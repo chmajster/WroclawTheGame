@@ -1,6 +1,7 @@
 #include "UI/SliceHUD.h"
 #include "Systems/WroclawMapSubsystem.h"
 #include "Systems/CityCoverageSubsystem.h"
+#include "Systems/CityGameplaySubsystem.h"
 #include "Vehicles/RaceSession.h"
 #include "Vehicles/DriveableVehicle.h"
 #include "Geography/GeoPreviewGameMode.h"
@@ -63,6 +64,7 @@ void ASliceHUD::DrawHUD()
     if (!PC)
         return;
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
+    auto *CityGameplay = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
     if (Cast<AGeoPreviewGameMode>(GetWorld()->GetAuthGameMode()))
         Text(TEXT("Mapa: © OpenStreetMap contributors (ODbL) | teren: Copernicus EU-DEM / USGS, via Mapzen"),
              20, Canvas->SizeY - 22, .65);
@@ -78,16 +80,22 @@ void ASliceHUD::DrawHUD()
     {
         if (auto *Vehicle = Cast<ADriveableVehicle>(PC->GetPawn()))
         {
-            if (M->bShowMenu)
-                Panel(TEXT("PAUZA"), TEXT("ESC — wznów | N — nowa kampania | L — checkpoint | Q — wyjście"));
+            if (PC->bPhone)
+                Panel(TEXT("TELEFON"),M->PhoneText(PC->Page)+TEXT("\nESC — zamknij"));
+            else if (!PC->Message.IsEmpty())
+                Panel(TEXT("DZIENNIK"),PC->Message+TEXT("\nENTER / ESC — zamknij"));
+            else if (M->bShowMenu)
+                Panel(TEXT("PAUZA"), CityGameplay->IsActive() ? TEXT("ESC — wznów | N — nowy zapis miasta | L — wczytaj miasto | Q — wyjście") : TEXT("ESC — wznów | N — nowa kampania | L — checkpoint | Q — wyjście"));
             else
             {
                 Text(Vehicle->Status(), 30, Canvas->SizeY - 120, .9);
-                Text(TEXT("NADODRZE — TEST POJAZDU"), 30, 30, 1.2);
+                Text(CityGameplay->IsActive() ? CityGameplay->NearbyObjective() : TEXT("NADODRZE — TEST POJAZDU"), 30, 30, 1.0);
                 if (auto *Race = Vehicle->FindComponentByClass<URaceSession>())
                     Text(Race->StatusText(), 30, 85, .9);
             }
         }
+        if (FPlatformTime::Seconds()<M->NotificationUntil)
+            Text(M->Notification.Left(135),30,Canvas->SizeY-160,.8,FLinearColor(1,.82,.4));
         return;
     }
     if (M->bDead)
@@ -98,6 +106,8 @@ void ASliceHUD::DrawHUD()
                    "lotnisko.\nNie możesz jeszcze opuścić Wrocławia. Wymaga to ukończenia "
                    "kampanii.\n\nROZDZIAŁ 2 ODBLOKOWANY — zawartość poza zakresem tego etapu.\n\n") +
                   M->AchievementsText() + TEXT("\nN — nowa gra | Q — wyjście"));
+    else if (M->bShowMenu && CityGameplay->IsActive())
+        Panel(TEXT("WROCŁAW — PAUZA"), TEXT("ENTER / ESC — wznów\nL — wczytaj ostatni zapis miasta\nN — rozpocznij od nowa (usuwa postęp miasta)\nQ — wyjdź\n\nB — dziennik dzielnic | T — telefon\nKampania Przebudzenie posiada oddzielny zapis."));
     else if (M->bShowMenu)
         Panel(
             TEXT("WROCLAW THE GAME"),
@@ -168,7 +178,7 @@ void ASliceHUD::DrawHUD()
     else
     {
         DrawRect(FLinearColor(0, 0, 0, .7), 20, 20, Canvas->SizeX - 40, 75);
-        Text(M->ObjectiveText(), 36, 35);
+        Text(CityGameplay->IsActive() ? CityGameplay->NearbyObjective() : M->ObjectiveText(), 36, 35);
         const float Y = Canvas->SizeY - 95;
         DrawRect(FLinearColor(.08, .08, .08), 30, Y, 220, 16);
         DrawRect(FLinearColor(.7, .15, .15), 30, Y, 220 * P->HealthState->Value / 100, 16);

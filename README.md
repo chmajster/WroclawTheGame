@@ -21,7 +21,7 @@ Dodano rzeczywiste dane OSM i terenu dla obszaru Hub/Gaju/Borka/Krzyków oraz ł
 
 `Build-Geography.ps1 -City` rozszerza istniejący świat GIS w tym samym układzie współrzędnych. Dodano katalog sektorów, profile materiałów, adresy powiązane z budynkami, routing portalowy offline, raport gotowości oraz integrację katalogu z telefonem i developerskim overlayem `CityCoverage`.
 
-**Status: GISOnly, 0 sektorów Playable.** Mosty/tunele bez opracowanych wysokości blokują zatwierdzone trasy z Nadodrza na południe. Brakuje jeszcze contentu dzielnic, AI/ruchu i testów silnikowych. Kampania pozostaje na swojej dotychczasowej mapie. Szczegóły i polecenia: [Wave 1](docs/CITY-WAVE1.md).
+**Status odbioru: GISOnly, 0 sektorów potwierdzonych jako Playable.** Sześć pomostów prototypowych przywraca połączenia wszystkich sektorów w grafie. Dodano 32 aktywności (4 zadania, 4 sekrety, 12 zdarzeń i 12 tropów), cztery wnętrza powiązane z budynkami, podstawową populację, zapis miasta/pojazdu i predykcję streamingu. Kod UE i wygenerowane assety nadal wymagają kompilacji oraz playtestu. Kampania pozostaje na swojej dotychczasowej mapie. Szczegóły i polecenia: [Wave 1](docs/CITY-WAVE1.md).
 
 ## Uruchomienie i build kampanii
 

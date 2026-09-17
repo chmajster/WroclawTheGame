@@ -9,6 +9,8 @@ from shapely.geometry import Polygon, box
 from import_sector import ROOT, SOURCE, build
 from road_routes import adjacency
 from city_coverage import evaluate, fingerprint
+from city_structures import apply_structures
+from city_content import generate_content
 
 DEFAULT_OUTPUT = ROOT/'Saved/CityData'
 
@@ -83,6 +85,8 @@ def connectivity(data, catalog, owners):
 def generate(output=DEFAULT_OUTPUT, catalog_path=ROOT/'Data/city.json', evidence_path=None):
     catalog = json.loads(catalog_path.read_text(encoding='utf-8')); validate_catalog(catalog)
     data, geo = build(output=output, name=catalog['dataset'], origin=catalog['origin_projected_m'])
+    structures=json.loads((ROOT/'Data/city_structures.json').read_text())
+    apply_structures(data,structures)
     sectors = {s['id']: s for s in catalog['sectors']}
     owners = {n['id']: owner(catalog, *n['geographic']) for n in data['road_graph']['nodes']}
     stats = {sid: {'buildings': 0, 'roads': 0, 'foot_edges': 0, 'rail_lines': 0, 'courtyards': 0} for sid in sectors}
@@ -123,13 +127,15 @@ def generate(output=DEFAULT_OUTPUT, catalog_path=ROOT/'Data/city.json', evidence
         if kind == 'rail': stats[sid]['rail_lines'] += 1
     for edge in data['road_graph']['edges']:
         if edge['foot']: stats[owners[edge['from']]]['foot_edges'] += 1
+    gameplay=json.loads((ROOT/'Data/city_gameplay.json').read_text(encoding='utf-8'))
+    content=generate_content(data,catalog,gameplay,owners)
     connections, anchors, seed = connectivity(data, catalog, owners)
     pipeline = hashlib.sha256()
     paths = list((ROOT/'Scripts/gis').glob('*.py')) + list((ROOT/'Source').rglob('*.cpp')) + list((ROOT/'Source').rglob('*.h'))
     paths += list((ROOT/'Config').glob('*.ini')) + [ROOT/'Scripts/prepare_geography.py', ROOT/'WroclawTheGame.uproject']
     for path in sorted(paths):
         pipeline.update(path.relative_to(ROOT).as_posix().encode()); pipeline.update(path.read_bytes())
-    digest = fingerprint(catalog, [*data['sources'], {'pipeline_sha256': pipeline.hexdigest()}])
+    digest = fingerprint(catalog, [*data['sources'], structures, gameplay, {'pipeline_sha256': pipeline.hexdigest()}])
     evidence = json.loads(evidence_path.read_text()) if evidence_path else None
     report = evaluate(catalog, stats, connections, digest, evidence)
     runtime = {'schema_version': 1, 'world_package': catalog['world_package'], 'fingerprint': digest, 'sectors': []}
@@ -141,7 +147,7 @@ def generate(output=DEFAULT_OUTPUT, catalog_path=ROOT/'Data/city.json', evidence
                                    'boundary': [p[:2] for p in corners],
                                    'min': [min(p[i] for p in corners) for i in range(2)],
                                    'max': [max(p[i] for p in corners) for i in range(2)]})
-    products = {'sector.json': data, 'city.json': runtime, 'coverage.json': report,
+    products = {'content.json':content, 'sector.json': data, 'city.json': runtime, 'coverage.json': report,
                 'routing.json': {'owners': owners, 'anchors': anchors, 'origin_node': seed, 'connectivity': connections},
                 'streets.json': sorted(streets.values(), key=lambda s:s['id']), 'addresses.json': addresses,
                 'courtyards.json': courtyards}

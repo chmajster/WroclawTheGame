@@ -46,7 +46,8 @@ def prepare():
         if material:mesh.set_material(0,material)
         if not unreal.EditorAssetLibrary.save_loaded_asset(mesh,False):raise RuntimeError('Mesh save failed '+name)
         actor=actors.spawn_actor_from_class(unreal.StaticMeshActor,unreal.Vector(*record['origin']))
-        actor.set_actor_label('GIS_'+name);actor.get_component_by_class(unreal.StaticMeshComponent).set_static_mesh(mesh)
+        actor.set_actor_label('GIS_'+name);component=actor.get_component_by_class(unreal.StaticMeshComponent);component.set_static_mesh(mesh)
+        if record['kind']=='water':component.set_collision_profile_name('NoCollision')
         if hlod:actor.set_editor_property('hlod_layer',hlod)
     if city_input:
         path='/Game/Generated/CityDefinition';definition=unreal.load_asset(path)
@@ -59,6 +60,53 @@ def prepare():
         registry=actors.spawn_actor_from_class(unreal.CityRegistry,unreal.Vector())
         registry.set_editor_property('definition',definition)
         registry.set_editor_property('is_spatially_loaded',False)
+        content=json.loads((input_dir/'content.json').read_text(encoding='utf-8'))
+        cube=unreal.load_asset('/Engine/BasicShapes/Cube.Cube')
+        def room_part(center,offset,size):
+            part=actors.spawn_actor_from_class(unreal.StaticMeshActor,unreal.Vector(*[center[i]+offset[i] for i in range(3)]))
+            component=part.get_component_by_class(unreal.StaticMeshComponent);component.set_static_mesh(cube)
+            component.set_material(0,unreal.load_asset('/Game/Generated/M_Plaster'))
+            part.set_actor_scale3d(unreal.Vector(*[v/100 for v in size]))
+        for interior in content['interiors']:
+            center=interior['center']
+            room_part(center,[0,0,-20],[1000,800,40])
+            for offset,size in [([-500,0,200],[30,800,440]),([500,0,200],[30,800,440]),([0,-400,200],[1000,30,440]),([0,400,200],[1000,30,440])]:room_part(center,offset,size)
+            # Walkable stair flight to the authored upper room; no collision inside the GIS shell is guessed.
+            for step in range(10):room_part(center,[-260+step*40,0,(step+1)*10],[40,180,(step+1)*20])
+            room_part(center,[275,0,190],[450,750,20])
+            entry=actors.spawn_actor_from_class(unreal.CityInteriorDoor,unreal.Vector(*interior['entrance']))
+            entry.set_editor_property('label','Wejdź: '+interior['title']);entry.set_editor_property('building_id',interior['building'])
+            entry.set_editor_property('destination',unreal.Vector(center[0]-350,center[1]-180,center[2]+94))
+            exit_door=actors.spawn_actor_from_class(unreal.CityInteriorDoor,unreal.Vector(center[0]-400,center[1]-220,center[2]+100))
+            exit_door.set_editor_property('label','Wyjdź na ulicę');exit_door.set_editor_property('building_id',interior['building'])
+            point=interior['entrance'];exit_door.set_editor_property('destination',unreal.Vector(point[0]+130,point[1],point[2]+24))
+            light=actors.spawn_actor_from_class(unreal.PointLight,unreal.Vector(center[0],center[1],center[2]+350))
+            light.get_component_by_class(unreal.PointLightComponent).set_editor_property('intensity',3000)
+        for item in content['activities']:
+            actor=actors.spawn_actor_from_class(unreal.CityActivity,unreal.Vector(*item['position']))
+            if not actor:raise RuntimeError('Cannot place city activity '+item['id'])
+            actor.set_editor_property('action_id',item['id'])
+            actor.set_editor_property('building_id',item['building'])
+            actor.set_actor_label(item['id'])
+        population=actors.spawn_actor_from_class(unreal.CityPopulation,unreal.Vector())
+        definitions=[]
+        for item in content['population_routes']:
+            definition=unreal.CityPopulationRoute()
+            definition.set_editor_property('id',item['id'])
+            definition.set_editor_property('vehicle',item['vehicle'])
+            definition.set_editor_property('points',[unreal.Vector(*p) for p in item['points']])
+            definitions.append(definition)
+        population.set_editor_property('routes',definitions)
+        population.set_editor_property('is_spatially_loaded',False)
+        # Recast builds only around existing character NavigationInvoker components.
+        for sector in json.loads((input_dir/'city.json').read_text(encoding='utf-8'))['sectors']:
+            low,high=sector['min'],sector['max']
+            nav=actors.spawn_actor_from_class(unreal.NavMeshBoundsVolume,unreal.Vector((low[0]+high[0])/2,(low[1]+high[1])/2,0))
+            if not nav:raise RuntimeError('Cannot create city navigation bounds')
+            _,extent=nav.get_actor_bounds(False)
+            if min(extent.x,extent.y,extent.z)<=0:raise RuntimeError('Empty city navigation brush')
+            nav.set_actor_scale3d(unreal.Vector((high[0]-low[0])/2/extent.x,(high[1]-low[1])/2/extent.y,5000/extent.z))
+            nav.set_editor_property('is_spatially_loaded',False)
     nodes={n['id']:n for n in data['road_graph']['nodes']}
     candidates=[e for e in data['road_graph']['edges'] if e['name']=='Ludwika Rydygiera' and e['car_forward'] and e['length_cm']>1500 and e['bridge']=='no']
     if not candidates:raise RuntimeError('No verified street spawn segment')

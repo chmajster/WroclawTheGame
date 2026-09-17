@@ -21,6 +21,8 @@ if (-not $OutputDirectory) { $OutputDirectory = Join-Path $ProjectRoot "Builds\$
 $OutputDirectory = [IO.Path]::GetFullPath($OutputDirectory)
 & $UnrealPython (Join-Path $PSScriptRoot 'compile_chapter.py')
 if ($LASTEXITCODE -ne 0) { throw 'Chapter data validation failed before compilation' }
+& $UnrealPython (Join-Path $PSScriptRoot 'compile_city_gameplay.py')
+if ($LASTEXITCODE -ne 0) { throw 'City gameplay validation failed' }
 & $UnrealPython (Join-Path $PSScriptRoot 'compile_world.py')
 if ($LASTEXITCODE -ne 0) { throw 'World profile validation failed' }
 & $UnrealPython (Join-Path $PSScriptRoot 'compile_tags.py')

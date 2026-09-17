@@ -1,4 +1,6 @@
 #include "Vehicles/DriveableVehicle.h"
+#include "World/CityStreamingProbe.h"
+#include "Systems/CityGameplaySubsystem.h"
 #include "Vehicles/RaceSession.h"
 #include "Vehicles/VehicleDefinition.h"
 #include "Components/BoxComponent.h"
@@ -64,10 +66,12 @@ ADriveableVehicle::ADriveableVehicle()
 void ADriveableVehicle::BeginPlay()
 {
     Super::BeginPlay();
+    StreamingProbe=GetWorld()->SpawnActor<ACityStreamingProbe>();
     if (!Definition)
         Definition = NewObject<UVehicleDefinition>(this);
     Chassis->SetMassOverrideInKg(NAME_None, FMath::Clamp(Definition->MassKg, 400.f, 5000.f));
     Health = Definition->MaxHealth;
+    GetWorld()->GetSubsystem<UCityGameplaySubsystem>()->RestoreVehicle(this);
     Chassis->OnComponentHit.AddDynamic(this, &ADriveableVehicle::Collision);
     StreamingSource->DisableStreamingSource();
     Chassis->SetSimulatePhysics(false);
@@ -104,6 +108,7 @@ void ADriveableVehicle::Interact(ASliceCharacter *Player)
     PC->Possess(this);
     PC->SetControlRotation(GetActorRotation());
     StreamingSource->EnableStreamingSource();
+    bWaitingForGround=true;Chassis->SetSimulatePhysics(false);
     EnteredAt = GetWorld()->GetTimeSeconds();
 }
 bool ADriveableVehicle::Exit()
@@ -135,6 +140,7 @@ bool ADriveableVehicle::Exit()
         Passenger->StreamingSource->EnableStreamingSource();
         Driver = nullptr;
         StreamingSource->DisableStreamingSource();
+        if (StreamingProbe) StreamingProbe->Source->DisableStreamingSource();
         bEngine = false;
         return true;
     }
@@ -156,11 +162,21 @@ void ADriveableVehicle::Tick(float Dt)
         Chassis->SetSimulatePhysics(true);
         bWaitingForGround = false;
     }
+    if (!Driver) { Chassis->SetSimulatePhysics(false); Speed=0; return; }
     if (!Chassis->IsSimulatingPhysics())
         return;
     const FVector Velocity = Chassis->GetPhysicsLinearVelocity(), Forward = GetActorForwardVector(),
                   Right = GetActorRightVector();
     Speed = FVector::DotProduct(Velocity, Forward);
+    if (StreamingProbe)
+    {
+        if (Driver && Velocity.Size2D()>500)
+        {
+            StreamingProbe->SetActorLocation(GetActorLocation()+(Velocity*2.5).GetClampedToMaxSize(15000));
+            StreamingProbe->Source->EnableStreamingSource();
+        }
+        else StreamingProbe->Source->DisableStreamingSource();
+    }
     float Throttle = 0, Steering = 0;
     bool Brake = false;
     auto *PC = Cast<ASliceController>(GetController());
@@ -256,4 +272,10 @@ FString ADriveableVehicle::Status() const
         TEXT("%.0f km/h | bieg %d | stan %.0f%% | silnik %s\nW/S gaz / hamowanie / wstecz | A/D skręt | "
              "SPACJA ręczny\nNUM 0 silnik | NUM + światła | NUM * klakson | E wysiądź po zatrzymaniu"),
         FMath::Abs(Speed) * .036f, Gear, Health, bEngine ? TEXT("ON") : TEXT("OFF"));
+}
+
+void ADriveableVehicle::EndPlay(const EEndPlayReason::Type Reason)
+{
+    if (StreamingProbe) StreamingProbe->Destroy();
+    Super::EndPlay(Reason);
 }

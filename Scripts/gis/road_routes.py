@@ -7,7 +7,7 @@ def adjacency(graph,mode='car'):
     result={n['id']:[] for n in graph['nodes']}
     for e in graph['edges']:
         # Bridge/tunnel heights require an authored elevation pass before drive testing.
-        if e['bridge']!='no' or e['layer']!='0' or e.get('tunnel','no')!='no':continue
+        if not e.get('surface_built',False) and (e['bridge']!='no' or e['layer']!='0' or e.get('tunnel','no')!='no'):continue
         if (mode=='foot' and e['foot']) or (mode=='car' and e['car_forward']):result[e['from']].append((e['to'],e['length_cm'],e['id']))
         if (mode=='foot' and e['foot']) or (mode=='car' and e['car_backward']):result[e['to']].append((e['from'],e['length_cm'],e['id']))
     return result
