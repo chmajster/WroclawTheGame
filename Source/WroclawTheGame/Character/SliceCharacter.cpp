@@ -1,6 +1,6 @@
 #include "Character/SliceCharacter.h"
 #include "Geography/GeoPreviewGameMode.h"
-#include "WorldPartition/WorldPartitionStreamingSourceComponent.h"
+#include "Components/WorldPartitionStreamingSourceComponent.h"
 #include "NavigationInvokerComponent.h"
 #include "Components/GameplayComponents.h"
 #include "Systems/NoiseSystem.h"
@@ -340,7 +340,7 @@ void ASliceCharacter::SetBlock(bool Value)
     bBlock = Value;
     Combat->bBlocking = Value;
 }
-float ASliceCharacter::TakeDamage(float Damage, const FDamageEvent &Event, AController *Instigator,
+float ASliceCharacter::TakeDamage(float Damage, const FDamageEvent &Event, AController *EventInstigator,
                                   AActor *Causer)
 {
     auto *M = Mission();

@@ -12,7 +12,7 @@ class WROCLAWTHEGAME_API ASliceCharacter : public ACharacter
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaSeconds) override;
     virtual void SetupPlayerInputComponent(UInputComponent *Input) override;
-    virtual float TakeDamage(float Damage, const FDamageEvent &Event, AController *Instigator,
+    virtual float TakeDamage(float Damage, const FDamageEvent &Event, AController *EventInstigator,
                              AActor *Causer) override;
     class USliceMission *Mission() const;
     void Interact();

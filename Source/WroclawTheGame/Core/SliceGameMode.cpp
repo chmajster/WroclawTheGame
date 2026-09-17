@@ -10,7 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "EngineUtils.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "WorldPartition/WorldPartitionStreamingSourceComponent.h"
+#include "Components/WorldPartitionStreamingSourceComponent.h"
 ASliceGameMode::ASliceGameMode()
 {
     DefaultPawnClass = ASliceCharacter::StaticClass();

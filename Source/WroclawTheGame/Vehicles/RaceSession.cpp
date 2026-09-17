@@ -1,6 +1,6 @@
 #include "Vehicles/RaceSession.h"
 #include "Engine/World.h"
-#include "WorldPartition/WorldPartitionStreamingSourceComponent.h"
+#include "Components/WorldPartitionStreamingSourceComponent.h"
 #include "Vehicles/DriveableVehicle.h"
 #include "Vehicles/VehicleDefinition.h"
 #include "Character/SliceCharacter.h"

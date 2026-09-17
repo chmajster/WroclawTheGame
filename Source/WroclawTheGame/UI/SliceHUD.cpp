@@ -241,7 +241,7 @@ void ASliceHUD::DrawCityCoverage()
         Text(Sector.DisplayName, Centre.X - 65, Centre.Y - 17, .7, Color);
         Text(Coverage->Label(Sector.Status), Centre.X - 65, Centre.Y + 3, .7, Color);
     }
-    if (const auto *Pawn = PlayerOwner->GetPawn())
+    if (const APawn *Pawn = PlayerOwner->GetPawn())
     {
         const FVector Position = Pawn->GetActorLocation();
         const FVector2D Point = Screen(FVector2D(Position.X, Position.Y));

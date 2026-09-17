@@ -1,6 +1,6 @@
 #include "World/CityStreamingProbe.h"
 #include "Components/SceneComponent.h"
-#include "WorldPartition/WorldPartitionStreamingSourceComponent.h"
+#include "Components/WorldPartitionStreamingSourceComponent.h"
 ACityStreamingProbe::ACityStreamingProbe()
 {
     SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));

@@ -19,7 +19,7 @@
 #include "Core/SliceGameMode.h"
 namespace
 {
-const TCHAR *Slot = TEXT("Przebudzenie_v3");
+const TCHAR *SaveSlotName = TEXT("Przebudzenie_v3");
 FString U(const std::string &S)
 {
     return UTF8_TO_TCHAR(S.c_str());
@@ -64,9 +64,10 @@ bool USliceMission::HasSave() const
 }
 bool USliceMission::LoadState(bool bApply)
 {
-    const bool Legacy = !UGameplayStatics::DoesSaveGameExist(Slot, 0);
+    const bool Legacy = !UGameplayStatics::DoesSaveGameExist(SaveSlotName, 0);
     auto *S =
-        Cast<USliceSave>(UGameplayStatics::LoadGameFromSlot(Legacy ? TEXT("Przebudzenie_v2") : Slot, 0));
+        Cast<USliceSave>(
+            UGameplayStatics::LoadGameFromSlot(Legacy ? TEXT("Przebudzenie_v2") : SaveSlotName, 0));
     if (!S || (S->Version != Wroclaw::Progress::Version && !(Legacy && S->Version == 2)) ||
         S->History.Num() > static_cast<int32>(Wroclaw::Catalog().size()) || S->Anchor.ContainsNaN() ||
         S->Anchor.X < 0 || S->Anchor.X > 15800 || S->Anchor.Y < 0 || S->Anchor.Y > 9300 ||
@@ -238,7 +239,7 @@ bool USliceMission::SaveCheckpoint()
         S->Failures.Add(U(Pair.first), Pair.second.failures);
         S->LockUntil.Add(U(Pair.first), Pair.second.until);
     }
-    bLastSaveSucceeded = UGameplayStatics::SaveGameToSlot(S, Slot, 0);
+    bLastSaveSucceeded = UGameplayStatics::SaveGameToSlot(S, SaveSlotName, 0);
     bSaveChecked = false;
     Notify(bLastSaveSucceeded ? TEXT("Zapisano checkpoint.")
                               : TEXT("Nie udało się zapisać checkpointu. Sprawdź miejsce na dysku."));

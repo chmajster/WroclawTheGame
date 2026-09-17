@@ -72,7 +72,7 @@ void ASliceEnemy::BeginPlay()
     if (auto *M = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Generated/M_Enemy.M_Enemy")))
         FindComponentByClass<UStaticMeshComponent>()->SetMaterial(0, M);
 }
-float ASliceEnemy::TakeDamage(float Damage, const FDamageEvent &Event, AController *Instigator,
+float ASliceEnemy::TakeDamage(float Damage, const FDamageEvent &Event, AController *EventInstigator,
                               AActor *Causer)
 {
     if (HealthState->Value <= 0 || !bActive)
@@ -139,9 +139,9 @@ ASliceEnemyController::ASliceEnemyController()
     Senses->ConfigureSense(*Hearing);
     Senses->SetDominantSense(Sight->GetSenseImplementation());
 }
-void ASliceEnemyController::OnPossess(APawn *Pawn)
+void ASliceEnemyController::OnPossess(APawn *InPawn)
 {
-    Super::OnPossess(Pawn);
+    Super::OnPossess(InPawn);
     Senses->OnTargetPerceptionUpdated.AddDynamic(this, &ASliceEnemyController::Perceived);
     ResetBrain();
 }

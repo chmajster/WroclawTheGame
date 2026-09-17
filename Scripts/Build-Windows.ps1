@@ -4,10 +4,57 @@ param(
     [ValidateSet('Development','Shipping')][string]$Configuration = 'Development',
     [string]$OutputDirectory,
     [switch]$PrepareOnly,
-    [switch]$BuildHLOD
+    [switch]$BuildHLOD,
+    [switch]$InstallPrerequisites
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+
+function Test-NetFxSdk {
+    $SdkDirectories = @(
+        (Join-Path ${env:ProgramFiles(x86)} 'Windows Kits\NETFXSDK'),
+        (Join-Path $env:ProgramFiles 'Windows Kits\NETFXSDK')
+    )
+    foreach ($Directory in $SdkDirectories) {
+        if ((Test-Path -LiteralPath $Directory) -and
+            @(Get-ChildItem -LiteralPath $Directory -Directory -ErrorAction SilentlyContinue).Count -gt 0) {
+            return $true
+        }
+    }
+
+    $RegistryRoots = @(
+        'HKLM:\SOFTWARE\Microsoft\Microsoft SDKs\NETFXSDK',
+        'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Microsoft SDKs\NETFXSDK'
+    )
+    foreach ($RegistryRoot in $RegistryRoots) {
+        if ((Test-Path -LiteralPath $RegistryRoot) -and
+            @(Get-ChildItem -LiteralPath $RegistryRoot -ErrorAction SilentlyContinue).Count -gt 0) {
+            return $true
+        }
+    }
+    return $false
+}
+
+if (-not (Test-NetFxSdk)) {
+    if (-not $InstallPrerequisites) {
+        throw 'Missing .NET Framework SDK required by UnrealBuildTool. Re-run with -InstallPrerequisites to install the Microsoft Developer Pack through winget.'
+    }
+
+    $Winget = Get-Command 'winget.exe' -ErrorAction SilentlyContinue
+    if (-not $Winget) {
+        throw 'winget.exe is required by -InstallPrerequisites. Install or update Windows App Installer first.'
+    }
+
+    Write-Host 'Installing Microsoft .NET Framework Developer Pack...'
+    & $Winget.Source install --id Microsoft.DotNet.Framework.DeveloperPack_4 --exact --source winget --silent --accept-package-agreements --accept-source-agreements --disable-interactivity
+    if ($LASTEXITCODE -notin @(0, 3010)) {
+        throw ".NET Framework Developer Pack installation failed ($LASTEXITCODE)"
+    }
+    if (-not (Test-NetFxSdk)) {
+        throw '.NET Framework Developer Pack installation completed, but the SDK is not visible yet. Restart PowerShell and run the build again.'
+    }
+}
+
 $ProjectRoot = Split-Path $PSScriptRoot -Parent
 $Project = Join-Path $ProjectRoot 'WroclawTheGame.uproject'
 $BuildTool = Join-Path $EngineRoot 'Engine\Build\BatchFiles\Build.bat'
@@ -15,7 +62,7 @@ $Editor = Join-Path $EngineRoot 'Engine\Binaries\Win64\UnrealEditor-Cmd.exe'
 $UnrealPython = Join-Path $EngineRoot 'Engine\Binaries\ThirdParty\Python3\Win64\python.exe'
 $Automation = Join-Path $EngineRoot 'Engine\Build\BatchFiles\RunUAT.bat'
 foreach ($File in @($BuildTool, $Editor, $Automation, $UnrealPython)) {
-    if (-not (Test-Path -LiteralPath $File)) { throw "Missing Unreal Engine 5.6 tool: $File" }
+    if (-not (Test-Path -LiteralPath $File)) { throw "Missing Unreal Engine 5.8 tool: $File" }
 }
 if (-not $OutputDirectory) { $OutputDirectory = Join-Path $ProjectRoot "Builds\$Configuration" }
 $OutputDirectory = [IO.Path]::GetFullPath($OutputDirectory)

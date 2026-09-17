@@ -15,7 +15,7 @@ class WROCLAWTHEGAME_API ADriveableVehicle : public APawn,
     virtual void BeginPlay() override;
     virtual void EndPlay(const EEndPlayReason::Type Reason) override;
     virtual void Tick(float DeltaSeconds) override;
-    virtual float TakeDamage(float Damage, const FDamageEvent &Event, AController *Instigator,
+    virtual float TakeDamage(float Damage, const FDamageEvent &Event, AController *EventInstigator,
                              AActor *Causer) override;
     virtual FText Prompt(ASliceCharacter *Player) const override;
     virtual void Interact(ASliceCharacter *Player) override;

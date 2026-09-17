@@ -1,7 +1,7 @@
 #include "Systems/CityGameplaySubsystem.h"
 #include "World/CityActivity.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "WorldPartition/WorldPartitionStreamingSourceComponent.h"
+#include "Components/WorldPartitionStreamingSourceComponent.h"
 #include "Character/SliceCharacter.h"
 #include "Vehicles/DriveableVehicle.h"
 #include "Mission/SliceMission.h"

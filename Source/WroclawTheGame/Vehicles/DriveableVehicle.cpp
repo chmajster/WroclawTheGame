@@ -9,7 +9,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "WorldPartition/WorldPartitionStreamingSourceComponent.h"
+#include "Components/WorldPartitionStreamingSourceComponent.h"
 #include "Character/SliceCharacter.h"
 #include "UI/SliceController.h"
 #include "Mission/SliceMission.h"
@@ -192,7 +192,7 @@ void ADriveableVehicle::Tick(float Dt)
         if (PC->WasInputKeyJustPressed(EKeys::Add))
         {
             bLights = !bLights;
-            for (auto *Light : Lights)
+            for (USpotLightComponent *Light : Lights)
                 Light->SetVisibility(bLights);
         }
         if (PC->IsInputKeyDown(EKeys::Multiply) && GetWorld()->GetTimeSeconds() - LastHorn > 1)
@@ -249,7 +249,8 @@ void ADriveableVehicle::Tick(float Dt)
     if (Health <= 0)
         bEngine = false;
 }
-float ADriveableVehicle::TakeDamage(float Amount, const FDamageEvent &Event, AController *Instigator,
+float ADriveableVehicle::TakeDamage(float Amount, const FDamageEvent &Event,
+                                    AController *EventInstigator,
                                     AActor *Causer)
 {
     const float Applied = FMath::Min(Health, FMath::Max(0.f, Amount));

@@ -24,7 +24,7 @@ class WROCLAWTHEGAME_API ASliceEnemy : public ACharacter
     ASliceEnemy();
     virtual void BeginPlay() override;
     virtual void EndPlay(const EEndPlayReason::Type Reason) override;
-    virtual float TakeDamage(float Damage, const FDamageEvent &Event, AController *Instigator,
+    virtual float TakeDamage(float Damage, const FDamageEvent &Event, AController *EventInstigator,
                              AActor *Causer) override;
     FString StatusText() const;
     bool IsThreat() const;
@@ -42,7 +42,7 @@ class WROCLAWTHEGAME_API ASliceEnemyController : public AAIController
   public:
     ASliceEnemyController();
     virtual void Tick(float DeltaSeconds) override;
-    virtual void OnPossess(APawn *Pawn) override;
+    virtual void OnPossess(APawn *InPawn) override;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UAIPerceptionComponent> Senses;
     UPROPERTY() EEnemyState State = EEnemyState::Patrol;
     void ResetBrain();

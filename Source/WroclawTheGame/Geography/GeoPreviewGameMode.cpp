@@ -8,7 +8,7 @@
 #include "UI/SliceHUD.h"
 #include "Mission/SliceMission.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "WorldPartition/WorldPartitionStreamingSourceComponent.h"
+#include "Components/WorldPartitionStreamingSourceComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"

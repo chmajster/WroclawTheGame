@@ -25,12 +25,12 @@ Dodano rzeczywiste dane OSM i terenu dla obszaru Hub/Gaju/Borka/Krzyków oraz ł
 
 ## Uruchomienie i build kampanii
 
-Wymagane lokalnie: UE 5.6, Visual Studio z narzędziami C++ i zgodny Windows SDK.
+Wymagane lokalnie: UE 5.8, Visual Studio z narzędziami C++, zgodny Windows SDK oraz .NET Framework SDK. Brakujący .NET Framework Developer Pack można zainstalować przez skrypt za pomocą `-InstallPrerequisites` (wymaga `winget` i może wyświetlić monit administratora).
 
 ```powershell
-.\Scripts\Build-Windows.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.6'
+.\Scripts\Build-Windows.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.8' -InstallPrerequisites
 # Alternatywnie:
-.\Scripts\Build-Windows.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.6' -Configuration Shipping -BuildHLOD
+.\Scripts\Build-Windows.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.8' -Configuration Shipping -BuildHLOD -InstallPrerequisites
 ```
 
 Skrypt waliduje katalogi i tagi, kompiluje target edytora, generuje materiały/audio/mapę, konwertuje World Partition i pakuje. Zatrzymuje się po błędzie lub braku znaczników generacji. `-PrepareOnly` przygotowuje content do edytora. Wynik pakowania: `Builds/Development` lub `Builds/Shipping`; uruchamiać cały pakiet, nie sam EXE.
