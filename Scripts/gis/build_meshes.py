@@ -32,7 +32,7 @@ def generate(destination, data=None, geo=None):
                 for ring in rings:
                     for a,b in zip(ring,ring[1:]):face(kind,[[a[0],a[1],min(a[2],base)-50],[b[0],b[1],min(b[2],base)-50],[b[0],b[1],base+height],[a[0],a[1],base+height]])
         elif kind in ('road','rail'):
-            if feature['tags'].get('bridge','no')!='no' or feature['tags'].get('tunnel','no')!='no':continue
+            if not feature.get('surface_built',False) and (feature['tags'].get('bridge','no')!='no' or feature['tags'].get('tunnel','no')!='no'):continue
             half=feature.get('width_m',1.4)*50
             for a,b in zip(feature['points'],feature['points'][1:]):
                 dx=b[0]-a[0];dy=b[1]-a[1];length=math.hypot(dx,dy)

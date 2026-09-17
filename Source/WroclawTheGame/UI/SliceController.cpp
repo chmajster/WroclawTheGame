@@ -1,6 +1,7 @@
 #include "UI/SliceController.h"
 #include "Engine/TextureRenderTarget2D.h"
 #include "Systems/DebugCheatManager.h"
+#include "Systems/CityGameplaySubsystem.h"
 #include "Mission/SliceMission.h"
 #include "Character/SliceCharacter.h"
 #include "Kismet/GameplayStatics.h"
@@ -238,13 +239,20 @@ void ASliceController::Confirm()
 void ASliceController::Reload()
 {
     CloseModal();
-    UGameplayStatics::OpenLevel(this, FName(TEXT("Przebudzenie_Source")));
+    UGameplayStatics::OpenLevel(this, GetWorld()->GetSubsystem<UCityGameplaySubsystem>()->IsActive() ? FName(TEXT("Nadodrze_GIS")) : FName(TEXT("Przebudzenie_Source")));
 }
 void ASliceController::NewGame()
 {
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     if (!M->bShowMenu && !M->bDead && !M->State.Finished())
         return;
+    auto *City = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+    if (City->IsActive())
+    {
+        if (City->NewRun()) Reload();
+        else M->Notify(TEXT("Nie udało się rozpocząć nowego zapisu miasta."));
+        return;
+    }
     M->NewGame();
     Reload();
 }
@@ -253,8 +261,13 @@ void ASliceController::LoadGame()
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     if (!M->bShowMenu && !M->bDead)
         return;
-    if (M->ContinueGame())
-        Reload();
+    auto *City = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+    if (City->IsActive())
+    {
+        if (City->LoadSaved()) Reload();
+        return;
+    }
+    if (M->ContinueGame()) Reload();
 }
 void ASliceController::Quit()
 {
@@ -365,7 +378,7 @@ DIGIT(2) DIGIT(3) DIGIT(4) DIGIT(5) DIGIT(6) DIGIT(7) DIGIT(8) DIGIT(9)
 {
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     if (M->bInGame && !M->bDead && !M->bShowMenu && !GameplayBlocked())
-        ShowMessage(M->QuestLogText());
+        ShowMessage(GetWorld()->GetSubsystem<UCityGameplaySubsystem>()->IsActive() ? GetWorld()->GetSubsystem<UCityGameplaySubsystem>()->Journal() : M->QuestLogText());
 }
 
 void ASliceController::OpenCCTV(UTextureRenderTarget2D *Feed)

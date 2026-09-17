@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "fingerprint": "b657cbe53d4858b5e41d8ed3c0d445b12eb7d7db00cedaf0ed9b2591313fc168",
+  "fingerprint": "7e6f9bb58db3c86c28ef51ccd911f76bf7762478b4bbba2d6a36c842b2f33362",
   "TotalSectors": 6,
   "PlayableSectors": 0,
   "DetailedSectors": 0,
@@ -123,9 +123,7 @@
         "secret",
         "save_load",
         "streaming",
-        "performance",
-        "car_connectivity",
-        "foot_connectivity"
+        "performance"
       ],
       "counts": {
         "buildings": 3114,
@@ -171,9 +169,7 @@
         "secret",
         "save_load",
         "streaming",
-        "performance",
-        "car_connectivity",
-        "foot_connectivity"
+        "performance"
       ],
       "counts": {
         "buildings": 4883,
@@ -219,9 +215,7 @@
         "secret",
         "save_load",
         "streaming",
-        "performance",
-        "car_connectivity",
-        "foot_connectivity"
+        "performance"
       ],
       "counts": {
         "buildings": 4278,
@@ -267,9 +261,7 @@
         "secret",
         "save_load",
         "streaming",
-        "performance",
-        "car_connectivity",
-        "foot_connectivity"
+        "performance"
       ],
       "counts": {
         "buildings": 5260,

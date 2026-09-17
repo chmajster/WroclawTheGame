@@ -13,6 +13,7 @@ class WROCLAWTHEGAME_API ADriveableVehicle : public APawn,
   public:
     ADriveableVehicle();
     virtual void BeginPlay() override;
+    virtual void EndPlay(const EEndPlayReason::Type Reason) override;
     virtual void Tick(float DeltaSeconds) override;
     virtual float TakeDamage(float Damage, const FDamageEvent &Event, AController *Instigator,
                              AActor *Causer) override;
@@ -34,6 +35,7 @@ class WROCLAWTHEGAME_API ADriveableVehicle : public APawn,
     int32 Gear = 0;
 
   private:
+    UPROPERTY() TObjectPtr<class ACityStreamingProbe> StreamingProbe;
     bool bWaitingForGround = true;
     double EnteredAt = 0, LastImpact = 0, LastHorn = 0;
     UFUNCTION()

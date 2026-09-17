@@ -1,4 +1,8 @@
 #include "Geography/GeoPreviewGameMode.h"
+#include "Systems/CityGameplaySubsystem.h"
+#include "Data/CityDefinition.h"
+#include "EngineUtils.h"
+#include "Vehicles/DriveableVehicle.h"
 #include "Character/SliceCharacter.h"
 #include "UI/SliceController.h"
 #include "UI/SliceHUD.h"
@@ -27,11 +31,21 @@ void AGeoPreviewGameMode::BeginPlay()
     if (auto *P = Cast<ASliceCharacter>(UGameplayStatics::GetPlayerPawn(this, 0)))
     {
         Start = P->GetActorLocation();
+        for (TActorIterator<ACityRegistry> It(GetWorld()); It; ++It)
+        {
+            auto *City = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+            City->Activate(Start);
+            Start = City->SpawnPoint();
+            P->SetActorLocation(Start);
+            for (TActorIterator<ADriveableVehicle> Vehicle(GetWorld());Vehicle;++Vehicle) City->RestoreVehicle(*Vehicle);
+            break;
+        }
         P->GetCharacterMovement()->DisableMovement();
         P->SetActorEnableCollision(false);
         P->StreamingSource->EnableStreamingSource();
     }
-    M->Notify(TEXT("Nadodrze — laboratorium geografii i pojazdu. Postęp kampanii nie jest zapisywany."));
+    if (!GetWorld()->GetSubsystem<UCityGameplaySubsystem>()->IsWriteBlocked())
+    M->Notify(TEXT("Wrocław — świat GIS. B: dziennik. Postęp miasta zapisuje się oddzielnie od kampanii."));
 }
 void AGeoPreviewGameMode::Tick(float Dt)
 {

@@ -2,7 +2,7 @@
 
 ## Stan dostawy
 
-Ta zmiana rozpoczyna Wave 1. **Nie kończy Wave 1 do poziomu Playable.** Unreal Engine nie jest dostępny w środowisku implementacji. Nie potwierdzono kompilacji UHT/UBT, wypieku assetów, jazdy, kolizji, streamingu, HLOD ani wydajności.
+Wave 1 zawiera teraz dane GIS oraz implementację podstawowego gameplayu. **Nie kończy Wave 1 do poziomu Playable.** Unreal Engine nie jest dostępny w środowisku implementacji. Nie potwierdzono kompilacji UHT/UBT, wypieku assetów, jazdy, kolizji, streamingu, HLOD ani wydajności.
 
 Dane obejmują południe Wrocławia, ciągły łącznik przez centrum i Nadodrze. OSM i teren są zapisane w repozytorium z metadanymi źródeł i sumami kontrolnymi. Build nie wykonuje zapytań sieciowych. Duży snapshot OSM jest przechowywany w częściach `.part001`–`.part003`; importer składa je w pamięci, sprawdzając sumę każdej części i całego archiwum. Każdy główny obszar Wave 1 jest reprezentowany przez komórkę produkcyjną. **Prostokąty nie są granicami administracyjnymi osiedli** i nie oznaczają pełnego pokrycia nazwanych dzielnic.
 
@@ -27,7 +27,7 @@ W edytorze otwórz `/Game/Maps/Nadodrze_GIS`. W Development komenda konsoli `Cit
 
 ## Dane i rozszerzanie
 
-- `Data/city.json`: stabilne ID dzielnic/sektorów, komórki produkcyjne, ringi, profile architektury i cele contentu. `content_targets` to wymagania do wykonania, **nie gotowe wnętrza lub aktywności**.
+- `Data/city.json`: stabilne ID dzielnic/sektorów, komórki produkcyjne, ringi, profile architektury i cele contentu. `content_targets` opisuje szerszy docelowy zakres dzielnic; implementację obecnych aktywności zawiera `Data/city_gameplay.json`.
 - `Saved/CityData/sector.json`: jeden globalny graf oraz geometria w stałym układzie współrzędnych.
 - `routing.json`: właściciele węzłów, rzeczywiste punkty połączenia sektorów i dwukierunkowa osiągalność samochodowa/piesza względem Nadodrza.
 - `streets.json`: wspólny słownik nazw, stabilne dla danej nazwy identyfikatory i odwołania do OSM ways. Zmiana nazwy ulicy wymaga przyszłego aliasu/migracji ID.
@@ -47,7 +47,7 @@ Skrypt pobiera małe wycinki sekwencyjnie, dzieli zbyt gęste obszary, zachowuje
 
 `HierarchicalRouter` jest **implementacją offline w Pythonie**, testowaną względem globalnej najkrótszej ścieżki. Oddziela lokalne przeszukiwania wewnątrz sektora od przejść przez portale. Obsługuje ponowne wejście do tego samego sektora, jednokierunkowość i osobny tryb pieszy. Nie łączy bliskich geometrycznie dróg bez wspólnej topologii OSM. Graf district route można odczytać z sekwencji sektorów i ich przypisania do dzielnic; osobnego trzeciego poziomu optymalizacji jeszcze nie wdrożono.
 
-Mosty, tunele i niezerowe warstwy są wykluczane z tras do czasu opracowania wysokości. Osiągalność w grafie **nie dowodzi fizycznej przejezdności** w Unreal. Brakuje importu routingu do runtime VehicleAI, ograniczeń skrętów OSM, pełnej sieci tramwajów i dynamicznych blokad.
+Mosty, tunele i niezerowe warstwy są wykluczane z tras do czasu opracowania wysokości. Wyjątkiem jest sześć jawnie skonfigurowanych pomostów z `Data/city_structures.json`: geometria i graf otrzymują te same interpolowane wysokości przyczółków. Są to powierzchnie prototypowe, nie pomiary geodezyjne mostów. Wszystkie sześć sektorów jest teraz osiągalne w obie strony w grafie samochodowym i pieszym. Osiągalność w grafie **nie dowodzi fizycznej przejezdności** w Unreal. Podstawowa populacja runtime odtwarza osiem zamkniętych tras obliczonych na tym grafie. Brakuje pełnego dynamicznego VehicleAI, ograniczeń skrętów OSM, pełnej sieci tramwajów i dynamicznych blokad.
 
 ## Statusy i odbiór
 
@@ -77,20 +77,30 @@ python Scripts/gis/build_city.py --evidence Saved/CityVerification.json --requir
 
 Brak któregokolwiek wymaganego kryterium blokuje odbiór. Dowody muszą być wprowadzone po rzeczywistych testach; narzędzie waliduje ich strukturę i fingerprint, ale nie uwierzytelnia treści zewnętrznych raportów. Zmiana źródeł, katalogu, kodu GIS/UE lub konfiguracji unieważnia poprzedni fingerprint. Build z `--require-playable` na dostarczonym stanie powinien zakończyć się błędem — to prawidłowa blokada odbioru.
 
-## Następna praca w Unreal
+## Zaimplementowany gameplay
 
-1. UHT/UBT, import mapy, kontrola transformacji GeoReferencing i World Partition, HLOD, pomiar pamięci oraz jazda/pieszy przegląd wszystkich czterech sektorów.
-2. Wysokości tuneli i mostów, rzeczywiste skrzyżowania, kolizje i nawigacja, optymalizacja komórek siatek. Obecny generator nadal grupuje trójkąty według środka, więc długie obiekty mogą przekraczać granice komórek.
-3. Huby: klatki, mieszkanie, opuszczony lokal, parking i przejścia; Gaj/Borek/Krzyki: miejsca z `content_targets`.
-4. Populacja, traffic runtime, ambient, po jednej aktywności, kilku zdarzeniach i sekrecie na sektor; testy save/load i migracji trwałych ID.
-5. Połączenie kampanii ze światem GIS. Dopiero po odbiorze Wave 1 — pełny content pass Wave 2.
+`Data/city_gameplay.json` i generowany `CityGameplayCatalog.h` przechowują stabilne ID, wymagania i odwołania do OSM. W każdej dzielnicy są trzy tropy, finał małego zadania, sekret i trzy trwałe zdarzenia. Zdarzenia uruchamiają komunikat/dźwięk i zapisują trwałą flagę; nie są rozbudowanymi scenami z antagonistami. Obserwacja Gaju wymaga 20 sekund w zatrzymanym samochodzie; oddalenie lub opuszczenie samochodu zeruje czas. Jedna skrytka Borka wymaga kucania. `B` i telefon pokazują dziennik, a HUD najbliższą dostępną załadowaną aktywność.
 
-Pozostałe wymagania załącznika, m.in. predykcja streamingu, pooling, pamięć według kategorii, questy wielodzielnicowe, AlleyNetwork, stany zagrożenia, trasy ucieczki i automatyczny city tour w silniku, pozostają niewdrożone. Nie zastąpiono ich pustymi klasami.
+Trzy pokoje Hub i kryjówka Borka są prostymi wnętrzami blockoutu z klatką, schodami, górnym pomieszczeniem i światłem. Każde ma BuildingID. Są umieszczone w tej samej mapie, w odizolowanej przestrzeni pod terenem; nie odtwarzają rzeczywistego rozkładu mieszkań. Wejścia czekają na streaming i bezpieczną kolizję, a po błędzie wracają do wejścia. Gracz nie jest zwalniany do ruchu nad niezaładowaną podłogą.
+
+`WroclawCity_v1` zapisuje tylko ukończone akcje, punkt wznowienia oraz położenie/stan samochodu. Nie zapisuje całego GIS ani populacji. Nieznane ID pozostają w zapisie przy aktualizacji mapy. Wadliwy/nowszy zapis blokuje automatyczne nadpisanie. Błąd zapisu wycofuje zaliczenie aktywności. `N` w menu miasta rozpoczyna nowy zapis miasta, `L` odczytuje go. Pliki kampanii nie są zmieniane.
+
+Populacja korzysta z puli maksymalnie 24 prostych agentów (po trzy na aktywną trasę). Agenci pojawiają się w pobliżu gracza, jadą/chodzą po zweryfikowanych krawędziach grafu i zatrzymują przed przeszkodą lub brakiem podłoża. To ruch kinematyczny blockoutu, bez pełnej symulacji skrzyżowań i zachowania kierowców. Zaparkowany samochód gracza wyłącza fizykę. Jazda aktywuje dodatkowe źródło streamingu 2,5 sekundy przed aktualnym wektorem prędkości, maksymalnie 150 metrów dalej.
+
+## Odbiór w Unreal
+
+1. UHT/UBT, wypiek mapy przez `Build-Geography.ps1 -City`, kontrola World Partition, HLOD oraz jazda/pieszy przegląd sektorów.
+2. Sprawdzenie prześwitu i kolizji sześciu pomostów, wody, skrzyżowań oraz podłoża agentów. Pozostałe nieopracowane mosty i tunele nadal są pomijane.
+3. Przejście wszystkich czterech zadań, sekretów, zdarzeń i wnętrz; save/load na ulicy, we wnętrzu i podczas postoju samochodu. W Session Frontend uruchomić test `WTG.City.SaveMemoryRoundTrip` (dodany, lokalnie nieuruchomiony).
+4. Pomiar pamięci, FPS i pop-in przy szybkiej jeździe; ręczna poprawa landmarków, punktów interakcji i profili fasad. Obecne markery, agentów i pokoje zastąpić docelowymi assetami.
+5. Migracja kampanii i jej wnętrz do GIS pozostaje osobnym zadaniem. Dopiero po odbiorze Wave 1 — pełny content pass Wave 2.
+
+Pozostałe wymagania załącznika, m.in. predykcja streamingu według trasy misji/wyścigu, pamięć według kategorii, questy wielodzielnicowe, AlleyNetwork, stany zagrożenia, trasy ucieczki i automatyczny city tour w silniku, pozostają niewdrożone. Nie zastąpiono ich pustymi klasami.
 
 ## Weryfikacja tej zmiany
 
-- `ASAN_OPTIONS=detect_leaks=0 bash Scripts/test.sh`: 25 testów Python i trzy zestawy testów C++ przeszły; w tym 12 ścieżek kampanii oraz 50 000 mieszanych interakcji. LeakSanitizer został wyłączony z powodu niezgodności środowiska z ptrace; ASan i UBSan pozostały aktywne.
+- `ASAN_OPTIONS=detect_leaks=0 bash Scripts/test.sh`: 29 testów Python i cztery zestawy testów C++ przeszły; w tym 12 ścieżek kampanii oraz 50 000 mieszanych interakcji. LeakSanitizer został wyłączony z powodu niezgodności środowiska z ptrace; ASan i UBSan pozostały aktywne.
 - Dodatkowy test dzielonego źródła: poprawne składanie, odrzucenie uszkodzonej części i niedozwolonej ścieżki.
-- Generacja siatek offline: 10 845 komórek, 1 558 081 trójkątów; sprawdzono zakresy indeksów, kompletność trójek i skończoność współrzędnych. Nie jest to weryfikacja kolizji ani renderowania w UE.
+- Generacja siatek offline: 10 845 komórek, 1 558 109 trójkątów; sprawdzono zakresy indeksów, kompletność trójek i skończoność współrzędnych. Nie jest to weryfikacja kolizji ani renderowania w UE.
 - Import zwraca ostrzeżenia `polygonize` dla części relacji OSM. Dane wymagają ręcznej kontroli geometrii; nie podniesiono ich statusu ponad GISOnly.
-- Kontrola `--require-playable` ma odrzucać ten stan. Cztery południowe sektory mają blokady połączeń z Nadodrzem, a wszystkie sektory nie mają odbioru silnikowego.
+- Kontrola `--require-playable` ma odrzucać ten stan. Wszystkie sektory mają połączenia w grafie, ale nie mają odbioru silnikowego.

@@ -3,6 +3,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 python3 Scripts/compile_chapter.py --check
 python3 Scripts/compile_world.py --check
+python3 Scripts/compile_city_gameplay.py --check
 python3 Scripts/compile_tags.py --check
 mkdir -p .test-bin
 "${CXX:-g++}" -std=c++20 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined -g -ISource/WroclawTheGame Tests/progression.cpp -o .test-bin/progression
@@ -11,5 +12,7 @@ g++ -std=c++20 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined -fno
 .test-bin/openworld
 "${CXX:-g++}" -std=c++20 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined -g -ISource/WroclawTheGame Tests/races.cpp -o .test-bin/races
 .test-bin/races
+"${CXX:-g++}" -std=c++20 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined -g -ISource/WroclawTheGame Tests/city_progress.cpp -o .test-bin/city_progress
+.test-bin/city_progress
 python3 -m unittest discover -s Tests -p 'test_*.py' -v
 python3 -m compileall -q Scripts

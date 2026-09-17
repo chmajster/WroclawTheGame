@@ -3,6 +3,7 @@
 #include "Engine/GameInstance.h"
 #include "Mission/SliceMission.h"
 #include "Systems/WroclawMapSubsystem.h"
+#include "Systems/CityGameplaySubsystem.h"
 #include "Engine/World.h"
 USliceMission *UPhoneSystem::Mission() const
 {
@@ -42,7 +43,7 @@ void UPhoneSystem::Initialize(FSubsystemCollectionBase &C)
     Register(TEXT("notes"),
              [this]() { return Mission()->ObjectiveText() + TEXT("\n") + Mission()->HintText(); });
     Register(TEXT("investigation"), [this]() { return Mission()->InvestigationText(2); });
-    Register(TEXT("objectives"), [this]() { return Mission()->QuestLogText(); });
+    Register(TEXT("objectives"), [this]() { auto *City = GetWorld()->GetSubsystem<UCityGameplaySubsystem>(); return City->IsActive() ? City->Journal() : Mission()->QuestLogText(); });
 }
 FString UPhoneSystem::Render(int32 Page) const
 {

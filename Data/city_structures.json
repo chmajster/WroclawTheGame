@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "note": "Prototype bridge decks interpolate the terrain heights at their abutments. These are authored blockout surfaces, not surveyed bridge elevations. Engine clearance/collision acceptance is still mandatory.",
+  "bridges": [
+    {"way": "178463527", "name": "Mosty Uniwersyteckie", "max_grade": 0.12},
+    {"way": "16584777", "name": "Mosty Uniwersyteckie", "max_grade": 0.12},
+    {"way": "53212285", "name": "most Księdza Piotra Skargi", "max_grade": 0.12},
+    {"way": "427901079", "name": "Most Pomorski Północny", "max_grade": 0.12},
+    {"way": "187405572", "name": "Most Pomorski Środkowy", "max_grade": 0.12},
+    {"way": "505519311", "name": "Most Pomorski Południowy", "max_grade": 0.12}
+  ]
+}

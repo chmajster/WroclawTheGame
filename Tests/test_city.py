@@ -14,6 +14,7 @@ from city_coverage import PLAYABLE_CHECKS, evaluate, fingerprint
 from city_routing import HierarchicalRouter
 from road_routes import route, adjacency
 from import_sector import Geography
+from city_structures import apply_structures
 
 
 def graph(edges, size=6):
@@ -137,6 +138,24 @@ class WaveOneSourceTests(unittest.TestCase):
         self.assertTrue({'Powstańców Śląskich','Hubska','Borowska'} <= names)
         self.assertEqual(self.report['PlayableSectors'], 0)
 
+    def test_all_sectors_connected_with_authored_bridge_decks(self):
+        self.assertTrue(all(modes['car'] and modes['foot'] for modes in self.routing['connectivity'].values()))
+        self.assertEqual(len(self.data['authored_structures']),6)
+        self.assertTrue(all(not s['engine_verified'] and not s['surveyed'] for s in self.data['authored_structures']))
+
+    def test_city_activities_interiors_and_directed_population_loops(self):
+        content=json.loads((Path(self.tmp.name)/'content.json').read_text())
+        self.assertEqual(len(content['activities']),32)
+        self.assertEqual(len(content['interiors']),4)
+        self.assertEqual(len(content['population_routes']),8)
+        for loop in content['population_routes']:
+            links=adjacency(self.data['road_graph'],'car' if loop['vehicle'] else 'foot')
+            self.assertEqual(loop['source_nodes'][0],loop['source_nodes'][-1])
+            for a,b in zip(loop['source_nodes'],loop['source_nodes'][1:]):
+                self.assertIn(b,{e[0] for e in links[a]})
+        self.assertEqual(len({a['id'] for a in content['activities']}),32)
+        self.assertTrue(all(i['building'] for i in content['interiors']))
+
     def test_topology_addresses_and_courtyards(self):
         self.assertEqual(len(self.routing['owners']),len(self.data['road_graph']['nodes']))
         addresses = json.loads((Path(self.tmp.name)/'addresses.json').read_text())
@@ -152,3 +171,17 @@ class WaveOneSourceTests(unittest.TestCase):
 
 
 if __name__ == '__main__': unittest.main()
+
+
+class AuthoredBridgeTests(unittest.TestCase):
+    def test_deck_and_graph_share_height_and_bad_grades_fail(self):
+        data={'features':[{'id':'way/1:line:0','tags':{'bridge':'yes'},'points':[[0,0,100],[1000,0,-500],[2000,0,200]]}],
+              'road_graph':{'nodes':[{'id':str(i),'position':p[:]} for i,p in enumerate([[0,0,100],[1000,0,-500],[2000,0,200]])],
+              'edges':[{'way':'1','from':'0','to':'1'},{'way':'1','from':'1','to':'2'}]}}
+        definition={'schema_version':1,'bridges':[{'way':'1','name':'test','max_grade':.1}]}
+        apply_structures(data,definition)
+        self.assertEqual(data['features'][0]['points'][1][2],150)
+        self.assertEqual(data['road_graph']['nodes'][1]['position'][2],150)
+        self.assertTrue(all(e['surface_built'] for e in data['road_graph']['edges']))
+        bad=copy.deepcopy(data);bad['features'][0]['points'][-1][2]=10000
+        with self.assertRaises(ValueError):apply_structures(bad,definition)

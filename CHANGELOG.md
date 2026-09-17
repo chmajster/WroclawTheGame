@@ -1,3 +1,13 @@
+## Wave 1 — gameplay i ciągłość sektorów
+
+- Sześć pomostów blockoutu z zachowaniem współrzędnych OSM i interpolacją wysokości przyczółków; spójność grafu i geometrii oraz limit nachylenia. Połączenia car/foot dla wszystkich sześciu sektorów.
+- 32 stabilne aktywności: 4 zadania z trzema tropami, 4 sekrety i 12 jednorazowych zdarzeń; obserwacja z samochodu i skrytka wymagająca kucania.
+- Trzy wnętrza Hub i kryjówka Borka, powiązane z BuildingID, klatki ze schodami i przejścia oczekujące na streaming oraz kolizję.
+- Dziennik miasta, interakcje, własny wersjonowany zapis postępu i samochodu, zachowanie nieznanych ID oraz blokada nadpisania nieprawidłowego/nowszego zapisu.
+- Osiem tras populacji wyznaczanych na grafie, stała pula 24 agentów i zatrzymywanie przed przeszkodami; dodatkowe źródło streamingu przed jadącym samochodem.
+- Wyłączanie fizyki zaparkowanego pojazdu, przywracanie jego pozycji i brak kolizji tafli wody.
+- Testy logiki i danych przechodzą; odbiór UE pozostaje wymagany. Status Playable nie jest przyznawany automatycznie.
+
 ## Wave 1 — city GIS foundation
 
 - Import rzeczywistych danych południa Wrocławia i łącznika z Nadodrzem: 26 wycinków OSM, dwa kafle terenu, metadane/licencje/checksumy, build offline.
