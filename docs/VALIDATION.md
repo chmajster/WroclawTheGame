@@ -1,25 +1,29 @@
-# Weryfikacja implementacji v2 — 2026-09-17
+# Weryfikacja 0.3 — 17.09.2026
 
-Lokalnie wykonano testy niezależne od Unreal Engine:
+## Wykonano w środowisku Linux
 
-- 12 pełnych głównych sekwencji: 2 wyjścia × 2 wejścia do sklepu × 3 warianty panelu.
-- Pominięcie wszystkich pobocznych w tych sekwencjach; osobna odmowa pomocy sąsiadowi nie blokuje zakończenia.
-- Zebranie wszystkich dowodów i osiągnięcie Detektyw przed końcem rozdziału.
-- Wzajemne wykluczenie wyborów, unikalne klucze i dokładne zużywanie przedmiotów.
-- Niepoprawne rozwiązania, brak wskazówek, blokada po trzech błędach, odblokowanie po 8 sekundach i zachowanie blokady w kopii stanu.
-- Odmowa zakończenia pościgu, otwarcia warsztatu i finału podczas zagrożenia.
-- Warianty i niezmienniki odtworzenia stanu, odrzucenie niespójnej historii/ekwipunku.
-- Progi podpowiedzi 90/180/300 sekund i reset po postępie.
-- 50 000 prób interakcji w losowych kolejnościach, sprawdzających rzeczywistą klasę produkcyjną.
-- Walidacja źródła treści i wygenerowanego katalogu, błędnych referencji, cykli i wariantów.
-- Generowanie/sprawdzenie 15 tekstur TGA i 10 WAV oraz składni generatorów.
+- Katalog rozdziału, świata i Gameplay Tags zgodny z generatorami.
+- Produkcyjny model C++20 z AddressSanitizer i UndefinedBehaviorSanitizer: 12 ścieżek rozdziału, opcjonalne nagrody/pominięcia, warunki zapisów, blokady i 50 000 mieszanych interakcji.
+- Event bus (w tym usunięcie subskrypcji podczas publikacji), rozszerzenie evaluatorów, zależności questów, Heat, pogoda, odkrycia, dyrektor lokalnych zdarzeń i round trip serializacji świata.
+- Model wyścigu: kolejność bramek, przejazd w złym kierunku, szybkie przekroczenie kilku bramek, limit czasu, utrata ładunku i restart.
+- 15 testów Python: generatory danych/assetów oraz GIS: źródła, dwukierunkowe przeliczenie współrzędnych, skala, kierunki jazdy, graf pieszy, niepoprawne referencje i trasy prób na rzeczywistych krawędziach.
+- Import rzeczywistych źródeł OSM/raster, wygenerowanie 281 grup siatek do wypieku w edytorze.
+- Kontrola składni Python i białych znaków diffu.
 
-Test C++ jest kompilowany jako **C++20**, z ostrzeżeniami jako błędami, AddressSanitizerem i UndefinedBehaviorSanitizerem. Lokalnie LeakSanitizer wymaga wyłączenia z powodu środowiska ptrace:
+Lokalne uruchomienie: `ASAN_OPTIONS=detect_leaks=0 bash Scripts/test.sh`. Wyłączono wyłącznie LeakSanitizer ze względu na środowisko wykonawcze. Nie jest to dowód braku wycieków w grze. CI używa domyślnych ustawień sanitizerów.
+
+## Nie wykonano
+
+Nie ma tutaj instalacji UE 5.6 ani Windows toolchain. Nie skompilowano klas Unreal ani nagłówków refleksji. Nie wykonano testu `WTG.Save.Version3MemoryRoundTrip`, generacji binarnych assetów w edytorze, konwersji WP, HLOD, cookingu, pakowania, testu gameplayu, migracji pliku SaveGame z dysku ani profilowania GPU/CPU.
+
+Nie wolno wnioskować o działaniu UE na podstawie kompilacji przenośnych modeli C++. Procedury Python/PowerShell oraz nowy kod komponentów mogą wymagać poprawek po pierwszym rzeczywistym uruchomieniu silnika. To jest jawna bramka przed odbiorem, a nie wynik zaliczony.
+
+## Odtworzenie
 
 ```bash
-ASAN_OPTIONS=detect_leaks=0 bash Scripts/test.sh
+python3 -m pip install -r Scripts/gis/requirements.txt
+bash Scripts/test.sh
+python3 Scripts/gis/build_meshes.py
 ```
 
-CI pozostawia domyślne ustawienia sanitizerów. Wyniki modelu nie są dowodem braku wycieków pamięci gry.
-
-**Niewykonane:** kompilacja UE/UHT/UBT, tworzenie mapy i import przez editor API, serializacja SaveGame na dysk, cooking i Windows EXE, sprawdzenie kolizji/AI/UI, pomiar długości rozgrywki, FPS, frame-time i pamięci. Tych bramek nie zastępują powyższe testy.
+Na Windows użyj Build-Windows.ps1 lub Build-Geography.ps1 zgodnie z README. Test silnikowy uruchom w Session Frontend → Automation → WTG.Save. Wyniki powinny trafić do raportu odbioru wraz z logami i identyfikatorem commitu. Workflow Windows wymaga własnego runnera z UE 5.6 i zmienną UE_ROOT; nie uruchamiano go na nieistniejącym runnerze.

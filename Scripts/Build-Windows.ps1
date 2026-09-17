@@ -3,7 +3,8 @@ param(
     [Parameter(Mandatory=$true)][string]$EngineRoot,
     [ValidateSet('Development','Shipping')][string]$Configuration = 'Development',
     [string]$OutputDirectory,
-    [switch]$PrepareOnly
+    [switch]$PrepareOnly,
+    [switch]$BuildHLOD
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -20,6 +21,10 @@ if (-not $OutputDirectory) { $OutputDirectory = Join-Path $ProjectRoot "Builds\$
 $OutputDirectory = [IO.Path]::GetFullPath($OutputDirectory)
 & $UnrealPython (Join-Path $PSScriptRoot 'compile_chapter.py')
 if ($LASTEXITCODE -ne 0) { throw 'Chapter data validation failed before compilation' }
+& $UnrealPython (Join-Path $PSScriptRoot 'compile_world.py')
+if ($LASTEXITCODE -ne 0) { throw 'World profile validation failed' }
+& $UnrealPython (Join-Path $PSScriptRoot 'compile_tags.py')
+if ($LASTEXITCODE -ne 0) { throw 'Gameplay tag generation failed' }
 & $BuildTool WroclawTheGameEditor Win64 Development "-Project=$Project" -WaitMutex -NoHotReloadFromIDE
 if ($LASTEXITCODE -ne 0) { throw "Editor target build failed ($LASTEXITCODE)" }
 $Marker = Join-Path $ProjectRoot 'Saved\GeneratedContent.ok'
@@ -29,8 +34,20 @@ $Script = Join-Path $PSScriptRoot 'prepare_content.py'
 if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $Marker)) {
     throw 'Content generation failed. Read Saved\Logs\WroclawTheGame.log; packaging was not started.'
 }
+# Convert the authored level in place; its package path remains stable for saved games.
+& $Editor $Project -run=WorldPartitionConvertCommandlet /Game/Maps/Przebudzenie_Source -SCCProvider=None -AllowCommandletRendering -unattended -stdout -FullStdOutLogOutput
+if ($LASTEXITCODE -ne 0) { throw 'World Partition conversion failed' }
+$VerifyScript = Join-Path $PSScriptRoot 'verify_partition.py'
+$PartitionMarker = Join-Path $ProjectRoot 'Saved\PartitionVerified.ok'
+if (Test-Path -LiteralPath $PartitionMarker) { Remove-Item -LiteralPath $PartitionMarker }
+& $Editor $Project "-ExecutePythonScript=$VerifyScript" -unattended -nosplash -nullrhi -stdout -FullStdOutLogOutput
+if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $PartitionMarker)) { throw 'Streaming validation failed; packaging stopped' }
+if ($BuildHLOD) {
+    & $Editor $Project /Game/Maps/Przebudzenie_Source -run=WorldPartitionBuilderCommandlet -Builder=WorldPartitionHLODsBuilder -SetupHLODs -BuildHLODs -AllowCommandletRendering -SCCProvider=None -unattended
+    if ($LASTEXITCODE -ne 0) { throw 'HLOD generation failed' }
+}
 if ($PrepareOnly) { Write-Host 'Editor target and generated content prepared.'; return }
-& $Automation BuildCookRun "-project=$Project" -noP4 -platform=Win64 "-clientconfig=$Configuration" -build -cook '-map=/Game/Maps/Przebudzenie' -stage -pak -archive "-archivedirectory=$OutputDirectory" -prereqs -utf8output -unattended
+& $Automation BuildCookRun "-project=$Project" -noP4 -platform=Win64 "-clientconfig=$Configuration" -build -cook '-map=/Game/Maps/Przebudzenie_Source' -stage -pak -archive "-archivedirectory=$OutputDirectory" -prereqs -utf8output -unattended
 if ($LASTEXITCODE -ne 0) { throw "Windows packaging failed ($LASTEXITCODE)" }
 $Executables = @(Get-ChildItem -LiteralPath $OutputDirectory -Filter 'WroclawTheGame.exe' -Recurse)
 if ($Executables.Count -eq 0) { throw 'Packaging returned success but no game executable was found.' }

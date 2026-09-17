@@ -1,3 +1,5 @@
+> Aktualizacja 0.3: bieżąca architektura i procedury są w [ARCHITECTURE.md](ARCHITECTURE.md), [ADDING_CONTENT.md](ADDING_CONTENT.md) i [GEOGRAPHY.md](GEOGRAPHY.md). Opis poniżej dotyczy wcześniejszego blockoutu 0.2; geometrię zastąpił wypiek aktorów do mapy edytora.
+
 # Dodawanie questów, zagadek i dowodów
 
 `Data/chapter1.json` jest źródłem treści. `Source/WroclawTheGame/Content/ChapterCatalog.h` jest generowanym katalogiem C++ używanym zarówno przez Unreal, jak i testy. Nie edytuj katalogu ręcznie.

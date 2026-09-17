@@ -1,3 +1,28 @@
+# Bramka odbioru 0.3 — niezaliczona
+
+Żaden punkt wymagający działającego silnika lub Windows nie został uznany za wykonany. Testy modelu opisano w VALIDATION.md. Poniższa lista uzupełnia historyczny odbiór rozdziału.
+
+- [ ] UHT/UBT UE 5.6 bez błędów; również Shipping.
+- [ ] Assety i obie mapy zapisują się, a commandlety kończą bez błędów.
+- [ ] Data Layers i World Partition rzeczywiście streamują aktorów; brak spadania przez niezaładowaną podłogę.
+- [ ] HLOD, nawigacja, powrót AI do patrolu, wykrywanie z profili i lokalne alarmowanie sprawdzone w grze.
+- [ ] Pełna pętla menu → mieszkanie → zagadki → ulica → pościg → bezpieczny punkt → koniec rozdziału w EXE.
+- [ ] Zapis v3 na dysku, odczyt v2, zgon i restart, uszkodzony zapis, pełny inventory i brak uprawnień do zapisu.
+- [ ] Pomiar czasu rozgrywki oraz 1080p: FPS, frame times, hitching, draw calls i pamięć na nazwanym sprzęcie.
+- [ ] Misja umieszczona w rzeczywistych budynkach; migracja starych współrzędnych checkpointów.
+- [ ] GIS: kontrola punktów odniesienia, footprintów, skrzyżowań, wysokości mostów, kolizji i przejść dla pieszych.
+- [ ] Import PBF/GeoJSON/SHP, tiled Landscape, graf pasów i relacje zakazów skrętu.
+- [ ] Jazda, stabilność zawieszenia, kolizje, wsiadanie/wysiadanie, kamera i sterowanie sprawdzone na Windows.
+- [ ] Ruch AI, LOD symulacji ruchu, co najmniej dwa pojazdy ścigające, utrata kontaktu, przeszukiwanie i blokady drogowe.
+- [ ] Pozostałe przykłady: ucieczka od dwóch aut, śledzenie pojazdu, trasa ze wskazówek; nagrody i dowody powiązane z kampanią.
+- [ ] Zapis własności/uszkodzeń/pozycji pojazdów, spójny checkpoint kampanii podczas jazdy.
+- [ ] Raster zdjęć telefonu, rzeczywista mapa GIS w telefonie i komplet wymaganych producentów typów celów.
+- [ ] Akceptacja licencji/atrybucji danych w dystrybuowanym pakiecie i dołączenie źródłowej bazy ODbL.
+
+PR pozostaje draft. `Nadodrze_GIS` jest laboratorium integracji, nie ukończonym rozdziałem w rzeczywistym mieście. Trzy próby drogowe nie oznaczają wykonania sześciu scenariuszy z rozszerzenia.
+
+---
+
 # Bramki odbioru v2 — OTWARTE
 
 Implementacja 0.2 rozszerza zakres do 45–90 minut. Nie uznawać etapu za ukończony na podstawie samych klas, katalogu treści lub testów.

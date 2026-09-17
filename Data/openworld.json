@@ -1,0 +1,776 @@
+{
+  "version": 1,
+  "clock_rate": 6,
+  "initial_hour": 19,
+  "initial_weather": "Cloudy",
+  "quiet_seconds": 35,
+  "event_interval": 18,
+  "heat_decay": 0.12,
+  "districts": [
+    {
+      "id": "apartment",
+      "name": "Kamienica",
+      "bounds": [
+        0,
+        0,
+        -400,
+        4400,
+        1200,
+        1400
+      ],
+      "threat": 0,
+      "ambient": "Apartment",
+      "light": 0.7,
+      "tags": [
+        "District.Apartment"
+      ],
+      "activities": [],
+      "events": [],
+      "safehouses": [],
+      "enemies": []
+    },
+    {
+      "id": "nadodrze",
+      "name": "Nadodrze",
+      "bounds": [
+        1700,
+        1200,
+        -400,
+        15800,
+        9300,
+        1800
+      ],
+      "threat": 1,
+      "ambient": "Street",
+      "light": 0.8,
+      "tags": [
+        "District.Nadodrze"
+      ],
+      "activities": [],
+      "events": [],
+      "safehouses": [],
+      "enemies": []
+    }
+  ],
+  "guards": [
+    {
+      "id": "hall",
+      "profile": "assassin",
+      "faction": "hunters",
+      "district": "apartment",
+      "position": [
+        2180,
+        620,
+        96
+      ],
+      "patrol": [
+        [
+          2180,
+          620,
+          96
+        ],
+        [
+          1940,
+          400,
+          136
+        ],
+        [
+          2200,
+          800,
+          96
+        ]
+      ],
+      "requires": [
+        "target"
+      ],
+      "tags": [
+        "Enemy.Assassin"
+      ],
+      "sight": 1800,
+      "hearing": 1700,
+      "walk": 210,
+      "chase": 400,
+      "health": 100,
+      "radio_delay": 3,
+      "radio_range": 2200,
+      "full_range": 3500,
+      "simple_range": 6500
+    },
+    {
+      "id": "courtyard",
+      "profile": "assassin",
+      "faction": "hunters",
+      "district": "nadodrze",
+      "position": [
+        3200,
+        1850,
+        96
+      ],
+      "patrol": [
+        [
+          2900,
+          1950,
+          96
+        ],
+        [
+          4100,
+          1480,
+          96
+        ],
+        [
+          3700,
+          2040,
+          96
+        ]
+      ],
+      "requires": [
+        "apartment_exit"
+      ],
+      "tags": [
+        "Enemy.Assassin"
+      ],
+      "sight": 1800,
+      "hearing": 1700,
+      "walk": 210,
+      "chase": 400,
+      "health": 100,
+      "radio_delay": 3,
+      "radio_range": 2200,
+      "full_range": 3500,
+      "simple_range": 6500
+    },
+    {
+      "id": "pursuer",
+      "profile": "assassin",
+      "faction": "hunters",
+      "district": "nadodrze",
+      "position": [
+        7300,
+        2900,
+        96
+      ],
+      "patrol": [
+        [
+          7300,
+          2900,
+          96
+        ],
+        [
+          7800,
+          3000,
+          96
+        ]
+      ],
+      "requires": [
+        "usb"
+      ],
+      "tags": [
+        "Enemy.Assassin"
+      ],
+      "sight": 1800,
+      "hearing": 1700,
+      "walk": 210,
+      "chase": 400,
+      "health": 100,
+      "radio_delay": 3,
+      "radio_range": 2200,
+      "full_range": 3500,
+      "simple_range": 6500
+    },
+    {
+      "id": "park_patrol",
+      "profile": "assassin",
+      "faction": "hunters",
+      "district": "nadodrze",
+      "position": [
+        10900,
+        6900,
+        96
+      ],
+      "patrol": [
+        [
+          10900,
+          6900,
+          96
+        ],
+        [
+          12300,
+          7000,
+          96
+        ],
+        [
+          11700,
+          4700,
+          96
+        ],
+        [
+          9800,
+          2800,
+          96
+        ]
+      ],
+      "requires": [],
+      "tags": [
+        "Enemy.Assassin"
+      ],
+      "sight": 1800,
+      "hearing": 1700,
+      "walk": 210,
+      "chase": 400,
+      "health": 100,
+      "radio_delay": 3,
+      "radio_range": 2200,
+      "full_range": 3500,
+      "simple_range": 6500
+    }
+  ],
+  "locations": [
+    {
+      "id": "shop",
+      "name": "Sklep",
+      "position": [
+        5300,
+        1500,
+        100
+      ],
+      "radius": 700,
+      "action": "",
+      "safehouse": false
+    },
+    {
+      "id": "park",
+      "name": "Skwer",
+      "position": [
+        11500,
+        6000,
+        100
+      ],
+      "radius": 1200,
+      "action": "",
+      "safehouse": false
+    },
+    {
+      "id": "workshop",
+      "name": "Stary warsztat",
+      "position": [
+        10600,
+        5500,
+        100
+      ],
+      "radius": 700,
+      "action": "",
+      "safehouse": false
+    },
+    {
+      "id": "park_shelter",
+      "name": "Schronienie przy skwerze",
+      "position": [
+        14500,
+        7500,
+        100
+      ],
+      "radius": 700,
+      "action": "safehouse_rest",
+      "safehouse": true
+    },
+    {
+      "id": "hidden",
+      "name": "Ukryta pracownia",
+      "position": [
+        13300,
+        8500,
+        100
+      ],
+      "radius": 550,
+      "action": "",
+      "safehouse": false
+    }
+  ],
+  "events": [
+    {
+      "id": "shot",
+      "name": "Z bocznej ulicy słychać trzask. Ktoś ucieka za kamienicę.",
+      "type": "EnvironmentalEvent",
+      "district": "nadodrze",
+      "position": [
+        9000,
+        7600,
+        100
+      ],
+      "chance": 0.5,
+      "min_heat": 0,
+      "max_heat": 100,
+      "start_hour": 0,
+      "end_hour": 24,
+      "weathers": [
+        "Clear",
+        "Cloudy",
+        "Rain",
+        "Fog",
+        "Storm"
+      ],
+      "requires": [],
+      "require_tags": [],
+      "cooldown": 120,
+      "hostile": false,
+      "action": "",
+      "noise": 1500,
+      "heat": 0
+    },
+    {
+      "id": "observer",
+      "name": "Ten sam zaparkowany samochód. Silnik nadal pracuje.",
+      "type": "SuspiciousVehicle",
+      "district": "nadodrze",
+      "position": [
+        13500,
+        2900,
+        100
+      ],
+      "chance": 0.65,
+      "min_heat": 0,
+      "max_heat": 100,
+      "start_hour": 0,
+      "end_hour": 24,
+      "weathers": [
+        "Clear",
+        "Cloudy",
+        "Rain",
+        "Fog",
+        "Storm"
+      ],
+      "requires": [],
+      "require_tags": [],
+      "cooldown": 120,
+      "hostile": false,
+      "action": "",
+      "noise": 0,
+      "heat": 0
+    },
+    {
+      "id": "neighbor_call",
+      "name": "Sąsiad dziękuje za pomoc: przy skwerze można odpocząć.",
+      "type": "PhoneCall",
+      "district": "nadodrze",
+      "position": [
+        10000,
+        3000,
+        100
+      ],
+      "chance": 0.5,
+      "min_heat": 0,
+      "max_heat": 100,
+      "start_hour": 0,
+      "end_hour": 24,
+      "weathers": [
+        "Clear",
+        "Cloudy",
+        "Rain",
+        "Fog",
+        "Storm"
+      ],
+      "requires": [],
+      "require_tags": [
+        "NPC.Neighbor.Saved"
+      ],
+      "cooldown": 600,
+      "hostile": false,
+      "action": "",
+      "noise": 0,
+      "heat": 0
+    },
+    {
+      "id": "cache",
+      "name": "Ktoś zostawił paczkę przy ławce. Warto zbadać skwer.",
+      "type": "HiddenCache",
+      "district": "nadodrze",
+      "position": [
+        11800,
+        7100,
+        100
+      ],
+      "chance": 0.35,
+      "min_heat": 0,
+      "max_heat": 100,
+      "start_hour": 0,
+      "end_hour": 24,
+      "weathers": [
+        "Clear",
+        "Cloudy",
+        "Rain",
+        "Fog",
+        "Storm"
+      ],
+      "requires": [],
+      "require_tags": [],
+      "cooldown": 120,
+      "hostile": false,
+      "action": "",
+      "noise": 0,
+      "heat": 0
+    },
+    {
+      "id": "search",
+      "name": "Słyszysz wezwanie patrolu. Zostań poza światłem.",
+      "type": "EnemyPatrol",
+      "district": "nadodrze",
+      "position": [
+        11300,
+        6900,
+        100
+      ],
+      "chance": 0.5,
+      "min_heat": 30,
+      "max_heat": 100,
+      "start_hour": 0,
+      "end_hour": 24,
+      "weathers": [
+        "Clear",
+        "Cloudy",
+        "Rain",
+        "Fog",
+        "Storm"
+      ],
+      "requires": [],
+      "require_tags": [],
+      "cooldown": 180,
+      "hostile": true,
+      "action": "",
+      "noise": 1800,
+      "heat": 3
+    }
+  ],
+  "hides": [
+    {
+      "id": "container",
+      "name": "Kontener na podwórku",
+      "position": [
+        3300,
+        1750,
+        100
+      ],
+      "exit": [
+        3410,
+        1750,
+        100
+      ],
+      "radius": 180
+    },
+    {
+      "id": "park_hiding",
+      "name": "Ciemna wnęka przy skwerze",
+      "position": [
+        11400,
+        7850,
+        100
+      ],
+      "exit": [
+        11300,
+        7850,
+        100
+      ],
+      "radius": 180
+    },
+    {
+      "id": "garage_hiding",
+      "name": "Miejsce za regałem",
+      "position": [
+        9250,
+        4290,
+        100
+      ],
+      "exit": [
+        9270,
+        4410,
+        100
+      ],
+      "radius": 180
+    }
+  ],
+  "cameras": [
+    {
+      "id": "park_camera",
+      "position": [
+        12000,
+        5900,
+        340
+      ],
+      "rotation": [
+        -12,
+        90,
+        0
+      ],
+      "radius": 1500,
+      "disabled_tag": "Power.Park.Disabled",
+      "power_tag": "",
+      "alarm_heat": 15
+    }
+  ],
+  "weather": [
+    {
+      "id": "Clear",
+      "visibility": 1,
+      "noise": 1,
+      "fog": 0.008
+    },
+    {
+      "id": "Cloudy",
+      "visibility": 0.85,
+      "noise": 1,
+      "fog": 0.012
+    },
+    {
+      "id": "Rain",
+      "visibility": 0.65,
+      "noise": 0.75,
+      "fog": 0.025
+    },
+    {
+      "id": "Fog",
+      "visibility": 0.4,
+      "noise": 0.9,
+      "fog": 0.07
+    },
+    {
+      "id": "Storm",
+      "visibility": 0.5,
+      "noise": 0.55,
+      "fog": 0.04
+    }
+  ],
+  "factions": [
+    {
+      "a": "player",
+      "b": "hunters",
+      "relation": "Hostile"
+    },
+    {
+      "a": "player",
+      "b": "residents",
+      "relation": "Neutral"
+    },
+    {
+      "a": "hunters",
+      "b": "residents",
+      "relation": "Suspicious"
+    }
+  ],
+  "npc": [
+    {
+      "id": "informant",
+      "name": "Mieszkaniec skweru",
+      "faction": "residents",
+      "role": "Informant",
+      "dialogue": "O zmroku unikaj kamery przy skwerze. Skrzynka C-3 jest na wschodniej ścianie.",
+      "position": [
+        11600,
+        7000,
+        96
+      ],
+      "schedule": [
+        {
+          "hour": 0,
+          "location": [
+            14300,
+            7600,
+            96
+          ]
+        },
+        {
+          "hour": 8,
+          "location": [
+            11500,
+            7000,
+            96
+          ]
+        },
+        {
+          "hour": 18,
+          "location": [
+            11600,
+            7000,
+            96
+          ]
+        }
+      ],
+      "hours": [
+        0,
+        8,
+        18
+      ],
+      "destinations": [
+        [
+          14300,
+          7600,
+          96
+        ],
+        [
+          11500,
+          7000,
+          96
+        ],
+        [
+          11600,
+          7000,
+          96
+        ]
+      ]
+    }
+  ],
+  "messages": [
+    {
+      "id": "intro",
+      "sender": "M.",
+      "text": "Nie ufaj głównemu wejściu.",
+      "requires": [
+        "sms"
+      ],
+      "tags": [],
+      "min_heat": 0
+    },
+    {
+      "id": "thanks",
+      "sender": "Sąsiad",
+      "text": "Przy skwerze jest schronienie. Dziękuję za pomoc.",
+      "requires": [],
+      "tags": [
+        "NPC.Neighbor.Saved"
+      ],
+      "min_heat": 0
+    },
+    {
+      "id": "heat_warning",
+      "sender": "M.",
+      "text": "Patrole cię szukają. Zejdź ze światła i zgub kontakt.",
+      "requires": [
+        "street"
+      ],
+      "tags": [],
+      "min_heat": 50
+    }
+  ],
+  "phone_apps": [
+    {
+      "id": "messages",
+      "title": "Wiadomości",
+      "on_open": [
+        "sms"
+      ],
+      "text": ""
+    },
+    {
+      "id": "calls",
+      "title": "Połączenia",
+      "on_open": [
+        "contact"
+      ],
+      "text": "Ostatnie połączenie: 02:17. Numer zastrzeżony."
+    },
+    {
+      "id": "contacts",
+      "title": "Kontakty",
+      "on_open": [
+        "contact"
+      ],
+      "text": "M. — numer zastrzeżony. Nadawca ostrzegł przed wejściem."
+    },
+    {
+      "id": "camera",
+      "title": "Aparat",
+      "on_open": [],
+      "text": "C — zapisz opis fotografii obserwowanej wskazówki."
+    },
+    {
+      "id": "gallery",
+      "title": "Galeria",
+      "on_open": [],
+      "text": ""
+    },
+    {
+      "id": "map",
+      "title": "Mapa odkryć",
+      "on_open": [],
+      "text": ""
+    },
+    {
+      "id": "notes",
+      "title": "Notatki",
+      "on_open": [],
+      "text": ""
+    },
+    {
+      "id": "investigation",
+      "title": "Śledztwo",
+      "on_open": [],
+      "text": ""
+    },
+    {
+      "id": "objectives",
+      "title": "Cele",
+      "on_open": [],
+      "text": ""
+    }
+  ],
+  "noise": [
+    {
+      "id": "Walk",
+      "radius": 650,
+      "intensity": 0.35,
+      "heat": 0
+    },
+    {
+      "id": "Sprint",
+      "radius": 1700,
+      "intensity": 1,
+      "heat": 0
+    },
+    {
+      "id": "Crouch",
+      "radius": 200,
+      "intensity": 0.12,
+      "heat": 0
+    },
+    {
+      "id": "Door",
+      "radius": 700,
+      "intensity": 0.5,
+      "heat": 0
+    },
+    {
+      "id": "Glass",
+      "radius": 2200,
+      "intensity": 1,
+      "heat": 5
+    },
+    {
+      "id": "Combat",
+      "radius": 1600,
+      "intensity": 1,
+      "heat": 5
+    },
+    {
+      "id": "Throw",
+      "radius": 2400,
+      "intensity": 1.2,
+      "heat": 0
+    },
+    {
+      "id": "Alarm",
+      "radius": 2400,
+      "intensity": 1.5,
+      "heat": 10
+    }
+  ],
+  "combinations": [
+    {
+      "id": "vehicle",
+      "title": "Samochód + monitoring + radio",
+      "evidence": [
+        "car_document",
+        "cctv",
+        "radio_recording"
+      ],
+      "action": "combine_vehicle"
+    }
+  ]
+}

@@ -1,1 +1,4 @@
 Source/WroclawTheGame/Content/ChapterCatalog.h linguist-generated=true
+Source/WroclawTheGame/Content/WorldCatalog.h linguist-generated=true
+Data/source/** linguist-vendored=true
+Data/processed/** linguist-generated=true

@@ -1,6 +1,7 @@
 """Execute inside Unreal Editor 5.6 via -ExecutePythonScript. Never reports success on a partial import."""
 from pathlib import Path
 import sys
+import json
 import traceback
 import unreal
 
@@ -62,34 +63,99 @@ def prepare():
             raise RuntimeError(f'Audio save failed: {name}')
     levels = unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
     actors = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
-    map_path = '/Game/Maps/Przebudzenie'
+    map_path = '/Game/Maps/Przebudzenie_Source'
+    # This package is generated exclusively from Data/environment.json, never an authored user map.
     if unreal.EditorAssetLibrary.does_asset_exist(map_path):
-        if not levels.load_level(map_path):
-            raise RuntimeError('Cannot load generated level')
-        # Only the generated bootstrap actors are replaced. Runtime architecture is in SliceWorld.
-        for actor in actors.get_all_level_actors():
-            if actor.get_actor_label().startswith('SliceBootstrap_'):
-                actors.destroy_actor(actor)
-    elif not levels.new_level(map_path):
-        raise RuntimeError('Cannot create Przebudzenie map')
+        if not levels.new_level('/Game/Maps/WTG_BakeScratch'):raise RuntimeError('Cannot switch away from generated map')
+        if not unreal.EditorAssetLibrary.delete_asset(map_path):raise RuntimeError('Cannot replace generated map')
+        for directory in ('/Game/__ExternalActors__/Maps/Przebudzenie_Source','/Game/__ExternalObjects__/Maps/Przebudzenie_Source'):
+            if unreal.EditorAssetLibrary.does_directory_exist(directory) and not unreal.EditorAssetLibrary.delete_directory(directory):raise RuntimeError('Cannot clear generated external actors')
+    if not levels.new_level(map_path):raise RuntimeError('Cannot create generated map')
+    hlod=unreal.load_asset('/Game/Generated/HLOD_Instancing')
+    if not hlod:hlod=unreal.AssetToolsHelpers.get_asset_tools().create_asset('HLOD_Instancing','/Game/Generated',unreal.HLODLayer,unreal.HLODLayerFactory())
+    if not hlod:raise RuntimeError('HLOD layer creation failed')
+    hlod.set_editor_property('layer_type',unreal.HLODLayerType.INSTANCING)
+    hlod.set_editor_property('cell_size',6400);hlod.set_editor_property('loading_range',14000)
+    unreal.EditorAssetLibrary.save_loaded_asset(hlod,False)
+    layer_assets={}
+    for layer_name in ('Architecture','Gameplay'):
+        asset=unreal.load_asset('/Game/Generated/DL_'+layer_name)
+        if not asset:asset=unreal.AssetToolsHelpers.get_asset_tools().create_asset('DL_'+layer_name,'/Game/Generated',unreal.DataLayerAsset,unreal.DataLayerFactory())
+        if not asset:raise RuntimeError('Data Layer creation failed')
+        unreal.EditorAssetLibrary.save_loaded_asset(asset,False);layer_assets[layer_name]=asset
+    def spawn(cls, position, label, rotation=None):
+        actor=actors.spawn_actor_from_class(cls,unreal.Vector(*position),unreal.Rotator(*(rotation or [0,0,0])))
+        if not actor:raise RuntimeError(f'Cannot spawn {label}')
+        actor.set_actor_label('SliceBootstrap_'+label)
+        actor.set_editor_property('data_layer_assets',[layer_assets['Architecture' if label.startswith('environment_') else 'Gameplay']])
+        return actor
+    cube=unreal.load_asset('/Engine/BasicShapes/Cube')
+    for record in json.loads((ROOT/'Data/environment.json').read_text(encoding='utf-8')):
+        kind=record['type']
+        if kind=='box':
+            actor=spawn(unreal.StaticMeshActor,record['position'],record['id'])
+            component=actor.get_component_by_class(unreal.StaticMeshComponent)
+            component.set_static_mesh(cube)
+            component.set_material(0,unreal.load_asset('/Game/Generated/M_'+record['material']))
+            actor.set_editor_property('hlod_layer',hlod)
+            actor.set_actor_scale3d(unreal.Vector(*[v/100 for v in record['size']]))
+        elif kind=='light':
+            actor=spawn(unreal.PointLight,record['position'],record['id'])
+            component=actor.get_component_by_class(unreal.PointLightComponent)
+            component.set_editor_property('intensity',record['intensity'])
+            component.set_editor_property('attenuation_radius',record['radius'])
+            component.set_editor_property('cast_shadows',False)
+            component.set_editor_property('light_color',unreal.Color(*[int(v*255) for v in record['color']],255))
+        elif kind=='sign':
+            actor=spawn(unreal.TextRenderActor,record['position'],record['id'],record['rotation'])
+            component=actor.get_component_by_class(unreal.TextRenderComponent)
+            component.set_text(record['text']);component.set_world_size(record['size'])
+        else:raise RuntimeError('Unknown environment record')
+    content=json.loads((ROOT/'Data/chapter1.json').read_text(encoding='utf-8'))
+    for action in content['actions']:
+        if action['kind'] in ('virtual','zone') or action['position'][:2]==[0,0]:continue
+        actor=spawn(unreal.SliceProp,action['position'],'action_'+action['id'])
+        actor.set_editor_property('action_id',action['id'])
+        actor.set_actor_scale3d(unreal.Vector(*[v/100 for v in action['size']]))
+    world=json.loads((ROOT/'Data/openworld.json').read_text(encoding='utf-8'))
+    for guard in world['guards']:
+        actor=spawn(unreal.SliceEnemy,guard['position'],'guard_'+guard['id'])
+        actor.set_editor_property('guard_id',guard['id'])
+    for hiding in world['hides']:
+        actor=spawn(unreal.WorldInteraction,hiding['position'],'hide_'+hiding['id'])
+        actor.set_editor_property('definition_id',hiding['id']);actor.set_editor_property('kind','Hide')
+    for camera in world['cameras']:
+        actor=spawn(unreal.SurveillanceCamera,camera['position'],'camera_'+camera['id'],camera['rotation'])
+        actor.set_editor_property('definition_id',camera['id'])
+        actor=spawn(unreal.WorldInteraction,[camera['position'][0]-180,camera['position'][1],100],'monitor_'+camera['id'])
+        actor.set_editor_property('definition_id',camera['id']);actor.set_editor_property('kind','CCTV')
+    for npc in world['npc']:
+        actor=spawn(unreal.ResidentNPC,npc['position'],'npc_'+npc['id']);actor.set_editor_property('definition_id',npc['id'])
+    definition=unreal.load_asset('/Game/Generated/ChapterDefinition')
+    if not definition:
+        factory=unreal.DataAssetFactory();factory.set_editor_property('data_asset_class',unreal.ChapterDefinition)
+        definition=unreal.AssetToolsHelpers.get_asset_tools().create_asset('ChapterDefinition','/Game/Generated',unreal.ChapterDefinition,factory)
+    if not definition:raise RuntimeError('ChapterDefinition creation failed')
+    definition.import_generated_catalog()
+    if not unreal.EditorAssetLibrary.save_loaded_asset(definition,False):raise RuntimeError('ChapterDefinition save failed')
     start = actors.spawn_actor_from_class(unreal.PlayerStart, unreal.Vector(250, 400, 456))
     if not start:
         raise RuntimeError('PlayerStart spawn failed')
     start.set_actor_label('SliceBootstrap_PlayerStart')
     # Actor factory creates the bounds volume brush in an editor world.
-    nav = actors.spawn_actor_from_class(unreal.NavMeshBoundsVolume, unreal.Vector(5600, 3000, 100))
+    nav = actors.spawn_actor_from_class(unreal.NavMeshBoundsVolume, unreal.Vector(7900, 4600, 200))
     if not nav:
         raise RuntimeError('Navigation volume spawn failed')
     nav.set_actor_label('SliceBootstrap_Navigation')
     _, extent = nav.get_actor_bounds(False)
     if min(extent.x, extent.y, extent.z) <= 0:
         raise RuntimeError('Navigation brush has no bounds; generation aborted before packaging')
-    nav.set_actor_scale3d(unreal.Vector(6000 / extent.x, 3400 / extent.y, 1000 / extent.z))
+    nav.set_actor_scale3d(unreal.Vector(8100 / extent.x, 4800 / extent.y, 1500 / extent.z))
     if not levels.save_current_level():
         raise RuntimeError('Map save failed')
     unreal.EditorAssetLibrary.save_directory('/Game/Generated', False, True)
     MARKER.parent.mkdir(parents=True, exist_ok=True)
-    MARKER.write_text('Przebudzenie content v2\n', encoding='utf-8')
+    MARKER.write_text('Przebudzenie content v3\n', encoding='utf-8')
     unreal.log('WROCLAW_CONTENT_READY')
 
 

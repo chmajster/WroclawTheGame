@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "chapter": "Przebudzenie",
   "duration_target_minutes": [
     45,
@@ -30,7 +30,32 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [
+        "Achievement.FirstSteps"
+      ],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Wstań i odzyskaj orientację.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "look",
@@ -53,7 +78,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Kartka przy łóżku.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "door_checked",
@@ -76,7 +124,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sprawdź główne drzwi.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "phone",
@@ -101,7 +172,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Pickup"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Pickup",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Otwórz szufladę i zabierz telefon.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "phone_attempt",
@@ -125,7 +219,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Virtual"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Spróbuj uruchomić telefon.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "charger",
@@ -148,7 +265,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Pickup"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Pickup",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zabierz ładowarkę.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "cable",
@@ -171,7 +311,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Pickup"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Pickup",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zabierz kabel USB.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "outlet_check",
@@ -194,7 +357,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sprawdź gniazdko.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "fuse_inspect",
@@ -217,7 +403,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sprawdź rozdzielnię.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "kitchen",
@@ -240,7 +449,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Przeszukaj kuchnię.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "date_photo",
@@ -261,7 +493,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zdjęcie na lodówce.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "date_rule",
@@ -282,7 +537,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Wiadomość obok zdjęcia.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "stash",
@@ -308,7 +586,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Code"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Otwórz schowek.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "CodeLocked"
     },
     {
       "id": "fuse",
@@ -333,7 +634,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Pickup"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Pickup",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zabierz bezpiecznik.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "power",
@@ -358,7 +682,34 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": true
+      "checkpoint": true,
+      "tags": [
+        "Interaction.Use"
+      ],
+      "set_tags": [
+        "Power.Apartment.On"
+      ],
+      "require_tags": [],
+      "consume": [
+        "fuse"
+      ],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zamontuj bezpiecznik.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "KeyLocked"
     },
     {
       "id": "charge",
@@ -386,7 +737,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Use"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Podłącz telefon do gniazdka.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "KeyLocked"
     },
     {
       "id": "dog_photo",
@@ -407,7 +781,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Fotografia psa.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "pin_rule",
@@ -428,7 +825,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sprawdź kalendarz.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "unlock_phone",
@@ -454,7 +874,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Code"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Odblokuj telefon.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "CodeLocked"
     },
     {
       "id": "sms",
@@ -477,7 +920,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Virtual"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Przeczytaj SMS.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "contact",
@@ -500,7 +966,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Virtual"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sprawdź nadawcę i historię połączeń.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "book",
@@ -521,7 +1010,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sprawdź książkę.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "computer",
@@ -547,7 +1059,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Password"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zaloguj się do komputera.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "CodeLocked"
     },
     {
       "id": "address_photo",
@@ -570,7 +1105,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Obejrzyj zdjęcie z komputera.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "target",
@@ -598,7 +1156,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": true
+      "checkpoint": true,
+      "tags": [
+        "Interaction.Code"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Otwórz zaszyfrowany plik.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "CodeLocked"
     },
     {
       "id": "peephole",
@@ -621,7 +1202,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "peek",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Spójrz przez wizjer.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "routes",
@@ -644,7 +1248,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Przeczytaj plan ewakuacji.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "apartment_unlocked",
@@ -669,7 +1296,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Door"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": true,
+      "size": [
+        20,
+        190,
+        260
+      ],
+      "presentation": "document",
+      "sound": "Door",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Otwórz drzwi mieszkania.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "KeyLocked"
     },
     {
       "id": "apartment_exit",
@@ -692,7 +1342,32 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": true
+      "checkpoint": true,
+      "tags": [
+        "Interaction.Zone"
+      ],
+      "set_tags": [
+        "Achievement.EscapeArtist"
+      ],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Opuść mieszkanie.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "neighbor_help",
@@ -718,7 +1393,32 @@
       "any_of": [],
       "choice": "neighbor",
       "alternate": "neighbor_leave",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Choice"
+      ],
+      "set_tags": [
+        "NPC.Neighbor.Saved"
+      ],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Ranny sąsiad — wybierz pomoc lub odejście.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "neighbor_leave",
@@ -741,7 +1441,32 @@
       "any_of": [],
       "choice": "neighbor",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Virtual"
+      ],
+      "set_tags": [
+        "NPC.Neighbor.Abandoned"
+      ],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Odejdź od sąsiada.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "basement_key",
@@ -766,7 +1491,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Pickup"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Pickup",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zapasowy klucz na półce dozorcy.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "flashlight",
@@ -789,7 +1537,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Pickup"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Pickup",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zabierz latarkę.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "batteries",
@@ -812,7 +1583,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Pickup"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Pickup",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zabierz baterie.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "basement_enter",
@@ -839,7 +1633,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Door"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": true,
+      "size": [
+        20,
+        190,
+        260
+      ],
+      "presentation": "document",
+      "sound": "Door",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Wejdź do piwnicy.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "KeyLocked"
     },
     {
       "id": "graffiti",
@@ -862,7 +1679,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Obejrzyj graffiti.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "building_plan",
@@ -885,7 +1725,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Stary plan budynku.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "basement_symbols",
@@ -911,7 +1774,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Symbols"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": true,
+      "size": [
+        160,
+        20,
+        260
+      ],
+      "presentation": "document",
+      "sound": "Door",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Otwórz kratę symbolami.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "CodeLocked"
     },
     {
       "id": "basement_exit",
@@ -934,7 +1820,30 @@
       "any_of": [],
       "choice": "route",
       "alternate": "",
-      "checkpoint": true
+      "checkpoint": true,
+      "tags": [
+        "Interaction.Zone"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Wyjdź z piwnicy na podwórko.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "technical_enter",
@@ -957,7 +1866,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Door"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": true,
+      "size": [
+        20,
+        190,
+        260
+      ],
+      "presentation": "document",
+      "sound": "Door",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Otwórz przejście techniczne.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "technical_clue",
@@ -980,7 +1912,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Schemat instalacji technicznej.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "technical_lock",
@@ -1005,7 +1960,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Sequence"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": true,
+      "size": [
+        185,
+        20,
+        270
+      ],
+      "presentation": "document",
+      "sound": "Door",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Uruchom wyjście techniczne.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "CodeLocked"
     },
     {
       "id": "technical_exit",
@@ -1028,7 +2006,30 @@
       "any_of": [],
       "choice": "route",
       "alternate": "",
-      "checkpoint": true
+      "checkpoint": true,
+      "tags": [
+        "Interaction.Zone"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zejdź na podwórko.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "courtyard",
@@ -1052,7 +2053,30 @@
       ],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Zone"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Przejdź podwórko.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "street",
@@ -1075,7 +2099,33 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": true
+      "checkpoint": true,
+      "tags": [
+        "Interaction.Zone"
+      ],
+      "set_tags": [
+        "Achievement.CourtyardPassed",
+        "District.Nadodrze.Unlocked"
+      ],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Dotrzyj do ulicy.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "bottle",
@@ -1098,7 +2148,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Pickup"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Pickup",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zabierz butelkę.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "can",
@@ -1121,7 +2194,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Pickup"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Pickup",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zabierz puszkę.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "stone",
@@ -1144,7 +2240,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Pickup"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Pickup",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zabierz kamień.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "shop_key",
@@ -1169,7 +2288,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Pickup"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Pickup",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Klucz pod skrzynką na zapleczu.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "shop_rule",
@@ -1192,7 +2334,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Kartka na witrynie.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "shop_sign",
@@ -1213,7 +2378,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sprawdź szyld sklepu.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "shop_code",
@@ -1239,7 +2427,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Code"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": true,
+      "size": [
+        185,
+        20,
+        270
+      ],
+      "presentation": "document",
+      "sound": "Door",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Otwórz wejście kodem.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "CodeLocked"
     },
     {
       "id": "shop_back",
@@ -1264,7 +2475,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Door"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": true,
+      "size": [
+        20,
+        190,
+        260
+      ],
+      "presentation": "document",
+      "sound": "Door",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Otwórz boczne wejście kluczem.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "KeyLocked"
     },
     {
       "id": "receipt",
@@ -1288,7 +2522,30 @@
       ],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Odczytaj paragon.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "schedule",
@@ -1312,7 +2569,30 @@
       ],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sprawdź grafik.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "terminal",
@@ -1339,7 +2619,30 @@
       ],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Code"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zaloguj się do terminala.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "CodeLocked"
     },
     {
       "id": "cctv",
@@ -1362,7 +2665,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Obejrzyj monitoring.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "panel",
@@ -1385,7 +2711,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Lights"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": true,
+      "size": [
+        185,
+        20,
+        270
+      ],
+      "presentation": "document",
+      "sound": "Door",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Odtwórz sekwencję panelu.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "CodeLocked"
     },
     {
       "id": "package",
@@ -1411,7 +2760,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Otwórz paczkę.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "file_dates",
@@ -1434,7 +2806,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sprawdź daty plików.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "usb",
@@ -1461,7 +2856,32 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": true
+      "checkpoint": true,
+      "tags": [
+        "Interaction.Order"
+      ],
+      "set_tags": [
+        "State.World.ChaseStarted"
+      ],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Odszyfruj katalog pendrive.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 12,
+      "door_state": "CodeLocked"
     },
     {
       "id": "ambush",
@@ -1484,7 +2904,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": true
+      "checkpoint": true,
+      "tags": [
+        "Interaction.Zone"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Opuść lokal podczas zasadzki.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "alley",
@@ -1507,7 +2950,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Zone"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Przedostań się przez zaułek.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "garage",
@@ -1534,7 +3000,31 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": true
+      "checkpoint": true,
+      "tags": [
+        "Interaction.Wires",
+        "Achievement.UnderThreat"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": true,
+      "size": [
+        185,
+        20,
+        270
+      ],
+      "presentation": "document",
+      "sound": "Door",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Awaryjnie otwórz garaż.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "CodeLocked"
     },
     {
       "id": "garage_enter",
@@ -1557,7 +3047,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Zone"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Wejdź do garażu.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "garage_escape",
@@ -1580,7 +3093,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": true
+      "checkpoint": true,
+      "tags": [
+        "Interaction.Zone"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Wyjdź tyłem z garażu.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "lost_pursuit",
@@ -1603,7 +3139,33 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Virtual",
+        "Trigger.Auto.NoThreat"
+      ],
+      "set_tags": [],
+      "require_tags": [
+        "State.World.ChaseStarted"
+      ],
+      "consume": [],
+      "safe": true,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zgub napastnika.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": -12,
+      "door_state": "QuestLocked"
     },
     {
       "id": "workshop",
@@ -1629,7 +3191,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Code"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": true,
+      "gate": true,
+      "size": [
+        185,
+        20,
+        270
+      ],
+      "presentation": "document",
+      "sound": "Door",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Otwórz bezpieczny punkt.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "CodeLocked"
     },
     {
       "id": "blockade_map",
@@ -1652,7 +3237,33 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": true
+      "checkpoint": true,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [
+        "Campaign.Chapter1.Completed",
+        "Campaign.Chapter2.Unlocked"
+      ],
+      "require_tags": [],
+      "consume": [],
+      "safe": true,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Przeczytaj mapę blokad.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "safe_a",
@@ -1675,7 +3286,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Notatka administratora.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "safe_b",
@@ -1698,7 +3332,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sprawdź liczniki.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "safe_c",
@@ -1721,7 +3378,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Numer klatki.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "safe",
@@ -1751,7 +3431,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Code"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Otwórz opcjonalny sejf.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "CodeLocked"
     },
     {
       "id": "car_clue",
@@ -1774,7 +3477,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Przeczytaj kartę parkingową.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "car_key",
@@ -1799,7 +3525,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Pickup"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Pickup",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Zabierz pilot ze stanowiska 08.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "car",
@@ -1826,7 +3575,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Use"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Otwórz zaparkowany samochód.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "KeyLocked"
     },
     {
       "id": "street_phone_clue",
@@ -1849,7 +3621,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Kartka pod ławką.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "street_phone",
@@ -1875,7 +3670,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Code"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Odblokuj porzucony telefon.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "CodeLocked"
     },
     {
       "id": "secret_1",
@@ -1896,7 +3714,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sekret 1.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "secret_2",
@@ -1919,7 +3760,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sekret 2.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "secret_3",
@@ -1942,7 +3806,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sekret 3.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "secret_4",
@@ -1965,7 +3852,30 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sekret 4.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
     },
     {
       "id": "secret_5",
@@ -1988,7 +3898,752 @@
       "any_of": [],
       "choice": "",
       "alternate": "",
-      "checkpoint": false
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Przyjrzyj się: Sekret 5.",
+        "Sprawdź śledztwo i powiązane przedmioty.",
+        "Porównaj wskazówki w kolejności zaznaczonej w notatkach."
+      ],
+      "heat": 0,
+      "door_state": "QuestLocked"
+    },
+    {
+      "id": "morse_guide",
+      "label": "Tablica alfabetu Morse’a",
+      "position": [
+        5100,
+        5700,
+        130
+      ],
+      "kind": "read",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "morse_guide",
+      "body": "S: trzy krótkie błyski. O: trzy długie. Sąsiad prosi o odpowiedź literami, nie cyframi.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Tablica alfabetu Morse’a.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": 0,
+      "door_state": "Unlocked"
+    },
+    {
+      "id": "window_signal",
+      "label": "Światło w oknie",
+      "position": [
+        5700,
+        5600,
+        140
+      ],
+      "kind": "read",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "window_signal",
+      "body": "Za zasłoną widzisz: · · · / — — — / · · · . Odpowiedz przy domofonie.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Światło w oknie.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": 0,
+      "door_state": "Unlocked"
+    },
+    {
+      "id": "window_reply",
+      "label": "Domofon — odpowiedź na sygnał",
+      "position": [
+        5700,
+        5680,
+        130
+      ],
+      "kind": "password",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [
+        "medkit"
+      ],
+      "evidence": "window_reply",
+      "body": "Mieszkaniec opuszcza pakunek na sznurze. Zapisano wiadomość o obserwowanym aucie.",
+      "answer": "SOS",
+      "clues": [
+        "morse_guide",
+        "window_signal"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Password"
+      ],
+      "set_tags": [
+        "Quest.Window.Completed"
+      ],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Domofon — odpowiedź na sygnał.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": 0,
+      "door_state": "Unlocked"
+    },
+    {
+      "id": "radio_note",
+      "label": "Notatka serwisanta radiowego",
+      "position": [
+        12300,
+        3000,
+        130
+      ],
+      "kind": "read",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "radio_note",
+      "body": "Kanał awaryjny: 107,3 MHz. Na pokrętle wpisz częstotliwość bez przecinka.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Notatka serwisanta radiowego.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": 0,
+      "door_state": "Unlocked"
+    },
+    {
+      "id": "radio_tune",
+      "label": "Odbiornik — częstotliwość",
+      "position": [
+        12800,
+        3700,
+        130
+      ],
+      "kind": "code",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "radio_recording",
+      "body": "Słyszysz: „Samochód DW 4127 czeka przy skwerze. Nie podchodź do kierowcy”.",
+      "answer": "1073",
+      "clues": [
+        "radio_note"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Code"
+      ],
+      "set_tags": [
+        "Quest.Signal.Completed"
+      ],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Odbiornik — częstotliwość.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": 0,
+      "door_state": "Unlocked"
+    },
+    {
+      "id": "camera_plan",
+      "label": "Plan obwodu monitoringu",
+      "position": [
+        10800,
+        6800,
+        130
+      ],
+      "kind": "read",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "camera_plan",
+      "body": "Bezpiecznik oznaczony C-3 zasila tylko kamerę skweru. Odłącz przy skrzynce technicznej.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Plan obwodu monitoringu.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": 0,
+      "door_state": "Unlocked"
+    },
+    {
+      "id": "camera_off",
+      "label": "Skrzynka C-3 — wyłącz kamerę",
+      "position": [
+        12000,
+        6100,
+        140
+      ],
+      "kind": "use",
+      "requires": [
+        "camera_plan"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "Kontrolka kamery zgasła.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Use"
+      ],
+      "set_tags": [
+        "Power.Park.Disabled",
+        "Quest.Camera.Completed"
+      ],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Skrzynka C-3 — wyłącz kamerę.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": 0,
+      "door_state": "Unlocked"
+    },
+    {
+      "id": "urban_symbol_1",
+      "label": "Symbol na elewacji 1",
+      "position": [
+        5200,
+        7600,
+        130
+      ],
+      "kind": "read",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "urban_symbol_1",
+      "body": "Pierwszy znak: fala (3).",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Symbol na elewacji 1.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": 0,
+      "door_state": "Unlocked"
+    },
+    {
+      "id": "urban_symbol_2",
+      "label": "Symbol na elewacji 2",
+      "position": [
+        8100,
+        6900,
+        130
+      ],
+      "kind": "read",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "urban_symbol_2",
+      "body": "Drugi znak: słońce (1).",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Symbol na elewacji 2.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": 0,
+      "door_state": "Unlocked"
+    },
+    {
+      "id": "urban_symbol_3",
+      "label": "Symbol na elewacji 3",
+      "position": [
+        13400,
+        5700,
+        130
+      ],
+      "kind": "read",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "urban_symbol_3",
+      "body": "Trzeci znak: gwiazda (4).",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Symbol na elewacji 3.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": 0,
+      "door_state": "Unlocked"
+    },
+    {
+      "id": "hidden_flat",
+      "label": "Ukryta pracownia — zamek symboli",
+      "position": [
+        13300,
+        8200,
+        140
+      ],
+      "kind": "symbols",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [
+        "cash"
+      ],
+      "evidence": "hidden_archive",
+      "body": "W pracowni ktoś segregował zdjęcia mieszkańców. Znajdujesz oznaczenie grupy obserwacyjnej.",
+      "answer": "314",
+      "clues": [
+        "urban_symbol_1",
+        "urban_symbol_2",
+        "urban_symbol_3"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Symbols"
+      ],
+      "set_tags": [
+        "Quest.HiddenFlat.Completed"
+      ],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": true,
+      "size": [
+        180,
+        20,
+        270
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Ukryta pracownia — zamek symboli.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": 0,
+      "door_state": "Unlocked"
+    },
+    {
+      "id": "combine_vehicle",
+      "label": "Połącz: samochód, monitoring i radio",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "kind": "virtual",
+      "requires": [
+        "car",
+        "cctv",
+        "radio_tune"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "vehicle_link",
+      "body": "DW 4127 występuje w dokumentach, radiu i zapisie kamery. Nowy trop: obserwatorzy używają tego samego auta.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Virtual"
+      ],
+      "set_tags": [
+        "Evidence.VehicleLink.Confirmed"
+      ],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Połącz: samochód, monitoring i radio.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": 0,
+      "door_state": "Unlocked"
+    },
+    {
+      "id": "safehouse_rest",
+      "label": "Odpocznij w schronieniu przy skwerze",
+      "position": [
+        14500,
+        7400,
+        130
+      ],
+      "kind": "use",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "Zamykasz wejście i porządkujesz notatki. To bezpieczny punkt powrotu.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": true,
+      "tags": [
+        "Interaction.Use"
+      ],
+      "set_tags": [
+        "Safehouse.Park.Discovered"
+      ],
+      "require_tags": [],
+      "consume": [],
+      "safe": true,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Odpocznij w schronieniu przy skwerze.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": -30,
+      "door_state": "Unlocked"
+    },
+    {
+      "id": "exit_city",
+      "label": "Przejście przez blokadę wyjazdową",
+      "position": [
+        15300,
+        3000,
+        130
+      ],
+      "kind": "use",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "Dokumenty są kompletne. Możesz rozpocząć ostatnią misję ucieczki.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Use"
+      ],
+      "set_tags": [
+        "Campaign.FinalEscape.Available"
+      ],
+      "require_tags": [
+        "Campaign.Main.Completed"
+      ],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Przejście przez blokadę wyjazdową.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": 0,
+      "door_state": "Unlocked"
+    },
+    {
+      "id": "roadblock_note",
+      "label": "Kontrola wyjazdu",
+      "position": [
+        15000,
+        2850,
+        140
+      ],
+      "kind": "read",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "roadblock_note",
+      "body": "Droga wyjazdowa jest kontrolowana. Brakuje dokumentów i kontaktu z dalszych rozdziałów kampanii.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false,
+      "tags": [
+        "Interaction.Read"
+      ],
+      "set_tags": [],
+      "require_tags": [],
+      "consume": [],
+      "safe": false,
+      "gate": false,
+      "size": [
+        35,
+        25,
+        18
+      ],
+      "presentation": "document",
+      "sound": "Switch",
+      "hint_delay": 90,
+      "hints": [
+        "Poszukaj śladów w otoczeniu: Kontrola wyjazdu.",
+        "Zapisz znaleziony materiał w śledztwie.",
+        "Porównaj symbole i kolejność informacji."
+      ],
+      "heat": 0,
+      "door_state": "Unlocked"
     }
   ],
   "quests": [
@@ -2004,42 +4659,165 @@
         "cable",
         "outlet_check"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_1",
+      "category": "Main",
+      "requires": [],
+      "description": "Przebudzenie",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "Interact",
+          "target": "awake",
+          "amount": 1
+        },
+        {
+          "type": "Interact",
+          "target": "look",
+          "amount": 1
+        },
+        {
+          "type": "Interact",
+          "target": "door_checked",
+          "amount": 1
+        },
+        {
+          "type": "Interact",
+          "target": "phone",
+          "amount": 1
+        },
+        {
+          "type": "Interact",
+          "target": "phone_attempt",
+          "amount": 1
+        },
+        {
+          "type": "Interact",
+          "target": "charger",
+          "amount": 1
+        },
+        {
+          "type": "Interact",
+          "target": "cable",
+          "amount": 1
+        },
+        {
+          "type": "Interact",
+          "target": "outlet_check",
+          "amount": 1
+        }
+      ]
     },
     {
       "title": "Brak zasilania",
       "all": [
         "power"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_2",
+      "category": "Main",
+      "requires": [
+        "chapter1_1"
+      ],
+      "description": "Brak zasilania",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "Interact",
+          "target": "power",
+          "amount": 1
+        }
+      ]
     },
     {
       "title": "Wiadomość",
       "all": [
         "contact"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_3",
+      "category": "Main",
+      "requires": [
+        "chapter1_2"
+      ],
+      "description": "Wiadomość",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "Interact",
+          "target": "contact",
+          "amount": 1
+        }
+      ]
     },
     {
       "title": "Komputer",
       "all": [
         "target"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_4",
+      "category": "Main",
+      "requires": [
+        "chapter1_3"
+      ],
+      "description": "Komputer",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "SolvePuzzle",
+          "target": "target",
+          "amount": 1
+        }
+      ]
     },
     {
       "title": "Ktoś jest na klatce",
       "all": [
         "peephole"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_5",
+      "category": "Main",
+      "requires": [
+        "chapter1_4"
+      ],
+      "description": "Ktoś jest na klatce",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "Interact",
+          "target": "peephole",
+          "amount": 1
+        }
+      ]
     },
     {
       "title": "Znajdź inne wyjście",
       "all": [
         "apartment_exit"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_6",
+      "category": "Main",
+      "requires": [
+        "chapter1_5"
+      ],
+      "description": "Znajdź inne wyjście",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "ReachLocation",
+          "target": "apartment_exit",
+          "amount": 1
+        }
+      ]
     },
     {
       "title": "Piwnica lub droga techniczna",
@@ -2047,21 +4825,60 @@
       "any": [
         "basement_exit",
         "technical_exit"
-      ]
+      ],
+      "id": "chapter1_7",
+      "category": "Main",
+      "requires": [
+        "chapter1_6"
+      ],
+      "description": "Piwnica lub droga techniczna",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": []
     },
     {
       "title": "Wyjdź z budynku",
       "all": [
         "courtyard"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_8",
+      "category": "Main",
+      "requires": [
+        "chapter1_7"
+      ],
+      "description": "Wyjdź z budynku",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "ReachLocation",
+          "target": "courtyard",
+          "amount": 1
+        }
+      ]
     },
     {
       "title": "Pierwszy kontakt",
       "all": [
         "street"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_9",
+      "category": "Main",
+      "requires": [
+        "chapter1_8"
+      ],
+      "description": "Pierwszy kontakt",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "ReachLocation",
+          "target": "street",
+          "amount": 1
+        }
+      ]
     },
     {
       "title": "Sklep",
@@ -2069,42 +4886,126 @@
       "any": [
         "shop_code",
         "shop_back"
-      ]
+      ],
+      "id": "chapter1_10",
+      "category": "Main",
+      "requires": [
+        "chapter1_9"
+      ],
+      "description": "Sklep",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": []
     },
     {
       "title": "Monitoring",
       "all": [
         "cctv"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_11",
+      "category": "Main",
+      "requires": [
+        "chapter1_10"
+      ],
+      "description": "Monitoring",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "Interact",
+          "target": "cctv",
+          "amount": 1
+        }
+      ]
     },
     {
       "title": "Paczka",
       "all": [
         "package"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_12",
+      "category": "Main",
+      "requires": [
+        "chapter1_11"
+      ],
+      "description": "Paczka",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "Interact",
+          "target": "package",
+          "amount": 1
+        }
+      ]
     },
     {
       "title": "Pendrive",
       "all": [
         "usb"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_13",
+      "category": "Main",
+      "requires": [
+        "chapter1_12"
+      ],
+      "description": "Pendrive",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "SolvePuzzle",
+          "target": "usb",
+          "amount": 1
+        }
+      ]
     },
     {
       "title": "Zasadzka",
       "all": [
         "alley"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_14",
+      "category": "Main",
+      "requires": [
+        "chapter1_13"
+      ],
+      "description": "Zasadzka",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "ReachLocation",
+          "target": "alley",
+          "amount": 1
+        }
+      ]
     },
     {
       "title": "Garaż",
       "all": [
         "garage_enter"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_15",
+      "category": "Main",
+      "requires": [
+        "chapter1_14"
+      ],
+      "description": "Garaż",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "ReachLocation",
+          "target": "garage_enter",
+          "amount": 1
+        }
+      ]
     },
     {
       "title": "Ucieczka",
@@ -2112,14 +5013,1070 @@
         "garage_escape",
         "lost_pursuit"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_16",
+      "category": "Main",
+      "requires": [
+        "chapter1_15"
+      ],
+      "description": "Ucieczka",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "ReachLocation",
+          "target": "garage_escape",
+          "amount": 1
+        },
+        {
+          "type": "Interact",
+          "target": "lost_pursuit",
+          "amount": 1
+        }
+      ]
     },
     {
       "title": "Bezpieczny punkt",
       "all": [
         "blockade_map"
       ],
-      "any": []
+      "any": [],
+      "id": "chapter1_17",
+      "category": "Main",
+      "requires": [
+        "chapter1_16"
+      ],
+      "description": "Bezpieczny punkt",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "Interact",
+          "target": "blockade_map",
+          "amount": 1
+        }
+      ]
+    }
+  ],
+  "campaign": {
+    "chapter_complete_tag": "Campaign.Chapter1.Completed",
+    "main_complete_tag": "Campaign.Main.Completed",
+    "required_chapters": [
+      "Campaign.Chapter1.Completed",
+      "Campaign.Chapter2.Completed",
+      "Campaign.Chapter3.Completed"
+    ]
+  },
+  "items": [
+    {
+      "id": "phone",
+      "name": "Telefon",
+      "type": "Tool",
+      "stack": 1,
+      "weight": 0.2,
+      "tags": [
+        "Item.Tool"
+      ],
+      "usable": false
+    },
+    {
+      "id": "charger",
+      "name": "Ładowarka",
+      "type": "Tool",
+      "stack": 1,
+      "weight": 0.2,
+      "tags": [
+        "Item.Tool"
+      ],
+      "usable": false
+    },
+    {
+      "id": "cable",
+      "name": "Kabel USB",
+      "type": "Tool",
+      "stack": 1,
+      "weight": 0.2,
+      "tags": [
+        "Item.Tool"
+      ],
+      "usable": false
+    },
+    {
+      "id": "fuse",
+      "name": "Bezpiecznik",
+      "type": "QuestItem",
+      "stack": 1,
+      "weight": 0.2,
+      "tags": [
+        "Item.QuestItem"
+      ],
+      "usable": false
+    },
+    {
+      "id": "apartment_key",
+      "name": "Klucz mieszkania",
+      "type": "Key",
+      "stack": 1,
+      "weight": 0.2,
+      "tags": [
+        "Item.Key",
+        "Key.apartment_key"
+      ],
+      "usable": false
+    },
+    {
+      "id": "basement_key",
+      "name": "Klucz piwnicy",
+      "type": "Key",
+      "stack": 1,
+      "weight": 0.2,
+      "tags": [
+        "Item.Key",
+        "Key.basement_key"
+      ],
+      "usable": false
+    },
+    {
+      "id": "flashlight",
+      "name": "Latarka",
+      "type": "Tool",
+      "stack": 1,
+      "weight": 0.2,
+      "tags": [
+        "Item.Tool"
+      ],
+      "usable": false
+    },
+    {
+      "id": "batteries",
+      "name": "Baterie",
+      "type": "Tool",
+      "stack": 1,
+      "weight": 0.2,
+      "tags": [
+        "Item.Tool"
+      ],
+      "usable": false
+    },
+    {
+      "id": "shop_key",
+      "name": "Klucz sklepu",
+      "type": "Key",
+      "stack": 1,
+      "weight": 0.2,
+      "tags": [
+        "Item.Key",
+        "Key.shop_key"
+      ],
+      "usable": false
+    },
+    {
+      "id": "garage_key",
+      "name": "Klucz garażu",
+      "type": "Key",
+      "stack": 1,
+      "weight": 0.2,
+      "tags": [
+        "Item.Key",
+        "Key.garage_key"
+      ],
+      "usable": false
+    },
+    {
+      "id": "usb",
+      "name": "Pendrive",
+      "type": "Evidence",
+      "stack": 1,
+      "weight": 0.2,
+      "tags": [
+        "Item.Evidence"
+      ],
+      "usable": false
+    },
+    {
+      "id": "car_key",
+      "name": "Pilot samochodu",
+      "type": "Key",
+      "stack": 1,
+      "weight": 0.2,
+      "tags": [
+        "Item.Key",
+        "Key.car_key"
+      ],
+      "usable": false
+    },
+    {
+      "id": "medkit",
+      "name": "Opatrunek",
+      "type": "Consumable",
+      "stack": 10,
+      "weight": 0.2,
+      "tags": [
+        "Item.Consumable"
+      ],
+      "usable": true
+    },
+    {
+      "id": "distraction",
+      "name": "Przedmiot do rzutu",
+      "type": "Consumable",
+      "stack": 10,
+      "weight": 0.2,
+      "tags": [
+        "Item.Consumable"
+      ],
+      "usable": true
+    },
+    {
+      "id": "cash",
+      "name": "Gotówka",
+      "type": "QuestItem",
+      "stack": 100,
+      "weight": 0.2,
+      "tags": [
+        "Item.QuestItem"
+      ],
+      "usable": false
+    }
+  ],
+  "side_quests": [
+    {
+      "id": "neighbor",
+      "title": "Ranny człowiek",
+      "all": [
+        "neighbor_help"
+      ],
+      "any": [],
+      "requires": [],
+      "category": "Side",
+      "description": "Ranny człowiek",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "Interact",
+          "target": "neighbor_help",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "safe",
+      "title": "Zamknięty sejf",
+      "all": [
+        "safe"
+      ],
+      "any": [],
+      "requires": [],
+      "category": "Side",
+      "description": "Zamknięty sejf",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "SolvePuzzle",
+          "target": "safe",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "car",
+      "title": "Porzucony samochód",
+      "all": [
+        "car"
+      ],
+      "any": [],
+      "requires": [],
+      "category": "Side",
+      "description": "Porzucony samochód",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "Interact",
+          "target": "car",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "phone",
+      "title": "Zaginiony telefon",
+      "all": [
+        "street_phone"
+      ],
+      "any": [],
+      "requires": [],
+      "category": "Side",
+      "description": "Zaginiony telefon",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "SolvePuzzle",
+          "target": "street_phone",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "window",
+      "title": "Światło w oknie",
+      "all": [
+        "window_reply"
+      ],
+      "any": [],
+      "requires": [],
+      "category": "Side",
+      "description": "Światło w oknie",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "SolvePuzzle",
+          "target": "window_reply",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "signal",
+      "title": "Dziwny sygnał",
+      "all": [
+        "radio_tune"
+      ],
+      "any": [],
+      "requires": [],
+      "category": "Side",
+      "description": "Dziwny sygnał",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "SolvePuzzle",
+          "target": "radio_tune",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "camera",
+      "title": "Kamera",
+      "all": [
+        "camera_off"
+      ],
+      "any": [],
+      "requires": [],
+      "category": "Side",
+      "description": "Kamera",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "Interact",
+          "target": "camera_off",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "hidden",
+      "title": "Ukryte mieszkanie",
+      "all": [
+        "hidden_flat"
+      ],
+      "any": [],
+      "requires": [],
+      "category": "Side",
+      "description": "Ukryte mieszkanie",
+      "district": "nadodrze",
+      "chapter": 1,
+      "objectives": [
+        {
+          "type": "SolvePuzzle",
+          "target": "hidden_flat",
+          "amount": 1
+        }
+      ]
+    }
+  ],
+  "evidence_definitions": [
+    {
+      "id": "date_photo",
+      "category": "Photo",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "date_photo"
+      ]
+    },
+    {
+      "id": "date_rule",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "date_rule"
+      ]
+    },
+    {
+      "id": "dog_photo",
+      "category": "Photo",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "dog_photo"
+      ]
+    },
+    {
+      "id": "pin_rule",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "pin_rule"
+      ]
+    },
+    {
+      "id": "sms",
+      "category": "Message",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "sms"
+      ]
+    },
+    {
+      "id": "contact",
+      "category": "Person",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "contact"
+      ]
+    },
+    {
+      "id": "book",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "book"
+      ]
+    },
+    {
+      "id": "computer_mail",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "computer"
+      ]
+    },
+    {
+      "id": "address_photo",
+      "category": "Location",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "address_photo"
+      ]
+    },
+    {
+      "id": "target",
+      "category": "Person",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "target"
+      ]
+    },
+    {
+      "id": "hallway",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "peephole"
+      ]
+    },
+    {
+      "id": "routes",
+      "category": "Location",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "routes"
+      ]
+    },
+    {
+      "id": "neighbor",
+      "category": "Person",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "neighbor_help"
+      ]
+    },
+    {
+      "id": "graffiti",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "graffiti"
+      ]
+    },
+    {
+      "id": "building_plan",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "building_plan"
+      ]
+    },
+    {
+      "id": "technical_clue",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "technical_clue"
+      ]
+    },
+    {
+      "id": "street_sms",
+      "category": "Message",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "street"
+      ]
+    },
+    {
+      "id": "shop_rule",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "shop_rule"
+      ]
+    },
+    {
+      "id": "shop_sign",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "shop_sign"
+      ]
+    },
+    {
+      "id": "receipt",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "receipt"
+      ]
+    },
+    {
+      "id": "schedule",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "schedule"
+      ]
+    },
+    {
+      "id": "cctv",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "cctv"
+      ]
+    },
+    {
+      "id": "package",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "package"
+      ]
+    },
+    {
+      "id": "file_dates",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "file_dates"
+      ]
+    },
+    {
+      "id": "usb",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "usb"
+      ]
+    },
+    {
+      "id": "workshop_sms",
+      "category": "Message",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "garage_escape"
+      ]
+    },
+    {
+      "id": "blockade_map",
+      "category": "Location",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "blockade_map"
+      ]
+    },
+    {
+      "id": "safe_a",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "safe_a"
+      ]
+    },
+    {
+      "id": "safe_b",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "safe_b"
+      ]
+    },
+    {
+      "id": "safe_c",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "safe_c"
+      ]
+    },
+    {
+      "id": "safe_document",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "safe"
+      ]
+    },
+    {
+      "id": "car_clue",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "car_clue"
+      ]
+    },
+    {
+      "id": "car_document",
+      "category": "Vehicle",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "car"
+      ]
+    },
+    {
+      "id": "street_phone_clue",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "street_phone_clue"
+      ]
+    },
+    {
+      "id": "street_photo",
+      "category": "Photo",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "street_phone"
+      ]
+    },
+    {
+      "id": "secret_1",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "secret_1"
+      ]
+    },
+    {
+      "id": "secret_2",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "secret_2"
+      ]
+    },
+    {
+      "id": "secret_3",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "secret_3"
+      ]
+    },
+    {
+      "id": "secret_4",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "secret_4"
+      ]
+    },
+    {
+      "id": "secret_5",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "secret_5"
+      ]
+    },
+    {
+      "id": "morse_guide",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "morse_guide"
+      ]
+    },
+    {
+      "id": "window_signal",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "window_signal"
+      ]
+    },
+    {
+      "id": "window_reply",
+      "category": "Message",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "window_reply"
+      ]
+    },
+    {
+      "id": "radio_note",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "radio_note"
+      ]
+    },
+    {
+      "id": "radio_recording",
+      "category": "Recording",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "radio_tune"
+      ]
+    },
+    {
+      "id": "camera_plan",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "camera_plan"
+      ]
+    },
+    {
+      "id": "urban_symbol_1",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "urban_symbol_1"
+      ]
+    },
+    {
+      "id": "urban_symbol_2",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "urban_symbol_2"
+      ]
+    },
+    {
+      "id": "urban_symbol_3",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "urban_symbol_3"
+      ]
+    },
+    {
+      "id": "hidden_archive",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "hidden_flat"
+      ]
+    },
+    {
+      "id": "vehicle_link",
+      "category": "Document",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "combine_vehicle"
+      ]
+    },
+    {
+      "id": "roadblock_note",
+      "category": "Location",
+      "validity": "Unknown",
+      "persons": [],
+      "locations": [
+        "nadodrze"
+      ],
+      "events": [],
+      "requirements": [
+        "roadblock_note"
+      ]
     }
   ]
 }
