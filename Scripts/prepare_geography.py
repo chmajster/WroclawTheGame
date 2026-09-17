@@ -1,14 +1,17 @@
 """Run after prepare_content.py and Scripts/gis/build_meshes.py in Unreal 5.6.
-Creates a separate integration map; does not relabel the campaign blockout as GIS.
+Extends the existing GIS map when WTG_CITY_INPUT is set. Campaign migration remains separate.
 """
-import json,traceback
+import json,traceback,os
 from pathlib import Path
 import unreal
 ROOT=Path(unreal.Paths.project_dir()).resolve();MARKER=ROOT/'Saved/GeographyReady.ok'
 def prepare():
     MARKER.unlink(missing_ok=True)
-    data=json.loads((ROOT/'Data/processed/wroclaw/sector.json').read_text(encoding='utf-8'))
-    mesh_dir=ROOT/'Saved/GISMeshes';meshes=json.loads((mesh_dir/'meshes.json').read_text())
+    city_input=os.environ.get('WTG_CITY_INPUT')
+    input_dir=Path(city_input) if city_input else ROOT/'Data/processed/wroclaw'
+    data=json.loads((input_dir/'sector.json').read_text(encoding='utf-8'))
+    mesh_dir=input_dir/'Meshes' if city_input else ROOT/'Saved/GISMeshes'
+    meshes=json.loads((mesh_dir/'meshes.json').read_text())
     levels=unreal.get_editor_subsystem(unreal.LevelEditorSubsystem);actors=unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
     map_path='/Game/Maps/Nadodrze_GIS'
     if unreal.EditorAssetLibrary.does_asset_exist(map_path):
@@ -39,12 +42,23 @@ def prepare():
         if unreal.EditorAssetLibrary.does_asset_exist(path) and not unreal.EditorAssetLibrary.delete_asset(path):raise RuntimeError('Cannot replace mesh '+name)
         mesh=unreal.GeoMeshLibrary.bake_mesh(path,[unreal.Vector(*v) for v in record['vertices']],record['triangles'])
         if not mesh:raise RuntimeError('Mesh bake failed '+name)
-        material=unreal.load_asset('/Game/Generated/M_'+materials[record['kind']])
+        material=unreal.load_asset('/Game/Generated/M_'+(record.get('material') or materials[record['kind']]))
         if material:mesh.set_material(0,material)
         if not unreal.EditorAssetLibrary.save_loaded_asset(mesh,False):raise RuntimeError('Mesh save failed '+name)
         actor=actors.spawn_actor_from_class(unreal.StaticMeshActor,unreal.Vector(*record['origin']))
         actor.set_actor_label('GIS_'+name);actor.get_component_by_class(unreal.StaticMeshComponent).set_static_mesh(mesh)
         if hlod:actor.set_editor_property('hlod_layer',hlod)
+    if city_input:
+        path='/Game/Generated/CityDefinition';definition=unreal.load_asset(path)
+        if not definition:
+            factory=unreal.DataAssetFactory();factory.set_editor_property('data_asset_class',unreal.CityDefinition)
+            definition=unreal.AssetToolsHelpers.get_asset_tools().create_asset('CityDefinition','/Game/Generated',unreal.CityDefinition,factory)
+        if not definition or not definition.import_catalog((input_dir/'city.json').read_text(encoding='utf-8')):
+            raise RuntimeError('City catalogue import failed')
+        if not unreal.EditorAssetLibrary.save_loaded_asset(definition,False):raise RuntimeError('City catalogue save failed')
+        registry=actors.spawn_actor_from_class(unreal.CityRegistry,unreal.Vector())
+        registry.set_editor_property('definition',definition)
+        registry.set_editor_property('is_spatially_loaded',False)
     nodes={n['id']:n for n in data['road_graph']['nodes']}
     candidates=[e for e in data['road_graph']['edges'] if e['name']=='Ludwika Rydygiera' and e['car_forward'] and e['length_cm']>1500 and e['bridge']=='no']
     if not candidates:raise RuntimeError('No verified street spawn segment')
@@ -72,7 +86,7 @@ def prepare():
     actors.spawn_actor_from_class(unreal.SkyLight,unreal.Vector(0,0,1000))
     actors.spawn_actor_from_class(unreal.SkyAtmosphere,unreal.Vector())
     if not levels.save_current_level():raise RuntimeError('GIS map save failed')
-    MARKER.write_text('Nadodrze GIS generated; engine playtest pending\n')
+    MARKER.write_text(('Wave 1 city' if city_input else 'Nadodrze')+' GIS generated; engine playtest pending\n')
 try:prepare()
 except Exception:unreal.log_error(traceback.format_exc());MARKER.unlink(missing_ok=True)
 finally:unreal.SystemLibrary.quit_editor()

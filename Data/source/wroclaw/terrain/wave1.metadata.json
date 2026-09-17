@@ -1,0 +1,24 @@
+{
+  "SourceName": "Mapzen Terrain Tiles (Skadi; Europe EU-DEM / USGS sources)",
+  "SourceURL": "https://s3.amazonaws.com/elevation-tiles-prod/skadi/N51/N51E017.hgt.gz",
+  "SourceDate": "2026-09-17",
+  "SourceLicense": "Terrain-Tiles-provider-terms",
+  "LicenseURL": "https://github.com/tilezen/joerd/blob/master/docs/attribution.md",
+  "ImportDate": "2026-09-17",
+  "CRS": "EPSG:4326",
+  "VerticalCRS": "EGM96 orthometric metres",
+  "ProcessingVersion": "2",
+  "SHA256": "fcb933d51658b55848b0829b103d18358bd0ac435ec10ef901077602e64a617d",
+  "SourceArchives": [
+    {
+      "SourceURL": "https://s3.amazonaws.com/elevation-tiles-prod/skadi/N51/N51E016.hgt.gz",
+      "SHA256": "a8e6bce915529c3d37ea252e12167d43a975bb915ffa143e120376b6b1e8faf0"
+    },
+    {
+      "SourceURL": "https://s3.amazonaws.com/elevation-tiles-prod/skadi/N51/N51E017.hgt.gz",
+      "SHA256": "303d07545aac6d418221607a1c693c0e94791ea69a64e1f528c8570e24f93887"
+    }
+  ],
+  "GridSize": 3601,
+  "Attribution": "Mapzen; Copernicus EU-DEM; USGS SRTM/GMTED2010"
+}

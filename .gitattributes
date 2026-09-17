@@ -2,3 +2,7 @@ Source/WroclawTheGame/Content/ChapterCatalog.h linguist-generated=true
 Source/WroclawTheGame/Content/WorldCatalog.h linguist-generated=true
 Data/source/** linguist-vendored=true
 Data/processed/** linguist-generated=true
+
+# Preserve source bytes: terrain provenance hashes must survive Windows checkout.
+Data/source/**/*.csv -text
+Data/source/**/*.osm.gz.part* -text

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "dataset": "wave1",
+  "world_package": "/Game/Maps/Nadodrze_GIS",
+  "origin_projected_m": [641702, 5665787, 115.0],
+  "bounds_note": "Production cells, not official district boundaries. Labels describe the dominant area. Coordinates require a manual district-boundary pass.",
+  "profiles": {
+    "tenement": {"materials": ["Plaster", "Brick"], "density": "High"},
+    "estate": {"materials": ["Concrete", "Plaster"], "density": "High"},
+    "villa": {"materials": ["Brick", "Plaster"], "density": "Medium"},
+    "mixed": {"materials": ["Plaster", "Concrete", "Brick"], "density": "High"}
+  },
+  "districts": [
+    {"id": "district.nadodrze", "name": "Nadodrze — obszar źródłowy", "wave": 0},
+    {"id": "district.centre", "name": "Łącznik przez centrum", "wave": 0},
+    {"id": "district.huby", "name": "Huby", "wave": 1},
+    {"id": "district.gaj", "name": "Gaj", "wave": 1},
+    {"id": "district.borek", "name": "Borek", "wave": 1},
+    {"id": "district.krzyki", "name": "Krzyki", "wave": 1}
+  ],
+  "sectors": [
+    {"id": "sector.nadodrze", "district": "district.nadodrze", "ring": 2, "bbox": [16.995,51.118,17.06,51.126], "profile": "tenement"},
+    {"id": "sector.centre", "district": "district.centre", "ring": 1, "bbox": [16.995,51.098,17.06,51.118], "profile": "mixed"},
+    {"id": "sector.huby", "district": "district.huby", "ring": 2, "bbox": [17.025,51.083,17.06,51.098], "profile": "tenement"},
+    {"id": "sector.gaj", "district": "district.gaj", "ring": 3, "bbox": [17.025,51.065,17.06,51.083], "profile": "estate"},
+    {"id": "sector.borek", "district": "district.borek", "ring": 2, "bbox": [16.995,51.083,17.025,51.098], "profile": "villa"},
+    {"id": "sector.krzyki", "district": "district.krzyki", "ring": 3, "bbox": [16.995,51.065,17.025,51.083], "profile": "mixed"}
+  ],
+  "content_targets": {
+    "district.huby": {"staircases": 3, "story_apartments": 1, "abandoned_shops": 1, "parking": 1, "courtyard_passages": 3, "activity": "investigation"},
+    "district.gaj": {"parking": 2, "meeting_places": 1, "activity": "vehicle_observation"},
+    "district.borek": {"safehouses": 1, "npc_houses": 1, "activity": "infiltration"},
+    "district.krzyki": {"garages": 2, "parking": 2, "activity": "vehicle_investigation"}
+  }
+}

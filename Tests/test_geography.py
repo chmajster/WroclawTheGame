@@ -1,7 +1,7 @@
 import copy,json,math,sys,tempfile,unittest
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'Scripts/gis'))
-from import_sector import build,validate
+from import_sector import build,validate,source_bytes
 from road_routes import route,adjacency
 class GeographyTests(unittest.TestCase):
  @classmethod
@@ -38,3 +38,21 @@ class GeographyTests(unittest.TestCase):
  def test_source_heights_are_not_flat(self):
   heights=list(self.geo.elevations.values());self.assertGreater(max(heights)-min(heights),5)
 if __name__=='__main__':unittest.main()
+
+
+class SourcePartsTests(unittest.TestCase):
+ def test_order_corruption_and_path_traversal_are_rejected(self):
+  import hashlib
+  with tempfile.TemporaryDirectory() as tmp:
+   root=Path(tmp);path=root/'example.osm.gz';meta=root/'example.metadata.json'
+   parts=[]
+   for i,raw in enumerate((b'first',b'second'),1):
+    name=f'example.osm.gz.part{i:03d}';(root/name).write_bytes(raw)
+    parts.append({'File':name,'SHA256':hashlib.sha256(raw).hexdigest()})
+   meta.write_text(json.dumps({'SourceParts':parts}))
+   self.assertEqual(source_bytes(path),b'firstsecond')
+   (root/parts[1]['File']).write_bytes(b'corrupt')
+   with self.assertRaises(ValueError):source_bytes(path)
+   parts[0]['File']='../outside'
+   meta.write_text(json.dumps({'SourceParts':parts}))
+   with self.assertRaises(ValueError):source_bytes(path)
