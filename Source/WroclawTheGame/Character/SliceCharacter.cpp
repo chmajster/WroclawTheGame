@@ -101,7 +101,7 @@ void ASliceCharacter::SetupPlayerInputComponent(UInputComponent *Input)
     auto *EI = CastChecked<UEnhancedInputComponent>(Input);
     Mapping = NewObject<UInputMappingContext>(this);
     auto Axis = [&](const TCHAR *Name, FKey Positive, FKey Negative) {
-        auto *Action = NewObject<UInputAction>(this, FName(Name));
+        auto *Action = NewObject<UInputAction>(Mapping, FName(Name));
         Action->ValueType = EInputActionValueType::Axis1D;
         Actions.Add(Action);
         Mapping->MapKey(Action, Positive);
@@ -110,7 +110,7 @@ void ASliceCharacter::SetupPlayerInputComponent(UInputComponent *Input)
         return Action;
     };
     auto Button = [&](const TCHAR *Name, FKey Key) {
-        auto *A = NewObject<UInputAction>(this, FName(Name));
+        auto *A = NewObject<UInputAction>(Mapping, FName(Name));
         Actions.Add(A);
         Mapping->MapKey(A, Key);
         return A;
