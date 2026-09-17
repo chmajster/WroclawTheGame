@@ -2,6 +2,8 @@
 #include "Engine/LocalPlayer.h"
 #include "Engine/GameInstance.h"
 #include "Mission/SliceMission.h"
+#include "Systems/WroclawMapSubsystem.h"
+#include "Engine/World.h"
 USliceMission *UPhoneSystem::Mission() const
 {
     return GetLocalPlayer()->GetGameInstance()->GetSubsystem<USliceMission>();
@@ -36,7 +38,7 @@ void UPhoneSystem::Initialize(FSubsystemCollectionBase &C)
         }
         return Text;
     });
-    Register(TEXT("map"), [this]() { return Mission()->WorldMapText(); });
+    Register(TEXT("map"), [this]() { return Mission()->WorldMapText() + GetWorld()->GetSubsystem<UWroclawMapSubsystem>()->PhoneMapText(); });
     Register(TEXT("notes"),
              [this]() { return Mission()->ObjectiveText() + TEXT("\n") + Mission()->HintText(); });
     Register(TEXT("investigation"), [this]() { return Mission()->InvestigationText(2); });

@@ -1,3 +1,13 @@
+## Wave 1 — city GIS foundation
+
+- Import rzeczywistych danych południa Wrocławia i łącznika z Nadodrzem: 26 wycinków OSM, dwa kafle terenu, metadane/licencje/checksumy, build offline.
+- Stały origin i rozszerzenie istniejącej mapy GIS przez `Build-Geography.ps1 -City`; dodatkowa kontrola World Partition przed pakowaniem.
+- Katalog sektorów i dzielnic, ringi, gęstości contentu, palety materiałów, słownik ulic/adresów i wykrywanie wewnętrznych dziedzińców.
+- `WroclawMapSubsystem`, `CityCoverageSubsystem`, importowany katalog UE, lista sektorów w telefonie i developerski overlay.
+- Routing portalowy offline z kierunkami jazdy i raport osiągalności; wykluczenie niezweryfikowanych tuneli także przy layer=0.
+- Raport gotowości blokujący Playable bez rzeczywistych odbiorów; testy routingu, integralności źródeł i bramek odbioru.
+- Zakres: GISOnly. Brak kompilacji/playtestu UE, gotowych aktywności nowych dzielnic i integracji kampanii z GIS. Nie jest to ukończony Wave 1.
+
 # Changelog
 
 ## 0.2.0 — 2026-09-17 (implementacja UE do walidacji)

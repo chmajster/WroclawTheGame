@@ -7,6 +7,7 @@ class WROCLAWTHEGAME_API UDebugCheatManager : public UCheatManager
 {
     GENERATED_BODY()
   public:
+    UFUNCTION(Exec) void CityCoverage();
     UFUNCTION(Exec) void SetHeatLevel(int32 Level);
     UFUNCTION(Exec) void CompleteQuest(const FString &Id);
     UFUNCTION(Exec) void StartQuest(const FString &Id);

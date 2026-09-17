@@ -1,5 +1,6 @@
 #include "Systems/DebugCheatManager.h"
 #include "Systems/OpenWorldSubsystem.h"
+#include "Systems/CityCoverageSubsystem.h"
 #include "Systems/NoiseSystem.h"
 #include "Mission/SliceMission.h"
 #include "Engine/World.h"
@@ -109,4 +110,12 @@ void UDebugCheatManager::StartQuest(const FString &Id)
         M->State.tags.erase("Quest." + std::string(TCHAR_TO_UTF8(*Id)) + ".Suspended");
         M->State.tags.insert("Quest." + std::string(TCHAR_TO_UTF8(*Id)) + ".Active");
     }
+}
+
+void UDebugCheatManager::CityCoverage()
+{
+#if !UE_BUILD_SHIPPING
+    auto *Coverage = GetWorld()->GetSubsystem<UCityCoverageSubsystem>();
+    Coverage->bShowOverlay = !Coverage->bShowOverlay;
+#endif
 }

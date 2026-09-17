@@ -25,23 +25,43 @@ DRIVE = {'motorway', 'trunk', 'primary', 'secondary', 'tertiary', 'unclassified'
 WALK_EXCLUDED = {'motorway', 'motorway_link', 'trunk', 'trunk_link', 'construction', 'proposed'}
 
 
+def source_bytes(path):
+    info_path = path.with_name(path.name.split('.')[0]+'.metadata.json')
+    info = json.loads(info_path.read_text())
+    if 'SourceParts' not in info:
+        return path.read_bytes()
+    chunks = []
+    for index, part in enumerate(info['SourceParts'], 1):
+        expected = path.name + f'.part{index:03d}'
+        if part.get('File') != expected:
+            raise ValueError('Invalid source part order or path')
+        raw = (path.parent / expected).read_bytes()
+        if hashlib.sha256(raw).hexdigest() != part['SHA256']:
+            raise ValueError('Source part checksum mismatch: ' + expected)
+        chunks.append(raw)
+    if not chunks: raise ValueError('Empty segmented source')
+    return b''.join(chunks)
+
+
 def metadata(path):
     info = json.loads(path.with_name(path.name.split('.')[0]+'.metadata.json').read_text())
     for key in ('SourceName', 'SourceURL', 'SourceDate', 'SourceLicense', 'CRS',
                 'ImportDate', 'ProcessingVersion', 'SHA256'):
         if not info.get(key):
             raise ValueError(f'Missing provenance: {key}')
-    if hashlib.sha256(path.read_bytes()).hexdigest() != info['SHA256']:
+    if hashlib.sha256(source_bytes(path)).hexdigest() != info['SHA256']:
         raise ValueError(f'Source checksum mismatch: {path.name}')
     return info
 
 
 class Geography:
-    def __init__(self, bbox, terrain):
+    def __init__(self, bbox, terrain, origin=None):
         self.forward = Transformer.from_crs(4326, 32633, always_xy=True)
         self.inverse = Transformer.from_crs(32633, 4326, always_xy=True)
         e, n = self.forward.transform(bbox[0], bbox[3])
-        self.origin = (round(e), round(n), 115.0)
+        self.origin = tuple(origin) if origin is not None else (round(e), round(n), 115.0)
+        if len(self.origin) != 3 or not all(math.isfinite(v) for v in self.origin):
+            raise ValueError("Invalid projected origin")
         with terrain.open() as stream:
             rows = list(csv.DictReader(stream))
         self.elevations = {(float(r['longitude']), float(r['latitude'])): float(r['elevation']) for r in rows}
@@ -77,13 +97,14 @@ def parts(geometry, kind):
             yield from parts(child, kind)
 
 
-def build(source=SOURCE, output=OUTPUT):
-    osm = source/'osm/nadodrze.osm.gz'; terrain = source/'terrain/nadodrze.csv'
+def build(source=SOURCE, output=OUTPUT, name="nadodrze", origin=None):
+    if not name or not all(c.isalnum() or c in "_-" for c in name):
+        raise ValueError("Invalid source dataset name")
+    osm = source/f"osm/{name}.osm.gz"; terrain = source/f"terrain/{name}.csv"
     sources = [metadata(osm), metadata(terrain)]
     bbox = sources[0]['BoundingBox']; clip = box(*bbox)
-    geo = Geography(bbox, terrain)
-    with gzip.open(osm, 'rb') as stream:
-        xml=stream.read()
+    geo = Geography(bbox, terrain, origin)
+    xml = gzip.decompress(source_bytes(osm))
     if hashlib.sha256(xml).hexdigest()!=sources[0]['UncompressedSHA256']:
         raise ValueError('Uncompressed OSM checksum mismatch')
     root = ET.fromstring(xml)
@@ -116,7 +137,7 @@ def build(source=SOURCE, output=OUTPUT):
         for m in relation.findall('member'):
             if m.attrib['type']!='way' or m.attrib['ref'] not in ways:continue
             refs,_=ways[m.attrib['ref']]; coords=[nodes[r] for r in refs if r in nodes]
-            if len(coords)>1:lines['inner' if m.attrib.get('role')=='inner' else 'outer'].append(LineString(coords))
+            if len(set(coords))>1:lines['inner' if m.attrib.get('role')=='inner' else 'outer'].append(LineString(coords))
             members.append(m.attrib['ref'])
         outer=unary_union(list(polygonize(lines['outer'])))
         inner=unary_union(list(polygonize(lines['inner'])))
@@ -124,8 +145,8 @@ def build(source=SOURCE, output=OUTPUT):
         if tags.get('building') not in (None,'no'):building_members.update(members)
     for identifier,(refs,tags) in ways.items():
         coords=[nodes[r] for r in refs if r in nodes]
-        if len(coords)<2:continue
-        if coords[0]==coords[-1] and len(coords)>3 and identifier not in building_members:
+        if len(set(coords))<2:continue
+        if coords[0]==coords[-1] and len(set(coords))>=3 and identifier not in building_members:
             polygon_feature('way/'+identifier,Polygon(coords),tags)
         highway=tags.get('highway'); rail=tags.get('railway')
         if not highway and not rail:continue
@@ -155,6 +176,7 @@ def build(source=SOURCE, output=OUTPUT):
                               'name':tags.get('name',''),'car_forward':car and oneway!='-1',
                               'car_backward':car and oneway not in ('yes','1','true'),
                               'foot':foot,'layer':tags.get('layer','0'),'bridge':tags.get('bridge','no'),
+                              'tunnel':tags.get('tunnel','no'),
                               'length_cm':math.dist(geo.world(*p),geo.world(*q))})
                 if tags.get('bridge','no')!='no' or tags.get('tunnel','no')!='no':unsupported.append(identifier)
     result={'version':1,'bbox':bbox,'projected_crs':'EPSG:32633','geographic_crs':'EPSG:4326',

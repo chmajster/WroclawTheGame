@@ -15,6 +15,14 @@ Unreal Engine **5.6 / C++20**, docelowo **Windows x64**. Wersja źródłowa 0.3 
 - Rzeczywisty sektor Nadodrza: OSM z 17.09.2026, EPSG:32633, skala 100 cm/m, źródłowe footprinty z dziedzińcami, ulice, tory, tereny zielone i wysokości. Import tworzy 3019 obiektów/linii, 5706 węzłów grafu i 281 grup siatek. Zachowuje kierunki jazdy i źródłową topologię. Mosty/tunele oczekują ręcznego opracowania wysokości.
 - Osobne laboratorium `Nadodrze_GIS`: samochód z napędem fizycznym, wsiadaniem/wysiadaniem, hamowaniem, biegiem wstecznym, światłami, klaksonem i uszkodzeniami. Trzy próby po prawdziwych drogach: sprint, czas, dostawa; kolejność checkpointów, restart bez przeładowania poziomu i osobny zapis rekordów. **Nie przetestowano fizyki w silniku.**
 
+## Wave 1 — południowe sektory GIS
+
+Dodano rzeczywiste dane OSM i terenu dla obszaru Hub/Gaju/Borka/Krzyków oraz łącznika z Nadodrzem: **82 823 obiekty i linie, 141 175 węzłów, 162 324 krawędzie**. Komórki produkcyjne nie są administracyjnymi granicami dzielnic.
+
+`Build-Geography.ps1 -City` rozszerza istniejący świat GIS w tym samym układzie współrzędnych. Dodano katalog sektorów, profile materiałów, adresy powiązane z budynkami, routing portalowy offline, raport gotowości oraz integrację katalogu z telefonem i developerskim overlayem `CityCoverage`.
+
+**Status: GISOnly, 0 sektorów Playable.** Mosty/tunele bez opracowanych wysokości blokują zatwierdzone trasy z Nadodrza na południe. Brakuje jeszcze contentu dzielnic, AI/ruchu i testów silnikowych. Kampania pozostaje na swojej dotychczasowej mapie. Szczegóły i polecenia: [Wave 1](docs/CITY-WAVE1.md).
+
 ## Uruchomienie i build kampanii
 
 Wymagane lokalnie: UE 5.6, Visual Studio z narzędziami C++ i zgodny Windows SDK.

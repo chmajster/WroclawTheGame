@@ -1,4 +1,6 @@
 #include "UI/SliceHUD.h"
+#include "Systems/WroclawMapSubsystem.h"
+#include "Systems/CityCoverageSubsystem.h"
 #include "Vehicles/RaceSession.h"
 #include "Vehicles/DriveableVehicle.h"
 #include "Geography/GeoPreviewGameMode.h"
@@ -64,6 +66,13 @@ void ASliceHUD::DrawHUD()
     if (Cast<AGeoPreviewGameMode>(GetWorld()->GetAuthGameMode()))
         Text(TEXT("Mapa: © OpenStreetMap contributors (ODbL) | teren: Copernicus EU-DEM / USGS, via Mapzen"),
              20, Canvas->SizeY - 22, .65);
+#if !UE_BUILD_SHIPPING
+    if (GetWorld()->GetSubsystem<UCityCoverageSubsystem>()->bShowOverlay)
+    {
+        DrawCityCoverage();
+        return;
+    }
+#endif
     auto *P = Cast<ASliceCharacter>(PC->GetPawn());
     if (!P)
     {
@@ -185,4 +194,49 @@ void ASliceHUD::DrawHUD()
              FLinearColor::Red);
     if (FPlatformTime::Seconds() < M->NotificationUntil)
         Text(M->Notification.Left(135), 35, Canvas->SizeY - 140, .8, FLinearColor(1, .82, .4));
+}
+
+void ASliceHUD::DrawCityCoverage()
+{
+    const auto *Coverage = GetWorld()->GetSubsystem<UCityCoverageSubsystem>();
+    const auto *City = GetWorld()->GetSubsystem<UWroclawMapSubsystem>()->GetCity();
+    DrawRect(FLinearColor(.015, .025, .035, .96), 0, 0, Canvas->SizeX, Canvas->SizeY);
+    Text(TEXT("CITY COVERAGE — granice produkcyjne"), 25, 20, 1.2);
+    Text(Coverage->ReportText(), 25, 55, .9);
+    if (!City || City->Sectors.IsEmpty()) return;
+    FVector2D Min(TNumericLimits<double>::Max(), TNumericLimits<double>::Max());
+    FVector2D Max(-TNumericLimits<double>::Max(), -TNumericLimits<double>::Max());
+    for (const auto &Sector : City->Sectors)
+        for (const auto &Point : Sector.Boundary)
+        {
+            Min.X = FMath::Min(Min.X, Point.X); Min.Y = FMath::Min(Min.Y, Point.Y);
+            Max.X = FMath::Max(Max.X, Point.X); Max.Y = FMath::Max(Max.Y, Point.Y);
+        }
+    const double Scale = FMath::Min((Canvas->SizeX - 80.) / FMath::Max(1., Max.X - Min.X),
+                                    (Canvas->SizeY - 180.) / FMath::Max(1., Max.Y - Min.Y));
+    const auto Screen = [&](const FVector2D &Point) { return FVector2D(40, 100) + (Point - Min) * Scale; };
+    for (const auto &Sector : City->Sectors)
+    {
+        if (Sector.Boundary.Num() < 3) continue;
+        const FLinearColor Color = Coverage->Color(Sector.Status);
+        FVector2D Centre = FVector2D::ZeroVector;
+        for (int32 I = 0; I < Sector.Boundary.Num(); ++I)
+        {
+            const FVector2D A = Screen(Sector.Boundary[I]);
+            const FVector2D B = Screen(Sector.Boundary[(I + 1) % Sector.Boundary.Num()]);
+            DrawLine(A.X, A.Y, B.X, B.Y, Color, 2);
+            Centre += A;
+        }
+        Centre /= Sector.Boundary.Num();
+        Text(Sector.DisplayName, Centre.X - 65, Centre.Y - 17, .7, Color);
+        Text(Coverage->Label(Sector.Status), Centre.X - 65, Centre.Y + 3, .7, Color);
+    }
+    if (const auto *Pawn = PlayerOwner->GetPawn())
+    {
+        const FVector Position = Pawn->GetActorLocation();
+        const FVector2D Point = Screen(FVector2D(Position.X, Position.Y));
+        DrawRect(FLinearColor::White, Point.X - 3, Point.Y - 3, 6, 6);
+    }
+    Text(TEXT("Szary Missing | niebieski GIS | pomarańczowy Blockout | żółty Playable | zielony Detailed | fioletowy Final"),
+         25, Canvas->SizeY - 45, .65);
 }
