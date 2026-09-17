@@ -1,0 +1,19 @@
+{
+  "SourceName": "OpenStreetMap contributors",
+  "SourceURL": "https://www.openstreetmap.org/api/0.6/map?bbox=17.025,51.118,17.038,51.126",
+  "SourceDate": "2026-09-17",
+  "SourceLicense": "ODbL-1.0",
+  "LicenseURL": "https://www.openstreetmap.org/copyright",
+  "ImportDate": "2026-09-17",
+  "CRS": "EPSG:4326",
+  "ProcessingVersion": "1",
+  "SHA256": "e327022888870666873fd70c11da4f1b8f501d5f355e02aca93dba69d387c0d3",
+  "BoundingBox": [
+    17.025,
+    51.118,
+    17.038,
+    51.126
+  ],
+  "UncompressedSHA256": "3c55760712b19665fc349096bba201b0d1430fe33e458121b48b70a665c5b5cf",
+  "StorageFormat": "gzip-compressed OSM XML"
+}

@@ -1,0 +1,18 @@
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+.vs/
+*.sln
+*.suo
+Builds/
+Content/Generated/
+Content/Maps/*.umap
+__pycache__/
+.test-bin/
+
+Content/__ExternalActors__/
+Content/__ExternalObjects__/
+
+# Reproducible GIS products (source data and provenance are committed).
+Data/processed/wroclaw/sector.json
