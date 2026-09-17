@@ -11,35 +11,50 @@
 #include "NavigationSystem.h"
 #include "NavMesh/NavMeshBoundsVolume.h"
 #include "EngineUtils.h"
-ASliceGameMode::ASliceGameMode() {
- DefaultPawnClass=ASliceCharacter::StaticClass();PlayerControllerClass=ASliceController::StaticClass();HUDClass=ASliceHUD::StaticClass();
- PrimaryActorTick.bCanEverTick=true;PrimaryActorTick.TickInterval=0.1f;
-}
-void ASliceGameMode::BeginPlay() {
- Super::BeginPlay();
+#include "Audio/SliceAudio.h"
+#include "Perception/AISense_Hearing.h"
+ASliceGameMode::ASliceGameMode(){DefaultPawnClass=ASliceCharacter::StaticClass();PlayerControllerClass=ASliceController::StaticClass();HUDClass=ASliceHUD::StaticClass();PrimaryActorTick.bCanEverTick=true;PrimaryActorTick.TickInterval=.1;}
+void ASliceGameMode::SpawnGuard(const FString& Id,const FVector& Position,const TArray<FVector>& Patrol){
  auto* M=GetGameInstance()->GetSubsystem<USliceMission>();
- GetWorld()->SpawnActor<ASliceWorld>();
- auto* PC=Cast<ASliceController>(UGameplayStatics::GetPlayerController(this,0));
- if(auto* P=Cast<ASliceCharacter>(PC?PC->GetPawn():nullptr)) {P->SetActorLocation(M->SpawnPoint(),false,nullptr,ETeleportType::TeleportPhysics);PC->SetControlRotation(FRotator(-10,0,0));}
- FActorSpawnParameters Params;Params.SpawnCollisionHandlingOverride=ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
- Enemy=GetWorld()->SpawnActor<ASliceEnemy>(FVector(3300,2450,96),FRotator(0,-155,0),Params);
- Enemy->bActive=M->State.Complete(10) && !M->State.Finished();
- if(auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld()))
-  for(TActorIterator<ANavMeshBoundsVolume> It(GetWorld());It;++It) Nav->OnNavigationBoundsUpdated(*It);
- if(PC && (M->bShowMenu || M->State.Finished())) PC->SetPause(true);
+ FActorSpawnParameters P;P.SpawnCollisionHandlingOverride=ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+ auto* G=GetWorld()->SpawnActor<ASliceEnemy>(Position,FRotator(0,-150,0),P);G->GuardId=Id;G->PatrolPoints=Patrol;
+ if(M->State.neutralized.count(TCHAR_TO_UTF8(*Id))){G->SetActorHiddenInGame(true);G->SetActorEnableCollision(false);G->Health=0;}
+ Guards.Add(G);if(Id==TEXT("pursuer"))Enemy=G;
 }
-void ASliceGameMode::Tick(float Dt) {
- Super::Tick(Dt);auto* M=GetGameInstance()->GetSubsystem<USliceMission>();
- if(!M->bInGame || M->bDead || M->State.Finished()) return;
- auto* P=Cast<ASliceCharacter>(UGameplayStatics::GetPlayerPawn(this,0));if(!P) return;
- const FVector L=P->GetActorLocation();
- if(L.X>1240 && L.X<1500 && L.Y>300 && L.Y<520) M->Apply(Wroclaw::Event::ExitApartment);
- if(L.X>2080 && L.X<2400 && L.Y>300 && L.Y<900 && L.Z<150) M->Apply(Wroclaw::Event::GroundFloor);
- if(L.Y>2110 && L.Y<3200 && L.X>1800 && L.X<5200 && M->Apply(Wroclaw::Event::Street)) {
-  Enemy->bActive=true;
-  if(auto* AI=Cast<ASliceEnemyController>(Enemy->GetController())) AI->ResetBrain();
-  M->Notify(TEXT("Napastnik jest na ulicy. Biegnij do zaułka przy niebieskim szyldzie. Nie prowadź go do lokalu."));
+void ASliceGameMode::BeginPlay(){
+ Super::BeginPlay();auto* M=GetGameInstance()->GetSubsystem<USliceMission>();GetWorld()->SpawnActor<ASliceWorld>();
+ auto* PC=Cast<ASliceController>(UGameplayStatics::GetPlayerController(this,0));
+ if(auto* P=Cast<ASliceCharacter>(PC?PC->GetPawn():nullptr)){if(!P->TeleportTo(M->SpawnPoint(),FRotator::ZeroRotator,false,false))M->Notify(TEXT("Punkt zapisu jest zajęty. Gracz pozostaje w bezpiecznym punkcie startowym."));PC->SetControlRotation(FRotator(-10,0,0));}
+ SpawnGuard(TEXT("hall"),{2180,620,96},{{2180,620,96},{1940,400,136},{2200,800,96}});
+ SpawnGuard(TEXT("courtyard"),{3200,1850,96},{{2900,1950,96},{4100,1480,96},{3700,2040,96}});
+ SpawnGuard(TEXT("pursuer"),{7300,2900,96},{{7300,2900,96},{7800,3000,96}});
+ if(auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld()))for(TActorIterator<ANavMeshBoundsVolume> It(GetWorld());It;++It)Nav->OnNavigationBoundsUpdated(*It);
+ if(PC && (M->bShowMenu || M->State.Finished()))PC->SetPause(true);
+}
+bool ASliceGameMode::HasThreat() const {for(ASliceEnemy* G:Guards)if(G && G->IsThreat())return true;return false;}
+FString ASliceGameMode::ThreatText() const {for(ASliceEnemy* G:Guards)if(G && G->IsThreat())return G->StatusText();return TEXT("");}
+void ASliceGameMode::Tick(float Dt){
+ Super::Tick(Dt);auto* M=GetGameInstance()->GetSubsystem<USliceMission>();if(!M->bInGame || M->bDead || M->State.Finished())return;
+ M->State.Tick(Dt);auto* P=Cast<ASliceCharacter>(UGameplayStatics::GetPlayerPawn(this,0));if(!P)return;
+ for(ASliceEnemy* G:Guards){
+  const bool Should=(G->GuardId==TEXT("hall")?M->State.Done("target"):(G->GuardId==TEXT("courtyard")?M->State.Done("apartment_exit"):M->State.Done("usb")));
+  if(Should && !G->bActive && G->Health>0){
+   G->bActive=true;if(auto* AI=Cast<ASliceEnemyController>(G->GetController())){AI->ResetBrain();if(G==Enemy)AI->Investigate({7100,3250,96});}
+   USliceAudio::Play(this,G==Enemy?TEXT("Alarm"):TEXT("Door"),G->GetActorLocation());
+  }
  }
- if(L.Y>4590 && L.Y<5300 && L.X>4000 && L.X<5200 && !Enemy->IsThreat() && M->Apply(Wroclaw::Event::ReachSafe))
-  if(auto* PC=Cast<ASliceController>(P->GetController())) PC->SetPause(true);
+ const FVector L=P->GetActorLocation();
+ for(const auto& A:Wroclaw::Catalog())if(A.kind=="zone" && !M->State.Done(A.id) && M->State.CanDo(A)){
+  if(FVector::Dist2D(L,FVector(A.x,A.y,A.z))<180 && FMath::Abs(L.Z-A.z)<100){
+   if(M->Act(UTF8_TO_TCHAR(A.id.c_str()))==Wroclaw::Result::Applied){
+    if(!A.body.empty())M->Notify(UTF8_TO_TCHAR(A.body.c_str()));
+    if(A.id=="garage_enter"){
+     M->Notify(TEXT("Napastnik nadchodzi. LPM atak, PPM blok, ALT unik. Możesz ogłuszyć go lub uciec tyłem."));
+     UAISense_Hearing::ReportNoiseEvent(GetWorld(),L,1.5,P,2200);
+    }
+   }
+  }
+ }
+ if(M->State.Done("garage_escape") && !HasThreat())M->Act(TEXT("lost_pursuit"));
+ if(M->State.Finished())if(auto* PC=Cast<ASliceController>(P->GetController()))PC->SetPause(true);
 }

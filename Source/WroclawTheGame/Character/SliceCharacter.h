@@ -15,7 +15,9 @@ public:
  class USliceMission* Mission() const;
  void Interact();
  void Phone();
- void Attack();
+ void Attack();void ThrowObject();void Dodge();void Heal();void ToggleFlashlight();
+ UPROPERTY(VisibleAnywhere) TObjectPtr<class USpotLightComponent> Flashlight;
+ double DodgeUntil=0;
  void SetSprint(bool Value) { bSprint=Value; }
  void SetBlock(bool Value) { bBlock=Value; }
  float Health=100, Stamina=100;

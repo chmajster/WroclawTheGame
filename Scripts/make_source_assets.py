@@ -17,7 +17,7 @@ MATERIALS = {
 }
 LOOPS = {'Apartment', 'Street', 'Chase'}
 SOUNDS = {'Footstep': .24, 'Door': .85, 'Drawer': .6, 'Pickup': .26, 'Switch': .12,
-          'Hit': .2, 'Apartment': 8, 'Street': 12, 'Chase': 4}
+          'Hit': .2, 'Alarm': .8, 'Apartment': 8, 'Street': 12, 'Chase': 4}
 
 
 def make_texture(path, name, color):
@@ -60,6 +60,8 @@ def make_sound(path, name, duration):
             sample = noise * .45 * math.exp(-t * 70)
         elif name == 'Hit':
             sample = (noise * .35 + math.sin(2 * math.pi * 65 * t) * .4) * math.exp(-t * 22)
+        elif name == 'Alarm':
+            sample = .3 * math.sin(2 * math.pi * (780 if int(t * 8) % 2 else 520) * t)
         elif name == 'Apartment':
             sample = .08 * math.sin(2 * math.pi * 50 * t) + .15 * low
         elif name == 'Street':

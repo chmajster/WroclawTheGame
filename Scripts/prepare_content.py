@@ -77,19 +77,19 @@ def prepare():
         raise RuntimeError('PlayerStart spawn failed')
     start.set_actor_label('SliceBootstrap_PlayerStart')
     # Actor factory creates the bounds volume brush in an editor world.
-    nav = actors.spawn_actor_from_class(unreal.NavMeshBoundsVolume, unreal.Vector(2600, 2600, 400))
+    nav = actors.spawn_actor_from_class(unreal.NavMeshBoundsVolume, unreal.Vector(5600, 3000, 100))
     if not nav:
         raise RuntimeError('Navigation volume spawn failed')
     nav.set_actor_label('SliceBootstrap_Navigation')
     _, extent = nav.get_actor_bounds(False)
     if min(extent.x, extent.y, extent.z) <= 0:
         raise RuntimeError('Navigation brush has no bounds; generation aborted before packaging')
-    nav.set_actor_scale3d(unreal.Vector(3000 / extent.x, 3000 / extent.y, 800 / extent.z))
+    nav.set_actor_scale3d(unreal.Vector(6000 / extent.x, 3400 / extent.y, 1000 / extent.z))
     if not levels.save_current_level():
         raise RuntimeError('Map save failed')
     unreal.EditorAssetLibrary.save_directory('/Game/Generated', False, True)
     MARKER.parent.mkdir(parents=True, exist_ok=True)
-    MARKER.write_text('Przebudzenie content v1\n', encoding='utf-8')
+    MARKER.write_text('Przebudzenie content v2\n', encoding='utf-8')
     unreal.log('WROCLAW_CONTENT_READY')
 
 

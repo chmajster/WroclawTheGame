@@ -1,35 +1,39 @@
 # WroclawTheGame — Przebudzenie
 
-Pierwsza implementacja zamkniętego vertical slice w **Unreal Engine 5.6 / C++**, z docelowym buildem **Windows x64**.
+Projekt Unreal Engine **5.6 / C++20**, docelowo **Windows x64**. Wersja 0.2 rozszerza pierwszy rozdział zgodnie z [nowym zakresem](docs/SCOPE-v2.md): celem jest 45–90 minut pierwszego przejścia, zamiast wcześniejszych 15–30 minut.
 
-**Status: implementacja do walidacji w Unreal Engine. Etap produkcji nie jest ukończony.**
-W środowisku przygotowania kodu nie ma UE ani toolchainu Windows. Nie wykonano kompilacji UHT/UBT, cookingu, uruchomienia EXE ani przejścia misji. Repozytorium nie zawiera gotowego pliku EXE. Testy niezależnej logiki nie zastępują tych bramek. Czas 15–30 minut i wydajność w 1080p pozostają celami do pomiaru.
+**Status: implementacja źródłowa do kompilacji i odbioru w Unreal Engine. Etap nie jest ukończony.** Nie wykonano UHT/UBT, cookingu, uruchomienia EXE ani przejścia gry na Windows — środowisko wykonania nie zawiera Unreal Engine. Czas 45–90 minut, pościg 3–5 minut oraz wydajność w 1080p pozostają niezmierzonymi celami. Testy logiki nie dowodzą grywalności.
 
-## Zbuduj na Windows
+## Build Windows
 
-Wymagania stanowiska: Unreal Engine **5.6**, Visual Studio 2022 z narzędziami C++ do gier i Windows SDK kompatybilnymi z tą instalacją UE. Skrypt korzysta z Pythona dostarczonego z edytorem. Nie wymaga płatnych ani zewnętrznych assetów.
-
-W PowerShell, w katalogu repozytorium:
+Stanowisko: Unreal Engine 5.6, Visual Studio 2022 z narzędziami C++ do gier i zgodny Windows SDK. Python pochodzi z instalacji Unreal. Wszystkie grafiki i dźwięki robocze są generowane lokalnie, bez płatnych assetów.
 
 ```powershell
 .\Scripts\Build-Windows.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.6'
 ```
 
-Skrypt kolejno kompiluje target edytora, generuje/importuje materiały, tekstury, WAV i mapę, następnie wykonuje BuildCookRun. Przerwie działanie przy błędzie kompilacji/importu lub braku poprawnej mapy. Wynik trafia do `Builds/Development/`. Uruchom `WroclawTheGame.exe` w wynikowym katalogu Windows. Do dystrybucji potrzebny jest **cały katalog pakietu**, nie sam plik EXE.
-
-Wersja Shipping:
+Skrypt waliduje dane i generuje katalog C++, kompiluje target edytora, tworzy/importuje content oraz mapę, a następnie wykonuje BuildCookRun. Wynik: `Builds/Development/`. Uruchom `WroclawTheGame.exe` z całego wynikowego pakietu Windows; sam EXE nie wystarcza.
 
 ```powershell
 .\Scripts\Build-Windows.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.6' -Configuration Shipping
 ```
 
-Przygotowanie edytora bez pakowania:
+Opcja `-PrepareOnly` przygotowuje projekt i mapę do otwarcia w edytorze. Geometria i interakcje powstają w runtime z kodu i katalogu danych. Mapa edytora zawiera punkt startowy i bounds nawigacji; nie jest ręcznie umeblowanym poziomem. Binarne assety są odtwarzane podczas przygotowania contentu.
 
-```powershell
-.\Scripts\Build-Windows.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.6' -PrepareOnly
-```
+## Zawartość implementacji 0.2
 
-Następnie otwórz `WroclawTheGame.uproject`, mapę `Content/Maps/Przebudzenie` i wybierz Play. Geometria i interakcje są tworzone przez `ASliceWorld` po rozpoczęciu gry; w samym widoku edycji mapa zawiera punkty startu i obszar nawigacji. Nie trzeba ręcznie rozmieszczać gameplayowych aktorów. Wygenerowane binarne assety pozostają lokalne i są odtwarzane podczas budowania.
+- **17 etapów głównych**, **4 questy poboczne**, **5 sekretów**, **14 paneli/zagadek z wpisywanym rozwiązaniem**, **40 wpisów śledztwa** i **83 akcje/zdarzenia** katalogu. Część paneli jest alternatywna lub opcjonalna; nie trzeba rozwiązywać wszystkich w jednym przejściu.
+- Mieszkanie → klatka → **piwnica albo pomieszczenie techniczne** → podwórko → ulica/sklep/parking → opuszczony lokal → zaułek → garaż → warsztat.
+- Nowy łańcuch zasilania: ładowarka + kabel → sprawdzenie gniazdka → schowek z bezpiecznikiem → prąd → ładowanie telefonu → PIN → SMS → komputer → TARGET. Telefon nie jest potrzebny do uruchomienia prądu.
+- Kody wymagają znalezienia wskazówek. Panele blokują się na 8 sekund po trzech błędach. Panel świateł pokazuje diody i wybiera jeden z trzech trwałych wariantów nowej gry.
+- Telefon: SMS, kontakty, zdjęcia/opisy fotografii, notatki i historia połączeń. Śledztwo: Ludzie, Miejsca, Dowody, Wiadomości. Questy i sekrety mają osobny dziennik.
+- Wybór pomocy sąsiadowi, opcjonalny sejf, samochód i porzucony telefon. Pominięcie pobocznych nie blokuje obu głównych dróg.
+- Jeden archetyp przeciwnika, trzy spotkania: klatka, podwórko, zasadzka. AI Perception Sight/Hearing, nawigacja, ostatnia znana pozycja, poszukiwanie i powrót do patrolu. Rzucony przedmiot generuje dźwięk przy zderzeniu. AI korzysta z natywnej maszyny stanów; nie dodano Behavior Tree/Blackboard.
+- Lekki atak ogłusza, blok zużywa staminę, unik ma krótki czas ochrony. Możliwa ucieczka przez tył garażu. Brak wymogu zabijania; nie dodano broni palnej.
+- Latarka wymaga baterii, opatrunki są zużywalne, przedmioty do rzutu mają ograniczoną liczbę. Zapis odtwarza neutralizację strażników i użyte przedmioty.
+- Trzy poziomy podpowiedzi na żądanie po 90/180/300 sekundach bez ukończenia etapu. Podpowiedzi nie podają odpowiedzi.
+- Sześć lokalnych osiągnięć zapisanych niezależnie od nowej gry. „Detektyw” wymaga wszystkich wpisów śledztwa; wybór odejścia od sąsiada wyklucza komplet dowodów w tym przejściu.
+- Finał odblokowuje rozdział 2 w stanie kampanii. Nie uruchamia nieistniejącego drugiego poziomu i nie oznacza ukończenia całej gry.
 
 ## Sterowanie
 
@@ -37,36 +41,34 @@ Następnie otwórz `WroclawTheGame.uproject`, mapę `Content/Maps/Przebudzenie` 
 |---|---|
 | WASD / mysz | Ruch / kamera third-person |
 | Shift / Ctrl / Spacja | Sprint / kucanie / skok |
-| E | Interakcja z obiektem pod celownikiem |
-| T / I | Telefon / ekwipunek |
-| LPM / PPM | Lekki atak / blok od przodu |
-| Esc | Pauza lub zamknięcie wskazówki |
-| 0–9, Backspace, Enter | Wpisanie, poprawienie i zatwierdzenie kodu |
-| N / L / Q w menu | Nowa gra / wczytanie / wyjście |
-| Enter na ekranie śmierci | Wczytanie ostatniego checkpointu |
+| E / T / I | Interakcja / telefon / ekwipunek |
+| J / B / H / K | Śledztwo / questy / podpowiedzi / osiągnięcia |
+| F / G / V | Latarka / rzut przedmiotu / opatrunek |
+| LPM / PPM / lewy Alt | Lekki atak / blok / unik |
+| 0–9, A–Z, Backspace, Enter | Rozwiązanie panelu, poprawka, zatwierdzenie |
+| 1–5 w telefonie / 1–4 w śledztwie | Wybór zakładki |
+| Strzałki góra/dół | Przewijanie długich wpisów |
+| Esc | Zamknięcie panelu lub pauza |
+| N / L / Q w menu | Nowa gra / checkpoint / wyjście |
 
-## Zakres kodu
+**Panele zagadek działają bez zatrzymywania świata.** W garażu można zostać zaatakowanym podczas wpisywania przewodów. Esc zamyka panel i przywraca sterowanie. Menu, ekwipunek i czytanie dokumentów zatrzymują rozgrywkę.
 
-- Mieszkanie, klatka z 18 stopniami, parter, podwórko, fragment ulicy, zaułek i lokal docelowy. Centymetry UE, wnętrza o wysokości około 3 m. Umowne Nadodrze z polskimi szyldami, kamienicami, znakami i przewodami tramwajowymi; nie jest to odwzorowanie ulicy 1:1.
-- Wspólny `IInteractable`: drzwi, szuflada, szafki, podnoszenie przedmiotów, rozdzielnia, przełącznik lampy i kartki. Telefon dostępny z ekwipunku przez T.
-- Zależności: telefon + powerbank z kablem + kartka z PIN-em → uruchomienie → wiadomość → bezpiecznik → prąd → lampa → kod szafki → klucz.
-- Misja z 13 celami. Jedna implementacja stanu jest używana przez runtime i testy. Zakończenie rozdziału nie oznacza opuszczenia Wrocławia ani ukończenia całej kampanii.
-- AI Perception Sight/Hearing, nawigacja, patrol, podejrzliwość, pościg, atak, ostatnia znana pozycja, przeszukiwanie i powrót. AI tego etapu używa natywnej maszyny stanów C++; **nie ma jeszcze assetu Behavior Tree/Blackboard**.
-- Zdrowie, stamina, koszt sprintu/ataku/bloku, śmierć, restart. Postacie są bryłowymi proxy; gracz ma prostą proceduralną animację kończyn. Brak finalnych modeli i animacji szkieletowych.
-- Zapis początkowy oraz autosave po otwarciu szafki, opuszczeniu mieszkania, wejściu na ulicę i dotarciu do schronienia. Odtworzenie stanu zagadek, przedmiotów i misji. Checkpoint przywraca pełne zdrowie i resetuje spotkanie z napastnikiem.
-- Minimalny HUD, menu, pauza, ekwipunek, wskazówki, klawiatury kodów i zakończenie rozdziału.
-- Generowane tekstury i parametry PBR, Lumen w konfiguracji, oświetlenie wnętrz/ulicy i syntetyzowane audio prototypowe. Są to assety robocze, nie finalna oprawa realistyczna.
+## Zapis i rozbudowa
 
-`USliceMission` przechowuje sesję pomiędzy przeładowaniami mapy. `USliceSave` zapisuje wersjonowany snapshot w standardowym katalogu `Saved/SaveGames/Przebudzenie_v1.sav` gry. Uszkodzone lub niezgodne logicznie zapisy są odrzucane. Nowa gra zapisuje początek nowej sesji w tym samym slocie.
+Zapis rozdziału: standardowy katalog gry `Saved/SaveGames/Przebudzenie_v2.sav`. Starszy slot v1 pozostaje nienaruszony, ale nie jest odczytywany jako v2: zmieniły się zależności zagadek. Zapis obejmuje historię stabilnych ID, wariant, ekwipunek odtworzony ze zdarzeń, zużycie przedmiotów, dowody, wybory, strażników, statystyki, podpowiedzi i blokady paneli. Zapis nie przechowuje dowolnego niezaufanego indeksu questu; odtwarza i waliduje zależności. Checkpoint przywraca pełne zdrowie i pozycję stojącego gracza.
 
-## Testy i CI
+Autozapis występuje przy kluczowych etapach. W danych jest 11 znaczników checkpointu, w tym dwa alternatywne wyjścia; każde przejście używa jednego z nich. Profil osiągnięć: `LocalAchievements.sav`.
+
+Treść i powiązania: `Data/chapter1.json`. Generator: `Scripts/compile_chapter.py`. Produkcyjny stan i testy korzystają z tego samego katalogu. Zasady rozszerzania: [docs/AUTHORING.md](docs/AUTHORING.md).
+
+## Weryfikacja
 
 ```bash
 bash Scripts/test.sh
 ```
 
-Testy C++ wykonują rzeczywistą maszynę stanów produkcyjnych: pełna droga, przedwczesne interakcje, powtórzenia, odtworzenie checkpointów, odrzucenie niespójnego stanu oraz eksploracja wszystkich osiągalnych kombinacji zdarzeń. Test assetów sprawdza wygenerowane PCM i tekstury. **Nie testują kolizji UE, UHT, renderingu, percepcji ani grywalności.**
+Testy obejmują 12 kombinacji głównych dróg, opuszczenie wszystkich pobocznych, nagrody, wszystkie dowody, wybory, odtworzenie stanu, blokady kodów, wskazówki i 50 000 prób zdarzeń w różnej kolejności. Walidator sprawdza aktualność katalogu, nieznane zależności i cykle. Generatory tworzą 15 tekstur TGA i 10 plików PCM WAV.
 
-Workflow `Logic and source assets` działa na GitHub-hosted Linux. Workflow `Windows UE5 package` jest uruchamiany ręcznie i wymaga własnego runnera z etykietami `self-hosted`, `Windows`, `X64`, `unreal-5.6` oraz zmienną środowiskową `UE_ROOT`. Nie zakłada, że taki runner już istnieje.
+Workflow Linux działa na GitHub-hosted runnerze. Ręczny workflow Windows wymaga własnego runnera z etykietami `self-hosted`, `Windows`, `X64`, `unreal-5.6` i zmienną `UE_ROOT`.
 
-Odbiór: [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md). Solucja do sprawdzania zależności: [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md). Wynik lokalnej weryfikacji: [docs/VALIDATION.md](docs/VALIDATION.md).
+[Odbiór](docs/ACCEPTANCE.md) · [Solucja testowa](docs/WALKTHROUGH.md) · [Wyniki i ograniczenia](docs/VALIDATION.md)

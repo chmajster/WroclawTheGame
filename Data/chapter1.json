@@ -1,0 +1,2125 @@
+{
+  "version": 2,
+  "chapter": "Przebudzenie",
+  "duration_target_minutes": [
+    45,
+    90
+  ],
+  "variants": [
+    "1423",
+    "3142",
+    "2413"
+  ],
+  "actions": [
+    {
+      "id": "awake",
+      "label": "Wstań i odzyskaj orientację",
+      "position": [
+        250,
+        260,
+        450
+      ],
+      "kind": "read",
+      "requires": [],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "Wrocław. Nadodrze. Nie pamiętasz końca wczorajszego wieczoru. Telefon został przy biurku.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "look",
+      "label": "Kartka przy łóżku",
+      "position": [
+        250,
+        200,
+        450
+      ],
+      "kind": "read",
+      "requires": [
+        "awake"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "Ktoś przeszukał mieszkanie. Sprawdź drzwi, zanim zapalisz światło.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "door_checked",
+      "label": "Sprawdź główne drzwi",
+      "position": [
+        1170,
+        400,
+        485
+      ],
+      "kind": "read",
+      "requires": [
+        "look"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "Drzwi mieszkania są zamknięte. Przy kluczu na biurku leży koperta z napisem: po przeczytaniu pliku.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "phone",
+      "label": "Otwórz szufladę i zabierz telefon",
+      "position": [
+        590,
+        180,
+        415
+      ],
+      "kind": "pickup",
+      "requires": [
+        "look"
+      ],
+      "items": [],
+      "reward": [
+        "phone"
+      ],
+      "evidence": "",
+      "body": "Telefon nie reaguje. Użyj T, żeby spróbować go uruchomić.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "phone_attempt",
+      "label": "Spróbuj uruchomić telefon",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "kind": "virtual",
+      "requires": [
+        "phone",
+        "door_checked"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "Bateria pusta. Potrzebujesz ładowarki, kabla oraz działającego gniazdka.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "charger",
+      "label": "Zabierz ładowarkę",
+      "position": [
+        1040,
+        160,
+        450
+      ],
+      "kind": "pickup",
+      "requires": [],
+      "items": [],
+      "reward": [
+        "charger"
+      ],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "cable",
+      "label": "Zabierz kabel USB",
+      "position": [
+        90,
+        680,
+        430
+      ],
+      "kind": "pickup",
+      "requires": [],
+      "items": [],
+      "reward": [
+        "cable"
+      ],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "outlet_check",
+      "label": "Sprawdź gniazdko",
+      "position": [
+        1090,
+        100,
+        430
+      ],
+      "kind": "read",
+      "requires": [
+        "phone_attempt"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "Brak zasilania. Najpierw sprawdź rozdzielnię przy wejściu.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "fuse_inspect",
+      "label": "Sprawdź rozdzielnię",
+      "position": [
+        1155,
+        600,
+        510
+      ],
+      "kind": "read",
+      "requires": [
+        "outlet_check"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "Brakuje bezpiecznika obwodu mieszkania. Zapas przechowywano w kuchennym schowku.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "kitchen",
+      "label": "Przeszukaj kuchnię",
+      "position": [
+        550,
+        820,
+        490
+      ],
+      "kind": "read",
+      "requires": [
+        "fuse_inspect"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "Schowek ma czterocyfrowy zamek. Na lodówce zachowało się zdjęcie i wiadomość.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "date_photo",
+      "label": "Zdjęcie na lodówce",
+      "position": [
+        680,
+        855,
+        535
+      ],
+      "kind": "read",
+      "requires": [],
+      "items": [],
+      "reward": [],
+      "evidence": "date_photo",
+      "body": "Zdjęcie z wyjazdu. Na odwrocie: 17.06.2024. Widać most i dwie osoby.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "date_rule",
+      "label": "Wiadomość obok zdjęcia",
+      "position": [
+        710,
+        850,
+        485
+      ],
+      "kind": "read",
+      "requires": [],
+      "items": [],
+      "reward": [],
+      "evidence": "date_rule",
+      "body": "Nie zapomnij: zmieniłem kod. Jak zawsze — dzień i miesiąc, po dwie cyfry.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "stash",
+      "label": "Otwórz schowek",
+      "position": [
+        760,
+        835,
+        415
+      ],
+      "kind": "code",
+      "requires": [
+        "kitchen"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "Schowek otwarty. W środku jest bezpiecznik.",
+      "answer": "1706",
+      "clues": [
+        "date_photo",
+        "date_rule"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "fuse",
+      "label": "Zabierz bezpiecznik",
+      "position": [
+        775,
+        800,
+        455
+      ],
+      "kind": "pickup",
+      "requires": [
+        "stash"
+      ],
+      "items": [],
+      "reward": [
+        "fuse"
+      ],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "power",
+      "label": "Zamontuj bezpiecznik",
+      "position": [
+        1125,
+        600,
+        460
+      ],
+      "kind": "use",
+      "requires": [
+        "fuse_inspect"
+      ],
+      "items": [
+        "fuse"
+      ],
+      "reward": [],
+      "evidence": "",
+      "body": "Zasilanie przywrócone. Możesz naładować telefon.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": true
+    },
+    {
+      "id": "charge",
+      "label": "Podłącz telefon do gniazdka",
+      "position": [
+        1090,
+        100,
+        460
+      ],
+      "kind": "use",
+      "requires": [
+        "power",
+        "phone_attempt"
+      ],
+      "items": [
+        "phone",
+        "charger",
+        "cable"
+      ],
+      "reward": [],
+      "evidence": "",
+      "body": "Telefon naładowany. Ekran wymaga PIN-u.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "dog_photo",
+      "label": "Fotografia psa",
+      "position": [
+        80,
+        790,
+        449
+      ],
+      "kind": "read",
+      "requires": [],
+      "items": [],
+      "reward": [],
+      "evidence": "dog_photo",
+      "body": "Na zdjęciu pies o imieniu Fado. Podpis: dzień adopcji — 4 listopada.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "pin_rule",
+      "label": "Sprawdź kalendarz",
+      "position": [
+        100,
+        830,
+        530
+      ],
+      "kind": "read",
+      "requires": [],
+      "items": [],
+      "reward": [],
+      "evidence": "pin_rule",
+      "body": "Przy listopadzie zapisano: PIN to miesiąc i dzień adopcji Fado; każda liczba ma dwie cyfry.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "unlock_phone",
+      "label": "Odblokuj telefon",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "kind": "code",
+      "requires": [
+        "charge"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "1104",
+      "clues": [
+        "dog_photo",
+        "pin_rule"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "sms",
+      "label": "Przeczytaj SMS",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "kind": "virtual",
+      "requires": [
+        "unlock_phone"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "sms",
+      "body": "NIE WYCHODŹ GŁÓWNYM WEJŚCIEM. ONI JUŻ TAM SĄ. Sprawdź komputer. Hasło znasz z ulubionej książki.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "contact",
+      "label": "Sprawdź nadawcę i historię połączeń",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "kind": "virtual",
+      "requires": [
+        "sms"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "contact",
+      "body": "Numer zastrzeżony. Ostatnie połączenie: 02:17. Kontakt zapisany jako M. Związek z nocnymi wydarzeniami pozostaje nieznany.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "book",
+      "label": "Sprawdź książkę",
+      "position": [
+        350,
+        100,
+        445
+      ],
+      "kind": "read",
+      "requires": [],
+      "items": [],
+      "reward": [],
+      "evidence": "book",
+      "body": "Tytuł na okładce: ODRA. Na zakładce: moje hasło to jednowyrazowy tytuł tej książki, wielkimi literami.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "computer",
+      "label": "Zaloguj się do komputera",
+      "position": [
+        640,
+        130,
+        480
+      ],
+      "kind": "password",
+      "requires": [
+        "sms",
+        "power"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "computer_mail",
+      "body": "E-mail: Obserwacja potwierdzona. Zabezpieczono katalog TARGET. Hasło pliku: numer budynku i mieszkania ze zdjęcia, po dwie cyfry.",
+      "answer": "ODRA",
+      "clues": [
+        "book"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "address_photo",
+      "label": "Obejrzyj zdjęcie z komputera",
+      "position": [
+        685,
+        140,
+        470
+      ],
+      "kind": "read",
+      "requires": [
+        "computer"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "address_photo",
+      "body": "Na fotografii wejście: budynek 48, mieszkanie 07. Na klamce jest ślad czerwonej farby.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "target",
+      "label": "Otwórz zaszyfrowany plik",
+      "position": [
+        635,
+        160,
+        460
+      ],
+      "kind": "code",
+      "requires": [
+        "computer"
+      ],
+      "items": [],
+      "reward": [
+        "apartment_key"
+      ],
+      "evidence": "target",
+      "body": "TARGET: Twoje zdjęcie wykonane z ukrycia, rozkład dnia, codzienne trasy. Jesteś celem obserwacji. Zabierasz klucz spod koperty.",
+      "answer": "4807",
+      "clues": [
+        "address_photo",
+        "computer"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": true
+    },
+    {
+      "id": "peephole",
+      "label": "Spójrz przez wizjer",
+      "position": [
+        1170,
+        405,
+        535
+      ],
+      "kind": "read",
+      "requires": [
+        "target"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "hallway",
+      "body": "Na klatce obcy człowiek sprawdza drzwi. Słyszysz kroki i uderzenie. Nie musisz z nim walczyć.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "routes",
+      "label": "Przeczytaj plan ewakuacji",
+      "position": [
+        1180,
+        325,
+        510
+      ],
+      "kind": "read",
+      "requires": [
+        "peephole"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "routes",
+      "body": "Dwie drogi: piwnica po lewej na parterze albo pomieszczenie techniczne po prawej. Obie prowadzą na podwórko.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "apartment_unlocked",
+      "label": "Otwórz drzwi mieszkania",
+      "position": [
+        1200,
+        400,
+        490
+      ],
+      "kind": "door",
+      "requires": [
+        "routes"
+      ],
+      "items": [
+        "apartment_key"
+      ],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "apartment_exit",
+      "label": "Opuść mieszkanie",
+      "position": [
+        1270,
+        400,
+        456
+      ],
+      "kind": "zone",
+      "requires": [
+        "apartment_unlocked"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": true
+    },
+    {
+      "id": "neighbor_help",
+      "label": "Ranny sąsiad — wybierz pomoc lub odejście",
+      "position": [
+        2240,
+        370,
+        80
+      ],
+      "kind": "choice",
+      "requires": [
+        "apartment_exit"
+      ],
+      "items": [],
+      "reward": [
+        "basement_key",
+        "medkit"
+      ],
+      "evidence": "neighbor",
+      "body": "1 — pomóż sąsiadowi opatrzyć ranę. Otrzymasz klucz do piwnicy i opatrunek.\n2 — odejdź. Wybór jest trwały w tym przejściu.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "neighbor",
+      "alternate": "neighbor_leave",
+      "checkpoint": false
+    },
+    {
+      "id": "neighbor_leave",
+      "label": "Odejdź od sąsiada",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "kind": "virtual",
+      "requires": [
+        "apartment_exit"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "Odchodzisz. Pomoc sąsiadowi nie jest warunkiem kampanii.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "neighbor",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "basement_key",
+      "label": "Zapasowy klucz na półce dozorcy",
+      "position": [
+        2350,
+        460,
+        120
+      ],
+      "kind": "pickup",
+      "requires": [
+        "routes"
+      ],
+      "items": [],
+      "reward": [
+        "basement_key"
+      ],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "flashlight",
+      "label": "Zabierz latarkę",
+      "position": [
+        2200,
+        420,
+        110
+      ],
+      "kind": "pickup",
+      "requires": [],
+      "items": [],
+      "reward": [
+        "flashlight"
+      ],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "batteries",
+      "label": "Zabierz baterie",
+      "position": [
+        2310,
+        780,
+        105
+      ],
+      "kind": "pickup",
+      "requires": [],
+      "items": [],
+      "reward": [
+        "batteries"
+      ],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "basement_enter",
+      "label": "Wejdź do piwnicy",
+      "position": [
+        2040,
+        680,
+        120
+      ],
+      "kind": "door",
+      "requires": [
+        "apartment_exit"
+      ],
+      "items": [
+        "basement_key",
+        "flashlight",
+        "batteries"
+      ],
+      "reward": [],
+      "evidence": "",
+      "body": "W piwnicy jest ciemno. Włącz latarkę klawiszem F. Krata prowadzi do drugich schodów na podwórko.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "graffiti",
+      "label": "Obejrzyj graffiti",
+      "position": [
+        470,
+        750,
+        -170
+      ],
+      "kind": "read",
+      "requires": [
+        "basement_enter"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "graffiti",
+      "body": "Na ścianie: słońce, fala, księżyc, gwiazda. Pod spodem cyfry przypisane symbolom: słońce=1, księżyc=2, fala=3, gwiazda=4.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "building_plan",
+      "label": "Stary plan budynku",
+      "position": [
+        930,
+        1050,
+        -200
+      ],
+      "kind": "read",
+      "requires": [
+        "basement_enter"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "building_plan",
+      "body": "Droga instalacji prowadzi od słońca przez falę do księżyca i kończy się przy gwieździe.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "basement_symbols",
+      "label": "Otwórz kratę symbolami",
+      "position": [
+        1250,
+        1400,
+        -170
+      ],
+      "kind": "symbols",
+      "requires": [
+        "basement_enter"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "1324",
+      "clues": [
+        "graffiti",
+        "building_plan"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "basement_exit",
+      "label": "Wyjdź z piwnicy na podwórko",
+      "position": [
+        2320,
+        1550,
+        90
+      ],
+      "kind": "zone",
+      "requires": [
+        "basement_symbols"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "route",
+      "alternate": "",
+      "checkpoint": true
+    },
+    {
+      "id": "technical_enter",
+      "label": "Otwórz przejście techniczne",
+      "position": [
+        2400,
+        620,
+        120
+      ],
+      "kind": "door",
+      "requires": [
+        "apartment_exit"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "technical_clue",
+      "label": "Schemat instalacji technicznej",
+      "position": [
+        3300,
+        450,
+        450
+      ],
+      "kind": "read",
+      "requires": [
+        "technical_enter"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "technical_clue",
+      "body": "Otwieranie wyjścia: najpierw wentylacja (3), potem zamek (1), na końcu oświetlenie (2).",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "technical_lock",
+      "label": "Uruchom wyjście techniczne",
+      "position": [
+        3780,
+        1000,
+        490
+      ],
+      "kind": "sequence",
+      "requires": [
+        "technical_enter"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "312",
+      "clues": [
+        "technical_clue"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "technical_exit",
+      "label": "Zejdź na podwórko",
+      "position": [
+        3780,
+        1700,
+        90
+      ],
+      "kind": "zone",
+      "requires": [
+        "technical_lock"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "route",
+      "alternate": "",
+      "checkpoint": true
+    },
+    {
+      "id": "courtyard",
+      "label": "Przejdź podwórko",
+      "position": [
+        2700,
+        2000,
+        90
+      ],
+      "kind": "zone",
+      "requires": [],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [
+        "basement_exit",
+        "technical_exit"
+      ],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "street",
+      "label": "Dotrzyj do ulicy",
+      "position": [
+        3000,
+        2250,
+        90
+      ],
+      "kind": "zone",
+      "requires": [
+        "courtyard"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "street_sms",
+      "body": "Idź do sklepu na końcu ulicy. Nikomu nie ufaj.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": true
+    },
+    {
+      "id": "bottle",
+      "label": "Zabierz butelkę",
+      "position": [
+        2600,
+        1640,
+        70
+      ],
+      "kind": "pickup",
+      "requires": [],
+      "items": [],
+      "reward": [
+        "distraction"
+      ],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "can",
+      "label": "Zabierz puszkę",
+      "position": [
+        4250,
+        2250,
+        50
+      ],
+      "kind": "pickup",
+      "requires": [],
+      "items": [],
+      "reward": [
+        "distraction"
+      ],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "stone",
+      "label": "Zabierz kamień",
+      "position": [
+        7500,
+        3400,
+        35
+      ],
+      "kind": "pickup",
+      "requires": [],
+      "items": [],
+      "reward": [
+        "distraction"
+      ],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "shop_key",
+      "label": "Klucz pod skrzynką na zapleczu",
+      "position": [
+        4530,
+        1100,
+        90
+      ],
+      "kind": "pickup",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [
+        "shop_key"
+      ],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "shop_rule",
+      "label": "Kartka na witrynie",
+      "position": [
+        5100,
+        2240,
+        155
+      ],
+      "kind": "read",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "shop_rule",
+      "body": "Kod wejścia: rok założenia sklepu z szyldu. Klucz zapasowy jest pod skrzynką przy bocznym wejściu.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "shop_sign",
+      "label": "Sprawdź szyld sklepu",
+      "position": [
+        5350,
+        2240,
+        210
+      ],
+      "kind": "read",
+      "requires": [],
+      "items": [],
+      "reward": [],
+      "evidence": "shop_sign",
+      "body": "Sklep osiedlowy NADODRZE. Działamy od 1986 roku.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "shop_code",
+      "label": "Otwórz wejście kodem",
+      "position": [
+        5300,
+        2200,
+        135
+      ],
+      "kind": "code",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "1986",
+      "clues": [
+        "shop_rule",
+        "shop_sign"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "shop_back",
+      "label": "Otwórz boczne wejście kluczem",
+      "position": [
+        4700,
+        1350,
+        135
+      ],
+      "kind": "door",
+      "requires": [
+        "street"
+      ],
+      "items": [
+        "shop_key"
+      ],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "receipt",
+      "label": "Odczytaj paragon",
+      "position": [
+        5150,
+        1500,
+        95
+      ],
+      "kind": "read",
+      "requires": [],
+      "items": [],
+      "reward": [],
+      "evidence": "receipt",
+      "body": "Paragon z 17 września. Zmiana poranna. Magazyn obsługujący sklep: 24.",
+      "answer": "",
+      "clues": [],
+      "any_of": [
+        "shop_code",
+        "shop_back"
+      ],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "schedule",
+      "label": "Sprawdź grafik",
+      "position": [
+        5650,
+        1100,
+        150
+      ],
+      "kind": "read",
+      "requires": [],
+      "items": [],
+      "reward": [],
+      "evidence": "schedule",
+      "body": "17 września rano: pracownik 06. Kod terminala: numer pracownika z właściwej zmiany, następnie numer magazynu.",
+      "answer": "",
+      "clues": [],
+      "any_of": [
+        "shop_code",
+        "shop_back"
+      ],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "terminal",
+      "label": "Zaloguj się do terminala",
+      "position": [
+        5450,
+        1500,
+        110
+      ],
+      "kind": "code",
+      "requires": [],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "0624",
+      "clues": [
+        "receipt",
+        "schedule"
+      ],
+      "any_of": [
+        "shop_code",
+        "shop_back"
+      ],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "cctv",
+      "label": "Obejrzyj monitoring",
+      "position": [
+        5500,
+        1500,
+        145
+      ],
+      "kind": "read",
+      "requires": [
+        "terminal"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "cctv",
+      "body": "02:17 — samochód zatrzymuje się pod kamienicą. Dwie osoby obserwują wejście.\n02:21 — M. zostawia paczkę w opuszczonym lokalu naprzeciw parkingu.\nKamera utrwala trzy przewody garażu: biały, czerwony, niebieski.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "panel",
+      "label": "Odtwórz sekwencję panelu",
+      "position": [
+        7100,
+        3300,
+        135
+      ],
+      "kind": "lights",
+      "requires": [
+        "cctv"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "Obserwuj cztery ponumerowane diody, a potem powtórz kolejność. Każda nowa gra wybiera jeden z przygotowanych wariantów.",
+      "answer": "@variant",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "package",
+      "label": "Otwórz paczkę",
+      "position": [
+        6920,
+        3770,
+        90
+      ],
+      "kind": "read",
+      "requires": [
+        "panel"
+      ],
+      "items": [],
+      "reward": [
+        "garage_key",
+        "usb"
+      ],
+      "evidence": "package",
+      "body": "Klucz, pendrive, zdjęcie. Wiadomość: Jeżeli to czytasz, wiedzą już, że żyjesz.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "file_dates",
+      "label": "Sprawdź daty plików",
+      "position": [
+        7400,
+        3900,
+        120
+      ],
+      "kind": "read",
+      "requires": [
+        "package"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "file_dates",
+      "body": "Plik 1: 19.09.2024\nPlik 2: 03.01.2022\nPlik 3: 12.07.2023\nPlik 4: 08.02.2025\nWiadomość: zacznij od najstarszego.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "usb",
+      "label": "Odszyfruj katalog pendrive",
+      "position": [
+        7450,
+        3900,
+        100
+      ],
+      "kind": "order",
+      "requires": [
+        "package"
+      ],
+      "items": [
+        "usb"
+      ],
+      "reward": [],
+      "evidence": "usb",
+      "body": "Lista punktów obserwacyjnych. Warsztat identyfikuje adres ze zdjęcia TARGET.\nPod lokal podjeżdża samochód. Musisz uciekać.",
+      "answer": "2314",
+      "clues": [
+        "file_dates"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": true
+    },
+    {
+      "id": "ambush",
+      "label": "Opuść lokal podczas zasadzki",
+      "position": [
+        7160,
+        3410,
+        90
+      ],
+      "kind": "zone",
+      "requires": [
+        "usb"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": true
+    },
+    {
+      "id": "alley",
+      "label": "Przedostań się przez zaułek",
+      "position": [
+        8100,
+        3450,
+        90
+      ],
+      "kind": "zone",
+      "requires": [
+        "ambush"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "garage",
+      "label": "Awaryjnie otwórz garaż",
+      "position": [
+        8500,
+        3700,
+        135
+      ],
+      "kind": "wires",
+      "requires": [
+        "alley"
+      ],
+      "items": [
+        "garage_key"
+      ],
+      "reward": [],
+      "evidence": "",
+      "body": "1 czerwony, 2 biały, 3 niebieski. Drzwi odblokowane. Napastnik próbuje wejść za tobą.",
+      "answer": "213",
+      "clues": [
+        "cctv"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": true
+    },
+    {
+      "id": "garage_enter",
+      "label": "Wejdź do garażu",
+      "position": [
+        8750,
+        3980,
+        90
+      ],
+      "kind": "zone",
+      "requires": [
+        "garage"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "garage_escape",
+      "label": "Wyjdź tyłem z garażu",
+      "position": [
+        9720,
+        4600,
+        90
+      ],
+      "kind": "zone",
+      "requires": [
+        "garage_enter"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "workshop_sms",
+      "body": "Stary warsztat. Wejdź tyłem. Kod to adres z fotografii TARGET — odnajdziesz ją w śledztwie.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": true
+    },
+    {
+      "id": "lost_pursuit",
+      "label": "Zgub napastnika",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "kind": "virtual",
+      "requires": [
+        "garage_escape"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "workshop",
+      "label": "Otwórz bezpieczny punkt",
+      "position": [
+        10200,
+        5000,
+        135
+      ],
+      "kind": "code",
+      "requires": [
+        "lost_pursuit"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "",
+      "body": "",
+      "answer": "4807",
+      "clues": [
+        "address_photo",
+        "garage_escape"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "blockade_map",
+      "label": "Przeczytaj mapę blokad",
+      "position": [
+        10800,
+        5500,
+        100
+      ],
+      "kind": "read",
+      "requires": [
+        "workshop"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "blockade_map",
+      "body": "Na planie Wrocławia: drogi wyjazdowe, dworzec, lotnisko i punkty kontroli.\nNie możesz jeszcze opuścić miasta. Ucieczka wymaga ukończenia kampanii.\nRozdział 2 został odblokowany; jego zawartość powstanie w kolejnym etapie.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": true
+    },
+    {
+      "id": "safe_a",
+      "label": "Notatka administratora",
+      "position": [
+        390,
+        1160,
+        -200
+      ],
+      "kind": "read",
+      "requires": [
+        "basement_enter"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "safe_a",
+      "body": "Sejf: najpierw liczba liczników.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "safe_b",
+      "label": "Sprawdź liczniki",
+      "position": [
+        950,
+        800,
+        -160
+      ],
+      "kind": "read",
+      "requires": [
+        "basement_enter"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "safe_b",
+      "body": "Na ścianie są cztery liczniki. Naklejka: po licznikach wpisz numer klatki.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "safe_c",
+      "label": "Numer klatki",
+      "position": [
+        1040,
+        1250,
+        -170
+      ],
+      "kind": "read",
+      "requires": [
+        "basement_enter"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "safe_c",
+      "body": "Klatka 12. Pod numerem: ostatnia cyfra to numer piwnicy — 7.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "safe",
+      "label": "Otwórz opcjonalny sejf",
+      "position": [
+        500,
+        1180,
+        -200
+      ],
+      "kind": "code",
+      "requires": [
+        "basement_enter"
+      ],
+      "items": [],
+      "reward": [
+        "cash",
+        "medkit"
+      ],
+      "evidence": "safe_document",
+      "body": "Dokument wskazuje, że obserwacja rozpoczęła się przed tygodniem. Zdjęcie właściciela samochodu.",
+      "answer": "4127",
+      "clues": [
+        "safe_a",
+        "safe_b",
+        "safe_c"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "car_clue",
+      "label": "Przeczytaj kartę parkingową",
+      "position": [
+        6700,
+        1180,
+        120
+      ],
+      "kind": "read",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "car_clue",
+      "body": "Pilot do samochodu leży w skrzynce przy stanowisku 08. Numer stanowiska dopasuj do tablicy parkingu.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "car_key",
+      "label": "Zabierz pilot ze stanowiska 08",
+      "position": [
+        7100,
+        1200,
+        110
+      ],
+      "kind": "pickup",
+      "requires": [
+        "car_clue"
+      ],
+      "items": [],
+      "reward": [
+        "car_key"
+      ],
+      "evidence": "",
+      "body": "",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "car",
+      "label": "Otwórz zaparkowany samochód",
+      "position": [
+        6540,
+        1760,
+        110
+      ],
+      "kind": "use",
+      "requires": [
+        "street"
+      ],
+      "items": [
+        "car_key"
+      ],
+      "reward": [
+        "medkit"
+      ],
+      "evidence": "car_document",
+      "body": "W torbie jest dokument obserwatora, zapasowy opatrunek i uszkodzony telefon.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "street_phone_clue",
+      "label": "Kartka pod ławką",
+      "position": [
+        6300,
+        3070,
+        75
+      ],
+      "kind": "read",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "street_phone_clue",
+      "body": "Obserwator zapisał: kod telefonu to godzina ostatniego połączenia bohatera, godziny i minuty.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "street_phone",
+      "label": "Odblokuj porzucony telefon",
+      "position": [
+        6440,
+        3020,
+        60
+      ],
+      "kind": "code",
+      "requires": [
+        "street"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "street_photo",
+      "body": "Zdjęcie ciebie przed kamienicą wykonano kilka godzin temu. W odbiciu szyby widać obserwatora.",
+      "answer": "0217",
+      "clues": [
+        "street_phone_clue",
+        "contact"
+      ],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "secret_1",
+      "label": "Sekret 1",
+      "position": [
+        340,
+        750,
+        430
+      ],
+      "kind": "read",
+      "requires": [],
+      "items": [],
+      "reward": [],
+      "evidence": "secret_1",
+      "body": "Ukryta notatka: numer M. zmieniono dzień przed zniknięciem.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "secret_2",
+      "label": "Sekret 2",
+      "position": [
+        3650,
+        450,
+        470
+      ],
+      "kind": "read",
+      "requires": [
+        "apartment_exit"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "secret_2",
+      "body": "Zdjęcie technika z osobą widzianą na monitoringu.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "secret_3",
+      "label": "Sekret 3",
+      "position": [
+        400,
+        1300,
+        -230
+      ],
+      "kind": "read",
+      "requires": [
+        "apartment_exit"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "secret_3",
+      "body": "Nagranie: rozmówcy wymieniają oznaczenie TARGET.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "secret_4",
+      "label": "Sekret 4",
+      "position": [
+        5800,
+        1100,
+        95
+      ],
+      "kind": "read",
+      "requires": [
+        "terminal"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "secret_4",
+      "body": "Ukryta szuflada: dostawy do sklepu trafiały do innego lokalu.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    },
+    {
+      "id": "secret_5",
+      "label": "Sekret 5",
+      "position": [
+        9400,
+        4300,
+        100
+      ],
+      "kind": "read",
+      "requires": [
+        "garage_enter"
+      ],
+      "items": [],
+      "reward": [],
+      "evidence": "secret_5",
+      "body": "Wiadomość w garażu: zlecenie obserwacji pochodziło spoza miasta.",
+      "answer": "",
+      "clues": [],
+      "any_of": [],
+      "choice": "",
+      "alternate": "",
+      "checkpoint": false
+    }
+  ],
+  "quests": [
+    {
+      "title": "Przebudzenie",
+      "all": [
+        "awake",
+        "look",
+        "door_checked",
+        "phone",
+        "phone_attempt",
+        "charger",
+        "cable",
+        "outlet_check"
+      ],
+      "any": []
+    },
+    {
+      "title": "Brak zasilania",
+      "all": [
+        "power"
+      ],
+      "any": []
+    },
+    {
+      "title": "Wiadomość",
+      "all": [
+        "contact"
+      ],
+      "any": []
+    },
+    {
+      "title": "Komputer",
+      "all": [
+        "target"
+      ],
+      "any": []
+    },
+    {
+      "title": "Ktoś jest na klatce",
+      "all": [
+        "peephole"
+      ],
+      "any": []
+    },
+    {
+      "title": "Znajdź inne wyjście",
+      "all": [
+        "apartment_exit"
+      ],
+      "any": []
+    },
+    {
+      "title": "Piwnica lub droga techniczna",
+      "all": [],
+      "any": [
+        "basement_exit",
+        "technical_exit"
+      ]
+    },
+    {
+      "title": "Wyjdź z budynku",
+      "all": [
+        "courtyard"
+      ],
+      "any": []
+    },
+    {
+      "title": "Pierwszy kontakt",
+      "all": [
+        "street"
+      ],
+      "any": []
+    },
+    {
+      "title": "Sklep",
+      "all": [],
+      "any": [
+        "shop_code",
+        "shop_back"
+      ]
+    },
+    {
+      "title": "Monitoring",
+      "all": [
+        "cctv"
+      ],
+      "any": []
+    },
+    {
+      "title": "Paczka",
+      "all": [
+        "package"
+      ],
+      "any": []
+    },
+    {
+      "title": "Pendrive",
+      "all": [
+        "usb"
+      ],
+      "any": []
+    },
+    {
+      "title": "Zasadzka",
+      "all": [
+        "alley"
+      ],
+      "any": []
+    },
+    {
+      "title": "Garaż",
+      "all": [
+        "garage_enter"
+      ],
+      "any": []
+    },
+    {
+      "title": "Ucieczka",
+      "all": [
+        "garage_escape",
+        "lost_pursuit"
+      ],
+      "any": []
+    },
+    {
+      "title": "Bezpieczny punkt",
+      "all": [
+        "blockade_map"
+      ],
+      "any": []
+    }
+  ]
+}

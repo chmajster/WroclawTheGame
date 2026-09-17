@@ -15,6 +15,8 @@ public:
  virtual float TakeDamage(float Damage,const FDamageEvent& Event,AController* Instigator,AActor* Causer) override;
  FString StatusText() const;
  bool IsThreat() const;
+ UPROPERTY() FString GuardId;
+ UPROPERTY() TArray<FVector> PatrolPoints;
  bool bActive=false;
  float Health=100;
 };
@@ -27,7 +29,7 @@ public:
  virtual void OnPossess(APawn* Pawn) override;
  UPROPERTY(VisibleAnywhere) TObjectPtr<class UAIPerceptionComponent> Senses;
  UPROPERTY() EEnemyState State=EEnemyState::Patrol;
- void ResetBrain();
+ void ResetBrain();void Investigate(const FVector& Location);
 private:
  UFUNCTION() void Perceived(AActor* Actor,FAIStimulus Stimulus);
  UPROPERTY() TObjectPtr<class UAISenseConfig_Sight> Sight;

@@ -1,29 +1,32 @@
-# Przebudzenie — droga odbiorowa
+# Solucja do odbioru rozdziału v2
 
-Dokument zawiera rozwiązania zagadek. To scenariusz testu, nie potwierdzenie wykonania playtestu.
+To scenariusz testowy z rozwiązaniami, nie raport wykonanego przejścia na Windows.
 
-1. Menu: N. Początek w mieszkaniu. Przeczytaj kartkę na łóżku przy pomocy E.
-2. Obejdź ściankę działową przez przejście przy łóżku. Podejdź do biurka. E otwiera szufladę, kolejne E zabiera telefon.
-3. Zabierz powerbank z kablem z kanapy. Kartka z PIN-em leży na komodzie w przeciwległej części mieszkania: **0417**. Kolejność znalezienia tych przedmiotów jest dowolna.
-4. T, wpisz PIN, Enter. T ponownie otwiera wiadomość. Odczyt wiadomości jest osobnym celem.
-5. Otwórz szafkę kuchenną E i kolejnym E zabierz bezpiecznik. Użyj rozdzielni przy wyjściu. Bezpiecznik zostaje zużyty; nie można go pobierać ponownie po przywróceniu zasilania.
-6. Użyj lampy na biurku. Odczytaj **7319**.
-7. E na szafce przy drzwiach, wpisz kod, Enter. Pierwszy checkpoint zagadki zostaje zapisany. Drugie E zabiera klucz.
-8. Otwórz drzwi mieszkania. Przejdź przez próg: drugi checkpoint.
-9. Zejdź 18 stopniami na parter, otwórz drzwi budynku, przejdź podwórko.
-10. Wejdź na ulicę: trzeci checkpoint i aktywacja napastnika. Upewnij się, że rzeczywiście zauważył gracza — samo przejście ulicy nie zalicza uniknięcia napastnika.
-11. Sprint pomaga zyskać dystans. Kieruj się do zaułka z szyldem lokalu. Zerwij kontakt za narożnikami/przeszkodami, przejdź w kucanie i przeczekaj przeszukiwanie ostatniej znanej pozycji. Alternatywnie pokonaj przeciwnika, korzystając z ataku i bloku. Nie próbuj tankować ataków bez staminy.
-12. Gdy zagrożenie opadnie, otwórz drzwi lokalu i wejdź do środka. Trwa aktywny pościg? Drzwi i zakończenie misji nie powinny go ignorować.
-13. Ekran zakończenia rozdziału, czwarty checkpoint. Po ponownym uruchomieniu L ma odtworzyć zakończony rozdział.
+1. Przy łóżku: E na „Wstań”, następnie kartka. Sprawdź drzwi. Zabierz telefon z szuflady i użyj T. Zbierz ładowarkę oraz kabel; sprawdź gniazdko i rozdzielnię.
+2. Kuchnia: fotografia 17.06.2024 oraz wskazówka „dzień i miesiąc”. Schowek: **1706**. Zabierz bezpiecznik i zamontuj go w rozdzielni.
+3. Podłącz telefon przy gniazdku. Fotografia psa: adopcja 4 listopada; kalendarz: miesiąc i dzień. PIN: **1104**. W telefonie otwórz SMS, kontakty lub historię połączeń. Powinien zostać zapisany ślad połączenia **02:17**.
+4. Książka: **ODRA**. Wpisz hasło komputera. Obejrzyj zdjęcie adresu: budynek 48, mieszkanie 07. Plik: **4807**. Otrzymujesz dowód TARGET i klucz mieszkania.
+5. Wizjer pokazuje rzeczywistą kamerę korytarza. Wycofaj się Esc. Przeczytaj plan dróg, otwórz drzwi, przejdź przez próg — dopiero wtedy zaliczane jest opuszczenie mieszkania.
+6. Na parterze opcjonalnie pomóż sąsiadowi (1) lub odejdź (2). Pomoc daje klucz i opatrunek. Bez pomocy klucz piwnicy jest na półce dozorcy.
+7. **Droga A:** zbierz latarkę i baterie, zejdź lewymi schodami, włącz F. Graffiti mapuje symbole na cyfry, plan określa kolejność. Krata: **1324**. Wyjdź drugimi schodami na podwórko.
+8. **Droga B:** wybierz prawą klatkę techniczną. Schemat opisuje wentylację, zamek i światło. Panel: **312**. Zejdź zewnętrznymi schodami na podwórko. Ta droga nie wymaga piwnicy ani sąsiada.
+9. Podwórko: unikaj strażnika. Butelka/puszka/kamień trafiają do ekwipunku; G rzuca przedmiotem. Hałas powstaje przy uderzeniu. Przejdź strefę środka podwórka i wejdź na ulicę.
+10. Sklep: zbadaj wskazówkę na witrynie i szyld. Wejście główne: **1986**. Alternatywnie zbierz klucz na zewnątrz bocznego wejścia i wejdź zapleczem.
+11. Paragon wskazuje magazyn 24, grafik pracownika 06. Terminal: **0624**. Odczytaj monitoring: wskazuje paczkę i kolejność przewodów garażu.
+12. Opuszczony lokal: obejrzyj diody, odczekaj koniec prezentacji, wpisz zaobserwowaną sekwencję. Nowa gra wybiera **1423**, **3142** lub **2413**. Wczytanie nie zmienia wariantu.
+13. Zabierz paczkę, podłącz pendrive i przeczytaj daty. Od najstarszego: plik 2, 3, 1, 4; kod **2314**. Uruchamia się spotkanie z napastnikiem. Wybiegnij na ulicę, przejdź zaułkiem i przeskocz przeszkodę.
+14. Garaż: dokument z monitoringu daje biały, czerwony, niebieski; panel mapuje je na 2, 1, 3. Wpisz **213**. Panel nie pauzuje gry. W razie ataku Esc, blok, unik lub ucieczka.
+15. Wejdź do garażu. Walka wręcz może ogłuszyć przeciwnika. Można też przebiec do tylnego wyjścia. Po wyjściu zerwij kontakt i przeczekaj poszukiwanie.
+16. Warsztat: ze śledztwa przypomnij adres fotografii TARGET — **4807**. Nie da się otworzyć go podczas aktywnego zagrożenia. Wejdź i odczytaj mapę blokad. Finał wymaga również zakończenia zagrożenia i odblokowuje stan rozdziału 2.
 
-## Próby regresyjne
+## Opcjonalne ścieżki
 
-- Telefon/klucz nie mogą pojawiać się bez interakcji. Wpisanie kodu nie omija wymaganych wskazówek.
-- Przedmioty można zbierać w innej kolejności. Podwójne kliknięcie nie dodaje duplikatów.
-- Zapis po szafce: po wczytaniu szafka jest otwarta, ale trzeba jeszcze zabrać klucz.
-- Zapis po mieszkaniu: klucz pozostaje w ekwipunku, drzwi są przechodnie.
-- Zapis uliczny: gracz wraca przed spotkanie, napastnik jest aktywny i ma działającą nawigację.
-- Śmierć podczas pościgu: Enter przywraca trzeci checkpoint z pełnym zdrowiem.
-- Odczyt telefonu, pauza i ekwipunek zatrzymują rozgrywkę; nie wolno ginąć podczas wpisywania kodu.
-- Błąd zapisu jest widoczny; UI nie może zapewniać o poprawnym zapisie po błędzie.
-- Wyjście ze schronienia podczas ponownego pościgu nie może przedwcześnie kończyć rozdziału.
+- Sąsiad: pomoc daje dowód, klucz i opatrunek; odmowa nie blokuje piwnicy.
+- Sejf piwnicy: trzy wskazówki — 4 liczniki, klatka 12, piwnica 7. Kod **4127**. Nagroda: dokument, gotówka i opatrunek.
+- Samochód: przeczytaj kartę parkingową, znajdź pilot stanowiska 08 i użyj go przy aucie. Nagroda: dokument i opatrunek.
+- Porzucony telefon: wskazówka odsyła do historii połączeń bohatera. Kod **0217**. Zdjęcie dodaje dowód.
+- Pięć sekretów: mieszkanie, pomieszczenie techniczne, piwnica, sklep, garaż. Aby zebrać wszystkie dowody, odwiedź również nieobraną pierwotnie część kamienicy; nie trzeba zaliczać obu wyjść do głównego questu.
+
+## Regresje w grze
+
+Sprawdź obie drogi i oba wejścia do sklepu z pominięciem pobocznych. Zgiń przy każdym checkpointcie i wczytaj po ponownym uruchomieniu EXE. Sprawdź zachowanie kodów po trzech błędach, identyczny wariant po wczytaniu, działanie podpowiedzi 90/180/300 s, zużycie opatrunków/przedmiotów i odtworzenie ogłuszonych strażników. Zapis aktywowany podczas kucania musi odtworzyć gracza bez kolizji z podłogą.

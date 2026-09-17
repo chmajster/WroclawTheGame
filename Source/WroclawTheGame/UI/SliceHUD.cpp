@@ -1,48 +1,65 @@
 #include "UI/SliceHUD.h"
-#include "Engine/GameInstance.h"
-#include "Engine/World.h"
 #include "UI/SliceController.h"
 #include "Engine/Canvas.h"
 #include "Engine/Engine.h"
+#include "Engine/GameInstance.h"
+#include "Engine/World.h"
 #include "Character/SliceCharacter.h"
 #include "Mission/SliceMission.h"
 #include "Interaction/Interactable.h"
 #include "Core/SliceGameMode.h"
-#include "AI/SliceEnemy.h"
-void ASliceHUD::Text(const FString& Value,float X,float Y,float Scale,const FLinearColor& Color) {
- DrawText(Value,Color,X,Y,GEngine->GetMediumFont(),Scale,false);
-}
-void ASliceHUD::Panel(const FString& Title,const FString& Body) {
- DrawRect(FLinearColor(0.015f,0.025f,0.035f,0.96f),0,0,Canvas->SizeX,Canvas->SizeY);
- const float X=Canvas->SizeX*0.08f, Y=Canvas->SizeY*0.16f;
- Text(Title,X,Y,1.65f,FLinearColor(0.9f,0.72f,0.38f));
- TArray<FString> Lines; Body.ParseIntoArrayLines(Lines,false);
- float Row=Y+70;
- for(const FString& Line:Lines) {Text(Line,X,Row,1.0f);Row+=30;}
-}
-void ASliceHUD::DrawHUD() {
- Super::DrawHUD(); if(!Canvas) return;
- auto* PC=Cast<ASliceController>(PlayerOwner); if(!PC) return;
- auto* M=GetGameInstance()->GetSubsystem<USliceMission>();
- auto* P=Cast<ASliceCharacter>(PC->GetPawn()); if(!P) return;
- if(M->bDead) Panel(TEXT("NIE UDAŁO SIĘ UCIEC"),TEXT("ENTER / L — wróć do ostatniego checkpointu\nN — nowa gra\nQ — wyjście"));
- else if(M->State.Finished()) Panel(TEXT("PRZEBUDZENIE — KONIEC ROZDZIAŁU"),TEXT("Drzwi zamykają się za tobą. Tym razem udało się zgubić pościg.\nTo dopiero początek. Nadal jesteś we Wrocławiu.\n\nUkończono rozdział.\nN — nowa gra\nQ — wyjście"));
- else if(M->bShowMenu) Panel(TEXT("WROCLAW THE GAME"),FString(TEXT("PRZEBUDZENIE\n\nN — nowa gra\n"))+(M->HasSave()?TEXT("L — wczytaj checkpoint\n"):TEXT("Brak zapisanego checkpointu\n"))+(M->bInGame?TEXT("ENTER / ESC — wznów\n"):TEXT(""))+TEXT("Q — wyjście\n\nWASD — ruch | mysz — kamera | SHIFT — sprint | CTRL — kucanie\nSPACJA — skok | E — interakcja | T — telefon | I — ekwipunek\nLPM — lekki atak | PPM — blok | ESC — pauza\nWalka kosztuje staminę. Narożniki i cichy ruch pomagają zgubić napastnika."));
- else if(PC->bKeypad) Panel(PC->CodeTarget?TEXT("ZAMEK SZAFKI"):TEXT("TELEFON — PIN"),TEXT("Wprowadź 4 cyfry: ")+PC->Code+TEXT("\n\nCyfry 0–9 — wpisz | BACKSPACE — usuń\nENTER — zatwierdź | ESC — anuluj"));
- else if(PC->bInventory) Panel(TEXT("EKWIPUNEK"),M->InventoryText()+TEXT("\nI / ESC — zamknij"));
- else if(!PC->Message.IsEmpty()) Panel(TEXT("WSKAZÓWKA"),PC->Message+TEXT("\n\nENTER / ESC — zamknij"));
- else {
-  DrawRect(FLinearColor(0,0,0,0.7),20,20,Canvas->SizeX-40,90);
-  Text(TEXT("PRZEBUDZENIE"),36,28,0.85f,FLinearColor(0.9f,0.72f,0.38f)); Text(M->ObjectiveText(),36,56);
-  const float Y=Canvas->SizeY-100;
-  DrawRect(FLinearColor(0.08f,0.08f,0.08f),30,Y,220,16); DrawRect(FLinearColor(0.7f,0.15f,0.15f),30,Y,220*P->Health/100,16);
-  DrawRect(FLinearColor(0.08f,0.08f,0.08f),30,Y+28,220,12); DrawRect(FLinearColor(0.1f,0.65f,0.55f),30,Y+28,220*P->Stamina/100,12);
-  Text(TEXT("ZDROWIE / STAMINA"),30,Y-25,0.7f);
-  DrawRect(FLinearColor::White,Canvas->SizeX/2.f-2,Canvas->SizeY/2.f-2,4,4);
-  if(auto* Target=Cast<IInteractable>(P->Focus)) Text(TEXT("[E] ")+Target->Prompt(P).ToString(),Canvas->SizeX*0.3f,Canvas->SizeY*0.73f);
-  if(auto* GM=Cast<ASliceGameMode>(GetWorld()->GetAuthGameMode())) if(GM->Enemy) Text(GM->Enemy->StatusText(),Canvas->SizeX-330,Y,0.85f,FLinearColor(1,0.55f,0.25f));
-  Text(TEXT("E interakcja  |  T telefon  |  I ekwipunek  |  ESC pauza"),300,Canvas->SizeY-40,0.7f);
+void ASliceHUD::Text(const FString& Value,float X,float Y,float Scale,const FLinearColor& Color){DrawText(Value,Color,X,Y,GEngine->GetMediumFont(),Scale,false);}
+void ASliceHUD::Panel(const FString& Title,const FString& Body){
+ DrawRect(FLinearColor(.015,.025,.035,.96),0,0,Canvas->SizeX,Canvas->SizeY);
+ const float X=Canvas->SizeX*.06f,Y=Canvas->SizeY*.09f,MaxWidth=Canvas->SizeX-X*2;
+ Text(Title,X,Y,1.5,FLinearColor(.9,.72,.38));
+ TArray<FString> Lines,Paragraphs;Body.ParseIntoArrayLines(Paragraphs,false);
+ for(const auto& Para:Paragraphs){TArray<FString> Words;Para.ParseIntoArray(Words,TEXT(" "),true);FString Line;
+  for(const auto& Word:Words){const FString Candidate=Line.IsEmpty()?Word:Line+TEXT(" ")+Word;float W,H;GetTextSize(Candidate,W,H,GEngine->GetMediumFont(),1);
+   if(W>MaxWidth && !Line.IsEmpty()){Lines.Add(Line);Line=Word;}else Line=Candidate;}
+  Lines.Add(Line);
  }
- if(!M->bLastSaveSucceeded) Text(TEXT("BŁĄD ZAPISU: bieżący postęp nie został zapisany."),35,Canvas->SizeY-170,0.85f,FLinearColor::Red);
- if(FPlatformTime::Seconds()<M->NotificationUntil) Text(M->Notification,35,Canvas->SizeY-140,0.85f,FLinearColor(1,0.82f,0.4f));
+ auto* PC=CastChecked<ASliceController>(PlayerOwner);const int Visible=FMath::Max(1,FMath::FloorToInt((Canvas->SizeY-Y-130)/27));
+ PC->Scroll=FMath::Clamp(PC->Scroll,0,FMath::Max(0,Lines.Num()-Visible));
+ for(int I=PC->Scroll;I<Lines.Num() && I<PC->Scroll+Visible;++I)Text(Lines[I],X,Y+65+(I-PC->Scroll)*27);
+ if(Lines.Num()>Visible)Text(TEXT("↑ / ↓ — przewijaj"),X,Canvas->SizeY-55,.8);
+}
+void ASliceHUD::DrawHUD(){
+ Super::DrawHUD();if(!Canvas)return;auto* PC=Cast<ASliceController>(PlayerOwner);if(!PC)return;
+ auto* M=GetGameInstance()->GetSubsystem<USliceMission>();auto* P=Cast<ASliceCharacter>(PC->GetPawn());if(!P)return;
+ if(M->bDead)Panel(TEXT("NIE UDAŁO SIĘ UCIEC"),TEXT("ENTER / L — ostatni checkpoint\nN — nowa gra\nQ — wyjście"));
+ else if(M->State.Finished())Panel(TEXT("ROZDZIAŁ 1 — PRZEBUDZENIE"),TEXT("Warsztat daje chwilę bezpieczeństwa. Mapa ujawnia blokady wyjazdowe, dworzec i lotnisko.\nNie możesz jeszcze opuścić Wrocławia. Wymaga to ukończenia kampanii.\n\nROZDZIAŁ 2 ODBLOKOWANY — zawartość poza zakresem tego etapu.\n\n")+M->AchievementsText()+TEXT("\nN — nowa gra | Q — wyjście"));
+ else if(M->bShowMenu)Panel(TEXT("WROCLAW THE GAME"),TEXT("PRZEBUDZENIE\n\nN — nowa gra\n")+FString(M->HasSave()?TEXT("L — wczytaj checkpoint\n"):TEXT("Brak zgodnego zapisu v2\n"))+(M->bInGame?TEXT("ENTER / ESC — wznów\n"):TEXT(""))+TEXT("Q — wyjście\n\nWASD ruch | mysz kamera | SHIFT sprint | CTRL kucanie | SPACJA skok\nE interakcja | T telefon | I ekwipunek | J śledztwo | H podpowiedź\nLPM atak | PPM blok | ALT unik | G rzut przedmiotu | V opatrunek\nF latarka | B questy | K osiągnięcia | ESC pauza\nPodczas wpisywania kodu świat działa dalej. ESC pozwala przerwać i uciec."));
+ else if(PC->bKeypad){
+  const auto* A=Wroclaw::Progress::Find(TCHAR_TO_UTF8(*PC->PuzzleId));if(!A)return;
+  FString Help=A->kind=="choice"?UTF8_TO_TCHAR(A->body.c_str()):TEXT("Wpisz rozwiązanie: ")+PC->Code;
+  if(A->kind=="symbols")Help+=TEXT("\n1 słońce | 2 księżyc | 3 fala | 4 gwiazda");
+  if(A->kind=="wires")Help+=TEXT("\n1 czerwony | 2 biały | 3 niebieski");
+  if(A->kind=="password")Help+=TEXT("\nHasło: tytuł książki, wielkie litery.");
+  if(A->kind=="lights")Help+=TEXT("\nObserwuj diody przez 6 sekund, potem odtwórz kolejność. Ponowne E odtwarza sekwencję.");
+  auto It=M->State.locks.find(A->id);if(It!=M->State.locks.end() && It->second.until>M->State.elapsed)Help+=FString::Printf(TEXT("\nBLOKADA: %.0f s"),FMath::CeilToDouble(It->second.until-M->State.elapsed));
+  Panel(UTF8_TO_TCHAR(A->label.c_str()),Help+TEXT("\n\nENTER — zatwierdź | BACKSPACE — popraw | ESC — przerwij"));
+  if(A->kind=="lights"){
+   const double T=M->State.elapsed-PC->PanelOpenedAt;const auto Sequence=M->State.Answer(*A);const int Index=FMath::FloorToInt(T);
+   const int Lit=T>=0 && T<4 && FMath::Frac(T)<.65?Sequence[Index]-'1':-1;
+   for(int I=0;I<4;++I){const float X=Canvas->SizeX*.25f+I*100;DrawRect(I==Lit?FLinearColor(1,.75,.15):FLinearColor(.12,.15,.18),X,Canvas->SizeY*.65,65,55);Text(FString::FromInt(I+1),X+25,Canvas->SizeY*.65+17);}
+  }
+ }
+ else if(PC->bPeek){Text(TEXT("WIZJER — obcy na klatce. ESC — odsuń się"),Canvas->SizeX*.25,Canvas->SizeY*.8);}
+ else if(PC->bInventory)Panel(TEXT("EKWIPUNEK"),M->InventoryText()+TEXT("\nI / ESC — zamknij"));
+ else if(PC->bPhone)Panel(TEXT("TELEFON"),M->PhoneText(PC->Page)+TEXT("\nESC — zamknij"));
+ else if(PC->bInvestigation)Panel(TEXT("ŚLEDZTWO"),M->InvestigationText(PC->Page)+TEXT("\nESC — zamknij"));
+ else if(!PC->Message.IsEmpty())Panel(TEXT("WSKAZÓWKA"),PC->Message+TEXT("\n\nENTER / ESC — zamknij"));
+ else{
+  DrawRect(FLinearColor(0,0,0,.7),20,20,Canvas->SizeX-40,75);Text(M->ObjectiveText(),36,35);
+  const float Y=Canvas->SizeY-95;DrawRect(FLinearColor(.08,.08,.08),30,Y,220,16);DrawRect(FLinearColor(.7,.15,.15),30,Y,220*P->Health/100,16);
+  DrawRect(FLinearColor(.08,.08,.08),30,Y+28,220,12);DrawRect(FLinearColor(.1,.65,.55),30,Y+28,220*P->Stamina/100,12);
+  DrawRect(FLinearColor::White,Canvas->SizeX/2.f-2,Canvas->SizeY/2.f-2,4,4);
+  if(auto* Target=Cast<IInteractable>(P->Focus))Text(TEXT("[E] ")+Target->Prompt(P).ToString(),Canvas->SizeX*.25,Canvas->SizeY*.72);
+  Text(TEXT("J śledztwo | H podpowiedź | T telefon | I ekwipunek"),300,Canvas->SizeY-40,.75);
+ }
+ if(PC->bKeypad && !M->bDead){DrawRect(FLinearColor(.1,.1,.1),30,Canvas->SizeY-75,220,16);DrawRect(FLinearColor(.7,.15,.15),30,Canvas->SizeY-75,220*P->Health/100,16);}
+ if(auto* GM=Cast<ASliceGameMode>(GetWorld()->GetAuthGameMode()))Text(GM->ThreatText(),Canvas->SizeX-360,Canvas->SizeY-100,.85,FLinearColor(1,.4,.2));
+ if(!M->bLastSaveSucceeded)Text(TEXT("BŁĄD ZAPISU — bieżący postęp niezapisany"),35,Canvas->SizeY-170,.85,FLinearColor::Red);
+ if(FPlatformTime::Seconds()<M->NotificationUntil)Text(M->Notification.Left(135),35,Canvas->SizeY-140,.8,FLinearColor(1,.82,.4));
 }

@@ -22,6 +22,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Audio/SliceAudio.h"
 #include "Engine/LocalPlayer.h"
+#include "Components/SpotLightComponent.h"
+#include "Interaction/NoiseThrowable.h"
 #include "Engine/World.h"
 ASliceCharacter::ASliceCharacter() {
  PrimaryActorTick.bCanEverTick=true;
@@ -36,6 +38,7 @@ ASliceCharacter::ASliceCharacter() {
  Boom->TargetArmLength=250; Boom->SocketOffset=FVector(0,35,55); Boom->bUsePawnControlRotation=true;
  Camera=CreateDefaultSubobject<UCameraComponent>(TEXT("Camera")); Camera->SetupAttachment(Boom);
  Camera->FieldOfView=85;
+ Flashlight=CreateDefaultSubobject<USpotLightComponent>(TEXT("Flashlight"));Flashlight->SetupAttachment(Camera);Flashlight->SetIntensity(5000);Flashlight->SetAttenuationRadius(1800);Flashlight->SetOuterConeAngle(28);Flashlight->SetVisibility(false);
  // Asset-independent articulated proxy: replace with a skeletal mesh without changing gameplay.
  static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeFinder(TEXT("/Engine/BasicShapes/Cube.Cube"));
  UStaticMesh* Cube=CubeFinder.Object;
@@ -69,6 +72,10 @@ void ASliceCharacter::SetupPlayerInputComponent(UInputComponent* Input) {
  EI->BindAction(Axis(TEXT("Right"),EKeys::D,EKeys::A),ETriggerEvent::Triggered,this,&ASliceCharacter::MoveRight);
  EI->BindAction(Axis(TEXT("Yaw"),EKeys::MouseX,FKey()),ETriggerEvent::Triggered,this,&ASliceCharacter::LookX);
  EI->BindAction(Axis(TEXT("Pitch"),EKeys::MouseY,FKey()),ETriggerEvent::Triggered,this,&ASliceCharacter::LookY);
+ EI->BindAction(Button(TEXT("Throw"),EKeys::G),ETriggerEvent::Started,this,&ASliceCharacter::ThrowObject);
+ EI->BindAction(Button(TEXT("Dodge"),EKeys::LeftAlt),ETriggerEvent::Started,this,&ASliceCharacter::Dodge);
+ EI->BindAction(Button(TEXT("Heal"),EKeys::V),ETriggerEvent::Started,this,&ASliceCharacter::Heal);
+ EI->BindAction(Button(TEXT("Flashlight"),EKeys::F),ETriggerEvent::Started,this,&ASliceCharacter::ToggleFlashlight);
  auto* Run=Button(TEXT("Sprint"),EKeys::LeftShift);
  EI->BindAction(Run,ETriggerEvent::Started,this,&ASliceCharacter::SprintStart); EI->BindAction(Run,ETriggerEvent::Completed,this,&ASliceCharacter::SprintEnd);
  EI->BindAction(Run,ETriggerEvent::Canceled,this,&ASliceCharacter::SprintEnd);
@@ -88,10 +95,10 @@ void ASliceCharacter::MoveForward(const FInputActionValue& V) { AddMovementInput
 void ASliceCharacter::MoveRight(const FInputActionValue& V) { AddMovementInput(FRotationMatrix(FRotator(0,GetControlRotation().Yaw,0)).GetUnitAxis(EAxis::Y),V.Get<float>()); }
 void ASliceCharacter::LookX(const FInputActionValue& V) { AddControllerYawInput(V.Get<float>()); }
 void ASliceCharacter::LookY(const FInputActionValue& V) { AddControllerPitchInput(-V.Get<float>()); }
-void ASliceCharacter::CrouchToggle() { if(bIsCrouched) UnCrouch(); else Crouch(); }
-void ASliceCharacter::SprintStart(){ bSprint=true; } void ASliceCharacter::SprintEnd(){ bSprint=false; }
-void ASliceCharacter::BlockStart(){ bBlock=true; } void ASliceCharacter::BlockEnd(){ bBlock=false; }
-void ASliceCharacter::JumpStart(){ if(Stamina>=12 && !bIsCrouched && CanJump()){ Stamina-=12; Jump(); } } void ASliceCharacter::JumpEnd(){ StopJumping(); }
+void ASliceCharacter::CrouchToggle() {if(CastChecked<ASliceController>(Controller)->GameplayBlocked())return; if(bIsCrouched) UnCrouch(); else Crouch(); }
+void ASliceCharacter::SprintStart(){ if(!CastChecked<ASliceController>(Controller)->GameplayBlocked()) bSprint=true; } void ASliceCharacter::SprintEnd(){ bSprint=false; }
+void ASliceCharacter::BlockStart(){ if(!CastChecked<ASliceController>(Controller)->GameplayBlocked()) bBlock=true; } void ASliceCharacter::BlockEnd(){ bBlock=false; }
+void ASliceCharacter::JumpStart(){ if(!CastChecked<ASliceController>(Controller)->GameplayBlocked() && Stamina>=12 && !bIsCrouched && CanJump()){ Stamina-=12; Jump(); } } void ASliceCharacter::JumpEnd(){ StopJumping(); }
 void ASliceCharacter::Tick(float Dt) {
  Super::Tick(Dt);
  auto* M=Mission(); if(!M->bInGame || M->bDead || M->State.Finished()) return;
@@ -114,18 +121,33 @@ void ASliceCharacter::Tick(float Dt) {
  FCollisionQueryParams Params(SCENE_QUERY_STAT(Interact),false,this);
  GetWorld()->LineTraceSingleByChannel(Hit,Start,Start+Camera->GetForwardVector()*600,ECC_Visibility,Params);
  Focus=(Hit.GetActor() && Hit.GetActor()->Implements<UInteractable>() && FVector::Dist(GetActorLocation(),Hit.ImpactPoint)<230)?Hit.GetActor():nullptr;
- if(GetActorLocation().Z < -400) TakeDamage(1000,FDamageEvent(),nullptr,nullptr);
+ if(GetActorLocation().Z < -650) TakeDamage(1000,FDamageEvent(),nullptr,nullptr);
 }
-void ASliceCharacter::Interact() { if(auto* Target=Cast<IInteractable>(Focus)) Target->Interact(this); }
+void ASliceCharacter::Interact() {if(CastChecked<ASliceController>(Controller)->GameplayBlocked())return; if(auto* Target=Cast<IInteractable>(Focus)) Target->Interact(this); }
 void ASliceCharacter::Phone() {
- auto* M=Mission();
- if(!M->State.Has(Wroclaw::Item::Phone)) { M->Notify(TEXT("Najpierw znajdź telefon.")); return; }
- if(!M->State.Has(Wroclaw::Item::Charger)) { M->Notify(TEXT("Bateria pusta. Znajdź powerbank z kablem USB.")); return; }
- if(!M->State.phoneUnlocked) { CastChecked<ASliceController>(Controller)->OpenKeypad(nullptr); return; }
- M->Apply(Wroclaw::Event::ReadMessage);
- CastChecked<ASliceController>(Controller)->ShowMessage(TEXT("NIE ZNASZ MNIE. Oni już tu są.\nBezpiecznik schowałem w kuchennej szafce. Włóż go do rozdzielni przy drzwiach.\nWłącz lampę na biurku — ciepło odsłoni kod szafki. W środku jest klucz.\nNa ulicy skręć w zaułek przy niebieskim szyldzie. Zgub ogon. Czekam w lokalu."));
+ auto* PC=CastChecked<ASliceController>(Controller);if(PC->GameplayBlocked())return;
+ auto* M=Mission();if(!M->State.Has("phone")){M->Notify(TEXT("Najpierw znajdź telefon."));return;}
+ if(!M->State.Done("phone_attempt")){M->Act(TEXT("phone_attempt"));M->Notify(TEXT("Telefon rozładowany. Znajdź ładowarkę, kabel i sprawdź gniazdko."));return;}
+ if(!M->State.Done("charge")){M->Notify(TEXT("Przywróć prąd i podłącz telefon do gniazdka [E]."));return;}
+ if(!M->State.Done("unlock_phone")){PC->OpenKeypad(TEXT("unlock_phone"));return;}
+ PC->OpenPhone();
 }
+void ASliceCharacter::ThrowObject(){
+ if(CastChecked<ASliceController>(Controller)->GameplayBlocked() || !Mission()->State.Has("distraction"))return;
+ FActorSpawnParameters Params;Params.Instigator=this;Params.SpawnCollisionHandlingOverride=ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+ auto* Object=GetWorld()->SpawnActor<ANoiseThrowable>(GetActorLocation()+GetActorForwardVector()*70+FVector(0,0,30),FRotator::ZeroRotator,Params);
+ if(Object){Mission()->State.Use("distraction");Object->Mesh->SetPhysicsLinearVelocity(GetControlRotation().Vector()*1000+FVector(0,0,200));}
+}
+void ASliceCharacter::Dodge(){
+ if(CastChecked<ASliceController>(Controller)->GameplayBlocked() || Stamina<25 || GetCharacterMovement()->IsFalling())return;
+ Stamina-=25;DodgeUntil=GetWorld()->GetTimeSeconds()+.3;
+ FVector Direction=GetLastMovementInputVector().GetSafeNormal();if(Direction.IsNearlyZero())Direction=-GetActorForwardVector();
+ LaunchCharacter(Direction*620+FVector(0,0,60),true,true);
+}
+void ASliceCharacter::Heal(){if(!CastChecked<ASliceController>(Controller)->GameplayBlocked() && Health<100 && Mission()->State.Use("medkit"))Health=FMath::Min(100.f,Health+45);}
+void ASliceCharacter::ToggleFlashlight(){if(CastChecked<ASliceController>(Controller)->GameplayBlocked())return;if(Mission()->State.Has("flashlight") && Mission()->State.Has("batteries"))Flashlight->SetVisibility(!Flashlight->IsVisible());else Mission()->Notify(TEXT("Latarka wymaga baterii."));}
 void ASliceCharacter::Attack() {
+ if(CastChecked<ASliceController>(Controller)->GameplayBlocked())return;
  const double Now=GetWorld()->GetTimeSeconds();
  if(Now-LastAttack<0.65 || Stamina<18) return;
  LastAttack=Now; Stamina-=18;
@@ -137,7 +159,7 @@ void ASliceCharacter::Attack() {
  USliceAudio::Play(this,TEXT("Hit"),Start,0.6f);
 }
 float ASliceCharacter::TakeDamage(float Damage,const FDamageEvent& Event,AController* Instigator,AActor* Causer) {
- auto* M=Mission(); if(M->bDead || !M->bInGame || M->State.Finished()) return 0;
+ auto* M=Mission(); if(M->bDead || !M->bInGame || M->State.Finished() || GetWorld()->GetTimeSeconds()<DodgeUntil) return 0;
  const bool Facing=Causer && FVector::DotProduct(GetActorForwardVector(),(Causer->GetActorLocation()-GetActorLocation()).GetSafeNormal())>0.2f;
  if(bBlock && Stamina>=20 && Facing) { Stamina-=20; Damage*=0.2f; }
  Health=FMath::Max(0.f,Health-Damage);

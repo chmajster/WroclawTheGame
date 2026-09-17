@@ -11,12 +11,15 @@ $ProjectRoot = Split-Path $PSScriptRoot -Parent
 $Project = Join-Path $ProjectRoot 'WroclawTheGame.uproject'
 $BuildTool = Join-Path $EngineRoot 'Engine\Build\BatchFiles\Build.bat'
 $Editor = Join-Path $EngineRoot 'Engine\Binaries\Win64\UnrealEditor-Cmd.exe'
+$UnrealPython = Join-Path $EngineRoot 'Engine\Binaries\ThirdParty\Python3\Win64\python.exe'
 $Automation = Join-Path $EngineRoot 'Engine\Build\BatchFiles\RunUAT.bat'
-foreach ($File in @($BuildTool, $Editor, $Automation)) {
+foreach ($File in @($BuildTool, $Editor, $Automation, $UnrealPython)) {
     if (-not (Test-Path -LiteralPath $File)) { throw "Missing Unreal Engine 5.6 tool: $File" }
 }
 if (-not $OutputDirectory) { $OutputDirectory = Join-Path $ProjectRoot "Builds\$Configuration" }
 $OutputDirectory = [IO.Path]::GetFullPath($OutputDirectory)
+& $UnrealPython (Join-Path $PSScriptRoot 'compile_chapter.py')
+if ($LASTEXITCODE -ne 0) { throw 'Chapter data validation failed before compilation' }
 & $BuildTool WroclawTheGameEditor Win64 Development "-Project=$Project" -WaitMutex -NoHotReloadFromIDE
 if ($LASTEXITCODE -ne 0) { throw "Editor target build failed ($LASTEXITCODE)" }
 $Marker = Join-Path $ProjectRoot 'Saved\GeneratedContent.ok'
