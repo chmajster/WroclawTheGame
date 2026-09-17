@@ -1,0 +1,13 @@
+name: Logic and source assets
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  logic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run production progression model and asset tests
+        run: bash Scripts/test.sh
