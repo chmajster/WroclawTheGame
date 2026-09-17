@@ -31,6 +31,8 @@ Mapa domyślna `/Game/Maps/Przebudzenie_Source` otwiera menu. `N` rozpoczyna gr�
 
 ## Laboratorium Nadodrza
 
+Import GIS wymaga osobnego Pythona 3.12 lub nowszego (pyproj 3.8). Python wbudowany w UE służy wyłącznie do wypieku gotowych danych.
+
 ```powershell
 python -m pip install -r Scripts/gis/requirements.txt
 .\Scripts\Build-Geography.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.6' -Package

@@ -12,6 +12,8 @@ Nie użyto modeli ani zrzutów Google Maps. Nie pobrano jeszcze zasobów miejski
 
 ## Konwersja i powtarzalność
 
+Wymagany Python 3.12+ dla przypiętej wersji pyproj 3.8.
+
 ```bash
 python3 -m pip install -r Scripts/gis/requirements.txt
 python3 Scripts/gis/import_sector.py
