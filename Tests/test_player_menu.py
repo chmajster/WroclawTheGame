@@ -115,6 +115,18 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_player_status_is_a_visual_dashboard_not_raw_bitmask_text(self):
+        for token in (
+            "HealthValue",
+            "StaminaValue",
+            'FString::Printf(TEXT("%.0f%%"), HealthValue)',
+            "AchievementCount",
+            'TEXT("AKTYWNOŚCI DZIELNIC")',
+            'TEXT("OSTATNI ZAPIS")',
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertNotIn('TEXT("Osiągnięcia       %d', self.cpp)
+
     def test_game_tab_has_real_campaign_hero(self):
         self.assertIn("UPlayerMenuWidget::AddGameHero()", self.cpp)
         self.assertIn("Mission->State.QuestComplete(Quest)", self.cpp)
