@@ -216,6 +216,39 @@ int32 UCityGameplaySubsystem::TrackableActivityCount() const
     return Count;
 }
 
+int32 UCityGameplaySubsystem::CompletedEventCount() const
+{
+    if (!bActive)
+        return 0;
+
+    int32 Count = 0;
+    for (const auto& Action : Wroclaw::CityActions())
+        if (Action.kind == "event" && Progress.completed.count(Action.id))
+            ++Count;
+    return Count;
+}
+
+int32 UCityGameplaySubsystem::EventCount() const
+{
+    int32 Count = 0;
+    for (const auto& Action : Wroclaw::CityActions())
+        if (Action.kind == "event")
+            ++Count;
+    return Count;
+}
+
+int32 UCityGameplaySubsystem::AvailableActivityCount() const
+{
+    if (!bActive)
+        return 0;
+
+    int32 Count = 0;
+    for (const auto& Action : Wroclaw::CityActions())
+        if (Action.kind != "event" && Progress.Available(Action))
+            ++Count;
+    return Count;
+}
+
 FString UCityGameplaySubsystem::Journal() const
 {
     if (!bActive) return FString();
