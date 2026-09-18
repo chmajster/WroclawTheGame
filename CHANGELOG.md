@@ -1,3 +1,11 @@
+## 2026-09-18 — bezpieczne wczytywanie zapisu
+
+- Wczytanie zapisu podczas aktywnej sesji wymaga teraz potwierdzenia.
+- Modal ostrzega, że bieżący stan w pamięci zostanie zastąpiony i niezapisane zmiany mogą zostać utracone.
+- Akcja Wczytaj korzysta z czerwonego wariantu ostrzegawczego i domyślnie ustawia fokus na Anuluj.
+- Z ekranu startowego bez aktywnej sesji wczytanie nadal odbywa się bez zbędnego dodatkowego potwierdzenia.
+- Test regresyjny pilnuje warunku aktywnej sesji i obsługi akcji modalnej.
+
 ## 2026-09-18 — pozycja gracza i właściwa mapa GIS
 
 - Zakładka Mapa rozróżnia mapę odkryć kampanii od rzeczywistej mapy sektorów miasta.
