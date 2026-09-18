@@ -226,6 +226,16 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         self.assertIn("City->NearbyObjective()", self.cpp)
         self.assertIn("City->IsWriteBlocked()", self.cpp)
 
+    def test_campaign_statistics_have_visual_progress_and_achievement_summary(self):
+        for token in (
+            "CampaignProgress",
+            "CampaignProgressBar->SetPercent",
+            'TEXT("POSTĘP KAMPANII")',
+            "UnlockedAchievements",
+            'TEXT("ODBLOKOWANE")',
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_city_statistics_use_city_progress_instead_of_campaign_counters(self):
         for token in (
             "CompletedEventCount()",
