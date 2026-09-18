@@ -30,6 +30,9 @@ private:
     UPROPERTY() TObjectPtr<class UBorder> AmbientGlowA;
     UPROPERTY() TObjectPtr<class UBorder> AmbientGlowB;
     UPROPERTY() TObjectPtr<class UTextBlock> ConfirmationCountdown;
+    UPROPERTY() TObjectPtr<class UScrollBox> ActionScroll;
+    UPROPERTY() TObjectPtr<class UScrollBox> CenterScroll;
+    UPROPERTY() TObjectPtr<class UScrollBox> RightScroll;
     UPROPERTY() TObjectPtr<class UVerticalBox> ActionColumn;
     UPROPERTY() TObjectPtr<class UVerticalBox> CenterColumn;
     UPROPERTY() TObjectPtr<class UVerticalBox> RightColumn;
