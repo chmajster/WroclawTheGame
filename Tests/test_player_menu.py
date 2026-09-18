@@ -350,7 +350,7 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             "HasKeyboardFocus()",
             "SetRenderScale",
             "SetRenderOpacity",
-            "1.015f",
+            "1.022f",
         ):
             self.assertIn(token, self.cpp)
         self.assertIn("void UpdateFocusPresentation();", self.header)
