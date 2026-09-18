@@ -1392,5 +1392,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/metal_jerrycan/metal_jerrycan_1k.fbx"
+  },
+  {
+    "slug": "rusted_wheel_rim_01",
+    "name": "Rusted Wheel Rim 01",
+    "intended_use": "Garage/workshop automotive detail.",
+    "source_page": "https://polyhaven.com/a/rusted_wheel_rim_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "John Hutcheson": "All"
+    },
+    "category": "Vehicles & Transport/Parts & Accessories/Rims",
+    "dimensions_mm": [
+      402.85147726535797,
+      154.13154661655426,
+      395.4814374446869
+    ],
+    "files_hash": "c6ea2791df5e76adddaff24df87f21144350cd3a",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/rusted_wheel_rim_01/rusted_wheel_rim_01_1k.fbx"
   }
 ]

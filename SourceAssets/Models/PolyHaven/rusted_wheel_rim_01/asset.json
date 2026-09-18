@@ -1,0 +1,60 @@
+{
+  "slug": "rusted_wheel_rim_01",
+  "name": "Rusted Wheel Rim 01",
+  "intended_use": "Garage/workshop automotive detail.",
+  "source_page": "https://polyhaven.com/a/rusted_wheel_rim_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "John Hutcheson": "All"
+  },
+  "category": "Vehicles & Transport/Parts & Accessories/Rims",
+  "tags": [
+    "car",
+    "vehicle",
+    "old",
+    "junkyard",
+    "scrapyard",
+    "trash"
+  ],
+  "dimensions_mm": [
+    402.85147726535797,
+    154.13154661655426,
+    395.4814374446869
+  ],
+  "files_hash": "c6ea2791df5e76adddaff24df87f21144350cd3a",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/rusted_wheel_rim_01/rusted_wheel_rim_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/rusted_wheel_rim_01/rusted_wheel_rim_01_1k.fbx",
+      "bytes": 511276,
+      "md5": "1754832c350cbaa5a231a04621c24e8e",
+      "sha256": "a8fbccf354bb8e025f31172db894ebe039f1fac549d1208709c3f1567e0fae3c",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/rusted_wheel_rim_01/rusted_wheel_rim_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/rusted_wheel_rim_01/textures/rusted_wheel_rim_01_diff_1k.jpg",
+      "bytes": 517042,
+      "md5": "07ed02f15027a1d937f257ea638ebc1f",
+      "sha256": "e533e5d6b7d1526218f3795f5e3694541d3a87e428242645d04783bc3e416e61",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/rusted_wheel_rim_01/rusted_wheel_rim_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/rusted_wheel_rim_01/textures/rusted_wheel_rim_01_nor_gl_1k.exr",
+      "bytes": 1836298,
+      "md5": "aa82c207bbf87260abd6d9c8af897792",
+      "sha256": "aec3c671bd171b7b3b0dd811c6cdaf12e5bbe20b6cb2f9753b78483e40f5c803",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/rusted_wheel_rim_01/rusted_wheel_rim_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/rusted_wheel_rim_01/textures/rusted_wheel_rim_01_rough_1k.exr",
+      "bytes": 869664,
+      "md5": "83fd683166387ca1a7d514ae4521fc1d",
+      "sha256": "42664fd31753fe4487bc51d4c9ab2b2ab4784a5ed803b49678f88b257f744570",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/rusted_wheel_rim_01/rusted_wheel_rim_01_rough_1k.exr"
+    }
+  ]
+}
