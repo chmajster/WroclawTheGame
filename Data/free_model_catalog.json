@@ -529,5 +529,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/decorative_book_set_01/decorative_book_set_01_1k.fbx"
+  },
+  {
+    "slug": "rollershutter_window_01",
+    "name": "Rollershutter Window 01",
+    "intended_use": "Shop/garage shutter and industrial frontage.",
+    "source_page": "https://polyhaven.com/a/rollershutter_window_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "MP": "All"
+    },
+    "category": "Architecture/Windows & Shutters/Roller Shutters",
+    "dimensions_mm": [
+      5100.001215934753,
+      300.0859081512317,
+      1850.7245529547163
+    ],
+    "files_hash": "55133df3196203d6ddd5b3ef1a4225625ff3aab7",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/rollershutter_window_01/rollershutter_window_01_1k.fbx"
   }
 ]
