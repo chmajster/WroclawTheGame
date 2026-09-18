@@ -2158,12 +2158,24 @@ void UPlayerMenuWidget::BuildSettingsTab()
     auto* SFXButton = MakeButton(FString::Printf(
         TEXT("EFEKTY ŚWIATA  •  %d%%"), FMath::RoundToInt(SFXVolume * 100.0f)), true);
     SFXButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleSFXVolume);
-    AddCenterButton(SFXButton);
+    AddCenterButton(SFXButton, 5.0f);
+    auto* SFXMeter = WidgetTree->ConstructWidget<UProgressBar>();
+    SFXMeter->SetPercent(SFXVolume);
+    SFXMeter->SetFillColorAndOpacity(Accent);
+    CenterColumn->AddChildToVerticalBox(SFXMeter)->SetPadding(FMargin(18, 0, 18, 13));
 
     auto* UIVolumeButton = MakeButton(FString::Printf(
         TEXT("INTERFEJS  •  %d%%"), FMath::RoundToInt(UIVolume * 100.0f)));
     UIVolumeButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleUIVolume);
-    AddCenterButton(UIVolumeButton);
+    AddCenterButton(UIVolumeButton, 5.0f);
+    auto* UIVolumeMeter = WidgetTree->ConstructWidget<UProgressBar>();
+    UIVolumeMeter->SetPercent(UIVolume);
+    UIVolumeMeter->SetFillColorAndOpacity(Accent);
+    CenterColumn->AddChildToVerticalBox(UIVolumeMeter)->SetPadding(FMargin(18, 0, 18, 10));
+
+    CenterColumn->AddChildToVerticalBox(MakeText(
+        TEXT("WYBIERZ KONTROLKĘ, ABY ZMIENIĆ POZIOM CO 25%"), 9, true, Muted))
+        ->SetPadding(FMargin(18, 0, 18, 8));
 
     RightColumn->AddChildToVerticalBox(MakeText(TEXT("POZIOMY GŁOŚNOŚCI"), 9, true, Accent))
         ->SetPadding(FMargin(0, 0, 0, 8));
