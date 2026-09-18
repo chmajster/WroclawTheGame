@@ -123,6 +123,8 @@
     "city_interior_chair": "modern_arm_chair_01",
     "city_interior_cabinet": "painted_wooden_cabinet",
     "city_interior_shelf": "wooden_bookshelf_worn",
-    "city_interior_lamp": "desk_lamp_arm_01"
+    "city_interior_lamp": "desk_lamp_arm_01",
+    "hide_park": "modular_street_seating",
+    "environment_sign_backing": "wtg-original-sign-board"
   }
 }
