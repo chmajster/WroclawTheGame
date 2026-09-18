@@ -15,6 +15,7 @@ public:
     void Refresh();
 
 protected:
+    virtual FReply NativeOnPreviewKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
     virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
     virtual FReply NativeOnMouseButtonDown(const FGeometry& Geometry, const FPointerEvent& Event) override;
     virtual FReply NativeOnMouseButtonUp(const FGeometry& Geometry, const FPointerEvent& Event) override;
@@ -30,12 +31,14 @@ private:
     UPROPERTY() TObjectPtr<class UVerticalBox> RightColumn;
     UPROPERTY() TObjectPtr<class UTextBlock> PageTitle;
     UPROPERTY() TArray<TObjectPtr<class UButton>> TabButtons;
+    UPROPERTY() TArray<TObjectPtr<class UButton>> ActionButtons;
     UPROPERTY() TObjectPtr<class AWTG_CharacterCreator> Studio;
 
     int32 ActiveTab = 0;
     int32 PendingConfirmation = 0;
     float ConfirmationSecondsRemaining = 0.0f;
     bool bRotatingPreview = false;
+    bool bCollectActionButtons = false;
 
     class UTextBlock* MakeText(const FString& Value, int32 Size = 16, bool bBold = false,
                                FLinearColor Color = FLinearColor::White);
@@ -54,6 +57,7 @@ private:
     void AddPlayerStatus();
     void SelectTab(int32 Index);
     void UpdateTabStyle();
+    void FocusPrimaryAction();
     void ShowConfirmation(int32 Action, const FString& Title, const FString& Body, const FString& ConfirmLabel);
     void ClearConfirmation();
 
