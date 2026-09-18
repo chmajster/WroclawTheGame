@@ -1370,5 +1370,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/CashRegister_01/CashRegister_01_1k.fbx"
+  },
+  {
+    "slug": "metal_jerrycan",
+    "name": "Metal Jerrycan",
+    "intended_use": "Garage/workshop fuel and industrial clutter.",
+    "source_page": "https://polyhaven.com/a/metal_jerrycan",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Sean Buckley": "All"
+    },
+    "category": "Containers & Storage/Tanks & Jerrycans/Jerrycans",
+    "dimensions_mm": [
+      350.3298610448837,
+      171.74389213323593,
+      455.1599698197606
+    ],
+    "files_hash": "dec5eb28e40431074a34abb2cc63354559218f46",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/metal_jerrycan/metal_jerrycan_1k.fbx"
   }
 ]
