@@ -39,6 +39,7 @@
 #include "Input/Reply.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Brushes/SlateRoundedBoxBrush.h"
+#include "Misc/ConfigCacheIni.h"
 
 namespace
 {
@@ -84,6 +85,29 @@ FString QualityLabel(int32 Level)
         case 4: return TEXT("KINOWA");
         default: return TEXT("NIESTANDARDOWA");
     }
+}
+
+FString BuildLabel()
+{
+#if UE_BUILD_SHIPPING
+    return TEXT("SHIPPING");
+#elif UE_BUILD_TEST
+    return TEXT("TEST");
+#elif UE_BUILD_DEBUG
+    return TEXT("DEBUG");
+#else
+    return TEXT("DEVELOPMENT");
+#endif
+}
+
+FString ProjectVersionLabel()
+{
+    FString Version = TEXT("0.0.0");
+    if (GConfig)
+        GConfig->GetString(
+            TEXT("/Script/EngineSettings.GeneralProjectSettings"),
+            TEXT("ProjectVersion"), Version, GGameIni);
+    return FString::Printf(TEXT("v%s  •  %s"), *Version, *BuildLabel());
 }
 }
 
@@ -385,6 +409,11 @@ void UPlayerMenuWidget::BuildShell()
 
     auto* Location = MakeText(TEXT("WROCŁAW  /  DOLNY ŚLĄSK"), 10, true, Muted);
     Footer->AddChildToHorizontalBox(Location)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+    auto* Build = MakeText(ProjectVersionLabel(), 9, true, Muted);
+    Build->SetJustification(ETextJustify::Center);
+    auto* BuildSlot = Footer->AddChildToHorizontalBox(Build);
+    BuildSlot->SetPadding(FMargin(18, 0, 18, 0));
 
     auto* FooterHint = MakeText(TEXT("MYSZ  •  KLAWIATURA  •  GAMEPAD"), 10, true, Accent);
     FooterHint->SetJustification(ETextJustify::Right);
