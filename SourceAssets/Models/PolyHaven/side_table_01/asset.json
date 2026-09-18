@@ -1,0 +1,73 @@
+{
+  "slug": "side_table_01",
+  "name": "Side Table 01",
+  "intended_use": "Apartment/interior furniture replacing simple blockout geometry.",
+  "source_page": "https://polyhaven.com/a/side_table_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "James Ray Cock": "All"
+  },
+  "category": "Furniture/Tables/Side & End Tables",
+  "tags": [
+    "table",
+    "wood",
+    "minimalist",
+    "modern",
+    "decor",
+    "living room",
+    "bedroom",
+    "shelf",
+    "contemporary",
+    "interior",
+    "home",
+    "wooden"
+  ],
+  "dimensions_mm": [
+    550.0000715255737,
+    450.00001788139343,
+    550.6622816901654
+  ],
+  "files_hash": "c48d34c9a62887ad0c1175877ac69ffdd97e52b6",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/side_table_01/side_table_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/side_table_01/side_table_01_1k.fbx",
+      "bytes": 98268,
+      "md5": "344119712c0b0c5ff46b724981f94abf",
+      "sha256": "be9b3812818e8f4d536679c549b4d048447d61856c081688d69d5f40f9f79df7",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/side_table_01/side_table_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/side_table_01/textures/side_table_01_diff_1k.jpg",
+      "bytes": 183315,
+      "md5": "858d3b2c5f7f4c733a5c6a32183b11de",
+      "sha256": "e0d9f2f91bede592868f9b89d141f5e8542524b8356f1b68f0f5c6bb6447731d",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/side_table_01/side_table_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/side_table_01/textures/side_table_01_metal_1k.exr",
+      "bytes": 21982,
+      "md5": "067fd7beff5800efb525d108a4e4de83",
+      "sha256": "eb5342142a2dc5bfe9594c9906363e7e7a0f3260e2b9456eed809f08c90621bc",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/side_table_01/side_table_01_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/side_table_01/textures/side_table_01_nor_gl_1k.exr",
+      "bytes": 534449,
+      "md5": "8887244aeaab999437d206c09d52f7dd",
+      "sha256": "221f2545544b417481a5f36971e654db7ab8daef317dda589a94a78c4d8fdeaf",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/side_table_01/side_table_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/side_table_01/textures/side_table_01_rough_1k.jpg",
+      "bytes": 148894,
+      "md5": "f847c9d177eb1660a714c9548df0f2ad",
+      "sha256": "b8825f54e30a63d7506c8c3c96a31c6467992edd75f22350506e055727d01e96",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/side_table_01/side_table_01_rough_1k.jpg"
+    }
+  ]
+}

@@ -10,3 +10,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Street Lamp 01 | Urban street lighting prop for authored city detail passes. | Josh Dean | [Poly Haven](https://polyhaven.com/a/street_lamp_01) | CC0 1.0 |
 | Concrete Road Barrier 02 | Roadblock and traffic-control prop for chase and blockade scenes. | Amal Kumar | [Poly Haven](https://polyhaven.com/a/concrete_road_barrier_02) | CC0 1.0 |
 | Bench Vice 01 | Garage/workshop prop for the campaign workshop environment. | Yann Kervran, Antanas Kep | [Poly Haven](https://polyhaven.com/a/bench_vice_01) | CC0 1.0 |
+| Side Table 01 | Apartment/interior furniture replacing simple blockout geometry. | James Ray Cock | [Poly Haven](https://polyhaven.com/a/side_table_01) | CC0 1.0 |

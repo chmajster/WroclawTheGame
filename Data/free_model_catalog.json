@@ -88,5 +88,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/bench_vice_01/bench_vice_01_1k.fbx"
+  },
+  {
+    "slug": "side_table_01",
+    "name": "Side Table 01",
+    "intended_use": "Apartment/interior furniture replacing simple blockout geometry.",
+    "source_page": "https://polyhaven.com/a/side_table_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Furniture/Tables/Side & End Tables",
+    "dimensions_mm": [
+      550.0000715255737,
+      450.00001788139343,
+      550.6622816901654
+    ],
+    "files_hash": "c48d34c9a62887ad0c1175877ac69ffdd97e52b6",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/side_table_01/side_table_01_1k.fbx"
   }
 ]
