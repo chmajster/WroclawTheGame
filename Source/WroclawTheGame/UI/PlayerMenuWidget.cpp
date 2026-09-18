@@ -759,6 +759,20 @@ void UPlayerMenuWidget::FocusPrimaryAction()
     if (PendingConfirmation != 0)
         return;
 
+    if (ActiveTab == 6 && ActionButtons.IsValidIndex(SettingsSection))
+    {
+        UButton* ActiveSettingsSection = ActionButtons[SettingsSection];
+        if (ActiveSettingsSection && ActiveSettingsSection->GetIsEnabled() &&
+            ActiveSettingsSection->GetVisibility() == ESlateVisibility::Visible)
+        {
+            if (APlayerController* PlayerController = GetOwningPlayer())
+                ActiveSettingsSection->SetUserFocus(PlayerController);
+            else
+                ActiveSettingsSection->SetKeyboardFocus();
+            return;
+        }
+    }
+
     for (UButton* Button : ActionButtons)
     {
         if (Button && Button->GetIsEnabled() && Button->GetVisibility() == ESlateVisibility::Visible)
