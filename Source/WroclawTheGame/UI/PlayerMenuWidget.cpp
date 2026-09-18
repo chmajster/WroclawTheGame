@@ -2627,7 +2627,7 @@ void UPlayerMenuWidget::ShowConfirmation(
     auto* ModalShortcuts = WidgetTree->ConstructWidget<UHorizontalBox>();
     ModalShortcuts->AddChildToHorizontalBox(MakeKeycap(TEXT("ENTER / A")))
         ->SetPadding(FMargin(0, 0, 6, 0));
-    ModalShortcuts->AddChildToHorizontalBox(MakeText(TEXT("POTWIERDŹ"), 8, true, Muted))
+    ModalShortcuts->AddChildToHorizontalBox(MakeText(TEXT("WYBIERZ"), 8, true, Muted))
         ->SetPadding(FMargin(0, 3, 14, 0));
     ModalShortcuts->AddChildToHorizontalBox(MakeKeycap(TEXT("ESC / B")))
         ->SetPadding(FMargin(0, 0, 6, 0));
