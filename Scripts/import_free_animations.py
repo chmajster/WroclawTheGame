@@ -10,7 +10,10 @@ import traceback
 import unreal
 
 ROOT = Path(unreal.Paths.project_dir()).resolve()
-CATALOGS = [\n    ROOT / "Data/free_animation_catalog.json",\n    ROOT / "Data/free_kaykit_animation_catalog.json",\n]
+CATALOGS = [
+    ROOT / "Data/free_animation_catalog.json",
+    ROOT / "Data/free_kaykit_animation_catalog.json",
+]
 MARKER = ROOT / "Saved/FreeAnimationsReady.ok"
 IMPORT_MAP = ROOT / "Saved/FreeAnimationImportMap.json"
 
