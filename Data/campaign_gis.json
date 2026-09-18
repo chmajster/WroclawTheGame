@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "source_bounds_cm": [0, 0, -400, 15800, 9300, 1800],
+  "zones": [
+    {
+      "id": "apartment_courtyard",
+      "source_min_x": 0,
+      "source_max_x": 4000,
+      "source_anchor": [3000, 2250, 90],
+      "anchor_street": "Ludwika Rydygiera",
+      "preferred_building_radius_cm": 6000,
+      "placement": "linked_blockout"
+    },
+    {
+      "id": "shop_street",
+      "source_min_x": 4000,
+      "source_max_x": 8000,
+      "source_anchor": [6000, 3000, 90],
+      "anchor_street": "Pomorska",
+      "preferred_building_radius_cm": 8000,
+      "placement": "linked_blockout"
+    },
+    {
+      "id": "garage_workshop",
+      "source_min_x": 8000,
+      "source_max_x": 12200,
+      "source_anchor": [10000, 4800, 90],
+      "anchor_street": "Trzebnicka",
+      "preferred_building_radius_cm": 8000,
+      "placement": "linked_blockout"
+    },
+    {
+      "id": "park_exit",
+      "source_min_x": 12200,
+      "source_max_x": 16000,
+      "source_anchor": [14000, 6000, 90],
+      "anchor_street": "Kazimierza Jagiellończyka",
+      "preferred_building_radius_cm": 8000,
+      "placement": "linked_blockout"
+    }
+  ]
+}
