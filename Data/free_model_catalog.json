@@ -65,5 +65,28 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/concrete_road_barrier_02/concrete_road_barrier_02_1k.fbx"
+  },
+  {
+    "slug": "bench_vice_01",
+    "name": "Bench Vice 01",
+    "intended_use": "Garage/workshop prop for the campaign workshop environment.",
+    "source_page": "https://polyhaven.com/a/bench_vice_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Yann Kervran": "Rigging",
+      "Antanas Kep": "Modeling & Texturing"
+    },
+    "category": "Tools & Equipment/Workshop Equipment/Vices & Clamps",
+    "dimensions_mm": [
+      200.48236846923828,
+      395.7868218421936,
+      271.6780751943588
+    ],
+    "files_hash": "e1b894759ca8b4ed6359bd7503a34c974494a620",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/bench_vice_01/bench_vice_01_1k.fbx"
   }
 ]

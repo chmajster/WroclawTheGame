@@ -1,0 +1,69 @@
+{
+  "slug": "bench_vice_01",
+  "name": "Bench Vice 01",
+  "intended_use": "Garage/workshop prop for the campaign workshop environment.",
+  "source_page": "https://polyhaven.com/a/bench_vice_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Yann Kervran": "Rigging",
+    "Antanas Kep": "Modeling & Texturing"
+  },
+  "category": "Tools & Equipment/Workshop Equipment/Vices & Clamps",
+  "tags": [
+    "workshop",
+    "garage",
+    "used",
+    "metal",
+    "old",
+    "shed",
+    "woodwork"
+  ],
+  "dimensions_mm": [
+    200.48236846923828,
+    395.7868218421936,
+    271.6780751943588
+  ],
+  "files_hash": "e1b894759ca8b4ed6359bd7503a34c974494a620",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/bench_vice_01/bench_vice_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/bench_vice_01/bench_vice_01_1k.fbx",
+      "bytes": 181356,
+      "md5": "4f2f948811d4927dcdb4955ce2e726c3",
+      "sha256": "34bbae6c8b3c8d5409012e42fc673e4acb2b1ae6db66d5701a82e8a2568cceb6",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/bench_vice_01/bench_vice_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/bench_vice_01/textures/bench_vice_01_diff_1k.jpg",
+      "bytes": 724482,
+      "md5": "3165de5dc903b01d870f0ab0a9933d0a",
+      "sha256": "e453c1bc7c283fb6a9c8da0638173809dfafb8310f5e81112705f5ecf88b5ab7",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/bench_vice_01/bench_vice_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/bench_vice_01/textures/bench_vice_01_metal_1k.exr",
+      "bytes": 1217141,
+      "md5": "e9a09e98b96451e1a51bcf65bba75265",
+      "sha256": "c501e9c37c7cf8eaf69c1591db3b00885821cf269f41d91c7e4b3c1fb0c177cf",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/bench_vice_01/bench_vice_01_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/bench_vice_01/textures/bench_vice_01_nor_gl_1k.exr",
+      "bytes": 1978410,
+      "md5": "d73b7f295daf7600fdd05837c9471286",
+      "sha256": "f056337b1c73f85528607bf779d0b4e36c7872d519bbf2b797eabbfb7bf15c16",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/bench_vice_01/bench_vice_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/bench_vice_01/textures/bench_vice_01_rough_1k.exr",
+      "bytes": 1063429,
+      "md5": "cb22469667925fb66def8a1b5ae16a95",
+      "sha256": "fb85681d6c8793decbe339c3ea70eed9aac735551a5a8f109bb14bfcbaa17eb2",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/bench_vice_01/bench_vice_01_rough_1k.exr"
+    }
+  ]
+}
