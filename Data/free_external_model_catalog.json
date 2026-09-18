@@ -631,5 +631,16 @@
     "intended_use": "Combined left-turn and straight-ahead signal model for authored intersections.",
     "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Ampel_Abbieger_links_geradeaus_Mast/Ampel_Abbieger_links_geradeaus_Mast.glb",
     "source_git_blob_sha1": "139113c8945b1405eeeb863fe16b1a8d17d7764f"
+  },
+  {
+    "id": "rostock-traffic-ampel-abbieger-rechts-geradeaus-mast",
+    "name": "Right/straight traffic light mast",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Ampel_Abbieger_rechts_geradeaus_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Combined right-turn and straight-ahead signal model for authored intersections.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Ampel_Abbieger_rechts_geradeaus_Mast/Ampel_Abbieger_rechts_geradeaus_Mast.glb",
+    "source_git_blob_sha1": "6fc42ff77acf26acda999362f89a83c44d7d7b15"
   }
 ]
