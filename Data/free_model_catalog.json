@@ -154,5 +154,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/signal_flashlight/signal_flashlight_1k.fbx"
+  },
+  {
+    "slug": "vintage_radio_transceiver",
+    "name": "Vintage Radio Transceiver",
+    "intended_use": "Radio-frequency puzzle / workshop communications prop.",
+    "source_page": "https://polyhaven.com/a/vintage_radio_transceiver",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Mateusz Sadek": "All"
+    },
+    "category": "Electronics & Appliances/Audio & Video/Radios & Portable Audio",
+    "dimensions_mm": [
+      618.1803643703461,
+      417.8741127252579,
+      434.39279100857675
+    ],
+    "files_hash": "f343f538ee1b638da93aeaf450e50e428a57a2f4",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/vintage_radio_transceiver/vintage_radio_transceiver_1k.fbx"
   }
 ]
