@@ -93,7 +93,7 @@ void UPlayerMenuWidget::NativeOnInitialized()
     {
         Studio->SetActorEnableCollision(false);
         Studio->SetView(TEXT("FullBody"));
-        Studio->SetLighting(TEXT("Neutral"));
+        Studio->SetLighting(TEXT("Modern"));
         if (auto* Creator = GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>())
             Studio->Appearance->ApplyAppearance(Creator->Committed.PlayerAppearanceData);
     }
