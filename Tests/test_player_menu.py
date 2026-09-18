@@ -287,7 +287,7 @@ class PlayerMenuRegressionTests(unittest.TestCase):
     def test_video_mode_has_confirmation_and_automatic_revert(self):
         self.assertIn("ConfirmVideoMode()", self.cpp)
         self.assertIn("RevertVideoMode()", self.cpp)
-        self.assertIn("ConfirmationSecondsRemaining = Action == 3 ? 15.0f", self.cpp)
+        self.assertIn("ConfirmationSecondsTotal = Action == 3 ? 15.0f : 0.0f", self.cpp)\n        self.assertIn("ConfirmationSecondsRemaining = ConfirmationSecondsTotal", self.cpp)
         self.assertIn("AUTOMATYCZNE COFNIĘCIE", self.cpp)
 
     def test_destructive_actions_are_guarded(self):
@@ -337,7 +337,7 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             'FString::Printf(TEXT("%02d  %s"), Index + 1, Labels[Index])',
             "const bool bActive = Index == ActiveTab",
             "bActive ? 1.008f : 1.0f",
-            "(bFocused || bActive) ? 1.0f : 0.94f",
+            "(bFocused || bActive) ? 1.0f : 0.92f",
         ):
             self.assertIn(token, self.cpp)
 
@@ -428,7 +428,7 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             "SFXMeter->SetPercent(SFXVolume)",
             "UIVolumeMeter->SetPercent(UIVolume)",
             "SetFillColorAndOpacity(Accent)",
-            'TEXT("WYBIERZ KONTROLKĘ, ABY ZMIENIĆ POZIOM CO 25%")',
+            'TEXT("SUWAK: PRECYZYJNA REGULACJA  •  PRZYCISK: SKOK CO 25%")',
         ):
             self.assertIn(token, self.cpp)
 
