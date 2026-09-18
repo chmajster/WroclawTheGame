@@ -10,6 +10,6 @@ class WROCLAWTHEGAME_API ACityTrafficVehicle : public ADriveableVehicle
   public:
     ACityTrafficVehicle();
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UVehicleAIDriverComponent> TrafficDriver;
-    bool ConfigureTraffic(const TArray<FVector> &Route, int32 StartIndex);
+    bool ConfigureTraffic(const TArray<FVector> &Route, int32 StartIndex, bool bLoop = true);
     void DeactivateTraffic();
 };
