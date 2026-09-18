@@ -510,6 +510,15 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_character_preview_mouse_controls_are_scoped_to_center_panel(self):
+        for token in (
+            "CenterScroll->GetCachedGeometry().IsUnderLocation(Event.GetScreenSpacePosition())",
+            "Studio && bPreviewPanelHovered",
+            "Studio->Zoom(-Event.GetWheelDelta() * 18.0f)",
+            "bRotatingPreview = true",
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_character_preview_keeps_camera_and_lighting_controls(self):
         for token in (
             "PreviewFullBody", "PreviewUpperBody", "PreviewFace",
