@@ -431,6 +431,111 @@ void UPlayerMenuWidget::FocusPrimaryAction()
     }
 }
 
+void UPlayerMenuWidget::AddGameHero()
+{
+    auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
+    const bool bInGame = Mission && Mission->bInGame;
+    const bool bHasSave = Mission && Mission->HasSave();
+
+    int32 Completed = 0;
+    const int32 Total = static_cast<int32>(Wroclaw::Quests().size());
+    if (Mission)
+        for (const auto& Quest : Wroclaw::Quests())
+            if (Mission->State.QuestComplete(Quest))
+                ++Completed;
+
+    auto* Stage = WidgetTree->ConstructWidget<UOverlay>();
+    auto* StageSlot = CenterColumn->AddChildToVerticalBox(Stage);
+    StageSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+    auto* StageBg = WidgetTree->ConstructWidget<UBorder>();
+    StageBg->SetBrush(RoundedBrush(FLinearColor(0.006f, 0.013f, 0.022f, 0.98f), 14.0f));
+    Stage->AddChildToOverlay(StageBg);
+
+    if (Studio && Studio->RenderTarget)
+    {
+        auto* PreviewScale = WidgetTree->ConstructWidget<UScaleBox>();
+        PreviewScale->SetStretch(EStretch::ScaleToFit);
+        PreviewScale->SetStretchDirection(EStretchDirection::Both);
+        auto* PreviewSlot = Stage->AddChildToOverlay(PreviewScale);
+        PreviewSlot->SetHorizontalAlignment(HAlign_Right);
+        PreviewSlot->SetVerticalAlignment(VAlign_Fill);
+        PreviewSlot->SetPadding(FMargin(330, 24, 20, 22));
+
+        auto* Image = WidgetTree->ConstructWidget<UImage>();
+        FSlateBrush Brush;
+        Brush.SetResourceObject(Studio->RenderTarget);
+        Brush.ImageSize = FVector2D(720, 1000);
+        Image->SetBrush(Brush);
+        Image->SetColorAndOpacity(FLinearColor(1.0f, 1.0f, 1.0f, 0.83f));
+        PreviewScale->AddChild(Image);
+    }
+
+    auto* TopLeft = WidgetTree->ConstructWidget<UBorder>();
+    TopLeft->SetBrush(RoundedBrush(FLinearColor(0.010f, 0.028f, 0.040f, 0.94f), 8.0f));
+    TopLeft->SetPadding(FMargin(11, 6));
+    auto* TopLeftSlot = Stage->AddChildToOverlay(TopLeft);
+    TopLeftSlot->SetHorizontalAlignment(HAlign_Left);
+    TopLeftSlot->SetVerticalAlignment(VAlign_Top);
+    TopLeftSlot->SetPadding(FMargin(18));
+    TopLeft->AddChild(MakeText(TEXT("ROZDZIAŁ 01  /  PRZEBUDZENIE"), 9, true, Accent));
+
+    auto* StatusBadge = WidgetTree->ConstructWidget<UBorder>();
+    StatusBadge->SetBrush(RoundedBrush(
+        bInGame ? FLinearColor(0.04f, 0.24f, 0.29f, 0.94f) : PanelSoft, 8.0f));
+    StatusBadge->SetPadding(FMargin(11, 6));
+    auto* BadgeSlot = Stage->AddChildToOverlay(StatusBadge);
+    BadgeSlot->SetHorizontalAlignment(HAlign_Right);
+    BadgeSlot->SetVerticalAlignment(VAlign_Top);
+    BadgeSlot->SetPadding(FMargin(18));
+    StatusBadge->AddChild(MakeText(
+        bInGame ? TEXT("AKTYWNA SESJA") : (bHasSave ? TEXT("ZAPIS GOTOWY") : TEXT("NOWA HISTORIA")),
+        9, true, bInGame ? Accent : Muted));
+
+    auto* HeroCard = WidgetTree->ConstructWidget<UBorder>();
+    HeroCard->SetBrush(RoundedBrush(FLinearColor(0.004f, 0.009f, 0.015f, 0.91f), 12.0f));
+    HeroCard->SetPadding(FMargin(22, 18, 22, 18));
+    auto* HeroSlot = Stage->AddChildToOverlay(HeroCard);
+    HeroSlot->SetHorizontalAlignment(HAlign_Left);
+    HeroSlot->SetVerticalAlignment(VAlign_Bottom);
+    HeroSlot->SetPadding(FMargin(18, 18, 300, 18));
+
+    auto* HeroBox = WidgetTree->ConstructWidget<UVerticalBox>();
+    HeroCard->AddChild(HeroBox);
+
+    HeroBox->AddChildToVerticalBox(MakeText(TEXT("WROCŁAW"), 10, true, Accent))
+        ->SetPadding(FMargin(0, 0, 0, 3));
+    HeroBox->AddChildToVerticalBox(MakeText(TEXT("PRZEBUDZENIE"), 30, true, TextPrimary))
+        ->SetPadding(FMargin(0, 0, 0, 10));
+
+    const FString Objective = bInGame && Mission
+        ? Mission->ObjectiveText()
+        : (bHasSave ? TEXT("Wczytaj ostatni zapis i kontynuuj historię.")
+                    : TEXT("Rozpocznij nową kampanię i obudź się we Wrocławiu."));
+    auto* ObjectiveText = MakeText(Objective, 12, false, Muted);
+    ObjectiveText->SetLineHeightPercentage(1.18f);
+    HeroBox->AddChildToVerticalBox(ObjectiveText)->SetPadding(FMargin(0, 0, 0, 15));
+
+    auto* ProgressHead = WidgetTree->ConstructWidget<UHorizontalBox>();
+    HeroBox->AddChildToVerticalBox(ProgressHead)->SetPadding(FMargin(0, 0, 0, 5));
+    ProgressHead->AddChildToHorizontalBox(MakeText(TEXT("POSTĘP ROZDZIAŁU"), 9, true, Muted))
+        ->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    auto* PercentText = MakeText(
+        FString::Printf(TEXT("%d / %d"), Completed, FMath::Max(Total, 1)), 9, true, Accent);
+    PercentText->SetJustification(ETextJustify::Right);
+    ProgressHead->AddChildToHorizontalBox(PercentText);
+
+    auto* Progress = WidgetTree->ConstructWidget<UProgressBar>();
+    Progress->SetPercent(Total > 0 ? static_cast<float>(Completed) / Total : 0.0f);
+    Progress->SetFillColorAndOpacity(Accent);
+    HeroBox->AddChildToVerticalBox(Progress)->SetPadding(FMargin(0, 0, 0, 12));
+
+    const FString SaveText = Mission
+        ? (Mission->bLastSaveSucceeded ? TEXT("OSTATNI ZAPIS  •  OK") : TEXT("OSTATNI ZAPIS  •  BŁĄD"))
+        : TEXT("BRAK AKTYWNEGO ZAPISU");
+    HeroBox->AddChildToVerticalBox(MakeText(SaveText, 9, true, Mission && !Mission->bLastSaveSucceeded ? FLinearColor(0.95f,0.42f,0.34f,1.0f) : Muted));
+}
+
 void UPlayerMenuWidget::AddPreview()
 {
     if (!Studio || !Studio->RenderTarget)
@@ -601,8 +706,14 @@ void UPlayerMenuWidget::BuildGameTab()
     auto* LoadButton = MakeButton(TEXT("WCZYTAJ ZAPIS"));
     LoadButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::LoadGame);
     const bool CityActive = GetWorld()->GetSubsystem<UCityGameplaySubsystem>()->IsActive();
-    LoadButton->SetIsEnabled(CityActive || (Mission && Mission->HasSave()));
-    ActionColumn->AddChildToVerticalBox(LoadButton)->SetPadding(FMargin(0, 0, 0, 18));
+    const bool bHasSave = CityActive || (Mission && Mission->HasSave());
+    LoadButton->SetIsEnabled(bHasSave);
+    ActionColumn->AddChildToVerticalBox(LoadButton)->SetPadding(FMargin(0, 0, 0, 10));
+
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+        bHasSave ? TEXT("DOSTĘPNY") : TEXT("BRAK"),
+        TEXT("OSTATNI ZAPIS"),
+        bHasSave))->SetPadding(FMargin(0, 0, 0, 18));
 
     ActionColumn->AddChildToVerticalBox(MakeText(TEXT("CENTRUM GRACZA"), 9, true, Muted))
         ->SetPadding(FMargin(2, 0, 2, 8));
@@ -619,7 +730,7 @@ void UPlayerMenuWidget::BuildGameTab()
     QuitButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::QuitGame);
     ActionColumn->AddChildToVerticalBox(QuitButton)->SetPadding(FMargin(0, 14, 0, 0));
 
-    AddPreview();
+    AddGameHero();
     AddPlayerStatus();
 }
 
