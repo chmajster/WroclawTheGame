@@ -17,7 +17,8 @@ MATERIALS = {
 }
 LOOPS = {'Apartment', 'Street', 'Chase'}
 SOUNDS = {'Footstep': .24, 'Door': .85, 'Drawer': .6, 'Pickup': .26, 'Switch': .12,
-          'Horn': .75, 'Hit': .2, 'Alarm': .8, 'Apartment': 8, 'Street': 12, 'Chase': 4}
+          'Horn': .75, 'Hit': .2, 'Alarm': .8, 'UIHover': .055, 'UIClick': .09,
+          'Apartment': 8, 'Street': 12, 'Chase': 4}
 
 
 def make_texture(path, name, color):
@@ -58,6 +59,13 @@ def make_sound(path, name, duration):
             sample = .25 * math.sin(2 * math.pi * 880 * t) * math.exp(-t * 14)
         elif name == 'Switch':
             sample = noise * .45 * math.exp(-t * 70)
+        elif name == 'UIHover':
+            sample = (.13 * math.sin(2 * math.pi * 980 * t) +
+                      .05 * math.sin(2 * math.pi * 1470 * t)) * math.exp(-t * 58)
+        elif name == 'UIClick':
+            sample = (.2 * math.sin(2 * math.pi * 720 * t) +
+                      .08 * math.sin(2 * math.pi * 1440 * t) +
+                      noise * .025) * math.exp(-t * 36)
         elif name == 'Hit':
             sample = (noise * .35 + math.sin(2 * math.pi * 65 * t) * .4) * math.exp(-t * 22)
         elif name == 'Horn':
