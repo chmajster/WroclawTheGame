@@ -23,8 +23,12 @@ class WROCLAWTHEGAME_API ADriveableVehicle : public APawn,
     virtual bool OpenStorage_Implementation(APawn *User) override;
     bool Exit();
     FString Status() const;
+    UFUNCTION(BlueprintCallable) void SetVisualMeshes(class UStaticMesh *BodyMesh, class UStaticMesh *WheelMesh);
     UPROPERTY(EditAnywhere) TObjectPtr<class UVehicleDefinition> Definition;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UBoxComponent> Chassis;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<class UStaticMeshComponent> BodyVisual;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<class UStaticMeshComponent> CabinVisual;
+    UPROPERTY(VisibleAnywhere) TArray<TObjectPtr<class UStaticMeshComponent>> WheelVisuals;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UWorldPartitionStreamingSourceComponent> StreamingSource;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class USpringArmComponent> Boom;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UCameraComponent> Camera;
