@@ -167,6 +167,20 @@ def prepare() -> None:
     nanite.set_editor_property("enabled", bool(manifest["unreal"]["nanite"]))
     mesh_subsystem.set_nanite_settings(base_mesh, nanite, True)
 
+    actual_lod_count = mesh_subsystem.get_lod_count(base_mesh)
+    expected_lod_count = len(manifest["lod"]["ratios"])
+    if actual_lod_count != expected_lod_count:
+        raise RuntimeError(f"Unexpected Unreal LOD count: {actual_lod_count} != {expected_lod_count}")
+
+    collision_count = mesh_subsystem.get_simple_collision_count(base_mesh)
+    if manifest["collision"]["mode"] == "simple" and collision_count <= 0:
+        hull_count = int(manifest["collision"].get("max_hulls", 1))
+        if not mesh_subsystem.set_convex_decomposition_collisions(base_mesh, hull_count, 32, 100000):
+            raise RuntimeError("Unreal failed to generate simple collision")
+        collision_count = mesh_subsystem.get_simple_collision_count(base_mesh)
+    if manifest["collision"]["mode"] == "simple" and collision_count <= 0:
+        raise RuntimeError("Simple collision is required but none exists")
+
     imported_textures = {}
     texture_destination = f"{destination}/Textures"
     for kind, value in manifest["textures"].items():
@@ -183,11 +197,11 @@ def prepare() -> None:
         "asset_id": asset_id,
         "mesh": expected_path,
         "lods": integrated_lods,
-        "expected_lods": len(manifest["lod"]["ratios"]),
+        "expected_lods": expected_lod_count,\n        "unreal_lod_count": actual_lod_count,
         "nanite": bool(manifest["unreal"]["nanite"]),
         "textures": {key: value.get_path_name() for key, value in imported_textures.items()},
         "material": material.get_path_name() if material else None,
-        "collision": manifest["collision"]["mode"],
+        "collision": manifest["collision"]["mode"],\n        "collision_count": collision_count,
         "blender_report": blender_report,
         "status": "PASS",
     }
