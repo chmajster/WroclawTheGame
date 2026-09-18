@@ -1,0 +1,68 @@
+{
+  "slug": "metal_office_desk",
+  "name": "Metal Office Desk",
+  "intended_use": "Desk for apartment, shop terminal and safehouse interiors.",
+  "source_page": "https://polyhaven.com/a/metal_office_desk",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Ulan Cabanilla": "All"
+  },
+  "category": "Furniture/Tables/Desks",
+  "tags": [
+    "old",
+    "vintage",
+    "metal",
+    "dirty",
+    "scratched",
+    "industrial",
+    "rectangular"
+  ],
+  "dimensions_mm": [
+    2000.0003576278687,
+    947.2135305404663,
+    787.5000089406967
+  ],
+  "files_hash": "687c6d374d4674adb8d065aa3480b04f4f56f2b0",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/metal_office_desk/metal_office_desk_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_office_desk/metal_office_desk_1k.fbx",
+      "bytes": 239676,
+      "md5": "0ed604020aaacc89c65eddb27d3354bc",
+      "sha256": "858d23fe96547b3c5d0d5d29db858598554b3d06e5af1e45f2f9c3e6be19cd91",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/metal_office_desk/metal_office_desk_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_office_desk/textures/metal_office_desk_diff_1k.jpg",
+      "bytes": 470831,
+      "md5": "6a27263c95811fa902ddea6476d610e9",
+      "sha256": "1f02e3e77e8f82a3600664c991bd45c1c187452d61e9ede4336c6f90f7fa3139",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/metal_office_desk/metal_office_desk_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_office_desk/textures/metal_office_desk_metal_1k.exr",
+      "bytes": 116140,
+      "md5": "d18c7ad7e26c10211ae284403b7c5da5",
+      "sha256": "3977a3f127007b2f8cab461edb68b0219d9d9ee7af1df95a52c63b58e13fdaaa",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_office_desk/metal_office_desk_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_office_desk/textures/metal_office_desk_nor_gl_1k.exr",
+      "bytes": 311917,
+      "md5": "13d7622ec2e38fbfed884283e99962f5",
+      "sha256": "99f83d8764dca05ab439416e20facaf9d93235807fb1237afeeeb1600a61ec6d",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_office_desk/metal_office_desk_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_office_desk/textures/metal_office_desk_rough_1k.exr",
+      "bytes": 772999,
+      "md5": "7e8e84038af8b72557f9a5074a4e2d32",
+      "sha256": "dbfba9e4ead968379ef4ab5cc0cd0eb5e0781353e10a92cab62c5e3e99effac0",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_office_desk/metal_office_desk_rough_1k.exr"
+    }
+  ]
+}

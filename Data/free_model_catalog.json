@@ -707,5 +707,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/utility_box_01/utility_box_01_1k.fbx"
+  },
+  {
+    "slug": "metal_office_desk",
+    "name": "Metal Office Desk",
+    "intended_use": "Desk for apartment, shop terminal and safehouse interiors.",
+    "source_page": "https://polyhaven.com/a/metal_office_desk",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Ulan Cabanilla": "All"
+    },
+    "category": "Furniture/Tables/Desks",
+    "dimensions_mm": [
+      2000.0003576278687,
+      947.2135305404663,
+      787.5000089406967
+    ],
+    "files_hash": "687c6d374d4674adb8d065aa3480b04f4f56f2b0",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/metal_office_desk/metal_office_desk_1k.fbx"
   }
 ]
