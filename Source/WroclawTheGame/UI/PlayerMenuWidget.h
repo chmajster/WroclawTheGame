@@ -43,6 +43,7 @@ private:
     UPROPERTY() TObjectPtr<class UTextBlock> ContextHint;
     UPROPERTY() TObjectPtr<class UTextBlock> PreviewViewStatus;
     UPROPERTY() TObjectPtr<class UTextBlock> PreviewLightingStatus;
+    UPROPERTY() TObjectPtr<class UBorder> ToastCard;
     UPROPERTY() TArray<TObjectPtr<class UButton>> TabButtons;
     UPROPERTY() TArray<TObjectPtr<class UBorder>> TabIndicators;
     UPROPERTY() TArray<TObjectPtr<class UButton>> ActionButtons;
@@ -57,6 +58,7 @@ private:
     float PageAnimationTime = 0.22f;
     float ShellAnimationTime = 0.28f;
     float AmbientAnimationTime = 0.0f;
+    float ToastTimeRemaining = 0.0f;
     bool bRotatingPreview = false;
     bool bCollectActionButtons = false;
     FString PreviewViewLabel = TEXT("CAŁA SYLWETKA");
@@ -83,6 +85,8 @@ private:
     void UpdateTabStyle();
     void UpdateContextStatus();
     void UpdateContextHint();
+    void ShowToast(const FString& Message);
+    void RefreshWithSettingsToast();
     void UpdateFocusPresentation();
     void FocusPrimaryAction();
     void UpdatePreviewStatus();
