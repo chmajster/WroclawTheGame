@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import traceback
 from pathlib import Path
 
@@ -10,7 +11,8 @@ import unreal
 
 ROOT = Path(unreal.Paths.project_dir()).resolve()
 POLICY = ROOT / "Data/runtime_asset_qa.json"
-CHAPTER = ROOT / "Data/chapter1.json"
+CHAPTER = Path(os.environ.get("WTG_CHAPTER_INPUT", ROOT / "Data/chapter1.json"))
+WORLD = Path(os.environ.get("WTG_WORLD_INPUT", ROOT / "Data/openworld.json"))
 BINDINGS = ROOT / "Data/model_bindings.json"
 CHARACTERS = ROOT / "Data/free_character_catalog.json"
 MODEL_REPORT = ROOT / "Saved/RuntimeAssetQA/model_quality.json"
@@ -167,11 +169,12 @@ def run():
         elif not actor_visuals(actor):
             errors.append(f"{action_id}: static action visual is missing")
 
+    world = json.loads(WORLD.read_text(encoding="utf-8"))
     system_expectations = {
-        "guards": ("SliceBootstrap_guard_", len(json.loads((ROOT/"Data/openworld.json").read_text(encoding="utf-8"))["guards"])),
-        "npcs": ("SliceBootstrap_npc_", len(json.loads((ROOT/"Data/openworld.json").read_text(encoding="utf-8"))["npc"])),
-        "hides": ("SliceBootstrap_hide_", len(json.loads((ROOT/"Data/openworld.json").read_text(encoding="utf-8"))["hides"])),
-        "monitors": ("SliceBootstrap_monitor_", len(json.loads((ROOT/"Data/openworld.json").read_text(encoding="utf-8"))["cameras"])),
+        "guards": ("SliceBootstrap_guard_", len(world["guards"])),
+        "npcs": ("SliceBootstrap_npc_", len(world["npc"])),
+        "hides": ("SliceBootstrap_hide_", len(world["hides"])),
+        "monitors": ("SliceBootstrap_monitor_", len(world["cameras"])),
     }
     counts = {}
     for name, (prefix, expected) in system_expectations.items():
