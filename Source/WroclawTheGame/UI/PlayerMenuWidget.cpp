@@ -625,46 +625,81 @@ void UPlayerMenuWidget::BuildGameTab()
 
 void UPlayerMenuWidget::BuildCharacterTab()
 {
-    PageTitle->SetText(FText::FromString(TEXT("POSTAĆ / PODGLĄD")));
+    PageTitle->SetText(FText::FromString(TEXT("POSTAĆ  /  PODGLĄD")));
 
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("KAMERA"), 16, true, Accent))
-        ->SetPadding(FMargin(3, 0, 3, 12));
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("PODGLĄD"), 20, true, TextPrimary))
+        ->SetPadding(FMargin(2, 1, 2, 2));
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("KAMERA I ŚWIATŁO"), 9, true, Accent))
+        ->SetPadding(FMargin(2, 0, 2, 14));
+
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("KADR"), 9, true, Muted))
+        ->SetPadding(FMargin(2, 0, 2, 7));
 
     auto* Full = MakeButton(TEXT("CAŁA SYLWETKA"), true);
     Full->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewFullBody);
-    ActionColumn->AddChildToVerticalBox(Full)->SetPadding(FMargin(0, 0, 0, 8));
+    ActionColumn->AddChildToVerticalBox(Full)->SetPadding(FMargin(0, 0, 0, 7));
 
     auto* Upper = MakeButton(TEXT("GÓRNA CZĘŚĆ"));
     Upper->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewUpperBody);
-    ActionColumn->AddChildToVerticalBox(Upper)->SetPadding(FMargin(0, 0, 0, 8));
+    ActionColumn->AddChildToVerticalBox(Upper)->SetPadding(FMargin(0, 0, 0, 7));
 
     auto* Face = MakeButton(TEXT("TWARZ"));
     Face->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewFace);
-    ActionColumn->AddChildToVerticalBox(Face)->SetPadding(FMargin(0, 0, 0, 16));
+    ActionColumn->AddChildToVerticalBox(Face)->SetPadding(FMargin(0, 0, 0, 14));
 
-    auto* Left = MakeButton(TEXT("OBRÓĆ W LEWO"));
-    Left->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewRotateLeft);
-    ActionColumn->AddChildToVerticalBox(Left)->SetPadding(FMargin(0, 0, 0, 8));
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("ŚWIATŁO"), 9, true, Muted))
+        ->SetPadding(FMargin(2, 0, 2, 7));
 
-    auto* Right = MakeButton(TEXT("OBRÓĆ W PRAWO"));
-    Right->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewRotateRight);
-    ActionColumn->AddChildToVerticalBox(Right);
+    auto* Modern = MakeButton(TEXT("STUDIO"), true);
+    Modern->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewLightingModern);
+    ActionColumn->AddChildToVerticalBox(Modern)->SetPadding(FMargin(0, 0, 0, 7));
+
+    auto* Day = MakeButton(TEXT("DZIEŃ"));
+    Day->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewLightingDaylight);
+    ActionColumn->AddChildToVerticalBox(Day)->SetPadding(FMargin(0, 0, 0, 7));
+
+    auto* Night = MakeButton(TEXT("NOC"));
+    Night->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewLightingNight);
+    ActionColumn->AddChildToVerticalBox(Night)->SetPadding(FMargin(0, 0, 0, 14));
+
+    auto* Reset = MakeButton(TEXT("RESET PODGLĄDU"));
+    Reset->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewReset);
+    ActionColumn->AddChildToVerticalBox(Reset);
 
     AddPreview();
 
     auto* Creator = GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>();
-    if (Creator)
-    {
-        const auto& A = Creator->Committed.PlayerAppearanceData;
-        const FString Sex = A.Sex == EAppearanceSex::Female ? TEXT("Kobieta") : TEXT("Mężczyzna");
-        const FString Details = FString::Printf(
-            TEXT("%s\n\nPłeć: %s\nWzrost: %.0f cm\nWiek wizualny: %.0f\nSylwetka: %s\nProfil głosu: %s\nPreset: %s\nSeed: %d"),
-            *A.Name.ToUpper(), *Sex, A.Height, A.VisualAge, *A.BodyBuild.ToString(),
-            *A.VoiceProfileID.ToString(), *A.PresetID.ToString(), A.RandomSeed);
-        RightColumn->AddChildToVerticalBox(MakeText(TEXT("PROFIL POSTACI"), 13, true, Accent))
-            ->SetPadding(FMargin(0, 0, 0, 10));
-        RightColumn->AddChildToVerticalBox(MakeText(Details, 14, false, FLinearColor(0.9f, 0.92f, 0.95f)));
-    }
+    if (!Creator)
+        return;
+
+    const auto& A = Creator->Committed.PlayerAppearanceData;
+    const FString Sex = A.Sex == EAppearanceSex::Female ? TEXT("KOBIETA") : TEXT("MĘŻCZYZNA");
+    const FString Name = A.Name.IsEmpty() ? TEXT("GRACZ") : A.Name.ToUpper();
+
+    RightColumn->AddChildToVerticalBox(MakeText(TEXT("PROFIL POSTACI"), 9, true, Accent))
+        ->SetPadding(FMargin(0, 0, 0, 4));
+    RightColumn->AddChildToVerticalBox(MakeText(Name, 23, true, TextPrimary))
+        ->SetPadding(FMargin(0, 0, 0, 14));
+
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(Sex, TEXT("PŁEĆ"), true))
+        ->SetPadding(FMargin(0, 0, 0, 6));
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%.0f CM"), A.Height), TEXT("WZROST")))
+        ->SetPadding(FMargin(0, 0, 0, 6));
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%.0f"), A.VisualAge), TEXT("WIEK WIZUALNY")))
+        ->SetPadding(FMargin(0, 0, 0, 6));
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(
+        A.BodyBuild.ToString().ToUpper(), TEXT("SYLWETKA")))
+        ->SetPadding(FMargin(0, 0, 0, 6));
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(
+        A.VoiceProfileID.ToString().ToUpper(), TEXT("PROFIL GŁOSU")))
+        ->SetPadding(FMargin(0, 0, 0, 6));
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(
+        A.PresetID.ToString().ToUpper(), TEXT("PRESET")))
+        ->SetPadding(FMargin(0, 0, 0, 6));
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%d"), A.RandomSeed), TEXT("SEED WYGLĄDU")));
 }
 
 void UPlayerMenuWidget::BuildInventoryTab()
@@ -1562,6 +1597,26 @@ void UPlayerMenuWidget::PreviewRotateLeft()
 void UPlayerMenuWidget::PreviewRotateRight()
 {
     if (Studio) Studio->Rotate(20);
+}
+
+void UPlayerMenuWidget::PreviewLightingModern()
+{
+    if (Studio) Studio->SetLighting(TEXT("Modern"));
+}
+
+void UPlayerMenuWidget::PreviewLightingDaylight()
+{
+    if (Studio) Studio->SetLighting(TEXT("Daylight"));
+}
+
+void UPlayerMenuWidget::PreviewLightingNight()
+{
+    if (Studio) Studio->SetLighting(TEXT("Night"));
+}
+
+void UPlayerMenuWidget::PreviewReset()
+{
+    if (Studio) Studio->ResetPresentation();
 }
 
 FReply UPlayerMenuWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)

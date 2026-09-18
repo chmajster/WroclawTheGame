@@ -1,3 +1,11 @@
+## 2026-09-18 — dopracowana zakładka Postać
+
+- Zakładka Postać korzysta z tego samego dashboardowego języka wizualnego co pozostałe części centrum gracza.
+- Sterowanie podglądem rozdzielono na kadr i oświetlenie.
+- Dodano profile Studio, Dzień i Noc wykorzystujące istniejące trzypunktowe światło Character Creator.
+- Dodano reset prezentacji przywracający pełną sylwetkę, frontalny obrót i profil Studio.
+- Profil postaci pokazuje osobne karty dla płci, wzrostu, wieku wizualnego, sylwetki, głosu, presetu i seeda.
+
 ## 2026-09-18 — żywe tło 3D menu
 
 - Pełnoekranowe menu nie zasłania już świata niemal czarnym tłem; pod interfejsem pozostaje aktualna scena 3D gry.

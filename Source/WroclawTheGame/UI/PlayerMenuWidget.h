@@ -88,6 +88,10 @@ private:
     UFUNCTION() void PreviewFace();
     UFUNCTION() void PreviewRotateLeft();
     UFUNCTION() void PreviewRotateRight();
+    UFUNCTION() void PreviewLightingModern();
+    UFUNCTION() void PreviewLightingDaylight();
+    UFUNCTION() void PreviewLightingNight();
+    UFUNCTION() void PreviewReset();
 
     UFUNCTION() void ToggleFPSCounter();
     UFUNCTION() void ToggleVSync();
