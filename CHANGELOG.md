@@ -1,3 +1,11 @@
+## 2026-09-18 — dźwięki i mikroanimacje menu
+
+- Dodano osobne, deterministycznie generowane dźwięki UIHover i UIClick do pipeline'u źródłowych assetów.
+- Dźwięki menu są odtwarzane jako niespatializowane UI audio i działają również podczas pauzy.
+- Każdy runtime przycisk ma subtelny hover i click feedback bez duplikowania logiki poszczególnych akcji.
+- Przy zmianie zakładki trzy kolumny menu płynnie pojawiają się z krótkim przesunięciem i easingiem cubic-out.
+- Animacja jest realizowana bez osobnych Blueprint Animation assets, dzięki czemu działa również w fallbackowym runtime UMG C++.
+
 ## 2026-09-18 — klawiatura i gamepad w menu
 
 - Wszystkie przyciski runtime UMG są jawnie focusable i współpracują z natywną nawigacją Slate strzałkami oraz D-padem.

@@ -2,6 +2,7 @@
 
 #include "UI/SliceController.h"
 #include "UI/PerformanceSettings.h"
+#include "Audio/SliceAudio.h"
 #include "Character/CharacterCreator.h"
 #include "Character/CharacterCreatorSubsystem.h"
 #include "Character/CharacterAppearanceComponent.h"
@@ -96,6 +97,8 @@ UButton* UPlayerMenuWidget::MakeButton(const FString& Label, bool bAccent)
 {
     auto* Button = WidgetTree->ConstructWidget<UButton>();
     Button->SetIsFocusable(true);
+    Button->OnHovered.AddDynamic(this, &UPlayerMenuWidget::PlayUIHover);
+    Button->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PlayUIClick);
     Button->SetBackgroundColor(FLinearColor::White);
     Button->SetColorAndOpacity(FLinearColor::White);
 
@@ -299,6 +302,15 @@ void UPlayerMenuWidget::Refresh()
         default: ActiveTab = 0; BuildGameTab(); break;
     }
     bCollectActionButtons = false;
+
+    PageAnimationTime = 0.0f;
+    ActionColumn->SetRenderOpacity(0.0f);
+    CenterColumn->SetRenderOpacity(0.0f);
+    RightColumn->SetRenderOpacity(0.0f);
+    ActionColumn->SetRenderTranslation(FVector2D(-12.0f, 0.0f));
+    CenterColumn->SetRenderTranslation(FVector2D(0.0f, 8.0f));
+    RightColumn->SetRenderTranslation(FVector2D(12.0f, 0.0f));
+
     FocusPrimaryAction();
 }
 
@@ -817,6 +829,16 @@ void UPlayerMenuWidget::QuitGame()
         TEXT("WYJDŹ"));
 }
 
+void UPlayerMenuWidget::PlayUIHover()
+{
+    USliceAudio::PlayUI(this, TEXT("UIHover"), 0.16f);
+}
+
+void UPlayerMenuWidget::PlayUIClick()
+{
+    USliceAudio::PlayUI(this, TEXT("UIClick"), 0.26f);
+}
+
 void UPlayerMenuWidget::ShowConfirmation(
     int32 Action,
     const FString& Title,
@@ -1218,6 +1240,20 @@ FReply UPlayerMenuWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, co
 void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
     Super::NativeTick(MyGeometry, InDeltaTime);
+
+    if (PageAnimationTime < 0.22f && ActionColumn && CenterColumn && RightColumn)
+    {
+        PageAnimationTime = FMath::Min(0.22f, PageAnimationTime + InDeltaTime);
+        const float T = FMath::Clamp(PageAnimationTime / 0.22f, 0.0f, 1.0f);
+        const float Ease = 1.0f - FMath::Pow(1.0f - T, 3.0f);
+
+        ActionColumn->SetRenderOpacity(Ease);
+        CenterColumn->SetRenderOpacity(Ease);
+        RightColumn->SetRenderOpacity(Ease);
+        ActionColumn->SetRenderTranslation(FVector2D(FMath::Lerp(-12.0f, 0.0f, Ease), 0.0f));
+        CenterColumn->SetRenderTranslation(FVector2D(0.0f, FMath::Lerp(8.0f, 0.0f, Ease)));
+        RightColumn->SetRenderTranslation(FVector2D(FMath::Lerp(12.0f, 0.0f, Ease), 0.0f));
+    }
 
     if (PendingConfirmation != 3 || !ConfirmationOverlay)
         return;

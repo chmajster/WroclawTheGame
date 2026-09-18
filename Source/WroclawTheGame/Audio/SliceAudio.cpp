@@ -18,3 +18,19 @@ void USliceAudio::Play(const UObject *Context, const FString &Name, const FVecto
     if (Sound)
         UGameplayStatics::PlaySoundAtLocation(Context, Sound, Location, Volume);
 }
+
+void USliceAudio::PlayUI(const UObject *Context, const FString &Name, float Volume)
+{
+    auto *Instance = UGameplayStatics::GetGameInstance(Context);
+    if (!Instance)
+        return;
+    auto *M = Instance->GetSubsystem<USliceMission>();
+    auto &Sound = M->Sounds.FindOrAdd(Name);
+    if (!Sound)
+    {
+        const FString Path = FString::Printf(TEXT("/Game/Generated/Audio/%s.%s"), *Name, *Name);
+        Sound = LoadObject<USoundBase>(nullptr, *Path);
+    }
+    if (Sound)
+        UGameplayStatics::PlaySound2D(Context, Sound, Volume, 1.0f, 0.0f, nullptr, nullptr, true);
+}
