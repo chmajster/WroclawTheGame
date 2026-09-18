@@ -2,6 +2,7 @@
 """Aggregate Unreal-side runtime asset QA gates into one final PASS/FAIL report."""
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -26,6 +27,9 @@ def digest_payload(value) -> str:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--require-geography", action="store_true")
+    args = parser.parse_args()
     MARKER.unlink(missing_ok=True)
     reports = {
         "model_quality": load("model_quality.json"),
@@ -34,8 +38,13 @@ def main() -> int:
         "capture": load("character_screenshots/capture.json"),
         "visual_review": load("visual_review.json"),
     }
+    if args.require_geography:
+        reports["geography_scene"] = load("geography_scene.json")
     errors = []
-    for name in ("model_quality", "retarget", "scene", "capture", "visual_review"):
+    required = ["model_quality", "retarget", "scene", "capture", "visual_review"]
+    if args.require_geography:
+        required.append("geography_scene")
+    for name in required:
         if reports[name].get("status") != "PASS":
             errors.append(f"{name}: status={reports[name].get('status')}")
 
