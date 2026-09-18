@@ -257,9 +257,18 @@ void UPlayerMenuWidget::BuildShell()
     Frame->SetHeightOverride(900.0f);
     Scale->AddChild(Frame);
 
-    auto* Layout = WidgetTree->ConstructWidget<UVerticalBox>();
-    Frame->AddChild(Layout);
-    Layout->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
+    ShellLayout = WidgetTree->ConstructWidget<UVerticalBox>();
+    Frame->AddChild(ShellLayout);
+    ShellLayout->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
+    const bool bReduceShellMotion = UISettings && UISettings->bReduceUIMotion;
+    ShellAnimationTime = bReduceShellMotion ? 0.28f : 0.0f;
+    ShellLayout->SetRenderOpacity(bReduceShellMotion ? 1.0f : 0.0f);
+    ShellLayout->SetRenderTranslation(
+        bReduceShellMotion ? FVector2D::ZeroVector : FVector2D(0.0f, 10.0f));
+    ShellLayout->SetRenderScale(
+        bReduceShellMotion ? FVector2D(1.0f, 1.0f) : FVector2D(0.985f, 0.985f));
+
+    auto* Layout = ShellLayout;
 
     auto* Header = MakeCard(FMargin(18, 14, 18, 14));
     auto* HeaderSlot = Layout->AddChildToVerticalBox(Header);
@@ -2396,6 +2405,17 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
 
     if (!bReduceMotion)
         AmbientAnimationTime += InDeltaTime;
+
+    if (!bReduceMotion && ShellLayout && ShellAnimationTime < 0.28f)
+    {
+        ShellAnimationTime = FMath::Min(0.28f, ShellAnimationTime + InDeltaTime);
+        const float T = FMath::Clamp(ShellAnimationTime / 0.28f, 0.0f, 1.0f);
+        const float Ease = 1.0f - FMath::Pow(1.0f - T, 3.0f);
+        ShellLayout->SetRenderOpacity(Ease);
+        ShellLayout->SetRenderTranslation(FVector2D(0.0f, FMath::Lerp(10.0f, 0.0f, Ease)));
+        const float Scale = FMath::Lerp(0.985f, 1.0f, Ease);
+        ShellLayout->SetRenderScale(FVector2D(Scale, Scale));
+    }
 
     if (!bReduceMotion && ConfirmationCard && ConfirmationAnimationTime < 0.18f)
     {
