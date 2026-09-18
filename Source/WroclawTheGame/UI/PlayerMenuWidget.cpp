@@ -1679,6 +1679,17 @@ void UPlayerMenuWidget::NewGame()
 
 void UPlayerMenuWidget::LoadGame()
 {
+    auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
+    if (Mission && Mission->bInGame)
+    {
+        ShowConfirmation(
+            4,
+            TEXT("WCZYTAĆ OSTATNI ZAPIS?"),
+            TEXT("Bieżący stan sesji zostanie zastąpiony danymi z ostatniego zapisu. Niezapisane zmiany zostaną utracone."),
+            TEXT("WCZYTAJ"));
+        return;
+    }
+
     if (auto* Controller = Cast<ASliceController>(GetOwningPlayer()))
         Controller->LoadGame();
 }
@@ -1747,7 +1758,7 @@ void UPlayerMenuWidget::ShowConfirmation(
     auto* Column = WidgetTree->ConstructWidget<UVerticalBox>();
     ConfirmationCard->AddChild(Column);
 
-    const bool bDestructive = Action == 1 || Action == 2;
+    const bool bDestructive = Action == 1 || Action == 2 || Action == 4;
     Column->AddChildToVerticalBox(MakeText(
         bDestructive ? TEXT("OSTRZEŻENIE") : TEXT("USTAWIENIA WIDEO"),
         9, true, bDestructive ? Danger : Accent))
@@ -1852,6 +1863,8 @@ void UPlayerMenuWidget::ConfirmPendingAction()
             Controller->NewGame();
         else if (Action == 2)
             Controller->Quit();
+        else if (Action == 4)
+            Controller->LoadGame();
     }
 }
 
