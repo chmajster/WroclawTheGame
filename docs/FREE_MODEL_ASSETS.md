@@ -32,3 +32,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Decorative Book Set 01 | Apartment book clue and shelf dressing. | James Ray Cock | [Poly Haven](https://polyhaven.com/a/decorative_book_set_01) | CC0 1.0 |
 | Rollershutter Window 01 | Shop/garage shutter and industrial frontage. | MP | [Poly Haven](https://polyhaven.com/a/rollershutter_window_01) | CC0 1.0 |
 | Wooden Display Shelves 01 | Shop/apartment shelving. | James Ray Cock | [Poly Haven](https://polyhaven.com/a/wooden_display_shelves_01) | CC0 1.0 |
+| Metal Toolbox | Workshop/garage tool storage. | Mateusz Sadek | [Poly Haven](https://polyhaven.com/a/metal_toolbox) | CC0 1.0 |

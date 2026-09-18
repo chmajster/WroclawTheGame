@@ -573,5 +573,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/wooden_display_shelves_01/wooden_display_shelves_01_1k.fbx"
+  },
+  {
+    "slug": "metal_toolbox",
+    "name": "Metal Toolbox",
+    "intended_use": "Workshop/garage tool storage.",
+    "source_page": "https://polyhaven.com/a/metal_toolbox",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Mateusz Sadek": "All"
+    },
+    "category": "Tools & Equipment/Workshop Equipment/Tool Chests",
+    "dimensions_mm": [
+      400.0099003314972,
+      292.32875257730484,
+      347.10586071014404
+    ],
+    "files_hash": "df0982cb97ade9651921bf5d76047a33a388118a",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/metal_toolbox/metal_toolbox_1k.fbx"
   }
 ]
