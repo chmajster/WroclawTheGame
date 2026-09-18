@@ -75,6 +75,13 @@ def apply_transforms(objects: list[bpy.types.Object]) -> None:
     bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
 
 
+def detach_keep_world(objects: list[bpy.types.Object]) -> None:
+    for obj in objects:
+        world = obj.matrix_world.copy()
+        obj.parent = None
+        obj.matrix_world = world
+
+
 def join_copy(objects: list[bpy.types.Object], name: str) -> bpy.types.Object:
     copies = []
     for obj in objects:
@@ -210,6 +217,7 @@ def main() -> None:
     if not meshes:
         raise RuntimeError("Source contains no mesh objects")
 
+    detach_keep_world(meshes)
     normalize(meshes, manifest)
     base = join_copy(meshes, safe_name)
     ensure_uv(base, bool(manifest["mesh"]["generate_uv_if_missing"]))
