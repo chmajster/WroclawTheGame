@@ -9,12 +9,13 @@
 - 15 testów Python: generatory danych/assetów oraz GIS: źródła, dwukierunkowe przeliczenie współrzędnych, skala, kierunki jazdy, graf pieszy, niepoprawne referencje i trasy prób na rzeczywistych krawędziach.
 - Import rzeczywistych źródeł OSM/raster, wygenerowanie 281 grup siatek do wypieku w edytorze.
 - Kontrola składni Python i białych znaków diffu.
+- Walidator manifestów produkcyjnych jest częścią `Scripts/test.sh`; przykład manifestu oraz wszystkie pliki `Pipeline/assets/**/*.asset.json` są sprawdzane bez uruchamiania UE.
 
 Lokalne uruchomienie: `ASAN_OPTIONS=detect_leaks=0 bash Scripts/test.sh`. Wyłączono wyłącznie LeakSanitizer ze względu na środowisko wykonawcze. Nie jest to dowód braku wycieków w grze. CI używa domyślnych ustawień sanitizerów.
 
 ## Nie wykonano
 
-Nie ma tutaj instalacji UE 5.6 ani Windows toolchain. Nie skompilowano klas Unreal ani nagłówków refleksji. Nie wykonano testu `WTG.Save.Version3MemoryRoundTrip`, generacji binarnych assetów w edytorze, konwersji WP, HLOD, cookingu, pakowania, testu gameplayu, migracji pliku SaveGame z dysku ani profilowania GPU/CPU.
+Nie ma tutaj instalacji UE/Windows toolchain ani Blendera. Nowa warstwa `Pipeline/` została zweryfikowana statycznie, ale nie wykonano jeszcze rzeczywistego przebiegu Blender → Unreal → Automation → screenshot na maszynie produkcyjnej. Nie skompilowano klas Unreal ani nagłówków refleksji. Nie wykonano testu `WTG.Save.Version3MemoryRoundTrip`, generacji binarnych assetów w edytorze, konwersji WP, HLOD, cookingu, pakowania, testu gameplayu, migracji pliku SaveGame z dysku ani profilowania GPU/CPU.
 
 Nie wolno wnioskować o działaniu UE na podstawie kompilacji przenośnych modeli C++. Procedury Python/PowerShell oraz nowy kod komponentów mogą wymagać poprawek po pierwszym rzeczywistym uruchomieniu silnika. To jest jawna bramka przed odbiorem, a nie wynik zaliczony.
 
@@ -26,4 +27,4 @@ bash Scripts/test.sh
 python3 Scripts/gis/build_meshes.py
 ```
 
-Na Windows użyj Build-Windows.ps1 lub Build-Geography.ps1 zgodnie z README. Test silnikowy uruchom w Session Frontend → Automation → WTG.Save. Wyniki powinny trafić do raportu odbioru wraz z logami i identyfikatorem commitu. Workflow Windows wymaga własnego runnera z UE 5.6 i zmienną UE_ROOT; nie uruchamiano go na nieistniejącym runnerze.
+Na Windows użyj Build-Windows.ps1 lub Build-Geography.ps1 zgodnie z README. Dla assetów 3D użyj `Pipeline/Invoke-WTGAssetPipeline.ps1`; rzeczywisty PASS musi pochodzić z raportu wygenerowanego przez ten przebieg, nie z samej walidacji składni. Test silnikowy uruchom w Session Frontend → Automation → WTG.Save. Wyniki powinny trafić do raportu odbioru wraz z logami i identyfikatorem commitu. Workflow Windows wymaga własnego runnera z UE 5.6 i zmienną UE_ROOT; nie uruchamiano go na nieistniejącym runnerze.
