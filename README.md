@@ -1,6 +1,6 @@
 # WroclawTheGame — Przebudzenie
 
-Unreal Engine **5.6 / C++20**, docelowo **Windows x64**. Wersja źródłowa 0.3 obejmuje rozdział, systemy otwartego świata oraz laboratorium rzeczywistej geografii i pojazdu.
+Unreal Engine **5.8 / C++20**, docelowo **Windows x64**. Wersja źródłowa 0.3 obejmuje rozdział, systemy otwartego świata oraz laboratorium rzeczywistej geografii i pojazdu.
 
 **Etap nie jest ukończony. Nie ma zweryfikowanego pakietu Windows.** Nie wykonano UHT/UBT, cookingu ani przejścia gry w Unreal. Czas rozgrywki i wydajność pozostają niezmierzone. Testy logiki nie stanowią dowodu grywalności.
 
