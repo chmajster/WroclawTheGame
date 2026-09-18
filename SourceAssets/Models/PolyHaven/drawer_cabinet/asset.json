@@ -1,0 +1,67 @@
+{
+  "slug": "drawer_cabinet",
+  "name": "Drawer Cabinet",
+  "intended_use": "Apartment drawer/cabinet furniture for phone and clue interactions.",
+  "source_page": "https://polyhaven.com/a/drawer_cabinet",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Ulan Cabanilla": "All"
+  },
+  "category": "Furniture/Storage Furniture/Drawers & Dressers",
+  "tags": [
+    "wood",
+    "furniture",
+    "shelf",
+    "drawer",
+    "metal",
+    "modern"
+  ],
+  "dimensions_mm": [
+    1141.0778760910034,
+    488.08445036411285,
+    1881.253957748413
+  ],
+  "files_hash": "dda532faa842f6046d05e7ffcfddaea897152f78",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/drawer_cabinet/drawer_cabinet_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/drawer_cabinet/drawer_cabinet_1k.fbx",
+      "bytes": 757244,
+      "md5": "4b54d4d9a2f89c293f6b8b45bd33e1b8",
+      "sha256": "643b1ed58b8fd4c650a880eb172ba96129c037ba87e6f158f821dbfefaf54ecf",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/drawer_cabinet/drawer_cabinet_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/drawer_cabinet/textures/drawer_cabinet_diff_1k.jpg",
+      "bytes": 150011,
+      "md5": "bb0311ae77d1779bc5b37396a029f6f3",
+      "sha256": "0fe270409b54a5609662dda14afaa94af4bd3267dcd83dd824e05fa880d96efb",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/drawer_cabinet/drawer_cabinet_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/drawer_cabinet/textures/drawer_cabinet_metallic_1k.exr",
+      "bytes": 14870,
+      "md5": "533e261d0b3b2dc4c97b3e09a1a60ea3",
+      "sha256": "2f68ec52bd8070e2e73545b950245ec2f0fe097e7758a5062b3b3dd1489cc188",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/drawer_cabinet/drawer_cabinet_metallic_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/drawer_cabinet/textures/drawer_cabinet_nor_gl_1k.exr",
+      "bytes": 769316,
+      "md5": "7a97401ef63ddbe622b7db4cc4febe28",
+      "sha256": "60981765f974ec117525a0e9b1ed909f1b9bab42ac714713e01995bf42ad95ed",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/drawer_cabinet/drawer_cabinet_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/drawer_cabinet/textures/drawer_cabinet_roughness_1k.jpg",
+      "bytes": 89864,
+      "md5": "8cdfbfcd6690b68d7e6b239a4dad4746",
+      "sha256": "25c56295f4c261ab372c41d8ad0773f3cc2a43272b0f028722f1f72c47e220e7",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/drawer_cabinet/drawer_cabinet_roughness_1k.jpg"
+    }
+  ]
+}

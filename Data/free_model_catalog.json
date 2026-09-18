@@ -287,5 +287,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/wooden_bookshelf_worn/wooden_bookshelf_worn_1k.fbx"
+  },
+  {
+    "slug": "drawer_cabinet",
+    "name": "Drawer Cabinet",
+    "intended_use": "Apartment drawer/cabinet furniture for phone and clue interactions.",
+    "source_page": "https://polyhaven.com/a/drawer_cabinet",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Ulan Cabanilla": "All"
+    },
+    "category": "Furniture/Storage Furniture/Drawers & Dressers",
+    "dimensions_mm": [
+      1141.0778760910034,
+      488.08445036411285,
+      1881.253957748413
+    ],
+    "files_hash": "dda532faa842f6046d05e7ffcfddaea897152f78",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/drawer_cabinet/drawer_cabinet_1k.fbx"
   }
 ]
