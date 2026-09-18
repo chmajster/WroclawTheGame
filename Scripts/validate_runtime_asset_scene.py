@@ -13,6 +13,7 @@ ROOT = Path(unreal.Paths.project_dir()).resolve()
 POLICY = ROOT / "Data/runtime_asset_qa.json"
 CHAPTER = Path(os.environ.get("WTG_CHAPTER_INPUT", ROOT / "Data/chapter1.json"))
 WORLD = Path(os.environ.get("WTG_WORLD_INPUT", ROOT / "Data/openworld.json"))
+ENVIRONMENT = Path(os.environ.get("WTG_ENVIRONMENT_INPUT", ROOT / "Data/environment.json"))
 BINDINGS = ROOT / "Data/model_bindings.json"
 CHARACTERS = ROOT / "Data/free_character_catalog.json"
 MODEL_REPORT = ROOT / "Saved/RuntimeAssetQA/model_quality.json"
@@ -91,6 +92,7 @@ def relevant_label(label):
         "SliceBootstrap_npc_",
         "SliceBootstrap_environment_model_",
         "SliceBootstrap_environment_lamp_",
+        "SliceBootstrap_environment_signback_",
     ))
 
 
@@ -170,11 +172,17 @@ def run():
             errors.append(f"{action_id}: static action visual is missing")
 
     world = json.loads(WORLD.read_text(encoding="utf-8"))
+    environment = json.loads(ENVIRONMENT.read_text(encoding="utf-8"))
     system_expectations = {
         "guards": ("SliceBootstrap_guard_", len(world["guards"])),
         "npcs": ("SliceBootstrap_npc_", len(world["npc"])),
         "hides": ("SliceBootstrap_hide_", len(world["hides"])),
+        "cameras": ("SliceBootstrap_camera_", len(world["cameras"])),
         "monitors": ("SliceBootstrap_monitor_", len(world["cameras"])),
+        "sign_backings": (
+            "SliceBootstrap_environment_signback_",
+            sum(1 for item in environment if item["type"] == "sign"),
+        ),
     }
     counts = {}
     for name, (prefix, expected) in system_expectations.items():
@@ -182,6 +190,17 @@ def run():
         counts[name] = {"expected": expected, "actual": count}
         if count != expected:
             errors.append(f"{name}: generated actor count {count} != {expected}")
+
+    for name, (prefix, _) in system_expectations.items():
+        if name == "sign_backings":
+            continue
+        for label, actor in by_label.items():
+            if label.startswith(prefix) and not actor_visuals(actor):
+                errors.append(f"{label}: runtime system actor has no visual mesh")
+
+    for label, actor in by_label.items():
+        if label.startswith("SliceBootstrap_environment_signback_") and not actor_visuals(actor):
+            errors.append(f"{label}: sign backing has no visual mesh")
 
     retargeted = retarget_report.get("retargeted_bindings", {})
     required_retarget = [
