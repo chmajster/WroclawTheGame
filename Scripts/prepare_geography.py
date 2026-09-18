@@ -23,6 +23,12 @@ def prepare():
     ambient_vehicle_mesh=model(systems['ambient_vehicle'],unreal.StaticMesh)
     driveable_body_mesh=model(systems['driveable_vehicle_body'],unreal.StaticMesh)
     driveable_wheel_mesh=model(systems['driveable_vehicle_wheel'],unreal.StaticMesh)
+    interior_sofa_mesh=model(systems['city_interior_sofa'],unreal.StaticMesh)
+    interior_table_mesh=model(systems['city_interior_table'],unreal.StaticMesh)
+    interior_chair_mesh=model(systems['city_interior_chair'],unreal.StaticMesh)
+    interior_cabinet_mesh=model(systems['city_interior_cabinet'],unreal.StaticMesh)
+    interior_shelf_mesh=model(systems['city_interior_shelf'],unreal.StaticMesh)
+    interior_lamp_mesh=model(systems['city_interior_lamp'],unreal.StaticMesh)
     city_input=os.environ.get('WTG_CITY_INPUT')
     input_dir=Path(city_input) if city_input else ROOT/'Data/processed/wroclaw'
     data=json.loads((input_dir/'sector.json').read_text(encoding='utf-8'))
@@ -84,6 +90,14 @@ def prepare():
             component=part.get_component_by_class(unreal.StaticMeshComponent);component.set_static_mesh(cube)
             component.set_material(0,unreal.load_asset('/Game/Generated/M_Plaster'))
             part.set_actor_scale3d(unreal.Vector(*[v/100 for v in size]))
+        def interior_prop(interior,center,offset,mesh,suffix,scale,yaw=0):
+            position=[center[i]+offset[i] for i in range(3)]
+            prop=actors.spawn_actor_from_class(unreal.StaticMeshActor,unreal.Vector(*position),unreal.Rotator(0,yaw,0))
+            if not prop:raise RuntimeError('Cannot place interior prop '+interior['id']+' '+suffix)
+            component=prop.get_component_by_class(unreal.StaticMeshComponent);component.set_static_mesh(mesh)
+            component.set_collision_profile_name('NoCollision');prop.set_actor_scale3d(unreal.Vector(*scale))
+            prop.set_actor_label(interior['id']+'_'+suffix)
+            return prop
         for interior in content['interiors']:
             center=interior['center']
             room_part(center,[0,0,-20],[1000,800,40])
@@ -91,6 +105,12 @@ def prepare():
             # Walkable stair flight to the authored upper room; no collision inside the GIS shell is guessed.
             for step in range(10):room_part(center,[-260+step*40,0,(step+1)*10],[40,180,(step+1)*20])
             room_part(center,[275,0,190],[450,750,20])
+            interior_prop(interior,center,[250,-230,0],interior_sofa_mesh,'sofa',[.72,.72,.72],180)
+            interior_prop(interior,center,[-100,100,0],interior_table_mesh,'table',[.85,.85,.85],0)
+            interior_prop(interior,center,[-100,-25,0],interior_chair_mesh,'chair',[.85,.85,.85],15)
+            interior_prop(interior,center,[350,250,0],interior_cabinet_mesh,'cabinet',[.72,.72,.72],180)
+            interior_prop(interior,center,[-350,250,0],interior_shelf_mesh,'shelf',[.8,.8,.8],0)
+            interior_prop(interior,center,[-100,100,82],interior_lamp_mesh,'lamp',[.55,.55,.55],25)
             entry=actors.spawn_actor_from_class(unreal.CityInteriorDoor,unreal.Vector(*interior['entrance']))
             entry.set_editor_property('label','Wejdź: '+interior['title']);entry.set_editor_property('building_id',interior['building'])
             entry.set_editor_property('destination',unreal.Vector(center[0]-350,center[1]-180,center[2]+94))
