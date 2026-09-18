@@ -1,3 +1,12 @@
+## 2026-09-18 — menu zależne od trybu kampanii / miasta
+
+- Landing page rozpoznaje aktywny UCityGameplaySubsystem i nie pokazuje już tytułu Przebudzenie w trybie GIS.
+- Tryb miasta używa etykiet WROCŁAW / OTWARTY ŚWIAT, celu NearbyObjective, postępu aktywności oraz stanu automatycznego zapisu.
+- Dodano read-only CompletedActivityCount i TrackableActivityCount bez ujawniania mutowalnego CityProgress do warstwy UI.
+- Lewy panel zmienia Nowa gra/Wczytaj zapis na Nowy zapis miasta/Wczytaj miasto.
+- Panel statusu gracza pokazuje w trybie miasta liczbę aktywności i ewentualną blokadę zapisu.
+- Test regresyjny menu pilnuje kontekstowego wariantu miasta.
+
 ## 2026-09-18 — test regresyjny nowoczesnego menu
 
 - Dodano Tests/test_player_menu.py do standardowego unittest discovery uruchamianego przez Scripts/test.sh.

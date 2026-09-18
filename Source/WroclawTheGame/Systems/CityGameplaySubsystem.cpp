@@ -195,6 +195,27 @@ void UCityGameplaySubsystem::Tick(float Dt)
     for (auto It = Progress.timers.begin(); It != Progress.timers.end();)
         if (!LoadedIds.count(It->first)) It = Progress.timers.erase(It); else ++It;
 }
+int32 UCityGameplaySubsystem::CompletedActivityCount() const
+{
+    if (!bActive)
+        return 0;
+
+    int32 Count = 0;
+    for (const auto& Action : Wroclaw::CityActions())
+        if (Action.kind != "event" && Progress.completed.count(Action.id))
+            ++Count;
+    return Count;
+}
+
+int32 UCityGameplaySubsystem::TrackableActivityCount() const
+{
+    int32 Count = 0;
+    for (const auto& Action : Wroclaw::CityActions())
+        if (Action.kind != "event")
+            ++Count;
+    return Count;
+}
+
 FString UCityGameplaySubsystem::Journal() const
 {
     if (!bActive) return FString();

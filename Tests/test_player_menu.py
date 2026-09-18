@@ -93,6 +93,15 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         self.assertIn("PlaySound2D", self.audio)
         self.assertIn("true);", self.audio)
 
+    def test_game_landing_is_context_aware_for_city_mode(self):
+        self.assertIn("City->IsActive()", self.cpp)
+        self.assertIn("CompletedActivityCount()", self.cpp)
+        self.assertIn("TrackableActivityCount()", self.cpp)
+        self.assertIn('TEXT("OTWARTY ŚWIAT")', self.cpp)
+        self.assertIn('TEXT("POSTĘP MIASTA")', self.cpp)
+        self.assertIn("City->NearbyObjective()", self.cpp)
+        self.assertIn("City->IsWriteBlocked()", self.cpp)
+
     def test_character_preview_keeps_camera_and_lighting_controls(self):
         for token in (
             "PreviewFullBody", "PreviewUpperBody", "PreviewFace",
