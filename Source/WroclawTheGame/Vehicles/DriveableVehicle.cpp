@@ -78,7 +78,27 @@ void ADriveableVehicle::BeginPlay()
 }
 bool ADriveableVehicle::CanEnterVehicle_Implementation(APawn *Passenger) const
 {
-    return Passenger && !Driver && Health > 0 && Chassis->GetPhysicsLinearVelocity().Size() < 100;
+    return Passenger && !Driver && !bAIControlled && Health > 0 &&
+           Chassis->GetPhysicsLinearVelocity().Size() < 100;
+}
+void ADriveableVehicle::SetAIControl(bool bEnabled, float Throttle, float Steering, bool bBrake)
+{
+    bAIControlled = bEnabled;
+    AIThrottle = bEnabled ? FMath::Clamp(Throttle, -1.0f, 1.0f) : 0.0f;
+    AISteering = bEnabled ? FMath::Clamp(Steering, -1.0f, 1.0f) : 0.0f;
+    bAIBrake = bEnabled && bBrake;
+    if (bEnabled)
+    {
+        bEngine = Health > 0;
+        bWaitingForGround = true;
+        SetActorTickEnabled(true);
+    }
+    else if (!Driver)
+    {
+        bEngine = false;
+        Speed = 0.0f;
+        Chassis->SetSimulatePhysics(false);
+    }
 }
 bool ADriveableVehicle::OpenStorage_Implementation(APawn *User)
 {
@@ -162,7 +182,7 @@ void ADriveableVehicle::Tick(float Dt)
         Chassis->SetSimulatePhysics(true);
         bWaitingForGround = false;
     }
-    if (!Driver) { Chassis->SetSimulatePhysics(false); Speed=0; return; }
+    if (!Driver && !bAIControlled) { Chassis->SetSimulatePhysics(false); Speed=0; return; }
     if (!Chassis->IsSimulatingPhysics())
         return;
     const FVector Velocity = Chassis->GetPhysicsLinearVelocity(), Forward = GetActorForwardVector(),
@@ -177,10 +197,11 @@ void ADriveableVehicle::Tick(float Dt)
         }
         else StreamingProbe->Source->DisableStreamingSource();
     }
-    float Throttle = 0, Steering = 0;
-    bool Brake = false;
+    float Throttle = bAIControlled ? AIThrottle : 0.0f;
+    float Steering = bAIControlled ? AISteering : 0.0f;
+    bool Brake = bAIControlled && bAIBrake;
     auto *PC = Cast<ASliceController>(GetController());
-    if (PC && !PC->GameplayBlocked() && !PC->IsPaused())
+    if (Driver && PC && !PC->GameplayBlocked() && !PC->IsPaused())
     {
         if (PC->WasInputKeyJustPressed(EKeys::E) && GetWorld()->GetTimeSeconds() - EnteredAt > .4)
         {
@@ -232,7 +253,7 @@ void ADriveableVehicle::Tick(float Dt)
     {
         const bool Opposing = Throttle * Speed < -30;
         const float Target = Throttle >= 0 ? Definition->MaxSpeed : Definition->ReverseSpeed;
-        if (Brake || Opposing || !Driver)
+        if (Brake || Opposing || (!Driver && !bAIControlled))
             Chassis->AddForce(-Forward *
                               FMath::Clamp(Speed / FMath::Max(Dt, .005f), -Definition->BrakeDeceleration,
                                            Definition->BrakeDeceleration) *
