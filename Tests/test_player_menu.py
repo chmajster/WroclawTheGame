@@ -266,6 +266,17 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_map_has_compass_and_modern_map_chrome(self):
+        for token in (
+            "AddCompassLabel",
+            'AddCompassLabel(TEXT("N")',
+            'AddCompassLabel(TEXT("E")',
+            'AddCompassLabel(TEXT("S")',
+            'AddCompassLabel(TEXT("W")',
+            'TEXT("WROCŁAW  •  MAPA 2D")',
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_map_uses_correct_coordinate_space_for_campaign_and_city(self):
         for token in (
             "UWroclawMapSubsystem",
