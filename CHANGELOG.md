@@ -2,7 +2,7 @@
 
 - Dodano pobieranie i konwersję oficjalnych modeli budynków GUGiK/Geoportal z CityGML do układu GIS gry.
 - Pierwszy zestaw: Stary Ratusz, bazylika św. Elżbiety, katedra, gmach główny UWr, Hala Targowa i Muzeum Narodowe.
-- Import preferuje LoD2 i automatycznie przechodzi na LoD1, gdy LoD2 nie ma pokrycia.
+- Wrocław korzysta z oficjalnej paczki GUGiK LoD1 dla TERYT 0264; miejski LoD2 pozostaje osobnym źródłem referencyjnym.
 - Prosta bryła OSM wybranego obiektu jest wykluczana przed wypiekiem, a model oficjalny trafia do `/Game/Generated/OfficialBuildings`.
 - Pełny build włącza `OfficialBuildings`; runtime/visual QA w UE 5.8 nadal jest wymagane.
 
