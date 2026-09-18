@@ -129,8 +129,9 @@ class LinkParser(html.parser.HTMLParser):
 
 
 def feature_info_links(layer: str, longitude: float, latitude: float) -> list[tuple[str, str]]:
-    west, east = longitude - 0.02, longitude + 0.02
-    south, north = latitude - 0.015, latitude + 0.015
+    east, north = Transformer.from_crs("EPSG:4326", "EPSG:2180", always_xy=True).transform(longitude, latitude)
+    west, east_lon = longitude - 0.02, longitude + 0.02
+    south, north_lat = latitude - 0.015, latitude + 0.015
     common = {
         "SERVICE": "WMS",
         "REQUEST": "GetFeatureInfo",
@@ -146,8 +147,17 @@ def feature_info_links(layer: str, longitude: float, latitude: float) -> list[tu
         {
             **common,
             "VERSION": "1.3.0",
+            "CRS": "EPSG:2180",
+            # EPSG:2180 authority axis order in WMS 1.3.0 is northing,easting.
+            "BBOX": f"{north-500},{east-500},{north+500},{east+500}",
+            "I": "50",
+            "J": "50",
+        },
+        {
+            **common,
+            "VERSION": "1.3.0",
             "CRS": "EPSG:4326",
-            "BBOX": f"{south},{west},{north},{east}",
+            "BBOX": f"{south},{west},{north_lat},{east_lon}",
             "I": "50",
             "J": "50",
         },
@@ -155,7 +165,7 @@ def feature_info_links(layer: str, longitude: float, latitude: float) -> list[tu
             **common,
             "VERSION": "1.1.1",
             "SRS": "EPSG:4326",
-            "BBOX": f"{west},{south},{east},{north}",
+            "BBOX": f"{west},{south},{east_lon},{north_lat}",
             "X": "50",
             "Y": "50",
         },
@@ -169,7 +179,7 @@ def feature_info_links(layer: str, longitude: float, latitude: float) -> list[tu
             parser.feed(payload.decode("utf-8", "replace"))
             if parser.links:
                 return [(urllib.parse.urljoin(url, href), text) for href, text in parser.links]
-            errors.append(f"no links in {params['VERSION']} response")
+            errors.append(f"no links in {params['VERSION']} {params.get('CRS',params.get('SRS'))} response")
         except Exception as exc:
             errors.append(f"{params['VERSION']}: {exc}")
     raise RuntimeError("GUGiK GetFeatureInfo failed: " + "; ".join(errors))
@@ -206,9 +216,29 @@ def download_source(output: Path, preferred_lod: str, click_lon: float, click_la
     source_dir.mkdir(parents=True, exist_ok=True)
     capabilities_url = wms_url({"SERVICE": "WMS", "REQUEST": "GetCapabilities", "VERSION": "1.3.0"})
     capabilities = request_bytes(capabilities_url)
-    layer = select_layer(layer_records(capabilities), preferred_lod)
-    links = feature_info_links(layer["name"], click_lon, click_lat)
-    download_url = choose_download_link(links, preferred_lod)
+    records = layer_records(capabilities)
+    preferences = [preferred_lod]
+    if preferred_lod.casefold() in {"auto", "lod2"}:
+        preferences += ["LoD1"]
+    errors = []
+    layer = None
+    download_url = None
+    used = set()
+    for preference in preferences:
+        try:
+            candidate = select_layer(records, preference)
+            if candidate["name"] in used:
+                continue
+            used.add(candidate["name"])
+            links = feature_info_links(candidate["name"], click_lon, click_lat)
+            candidate_url = choose_download_link(links, preference)
+            layer, download_url = candidate, candidate_url
+            break
+        except Exception as exc:
+            errors.append(f"{preference}: {exc}")
+    if not layer or not download_url:
+        raise RuntimeError("No GUGiK 3D building package covers Wrocław: " + "; ".join(errors))
+
     parsed = urllib.parse.urlparse(download_url)
     filename = Path(urllib.parse.unquote(parsed.path)).name or "gugik_buildings_3d.zip"
     if "." not in filename:
@@ -229,6 +259,7 @@ def download_source(output: Path, preferred_lod: str, click_lon: float, click_la
         "source": "GUGiK Geoportal - Modele 3D budynków",
         "service_url": SERVICE_URL,
         "layer": layer,
+        "requested_lod": preferred_lod,
         "download_url": download_url,
         "sha256": digest,
         "license_note": "Geoportal states that 3D building models are free and may be used for any purpose.",
