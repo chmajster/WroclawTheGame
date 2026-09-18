@@ -1,0 +1,77 @@
+{
+  "slug": "security_camera_02",
+  "name": "Security Camera 02",
+  "intended_use": "CCTV / surveillance prop; replaces the current generic surveillance placeholder.",
+  "source_page": "https://polyhaven.com/a/security_camera_02",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Garrison Gager": "Modeling & Texturing",
+    "Yann Kervran": "Rigging"
+  },
+  "category": "Industrial & Infrastructure/Utility Equipment/Surveillance Cameras",
+  "tags": [
+    "camera",
+    "surveillance",
+    "monitoring",
+    "cctv",
+    "police",
+    "security",
+    "utility",
+    "infrastructure"
+  ],
+  "dimensions_mm": [
+    140.66611975431442,
+    393.7917649745941,
+    208.5888683795929
+  ],
+  "files_hash": "141ee900f27b02e86f21ef1c1b5a5500a7e22b40",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/security_camera_02/security_camera_02_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/security_camera_02/security_camera_02_1k.fbx",
+      "bytes": 451324,
+      "md5": "cf1a76d4cff4340861cafe75136e88a5",
+      "sha256": "e816a815ad5b5ca317ed65d3d122ff0425bd8ac425d3245ee2e88e3455cd2996",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/security_camera_02/security_camera_02_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/security_camera_02/textures/security_camera_02_diff_1k.jpg",
+      "bytes": 394762,
+      "md5": "57891dae85c87511723b5a69020dbedb",
+      "sha256": "619756fa57b0972248d0f0100e99ca62d7cd95daa80c7439bb49ff8254eb7d12",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/security_camera_02/security_camera_02_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/security_camera_02/textures/security_camera_02_metal_1k.exr",
+      "bytes": 17048,
+      "md5": "6ba225b79bb4c8b2e85c273c139622e7",
+      "sha256": "4e5b7bb6722e5177f95a1249db0c48db95cb4995bf3d4fb427168dd81eae5da2",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/security_camera_02/security_camera_02_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/security_camera_02/textures/security_camera_02_nor_gl_1k.exr",
+      "bytes": 746474,
+      "md5": "97c6c924ee5589612b8cb3663768c129",
+      "sha256": "af084999659874615e1e68db5c0c2372aa09aafe44855c8bae33cd54268a280b",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/security_camera_02/security_camera_02_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/security_camera_02/textures/security_camera_02_opacity_1k.png",
+      "bytes": 11098,
+      "md5": "150658f8c9f5953e7883ae40b970e271",
+      "sha256": "57d177802df3361cf077e07aae7eb874473ef4114f90cc17c1e1d7dfb644c290",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/security_camera_02/security_camera_02_opacity_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/security_camera_02/textures/security_camera_02_rough_1k.exr",
+      "bytes": 853807,
+      "md5": "f90ce6984fe954ceec5f889ebb4ada3f",
+      "sha256": "97d5a5c17e96ff926fa1b09de6597f84ea1024aac74a5d2e705b7af679187da7",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/security_camera_02/security_camera_02_rough_1k.exr"
+    }
+  ]
+}
