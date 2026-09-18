@@ -1627,10 +1627,12 @@ void UPlayerMenuWidget::BuildStatsTab()
         return;
     }
 
+    const int32 MainTotal = static_cast<int32>(Wroclaw::Quests().size());
     int32 MainDone = 0;
     for (const auto& Quest : Wroclaw::Quests())
         if (Mission->State.QuestComplete(Quest))
             ++MainDone;
+    const float CampaignProgress = MainTotal > 0 ? static_cast<float>(MainDone) / MainTotal : 0.0f;
 
     ActionColumn->AddChildToVerticalBox(MakeInfoRow(
         Mission->bInGame ? TEXT("AKTYWNA") : TEXT("MENU"), TEXT("STATUS"), Mission->bInGame))
@@ -1652,7 +1654,7 @@ void UPlayerMenuWidget::BuildStatsTab()
         FString::Printf(TEXT("%.0f MIN"), Mission->State.elapsed / 60.0), TEXT("CZAS ROZGRYWKI"), true))
         ->SetPadding(FMargin(0, 0, 0, 7));
     Metrics->AddChildToVerticalBox(MakeInfoRow(
-        FString::Printf(TEXT("%d / %d"), MainDone, static_cast<int32>(Wroclaw::Quests().size())),
+        FString::Printf(TEXT("%d / %d"), MainDone, FMath::Max(MainTotal, 1)),
         TEXT("POSTĘP GŁÓWNY")))
         ->SetPadding(FMargin(0, 0, 0, 7));
     Metrics->AddChildToVerticalBox(MakeInfoRow(
@@ -1666,6 +1668,23 @@ void UPlayerMenuWidget::BuildStatsTab()
     Metrics->AddChildToVerticalBox(MakeInfoRow(
         FString::Printf(TEXT("%d"), Mission->State.kills), TEXT("NEUTRALIZACJE")));
 
+    auto* CampaignProgressCard = MakeCard(FMargin(14, 12, 14, 12));
+    CenterColumn->AddChildToVerticalBox(CampaignProgressCard)->SetPadding(FMargin(8, 6, 8, 8));
+    auto* CampaignProgressBox = WidgetTree->ConstructWidget<UVerticalBox>();
+    CampaignProgressCard->AddChild(CampaignProgressBox);
+    auto* CampaignProgressHead = WidgetTree->ConstructWidget<UHorizontalBox>();
+    CampaignProgressBox->AddChildToVerticalBox(CampaignProgressHead)->SetPadding(FMargin(0, 0, 0, 6));
+    CampaignProgressHead->AddChildToHorizontalBox(MakeText(TEXT("POSTĘP KAMPANII"), 9, true, Muted))
+        ->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    auto* CampaignProgressValue = MakeText(
+        FString::Printf(TEXT("%.0f%%"), CampaignProgress * 100.0f), 9, true, Accent);
+    CampaignProgressValue->SetJustification(ETextJustify::Right);
+    CampaignProgressHead->AddChildToHorizontalBox(CampaignProgressValue);
+    auto* CampaignProgressBar = WidgetTree->ConstructWidget<UProgressBar>();
+    CampaignProgressBar->SetPercent(CampaignProgress);
+    CampaignProgressBar->SetFillColorAndOpacity(Accent);
+    CampaignProgressBox->AddChildToVerticalBox(CampaignProgressBar);
+
     RightColumn->AddChildToVerticalBox(MakeText(TEXT("OSIĄGNIĘCIA"), 9, true, Accent))
         ->SetPadding(FMargin(0, 0, 0, 8));
 
@@ -1673,6 +1692,15 @@ void UPlayerMenuWidget::BuildStatsTab()
         TEXT("Pierwsze kroki"), TEXT("Escape Artist"), TEXT("Bez śladu"),
         TEXT("Detektyw"), TEXT("Pacyfista"), TEXT("Szybkie myślenie")
     };
+    int32 UnlockedAchievements = 0;
+    for (int32 Index = 0; Index < 6; ++Index)
+        if ((Mission->LifetimeAchievements & (1 << Index)) != 0)
+            ++UnlockedAchievements;
+
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%d / 6"), UnlockedAchievements), TEXT("ODBLOKOWANE"), true))
+        ->SetPadding(FMargin(0, 0, 0, 10));
+
     for (int32 Index = 0; Index < 6; ++Index)
     {
         const bool bUnlocked = (Mission->LifetimeAchievements & (1 << Index)) != 0;
