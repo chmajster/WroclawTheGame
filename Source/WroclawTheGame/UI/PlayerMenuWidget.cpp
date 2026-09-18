@@ -1301,6 +1301,31 @@ void UPlayerMenuWidget::BuildCharacterTab()
     const FString Sex = A.Sex == EAppearanceSex::Female ? TEXT("KOBIETA") : TEXT("MĘŻCZYZNA");
     const FString Name = A.Name.IsEmpty() ? TEXT("GRACZ") : A.Name.ToUpper();
 
+    FString BodyBuild = A.BodyBuild.ToString().ToUpper();
+    if (A.BodyBuild == TEXT("Slim")) BodyBuild = TEXT("SMUKŁA");
+    else if (A.BodyBuild == TEXT("Average")) BodyBuild = TEXT("STANDARDOWA");
+    else if (A.BodyBuild == TEXT("Athletic")) BodyBuild = TEXT("ATLETYCZNA");
+    else if (A.BodyBuild == TEXT("Heavy")) BodyBuild = TEXT("MASYWNA");
+
+    FString HairLabel = A.HairStyle.ToString().ToUpper();
+    FString VoiceLabel = A.VoiceProfileID.ToString().ToUpper();
+    if (Creator->Catalog)
+    {
+        if (const FAppearancePartDefinition* Hair =
+            Creator->Catalog->Part(Creator->Catalog->HairStyleDefinitions, A.HairStyle))
+        {
+            if (!Hair->DisplayName.IsEmpty())
+                HairLabel = Hair->DisplayName.ToString().ToUpper();
+        }
+
+        if (const FVoiceProfileDefinition* Voice = Creator->Catalog->VoiceProfiles.FindByPredicate(
+            [&](const FVoiceProfileDefinition& Candidate) { return Candidate.ID == A.VoiceProfileID; }))
+        {
+            if (!Voice->DisplayName.IsEmpty())
+                VoiceLabel = Voice->DisplayName.ToString().ToUpper();
+        }
+    }
+
     RightColumn->AddChildToVerticalBox(MakeText(TEXT("PROFIL POSTACI"), 9, true, Accent))
         ->SetPadding(FMargin(0, 0, 0, 4));
     RightColumn->AddChildToVerticalBox(MakeText(Name, 23, true, TextPrimary))
@@ -1315,16 +1340,13 @@ void UPlayerMenuWidget::BuildCharacterTab()
         FString::Printf(TEXT("%.0f"), A.VisualAge), TEXT("WIEK WIZUALNY")))
         ->SetPadding(FMargin(0, 0, 0, 6));
     RightColumn->AddChildToVerticalBox(MakeInfoRow(
-        A.BodyBuild.ToString().ToUpper(), TEXT("SYLWETKA")))
+        BodyBuild, TEXT("SYLWETKA")))
         ->SetPadding(FMargin(0, 0, 0, 6));
     RightColumn->AddChildToVerticalBox(MakeInfoRow(
-        A.VoiceProfileID.ToString().ToUpper(), TEXT("PROFIL GŁOSU")))
+        HairLabel, TEXT("FRYZURA")))
         ->SetPadding(FMargin(0, 0, 0, 6));
     RightColumn->AddChildToVerticalBox(MakeInfoRow(
-        A.PresetID.ToString().ToUpper(), TEXT("PRESET")))
-        ->SetPadding(FMargin(0, 0, 0, 6));
-    RightColumn->AddChildToVerticalBox(MakeInfoRow(
-        FString::Printf(TEXT("%d"), A.RandomSeed), TEXT("SEED WYGLĄDU")));
+        VoiceLabel, TEXT("PROFIL GŁOSU")));
 }
 
 void UPlayerMenuWidget::BuildInventoryTab()
@@ -1380,13 +1402,23 @@ void UPlayerMenuWidget::BuildInventoryTab()
     WardrobeBox->AddChildToVerticalBox(ClothesScroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     if (Creator && !Creator->Committed.OwnedClothing.IsEmpty())
     {
-        TArray<FName> Clothing = Creator->Committed.OwnedClothing;
-        Clothing.Sort([](const FName& A, const FName& B)
+        TArray<TPair<FString, FName>> Clothing;
+        Clothing.Reserve(Creator->Committed.OwnedClothing.Num());
+        for (const FName& Id : Creator->Committed.OwnedClothing)
         {
-            return A.ToString() < B.ToString();
+            const FAppearancePartDefinition* Definition =
+                Creator->Catalog ? Creator->Catalog->Part(Creator->Catalog->ClothingDefinitions, Id) : nullptr;
+            const FString DisplayName = Definition && !Definition->DisplayName.IsEmpty()
+                ? Definition->DisplayName.ToString()
+                : Id.ToString();
+            Clothing.Emplace(DisplayName, Id);
+        }
+        Clothing.Sort([](const TPair<FString, FName>& A, const TPair<FString, FName>& B)
+        {
+            return A.Key < B.Key;
         });
-        for (const FName& Id : Clothing)
-            ClothesScroll->AddChild(MakeInfoRow(Id.ToString().ToUpper(), TEXT("ELEMENT UBIORU")));
+        for (const auto& Entry : Clothing)
+            ClothesScroll->AddChild(MakeInfoRow(Entry.Key.ToUpper(), TEXT("ELEMENT UBIORU")));
     }
     else
         ClothesScroll->AddChild(MakeInfoRow(TEXT("PUSTO"), TEXT("BRAK ELEMENTÓW GARDEROBY")));
