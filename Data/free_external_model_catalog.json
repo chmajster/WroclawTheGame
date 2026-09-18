@@ -477,5 +477,16 @@
     "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-wall-outlet/wtg-original-wall-outlet.obj",
     "generated": true,
     "generator": "bootstrap-original-fallback-models.yml"
+  },
+  {
+    "id": "wtg-original-intercom",
+    "name": "Wall Intercom",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Intercom/password puzzle fallback.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-intercom/wtg-original-intercom.obj",
+    "generated": true,
+    "generator": "bootstrap-original-fallback-models.yml"
   }
 ]
