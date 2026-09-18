@@ -281,7 +281,7 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             'TEXT("PPM  OBRÓT',
             'TEXT("C  NASTĘPNY CEL',
             'TEXT("MAPA ODKRYĆ',
-            'TEXT("ENTER/A  ZMIEŃ',
+            'TEXT("ENTER / A  ZMIEŃ WARTOŚĆ',
         ):
             self.assertIn(token, self.cpp)
         self.assertIn("TObjectPtr<class UTextBlock> ContextHint", self.header)
@@ -295,7 +295,8 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             "EKeys::End",
             "EKeys::Gamepad_DPad_Left",
             "EKeys::Gamepad_DPad_Right",
-            'TEXT("1–7  Q/E  L1/R1  ZAKŁADKI',
+            'TEXT("Q/E  •  L1/R1  ZMIEŃ ZAKŁADKĘ")',
+            'AddFooterShortcut(TEXT("1–7"), TEXT("ZAKŁADKI"))',
         ):
             self.assertIn(token, self.cpp)
 
