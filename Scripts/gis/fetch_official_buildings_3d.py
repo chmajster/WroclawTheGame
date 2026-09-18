@@ -211,33 +211,37 @@ def choose_download_link(links: list[tuple[str, str]], preferred: str) -> str:
     return selected[0]
 
 
-def download_source(output: Path, preferred_lod: str, click_lon: float, click_lat: float) -> tuple[Path, str]:
+def download_source(output: Path, preferred_lod: str, click_lon: float, click_lat: float, direct_url: str | None = None) -> tuple[Path, str]:
     source_dir = output / "Source"
     source_dir.mkdir(parents=True, exist_ok=True)
-    capabilities_url = wms_url({"SERVICE": "WMS", "REQUEST": "GetCapabilities", "VERSION": "1.3.0"})
-    capabilities = request_bytes(capabilities_url)
-    records = layer_records(capabilities)
-    preferences = [preferred_lod]
-    if preferred_lod.casefold() in {"auto", "lod2"}:
-        preferences += ["LoD1"]
-    errors = []
-    layer = None
-    download_url = None
-    used = set()
-    for preference in preferences:
-        try:
-            candidate = select_layer(records, preference)
-            if candidate["name"] in used:
-                continue
-            used.add(candidate["name"])
-            links = feature_info_links(candidate["name"], click_lon, click_lat)
-            candidate_url = choose_download_link(links, preference)
-            layer, download_url = candidate, candidate_url
-            break
-        except Exception as exc:
-            errors.append(f"{preference}: {exc}")
-    if not layer or not download_url:
-        raise RuntimeError("No GUGiK 3D building package covers Wrocław: " + "; ".join(errors))
+    if direct_url:
+        layer = {"name": preferred_lod.casefold(), "title": f"Wrocław {preferred_lod}", "queryable": False}
+        download_url = direct_url
+    else:
+        capabilities_url = wms_url({"SERVICE": "WMS", "REQUEST": "GetCapabilities", "VERSION": "1.3.0"})
+        capabilities = request_bytes(capabilities_url)
+        records = layer_records(capabilities)
+        preferences = [preferred_lod]
+        if preferred_lod.casefold() in {"auto", "lod2"}:
+            preferences += ["LoD1"]
+        errors = []
+        layer = None
+        download_url = None
+        used = set()
+        for preference in preferences:
+            try:
+                candidate = select_layer(records, preference)
+                if candidate["name"] in used:
+                    continue
+                used.add(candidate["name"])
+                links = feature_info_links(candidate["name"], click_lon, click_lat)
+                candidate_url = choose_download_link(links, preference)
+                layer, download_url = candidate, candidate_url
+                break
+            except Exception as exc:
+                errors.append(f"{preference}: {exc}")
+        if not layer or not download_url:
+            raise RuntimeError("No GUGiK 3D building package covers Wrocław: " + "; ".join(errors))
 
     parsed = urllib.parse.urlparse(download_url)
     filename = Path(urllib.parse.unquote(parsed.path)).name or "gugik_buildings_3d.zip"
@@ -582,7 +586,7 @@ def run(config_path: Path, city_data: Path, output: Path, archive: Path | None, 
     if archive is None:
         click_lon = sum(t["longitude"] for t in targets) / len(targets)
         click_lat = sum(t["latitude"] for t in targets) / len(targets)
-        archive, download_url = download_source(output, config.get("preferred_lod", "LoD2"), click_lon, click_lat)
+        archive, download_url = download_source(output, config.get("preferred_lod", "LoD1"), click_lon, click_lat, config.get("source_direct_url"))
     else:
         archive = archive.resolve()
         if not archive.is_file():
