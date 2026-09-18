@@ -35,13 +35,15 @@ class FreeCharacterAnimationAssets(unittest.TestCase):
 
     def test_semantic_bindings_resolve_to_real_clips(self):
         animation_catalog = ROOT / "Data/free_animation_catalog.json"
+        kaykit_catalog = ROOT / "Data/free_kaykit_animation_catalog.json"
         bindings_file = ROOT / "Data/animation_bindings.json"
-        if not animation_catalog.exists():
-            self.skipTest("Binary fetch workflow has not populated animation catalog yet")
+        if not animation_catalog.exists() or not kaykit_catalog.exists():
+            self.skipTest("Binary fetch workflows have not populated animation catalogs yet")
         catalog = json.loads(animation_catalog.read_text(encoding="utf-8"))
+        catalog += json.loads(kaykit_catalog.read_text(encoding="utf-8"))
         bindings = json.loads(bindings_file.read_text(encoding="utf-8"))["bindings"]
         clips = {item["id"]: set(item["clips"]) for item in catalog}
-        self.assertGreaterEqual(len(bindings), 30)
+        self.assertGreaterEqual(len(bindings), 50)
         for semantic, binding in bindings.items():
             self.assertIn(binding["library"], clips, semantic)
             self.assertIn(binding["clip"], clips[binding["library"]], semantic)

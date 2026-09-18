@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "note": "Semantic bindings for current and planned WroclawTheGame character actions. Use the non-root-motion libraries for CharacterMovement-driven locomotion; choose the paired -rm library only for authored root-motion actions.",
+  "version": 2,
+  "note": "Semantic bindings for current and planned WroclawTheGame character actions. Quaternius and KayKit use different humanoid rigs; cross-rig playback requires Unreal retargeting. Use root-motion libraries only for authored root-motion actions.",
   "bindings": {
     "character.creator_idle": {
       "library": "quaternius-ual1-standard",
@@ -173,6 +173,131 @@
     "swim.forward": {
       "library": "quaternius-ual1-standard",
       "clip": "Swim_Fwd_Loop"
+    },
+    "opening.lie_down": {
+      "library": "kaykit-ca11-rig-medium-simulation",
+      "clip": "Lie_Down",
+      "requires_retarget": true
+    },
+    "opening.lie_idle": {
+      "library": "kaykit-ca11-rig-medium-simulation",
+      "clip": "Lie_Idle",
+      "requires_retarget": true
+    },
+    "opening.stand_up": {
+      "library": "kaykit-ca11-rig-medium-simulation",
+      "clip": "Lie_StandUp",
+      "requires_retarget": true
+    },
+    "character.crawl": {
+      "library": "kaykit-ca11-rig-medium-movementadvanced",
+      "clip": "Crawling",
+      "requires_retarget": true
+    },
+    "character.sneak": {
+      "library": "kaykit-ca11-rig-medium-movementadvanced",
+      "clip": "Sneaking",
+      "requires_retarget": true
+    },
+    "character.walk_backwards": {
+      "library": "kaykit-ca11-rig-medium-movementadvanced",
+      "clip": "Walking_Backwards",
+      "requires_retarget": true
+    },
+    "character.dodge_forward": {
+      "library": "kaykit-ca11-rig-medium-movementadvanced",
+      "clip": "Dodge_Forward",
+      "requires_retarget": true
+    },
+    "character.dodge_backward": {
+      "library": "kaykit-ca11-rig-medium-movementadvanced",
+      "clip": "Dodge_Backward",
+      "requires_retarget": true
+    },
+    "character.dodge_left": {
+      "library": "kaykit-ca11-rig-medium-movementadvanced",
+      "clip": "Dodge_Left",
+      "requires_retarget": true
+    },
+    "character.dodge_right": {
+      "library": "kaykit-ca11-rig-medium-movementadvanced",
+      "clip": "Dodge_Right",
+      "requires_retarget": true
+    },
+    "interaction.lockpick": {
+      "library": "kaykit-ca11-rig-medium-tools",
+      "clip": "Lockpick",
+      "requires_retarget": true
+    },
+    "interaction.lockpicking": {
+      "library": "kaykit-ca11-rig-medium-tools",
+      "clip": "Lockpicking",
+      "requires_retarget": true
+    },
+    "tools.chopping": {
+      "library": "kaykit-ca11-rig-medium-tools",
+      "clip": "Chopping",
+      "requires_retarget": true
+    },
+    "tools.digging": {
+      "library": "kaykit-ca11-rig-medium-tools",
+      "clip": "Digging",
+      "requires_retarget": true
+    },
+    "tools.hammering": {
+      "library": "kaykit-ca11-rig-medium-tools",
+      "clip": "Hammering",
+      "requires_retarget": true
+    },
+    "tools.sawing": {
+      "library": "kaykit-ca11-rig-medium-tools",
+      "clip": "Sawing",
+      "requires_retarget": true
+    },
+    "tools.working": {
+      "library": "kaykit-ca11-rig-medium-tools",
+      "clip": "Working_A",
+      "requires_retarget": true
+    },
+    "social.cheering": {
+      "library": "kaykit-ca11-rig-medium-simulation",
+      "clip": "Cheering",
+      "requires_retarget": true
+    },
+    "social.waving": {
+      "library": "kaykit-ca11-rig-medium-simulation",
+      "clip": "Waving",
+      "requires_retarget": true
+    },
+    "sitting.chair_enter": {
+      "library": "kaykit-ca11-rig-medium-simulation",
+      "clip": "Sit_Chair_Down",
+      "requires_retarget": true
+    },
+    "sitting.chair_idle": {
+      "library": "kaykit-ca11-rig-medium-simulation",
+      "clip": "Sit_Chair_Idle",
+      "requires_retarget": true
+    },
+    "sitting.chair_exit": {
+      "library": "kaykit-ca11-rig-medium-simulation",
+      "clip": "Sit_Chair_StandUp",
+      "requires_retarget": true
+    },
+    "sitting.floor_enter": {
+      "library": "kaykit-ca11-rig-medium-simulation",
+      "clip": "Sit_Floor_Down",
+      "requires_retarget": true
+    },
+    "sitting.floor_idle": {
+      "library": "kaykit-ca11-rig-medium-simulation",
+      "clip": "Sit_Floor_Idle",
+      "requires_retarget": true
+    },
+    "sitting.floor_exit": {
+      "library": "kaykit-ca11-rig-medium-simulation",
+      "clip": "Sit_Floor_StandUp",
+      "requires_retarget": true
     }
   }
 }

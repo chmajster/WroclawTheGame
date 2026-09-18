@@ -1,3 +1,11 @@
+## 2026-09-18 — domknięcie darmowych animacji KayKit
+
+- Dodano cały darmowy KayKit Character Animations 1.1 dla `Rig_Medium`: 8 bibliotek GLB i 139 rzeczywistych klipów.
+- Dodano `Lie_Down`, `Lie_Idle` i `Lie_StandUp`, zamykając jawny brak źródłowej animacji wstawania.
+- Rozszerzono importer UE o katalog KayKit oraz semantyczne bindingi m.in. dla uników, crawl/sneak, lockpickingu, narzędzi i siadania.
+- Wszystkie GLB są przypięte do konkretnego commita publicznego mirrora i sprawdzane przez Git blob SHA-1; licencja źródłowa: CC0 1.0.
+- Retargeting KayKit `Rig_Medium` na docelowy szkielet postaci pozostaje bramką odbioru UE, a nie brakiem źródłowego assetu.
+
 ## 2026-09-18 — darmowe postacie i animacje CC0
 
 - Dodano reprodukowalny pipeline dla Quaternius Universal Base Characters [Standard]: męska i żeńska baza, fryzury, zarost i brwi.

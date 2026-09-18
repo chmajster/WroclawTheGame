@@ -47,6 +47,6 @@ W Development zbierz `stat unit`, `stat gpu`, `stat rhi`, `stat memory` i ślad 
 
 ## Ograniczenia oprawy i implementacji
 
-Geometria i postacie są bryłowymi proxy. Dokumenty, fotografie, monitoring i finał przekazują obecnie informacje głównie tekstowo; nie ma finalnych fotografii, nagranego materiału CCTV, dialogów głosowych ani filmowej sceny finałowej. Wizjer korzysta z rzeczywistej kamery korytarza. Audio jest syntezowane. Wstawanie jest interakcją rozpoczynającą zadanie, bez finalnej animacji.
+Geometria i postacie są bryłowymi proxy. Dokumenty, fotografie, monitoring i finał przekazują obecnie informacje głównie tekstowo; nie ma finalnych fotografii, nagranego materiału CCTV, dialogów głosowych ani filmowej sceny finałowej. Wizjer korzysta z rzeczywistej kamery korytarza. Audio jest syntezowane. Źródłowa animacja CC0 wstawania (`Lie_StandUp`) jest dodana i zmapowana; retargeting na docelowy szkielet oraz odbiór jej odtwarzania w UE pozostają niewykonane.
 
 AI używa natywnej maszyny stanów, bez Behavior Tree/Blackboard. Drugi rozdział jest odblokowany logicznie, ale nie ma jeszcze zawartości. Mapa nie używa World Partition ani level streamingu — dotyczy zamkniętego fragmentu miasta. Zgodność API UE, kolizji, rozmieszczenia interakcji oraz trudności wymaga kompilacji i przejścia w silniku. Nie dodano sztucznych pauz wydłużających czas do 45–90 minut.
