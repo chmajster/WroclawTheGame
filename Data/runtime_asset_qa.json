@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "static_mesh": {
+    "lod_rules": [
+      {
+        "min_vertices": 0,
+        "required_lods": 1,
+        "ratios": [
+          1
+        ],
+        "screen_sizes": [
+          1
+        ]
+      },
+      {
+        "min_vertices": 200,
+        "required_lods": 2,
+        "ratios": [
+          1,
+          0.5
+        ],
+        "screen_sizes": [
+          1,
+          0.35
+        ]
+      },
+      {
+        "min_vertices": 2000,
+        "required_lods": 3,
+        "ratios": [
+          1,
+          0.5,
+          0.25
+        ],
+        "screen_sizes": [
+          1,
+          0.35,
+          0.1
+        ]
+      }
+    ],
+    "require_simple_collision": true,
+    "max_simple_collisions": 32,
+    "require_material": true,
+    "max_dimension_cm": 5000,
+    "min_dimension_cm": 0.1
+  },
+  "skeletal_mesh": {
+    "required_lods": 2,
+    "require_material": true,
+    "require_skeleton": true,
+    "require_physics_asset": false,
+    "min_height_cm": 80,
+    "max_height_cm": 260,
+    "max_dimension_cm": 500,
+    "require_physics_asset_for_categories": [
+      "body"
+    ],
+    "height_limits_for_categories": [
+      "body"
+    ]
+  },
+  "transform": {
+    "min_abs_scale": 0.001,
+    "max_abs_scale": 20,
+    "max_nonuniform_ratio": 8,
+    "max_abs_rotation_degrees": 3600
+  },
+  "character": {
+    "required_ik_chains": [
+      "Spine",
+      "LeftArm",
+      "RightArm",
+      "LeftLeg",
+      "RightLeg"
+    ],
+    "require_ik_retargeter": true,
+    "require_fbik": true,
+    "require_retarget_for_flagged_bindings": true,
+    "visual_qa_poses": [
+      "character.creator_idle",
+      "character.walk",
+      "character.jog",
+      "character.crouch_idle",
+      "opening.stand_up",
+      "character.dodge_forward"
+    ],
+    "visual_qa_resolution": [
+      1920,
+      1080
+    ],
+    "visual_review_required": true
+  }
+}
