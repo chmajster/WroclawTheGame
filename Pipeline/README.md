@@ -12,6 +12,7 @@ reference -> source 3D -> Blender -> PBR/LOD/collision -> Unreal -> gameplay aut
 - Unreal importuje gotowy LOD0, podpina kolejne LOD-y przez `StaticMeshEditorSubsystem`, ustawia Nanite i zapisuje raport.
 - Screenshot QA wymaga nazwanych kamer z manifestu. Asset jakości `hero` nie przejdzie walidacji bez co najmniej jednej kamery.
 - Publikacja do Git jest oddzielną bramką i może nastąpić dopiero po zakończeniu QA.
+- Pipeline produkuje asset, ale nie przejmuje źródła prawdy mapy. Pozycje i użycie w świecie zapisuj w istniejących `Data/*`/generatorach kampanii lub GIS, a następnie odtwarzaj mapę tym samym procesem co obecnie.
 
 ## Manifest
 
@@ -44,10 +45,7 @@ python Pipeline/qa/validate_manifest.py Pipeline/assets/rynek/latarnia_001.asset
 Pełny pipeline na Windows:
 
 ```powershell
-.\Pipeline\Invoke-WTGAssetPipeline.ps1 \
-  -Manifest Pipeline/assets/rynek/latarnia_001.asset.json \
-  -EngineRoot 'C:\Program Files\Epic Games\UE_5.8' \
-  -BlenderExe 'C:\Program Files\Blender Foundation\Blender 4.5\blender.exe'
+.\Pipeline\Invoke-WTGAssetPipeline.ps1 -Manifest Pipeline/assets/rynek/latarnia_001.asset.json -EngineRoot 'C:\Program Files\Epic Games\UE_5.8' -BlenderExe 'C:\Program Files\Blender Foundation\Blender 4.5\blender.exe'
 ```
 
 Wznowienie od ostatniego zaliczonego etapu:
@@ -59,9 +57,7 @@ Wznowienie od ostatniego zaliczonego etapu:
 Publikacja po QA:
 
 ```powershell
-.\Pipeline\git\Publish-Asset.ps1 \
-  -Manifest Pipeline/assets/rynek/latarnia_001.asset.json \
-  -Merge
+.\Pipeline\git\Publish-Asset.ps1 -Manifest Pipeline/assets/rynek/latarnia_001.asset.json -Merge
 ```
 
 ## Artefakty robocze
