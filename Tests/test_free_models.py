@@ -70,6 +70,13 @@ class FreeModelCoverage(unittest.TestCase):
             "cctv_monitor",
             "hide_container",
             "hide_shelf",
+            "street_lamp",
+            "city_interior_sofa",
+            "city_interior_table",
+            "city_interior_chair",
+            "city_interior_cabinet",
+            "city_interior_shelf",
+            "city_interior_lamp",
             "city_activity_marker",
         }
         self.assertEqual(required, set(self.bindings["systems"]))
