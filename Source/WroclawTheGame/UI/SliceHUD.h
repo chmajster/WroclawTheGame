@@ -13,5 +13,7 @@ class WROCLAWTHEGAME_API ASliceHUD : public AHUD
     void Text(const FString &Value, float X, float Y, float Scale = 1,
               const FLinearColor &Color = FLinearColor::White);
     void DrawCityCoverage();
+    void DrawFPSCounter();
     void Panel(const FString &Title, const FString &Body);
+    float SmoothedFPS = 0.0f;
 };
