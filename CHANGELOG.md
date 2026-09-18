@@ -1,3 +1,11 @@
+## 2026-09-18 — landing page kampanii
+
+- Zakładka GRA dostała własny hero panel zamiast korzystać z identycznego podglądu jak zakładka Postać.
+- Hero łączy render aktualnej postaci z tytułem rozdziału, statusem sesji, bieżącym celem i paskiem postępu kampanii.
+- Postęp rozdziału jest liczony z rzeczywiście ukończonych Wroclaw::Quests, a nie z wartości demonstracyjnej.
+- Status zapisu jest widoczny zarówno przy akcjach, jak i bezpośrednio w hero panelu.
+- Stan bez aktywnej sesji rozróżnia nową historię od istniejącego zapisu i podpowiada właściwą akcję.
+
 ## 2026-09-18 — dopracowana zakładka Postać
 
 - Zakładka Postać korzysta z tego samego dashboardowego języka wizualnego co pozostałe części centrum gracza.
