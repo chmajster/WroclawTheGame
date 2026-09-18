@@ -39,7 +39,9 @@ Mapa domyślna `/Game/Maps/Przebudzenie_Source` otwiera menu. `N` rozpoczyna gr�
 
 ## Oficjalne modele budynków GUGiK
 
-Pełny build GIS może pobierać oficjalne modele 3D budynków z Geoportalu GUGiK. Pierwszy zestaw obejmuje Stary Ratusz, bazylikę św. Elżbiety, katedrę, gmach główny UWr, Halę Targową i Muzeum Narodowe. Dla Wrocławia używana jest oficjalna krajowa paczka GUGiK LoD1 dla TERYT 0264. Miejski model Wrocławia posiada LoD2 w ścisłym centrum, ale jest traktowany jako oddzielne źródło referencyjne. Model zastępuje odpowiadającą mu prostą bryłę OSM zamiast nakładać się na nią.
+Pełny build GIS pobiera oficjalne modele 3D budynków GUGiK i importuje **wszystkie bezpiecznie dopasowane budynki leżące w aktywnych sektorach gry**, a nie tylko ręczną listę landmarków. Import preferuje aktualną ogólnopolską warstwę LoD1-2024; starsza paczka miasta Wrocław, TERYT 0264, pozostaje fallbackiem offline/awaryjnym. Dopasowanie do bryły zastępowanej w OSM wykorzystuje nakładanie footprintów, a dystans centroidów jest tylko fallbackiem. Wyniki są grupowane w komórki 128 m, aby nie tworzyć osobnego ciężkiego aktora dla każdego budynku.
+
+Lista sześciu landmarków (Ratusz, bazylika św. Elżbiety, katedra, gmach główny UWr, Hala Targowa i Muzeum Narodowe) pozostaje jako zestaw do ręcznego hero-QA. Miejski model Wrocławia LoD2 jest oddzielnym źródłem referencyjnym.
 
 `Build-FullGame.ps1` włącza ten tor automatycznie. Dla samego GIS użyj `Build-Geography.ps1 -City -OfficialBuildings`. Źródło, licencja, algorytm dopasowania i ograniczenia: [oficjalne budynki 3D](docs/OFFICIAL_BUILDINGS_3D.md).
 
