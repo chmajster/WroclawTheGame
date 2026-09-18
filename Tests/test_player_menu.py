@@ -458,6 +458,20 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         self.assertIn("PlaySound2D", self.audio)
         self.assertIn("true);", self.audio)
 
+    def test_player_facing_copy_avoids_implementation_jargon(self):
+        for token in (
+            'TEXT("OTWARTY ŚWIAT / WROCŁAW")',
+            'TEXT("MAPA MIASTA / SEKTORY")',
+            'TEXT("WROCŁAW / OTWARTY ŚWIAT")',
+            'TEXT("WSPÓLNY MIKS")',
+            'TEXT("MUZYKA")',
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertNotIn('TEXT("OTWARTY ŚWIAT / GIS")', self.cpp)
+        self.assertNotIn('TEXT("MAPA GIS / SEKTORY")', self.cpp)
+        self.assertNotIn("Projekt nie ma jeszcze osobnego kanału muzyki", self.cpp)
+        self.assertNotIn("obsługiwane przez runtime", self.cpp)
+
     def test_game_landing_is_context_aware_for_city_mode(self):
         self.assertIn("City->IsActive()", self.cpp)
         self.assertIn("CompletedActivityCount()", self.cpp)
