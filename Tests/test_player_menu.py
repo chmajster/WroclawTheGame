@@ -44,6 +44,19 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_long_menu_panels_are_scrollable(self):
+        for token in (
+            "ActionScroll = WidgetTree->ConstructWidget<UScrollBox>()",
+            "CenterScroll = WidgetTree->ConstructWidget<UScrollBox>()",
+            "RightScroll = WidgetTree->ConstructWidget<UScrollBox>()",
+            "SetScrollBarVisibility(ESlateVisibility::Hidden)",
+            "SetAnimateWheelScrolling(true)",
+            "ScrollToStart()",
+        ):
+            self.assertIn(token, self.cpp)
+        for member in ("ActionScroll", "CenterScroll", "RightScroll"):
+            self.assertIn(f"TObjectPtr<class UScrollBox> {member}", self.header)
+
     def test_game_tab_has_real_campaign_hero(self):
         self.assertIn("UPlayerMenuWidget::AddGameHero()", self.cpp)
         self.assertIn("Mission->State.QuestComplete(Quest)", self.cpp)
