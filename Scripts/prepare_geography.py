@@ -112,6 +112,107 @@ def prepare():
             if min(extent.x,extent.y,extent.z)<=0:raise RuntimeError('Empty city navigation brush')
             nav.set_actor_scale3d(unreal.Vector((high[0]-low[0])/2/extent.x,(high[1]-low[1])/2/extent.y,5000/extent.z))
             nav.set_editor_property('is_spatially_loaded',False)
+    if campaign_dir:
+        migration=json.loads((campaign_dir/'campaign_migration.json').read_text(encoding='utf-8'))
+        if not migration.get('stable_ids_preserved') or not migration.get('runtime_data_generated'):
+            raise RuntimeError('Campaign GIS migration report is invalid')
+        campaign_environment=json.loads((campaign_dir/'environment.json').read_text(encoding='utf-8'))
+        campaign_chapter=json.loads((campaign_dir/'chapter1.json').read_text(encoding='utf-8'))
+        campaign_world=json.loads((campaign_dir/'openworld.json').read_text(encoding='utf-8'))
+        campaign_opening=json.loads((campaign_dir/'opening_scene_models.json').read_text(encoding='utf-8'))
+        bindings=json.loads((ROOT/'Data/prop_model_bindings.json').read_text(encoding='utf-8'))
+        binding_by_action={item['action']:item for item in bindings}
+        imported=json.loads((ROOT/'Saved/FreeModelImportMap.json').read_text(encoding='utf-8'))
+        required={item['model'] for item in campaign_opening}
+        required.update(item['model'] for item in bindings)
+        free_models={}
+        for model_id in sorted(required):
+            metadata=imported.get(model_id)
+            object_path=metadata.get('primary_object') if metadata else None
+            mesh=unreal.load_asset(object_path) if object_path else None
+            if not mesh or not isinstance(mesh,unreal.StaticMesh):
+                raise RuntimeError('Campaign free model unavailable: '+model_id)
+            free_models[model_id]=mesh
+
+        def campaign_spawn(cls,position,label,rotation=None):
+            actor=actors.spawn_actor_from_class(
+                cls,unreal.Vector(*position),unreal.Rotator(*(rotation or [0,0,0])))
+            if not actor:raise RuntimeError('Cannot spawn campaign actor '+label)
+            actor.set_actor_label('CampaignGIS_'+label)
+            return actor
+
+        def apply_mesh(actor,mesh,scale):
+            component=actor.get_component_by_class(unreal.StaticMeshComponent)
+            if not component:raise RuntimeError('Missing campaign StaticMeshComponent')
+            component.set_static_mesh(mesh)
+            actor.set_actor_scale3d(unreal.Vector(*scale))
+            component.set_editor_property('cast_shadow',True)
+            return component
+
+        for record in campaign_environment:
+            kind=record['type'];rotation=record.get('rotation',[0,0,0])
+            if kind=='box':
+                actor=campaign_spawn(unreal.StaticMeshActor,record['position'],record['id'],rotation)
+                component=actor.get_component_by_class(unreal.StaticMeshComponent);component.set_static_mesh(cube)
+                surface=unreal.load_asset('/Game/SurfaceQuality/Instances/MI_'+record['material']) or unreal.load_asset('/Game/Generated/M_'+record['material'])
+                if surface:component.set_material(0,surface)
+                actor.set_actor_scale3d(unreal.Vector(*[v/100 for v in record['size']]))
+                if hlod:actor.set_editor_property('hlod_layer',hlod)
+            elif kind=='light':
+                actor=campaign_spawn(unreal.PointLight,record['position'],record['id'],rotation)
+                component=actor.get_component_by_class(unreal.PointLightComponent)
+                component.set_editor_property('intensity',record['intensity'])
+                component.set_editor_property('attenuation_radius',record['radius'])
+                component.set_editor_property('cast_shadows',record.get('cast_shadows',True))
+                component.set_editor_property('source_radius',record.get('source_radius',4.0))
+                component.set_editor_property('soft_source_radius',record.get('soft_source_radius',12.0))
+                component.set_editor_property('light_color',unreal.Color(*[int(v*255) for v in record['color']],255))
+            elif kind=='sign':
+                actor=campaign_spawn(unreal.TextRenderActor,record['position'],record['id'],rotation)
+                component=actor.get_component_by_class(unreal.TextRenderComponent)
+                component.set_text(record['text']);component.set_world_size(record['size'])
+            else:
+                raise RuntimeError('Unsupported migrated campaign environment type: '+kind)
+
+        for record in campaign_opening:
+            actor=campaign_spawn(unreal.StaticMeshActor,record['position'],record['id'],record.get('rotation',[0,0,0]))
+            apply_mesh(actor,free_models[record['model']],record.get('scale',[1,1,1]))
+            if hlod:actor.set_editor_property('hlod_layer',hlod)
+
+        for action in campaign_chapter['actions']:
+            if action['kind'] in ('virtual','zone') or action['position'][:2]==[0,0]:
+                continue
+            binding=binding_by_action.get(action['id']);position=list(action['position']);rotation=[0,0,0]
+            if binding:
+                offset=binding.get('offset',[0,0,0])
+                position=[position[i]+offset[i] for i in range(3)]
+                rotation=binding.get('rotation',[0,0,0])
+            actor=campaign_spawn(unreal.SliceProp,position,'action_'+action['id'],rotation)
+            actor.set_editor_property('action_id',action['id'])
+            if binding:apply_mesh(actor,free_models[binding['model']],binding.get('scale',[1,1,1]))
+            else:actor.set_actor_scale3d(unreal.Vector(*[v/100 for v in action['size']]))
+
+        for guard in campaign_world['guards']:
+            actor=campaign_spawn(unreal.SliceEnemy,guard['position'],'guard_'+guard['id'])
+            actor.set_editor_property('guard_id',guard['id'])
+        for hiding in campaign_world['hides']:
+            actor=campaign_spawn(unreal.WorldInteraction,hiding['position'],'hide_'+hiding['id'])
+            actor.set_editor_property('definition_id',hiding['id']);actor.set_editor_property('kind','Hide')
+        for camera in campaign_world['cameras']:
+            actor=campaign_spawn(unreal.SurveillanceCamera,camera['position'],'camera_'+camera['id'],camera['rotation'])
+            actor.set_editor_property('definition_id',camera['id'])
+            monitor=campaign_spawn(unreal.WorldInteraction,[camera['position'][0]-180,camera['position'][1],camera['position'][2]-240],'monitor_'+camera['id'])
+            monitor.set_editor_property('definition_id',camera['id']);monitor.set_editor_property('kind','CCTV')
+        for npc in campaign_world['npc']:
+            actor=campaign_spawn(unreal.ResidentNPC,npc['position'],'npc_'+npc['id'])
+            actor.set_editor_property('definition_id',npc['id'])
+
+        definition=unreal.load_asset('/Game/Generated/ChapterDefinition')
+        if not definition:raise RuntimeError('Campaign ChapterDefinition missing after content preparation')
+        definition.import_generated_catalog()
+        if not unreal.EditorAssetLibrary.save_loaded_asset(definition,False):
+            raise RuntimeError('Campaign ChapterDefinition save failed on GIS map')
+
     nodes={n['id']:n for n in data['road_graph']['nodes']}
     candidates=[e for e in data['road_graph']['edges'] if e['name']=='Ludwika Rydygiera' and e['car_forward'] and e['length_cm']>1500 and e['bridge']=='no']
     if not candidates:raise RuntimeError('No verified street spawn segment')
