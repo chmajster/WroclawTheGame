@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "source": "GUGiK BDOT10k",
+  "schema": "schemat2021",
+  "class_base_urls": {
+    "geoparquet": "https://opendata.geoportal.gov.pl/bdot10k/schemat2021/GeoParquet/{class_name}.parquet",
+    "gpkg": "https://opendata.geoportal.gov.pl/bdot10k/schemat2021/GPKG/{class_name}.gpkg"
+  },
+  "package_wms": "https://mapy.geoportal.gov.pl/wss/service/PZGIK/BDOT/WMS/PobieranieBDOT10k",
+  "default_classes": [
+    {
+      "class_name": "OT_BUBD_A",
+      "role": "buildings",
+      "enabled": true,
+      "confirmed_by_geoportal": true
+    }
+  ],
+  "thematic_groups": {
+    "SW": "sieć wodna",
+    "SK": "sieć komunikacyjna",
+    "SU": "sieć uzbrojenia terenu",
+    "PT": "pokrycie terenu",
+    "BU": "budynki, budowle i urządzenia",
+    "KU": "kompleksy użytkowania terenu",
+    "AD": "jednostki podziału terytorialnego",
+    "TC": "tereny chronione",
+    "OI": "obiekty inne",
+    "RT": "rzeźba terenu"
+  },
+  "wroclaw_probe": {
+    "longitude": 17.0325,
+    "latitude": 51.1079
+  }
+}
