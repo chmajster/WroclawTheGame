@@ -6,15 +6,11 @@
 #include "Components/GameplayComponents.h"
 #include "Systems/NoiseSystem.h"
 #include "Engine/GameInstance.h"
-#include "UObject/ConstructorHelpers.h"
-#include "Engine/StaticMesh.h"
-#include "Materials/MaterialInterface.h"
 #include "Engine/DamageEvents.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Components/StaticMeshComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
@@ -70,31 +66,10 @@ ASliceCharacter::ASliceCharacter()
     Flashlight->SetAttenuationRadius(1800);
     Flashlight->SetOuterConeAngle(28);
     Flashlight->SetVisibility(false);
-    // Asset-independent articulated proxy: replace with a skeletal mesh without changing gameplay.
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeFinder(TEXT("/Engine/BasicShapes/Cube.Cube"));
-    UStaticMesh *Cube = CubeFinder.Object;
-    const FVector Positions[] = {{0, 0, 6}, {0, 0, 63}, {0, -30, 5}, {0, 30, 5}, {0, -13, -57}, {0, 13, -57}};
-    const FVector Sizes[] = {{35, 44, 65}, {26, 26, 28}, {20, 16, 60},
-                             {20, 16, 60}, {23, 20, 64}, {23, 20, 64}};
-    for (int I = 0; I < 6; ++I)
-    {
-        auto *Part = CreateDefaultSubobject<UStaticMeshComponent>(*FString::Printf(TEXT("Body%d"), I));
-        Part->SetupAttachment(RootComponent);
-        Part->SetStaticMesh(Cube);
-        Part->SetRelativeLocation(Positions[I]);
-        Part->SetRelativeScale3D(Sizes[I] / 100);
-        Part->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-        Part->SetCanEverAffectNavigation(false);
-        Part->SetVisibility(false);
-        Limbs.Add(Part);
-    }
 }
 void ASliceCharacter::BeginPlay()
 {
     Super::BeginPlay();
-    if (auto *Skin = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Generated/M_Player.M_Player")))
-        for (UStaticMeshComponent *Part : Limbs)
-            Part->SetMaterial(0, Skin);
 }
 USliceMission *ASliceCharacter::Mission() const
 {
@@ -243,10 +218,6 @@ void ASliceCharacter::Tick(float Dt)
             USliceAudio::Play(this, TEXT("Footstep"), GetActorLocation(), bIsCrouched ? 0.15f : 0.4f);
         }
     }
-    const float Swing =
-        FMath::Sin(GetWorld()->GetTimeSeconds() * (Running ? 14.f : 9.f)) * FMath::Min(Speed / 10, 30.f);
-    for (int I = 2; I < 6; ++I)
-        Limbs[I]->SetRelativeRotation(FRotator((I % 2 ? 1 : -1) * Swing, 0, 0));
     Focus = Interaction->Find(Camera->GetComponentLocation(), Camera->GetForwardVector());
     if (GetActorLocation().Z < (Cast<AGeoPreviewGameMode>(GetWorld()->GetAuthGameMode()) ? -100000 : -650))
         TakeDamage(1000, FDamageEvent(), nullptr, nullptr);
