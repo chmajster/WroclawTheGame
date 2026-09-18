@@ -1,3 +1,22 @@
+## Runtime Asset QA — obowiązkowa bramka
+
+Odbiór assetów 3D jest zautomatyzowany w `Scripts/Build-Windows.ps1` i `Scripts/Build-Geography.ps1`.
+
+Przed packagingiem wymagane są rzeczywiste raporty z UE 5.8:
+
+- [ ] `Saved/RuntimeAssetQA/model_quality.json` — PASS: bounds/skala, LOD, simple collision, materiały, skeleton i Physics Asset bazowych postaci.
+- [ ] `Saved/RuntimeAssetQA/retarget.json` — PASS: IK Rig, chains, Full Body IK oraz retarget wszystkich semantic animations na męski i żeński target Quaternius.
+- [ ] `Saved/RuntimeAssetQA/scene.json` — PASS: transformy i visual meshes kampanii.
+- [ ] `Saved/RuntimeAssetQA/geography_scene.json` — PASS dla builda GIS.
+- [ ] `Saved/RuntimeAssetQA/character_screenshots/capture.json` — PASS: sześć krytycznych póz 1920×1080, wariant męski i żeński.
+- [ ] `Saved/RuntimeAssetQA/visual_review.json` — PASS po faktycznej inspekcji screenshotów pod kątem skali, deformacji, IK i clippingu.
+- [ ] `Saved/RuntimeAssetQA/final.json` — PASS i aktualny fingerprint.
+- [ ] `Saved/RuntimeAssetQAPass.ok` istnieje z bieżącego przebiegu.
+
+Brak któregokolwiek raportu, FAIL albo nieaktualny visual review blokuje `BuildCookRun`.
+
+Szczegóły: [RUNTIME_ASSET_QA.md](RUNTIME_ASSET_QA.md).
+
 # Bramka odbioru 0.3 — niezaliczona
 
 Żaden punkt wymagający działającego silnika lub Windows nie został uznany za wykonany. Testy modelu opisano w VALIDATION.md. Poniższa lista uzupełnia historyczny odbiór rozdziału.
