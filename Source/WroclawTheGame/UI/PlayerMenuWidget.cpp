@@ -42,6 +42,7 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Brushes/SlateRoundedBoxBrush.h"
 #include "Misc/ConfigCacheIni.h"
+#include "Misc/DateTime.h"
 
 namespace
 {
@@ -366,12 +367,28 @@ void UPlayerMenuWidget::BuildShell()
     auto* ContextSlot = Layout->AddChildToVerticalBox(ContextBar);
     ContextSlot->SetPadding(FMargin(34, 13, 34, 12));
 
+    auto* PageChip = WidgetTree->ConstructWidget<UBorder>();
+    PageChip->SetBrush(RoundedBrush(FLinearColor(Accent.R, Accent.G, Accent.B, 0.10f), 7.0f));
+    PageChip->SetPadding(FMargin(9, 4, 9, 4));
+    PageCounter = MakeText(TEXT("01 / 07"), 9, true, Accent);
+    PageCounter->SetJustification(ETextJustify::Center);
+    PageChip->AddChild(PageCounter);
+    ContextBar->AddChildToHorizontalBox(PageChip)->SetPadding(FMargin(0, 0, 12, 0));
+
     PageTitle = MakeText(TEXT(""), 11, true, Accent);
     ContextBar->AddChildToHorizontalBox(PageTitle)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
+    auto* DotSize = WidgetTree->ConstructWidget<USizeBox>();
+    DotSize->SetWidthOverride(8.0f);
+    DotSize->SetHeightOverride(8.0f);
+    SessionStateDot = WidgetTree->ConstructWidget<UBorder>();
+    SessionStateDot->SetBrush(RoundedBrush(Muted, 4.0f));
+    DotSize->AddChild(SessionStateDot);
+    ContextBar->AddChildToHorizontalBox(DotSize)->SetPadding(FMargin(0, 5, 8, 0));
+
     ContextStatus = MakeText(TEXT(""), 9, true, Muted);
     ContextStatus->SetJustification(ETextJustify::Right);
-    ContextBar->AddChildToHorizontalBox(ContextStatus)->SetPadding(FMargin(12, 0, 18, 0));
+    ContextBar->AddChildToHorizontalBox(ContextStatus)->SetPadding(FMargin(0, 0, 18, 0));
 
     ContextHint = MakeText(TEXT(""), 10, true, Muted);
     ContextHint->SetJustification(ETextJustify::Right);
@@ -420,17 +437,28 @@ void UPlayerMenuWidget::BuildShell()
     RightColumn = WidgetTree->ConstructWidget<UVerticalBox>();
     RightScroll->AddChild(RightColumn);
 
+    auto* FooterDivider = WidgetTree->ConstructWidget<UBorder>();
+    FooterDivider->SetBrushColor(FLinearColor(Divider.R, Divider.G, Divider.B, 0.72f));
+    auto* FooterDividerSize = WidgetTree->ConstructWidget<USizeBox>();
+    FooterDividerSize->SetHeightOverride(1.0f);
+    FooterDividerSize->AddChild(FooterDivider);
+    Layout->AddChildToVerticalBox(FooterDividerSize)->SetPadding(FMargin(34, 10, 34, 0));
+
     auto* Footer = WidgetTree->ConstructWidget<UHorizontalBox>();
     auto* FooterSlot = Layout->AddChildToVerticalBox(Footer);
-    FooterSlot->SetPadding(FMargin(34, 12, 34, 20));
+    FooterSlot->SetPadding(FMargin(34, 10, 34, 20));
 
     auto* Location = MakeText(TEXT("WROCŁAW  /  DOLNY ŚLĄSK"), 10, true, Muted);
     Footer->AddChildToHorizontalBox(Location)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
+    ClockText = MakeText(FDateTime::Now().ToString(TEXT("%d.%m.%Y  •  %H:%M")), 9, true, Muted);
+    ClockText->SetJustification(ETextJustify::Center);
+    Footer->AddChildToHorizontalBox(ClockText)->SetPadding(FMargin(16, 0, 16, 0));
+
     auto* Build = MakeText(ProjectVersionLabel(), 9, true, Muted);
     Build->SetJustification(ETextJustify::Center);
     auto* BuildSlot = Footer->AddChildToHorizontalBox(Build);
-    BuildSlot->SetPadding(FMargin(18, 0, 18, 0));
+    BuildSlot->SetPadding(FMargin(16, 0, 16, 0));
 
     auto* FooterHint = MakeText(TEXT("MYSZ  •  KLAWIATURA  •  GAMEPAD"), 10, true, Accent);
     FooterHint->SetJustification(ETextJustify::Right);
@@ -514,6 +542,9 @@ void UPlayerMenuWidget::UpdateTabStyle()
 
 void UPlayerMenuWidget::UpdateContextStatus()
 {
+    if (PageCounter)
+        PageCounter->SetText(FText::FromString(FString::Printf(TEXT("%02d / 07"), ActiveTab + 1)));
+
     if (!ContextStatus)
         return;
 
@@ -530,6 +561,8 @@ void UPlayerMenuWidget::UpdateContextStatus()
     ContextStatus->SetText(FText::FromString(FString::Printf(
         TEXT("%s  •  %s  •  %s"), *Mode, *Session, *Save)));
     ContextStatus->SetColorAndOpacity(FSlateColor(bHasSave ? Accent : Muted));
+    if (SessionStateDot)
+        SessionStateDot->SetBrush(RoundedBrush(bInGame ? Accent : Muted, 4.0f));
 }
 
 void UPlayerMenuWidget::UpdateContextHint()
@@ -2902,6 +2935,13 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
     const bool bReduceMotion = UISettings && UISettings->bReduceUIMotion;
 
     UpdateFocusPresentation();
+
+    ClockRefreshAccumulator += InDeltaTime;
+    if (ClockText && ClockRefreshAccumulator >= 1.0f)
+    {
+        ClockRefreshAccumulator = 0.0f;
+        ClockText->SetText(FText::FromString(FDateTime::Now().ToString(TEXT("%d.%m.%Y  •  %H:%M"))));
+    }
 
     if (!bReduceMotion)
         AmbientAnimationTime += InDeltaTime;
