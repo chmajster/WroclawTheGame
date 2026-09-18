@@ -15,9 +15,10 @@ Set-StrictMode -Version Latest
 $ProjectRoot = Split-Path $PSScriptRoot -Parent
 $Project = Join-Path $ProjectRoot 'WroclawTheGame.uproject'
 $Editor = Join-Path $EngineRoot 'Engine\Binaries\Win64\UnrealEditor-Cmd.exe'
-$ManifestPath = [IO.Path]::GetFullPath((Join-Path $ProjectRoot $Manifest))
 if ([IO.Path]::IsPathRooted($Manifest)) {
     $ManifestPath = [IO.Path]::GetFullPath($Manifest)
+} else {
+    $ManifestPath = [IO.Path]::GetFullPath((Join-Path $ProjectRoot $Manifest))
 }
 foreach ($Required in @($Project, $Editor, $ManifestPath)) {
     if (-not (Test-Path -LiteralPath $Required)) { throw "Missing required file: $Required" }
@@ -84,6 +85,7 @@ for ($Index = $StartIndex; $Index -lt $Stages.Count; $Index++) {
                 Assert-Exit 'Manifest validation'
             }
             'blender' {
+                Remove-Item -LiteralPath (Join-Path $ProjectRoot "Saved\Pipeline\visual\$AssetId.json") -Force -ErrorAction SilentlyContinue
                 & $BlenderExe --background --python (Join-Path $ProjectRoot 'Pipeline\blender\build_asset.py') -- --manifest $ManifestPath
                 Assert-Exit 'Blender asset build'
                 $Report = Join-Path $ProjectRoot "Saved\Pipeline\generated\$AssetId\blender-report.json"
