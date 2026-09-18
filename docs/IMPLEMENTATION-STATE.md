@@ -1,7 +1,7 @@
 # Full game expansion — implementation state
 
 Updated: 2026-09-18
-Working branch: `codex/full-game-expansion-pass-1`
+Working branch: `codex/official-wroclaw-buildings-3d`
 
 This file is the hand-off point for long-running implementation of the full WroclawTheGame expansion. Update it before ending every implementation pass. Do not mark runtime work as complete without an Unreal/Windows verification artifact.
 
