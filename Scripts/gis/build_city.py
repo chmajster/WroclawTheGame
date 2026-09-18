@@ -138,7 +138,21 @@ def generate(output=DEFAULT_OUTPUT, catalog_path=ROOT/'Data/city.json', evidence
     digest = fingerprint(catalog, [*data['sources'], structures, gameplay, {'pipeline_sha256': pipeline.hexdigest()}])
     evidence = json.loads(evidence_path.read_text()) if evidence_path else None
     report = evaluate(catalog, stats, connections, digest, evidence)
-    runtime = {'schema_version': 1, 'world_package': catalog['world_package'], 'fingerprint': digest, 'sectors': []}
+    sector_link_modes = {}
+    for edge in data['road_graph']['edges']:
+        source_owner = owners.get(edge['from']); target_owner = owners.get(edge['to'])
+        if not source_owner or not target_owner or source_owner == target_owner:
+            continue
+        modes = sector_link_modes.setdefault((source_owner, target_owner), {'car': False, 'foot': False})
+        modes['car'] = modes['car'] or bool(edge.get('car_forward'))
+        modes['foot'] = modes['foot'] or bool(edge.get('foot'))
+    sector_links = [
+        {'from': source, 'to': target, **modes}
+        for (source, target), modes in sorted(sector_link_modes.items())
+        if modes['car'] or modes['foot']
+    ]
+    runtime = {'schema_version': 1, 'world_package': catalog['world_package'], 'fingerprint': digest,
+               'sectors': [], 'links': sector_links}
     for sector, assessed in zip(catalog['sectors'], report['sectors']):
         w,s,e,n = sector['bbox']; corners = [geo.world(lon,lat,115) for lon,lat in ((w,s),(e,s),(e,n),(w,n))]
         runtime['sectors'].append({**sector, 'name': assessed['name'], 'status': assessed['status'],
