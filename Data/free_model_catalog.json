@@ -663,5 +663,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/wooden_crate_01/wooden_crate_01_1k.fbx"
+  },
+  {
+    "slug": "fire_hydrant",
+    "name": "Fire Hydrant",
+    "intended_use": "Urban street infrastructure dressing.",
+    "source_page": "https://polyhaven.com/a/fire_hydrant",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Gonçalo Felício": "All"
+    },
+    "category": "Industrial & Infrastructure/Traffic & Safety/Hydrants & Fire Safety",
+    "dimensions_mm": [
+      874.623566865921,
+      317.74356961250305,
+      799.4560238003032
+    ],
+    "files_hash": "392eed954362d55b55022af83c0b7150bf977853",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/fire_hydrant/fire_hydrant_1k.fbx"
   }
 ]
