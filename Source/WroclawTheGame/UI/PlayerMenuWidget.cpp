@@ -691,8 +691,18 @@ void UPlayerMenuWidget::ShowToast(const FString& Message)
 
     ToastCard = WidgetTree->ConstructWidget<UBorder>();
     ToastCard->SetBrush(RoundedBrush(FLinearColor(0.020f, 0.075f, 0.095f, 0.98f), 10.0f));
-    ToastCard->SetPadding(FMargin(14, 10, 14, 10));
-    ToastCard->AddChild(MakeText(Message, 9, true, TextPrimary));
+    ToastCard->SetPadding(FMargin(10, 9, 14, 9));
+
+    auto* ToastContent = WidgetTree->ConstructWidget<UHorizontalBox>();
+    ToastCard->AddChild(ToastContent);
+
+    auto* ToastRail = WidgetTree->ConstructWidget<UBorder>();
+    ToastRail->SetBrush(RoundedBrush(Accent, 2.0f));
+    auto* ToastRailSize = WidgetTree->ConstructWidget<USizeBox>();
+    ToastRailSize->SetWidthOverride(3.0f);
+    ToastRailSize->AddChild(ToastRail);
+    ToastContent->AddChildToHorizontalBox(ToastRailSize)->SetPadding(FMargin(0, 1, 10, 1));
+    ToastContent->AddChildToHorizontalBox(MakeText(Message, 9, true, TextPrimary));
 
     auto* Slot = RootOverlay->AddChildToOverlay(ToastCard);
     Slot->SetHorizontalAlignment(HAlign_Right);
@@ -700,7 +710,12 @@ void UPlayerMenuWidget::ShowToast(const FString& Message)
     Slot->SetPadding(FMargin(24, 24, 24, 72));
 
     ToastTimeRemaining = 1.8f;
-    ToastCard->SetRenderOpacity(1.0f);
+    const auto* UISettings = UWTGPerformanceSettings::Get();
+    const bool bReduceMotion = UISettings && UISettings->bReduceUIMotion;
+    ToastAnimationTime = bReduceMotion ? 0.18f : 0.0f;
+    ToastCard->SetRenderOpacity(bReduceMotion ? 1.0f : 0.0f);
+    ToastCard->SetRenderTranslation(
+        bReduceMotion ? FVector2D::ZeroVector : FVector2D(18.0f, 0.0f));
 }
 
 void UPlayerMenuWidget::RefreshWithSettingsToast()
@@ -3107,6 +3122,16 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
     if (ToastCard && ToastTimeRemaining > 0.0f)
     {
         ToastTimeRemaining = FMath::Max(0.0f, ToastTimeRemaining - InDeltaTime);
+
+        if (!bReduceMotion && ToastAnimationTime < 0.18f)
+        {
+            ToastAnimationTime = FMath::Min(0.18f, ToastAnimationTime + InDeltaTime);
+            const float T = FMath::Clamp(ToastAnimationTime / 0.18f, 0.0f, 1.0f);
+            const float Ease = 1.0f - FMath::Pow(1.0f - T, 3.0f);
+            ToastCard->SetRenderOpacity(Ease);
+            ToastCard->SetRenderTranslation(FVector2D(FMath::Lerp(18.0f, 0.0f, Ease), 0.0f));
+        }
+
         if (!bReduceMotion && ToastTimeRemaining < 0.30f)
             ToastCard->SetRenderOpacity(FMath::Clamp(ToastTimeRemaining / 0.30f, 0.0f, 1.0f));
         if (ToastTimeRemaining <= 0.0f)
