@@ -88,25 +88,15 @@ def collision_box_enum():
 
 
 def make_fallback_material():
-    path = DEST + "/M_RuntimeAssetFallback"
-    material = unreal.load_asset(path)
-    if material:
-        return material
-    tools = unreal.AssetToolsHelpers.get_asset_tools()
-    material = tools.create_asset("M_RuntimeAssetFallback", DEST, unreal.Material, unreal.MaterialFactoryNew())
-    if not material:
-        raise RuntimeError("Cannot create runtime fallback material")
-    edit = unreal.MaterialEditingLibrary
-    color = edit.create_material_expression(material, unreal.MaterialExpressionConstant3Vector)
-    color.set_editor_property("constant", unreal.LinearColor(0.18, 0.18, 0.18, 1.0))
-    edit.connect_material_property(color, "", unreal.MaterialProperty.MP_BASE_COLOR)
-    rough = edit.create_material_expression(material, unreal.MaterialExpressionConstant)
-    rough.set_editor_property("r", 0.55)
-    edit.connect_material_property(rough, "", unreal.MaterialProperty.MP_ROUGHNESS)
-    edit.recompile_material(material)
-    if not unreal.EditorAssetLibrary.save_loaded_asset(material, False):
-        raise RuntimeError("Cannot save runtime fallback material")
-    return material
+    candidates = (
+        "/Game/SurfaceQuality/Instances/MI_Plaster.MI_Plaster",
+        "/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial",
+    )
+    for path in candidates:
+        material = unreal.load_asset(path)
+        if isinstance(material, unreal.MaterialInterface):
+            return material
+    raise RuntimeError("No safe fallback material is available")
 
 
 def static_materials(mesh, subsystem):
