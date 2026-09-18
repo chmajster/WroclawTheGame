@@ -16,3 +16,11 @@
 - Maintain `docs/IMPLEMENTATION-STATE.md` as the source of truth for completed work, verification gaps, and the next concrete step.
 - Before ending a pass, update both that file and the draft PR description so the next agent can resume without reconstructing state from chat history.
 - Merge the PR only when the requested multi-pass scope reaches its acceptance gates or the user explicitly asks to merge the current partial state.
+
+## Asset production
+
+- Route new or materially changed 3D environment/prop assets through `Pipeline/Invoke-WTGAssetPipeline.ps1`; do not treat a source model or imported FBX as finished work.
+- Add a versioned `Pipeline/assets/<area>/<asset>.asset.json` manifest for production assets. Existing campaign/GIS data files remain the source of truth for world placement; do not make generated binary maps the authoritative source.
+- A production asset is complete only after manifest validation, Blender export, Unreal import/LOD/collision/Nanite validation, Automation tests, required screenshot capture, required visual review, and the final `Saved/Pipeline/reports/<asset>.json` status is `PASS`.
+- If visual review is required, compare the generated screenshots against the real/reference material, record explicit PASS/FAIL with `Pipeline/qa/record_visual_review.py`, and rebuild/retest after a failure.
+- Use `Pipeline/git/Publish-Asset.ps1` only after the final QA report and pipeline state are PASS. Never bypass the QA gates merely to create or merge a pull request.
