@@ -95,8 +95,10 @@ FString BuildLabel()
     return TEXT("TEST");
 #elif UE_BUILD_DEBUG
     return TEXT("DEBUG");
-#else
+#elif UE_BUILD_DEVELOPMENT
     return TEXT("DEVELOPMENT");
+#else
+    return TEXT("UNKNOWN");
 #endif
 }
 
