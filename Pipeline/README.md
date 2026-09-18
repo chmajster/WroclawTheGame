@@ -93,3 +93,7 @@ Asset jest zakończony dopiero, gdy:
 Sama kompilacja kodu lub sam import FBX nie oznacza ukończenia assetu.
 
 Kontrakt pracy autonomicznego agenta: [ASTRA_AGENT.md](ASTRA_AGENT.md).
+
+## Runtime integration QA
+
+Pipeline pojedynczego assetu nie zastępuje odbioru całej gry. Modele po podłączeniu do kampanii/GIS przechodzą dodatkową bramkę opisaną w [docs/RUNTIME_ASSET_QA.md](../docs/RUNTIME_ASSET_QA.md): LOD, collision, materiały, transformy, IK/FBIK, retarget oraz clipping w kontekście runtime. Packaging wymaga aktualnego `Saved/RuntimeAssetQAPass.ok`.
