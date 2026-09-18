@@ -749,6 +749,23 @@ void UPlayerMenuWidget::AddPreview()
     TopBadgeSlot->SetPadding(FMargin(18));
     TopBadge->AddChild(MakeText(TEXT("PODGLĄD NA ŻYWO"), 9, true, Accent));
 
+    auto* StateBadge = WidgetTree->ConstructWidget<UBorder>();
+    StateBadge->SetBrush(RoundedBrush(FLinearColor(0.015f, 0.024f, 0.036f, 0.92f), 8.0f));
+    StateBadge->SetPadding(FMargin(11, 7));
+    auto* StateBadgeSlot = Stage->AddChildToOverlay(StateBadge);
+    StateBadgeSlot->SetHorizontalAlignment(HAlign_Right);
+    StateBadgeSlot->SetVerticalAlignment(VAlign_Top);
+    StateBadgeSlot->SetPadding(FMargin(18));
+    auto* StateBox = WidgetTree->ConstructWidget<UVerticalBox>();
+    StateBadge->AddChild(StateBox);
+    PreviewViewStatus = MakeText(TEXT(""), 8, true, TextPrimary);
+    PreviewViewStatus->SetJustification(ETextJustify::Right);
+    StateBox->AddChildToVerticalBox(PreviewViewStatus);
+    PreviewLightingStatus = MakeText(TEXT(""), 8, true, Muted);
+    PreviewLightingStatus->SetJustification(ETextJustify::Right);
+    StateBox->AddChildToVerticalBox(PreviewLightingStatus)->SetPadding(FMargin(0, 3, 0, 0));
+    UpdatePreviewStatus();
+
     auto* CaptionCard = WidgetTree->ConstructWidget<UBorder>();
     CaptionCard->SetBrush(RoundedBrush(FLinearColor(0.005f, 0.009f, 0.015f, 0.88f), 10.0f));
     CaptionCard->SetPadding(FMargin(16, 11, 16, 11));
@@ -2438,16 +2455,22 @@ void UPlayerMenuWidget::FPS240() { SetFPSLimit(240); }
 void UPlayerMenuWidget::PreviewFullBody()
 {
     if (Studio) Studio->SetView(TEXT("FullBody"));
+    PreviewViewLabel = TEXT("CAŁA SYLWETKA");
+    UpdatePreviewStatus();
 }
 
 void UPlayerMenuWidget::PreviewUpperBody()
 {
     if (Studio) Studio->SetView(TEXT("UpperBody"));
+    PreviewViewLabel = TEXT("GÓRNA CZĘŚĆ");
+    UpdatePreviewStatus();
 }
 
 void UPlayerMenuWidget::PreviewFace()
 {
     if (Studio) Studio->SetView(TEXT("Face"));
+    PreviewViewLabel = TEXT("TWARZ");
+    UpdatePreviewStatus();
 }
 
 void UPlayerMenuWidget::PreviewRotateLeft()
@@ -2463,21 +2486,40 @@ void UPlayerMenuWidget::PreviewRotateRight()
 void UPlayerMenuWidget::PreviewLightingModern()
 {
     if (Studio) Studio->SetLighting(TEXT("Modern"));
+    PreviewLightingLabel = TEXT("STUDIO");
+    UpdatePreviewStatus();
 }
 
 void UPlayerMenuWidget::PreviewLightingDaylight()
 {
     if (Studio) Studio->SetLighting(TEXT("Daylight"));
+    PreviewLightingLabel = TEXT("DZIEŃ");
+    UpdatePreviewStatus();
 }
 
 void UPlayerMenuWidget::PreviewLightingNight()
 {
     if (Studio) Studio->SetLighting(TEXT("Night"));
+    PreviewLightingLabel = TEXT("NOC");
+    UpdatePreviewStatus();
 }
 
 void UPlayerMenuWidget::PreviewReset()
 {
     if (Studio) Studio->ResetPresentation();
+    PreviewViewLabel = TEXT("CAŁA SYLWETKA");
+    PreviewLightingLabel = TEXT("STUDIO");
+    UpdatePreviewStatus();
+}
+
+void UPlayerMenuWidget::UpdatePreviewStatus()
+{
+    if (PreviewViewStatus)
+        PreviewViewStatus->SetText(FText::FromString(
+            FString::Printf(TEXT("KADR  •  %s"), *PreviewViewLabel)));
+    if (PreviewLightingStatus)
+        PreviewLightingStatus->SetText(FText::FromString(
+            FString::Printf(TEXT("ŚWIATŁO  •  %s"), *PreviewLightingLabel)));
 }
 
 FReply UPlayerMenuWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
