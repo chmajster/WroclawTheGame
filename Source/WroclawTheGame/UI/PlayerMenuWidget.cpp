@@ -2380,10 +2380,9 @@ void UPlayerMenuWidget::BuildSettingsTab()
     AddCenterButton(UILevelButton, 5.0f);
 
     UIVolumeMeter = WidgetTree->ConstructWidget<UProgressBar>();
-    auto* UIMeter = UIVolumeMeter.Get();
-    UIMeter->SetPercent(UIVolume);
-    UIMeter->SetFillColorAndOpacity(Accent);
-    CenterColumn->AddChildToVerticalBox(UIMeter)->SetPadding(FMargin(18, 0, 18, 5));
+    UIVolumeMeter->SetPercent(UIVolume);
+    UIVolumeMeter->SetFillColorAndOpacity(Accent);
+    CenterColumn->AddChildToVerticalBox(UIVolumeMeter)->SetPadding(FMargin(18, 0, 18, 5));
 
     auto* UISlider = WidgetTree->ConstructWidget<USlider>();
     UISlider->SetValue(UIVolume);
