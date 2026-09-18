@@ -1,0 +1,190 @@
+name: Bootstrap Kenney CC0 system models
+
+on:
+  push:
+    branches:
+      - assets/cc0-models-20260918
+    paths:
+      - .github/workflows/bootstrap-kenney-system-models.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Download audited Kenney CC0 packs and commit models individually
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python - <<'PY'
+          import hashlib, json, os, re, shutil, subprocess, tempfile, urllib.request, zipfile
+          from pathlib import Path, PurePosixPath
+          from urllib.parse import urlparse
+
+          ROOT=Path.cwd()
+          MAX_ZIP=20*1024*1024
+          MAX_MEMBER=40*1024*1024
+          ALLOWED={".fbx",".png",".jpg",".jpeg",".mtl",".txt",".md",".gltf",".glb"}
+          SOURCES={
+            "car-kit":{
+              "url":"https://opengameart.org/sites/default/files/kenney_car-kit_3.1.zip",
+              "page":"https://opengameart.org/content/car-kit",
+              "use":"Driveable and ambient vehicle prototypes with separate wheels.",
+              "mode":"car",
+            },
+            "blocky-characters":{
+              "url":"https://opengameart.org/sites/default/files/kenney_blocky-characters_2.0.zip",
+              "page":"https://opengameart.org/content/blocky-characters",
+              "use":"Rigged fallback NPC/enemy/pedestrian prototype with animations; not final photorealistic character art.",
+              "mode":"character",
+            },
+            "building-kit":{
+              "url":"https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+              "page":"https://opengameart.org/content/building-kit",
+              "use":"Animated/structural door models replacing cube door placeholders.",
+              "mode":"doors",
+            },
+          }
+
+          def download(url):
+              p=urlparse(url)
+              if p.scheme!="https" or p.hostname!="opengameart.org":
+                  raise ValueError("unexpected source host")
+              req=urllib.request.Request(url,headers={"User-Agent":"WroclawTheGame-KenneyFetcher/1.0"})
+              with urllib.request.urlopen(req,timeout=120) as r:
+                  data=r.read(MAX_ZIP+1)
+              if len(data)>MAX_ZIP or not data.startswith(b"PK"):
+                  raise ValueError("invalid/oversized zip")
+              return data
+
+          def safe_members(z):
+              rows=[]
+              total=0
+              for info in z.infolist():
+                  p=PurePosixPath(info.filename)
+                  if p.is_absolute() or ".." in p.parts:
+                      raise ValueError("unsafe zip path")
+                  if info.is_dir(): continue
+                  if info.file_size>MAX_MEMBER: raise ValueError("oversized zip member")
+                  total+=info.file_size
+                  if total>150*1024*1024: raise ValueError("oversized expanded bundle")
+                  if Path(info.filename).suffix.lower() in ALLOWED:
+                      rows.append(info)
+              return rows
+
+          def clean_id(name):
+              return re.sub(r"[^A-Za-z0-9._-]+","-",name).strip("-").lower()
+
+          catalog_path=ROOT/"Data/free_external_model_catalog.json"
+          catalog=json.loads(catalog_path.read_text(encoding="utf-8")) if catalog_path.exists() else []
+          existing={x["id"] for x in catalog}
+          staging=Path(tempfile.mkdtemp(prefix="wtg-kenney-"))
+
+          try:
+              for pack,src in SOURCES.items():
+                  data=download(src["url"])
+                  archive_sha=hashlib.sha256(data).hexdigest()
+                  zip_path=staging/(pack+".zip"); zip_path.write_bytes(data)
+                  unpack=staging/pack; unpack.mkdir()
+                  with zipfile.ZipFile(zip_path) as z:
+                      members=safe_members(z)
+                      for info in members:
+                          out=unpack/Path(*PurePosixPath(info.filename).parts)
+                          out.parent.mkdir(parents=True,exist_ok=True)
+                          with z.open(info) as s, open(out,"wb") as d: shutil.copyfileobj(s,d)
+
+                  all_files=[p for p in unpack.rglob("*") if p.is_file()]
+                  fbx=[p for p in all_files if p.suffix.lower()==".fbx"]
+                  images=[p for p in all_files if p.suffix.lower() in {".png",".jpg",".jpeg"}]
+
+                  if src["mode"]=="car":
+                      selected=[p for p in fbx if any(k in p.stem.lower() for k in ("sedan","wheel"))]
+                      if not selected:
+                          selected=fbx[:12]
+                      for model in sorted(selected):
+                          ident="kenney-car-"+clean_id(model.stem)
+                          if ident in existing: continue
+                          target=ROOT/"SourceAssets/Models/Kenney/CarKit"/clean_id(model.stem)
+                          target.mkdir(parents=True,exist_ok=True)
+                          shutil.copy2(model,target/model.name)
+                          # Kenney packs use small shared palette/color maps; include them with each self-contained model.
+                          for img in images:
+                              if img.stat().st_size<=4*1024*1024:
+                                  (target/"textures").mkdir(exist_ok=True)
+                                  shutil.copy2(img,target/"textures"/img.name)
+                          rec={"id":ident,"name":model.stem,"provider":"Kenney","pack":"Car Kit",
+                               "source_page":src["page"],"download_url":src["url"],"license":"CC0-1.0",
+                               "intended_use":src["use"],"archive_sha256":archive_sha,
+                               "primary_path":(target/model.name).relative_to(ROOT).as_posix()}
+                          (target/"asset.json").write_text(json.dumps(rec,indent=2)+"\n")
+                          catalog.append(rec); catalog_path.write_text(json.dumps(catalog,indent=2)+"\n")
+                          subprocess.run(["git","add",str(target.relative_to(ROOT)),str(catalog_path.relative_to(ROOT))],check=True)
+                          subprocess.run(["git","commit","-m",f"assets: add {ident} CC0 model"],check=True)
+                          subprocess.run(["git","push","origin",f"HEAD:{os.environ['GITHUB_REF_NAME']}"],check=True)
+                          existing.add(ident)
+
+                  elif src["mode"]=="character":
+                      candidates=[p for p in fbx if "animation" not in p.as_posix().lower() and "anim" not in p.parent.name.lower()]
+                      base=None
+                      preferred=[p for p in candidates if "medium" in p.stem.lower() or p.stem.lower()=="character"]
+                      if preferred: base=sorted(preferred)[0]
+                      elif candidates: base=sorted(candidates)[0]
+                      if not base: raise ValueError("no character FBX found")
+                      ident="kenney-blocky-character-rig"
+                      if ident not in existing:
+                          target=ROOT/"SourceAssets/Characters/Kenney/BlockyCharacters"
+                          target.mkdir(parents=True,exist_ok=True)
+                          shutil.copy2(base,target/base.name)
+                          # Preserve all FBX animation clips and skin textures required by the rig.
+                          for p in fbx:
+                              if p==base: continue
+                              if "anim" in p.as_posix().lower():
+                                  rel=Path("animations")/p.name
+                                  (target/rel.parent).mkdir(parents=True,exist_ok=True)
+                                  shutil.copy2(p,target/rel)
+                          for img in images:
+                              (target/"textures").mkdir(exist_ok=True)
+                              shutil.copy2(img,target/"textures"/img.name)
+                          rec={"id":ident,"name":"Kenney Blocky Character Rig","provider":"Kenney","pack":"Blocky Characters",
+                               "source_page":src["page"],"download_url":src["url"],"license":"CC0-1.0",
+                               "intended_use":src["use"],"archive_sha256":archive_sha,
+                               "primary_path":(target/base.name).relative_to(ROOT).as_posix()}
+                          (target/"asset.json").write_text(json.dumps(rec,indent=2)+"\n")
+                          catalog.append(rec); catalog_path.write_text(json.dumps(catalog,indent=2)+"\n")
+                          subprocess.run(["git","add",str(target.relative_to(ROOT)),str(catalog_path.relative_to(ROOT))],check=True)
+                          subprocess.run(["git","commit","-m","assets: add kenney-blocky-character-rig CC0 model"],check=True)
+                          subprocess.run(["git","push","origin",f"HEAD:{os.environ['GITHUB_REF_NAME']}"],check=True)
+                          existing.add(ident)
+
+                  elif src["mode"]=="doors":
+                      selected=[p for p in fbx if "door" in p.stem.lower()]
+                      if not selected: raise ValueError("no door FBX files found")
+                      for model in sorted(selected):
+                          ident="kenney-door-"+clean_id(model.stem)
+                          if ident in existing: continue
+                          target=ROOT/"SourceAssets/Models/Kenney/BuildingKit"/clean_id(model.stem)
+                          target.mkdir(parents=True,exist_ok=True)
+                          shutil.copy2(model,target/model.name)
+                          for img in images:
+                              if img.stat().st_size<=4*1024*1024:
+                                  (target/"textures").mkdir(exist_ok=True)
+                                  shutil.copy2(img,target/"textures"/img.name)
+                          rec={"id":ident,"name":model.stem,"provider":"Kenney","pack":"Building Kit",
+                               "source_page":src["page"],"download_url":src["url"],"license":"CC0-1.0",
+                               "intended_use":src["use"],"archive_sha256":archive_sha,
+                               "primary_path":(target/model.name).relative_to(ROOT).as_posix()}
+                          (target/"asset.json").write_text(json.dumps(rec,indent=2)+"\n")
+                          catalog.append(rec); catalog_path.write_text(json.dumps(catalog,indent=2)+"\n")
+                          subprocess.run(["git","add",str(target.relative_to(ROOT)),str(catalog_path.relative_to(ROOT))],check=True)
+                          subprocess.run(["git","commit","-m",f"assets: add {ident} CC0 model"],check=True)
+                          subprocess.run(["git","push","origin",f"HEAD:{os.environ['GITHUB_REF_NAME']}"],check=True)
+                          existing.add(ident)
+          finally:
+              shutil.rmtree(staging,ignore_errors=True)
+          PY
