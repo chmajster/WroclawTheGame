@@ -135,7 +135,11 @@ def main() -> int:
         if resolved not in seen:
             unique.append(resolved)
             seen.add(resolved)
-    if not unique:\n        if args.all:\n            print("PASS no production asset manifests found")\n            return 0\n        require(False, "no manifests selected")
+    if not unique:
+        if args.all:
+            print("PASS no production asset manifests found")
+            return 0
+        require(False, "no manifests selected")
 
     failures = []
     for path in unique:
