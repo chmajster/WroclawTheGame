@@ -1,3 +1,12 @@
+## 2026-09-18 — klawiatura i gamepad w menu
+
+- Wszystkie przyciski runtime UMG są jawnie focusable i współpracują z natywną nawigacją Slate strzałkami oraz D-padem.
+- Po wejściu do zakładki fokus automatycznie trafia na pierwszą dostępną akcję zamiast pozostawać na niewidocznym root widget.
+- Q/E oraz L1/R1 przełączają zakładki bez użycia myszy.
+- B na gamepadzie cofa modal lub wraca do gry; przycisk Start wznawia aktywną sesję.
+- Modal potwierdzenia utrzymuje fokus na akcji i obsługuje anulowanie przez ESC, Backspace oraz B.
+- Pasek pomocy pokazuje równolegle sterowanie myszą, klawiaturą i gamepadem.
+
 ## 2026-09-18 — bezpieczne potwierdzenia menu
 
 - Dodano pełnoekranowy modal potwierdzający rozpoczęcie nowej gry i wyjście do pulpitu.
