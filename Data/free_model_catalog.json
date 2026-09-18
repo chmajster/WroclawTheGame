@@ -1326,5 +1326,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/can_rusted/can_rusted_1k.fbx"
+  },
+  {
+    "slug": "clipboard",
+    "name": "Clipboard",
+    "intended_use": "Notes, schedules, plans and paper clue proxy.",
+    "source_page": "https://polyhaven.com/a/clipboard",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "ProgrammerOnCoffee": "All"
+    },
+    "category": "Office & Stationery/Stationery & Supplies/Clipboards & Boards",
+    "dimensions_mm": [
+      228.6001443862915,
+      336.55010163784027,
+      41.990341851487756
+    ],
+    "files_hash": "d67455f77731d7d7927333d699907dd6451e581c",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/clipboard/clipboard_1k.fbx"
   }
 ]
