@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "city": "Wrocław",
+  "records": [
+    {
+      "id": "old_town_hall",
+      "name": "Stary Ratusz",
+      "category": "historic",
+      "district": "Stare Miasto",
+      "osm_names": [
+        "Ratusz",
+        "Stary Ratusz"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "centennial_hall",
+      "name": "Hala Stulecia",
+      "category": "cultural",
+      "district": "Biskupin-Sępolno-Dąbie-Bartoszowice",
+      "osm_names": [
+        "Hala Stulecia",
+        "Hala Ludowa"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "wroclaw_cathedral",
+      "name": "Archikatedra św. Jana Chrzciciela",
+      "category": "religious",
+      "district": "Plac Grunwaldzki",
+      "osm_names": [
+        "Archikatedra św. Jana Chrzciciela",
+        "Katedra św. Jana Chrzciciela"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "university_main",
+      "name": "Gmach główny Uniwersytetu Wrocławskiego",
+      "category": "education",
+      "district": "Stare Miasto",
+      "osm_names": [
+        "Uniwersytet Wrocławski",
+        "Gmach główny Uniwersytetu Wrocławskiego"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "market_hall",
+      "name": "Hala Targowa",
+      "category": "commercial",
+      "district": "Stare Miasto",
+      "osm_names": [
+        "Hala Targowa"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "national_museum",
+      "name": "Muzeum Narodowe",
+      "category": "cultural",
+      "district": "Plac Grunwaldzki",
+      "osm_names": [
+        "Muzeum Narodowe we Wrocławiu",
+        "Muzeum Narodowe"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "main_station",
+      "name": "Wrocław Główny",
+      "category": "transport",
+      "district": "Przedmieście Oławskie",
+      "osm_names": [
+        "Wrocław Główny",
+        "Dworzec Wrocław Główny"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "opera",
+      "name": "Opera Wrocławska",
+      "category": "cultural",
+      "district": "Stare Miasto",
+      "osm_names": [
+        "Opera Wrocławska"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "nfm",
+      "name": "Narodowe Forum Muzyki",
+      "category": "cultural",
+      "district": "Stare Miasto",
+      "osm_names": [
+        "Narodowe Forum Muzyki",
+        "NFM"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "hydropolis",
+      "name": "Hydropolis",
+      "category": "cultural",
+      "district": "Przedmieście Oławskie",
+      "osm_names": [
+        "Hydropolis"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "sky_tower",
+      "name": "Sky Tower",
+      "category": "modern",
+      "district": "Powstańców Śląskich",
+      "osm_names": [
+        "Sky Tower"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "renoma",
+      "name": "Renoma",
+      "category": "commercial",
+      "district": "Przedmieście Świdnickie",
+      "osm_names": [
+        "Renoma"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "panorama_raclawicka",
+      "name": "Panorama Racławicka",
+      "category": "cultural",
+      "district": "Plac Grunwaldzki",
+      "osm_names": [
+        "Panorama Racławicka"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "ossolineum",
+      "name": "Ossolineum",
+      "category": "cultural",
+      "district": "Stare Miasto",
+      "osm_names": [
+        "Zakład Narodowy im. Ossolińskich",
+        "Ossolineum"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "arsenal",
+      "name": "Arsenał Miejski",
+      "category": "historic",
+      "district": "Stare Miasto",
+      "osm_names": [
+        "Arsenał Miejski",
+        "Arsenał"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "four_domes",
+      "name": "Pawilon Czterech Kopuł",
+      "category": "cultural",
+      "district": "Biskupin-Sępolno-Dąbie-Bartoszowice",
+      "osm_names": [
+        "Pawilon Czterech Kopuł"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "stadium_wroclaw",
+      "name": "Tarczyński Arena Wrocław",
+      "category": "sport",
+      "district": "Pilczyce-Kozanów-Popowice Płn.",
+      "osm_names": [
+        "Tarczyński Arena",
+        "Stadion Wrocław"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "wroclaw_tower",
+      "name": "Wieża Matematyczna UWr",
+      "category": "historic",
+      "district": "Stare Miasto",
+      "osm_names": [
+        "Wieża Matematyczna"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "st_elizabeth",
+      "name": "Bazylika św. Elżbiety",
+      "category": "religious",
+      "district": "Stare Miasto",
+      "osm_names": [
+        "Bazylika św. Elżbiety Węgierskiej",
+        "Kościół św. Elżbiety"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "st_mary_magdalene",
+      "name": "Katedra św. Marii Magdaleny",
+      "category": "religious",
+      "district": "Stare Miasto",
+      "osm_names": [
+        "Katedra św. Marii Magdaleny",
+        "Kościół św. Marii Magdaleny"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "st_cross",
+      "name": "Kolegiata Świętego Krzyża",
+      "category": "religious",
+      "district": "Plac Grunwaldzki",
+      "osm_names": [
+        "Kolegiata Świętego Krzyża",
+        "Kościół Świętego Krzyża"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "wroclaw_palace",
+      "name": "Pałac Królewski",
+      "category": "historic",
+      "district": "Stare Miasto",
+      "osm_names": [
+        "Pałac Królewski"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "capitol",
+      "name": "Teatr Muzyczny Capitol",
+      "category": "cultural",
+      "district": "Przedmieście Świdnickie",
+      "osm_names": [
+        "Teatr Muzyczny Capitol",
+        "Capitol"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "polinka_station",
+      "name": "Polinka",
+      "category": "transport",
+      "district": "Plac Grunwaldzki",
+      "osm_names": [
+        "Polinka"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "wroclavia",
+      "name": "Wroclavia",
+      "category": "commercial",
+      "district": "Huby",
+      "osm_names": [
+        "Wroclavia"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "aquapark",
+      "name": "Aquapark Wrocław",
+      "category": "recreation",
+      "district": "Huby",
+      "osm_names": [
+        "Aquapark Wrocław",
+        "Wrocławski Park Wodny"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "old_jewish_cemetery",
+      "name": "Stary Cmentarz Żydowski",
+      "category": "historic",
+      "district": "Powstańców Śląskich",
+      "osm_names": [
+        "Stary Cmentarz Żydowski"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "browar_mieszczanski",
+      "name": "Browar Mieszczański",
+      "category": "industrial",
+      "district": "Huby",
+      "osm_names": [
+        "Browar Mieszczański"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "wroclaw_zoo",
+      "name": "Zoo Wrocław",
+      "category": "recreation",
+      "district": "Biskupin-Sępolno-Dąbie-Bartoszowice",
+      "osm_names": [
+        "Zoo Wrocław",
+        "Ogród Zoologiczny"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "iglica",
+      "name": "Iglica",
+      "category": "monument",
+      "district": "Biskupin-Sępolno-Dąbie-Bartoszowice",
+      "osm_names": [
+        "Iglica"
+      ],
+      "quality": "hero"
+    }
+  ]
+}
