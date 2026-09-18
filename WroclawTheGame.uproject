@@ -30,6 +30,13 @@
 			]
 		},
 		{
+			"Name": "PythonAutomationTest",
+			"Enabled": true,
+			"TargetAllowList": [
+				"Editor"
+			]
+		},
+		{
 			"Name": "GeoReferencing",
 			"Enabled": true
 		}
