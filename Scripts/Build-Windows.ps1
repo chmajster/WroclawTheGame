@@ -93,11 +93,27 @@ $FreeModelsScript = Join-Path $PSScriptRoot 'import_free_models.py'
 & $Editor $Project "-ExecutePythonScript=$FreeModelsScript" -unattended -nosplash -nullrhi -stdout -FullStdOutLogOutput
 if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $FreeModelsMarker)) { throw 'Free model import failed; packaging stopped' }
 
+$RuntimeQualityMarker = Join-Path $ProjectRoot 'Saved\RuntimeAssetQualityReady.ok'
+if (Test-Path -LiteralPath $RuntimeQualityMarker) { Remove-Item -LiteralPath $RuntimeQualityMarker }
+$RuntimeQualityScript = Join-Path $PSScriptRoot 'prepare_runtime_asset_quality.py'
+& $Editor $Project "-ExecutePythonScript=$RuntimeQualityScript" -unattended -nosplash -nullrhi -stdout -FullStdOutLogOutput
+if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $RuntimeQualityMarker)) {
+    throw 'Runtime model LOD/collision/material quality failed; packaging stopped'
+}
+
 $FreeAnimationsMarker = Join-Path $ProjectRoot 'Saved\FreeAnimationsReady.ok'
 if (Test-Path -LiteralPath $FreeAnimationsMarker) { Remove-Item -LiteralPath $FreeAnimationsMarker }
 $FreeAnimationsScript = Join-Path $PSScriptRoot 'import_free_animations.py'
 & $Editor $Project "-ExecutePythonScript=$FreeAnimationsScript" -unattended -nosplash -nullrhi -stdout -FullStdOutLogOutput
 if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $FreeAnimationsMarker)) { throw 'Free animation import failed; packaging stopped' }
+
+$RetargetMarker = Join-Path $ProjectRoot 'Saved\AnimationRetargetReady.ok'
+if (Test-Path -LiteralPath $RetargetMarker) { Remove-Item -LiteralPath $RetargetMarker }
+$RetargetScript = Join-Path $PSScriptRoot 'prepare_animation_retargeting.py'
+& $Editor $Project "-ExecutePythonScript=$RetargetScript" -unattended -nosplash -nullrhi -stdout -FullStdOutLogOutput
+if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $RetargetMarker)) {
+    throw 'Animation retarget/IK/FBIK validation failed; packaging stopped'
+}
 
 if (Test-Path -LiteralPath $CreatorMarker) { Remove-Item -LiteralPath $CreatorMarker }
 $CreatorScript = Join-Path $PSScriptRoot 'prepare_character_creator.py'
@@ -109,6 +125,14 @@ $Script = Join-Path $PSScriptRoot 'prepare_content.py'
 & $Editor $Project "-ExecutePythonScript=$Script" -unattended -nosplash -nullrhi -stdout -FullStdOutLogOutput
 if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $Marker)) {
     throw 'Content generation failed. Read Saved\Logs\WroclawTheGame.log; packaging was not started.'
+}
+
+$RuntimeSceneMarker = Join-Path $ProjectRoot 'Saved\RuntimeAssetSceneReady.ok'
+if (Test-Path -LiteralPath $RuntimeSceneMarker) { Remove-Item -LiteralPath $RuntimeSceneMarker }
+$RuntimeSceneScript = Join-Path $PSScriptRoot 'validate_runtime_asset_scene.py'
+& $Editor $Project "-ExecutePythonScript=$RuntimeSceneScript" -unattended -nosplash -nullrhi -stdout -FullStdOutLogOutput
+if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $RuntimeSceneMarker)) {
+    throw 'Runtime asset transform/scene validation failed; packaging stopped'
 }
 # Convert the authored level in place; its package path remains stable for saved games.
 & $Editor $Project -run=WorldPartitionConvertCommandlet /Game/Maps/Przebudzenie_Source -SCCProvider=None -AllowCommandletRendering -unattended -stdout -FullStdOutLogOutput
@@ -122,7 +146,31 @@ if ($BuildHLOD) {
     & $Editor $Project /Game/Maps/Przebudzenie_Source -run=WorldPartitionBuilderCommandlet -Builder=WorldPartitionHLODsBuilder -SetupHLODs -BuildHLODs -AllowCommandletRendering -SCCProvider=None -unattended
     if ($LASTEXITCODE -ne 0) { throw 'HLOD generation failed' }
 }
-if ($PrepareOnly) { Write-Host 'Editor target and generated content prepared.'; return }
+if ($PrepareOnly) {
+    Write-Host 'Editor target, asset quality, retargeting and generated content prepared. Visual screenshot/review gate is enforced for packaging builds.'
+    return
+}
+
+$CharacterCaptureMarker = Join-Path $ProjectRoot 'Saved\RuntimeCharacterVisualsReady.ok'
+if (Test-Path -LiteralPath $CharacterCaptureMarker) { Remove-Item -LiteralPath $CharacterCaptureMarker }
+$CharacterCaptureScript = Join-Path $PSScriptRoot 'capture_runtime_character_qa.py'
+& $Editor $Project "-ExecutePythonScript=$CharacterCaptureScript" -unattended -nosplash -nop4 -stdout -FullStdOutLogOutput
+if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $CharacterCaptureMarker)) {
+    throw 'Character clipping/pose screenshot capture failed; packaging stopped'
+}
+
+$VisualReview = Join-Path $ProjectRoot 'Saved\RuntimeAssetQA\visual_review.json'
+if (-not (Test-Path -LiteralPath $VisualReview)) {
+    throw 'Runtime asset visual review required. Inspect Saved\RuntimeAssetQA\character_screenshots, then record PASS/FAIL with Scripts\record_runtime_asset_visual_review.py and rerun the build.'
+}
+
+$RuntimeQAMarker = Join-Path $ProjectRoot 'Saved\RuntimeAssetQAPass.ok'
+if (Test-Path -LiteralPath $RuntimeQAMarker) { Remove-Item -LiteralPath $RuntimeQAMarker }
+& $UnrealPython (Join-Path $PSScriptRoot 'build_runtime_asset_qa_report.py')
+if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $RuntimeQAMarker)) {
+    throw 'Final runtime asset QA report is not PASS; packaging stopped'
+}
+
 & $Automation BuildCookRun "-project=$Project" -noP4 -platform=Win64 "-clientconfig=$Configuration" -build -cook '-map=/Game/Maps/Przebudzenie_Source' -stage -pak -archive "-archivedirectory=$OutputDirectory" -prereqs -utf8output -unattended
 if ($LASTEXITCODE -ne 0) { throw "Windows packaging failed ($LASTEXITCODE)" }
 $Executables = @(Get-ChildItem -LiteralPath $OutputDirectory -Filter 'WroclawTheGame.exe' -Recurse)
