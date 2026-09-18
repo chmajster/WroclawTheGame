@@ -45,6 +45,7 @@ void UVehicleAIDriverComponent::StopAI()
     TargetIndex = 0;
     if (Vehicle)
         Vehicle->SetAIControl(false);
+    SetComponentTickEnabled(false);
 }
 
 void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
