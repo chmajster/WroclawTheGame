@@ -224,7 +224,7 @@ def main() -> None:
     lod_objects = []
     lod_reports = []
     for index, ratio in enumerate(ratios):
-        obj = decimated_copy(base, ratio, f"{safe_name}_LOD{index}")
+        lod_name = safe_name if index == 0 else f"{safe_name}_LOD{index}"\n        obj = decimated_copy(base, ratio, lod_name)
         count = triangle_count(obj)
         lod_objects.append(obj)
         lod_reports.append({"lod": index, "ratio": ratio, "triangles": count})
