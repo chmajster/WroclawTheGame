@@ -290,6 +290,18 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_character_preview_shows_current_camera_and_lighting_state(self):
+        for token in (
+            "PreviewViewStatus",
+            "PreviewLightingStatus",
+            "UpdatePreviewStatus()",
+            'TEXT("KADR  •  %s")',
+            'TEXT("ŚWIATŁO  •  %s")',
+            'PreviewViewLabel = TEXT("TWARZ")',
+            'PreviewLightingLabel = TEXT("NOC")',
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_character_preview_keeps_camera_and_lighting_controls(self):
         for token in (
             "PreviewFullBody", "PreviewUpperBody", "PreviewFace",
