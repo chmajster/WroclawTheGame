@@ -201,6 +201,23 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_character_and_wardrobe_use_player_facing_catalog_names(self):
+        for token in (
+            "Creator->Catalog->ClothingDefinitions",
+            "Definition->DisplayName.ToString()",
+            "Creator->Catalog->HairStyleDefinitions",
+            "VoiceProfiles.FindByPredicate",
+            'TEXT("FRYZURA")',
+            'TEXT("PROFIL GŁOSU")',
+            'TEXT("SMUKŁA")',
+            'TEXT("STANDARDOWA")',
+            'TEXT("ATLETYCZNA")',
+            'TEXT("MASYWNA")',
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertNotIn('TEXT("PRESET")', self.cpp)
+        self.assertNotIn('TEXT("SEED WYGLĄDU")', self.cpp)
+
     def test_inventory_has_stable_sorting_counts_and_empty_states(self):
         for token in (
             'TEXT("GARDEROBA  •  %d")',
