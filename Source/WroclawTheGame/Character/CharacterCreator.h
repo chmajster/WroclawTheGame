@@ -22,6 +22,7 @@ public:
     UFUNCTION(BlueprintCallable) void SetLighting(FName Profile);
     UFUNCTION(BlueprintCallable) void Rotate(float Degrees);
     UFUNCTION(BlueprintCallable) void Zoom(float Amount);
+    UFUNCTION(BlueprintCallable) void ResetPresentation();
     UFUNCTION() void RefreshAppearance();
 private:
     float Distance=290, TargetDistance=290, TargetHeight=92, CameraHeight=92, Yaw=0;
