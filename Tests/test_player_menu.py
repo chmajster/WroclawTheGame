@@ -280,6 +280,15 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_audio_settings_have_visual_level_meters(self):
+        for token in (
+            "SFXMeter->SetPercent(SFXVolume)",
+            "UIVolumeMeter->SetPercent(UIVolume)",
+            "SetFillColorAndOpacity(Accent)",
+            'TEXT("WYBIERZ KONTROLKĘ, ABY ZMIENIĆ POZIOM CO 25%")',
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_audio_settings_are_real_and_runtime_backed(self):
         for token in (
             'TEXT("DŹWIĘK")',
