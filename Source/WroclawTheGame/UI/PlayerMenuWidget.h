@@ -40,6 +40,8 @@ private:
     UPROPERTY() TObjectPtr<class UVerticalBox> ShellLayout;
     UPROPERTY() TObjectPtr<class UTextBlock> PageTitle;
     UPROPERTY() TObjectPtr<class UTextBlock> ContextStatus;
+    UPROPERTY() TObjectPtr<class UTextBlock> PreviewViewStatus;
+    UPROPERTY() TObjectPtr<class UTextBlock> PreviewLightingStatus;
     UPROPERTY() TArray<TObjectPtr<class UButton>> TabButtons;
     UPROPERTY() TArray<TObjectPtr<class UBorder>> TabIndicators;
     UPROPERTY() TArray<TObjectPtr<class UButton>> ActionButtons;
@@ -56,6 +58,8 @@ private:
     float AmbientAnimationTime = 0.0f;
     bool bRotatingPreview = false;
     bool bCollectActionButtons = false;
+    FString PreviewViewLabel = TEXT("CAŁA SYLWETKA");
+    FString PreviewLightingLabel = TEXT("STUDIO");
 
     class UTextBlock* MakeText(const FString& Value, int32 Size = 16, bool bBold = false,
                                FLinearColor Color = FLinearColor::White);
@@ -78,6 +82,7 @@ private:
     void UpdateTabStyle();
     void UpdateContextStatus();
     void FocusPrimaryAction();
+    void UpdatePreviewStatus();
     void ShowConfirmation(int32 Action, const FString& Title, const FString& Body, const FString& ConfirmLabel);
     void ClearConfirmation();
 
