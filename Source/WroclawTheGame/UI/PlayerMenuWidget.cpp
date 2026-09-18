@@ -441,15 +441,26 @@ void UPlayerMenuWidget::FocusPrimaryAction()
 void UPlayerMenuWidget::AddGameHero()
 {
     auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
+    auto* City = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+    const bool bCity = City && City->IsActive();
     const bool bInGame = Mission && Mission->bInGame;
-    const bool bHasSave = Mission && Mission->HasSave();
+    const bool bHasSave = bCity || (Mission && Mission->HasSave());
 
     int32 Completed = 0;
-    const int32 Total = static_cast<int32>(Wroclaw::Quests().size());
-    if (Mission)
-        for (const auto& Quest : Wroclaw::Quests())
-            if (Mission->State.QuestComplete(Quest))
-                ++Completed;
+    int32 Total = 0;
+    if (bCity)
+    {
+        Completed = City->CompletedActivityCount();
+        Total = City->TrackableActivityCount();
+    }
+    else
+    {
+        Total = static_cast<int32>(Wroclaw::Quests().size());
+        if (Mission)
+            for (const auto& Quest : Wroclaw::Quests())
+                if (Mission->State.QuestComplete(Quest))
+                    ++Completed;
+    }
 
     auto* Stage = WidgetTree->ConstructWidget<UOverlay>();
     auto* StageSlot = CenterColumn->AddChildToVerticalBox(Stage);
@@ -485,7 +496,9 @@ void UPlayerMenuWidget::AddGameHero()
     TopLeftSlot->SetHorizontalAlignment(HAlign_Left);
     TopLeftSlot->SetVerticalAlignment(VAlign_Top);
     TopLeftSlot->SetPadding(FMargin(18));
-    TopLeft->AddChild(MakeText(TEXT("ROZDZIAŁ 01  /  PRZEBUDZENIE"), 9, true, Accent));
+    TopLeft->AddChild(MakeText(
+        bCity ? TEXT("WROCŁAW  /  OTWARTY ŚWIAT") : TEXT("ROZDZIAŁ 01  /  PRZEBUDZENIE"),
+        9, true, Accent));
 
     auto* StatusBadge = WidgetTree->ConstructWidget<UBorder>();
     StatusBadge->SetBrush(RoundedBrush(
@@ -512,20 +525,24 @@ void UPlayerMenuWidget::AddGameHero()
 
     HeroBox->AddChildToVerticalBox(MakeText(TEXT("WROCŁAW"), 10, true, Accent))
         ->SetPadding(FMargin(0, 0, 0, 3));
-    HeroBox->AddChildToVerticalBox(MakeText(TEXT("PRZEBUDZENIE"), 30, true, TextPrimary))
+    HeroBox->AddChildToVerticalBox(MakeText(
+        bCity ? TEXT("OTWARTY ŚWIAT") : TEXT("PRZEBUDZENIE"), 30, true, TextPrimary))
         ->SetPadding(FMargin(0, 0, 0, 10));
 
-    const FString Objective = bInGame && Mission
-        ? Mission->ObjectiveText()
-        : (bHasSave ? TEXT("Wczytaj ostatni zapis i kontynuuj historię.")
-                    : TEXT("Rozpocznij nową kampanię i obudź się we Wrocławiu."));
+    const FString Objective = bCity
+        ? City->NearbyObjective()
+        : (bInGame && Mission
+            ? Mission->ObjectiveText()
+            : (bHasSave ? TEXT("Wczytaj ostatni zapis i kontynuuj historię.")
+                        : TEXT("Rozpocznij nową kampanię i obudź się we Wrocławiu.")));
     auto* ObjectiveText = MakeText(Objective, 12, false, Muted);
     ObjectiveText->SetLineHeightPercentage(1.18f);
     HeroBox->AddChildToVerticalBox(ObjectiveText)->SetPadding(FMargin(0, 0, 0, 15));
 
     auto* ProgressHead = WidgetTree->ConstructWidget<UHorizontalBox>();
     HeroBox->AddChildToVerticalBox(ProgressHead)->SetPadding(FMargin(0, 0, 0, 5));
-    ProgressHead->AddChildToHorizontalBox(MakeText(TEXT("POSTĘP ROZDZIAŁU"), 9, true, Muted))
+    ProgressHead->AddChildToHorizontalBox(MakeText(
+        bCity ? TEXT("POSTĘP MIASTA") : TEXT("POSTĘP ROZDZIAŁU"), 9, true, Muted))
         ->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     auto* PercentText = MakeText(
         FString::Printf(TEXT("%d / %d"), Completed, FMath::Max(Total, 1)), 9, true, Accent);
@@ -537,10 +554,16 @@ void UPlayerMenuWidget::AddGameHero()
     Progress->SetFillColorAndOpacity(Accent);
     HeroBox->AddChildToVerticalBox(Progress)->SetPadding(FMargin(0, 0, 0, 12));
 
-    const FString SaveText = Mission
-        ? (Mission->bLastSaveSucceeded ? TEXT("OSTATNI ZAPIS  •  OK") : TEXT("OSTATNI ZAPIS  •  BŁĄD"))
-        : TEXT("BRAK AKTYWNEGO ZAPISU");
-    HeroBox->AddChildToVerticalBox(MakeText(SaveText, 9, true, Mission && !Mission->bLastSaveSucceeded ? FLinearColor(0.95f,0.42f,0.34f,1.0f) : Muted));
+    const bool bSaveError = bCity ? City->IsWriteBlocked() : (Mission && !Mission->bLastSaveSucceeded);
+    const FString SaveText = bCity
+        ? (City->IsWriteBlocked() ? TEXT("AUTOMATYCZNY ZAPIS  •  ZABLOKOWANY")
+                                  : TEXT("AUTOMATYCZNY ZAPIS  •  AKTYWNY"))
+        : (Mission
+            ? (Mission->bLastSaveSucceeded ? TEXT("OSTATNI ZAPIS  •  OK") : TEXT("OSTATNI ZAPIS  •  BŁĄD"))
+            : TEXT("BRAK AKTYWNEGO ZAPISU"));
+    HeroBox->AddChildToVerticalBox(MakeText(
+        SaveText, 9, true,
+        bSaveError ? FLinearColor(0.95f, 0.42f, 0.34f, 1.0f) : Muted));
 }
 
 void UPlayerMenuWidget::AddPreview()
@@ -659,6 +682,9 @@ void UPlayerMenuWidget::AddPlayerStatus()
 
     if (Mission)
     {
+        auto* City = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+        const bool bCity = City && City->IsActive();
+
         auto* ObjectiveCard = WidgetTree->ConstructWidget<UBorder>();
         ObjectiveCard->SetBrush(RoundedBrush(PanelSoft, 11.0f));
         ObjectiveCard->SetPadding(FMargin(13, 12, 13, 12));
@@ -668,17 +694,25 @@ void UPlayerMenuWidget::AddPlayerStatus()
         ObjectiveCard->AddChild(ObjectiveBox);
         ObjectiveBox->AddChildToVerticalBox(MakeText(TEXT("AKTUALNY CEL"), 9, true, Accent))
             ->SetPadding(FMargin(0, 0, 0, 6));
-        ObjectiveBox->AddChildToVerticalBox(
-            MakeText(Mission->ObjectiveText(), 13, true, TextPrimary));
+        ObjectiveBox->AddChildToVerticalBox(MakeText(
+            bCity ? City->NearbyObjective() : Mission->ObjectiveText(), 13, true, TextPrimary));
 
-        RightColumn->AddChildToVerticalBox(MakeText(TEXT("SESJA"), 9, true, Accent))
+        RightColumn->AddChildToVerticalBox(MakeText(
+            bCity ? TEXT("MIASTO") : TEXT("SESJA"), 9, true, Accent))
             ->SetPadding(FMargin(0, 0, 0, 7));
-        const FString Meta = FString::Printf(
-            TEXT("Zagrożenie        %d / 5\nCzas rozgrywki    %.0f min\nOsiągnięcia       %d\nZapis             %s"),
-            Mission->WorldState.HeatLevel(),
-            Mission->State.elapsed / 60.0,
-            Mission->LifetimeAchievements,
-            Mission->bLastSaveSucceeded ? TEXT("OK") : TEXT("BŁĄD"));
+        const FString Meta = bCity
+            ? FString::Printf(
+                TEXT("Aktywności       %d / %d\nZagrożenie        %d / 5\nZapis miasta      %s"),
+                City->CompletedActivityCount(),
+                City->TrackableActivityCount(),
+                Mission->WorldState.HeatLevel(),
+                City->IsWriteBlocked() ? TEXT("ZABLOKOWANY") : TEXT("OK"))
+            : FString::Printf(
+                TEXT("Zagrożenie        %d / 5\nCzas rozgrywki    %.0f min\nOsiągnięcia       %d\nZapis             %s"),
+                Mission->WorldState.HeatLevel(),
+                Mission->State.elapsed / 60.0,
+                Mission->LifetimeAchievements,
+                Mission->bLastSaveSucceeded ? TEXT("OK") : TEXT("BŁĄD"));
         auto* MetaText = MakeText(Meta, 11, false, Muted);
         MetaText->SetLineHeightPercentage(1.35f);
         RightColumn->AddChildToVerticalBox(MetaText);
@@ -690,15 +724,20 @@ void UPlayerMenuWidget::BuildGameTab()
     PageTitle->SetText(FText::FromString(TEXT("CENTRUM GRACZA  /  GRA")));
 
     auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
+    auto* City = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+    const bool bCity = City && City->IsActive();
     const bool bInGame = Mission && Mission->bInGame;
 
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("PRZEBUDZENIE"), 21, true, TextPrimary))
+    ActionColumn->AddChildToVerticalBox(MakeText(
+        bCity ? TEXT("WROCŁAW") : TEXT("PRZEBUDZENIE"), 21, true, TextPrimary))
         ->SetPadding(FMargin(2, 1, 2, 2));
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("KAMPANIA FABULARNA"), 9, true, Accent))
+    ActionColumn->AddChildToVerticalBox(MakeText(
+        bCity ? TEXT("OTWARTY ŚWIAT / GIS") : TEXT("KAMPANIA FABULARNA"), 9, true, Accent))
         ->SetPadding(FMargin(2, 0, 2, 12));
     ActionColumn->AddChildToVerticalBox(MakeText(
-        bInGame ? TEXT("Wróć do bieżącej sesji albo zarządzaj zapisem.")
-                : TEXT("Rozpocznij nową historię albo wczytaj istniejący zapis."),
+        bCity ? TEXT("Eksploruj dzielnice, odkrywaj aktywności i kontynuuj zapis miasta.")
+              : (bInGame ? TEXT("Wróć do bieżącej sesji albo zarządzaj zapisem.")
+                         : TEXT("Rozpocznij nową historię albo wczytaj istniejący zapis.")),
         11, false, Muted))->SetPadding(FMargin(2, 0, 2, 18));
 
     auto* ResumeButton = MakeButton(bInGame ? TEXT("KONTYNUUJ") : TEXT("BRAK AKTYWNEJ SESJI"), bInGame);
@@ -706,14 +745,14 @@ void UPlayerMenuWidget::BuildGameTab()
     ResumeButton->SetIsEnabled(bInGame);
     ActionColumn->AddChildToVerticalBox(ResumeButton)->SetPadding(FMargin(0, 0, 0, 8));
 
-    auto* NewButton = MakeButton(TEXT("NOWA GRA"), !bInGame);
+    auto* NewButton = MakeButton(
+        bCity ? TEXT("NOWY ZAPIS MIASTA") : TEXT("NOWA GRA"), !bInGame);
     NewButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::NewGame);
     ActionColumn->AddChildToVerticalBox(NewButton)->SetPadding(FMargin(0, 0, 0, 8));
 
-    auto* LoadButton = MakeButton(TEXT("WCZYTAJ ZAPIS"));
+    auto* LoadButton = MakeButton(bCity ? TEXT("WCZYTAJ MIASTO") : TEXT("WCZYTAJ ZAPIS"));
     LoadButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::LoadGame);
-    const bool CityActive = GetWorld()->GetSubsystem<UCityGameplaySubsystem>()->IsActive();
-    const bool bHasSave = CityActive || (Mission && Mission->HasSave());
+    const bool bHasSave = bCity || (Mission && Mission->HasSave());
     LoadButton->SetIsEnabled(bHasSave);
     ActionColumn->AddChildToVerticalBox(LoadButton)->SetPadding(FMargin(0, 0, 0, 10));
 
