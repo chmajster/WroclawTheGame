@@ -95,6 +95,7 @@ UTextBlock* UPlayerMenuWidget::MakeText(const FString& Value, int32 Size, bool b
 UButton* UPlayerMenuWidget::MakeButton(const FString& Label, bool bAccent)
 {
     auto* Button = WidgetTree->ConstructWidget<UButton>();
+    Button->SetIsFocusable(true);
     Button->SetBackgroundColor(FLinearColor::White);
     Button->SetColorAndOpacity(FLinearColor::White);
 
@@ -111,6 +112,8 @@ UButton* UPlayerMenuWidget::MakeButton(const FString& Label, bool bAccent)
     Text->SetJustification(ETextJustify::Center);
     Text->SetLineHeightPercentage(1.0f);
     Button->AddChild(Text);
+    if (bCollectActionButtons)
+        ActionButtons.Add(Button);
     return Button;
 }
 
@@ -228,7 +231,7 @@ void UPlayerMenuWidget::BuildShell()
     PageTitle = MakeText(TEXT(""), 11, true, Accent);
     ContextBar->AddChildToHorizontalBox(PageTitle)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
-    auto* ContextHint = MakeText(TEXT("ESC  WRÓĆ DO GRY    •    PPM  OBRÓT    •    KÓŁKO  ZOOM"), 10, true, Muted);
+    auto* ContextHint = MakeText(TEXT("Q/E  L1/R1  ZAKŁADKI    •    ENTER/A  WYBIERZ    •    ESC/B  WSTECZ"), 10, true, Muted);
     ContextHint->SetJustification(ETextJustify::Right);
     ContextBar->AddChildToHorizontalBox(ContextHint);
 
@@ -267,7 +270,7 @@ void UPlayerMenuWidget::BuildShell()
     auto* Location = MakeText(TEXT("WROCŁAW  /  DOLNY ŚLĄSK"), 10, true, Muted);
     Footer->AddChildToHorizontalBox(Location)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
-    auto* FooterHint = MakeText(TEXT("CENTRUM GRACZA"), 10, true, Accent);
+    auto* FooterHint = MakeText(TEXT("MYSZ  •  KLAWIATURA  •  GAMEPAD"), 10, true, Accent);
     FooterHint->SetJustification(ETextJustify::Right);
     Footer->AddChildToHorizontalBox(FooterHint);
 }
@@ -280,8 +283,10 @@ void UPlayerMenuWidget::Refresh()
     ActionColumn->ClearChildren();
     CenterColumn->ClearChildren();
     RightColumn->ClearChildren();
+    ActionButtons.Reset();
     UpdateTabStyle();
 
+    bCollectActionButtons = true;
     switch (ActiveTab)
     {
         case 0: BuildGameTab(); break;
@@ -293,6 +298,8 @@ void UPlayerMenuWidget::Refresh()
         case 6: BuildSettingsTab(); break;
         default: ActiveTab = 0; BuildGameTab(); break;
     }
+    bCollectActionButtons = false;
+    FocusPrimaryAction();
 }
 
 void UPlayerMenuWidget::SelectTab(int32 Index)
@@ -318,6 +325,32 @@ void UPlayerMenuWidget::UpdateTabStyle()
 
         if (auto* Text = Cast<UTextBlock>(Button->GetContent()))
             Text->SetColorAndOpacity(FSlateColor(bActive ? Background : TextPrimary));
+    }
+}
+
+void UPlayerMenuWidget::FocusPrimaryAction()
+{
+    if (PendingConfirmation != 0)
+        return;
+
+    for (UButton* Button : ActionButtons)
+    {
+        if (Button && Button->GetIsEnabled() && Button->GetVisibility() == ESlateVisibility::Visible)
+        {
+            if (APlayerController* PlayerController = GetOwningPlayer())
+                Button->SetUserFocus(PlayerController);
+            else
+                Button->SetKeyboardFocus();
+            return;
+        }
+    }
+
+    if (TabButtons.IsValidIndex(ActiveTab) && TabButtons[ActiveTab])
+    {
+        if (APlayerController* PlayerController = GetOwningPlayer())
+            TabButtons[ActiveTab]->SetUserFocus(PlayerController);
+        else
+            TabButtons[ActiveTab]->SetKeyboardFocus();
     }
 }
 
@@ -848,7 +881,10 @@ void UPlayerMenuWidget::ShowConfirmation(
     ConfirmSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     ConfirmSlot->SetPadding(FMargin(5, 0, 0, 0));
 
-    Confirm->SetKeyboardFocus();
+    if (APlayerController* PlayerController = GetOwningPlayer())
+        Confirm->SetUserFocus(PlayerController);
+    else
+        Confirm->SetKeyboardFocus();
 }
 
 void UPlayerMenuWidget::ClearConfirmation()
@@ -1128,6 +1164,55 @@ void UPlayerMenuWidget::PreviewRotateLeft()
 void UPlayerMenuWidget::PreviewRotateRight()
 {
     if (Studio) Studio->Rotate(20);
+}
+
+FReply UPlayerMenuWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
+{
+    const FKey Key = InKeyEvent.GetKey();
+
+    if (PendingConfirmation != 0)
+    {
+        if (Key == EKeys::Escape || Key == EKeys::BackSpace || Key == EKeys::Gamepad_FaceButton_Right)
+        {
+            CancelConfirmation();
+            return FReply::Handled();
+        }
+        return Super::NativeOnPreviewKeyDown(InGeometry, InKeyEvent);
+    }
+
+    if (Key == EKeys::Q || Key == EKeys::Gamepad_LeftShoulder)
+    {
+        SelectTab((ActiveTab + TabButtons.Num() - 1) % TabButtons.Num());
+        return FReply::Handled();
+    }
+
+    if (Key == EKeys::E || Key == EKeys::Gamepad_RightShoulder)
+    {
+        SelectTab((ActiveTab + 1) % TabButtons.Num());
+        return FReply::Handled();
+    }
+
+    if (Key == EKeys::Gamepad_FaceButton_Right)
+    {
+        auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
+        if (Mission && Mission->bInGame)
+        {
+            Resume();
+            return FReply::Handled();
+        }
+    }
+
+    if (Key == EKeys::Gamepad_Special_Right)
+    {
+        auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
+        if (Mission && Mission->bInGame)
+        {
+            Resume();
+            return FReply::Handled();
+        }
+    }
+
+    return Super::NativeOnPreviewKeyDown(InGeometry, InKeyEvent);
 }
 
 void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
