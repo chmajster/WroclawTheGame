@@ -510,6 +510,23 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_character_preview_controls_show_real_selected_state(self):
+        for token in (
+            'PreviewViewLabel == TEXT("CAŁA SYLWETKA")',
+            'PreviewViewLabel == TEXT("GÓRNA CZĘŚĆ")',
+            'PreviewViewLabel == TEXT("TWARZ")',
+            'PreviewLightingLabel == TEXT("STUDIO")',
+            'PreviewLightingLabel == TEXT("DZIEŃ")',
+            'PreviewLightingLabel == TEXT("NOC")',
+            "PreviewViewButtons.Add",
+            "PreviewLightingButtons.Add",
+            "UpdatePreviewControlStyles()",
+            "ApplySelectedStyle",
+        ):
+            self.assertIn(token, self.cpp)
+        for member in ("PreviewViewButtons", "PreviewLightingButtons"):
+            self.assertIn(member, self.header)
+
     def test_character_preview_mouse_controls_are_scoped_to_center_panel(self):
         for token in (
             "CenterScroll->GetCachedGeometry().IsUnderLocation(Event.GetScreenSpacePosition())",
