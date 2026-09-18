@@ -739,6 +739,7 @@ void UPlayerMenuWidget::UpdateFocusPresentation()
     {
         return Button && (Button->HasAnyUserFocus() || Button->HasKeyboardFocus());
     };
+    const FLinearColor FocusTint(0.72f, 1.0f, 1.0f, 1.0f);
 
     for (int32 Index = 0; Index < TabButtons.Num(); ++Index)
     {
@@ -747,9 +748,10 @@ void UPlayerMenuWidget::UpdateFocusPresentation()
             continue;
         const bool bFocused = HasFocus(Button);
         const bool bActive = Index == ActiveTab;
-        const float Scale = bFocused ? 1.015f : (bActive ? 1.008f : 1.0f);
+        const float Scale = bFocused ? 1.022f : (bActive ? 1.008f : 1.0f);
         Button->SetRenderScale(FVector2D(Scale, Scale));
-        Button->SetRenderOpacity((bFocused || bActive) ? 1.0f : 0.94f);
+        Button->SetRenderOpacity((bFocused || bActive) ? 1.0f : 0.92f);
+        Button->SetBackgroundColor(bFocused ? FocusTint : FLinearColor::White);
     }
 
     for (UButton* Button : ActionButtons)
@@ -757,9 +759,10 @@ void UPlayerMenuWidget::UpdateFocusPresentation()
         if (!Button)
             continue;
         const bool bFocused = HasFocus(Button);
-        const float Scale = bFocused ? 1.015f : 1.0f;
+        const float Scale = bFocused ? 1.022f : 1.0f;
         Button->SetRenderScale(FVector2D(Scale, Scale));
-        Button->SetRenderOpacity(bFocused ? 1.0f : 0.97f);
+        Button->SetRenderOpacity(bFocused ? 1.0f : 0.94f);
+        Button->SetBackgroundColor(bFocused ? FocusTint : FLinearColor::White);
     }
 }
 
