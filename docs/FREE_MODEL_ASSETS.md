@@ -26,3 +26,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Covered Car | Static parked/garage car prop; not used as the driveable vehicle. | MP | [Poly Haven](https://polyhaven.com/a/covered_car) | CC0 1.0 |
 | Old Tyre | Garage/workshop automotive clutter. | MP | [Poly Haven](https://polyhaven.com/a/old_tyre) | CC0 1.0 |
 | Korean Fire Extinguisher 01 | Building, basement and garage fire-safety prop. | UM JOORIN | [Poly Haven](https://polyhaven.com/a/korean_fire_extinguisher_01) | CC0 1.0 |
+| Metal Trash Can | Courtyard/street trash prop. | GurJas Studios | [Poly Haven](https://polyhaven.com/a/metal_trash_can) | CC0 1.0 |

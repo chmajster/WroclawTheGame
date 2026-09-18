@@ -441,5 +441,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/korean_fire_extinguisher_01_1k.fbx"
+  },
+  {
+    "slug": "metal_trash_can",
+    "name": "Metal Trash Can",
+    "intended_use": "Courtyard/street trash prop.",
+    "source_page": "https://polyhaven.com/a/metal_trash_can",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "GurJas Studios": "All"
+    },
+    "category": "Containers & Storage/Cans, Tins & Bottles/Trash Cans",
+    "dimensions_mm": [
+      1846.9352722167969,
+      556.2898814678192,
+      906.1697272554738
+    ],
+    "files_hash": "3ecbee3adbcc53b4af3c8f010e76e10c5b7558a2",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/metal_trash_can/metal_trash_can_1k.fbx"
   }
 ]
