@@ -1,4 +1,4 @@
-# Weryfikacja 0.3 — 17.09.2026
+# Weryfikacja 0.3 — 18.09.2026
 
 ## Wykonano w środowisku Linux
 
