@@ -17,3 +17,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Power Box 01 | Fuse box, electrical panel and camera power-control interactions. | Rico Cilliers, Yann Kervran | [Poly Haven](https://polyhaven.com/a/power_box_01) | CC0 1.0 |
 | Classic Laptop | Apartment computer and terminal interaction prop. | Arrangemonk | [Poly Haven](https://polyhaven.com/a/classic_laptop) | CC0 1.0 |
 | Cardboard Box 01 | Package, shop backroom and garage clutter. | Rahul Chaudhary | [Poly Haven](https://polyhaven.com/a/cardboard_box_01) | CC0 1.0 |
+| Plastic Container | Courtyard hiding/storage container. | PierreB3D | [Poly Haven](https://polyhaven.com/a/plastic_container) | CC0 1.0 |

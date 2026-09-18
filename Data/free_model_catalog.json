@@ -243,5 +243,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/cardboard_box_01/cardboard_box_01_1k.fbx"
+  },
+  {
+    "slug": "plastic_container",
+    "name": "Plastic Container",
+    "intended_use": "Courtyard hiding/storage container.",
+    "source_page": "https://polyhaven.com/a/plastic_container",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "PierreB3D": "All"
+    },
+    "category": "Containers & Storage/Boxes & Crates/Bins",
+    "dimensions_mm": [
+      895.0786888599396,
+      626.3633966445923,
+      429.68997440377774
+    ],
+    "files_hash": "15344534f183e6b8c9fe2605822057d37d276f7c",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/plastic_container/plastic_container_1k.fbx"
   }
 ]
