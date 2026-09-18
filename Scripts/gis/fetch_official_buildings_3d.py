@@ -432,7 +432,7 @@ def find_citygml_candidates(paths: list[Path], targets: list[dict]) -> dict[str,
                     best[target["id"]] = {
                         "distance_m": distance,
                         "gml_id": building_id(element),
-                        "source_file": str(path),
+                        "source_file": path.name,
                         "source_crs": crs,
                         "centroid_utm": [ce, cn],
                         "surfaces": transform_surfaces(surfaces, to_utm),
@@ -484,11 +484,11 @@ def triangulated_surface(rings):
     exterior_2d = [projected(point, dropped) for point in exterior]
     holes_2d = [[projected(point, dropped) for point in ring] for ring in rings[1:]]
     polygon = make_valid(Polygon(exterior_2d, holes_2d))
-    polygons = [polygon] if polygon.geom_type == "Polygon" else list(getattr(polygon, "geoms", []))
+    polygons = [polygon] if polygon.geom_type == "Polygon" else [g for g in getattr(polygon, "geoms", []) if g.geom_type == "Polygon"]
     result = []
     for component in polygons:
         for triangle in triangulate(component):
-            if not component.covers(triangle.representative_point()):
+            if not component.covers(triangle):
                 continue
             coords = list(triangle.exterior.coords)[:3]
             result.append([lifted(coord, dropped, exterior[0], normal) for coord in coords])
