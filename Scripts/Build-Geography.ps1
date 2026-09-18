@@ -4,6 +4,7 @@ $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
 $Root=Split-Path $PSScriptRoot -Parent
 $Project=Join-Path $Root 'WroclawTheGame.uproject'
+& (Join-Path $PSScriptRoot 'Assert-UnrealVersion.ps1') -EngineRoot $EngineRoot -Project $Project -ExpectedVersion '5.8'
 $Editor=Join-Path $EngineRoot 'Engine\Binaries\Win64\UnrealEditor-Cmd.exe'
 # Dependency installation is explicit and separate: python -m pip install -r Scripts/gis/requirements.txt
 if($City){
