@@ -37,9 +37,11 @@ REQUIRED_SYSTEMS = {
     "surveillance_camera",
     "cctv_monitor",
     "hide_container",
+    "hide_park",
     "hide_shelf",
     "city_activity_marker",
     "street_lamp",
+    "environment_sign_backing",
     "city_interior_sofa",
     "city_interior_table",
     "city_interior_chair",
@@ -144,6 +146,11 @@ def main() -> None:
     prepare_geography = (ROOT / "Scripts/prepare_geography.py").read_text(encoding="utf-8")
     if "model_bindings['actions']" not in prepare_content:
         errors.append("campaign generator does not consume complete action model bindings")
+    if "model_bindings['actions']" not in prepare_geography:
+        errors.append("GIS campaign migration does not consume complete action model bindings")
+    for token in ("hide_park", "environment_sign_backing"):
+        if token not in prepare_content or token not in prepare_geography:
+            errors.append(f"campaign/GIS generators do not both consume model binding: {token}")
     for token in (
         "ambient_pedestrian",
         "ambient_vehicle",
