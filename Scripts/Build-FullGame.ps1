@@ -13,6 +13,7 @@ $Args=@{
     Python=$Python
     City=$true
     Campaign=$true
+    OfficialBuildings=$true
 }
 if(-not $PrepareOnly){$Args.Package=$true}
 
