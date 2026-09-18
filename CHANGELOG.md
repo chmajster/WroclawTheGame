@@ -1,3 +1,12 @@
+## 2026-09-18 — żywe tło 3D menu
+
+- Pełnoekranowe menu nie zasłania już świata niemal czarnym tłem; pod interfejsem pozostaje aktualna scena 3D gry.
+- Dodano UBackgroundBlur z umiarkowanym promieniem i siłą, dzięki czemu scena pozostaje rozpoznawalna, ale nie konkuruje z tekstem.
+- Karty systemu urban glass są bardziej transparentne i faktycznie wykorzystują rozmyte tło.
+- Dodano subtelne, animowane turkusowe poświaty i cienką linię akcentu bez ciężkich materiałów UI.
+- Tło działa zarówno dla kampanii, jak i mapy GIS: menu pokazuje kontekst miejsca, w którym gracz je otworzył.
+- W trybie niskiej jakości Slate nadal może zastosować systemowy fallback Background Blur.
+
 ## 2026-09-18 — dashboardy Ekwipunku, Dziennika, Mapy i Statystyk
 
 - Ekwipunek przestał być blokiem tekstu: osobne kolumny garderoby i przedmiotów, ilości oraz podsumowanie zasobów.

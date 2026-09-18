@@ -12,6 +12,7 @@
 #include "Systems/CityGameplaySubsystem.h"
 
 #include "Blueprint/WidgetTree.h"
+#include "Components/BackgroundBlur.h"
 #include "Components/Border.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
@@ -39,9 +40,9 @@
 
 namespace
 {
-const FLinearColor Background(0.005f, 0.009f, 0.016f, 0.995f);
-const FLinearColor Panel(0.020f, 0.030f, 0.044f, 0.985f);
-const FLinearColor PanelSoft(0.034f, 0.049f, 0.069f, 0.98f);
+const FLinearColor Background(0.005f, 0.009f, 0.016f, 0.79f);
+const FLinearColor Panel(0.020f, 0.030f, 0.044f, 0.93f);
+const FLinearColor PanelSoft(0.034f, 0.049f, 0.069f, 0.91f);
 const FLinearColor PanelHover(0.055f, 0.078f, 0.105f, 1.0f);
 const FLinearColor Accent(0.18f, 0.79f, 0.96f, 1.0f);
 const FLinearColor AccentHover(0.32f, 0.86f, 1.0f, 1.0f);
@@ -187,9 +188,53 @@ void UPlayerMenuWidget::BuildShell()
     RootOverlay = WidgetTree->ConstructWidget<UOverlay>();
     WidgetTree->RootWidget = RootOverlay;
 
+    auto* WorldBlur = WidgetTree->ConstructWidget<UBackgroundBlur>();
+    WorldBlur->SetBlurStrength(12.0f);
+    WorldBlur->SetBlurRadius(18);
+    WorldBlur->SetApplyAlphaToBlur(false);
+    auto* BlurFill = WidgetTree->ConstructWidget<UBorder>();
+    BlurFill->SetBrushColor(FLinearColor(0, 0, 0, 0.01f));
+    WorldBlur->AddChild(BlurFill);
+    auto* BlurSlot = RootOverlay->AddChildToOverlay(WorldBlur);
+    BlurSlot->SetHorizontalAlignment(HAlign_Fill);
+    BlurSlot->SetVerticalAlignment(VAlign_Fill);
+
     auto* Backdrop = WidgetTree->ConstructWidget<UBorder>();
     Backdrop->SetBrushColor(Background);
-    RootOverlay->AddChildToOverlay(Backdrop);
+    auto* BackdropSlot = RootOverlay->AddChildToOverlay(Backdrop);
+    BackdropSlot->SetHorizontalAlignment(HAlign_Fill);
+    BackdropSlot->SetVerticalAlignment(VAlign_Fill);
+
+    AmbientGlowA = WidgetTree->ConstructWidget<UBorder>();
+    AmbientGlowA->SetBrush(RoundedBrush(FLinearColor(0.10f, 0.65f, 0.82f, 0.055f), 240.0f));
+    auto* GlowASize = WidgetTree->ConstructWidget<USizeBox>();
+    GlowASize->SetWidthOverride(480.0f);
+    GlowASize->SetHeightOverride(480.0f);
+    GlowASize->AddChild(AmbientGlowA);
+    auto* GlowASlot = RootOverlay->AddChildToOverlay(GlowASize);
+    GlowASlot->SetHorizontalAlignment(HAlign_Right);
+    GlowASlot->SetVerticalAlignment(VAlign_Top);
+    GlowASlot->SetPadding(FMargin(0, -140, -120, 0));
+
+    AmbientGlowB = WidgetTree->ConstructWidget<UBorder>();
+    AmbientGlowB->SetBrush(RoundedBrush(FLinearColor(0.16f, 0.35f, 0.50f, 0.045f), 190.0f));
+    auto* GlowBSize = WidgetTree->ConstructWidget<USizeBox>();
+    GlowBSize->SetWidthOverride(380.0f);
+    GlowBSize->SetHeightOverride(380.0f);
+    GlowBSize->AddChild(AmbientGlowB);
+    auto* GlowBSlot = RootOverlay->AddChildToOverlay(GlowBSize);
+    GlowBSlot->SetHorizontalAlignment(HAlign_Left);
+    GlowBSlot->SetVerticalAlignment(VAlign_Bottom);
+    GlowBSlot->SetPadding(FMargin(-110, 0, 0, -120));
+
+    auto* TopAccent = WidgetTree->ConstructWidget<UBorder>();
+    TopAccent->SetBrushColor(FLinearColor(Accent.R, Accent.G, Accent.B, 0.62f));
+    auto* TopAccentSize = WidgetTree->ConstructWidget<USizeBox>();
+    TopAccentSize->SetHeightOverride(3.0f);
+    TopAccentSize->AddChild(TopAccent);
+    auto* AccentSlot = RootOverlay->AddChildToOverlay(TopAccentSize);
+    AccentSlot->SetHorizontalAlignment(HAlign_Fill);
+    AccentSlot->SetVerticalAlignment(VAlign_Top);
 
     // Fixed design canvas scaled as one unit keeps spacing and typography stable
     // from 1280x720 up to ultrawide/4K while the backdrop still fills the screen.
@@ -1571,6 +1616,22 @@ FReply UPlayerMenuWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, co
 void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
     Super::NativeTick(MyGeometry, InDeltaTime);
+
+    AmbientAnimationTime += InDeltaTime;
+    if (AmbientGlowA)
+    {
+        AmbientGlowA->SetRenderTranslation(FVector2D(
+            FMath::Sin(AmbientAnimationTime * 0.22f) * 18.0f,
+            FMath::Cos(AmbientAnimationTime * 0.17f) * 12.0f));
+        AmbientGlowA->SetRenderOpacity(0.78f + FMath::Sin(AmbientAnimationTime * 0.31f) * 0.12f);
+    }
+    if (AmbientGlowB)
+    {
+        AmbientGlowB->SetRenderTranslation(FVector2D(
+            FMath::Cos(AmbientAnimationTime * 0.19f) * 14.0f,
+            FMath::Sin(AmbientAnimationTime * 0.15f) * 10.0f));
+        AmbientGlowB->SetRenderOpacity(0.72f + FMath::Cos(AmbientAnimationTime * 0.27f) * 0.10f);
+    }
 
     if (PageAnimationTime < 0.22f && ActionColumn && CenterColumn && RightColumn)
     {
