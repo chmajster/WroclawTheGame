@@ -136,6 +136,7 @@ UButton* UPlayerMenuWidget::MakeButton(const FString& Label, bool bAccent)
     Button->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PlayUIClick);
     Button->SetBackgroundColor(FLinearColor::White);
     Button->SetColorAndOpacity(FLinearColor::White);
+    Button->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
 
     FButtonStyle Style = Button->GetStyle();
     Style.Normal = RoundedBrush(bAccent ? Accent : PanelSoft, 9.0f);
@@ -518,6 +519,24 @@ void UPlayerMenuWidget::UpdateContextStatus()
     ContextStatus->SetText(FText::FromString(FString::Printf(
         TEXT("%s  •  %s  •  %s"), *Mode, *Session, *Save)));
     ContextStatus->SetColorAndOpacity(FSlateColor(bHasSave ? Accent : Muted));
+}
+
+void UPlayerMenuWidget::UpdateFocusPresentation()
+{
+    auto UpdateButton = [](UButton* Button)
+    {
+        if (!Button)
+            return;
+        const bool bFocused = Button->HasAnyUserFocus() || Button->HasKeyboardFocus();
+        const float Scale = bFocused ? 1.015f : 1.0f;
+        Button->SetRenderScale(FVector2D(Scale, Scale));
+        Button->SetRenderOpacity(bFocused ? 1.0f : 0.97f);
+    };
+
+    for (UButton* Button : TabButtons)
+        UpdateButton(Button);
+    for (UButton* Button : ActionButtons)
+        UpdateButton(Button);
 }
 
 void UPlayerMenuWidget::FocusPrimaryAction()
@@ -2622,6 +2641,8 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
 
     const auto* UISettings = UWTGPerformanceSettings::Get();
     const bool bReduceMotion = UISettings && UISettings->bReduceUIMotion;
+
+    UpdateFocusPresentation();
 
     if (!bReduceMotion)
         AmbientAnimationTime += InDeltaTime;
