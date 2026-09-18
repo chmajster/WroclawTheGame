@@ -2555,10 +2555,18 @@ void UPlayerMenuWidget::ShowConfirmation(
     ConfirmSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     ConfirmSlot->SetPadding(FMargin(5, 0, 0, 0));
 
-    auto* ShortcutHint = MakeText(
-        TEXT("ENTER / A  POTWIERDŹ    •    ESC / B  ANULUJ"), 9, true, Muted);
-    ShortcutHint->SetJustification(ETextJustify::Center);
-    Column->AddChildToVerticalBox(ShortcutHint)->SetPadding(FMargin(0, 12, 0, 0));
+    auto* ModalShortcuts = WidgetTree->ConstructWidget<UHorizontalBox>();
+    ModalShortcuts->AddChildToHorizontalBox(MakeKeycap(TEXT("ENTER / A")))
+        ->SetPadding(FMargin(0, 0, 6, 0));
+    ModalShortcuts->AddChildToHorizontalBox(MakeText(TEXT("POTWIERDŹ"), 8, true, Muted))
+        ->SetPadding(FMargin(0, 3, 14, 0));
+    ModalShortcuts->AddChildToHorizontalBox(MakeKeycap(TEXT("ESC / B")))
+        ->SetPadding(FMargin(0, 0, 6, 0));
+    ModalShortcuts->AddChildToHorizontalBox(MakeText(TEXT("ANULUJ"), 8, true, Muted))
+        ->SetPadding(FMargin(0, 3, 0, 0));
+    auto* ModalShortcutsSlot = Column->AddChildToVerticalBox(ModalShortcuts);
+    ModalShortcutsSlot->SetHorizontalAlignment(HAlign_Center);
+    ModalShortcutsSlot->SetPadding(FMargin(0, 12, 0, 0));
 
     UButton* DefaultFocus = bDestructive ? Cancel : Confirm;
     if (APlayerController* PlayerController = GetOwningPlayer())
