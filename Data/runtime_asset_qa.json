@@ -78,12 +78,12 @@
     "require_fbik": true,
     "require_retarget_for_flagged_bindings": true,
     "visual_qa_poses": [
-      "Idle_Loop",
-      "Walk_Loop",
-      "Jog_Fwd_Loop",
-      "Crouch_Idle_Loop",
-      "Lie_StandUp",
-      "Dodge_Forward"
+      "character.creator_idle",
+      "character.walk",
+      "character.jog",
+      "character.crouch_idle",
+      "opening.stand_up",
+      "character.dodge_forward"
     ],
     "visual_qa_resolution": [
       1920,
