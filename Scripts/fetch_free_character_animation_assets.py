@@ -57,7 +57,7 @@ SPECS: list[tuple[str, str, str]] = [
     (f"{UBC_SOURCE}/Base Characters/Godot - UE/T_Hair_2_Normal.png", f"{UBC_DEST}/BaseCharacters/T_Hair_2_Normal.png", "2d77b1dd52d5e2954b953364e2cf3555305971ed"),
     (f"{UBC_SOURCE}/Base Characters/Godot - UE/T_Superhero_Male_Dark.png", f"{UBC_DEST}/BaseCharacters/T_Superhero_Male_Dark.png", "6391f45275f6c904edbde5daa500bab26b103366"),
     (f"{UBC_SOURCE}/Base Characters/Godot - UE/T_Superhero_Male_Normal.png", f"{UBC_DEST}/BaseCharacters/T_Superhero_Male_Normal.png", "88303e2ad3f435853cd10d509adbbae960af4279"),
-    (f"{UBC_SOURCE}/Base Characters/Godot - UE/T_Superhero_Male_Roughness.png", f"{UBC_DEST}/BaseCharacters/T_Superhero_Male_Roughness.png", "2bbc618d20047d14fd51faf5be5bc272f5a8bf6"),
+    (f"{UBC_SOURCE}/Base Characters/Godot - UE/T_Superhero_Male_Roughness.png", f"{UBC_DEST}/BaseCharacters/T_Superhero_Male_Roughness.png", "2bbc618d20047d14fd51faf5be5bc272f5a8bf6d"),
     (f"{UBC_SOURCE}/Base Characters/Godot - UE/T_Superhero_Female_Dark_BaseColor.png", f"{UBC_DEST}/BaseCharacters/T_Superhero_Female_Dark_BaseColor.png", "06d49a50a69873d30f687f59e74e94d34e69ad9a"),
     (f"{UBC_SOURCE}/Base Characters/Godot - UE/T_Superhero_Female_Normal.png", f"{UBC_DEST}/BaseCharacters/T_Superhero_Female_Normal.png", "20af328bc43a49a54b2b0fab62e5267b9a5993fa"),
     (f"{UBC_SOURCE}/Base Characters/Godot - UE/T_Superhero_Female_Roughness.png", f"{UBC_DEST}/BaseCharacters/T_Superhero_Female_Roughness.png", "d496b5331598258460a00aaedda2b9bc96ab9c8f"),
