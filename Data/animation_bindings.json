@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "note": "Semantic bindings for current and planned WroclawTheGame character actions. Use the non-root-motion libraries for CharacterMovement-driven locomotion; choose the paired -rm library only for authored root-motion actions.",
+  "bindings": {
+    "character.creator_idle": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Idle_Loop"
+    },
+    "character.walk": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Walk_Loop"
+    },
+    "character.walk_formal": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Walk_Formal_Loop"
+    },
+    "character.jog": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Jog_Fwd_Loop"
+    },
+    "character.sprint": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Sprint_Loop"
+    },
+    "character.crouch_idle": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Crouch_Idle_Loop"
+    },
+    "character.crouch_move": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Crouch_Fwd_Loop"
+    },
+    "character.jump_start": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Jump_Start"
+    },
+    "character.jump_loop": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Jump_Loop"
+    },
+    "character.jump_land": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Jump_Land"
+    },
+    "character.dodge": {
+      "library": "quaternius-ual1-standard-rm",
+      "clip": "Roll"
+    },
+    "character.hit_chest": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Hit_Chest"
+    },
+    "character.hit_head": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Hit_Head"
+    },
+    "character.knockback": {
+      "library": "quaternius-ual2-standard-rm",
+      "clip": "Hit_Knockback"
+    },
+    "character.death": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Death01"
+    },
+    "interaction.use": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Interact"
+    },
+    "interaction.pickup": {
+      "library": "quaternius-ual1-standard",
+      "clip": "PickUp_Table"
+    },
+    "interaction.throw": {
+      "library": "quaternius-ual2-standard-rm",
+      "clip": "OverhandThrow"
+    },
+    "interaction.consume_heal": {
+      "library": "quaternius-ual2-standard",
+      "clip": "Consume"
+    },
+    "interaction.chest_open": {
+      "library": "quaternius-ual2-standard",
+      "clip": "Chest_Open"
+    },
+    "combat.light_jab": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Punch_Jab"
+    },
+    "combat.light_cross": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Punch_Cross"
+    },
+    "combat.melee_hook": {
+      "library": "quaternius-ual2-standard",
+      "clip": "Melee_Hook"
+    },
+    "combat.sword_light": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Sword_Attack"
+    },
+    "combat.sword_heavy": {
+      "library": "quaternius-ual2-standard-rm",
+      "clip": "Sword_Heavy_Combo"
+    },
+    "combat.sword_block": {
+      "library": "quaternius-ual2-standard",
+      "clip": "Sword_Block"
+    },
+    "combat.pistol_idle": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Pistol_Idle_Loop"
+    },
+    "combat.pistol_shoot": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Pistol_Shoot"
+    },
+    "combat.pistol_reload": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Pistol_Reload"
+    },
+    "vehicle.driving": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Driving_Loop"
+    },
+    "phone.idle": {
+      "library": "quaternius-ual2-standard",
+      "clip": "Idle_TalkingPhone_Loop"
+    },
+    "social.talking": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Idle_Talking_Loop"
+    },
+    "social.dance": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Dance_Loop"
+    },
+    "social.yes": {
+      "library": "quaternius-ual2-standard",
+      "clip": "Yes"
+    },
+    "sitting.enter": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Sitting_Enter"
+    },
+    "sitting.idle": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Sitting_Idle_Loop"
+    },
+    "sitting.exit": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Sitting_Exit"
+    },
+    "parkour.climb_1m": {
+      "library": "quaternius-ual2-standard-rm",
+      "clip": "ClimbUp_1m"
+    },
+    "parkour.slide_start": {
+      "library": "quaternius-ual2-standard-rm",
+      "clip": "Slide_Start"
+    },
+    "parkour.slide_loop": {
+      "library": "quaternius-ual2-standard-rm",
+      "clip": "Slide_Loop"
+    },
+    "parkour.slide_exit": {
+      "library": "quaternius-ual2-standard-rm",
+      "clip": "Slide_Exit"
+    },
+    "swim.idle": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Swim_Idle_Loop"
+    },
+    "swim.forward": {
+      "library": "quaternius-ual1-standard",
+      "clip": "Swim_Fwd_Loop"
+    }
+  }
+}
