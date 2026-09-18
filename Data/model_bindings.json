@@ -116,6 +116,13 @@
     "hide_container": "plastic_container",
     "hide_shelf": "wooden_bookshelf_worn",
     "city_activity_marker": "clipboard",
-    "player_fallback_female": "quaternius-ubc-superhero-female"
+    "player_fallback_female": "quaternius-ubc-superhero-female",
+    "street_lamp": "street_lamp_01",
+    "city_interior_sofa": "sofa_03",
+    "city_interior_table": "round_wooden_table_01",
+    "city_interior_chair": "modern_arm_chair_01",
+    "city_interior_cabinet": "painted_wooden_cabinet",
+    "city_interior_shelf": "wooden_bookshelf_worn",
+    "city_interior_lamp": "desk_lamp_arm_01"
   }
 }
