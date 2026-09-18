@@ -558,5 +558,19 @@
     "license": "CC0-1.0",
     "intended_use": "Residential facade/window module for the opening apartment and authored urban buildings.",
     "primary_path": "SourceAssets/Models/Kenney/BuildingKit/wall-window-round/wall-window-round.glb"
+  },
+  {
+    "id": "kenney-window-wall-window-round-detailed",
+    "name": "wall-window-round-detailed",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://kenney.nl/assets/building-kit",
+    "source_repository": "https://github.com/shorepine/kenney",
+    "source_commit": "3694c6879e487c108f55677be7dd2ca75b07cc3b",
+    "source_path": "3d/building/wall-window-round-detailed.glb",
+    "source_blob_sha": "bcc68efc593ab08a5952110e52e5e1598bd0ccf0",
+    "license": "CC0-1.0",
+    "intended_use": "Residential facade/window module for the opening apartment and authored urban buildings.",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/wall-window-round-detailed/wall-window-round-detailed.glb"
   }
 ]
