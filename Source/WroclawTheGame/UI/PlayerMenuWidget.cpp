@@ -559,6 +559,34 @@ void UPlayerMenuWidget::UpdateContextHint()
     ContextHint->SetText(FText::FromString(Hint));
 }
 
+void UPlayerMenuWidget::ShowToast(const FString& Message)
+{
+    if (!RootOverlay)
+        return;
+
+    if (ToastCard)
+        ToastCard->RemoveFromParent();
+
+    ToastCard = WidgetTree->ConstructWidget<UBorder>();
+    ToastCard->SetBrush(RoundedBrush(FLinearColor(0.020f, 0.075f, 0.095f, 0.98f), 10.0f));
+    ToastCard->SetPadding(FMargin(14, 10, 14, 10));
+    ToastCard->AddChild(MakeText(Message, 9, true, TextPrimary));
+
+    auto* Slot = RootOverlay->AddChildToOverlay(ToastCard);
+    Slot->SetHorizontalAlignment(HAlign_Right);
+    Slot->SetVerticalAlignment(VAlign_Bottom);
+    Slot->SetPadding(FMargin(24, 24, 24, 72));
+
+    ToastTimeRemaining = 1.8f;
+    ToastCard->SetRenderOpacity(1.0f);
+}
+
+void UPlayerMenuWidget::RefreshWithSettingsToast()
+{
+    Refresh();
+    ShowToast(TEXT("USTAWIENIA ZAPISANE"));
+}
+
 void UPlayerMenuWidget::UpdateFocusPresentation()
 {
     auto UpdateButton = [](UButton* Button)
@@ -2168,14 +2196,14 @@ void UPlayerMenuWidget::CycleSFXVolume()
 {
     if (auto* Settings = UWTGAudioSettings::Get())
         Settings->SetSFXVolume(NextAudioVolume(Settings->SFXVolume));
-    Refresh();
+    RefreshWithSettingsToast();
 }
 
 void UPlayerMenuWidget::CycleUIVolume()
 {
     if (auto* Settings = UWTGAudioSettings::Get())
         Settings->SetUIVolume(NextAudioVolume(Settings->UIVolume));
-    Refresh();
+    RefreshWithSettingsToast();
 }
 
 void UPlayerMenuWidget::ResetSettings()
@@ -2398,6 +2426,7 @@ void UPlayerMenuWidget::ConfirmPendingAction()
         }
         ClearConfirmation();
         Refresh();
+        ShowToast(TEXT("USTAWIENIA OBRAZU ZAPISANE"));
         return;
     }
 
@@ -2430,6 +2459,7 @@ void UPlayerMenuWidget::ConfirmPendingAction()
         }
 
         Refresh();
+        ShowToast(TEXT("USTAWIENIA DOMYŚLNE PRZYWRÓCONE"));
         return;
     }
 
@@ -2468,7 +2498,7 @@ void UPlayerMenuWidget::ToggleReduceUIMotion()
 {
     if (auto* Settings = UWTGPerformanceSettings::Get())
         Settings->SetReduceUIMotion(!Settings->bReduceUIMotion);
-    Refresh();
+    RefreshWithSettingsToast();
 }
 
 void UPlayerMenuWidget::ToggleMenuBackgroundBlur()
@@ -2482,14 +2512,14 @@ void UPlayerMenuWidget::ToggleMenuBackgroundBlur()
             MenuBackgroundBlur->SetBlurRadius(Settings->bMenuBackgroundBlur ? 18 : 0);
         }
     }
-    Refresh();
+    RefreshWithSettingsToast();
 }
 
 void UPlayerMenuWidget::ToggleUISounds()
 {
     if (auto* Settings = UWTGPerformanceSettings::Get())
         Settings->SetUISounds(!Settings->bUISounds);
-    Refresh();
+    RefreshWithSettingsToast();
 }
 
 void UPlayerMenuWidget::ToggleFPSCounter()
@@ -2498,7 +2528,7 @@ void UPlayerMenuWidget::ToggleFPSCounter()
     if (!Preferences)
         return;
     Preferences->SetShowFPS(!Preferences->bShowFPS);
-    Refresh();
+    RefreshWithSettingsToast();
 }
 
 void UPlayerMenuWidget::ToggleVSync()
@@ -2512,7 +2542,7 @@ void UPlayerMenuWidget::ToggleVSync()
             UserSettings->SaveSettings();
         }
     }
-    Refresh();
+    RefreshWithSettingsToast();
 }
 
 void UPlayerMenuWidget::ToggleDynamicResolution()
@@ -2525,7 +2555,7 @@ void UPlayerMenuWidget::ToggleDynamicResolution()
             UserSettings->ApplySettings(false);
         }
     }
-    Refresh();
+    RefreshWithSettingsToast();
 }
 
 void UPlayerMenuWidget::CycleWindowMode()
@@ -2614,7 +2644,7 @@ void UPlayerMenuWidget::CycleQuality()
         UserSettings->SetOverallScalabilityLevel(Next);
         UserSettings->ApplySettings(false);
     }
-    Refresh();
+    RefreshWithSettingsToast();
 }
 
 void UPlayerMenuWidget::CycleResolutionScale()
@@ -2644,7 +2674,7 @@ void UPlayerMenuWidget::CycleResolutionScale()
         UserSettings->SetResolutionScaleValueEx(Next);
         UserSettings->ApplySettings(false);
     }
-    Refresh();
+    RefreshWithSettingsToast();
 }
 
 void UPlayerMenuWidget::CycleFPSLimit()
@@ -2669,14 +2699,14 @@ void UPlayerMenuWidget::CycleFPSLimit()
         Next = 60;
 
     Preferences->SetFPSLimit(Next);
-    Refresh();
+    RefreshWithSettingsToast();
 }
 
 void UPlayerMenuWidget::SetFPSLimit(int32 Limit)
 {
     if (auto* Preferences = UWTGPerformanceSettings::Get())
         Preferences->SetFPSLimit(Limit);
-    Refresh();
+    RefreshWithSettingsToast();
 }
 
 void UPlayerMenuWidget::FPSUnlimited() { SetFPSLimit(0); }
@@ -2910,6 +2940,18 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
         ActionColumn->SetRenderTranslation(FVector2D(FMath::Lerp(-12.0f, 0.0f, Ease), 0.0f));
         CenterColumn->SetRenderTranslation(FVector2D(0.0f, FMath::Lerp(8.0f, 0.0f, Ease)));
         RightColumn->SetRenderTranslation(FVector2D(FMath::Lerp(12.0f, 0.0f, Ease), 0.0f));
+    }
+
+    if (ToastCard && ToastTimeRemaining > 0.0f)
+    {
+        ToastTimeRemaining = FMath::Max(0.0f, ToastTimeRemaining - InDeltaTime);
+        if (!bReduceMotion && ToastTimeRemaining < 0.30f)
+            ToastCard->SetRenderOpacity(FMath::Clamp(ToastTimeRemaining / 0.30f, 0.0f, 1.0f));
+        if (ToastTimeRemaining <= 0.0f)
+        {
+            ToastCard->RemoveFromParent();
+            ToastCard = nullptr;
+        }
     }
 
     if (PendingConfirmation != 3 || !ConfirmationOverlay)
