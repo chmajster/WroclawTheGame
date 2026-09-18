@@ -1,0 +1,76 @@
+{
+  "slug": "utility_box_02",
+  "name": "Utility Box 02",
+  "intended_use": "Second urban electrical utility box variation.",
+  "source_page": "https://polyhaven.com/a/utility_box_02",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "James Ray Cock": "All"
+  },
+  "category": "Industrial & Infrastructure/Electrical/Utility & Power Boxes",
+  "tags": [
+    "utility",
+    "box",
+    "electrical",
+    "power",
+    "urban",
+    "city",
+    "road",
+    "circuit",
+    "breakers",
+    "transformer",
+    "distributionpanel",
+    "junction box",
+    "control panel",
+    "utility box",
+    "infrastructure"
+  ],
+  "dimensions_mm": [
+    920.0001955032349,
+    431.999996304512,
+    1120.3334331512451
+  ],
+  "files_hash": "8420d634a09db8508124f2086be28b992d0a26c0",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/utility_box_02/utility_box_02_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/utility_box_02/utility_box_02_1k.fbx",
+      "bytes": 187484,
+      "md5": "4894e02e9b4c27c0f185b202792144e5",
+      "sha256": "48084269602e0164f5c9a8089272af684f22b068ea23b5cd30545ca36dbff1f8",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/utility_box_02/utility_box_02_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/utility_box_02/textures/utility_box_02_diff_1k.jpg",
+      "bytes": 553096,
+      "md5": "119987b82e0faac169e2109ff5961743",
+      "sha256": "78a0c93b1d8d394beee5989c0d3470a9c8c4e902f708acf3c11cd4edafbe08b1",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/utility_box_02/utility_box_02_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/utility_box_02/textures/utility_box_02_metal_1k.exr",
+      "bytes": 817585,
+      "md5": "b47309441df1cafcf4bfe80463ba9c35",
+      "sha256": "eb99912afdb792575c251637b69f3d0a8d7da067a29465f04e075592b40f58bb",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/utility_box_02/utility_box_02_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/utility_box_02/textures/utility_box_02_nor_gl_1k.exr",
+      "bytes": 1277336,
+      "md5": "46d5ecaff646bb17e30a9d778767e43d",
+      "sha256": "ee635a26bc5a0dd2bbf89371e5a5483b3024db9e3a739bdc4d803fc1a5381832",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/utility_box_02/utility_box_02_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/utility_box_02/textures/utility_box_02_rough_1k.exr",
+      "bytes": 1032950,
+      "md5": "e6794f554016cfc8def09980f31afd95",
+      "sha256": "8b1740bab0595816bfae5da988d00fe4353b329a4784c6eaaaf48adeef57edd2",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/utility_box_02/utility_box_02_rough_1k.exr"
+    }
+  ]
+}
