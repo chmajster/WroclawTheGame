@@ -1,5 +1,6 @@
 #include "World/SurveillanceCamera.h"
 #include "Components/SceneCaptureComponent2D.h"
+#include "Components/StaticMeshComponent.h"
 #include "Components/GameplayComponents.h"
 #include "Engine/TextureRenderTarget2D.h"
 #include "Engine/World.h"
@@ -13,8 +14,13 @@ ASurveillanceCamera::ASurveillanceCamera()
 {
     PrimaryActorTick.bCanEverTick = true;
     PrimaryActorTick.TickInterval = .25;
+    Visual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Visual"));
+    RootComponent = Visual;
+    Visual->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    Visual->SetCanEverAffectNavigation(false);
     Capture = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("Capture"));
-    RootComponent = Capture;
+    Capture->SetupAttachment(Visual);
+    Capture->SetRelativeLocation(FVector(20,0,0));
     Capture->bCaptureEveryFrame = false;
     Capture->bCaptureOnMovement = false;
     Capture->FOVAngle = 75;

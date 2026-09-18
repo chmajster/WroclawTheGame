@@ -9,6 +9,7 @@ class WROCLAWTHEGAME_API ASliceProp : public AActor, public IInteractable
     GENERATED_BODY()
   public:
     ASliceProp();
+    UPROPERTY(VisibleAnywhere) TObjectPtr<class UBoxComponent> Collider;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UStaticMeshComponent> Mesh;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FString ActionId;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UDoorComponent> Door;

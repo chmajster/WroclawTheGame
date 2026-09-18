@@ -1,24 +1,39 @@
 #include "World/CityPopulation.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/SkeletalMesh.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
-#include "UObject/ConstructorHelpers.h"
 ACityAmbientAgent::ACityAmbientAgent()
 {
     PrimaryActorTick.bCanEverTick = true;
     Body = CreateDefaultSubobject<UBoxComponent>(TEXT("Body")); SetRootComponent(Body);
     Body->SetCollisionProfileName(TEXT("BlockAllDynamic"));
-    Visual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Visual")); Visual->SetupAttachment(Body);
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
-    Visual->SetStaticMesh(Cube.Object); Visual->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    Visual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VehicleVisual")); Visual->SetupAttachment(Body);
+    Visual->SetCollisionEnabled(ECollisionEnabled::NoCollision); Visual->SetCanEverAffectNavigation(false); Visual->SetVisibility(false);
+    PedestrianVisual = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("PedestrianVisual")); PedestrianVisual->SetupAttachment(Body);
+    PedestrianVisual->SetCollisionEnabled(ECollisionEnabled::NoCollision); PedestrianVisual->SetCanEverAffectNavigation(false); PedestrianVisual->SetVisibility(false);
 }
-void ACityAmbientAgent::Configure(const FCityPopulationRoute &Definition, int32 StartIndex)
+void ACityAmbientAgent::Configure(const FCityPopulationRoute &Definition, int32 StartIndex, UStaticMesh *VehicleMesh, USkeletalMesh *PedestrianMesh)
 {
     Route = Definition.Points; bVehicle = Definition.Vehicle;
     const FVector Size = bVehicle ? FVector(180,80,50) : FVector(25,25,85);
-    Body->SetBoxExtent(Size); Visual->SetRelativeScale3D(Size/50);
+    Body->SetBoxExtent(Size);
+    if (bVehicle)
+    {
+        Visual->SetStaticMesh(VehicleMesh); Visual->SetVisibility(VehicleMesh != nullptr);
+        Visual->SetRelativeScale3D(FVector(1)); Visual->SetRelativeLocation(FVector(0,0,-62));
+        PedestrianVisual->SetVisibility(false);
+    }
+    else
+    {
+        PedestrianVisual->SetSkeletalMesh(PedestrianMesh); PedestrianVisual->SetVisibility(PedestrianMesh != nullptr);
+        PedestrianVisual->SetRelativeScale3D(FVector(1)); PedestrianVisual->SetRelativeLocation(FVector(0,0,-97));
+        PedestrianVisual->SetRelativeRotation(FRotator(0,-90,0));
+        Visual->SetVisibility(false);
+    }
     if (Route.Num() < 2) return;
     StartIndex = FMath::Clamp(StartIndex,0,Route.Num()-2);
     Target = StartIndex+1;
@@ -84,7 +99,7 @@ void ACityPopulation::Tick(float Dt)
             if (Route.Points.Num()<2) continue;
             const int32 Start=(I%3)*(Route.Points.Num()-1)/3;
             if (FVector::DistSquared(Route.Points[Start],Player->GetActorLocation())<FMath::Square(600.)) continue;
-            Pool[I]->Configure(Route,Start);AssignedRoutes[I]=RouteIndex;
+            Pool[I]->Configure(Route,Start,VehicleMesh,PedestrianMesh);AssignedRoutes[I]=RouteIndex;
         }
     }
 }

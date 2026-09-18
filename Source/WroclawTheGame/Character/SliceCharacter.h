@@ -48,7 +48,6 @@ class WROCLAWTHEGAME_API ASliceCharacter : public ACharacter
   private:
     UPROPERTY() TObjectPtr<class UInputMappingContext> Mapping;
     UPROPERTY() TArray<TObjectPtr<class UInputAction>> Actions;
-    UPROPERTY() TArray<TObjectPtr<class UStaticMeshComponent>> Limbs;
 
     float FootstepTime = 0;
     void MoveForward(const FInputActionValue &Value);

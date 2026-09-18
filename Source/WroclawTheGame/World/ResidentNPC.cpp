@@ -4,10 +4,7 @@
 #include "Content/WorldCatalog.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
-#include "Engine/StaticMesh.h"
-#include "Components/StaticMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "Mission/SliceMission.h"
 #include "Character/SliceCharacter.h"
@@ -21,12 +18,6 @@ AResidentNPC::AResidentNPC()
     AIControllerClass = AAIController::StaticClass();
     AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
     GetCharacterMovement()->MaxWalkSpeed = 120;
-    auto *Body = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
-    Body->SetupAttachment(RootComponent);
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
-    Body->SetStaticMesh(Cube.Object);
-    Body->SetRelativeScale3D(FVector(.45, .5, 1.7));
-    Body->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 void AResidentNPC::Tick(float Dt)
 {

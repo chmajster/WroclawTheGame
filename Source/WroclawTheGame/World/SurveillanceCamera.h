@@ -9,6 +9,7 @@ class WROCLAWTHEGAME_API ASurveillanceCamera : public AActor
   public:
     ASurveillanceCamera();
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FName DefinitionId;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<class UStaticMeshComponent> Visual;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class USceneCaptureComponent2D> Capture;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UPowerConsumerComponent> Power;
     UPROPERTY() TObjectPtr<class UTextureRenderTarget2D> RenderTarget;

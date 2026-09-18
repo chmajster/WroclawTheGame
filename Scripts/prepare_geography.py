@@ -5,8 +5,30 @@ import json,traceback,os
 from pathlib import Path
 import unreal
 ROOT=Path(unreal.Paths.project_dir()).resolve();MARKER=ROOT/'Saved/GeographyReady.ok'
+FREE_MODEL_IMPORT_MAP=ROOT/'Saved/FreeModelImportMap.json';MODEL_BINDINGS=ROOT/'Data/model_bindings.json'
 def prepare():
     MARKER.unlink(missing_ok=True)
+    if not FREE_MODEL_IMPORT_MAP.is_file():raise RuntimeError('Free model import map missing')
+    imported_models=json.loads(FREE_MODEL_IMPORT_MAP.read_text(encoding='utf-8'))
+    model_bindings=json.loads(MODEL_BINDINGS.read_text(encoding='utf-8'))
+    def model(model_id,expected):
+        metadata=imported_models.get(model_id);object_path=metadata.get('primary_object') if metadata else None
+        asset=unreal.load_asset(object_path) if object_path else None
+        if not asset or not isinstance(asset,expected):raise RuntimeError('Wrong or missing model '+model_id+' -> '+str(object_path))
+        return asset
+    systems=model_bindings['systems']
+    city_door_mesh=model(systems['city_interior_door'],unreal.StaticMesh)
+    city_activity_mesh=model(systems['city_activity_marker'],unreal.StaticMesh)
+    pedestrian_mesh=model(systems['ambient_pedestrian'],unreal.SkeletalMesh)
+    ambient_vehicle_mesh=model(systems['ambient_vehicle'],unreal.StaticMesh)
+    driveable_body_mesh=model(systems['driveable_vehicle_body'],unreal.StaticMesh)
+    driveable_wheel_mesh=model(systems['driveable_vehicle_wheel'],unreal.StaticMesh)
+    interior_sofa_mesh=model(systems['city_interior_sofa'],unreal.StaticMesh)
+    interior_table_mesh=model(systems['city_interior_table'],unreal.StaticMesh)
+    interior_chair_mesh=model(systems['city_interior_chair'],unreal.StaticMesh)
+    interior_cabinet_mesh=model(systems['city_interior_cabinet'],unreal.StaticMesh)
+    interior_shelf_mesh=model(systems['city_interior_shelf'],unreal.StaticMesh)
+    interior_lamp_mesh=model(systems['city_interior_lamp'],unreal.StaticMesh)
     city_input=os.environ.get('WTG_CITY_INPUT')
     input_dir=Path(city_input) if city_input else ROOT/'Data/processed/wroclaw'
     data=json.loads((input_dir/'sector.json').read_text(encoding='utf-8'))
@@ -68,6 +90,14 @@ def prepare():
             component=part.get_component_by_class(unreal.StaticMeshComponent);component.set_static_mesh(cube)
             component.set_material(0,unreal.load_asset('/Game/Generated/M_Plaster'))
             part.set_actor_scale3d(unreal.Vector(*[v/100 for v in size]))
+        def interior_prop(interior,center,offset,mesh,suffix,scale,yaw=0):
+            position=[center[i]+offset[i] for i in range(3)]
+            prop=actors.spawn_actor_from_class(unreal.StaticMeshActor,unreal.Vector(*position),unreal.Rotator(0,yaw,0))
+            if not prop:raise RuntimeError('Cannot place interior prop '+interior['id']+' '+suffix)
+            component=prop.get_component_by_class(unreal.StaticMeshComponent);component.set_static_mesh(mesh)
+            component.set_collision_profile_name('NoCollision');prop.set_actor_scale3d(unreal.Vector(*scale))
+            prop.set_actor_label(interior['id']+'_'+suffix)
+            return prop
         for interior in content['interiors']:
             center=interior['center']
             room_part(center,[0,0,-20],[1000,800,40])
@@ -75,12 +105,20 @@ def prepare():
             # Walkable stair flight to the authored upper room; no collision inside the GIS shell is guessed.
             for step in range(10):room_part(center,[-260+step*40,0,(step+1)*10],[40,180,(step+1)*20])
             room_part(center,[275,0,190],[450,750,20])
+            interior_prop(interior,center,[250,-230,0],interior_sofa_mesh,'sofa',[.72,.72,.72],180)
+            interior_prop(interior,center,[-100,100,0],interior_table_mesh,'table',[.85,.85,.85],0)
+            interior_prop(interior,center,[-100,-25,0],interior_chair_mesh,'chair',[.85,.85,.85],15)
+            interior_prop(interior,center,[350,250,0],interior_cabinet_mesh,'cabinet',[.72,.72,.72],180)
+            interior_prop(interior,center,[-350,250,0],interior_shelf_mesh,'shelf',[.8,.8,.8],0)
+            interior_prop(interior,center,[-100,100,82],interior_lamp_mesh,'lamp',[.55,.55,.55],25)
             entry=actors.spawn_actor_from_class(unreal.CityInteriorDoor,unreal.Vector(*interior['entrance']))
             entry.set_editor_property('label','Wejdź: '+interior['title']);entry.set_editor_property('building_id',interior['building'])
             entry.set_editor_property('destination',unreal.Vector(center[0]-350,center[1]-180,center[2]+94))
+            entry.get_component_by_class(unreal.StaticMeshComponent).set_static_mesh(city_door_mesh);entry.set_actor_scale3d(unreal.Vector(1,1,1))
             exit_door=actors.spawn_actor_from_class(unreal.CityInteriorDoor,unreal.Vector(center[0]-400,center[1]-220,center[2]+100))
             exit_door.set_editor_property('label','Wyjdź na ulicę');exit_door.set_editor_property('building_id',interior['building'])
             point=interior['entrance'];exit_door.set_editor_property('destination',unreal.Vector(point[0]+130,point[1],point[2]+24))
+            exit_door.get_component_by_class(unreal.StaticMeshComponent).set_static_mesh(city_door_mesh);exit_door.set_actor_scale3d(unreal.Vector(1,1,1))
             light=actors.spawn_actor_from_class(unreal.PointLight,unreal.Vector(center[0],center[1],center[2]+350))
             light.get_component_by_class(unreal.PointLightComponent).set_editor_property('intensity',3000)
         for item in content['activities']:
@@ -88,6 +126,7 @@ def prepare():
             if not actor:raise RuntimeError('Cannot place city activity '+item['id'])
             actor.set_editor_property('action_id',item['id'])
             actor.set_editor_property('building_id',item['building'])
+            actor.get_component_by_class(unreal.StaticMeshComponent).set_static_mesh(city_activity_mesh);actor.set_actor_scale3d(unreal.Vector(1,1,1))
             actor.set_actor_label(item['id'])
         population=actors.spawn_actor_from_class(unreal.CityPopulation,unreal.Vector())
         definitions=[]
@@ -98,6 +137,7 @@ def prepare():
             definition.set_editor_property('points',[unreal.Vector(*p) for p in item['points']])
             definitions.append(definition)
         population.set_editor_property('routes',definitions)
+        population.set_editor_property('vehicle_mesh',ambient_vehicle_mesh);population.set_editor_property('pedestrian_mesh',pedestrian_mesh)
         population.set_editor_property('is_spatially_loaded',False)
         # Recast builds only around existing character NavigationInvoker components.
         for sector in json.loads((input_dir/'city.json').read_text(encoding='utf-8'))['sectors']:
@@ -115,6 +155,7 @@ def prepare():
     point=(a+b)*.5;rotation=unreal.MathLibrary.find_look_at_rotation(a,b)
     start=actors.spawn_actor_from_class(unreal.PlayerStart,point+unreal.Vector(0,0,150))
     car=actors.spawn_actor_from_class(unreal.DriveableVehicle,point+(b-a)*(650/(b-a).length())+unreal.Vector(0,0,85),rotation)
+    car.set_visual_meshes(driveable_body_mesh,driveable_wheel_mesh)
     # The laboratory car stays loaded so its physics state cannot reset during a short drive.
     car.set_editor_property('is_spatially_loaded',False)
     definitions=[]

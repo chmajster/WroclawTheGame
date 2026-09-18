@@ -92,7 +92,7 @@ Populacja korzysta z puli maksymalnie 24 prostych agentów (po trzy na aktywną 
 1. UHT/UBT, wypiek mapy przez `Build-Geography.ps1 -City`, kontrola World Partition, HLOD oraz jazda/pieszy przegląd sektorów.
 2. Sprawdzenie prześwitu i kolizji sześciu pomostów, wody, skrzyżowań oraz podłoża agentów. Pozostałe nieopracowane mosty i tunele nadal są pomijane.
 3. Przejście wszystkich czterech zadań, sekretów, zdarzeń i wnętrz; save/load na ulicy, we wnętrzu i podczas postoju samochodu. W Session Frontend uruchomić test `WTG.City.SaveMemoryRoundTrip` (dodany, lokalnie nieuruchomiony).
-4. Pomiar pamięci, FPS i pop-in przy szybkiej jeździe; ręczna poprawa landmarków, punktów interakcji i profili fasad. Obecne markery, agentów i pokoje zastąpić docelowymi assetami.
+4. Pomiar pamięci, FPS i pop-in przy szybkiej jeździe; ręczna poprawa landmarków, punktów interakcji i profili fasad. Markery, dynamiczni agenci, drzwi, samochód oraz bazowe wyposażenie wnętrz korzystają już z audytowanych modeli CC0 przez `Data/model_bindings.json`; pozostaje wizualny odbiór ich transformacji, LOD, kolizji i materiałów w Unreal.
 5. Migracja kampanii i jej wnętrz do GIS pozostaje osobnym zadaniem. Dopiero po odbiorze Wave 1 — pełny content pass Wave 2.
 
 Pozostałe wymagania załącznika, m.in. predykcja streamingu według trasy misji/wyścigu, pamięć według kategorii, questy wielodzielnicowe, AlleyNetwork, stany zagrożenia, trasy ucieczki i automatyczny city tour w silniku, pozostają niewdrożone. Nie zastąpiono ich pustymi klasami.

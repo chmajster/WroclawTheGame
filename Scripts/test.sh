@@ -7,6 +7,7 @@ python3 Scripts/compile_city_gameplay.py --check
 python3 Scripts/compile_tags.py --check
 python3 Pipeline/qa/validate_manifest.py Pipeline/examples/asset.example.json
 python3 Pipeline/qa/validate_manifest.py --all
+python3 Scripts/audit_model_coverage.py
 mkdir -p .test-bin
 "${CXX:-g++}" -std=c++20 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined -g -ISource/WroclawTheGame Tests/progression.cpp -o .test-bin/progression
 .test-bin/progression

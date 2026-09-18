@@ -3,25 +3,25 @@
 #include "Systems/NoiseSystem.h"
 #include "Engine/World.h"
 #include "Components/StaticMeshComponent.h"
-#include "UObject/ConstructorHelpers.h"
-#include "Engine/StaticMesh.h"
+#include "Components/BoxComponent.h"
 #include "Engine/GameInstance.h"
 #include "Character/SliceCharacter.h"
 #include "Mission/SliceMission.h"
 #include "UI/SliceController.h"
 #include "Audio/SliceAudio.h"
-#include "Materials/MaterialInterface.h"
 ASliceProp::ASliceProp()
 {
     Door = CreateDefaultSubobject<UDoorComponent>(TEXT("Door"));
     Puzzle = CreateDefaultSubobject<UBasePuzzleComponent>(TEXT("Puzzle"));
     PrimaryActorTick.bCanEverTick = true;
     PrimaryActorTick.TickInterval = 0.1f;
+    Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("InteractionBounds"));
+    RootComponent = Collider;
+    Collider->SetCollisionProfileName(TEXT("Interactable"));
     Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-    RootComponent = Mesh;
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
-    Mesh->SetStaticMesh(Cube.Object);
-    Mesh->SetCollisionProfileName(TEXT("Interactable"));
+    Mesh->SetupAttachment(Collider);
+    Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    Mesh->SetCanEverAffectNavigation(false);
 }
 void ASliceProp::BeginPlay()
 {
@@ -34,17 +34,9 @@ void ASliceProp::Configure(const FString &Id, const FVector &Size)
     ActionId = Id;
     Puzzle->DefinitionId = FName(*Id);
     ClosedPosition = GetActorLocation();
-    const bool bFallbackCube =
-        Mesh->GetStaticMesh() && Mesh->GetStaticMesh()->GetPathName() == TEXT("/Engine/BasicShapes/Cube.Cube");
-    const auto *A = Wroclaw::Progress::Find(TCHAR_TO_UTF8(*Id));
-    if (bFallbackCube)
-    {
-        Mesh->SetWorldScale3D(Size / 100);
-        const TCHAR *Path =
-            A && A->gate ? TEXT("/Game/Generated/M_Wood.M_Wood") : TEXT("/Game/Generated/M_Paper.M_Paper");
-        if (auto *Mat = LoadObject<UMaterialInterface>(nullptr, Path))
-            Mesh->SetMaterial(0, Mat);
-    }
+    Collider->SetBoxExtent(FVector(FMath::Max(8.f, Size.X*.5f),
+                                   FMath::Max(8.f, Size.Y*.5f),
+                                   FMath::Max(8.f, Size.Z*.5f)));
     Tick(0);
 }
 FText ASliceProp::Prompt(ASliceCharacter *Player) const

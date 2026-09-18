@@ -1,8 +1,7 @@
 #include "World/WorldInteraction.h"
 #include "Components/GameplayComponents.h"
 #include "Components/StaticMeshComponent.h"
-#include "UObject/ConstructorHelpers.h"
-#include "Engine/StaticMesh.h"
+#include "Components/BoxComponent.h"
 #include "Character/SliceCharacter.h"
 #include "Mission/SliceMission.h"
 #include "UI/SliceController.h"
@@ -10,11 +9,14 @@
 #include "EngineUtils.h"
 AWorldInteraction::AWorldInteraction()
 {
+    Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("InteractionBounds"));
+    RootComponent = Collider;
+    Collider->SetBoxExtent(FVector(32.5,25,50));
+    Collider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+    Collider->SetCollisionResponseToAllChannels(ECR_Ignore);
+    Collider->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
     Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-    RootComponent = Mesh;
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
-    Mesh->SetStaticMesh(Cube.Object);
-    Mesh->SetRelativeScale3D(FVector(.65, .5, 1));
+    Mesh->SetupAttachment(Collider);Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);Mesh->SetCanEverAffectNavigation(false);
     Hideable = CreateDefaultSubobject<UHideableComponent>(TEXT("Hideable"));
 }
 void AWorldInteraction::BeginPlay()

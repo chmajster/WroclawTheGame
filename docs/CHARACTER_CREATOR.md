@@ -54,9 +54,7 @@ zabezpiecza tożsamość po rozbudowie katalogu.
 
 ## Podłączenie realistycznych assetów
 
-Obecnie projekt zawiera **jawnie oznaczone placeholdery**, nie fotorealistyczne głowy
-ani gotowe MetaHumany. Nie ma syntezy mowy ani nagrań preview w domyślnym katalogu.
-Fotorealizm, finalny rig/IK i brak clippingu wymagają przygotowanych assetów i ich QA.
+Runtime korzysta teraz z audytowanych modeli Quaternius CC0 dla baz męskiej i żeńskiej oraz dostępnych włosów, zarostu i brwi. Proceduralny `M_CharacterPlaceholder` pozostaje wyłącznie awaryjnym fallbackiem, gdy źródłowy mesh nie może zostać załadowany. Modele nie są fotorealistycznymi MetaHumanami; finalny retarget animacji, LOD, IK, clipping i odbiór materiałów nadal wymagają QA w Unreal.
 
 1. Dodaj `FBodyPresetDefinition`: ID, płeć, tag zgodności, body/face mesh, referencyjny
    wzrost, obrót modelu, AnimBP ciała i twarzy oraz animacje Idle/Walk/Jog/Crouch.
