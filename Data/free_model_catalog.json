@@ -1282,5 +1282,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/portable_generator/portable_generator_1k.fbx"
+  },
+  {
+    "slug": "barrel_stove",
+    "name": "Barrel Stove",
+    "intended_use": "Garage/workshop heating and industrial clutter.",
+    "source_page": "https://polyhaven.com/a/barrel_stove",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "MP": "All"
+    },
+    "category": "Electronics & Appliances/Home Appliances/Stoves & Heaters",
+    "dimensions_mm": [
+      599.3210971355438,
+      598.1101393699646,
+      855.6039333343506
+    ],
+    "files_hash": "317d4401f290899072044a82841d94f4a8440c2f",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/barrel_stove/barrel_stove_1k.fbx"
   }
 ]

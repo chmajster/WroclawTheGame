@@ -64,3 +64,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Ladder Sectioned 01 | Garage/workshop ladder. | MP | [Poly Haven](https://polyhaven.com/a/ladder_sectioned_01) | CC0 1.0 |
 | Exterior Aircon Unit | Urban facade/detail prop. | Monsta3D | [Poly Haven](https://polyhaven.com/a/exterior_aircon_unit) | CC0 1.0 |
 | Portable Generator | Garage/workshop and emergency-power prop. | James Ray Cock | [Poly Haven](https://polyhaven.com/a/portable_generator) | CC0 1.0 |
+| Barrel Stove | Garage/workshop heating and industrial clutter. | MP | [Poly Haven](https://polyhaven.com/a/barrel_stove) | CC0 1.0 |
