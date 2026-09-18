@@ -259,7 +259,10 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             "ConfirmationProgress",
             "ConfirmationSecondsTotal",
             "ConfirmationSecondsRemaining / ConfirmationSecondsTotal",
-            'TEXT("ENTER / A  POTWIERDŹ',
+            'MakeKeycap(TEXT("ENTER / A"))',
+            'MakeKeycap(TEXT("ESC / B"))',
+            'TEXT("POTWIERDŹ")',
+            'TEXT("ANULUJ")',
         ):
             self.assertIn(token, self.cpp)
         self.assertIn("TObjectPtr<class UProgressBar> ConfirmationProgress", self.header)
