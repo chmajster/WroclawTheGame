@@ -44,3 +44,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Television 01 | CCTV monitor / apartment electronics proxy. | Gabriel Radić | [Poly Haven](https://polyhaven.com/a/Television_01) | CC0 1.0 |
 | Modern Wooden Cabinet | Apartment and safehouse storage furniture. | Patrik Pangerl | [Poly Haven](https://polyhaven.com/a/modern_wooden_cabinet) | CC0 1.0 |
 | Painted Wooden Cabinet | Basement/workshop storage variant. | Kirill Sannikov | [Poly Haven](https://polyhaven.com/a/painted_wooden_cabinet) | CC0 1.0 |
+| Security Camera 01 | Second CCTV variation for urban scenes. | Alexander Otterbeck, Yann Kervran | [Poly Haven](https://polyhaven.com/a/security_camera_01) | CC0 1.0 |
