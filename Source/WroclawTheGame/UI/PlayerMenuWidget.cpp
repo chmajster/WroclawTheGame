@@ -635,23 +635,23 @@ void UPlayerMenuWidget::UpdateContextHint()
     if (!ContextHint)
         return;
 
-    FString Hint = TEXT("1–7  ZAKŁADKI    •    Q/E  L1/R1  PRZEŁĄCZ    •    ENTER/A  WYBIERZ    •    ESC/B  WSTECZ");
+    FString Hint = TEXT("Q/E  •  L1/R1  ZMIEŃ ZAKŁADKĘ");
 
     if (ActiveTab == 1)
     {
-        Hint = TEXT("PPM  OBRÓT    •    KÓŁKO  ZOOM    •    Q/E  L1/R1  ZAKŁADKI    •    ESC/B  WSTECZ");
+        Hint = TEXT("PPM  OBRÓT    •    KÓŁKO  ZOOM");
     }
     else if (ActiveTab == 4)
     {
         auto* CityGameplay = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
         auto* MapSubsystem = GetWorld()->GetSubsystem<UWroclawMapSubsystem>();
         Hint = CityGameplay && CityGameplay->IsActive() && MapSubsystem
-            ? TEXT("C  NASTĘPNY CEL    •    BACKSPACE  USUŃ CEL    •    Q/E  L1/R1  ZAKŁADKI")
-            : TEXT("MAPA ODKRYĆ    •    Q/E  L1/R1  ZAKŁADKI    •    ESC/B  WSTECZ");
+            ? TEXT("C  NASTĘPNY CEL    •    BACKSPACE  USUŃ CEL")
+            : TEXT("MAPA ODKRYĆ");
     }
     else if (ActiveTab == 6)
     {
-        Hint = TEXT("ENTER/A  ZMIEŃ    •    Q/E  L1/R1  ZAKŁADKI    •    ESC/B  WSTECZ");
+        Hint = TEXT("ENTER / A  ZMIEŃ WARTOŚĆ");
     }
 
     ContextHint->SetText(FText::FromString(Hint));
