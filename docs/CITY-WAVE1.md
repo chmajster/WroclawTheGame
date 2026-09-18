@@ -21,7 +21,7 @@ python Scripts/gis/build_city.py
 .\Scripts\Build-Geography.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.8' -City -Package
 ```
 
-W edytorze otwórz `/Game/Maps/Nadodrze_GIS`. W Development komenda konsoli `CityCoverage` przełącza podgląd sektorów, ich statusów i pozycji gracza. Overlay nie jest dostępny w Shipping. Telefon pobiera listę obszarów z tego samego katalogu co overlay. Jest to lista, nie pełny GPS ani mapa drogowa.
+W edytorze otwórz `/Game/Maps/Nadodrze_GIS`. W Development komenda konsoli `CityCoverage` przełącza podgląd sektorów, ich statusów i pozycji gracza. Overlay nie jest dostępny w Shipping. Telefon pobiera obszary z tego samego katalogu co overlay, wskazuje aktualny sektor i pozwala wybrać waypoint sektora z dystansem w linii prostej. Nie jest to jeszcze wizualna mapa 2D ani routing po grafie ulic w runtime.
 
 `UCityDefinition` jest importowany z wygenerowanego JSON i wskazywany przez stale załadowany `ACityRegistry`; dzięki twardej referencji katalog trafia do cookingu. `UWroclawMapSubsystem` udostępnia dane i wyszukuje sektor po położeniu. `UCityCoverageSubsystem` prezentuje status. Brak katalogu na mapie kampanii nie powoduje podmiany jej dzielnic.
 
@@ -47,7 +47,7 @@ Skrypt pobiera małe wycinki sekwencyjnie, dzieli zbyt gęste obszary, zachowuje
 
 `HierarchicalRouter` jest **implementacją offline w Pythonie**, testowaną względem globalnej najkrótszej ścieżki. Oddziela lokalne przeszukiwania wewnątrz sektora od przejść przez portale. Obsługuje ponowne wejście do tego samego sektora, jednokierunkowość i osobny tryb pieszy. Nie łączy bliskich geometrycznie dróg bez wspólnej topologii OSM. Graf district route można odczytać z sekwencji sektorów i ich przypisania do dzielnic; osobnego trzeciego poziomu optymalizacji jeszcze nie wdrożono.
 
-Mosty, tunele i niezerowe warstwy są wykluczane z tras do czasu opracowania wysokości. Wyjątkiem jest sześć jawnie skonfigurowanych pomostów z `Data/city_structures.json`: geometria i graf otrzymują te same interpolowane wysokości przyczółków. Są to powierzchnie prototypowe, nie pomiary geodezyjne mostów. Wszystkie sześć sektorów jest teraz osiągalne w obie strony w grafie samochodowym i pieszym. Osiągalność w grafie **nie dowodzi fizycznej przejezdności** w Unreal. Podstawowa populacja runtime odtwarza osiem zamkniętych tras obliczonych na tym grafie. Brakuje pełnego dynamicznego VehicleAI, ograniczeń skrętów OSM, pełnej sieci tramwajów i dynamicznych blokad.
+Mosty, tunele i niezerowe warstwy są wykluczane z tras do czasu opracowania wysokości. Wyjątkiem jest sześć jawnie skonfigurowanych pomostów z `Data/city_structures.json`: geometria i graf otrzymują te same interpolowane wysokości przyczółków. Są to powierzchnie prototypowe, nie pomiary geodezyjne mostów. Wszystkie sześć sektorów jest teraz osiągalne w obie strony w grafie samochodowym i pieszym. Osiągalność w grafie **nie dowodzi fizycznej przejezdności** w Unreal. Podstawowa populacja runtime odtwarza osiem zamkniętych tras obliczonych na tym grafie. Trasy piesze korzystają z agentów z poziomami Full/Simplified/Dormant, a trasy samochodowe z ograniczonej puli fizycznych `ACityTrafficVehicle` sterowanych przez `UVehicleAIDriverComponent`. Jest to pierwszy dynamiczny DriverAI, nadal bez pełnych skrzyżowań, ograniczeń skrętów OSM, sygnalizacji, pełnej sieci tramwajów, pościgów i dynamicznych blokad.
 
 ## Statusy i odbiór
 
@@ -85,7 +85,7 @@ Trzy pokoje Hub i kryjówka Borka są prostymi wnętrzami blockoutu z klatką, s
 
 `WroclawCity_v1` zapisuje tylko ukończone akcje, punkt wznowienia oraz położenie/stan samochodu. Nie zapisuje całego GIS ani populacji. Nieznane ID pozostają w zapisie przy aktualizacji mapy. Wadliwy/nowszy zapis blokuje automatyczne nadpisanie. Błąd zapisu wycofuje zaliczenie aktywności. `N` w menu miasta rozpoczyna nowy zapis miasta, `L` odczytuje go. Pliki kampanii nie są zmieniane.
 
-Populacja korzysta z puli maksymalnie 24 prostych agentów (po trzy na aktywną trasę). Agenci pojawiają się w pobliżu gracza, jadą/chodzą po zweryfikowanych krawędziach grafu i zatrzymują przed przeszkodą lub brakiem podłoża. To ruch kinematyczny blockoutu, bez pełnej symulacji skrzyżowań i zachowania kierowców. Zaparkowany samochód gracza wyłącza fizykę. Jazda aktywuje dodatkowe źródło streamingu 2,5 sekundy przed aktualnym wektorem prędkości, maksymalnie 150 metrów dalej.
+Populacja rozdziela pieszych i samochody. Piesi korzystają z puli maksymalnie 24 lekkich agentów z LOD symulacji. Samochody korzystają domyślnie z maksymalnie 6 transient fizycznych pojazdów opartych o ten sam `ADriveableVehicle` co samochód gracza; mają podążanie po trasie, płynny skręt/prędkość i hamowanie przed przeszkodą. Auta traffic nie są zapisywane jako pojazd gracza i nie tworzą własnych predykcyjnych źródeł streamingu. Brakuje odbioru w UE, zachowań skrzyżowań i zaawansowanego DriverAI. Zaparkowany samochód gracza wyłącza fizykę. Jazda aktywuje dodatkowe źródło streamingu 2,5 sekundy przed aktualnym wektorem prędkości, maksymalnie 150 metrów dalej.
 
 ## Odbiór w Unreal
 
