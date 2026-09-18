@@ -32,8 +32,9 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             "BuildJournalTab", "BuildMapTab", "BuildStatsTab", "BuildSettingsTab",
         )
         for builder in builders:
-            self.assertEqual(self.cpp.count(f"UPlayerMenuWidget::{builder}()"), 1)
-            self.assertIn(f"void {builder}();", self.header)
+            definition = f"void UPlayerMenuWidget::{builder}()"
+            self.assertEqual(self.cpp.count(definition), 1, builder)
+            self.assertIn(f"void {builder}();", self.header, builder)
 
     def test_modern_visual_shell_is_not_removed(self):
         for token in (
