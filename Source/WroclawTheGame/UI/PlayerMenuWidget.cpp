@@ -1971,7 +1971,27 @@ void UPlayerMenuWidget::BuildSettingsTab()
 
         auto* LimitButton = MakeButton(FString::Printf(TEXT("LIMIT KLATEK  •  %s"), *LimitLabel));
         LimitButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleFPSLimit);
-        AddCenterButton(LimitButton);
+        AddCenterButton(LimitButton, 12.0f);
+
+        CenterColumn->AddChildToVerticalBox(MakeText(TEXT("SZYBKI LIMIT FPS"), 9, true, Muted))
+            ->SetPadding(FMargin(18, 0, 18, 7));
+        auto* FPSPresets = WidgetTree->ConstructWidget<UHorizontalBox>();
+        CenterColumn->AddChildToVerticalBox(FPSPresets)->SetPadding(FMargin(18, 0, 18, 12));
+
+        auto AddFPSPreset = [&](const FString& Label, int32 Value, void (UPlayerMenuWidget::*Handler)())
+        {
+            auto* Button = MakeButton(Label, Limit == Value);
+            Button->OnClicked.AddDynamic(this, Handler);
+            auto* Slot = FPSPresets->AddChildToHorizontalBox(Button);
+            Slot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+            Slot->SetPadding(FMargin(2, 0, 2, 0));
+        };
+
+        AddFPSPreset(TEXT("60"), 60, &UPlayerMenuWidget::FPS60);
+        AddFPSPreset(TEXT("120"), 120, &UPlayerMenuWidget::FPS120);
+        AddFPSPreset(TEXT("144"), 144, &UPlayerMenuWidget::FPS144);
+        AddFPSPreset(TEXT("165"), 165, &UPlayerMenuWidget::FPS165);
+        AddFPSPreset(TEXT("∞"), 0, &UPlayerMenuWidget::FPSUnlimited);
 
         auto* FPSButton = MakeButton(
             FString::Printf(TEXT("LICZNIK FPS  •  %s"), bFPSVisible ? TEXT("WŁ.") : TEXT("WYŁ.")),
