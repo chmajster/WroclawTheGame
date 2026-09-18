@@ -1899,7 +1899,8 @@ void UPlayerMenuWidget::ShowConfirmation(
 
     ClearConfirmation();
     PendingConfirmation = Action;
-    ConfirmationSecondsRemaining = Action == 3 ? 15.0f : 0.0f;
+    ConfirmationSecondsTotal = Action == 3 ? 15.0f : 0.0f;
+    ConfirmationSecondsRemaining = ConfirmationSecondsTotal;
     ConfirmationAnimationTime = 0.0f;
 
     ConfirmationOverlay = WidgetTree->ConstructWidget<UBorder>();
@@ -1961,7 +1962,12 @@ void UPlayerMenuWidget::ShowConfirmation(
     if (Action == 3)
     {
         ConfirmationCountdown = MakeText(TEXT("AUTOMATYCZNE COFNIĘCIE ZA 15 S"), 10, true, Accent);
-        Column->AddChildToVerticalBox(ConfirmationCountdown)->SetPadding(FMargin(0, 0, 0, 12));
+        Column->AddChildToVerticalBox(ConfirmationCountdown)->SetPadding(FMargin(0, 0, 0, 7));
+
+        ConfirmationProgress = WidgetTree->ConstructWidget<UProgressBar>();
+        ConfirmationProgress->SetPercent(1.0f);
+        ConfirmationProgress->SetFillColorAndOpacity(Accent);
+        Column->AddChildToVerticalBox(ConfirmationProgress)->SetPadding(FMargin(0, 0, 0, 15));
     }
 
     auto* Buttons = WidgetTree->ConstructWidget<UHorizontalBox>();
@@ -1989,6 +1995,11 @@ void UPlayerMenuWidget::ShowConfirmation(
     ConfirmSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     ConfirmSlot->SetPadding(FMargin(5, 0, 0, 0));
 
+    auto* ShortcutHint = MakeText(
+        TEXT("ENTER / A  POTWIERDŹ    •    ESC / B  ANULUJ"), 9, true, Muted);
+    ShortcutHint->SetJustification(ETextJustify::Center);
+    Column->AddChildToVerticalBox(ShortcutHint)->SetPadding(FMargin(0, 12, 0, 0));
+
     UButton* DefaultFocus = bDestructive ? Cancel : Confirm;
     if (APlayerController* PlayerController = GetOwningPlayer())
         DefaultFocus->SetUserFocus(PlayerController);
@@ -2003,7 +2014,9 @@ void UPlayerMenuWidget::ClearConfirmation()
     ConfirmationOverlay = nullptr;
     ConfirmationCard = nullptr;
     ConfirmationCountdown = nullptr;
+    ConfirmationProgress = nullptr;
     PendingConfirmation = 0;
+    ConfirmationSecondsTotal = 0.0f;
     ConfirmationSecondsRemaining = 0.0f;
 }
 
@@ -2487,6 +2500,11 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
         ConfirmationCountdown->SetText(FText::FromString(FString::Printf(
             TEXT("AUTOMATYCZNE COFNIĘCIE ZA %d S"),
             FMath::Max(0, FMath::CeilToInt(ConfirmationSecondsRemaining)))));
+    }
+    if (ConfirmationProgress && ConfirmationSecondsTotal > 0.0f)
+    {
+        ConfirmationProgress->SetPercent(FMath::Clamp(
+            ConfirmationSecondsRemaining / ConfirmationSecondsTotal, 0.0f, 1.0f));
     }
 
     if (ConfirmationSecondsRemaining <= 0.0f)

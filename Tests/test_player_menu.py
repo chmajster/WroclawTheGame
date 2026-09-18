@@ -111,6 +111,16 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_confirmation_modal_has_countdown_progress_and_input_hint(self):
+        for token in (
+            "ConfirmationProgress",
+            "ConfirmationSecondsTotal",
+            "ConfirmationSecondsRemaining / ConfirmationSecondsTotal",
+            'TEXT("ENTER / A  POTWIERDŹ',
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertIn("TObjectPtr<class UProgressBar> ConfirmationProgress", self.header)
+
     def test_video_mode_has_confirmation_and_automatic_revert(self):
         self.assertIn("ConfirmVideoMode()", self.cpp)
         self.assertIn("RevertVideoMode()", self.cpp)

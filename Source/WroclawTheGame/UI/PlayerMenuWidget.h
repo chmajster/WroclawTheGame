@@ -30,6 +30,7 @@ private:
     UPROPERTY() TObjectPtr<class UBorder> AmbientGlowA;
     UPROPERTY() TObjectPtr<class UBorder> AmbientGlowB;
     UPROPERTY() TObjectPtr<class UTextBlock> ConfirmationCountdown;
+    UPROPERTY() TObjectPtr<class UProgressBar> ConfirmationProgress;
     UPROPERTY() TObjectPtr<class UScrollBox> ActionScroll;
     UPROPERTY() TObjectPtr<class UScrollBox> CenterScroll;
     UPROPERTY() TObjectPtr<class UScrollBox> RightScroll;
@@ -47,6 +48,7 @@ private:
     int32 ActiveTab = 0;
     int32 SettingsSection = 0;
     int32 PendingConfirmation = 0;
+    float ConfirmationSecondsTotal = 0.0f;
     float ConfirmationSecondsRemaining = 0.0f;
     float ConfirmationAnimationTime = 0.18f;
     float PageAnimationTime = 0.22f;
