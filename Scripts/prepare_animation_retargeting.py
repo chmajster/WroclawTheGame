@@ -175,23 +175,33 @@ def run():
     required_chains = list(policy["required_ik_chains"])
     require_fbik = bool(policy["require_fbik"])
 
-    target_meta = model_map.get("quaternius-ubc-superhero-male")
-    if not target_meta:
-        raise RuntimeError("Quaternius target character is not imported")
-    target_mesh = unreal.load_asset(target_meta.get("primary_object"))
-    if not isinstance(target_mesh, unreal.SkeletalMesh):
-        raise RuntimeError("Quaternius target character is not a SkeletalMesh")
-
-    target_rig, _, target_chains = make_ik_rig(
-        "IKR_Quaternius_UBC", target_mesh, require_fbik, required_chains
-    )
-
-    requested = {
-        key: value
-        for key, value in bindings.items()
-        if bool(value.get("requires_retarget"))
+    target_models = {
+        "male": "quaternius-ubc-superhero-male",
+        "female": "quaternius-ubc-superhero-female",
     }
-    if bool(policy["require_retarget_for_flagged_bindings"]) and not requested:
+    target_meshes = {}
+    target_rigs = {}
+    target_chains_by_variant = {}
+    for variant, model_id in target_models.items():
+        target_meta = model_map.get(model_id)
+        if not target_meta:
+            raise RuntimeError(f"Quaternius {variant} target character is not imported")
+        target_mesh = unreal.load_asset(target_meta.get("primary_object"))
+        if not isinstance(target_mesh, unreal.SkeletalMesh):
+            raise RuntimeError(f"Quaternius {variant} target character is not a SkeletalMesh")
+        target_rig, _, target_chains = make_ik_rig(
+            "IKR_Quaternius_UBC_" + variant.capitalize(),
+            target_mesh,
+            require_fbik,
+            required_chains,
+        )
+        target_meshes[variant] = target_mesh
+        target_rigs[variant] = target_rig
+        target_chains_by_variant[variant] = target_chains
+
+    requested = dict(bindings)
+    flagged = {key for key, value in bindings.items() if bool(value.get("requires_retarget"))}
+    if bool(policy["require_retarget_for_flagged_bindings"]) and not flagged:
         raise RuntimeError("No bindings are marked requires_retarget")
 
     libraries = sorted({value["library"] for value in requested.values()})
@@ -208,24 +218,31 @@ def run():
         )
         if not source_controller.is_skeletal_mesh_compatible(source_mesh):
             raise RuntimeError(f"Source IK Rig rejects its own mesh: {library_id}")
-        rtg, mapped, unmapped = make_retargeter(
-            "RTG_" + clean(library_id) + "_To_Quaternius",
-            source_rig,
-            target_rig,
-            source_mesh,
-            target_mesh,
-        )
         rigs[library_id] = (source_mesh, source_rig)
-        retargeters[library_id] = rtg
+        retargeters[library_id] = {}
         report_libraries[library_id] = {
             "source_mesh": source_mesh.get_path_name(),
             "source_rig": source_rig.get_path_name(),
             "source_chains": source_chains,
-            "target_chains": target_chains,
-            "retargeter": rtg.get_path_name(),
-            "mapped_chains": mapped,
-            "unmapped_chains": unmapped,
+            "targets": {},
         }
+        for variant in ("male", "female"):
+            rtg, mapped, unmapped = make_retargeter(
+                "RTG_" + clean(library_id) + "_To_Quaternius_" + variant.capitalize(),
+                source_rig,
+                target_rigs[variant],
+                source_mesh,
+                target_meshes[variant],
+            )
+            retargeters[library_id][variant] = rtg
+            report_libraries[library_id]["targets"][variant] = {
+                "target_mesh": target_meshes[variant].get_path_name(),
+                "target_rig": target_rigs[variant].get_path_name(),
+                "target_chains": target_chains_by_variant[variant],
+                "retargeter": rtg.get_path_name(),
+                "mapped_chains": mapped,
+                "unmapped_chains": unmapped,
+            }
 
     cache = {}
     semantic_map = {}
@@ -233,28 +250,36 @@ def run():
     for semantic, binding in sorted(requested.items()):
         library_id = binding["library"]
         clip = binding["clip"]
-        key = (library_id, clip)
         metadata = anim_map[library_id]
         source_path, source_asset = animation_asset_for_clip(metadata.get("animations", []), clip)
         source_mesh, _ = rigs[library_id]
-        if key not in cache:
-            try:
-                cache[key] = retarget_one(
-                    source_path,
-                    source_mesh,
-                    target_mesh,
-                    retargeters[library_id],
-                    library_id,
-                    clip,
-                )
-            except Exception as exc:
-                errors.append(f"{semantic}: {exc}")
-                continue
+        targets = {}
+        failed = False
+        for variant in ("male", "female"):
+            key = (library_id, clip, variant)
+            if key not in cache:
+                try:
+                    cache[key] = retarget_one(
+                        source_path,
+                        source_mesh,
+                        target_meshes[variant],
+                        retargeters[library_id][variant],
+                        library_id + "_" + variant,
+                        clip,
+                    )
+                except Exception as exc:
+                    errors.append(f"{semantic}/{variant}: {exc}")
+                    failed = True
+                    continue
+            targets[variant] = cache[key]
+        if failed or len(targets) != 2:
+            continue
         semantic_map[semantic] = {
             "library": library_id,
             "clip": clip,
             "source": source_asset.get_path_name(),
-            "retargeted": cache[key],
+            "requires_cross_rig_retarget": bool(binding.get("requires_retarget")),
+            "targets": targets,
         }
 
     missing_semantics = sorted(set(requested) - set(semantic_map))
@@ -262,18 +287,27 @@ def run():
         errors.append("missing retargeted semantic bindings: " + ", ".join(missing_semantics))
 
     for semantic, record in semantic_map.items():
-        asset = unreal.load_asset(record["retargeted"])
-        if not isinstance(asset, unreal.AnimationAsset):
-            errors.append(f"{semantic}: retargeted object cannot be loaded as AnimationAsset")
-            continue
-        skeleton = asset.get_editor_property("skeleton")
-        if skeleton != target_mesh.get_editor_property("skeleton"):
-            errors.append(f"{semantic}: retargeted animation skeleton differs from target skeleton")
+        for variant, path in record["targets"].items():
+            asset = unreal.load_asset(path)
+            if not isinstance(asset, unreal.AnimationAsset):
+                errors.append(f"{semantic}/{variant}: retargeted object cannot be loaded as AnimationAsset")
+                continue
+            skeleton = asset.get_editor_property("skeleton")
+            if skeleton != target_meshes[variant].get_editor_property("skeleton"):
+                errors.append(
+                    f"{semantic}/{variant}: retargeted animation skeleton differs from target skeleton"
+                )
 
     report = {
         "status": "PASS" if not errors else "FAIL",
-        "target_mesh": target_mesh.get_path_name(),
-        "target_rig": target_rig.get_path_name(),
+        "targets": {
+            variant: {
+                "mesh": target_meshes[variant].get_path_name(),
+                "rig": target_rigs[variant].get_path_name(),
+                "chains": target_chains_by_variant[variant],
+            }
+            for variant in ("male", "female")
+        },
         "libraries": report_libraries,
         "retargeted_bindings": semantic_map,
         "errors": errors,
