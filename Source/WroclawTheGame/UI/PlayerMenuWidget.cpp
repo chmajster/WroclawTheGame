@@ -2156,6 +2156,27 @@ FReply UPlayerMenuWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, co
         return Super::NativeOnPreviewKeyDown(InGeometry, InKeyEvent);
     }
 
+    if (ActiveTab == 4)
+    {
+        auto* CityGameplay = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+        auto* MapSubsystem = GetWorld()->GetSubsystem<UWroclawMapSubsystem>();
+        if (CityGameplay && CityGameplay->IsActive() && MapSubsystem)
+        {
+            if (Key == EKeys::C)
+            {
+                MapSubsystem->CycleWaypoint();
+                Refresh();
+                return FReply::Handled();
+            }
+            if (Key == EKeys::BackSpace)
+            {
+                MapSubsystem->ClearWaypoint();
+                Refresh();
+                return FReply::Handled();
+            }
+        }
+    }
+
     if (Key == EKeys::Q || Key == EKeys::Gamepad_LeftShoulder)
     {
         SelectTab((ActiveTab + TabButtons.Num() - 1) % TabButtons.Num());
