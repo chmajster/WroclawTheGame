@@ -1216,5 +1216,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/bar_chair_round_01/bar_chair_round_01_1k.fbx"
+  },
+  {
+    "slug": "ladder_sectioned_01",
+    "name": "Ladder Sectioned 01",
+    "intended_use": "Garage/workshop ladder.",
+    "source_page": "https://polyhaven.com/a/ladder_sectioned_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "MP": "All"
+    },
+    "category": "Tools & Equipment/Workshop Equipment/Ladders",
+    "dimensions_mm": [
+      661.5026593208313,
+      177.62134224176407,
+      2134.558429243043
+    ],
+    "files_hash": "13918cbf2df2d0f0321d29546ed2da162b44887a",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/ladder_sectioned_01/ladder_sectioned_01_1k.fbx"
   }
 ]
