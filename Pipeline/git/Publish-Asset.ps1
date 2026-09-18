@@ -8,8 +8,11 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 $ProjectRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-$ManifestPath = [IO.Path]::GetFullPath((Join-Path $ProjectRoot $Manifest))
-if ([IO.Path]::IsPathRooted($Manifest)) { $ManifestPath = [IO.Path]::GetFullPath($Manifest) }
+if ([IO.Path]::IsPathRooted($Manifest)) {
+    $ManifestPath = [IO.Path]::GetFullPath($Manifest)
+} else {
+    $ManifestPath = [IO.Path]::GetFullPath((Join-Path $ProjectRoot $Manifest))
+}
 if (-not (Test-Path -LiteralPath $ManifestPath)) { throw "Manifest not found: $ManifestPath" }
 
 $ManifestData = Get-Content -LiteralPath $ManifestPath -Raw | ConvertFrom-Json
