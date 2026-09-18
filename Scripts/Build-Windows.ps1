@@ -82,15 +82,24 @@ if (Test-Path -LiteralPath $SurfaceMarker) { Remove-Item -LiteralPath $SurfaceMa
 $SurfaceScript = Join-Path $PSScriptRoot 'prepare_surface_quality.py'
 & $Editor $Project "-ExecutePythonScript=$SurfaceScript" -unattended -nosplash -stdout -FullStdOutLogOutput
 if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $SurfaceMarker)) { throw 'Surface PBR validation failed; packaging stopped' }
-if (Test-Path -LiteralPath $CreatorMarker) { Remove-Item -LiteralPath $CreatorMarker }
-$CreatorScript = Join-Path $PSScriptRoot 'prepare_character_creator.py'
-& $Editor $Project "-ExecutePythonScript=$CreatorScript" -unattended -nosplash -nullrhi -stdout -FullStdOutLogOutput
-if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $CreatorMarker)) { throw 'Character Creator asset validation failed; packaging stopped' }
+
+# External meshes and animation libraries must exist before character assets are validated.
 $FreeModelsMarker = Join-Path $ProjectRoot 'Saved\FreeModelsReady.ok'
 if (Test-Path -LiteralPath $FreeModelsMarker) { Remove-Item -LiteralPath $FreeModelsMarker }
 $FreeModelsScript = Join-Path $PSScriptRoot 'import_free_models.py'
 & $Editor $Project "-ExecutePythonScript=$FreeModelsScript" -unattended -nosplash -nullrhi -stdout -FullStdOutLogOutput
 if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $FreeModelsMarker)) { throw 'Free model import failed; packaging stopped' }
+
+$FreeAnimationsMarker = Join-Path $ProjectRoot 'Saved\FreeAnimationsReady.ok'
+if (Test-Path -LiteralPath $FreeAnimationsMarker) { Remove-Item -LiteralPath $FreeAnimationsMarker }
+$FreeAnimationsScript = Join-Path $PSScriptRoot 'import_free_animations.py'
+& $Editor $Project "-ExecutePythonScript=$FreeAnimationsScript" -unattended -nosplash -nullrhi -stdout -FullStdOutLogOutput
+if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $FreeAnimationsMarker)) { throw 'Free animation import failed; packaging stopped' }
+
+if (Test-Path -LiteralPath $CreatorMarker) { Remove-Item -LiteralPath $CreatorMarker }
+$CreatorScript = Join-Path $PSScriptRoot 'prepare_character_creator.py'
+& $Editor $Project "-ExecutePythonScript=$CreatorScript" -unattended -nosplash -nullrhi -stdout -FullStdOutLogOutput
+if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $CreatorMarker)) { throw 'Character Creator asset validation failed; packaging stopped' }
 $Marker = Join-Path $ProjectRoot 'Saved\GeneratedContent.ok'
 if (Test-Path -LiteralPath $Marker) { Remove-Item -LiteralPath $Marker }
 $Script = Join-Path $PSScriptRoot 'prepare_content.py'
