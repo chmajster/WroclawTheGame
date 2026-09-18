@@ -235,10 +235,14 @@ void UCharacterAppearanceComponent::TickComponent(float Dt,ELevelTick T,FActorCo
         }
         if (bPreview) VisualRoot->SetRelativeLocation(FVector::ZeroVector);
     }
-    else if (bPreview)
+    else
     {
         const auto* B=Catalog->Body(Appearance.BodyPreset); if (!B) return;
-        UAnimationAsset* Anim=PreviewMovement==TEXT("Walk")?B->Walk.Get():(PreviewMovement==TEXT("Jog")?B->Jog.Get():(PreviewMovement==TEXT("Crouch")?B->Crouch.Get():B->CreatorIdle.Get()));
+        UAnimationAsset* Anim=nullptr;
+        if (bPreview)
+            Anim=PreviewMovement==TEXT("Walk")?B->Walk.Get():(PreviewMovement==TEXT("Jog")?B->Jog.Get():(PreviewMovement==TEXT("Crouch")?B->Crouch.Get():B->CreatorIdle.Get()));
+        else if (!B->AnimationClass.Get())
+            Anim=Crouched?B->Crouch.Get():(Speed>380?B->Jog.Get():(Speed>20?B->Walk.Get():B->CreatorIdle.Get()));
         if (Anim && BodyMesh->AnimationData.AnimToPlay!=Anim) BodyMesh->PlayAnimation(Anim,true);
     }
 }
