@@ -10,6 +10,7 @@
 #include "Systems/GameplayEventBus.h"
 #include "Core/WTGLog.h"
 #include "Data/ChapterDefinition.h"
+#include "Data/CampaignMigrationDefinition.h"
 #include "Camera/CameraComponent.h"
 #include "Components/SceneCaptureComponent2D.h"
 #include "Engine/TextureRenderTarget2D.h"
@@ -40,6 +41,19 @@ bool ValidCampaignWorldPosition(const FVector &Position)
            FMath::Abs(Position.X) <= MaxHorizontal &&
            FMath::Abs(Position.Y) <= MaxHorizontal &&
            Position.Z >= MinVertical && Position.Z <= MaxVertical;
+}
+const UCampaignMigrationDefinition *ActiveCampaignMigration(const UWorld *World)
+{
+    if (!World || !World->GetMapName().Contains(TEXT("Nadodrze_GIS")))
+        return nullptr;
+    return LoadObject<UCampaignMigrationDefinition>(
+        nullptr, TEXT("/Game/Generated/CampaignMigrationDefinition.CampaignMigrationDefinition"));
+}
+FString CurrentCoordinateSpace(const UWorld *World)
+{
+    if (const auto *Migration = ActiveCampaignMigration(World))
+        return Migration->TargetSpace;
+    return TEXT("BlockoutV1");
 }
 
 } // namespace
@@ -92,6 +106,28 @@ bool USliceMission::LoadState(bool bApply)
         S->History.Num() > static_cast<int32>(Wroclaw::Catalog().size()) ||
         !ValidCampaignWorldPosition(S->Anchor))
         return false;
+
+    FVector LoadedAnchor = S->Anchor;
+    TMap<FString, FWTGNPCSnapshot> LoadedNPCs = S->NPCs;
+    FString SaveSpace = S->CoordinateSpace.IsEmpty() ? TEXT("BlockoutV1") : S->CoordinateSpace;
+    const FString ActiveSpace = CurrentCoordinateSpace(GetWorld());
+    if (SaveSpace != ActiveSpace)
+    {
+        const auto *Migration = ActiveCampaignMigration(GetWorld());
+        if (SaveSpace != TEXT("BlockoutV1") || ActiveSpace != TEXT("WroclawGISV1") || !Migration ||
+            !Migration->TransformLegacyPosition(LoadedAnchor, LoadedAnchor))
+            return false;
+        for (auto &Pair : LoadedNPCs)
+        {
+            FTransform Migrated;
+            if (!Migration->TransformLegacyTransform(Pair.Value.Transform, Migrated))
+                return false;
+            Pair.Value.Transform = Migrated;
+        }
+        if (!ValidCampaignWorldPosition(LoadedAnchor))
+            return false;
+    }
+
     Wroclaw::Progress Candidate(S->Variant);
     if (Legacy)
     {
@@ -159,9 +195,9 @@ bool USliceMission::LoadState(bool bApply)
     }
     if (!Candidate.Valid())
         return false;
-    if (S->NPCs.Num() > 128 || S->Settings.Num() > 64)
+    if (LoadedNPCs.Num() > 128 || S->Settings.Num() > 64)
         return false;
-    for (const auto &Pair : S->NPCs)
+    for (const auto &Pair : LoadedNPCs)
     {
         const auto &Snap = Pair.Value;
         const FVector Pos = Snap.Transform.GetLocation();
@@ -179,8 +215,8 @@ bool USliceMission::LoadState(bool bApply)
     {
         State = Candidate;
         WorldState = World;
-        Anchor = S->Anchor;
-        NPCs = S->NPCs;
+        Anchor = LoadedAnchor;
+        NPCs = MoveTemp(LoadedNPCs);
         Settings = S->Settings;
         GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Restore(S->CharacterCustomization);
     }
@@ -216,6 +252,7 @@ bool USliceMission::SaveCheckpoint()
         return false;
     }
     auto *S = Cast<USliceSave>(UGameplayStatics::CreateSaveGameObject(USliceSave::StaticClass()));
+    S->CoordinateSpace = CurrentCoordinateSpace(GetWorld());
     S->CharacterCustomization = GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Committed;
     if (!State.history.empty())
         for (TActorIterator<ASliceEnemy> It(GetWorld()); It; ++It)
