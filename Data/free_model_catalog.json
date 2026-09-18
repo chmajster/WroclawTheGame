@@ -221,5 +221,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/classic_laptop/classic_laptop_1k.fbx"
+  },
+  {
+    "slug": "cardboard_box_01",
+    "name": "Cardboard Box 01",
+    "intended_use": "Package, shop backroom and garage clutter.",
+    "source_page": "https://polyhaven.com/a/cardboard_box_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Rahul Chaudhary": "All"
+    },
+    "category": "Containers & Storage/Boxes & Crates/Cardboard Boxes",
+    "dimensions_mm": [
+      387.02359795570374,
+      515.8704221248627,
+      341.7995423078537
+    ],
+    "files_hash": "2a37ded0aeebc15100db0e1d285ad36cf40b8f42",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/cardboard_box_01/cardboard_box_01_1k.fbx"
   }
 ]
