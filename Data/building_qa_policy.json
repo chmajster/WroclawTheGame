@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "thresholds": {
+    "max_osm_match_distance_m": 35,
+    "min_footprint_overlap_ratio": 0.15,
+    "max_triangles_background": 50000,
+    "max_triangles_standard": 250000,
+    "max_triangles_detailed": 750000,
+    "max_triangles_hero": 1500000,
+    "max_vertices_per_mesh_group": 2000000
+  },
+  "required_fields": {
+    "official": [
+      "id",
+      "replaced_feature_id",
+      "status"
+    ],
+    "quality": [
+      "building_id",
+      "selected_source",
+      "quality"
+    ]
+  },
+  "hero_requires_visual_qa": true
+}
