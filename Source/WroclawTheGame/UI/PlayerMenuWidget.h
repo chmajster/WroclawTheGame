@@ -37,6 +37,7 @@ private:
     int32 ActiveTab = 0;
     int32 PendingConfirmation = 0;
     float ConfirmationSecondsRemaining = 0.0f;
+    float PageAnimationTime = 0.22f;
     bool bRotatingPreview = false;
     bool bCollectActionButtons = false;
 
@@ -61,6 +62,8 @@ private:
     void ShowConfirmation(int32 Action, const FString& Title, const FString& Body, const FString& ConfirmLabel);
     void ClearConfirmation();
 
+    UFUNCTION() void PlayUIHover();
+    UFUNCTION() void PlayUIClick();
     UFUNCTION() void ConfirmPendingAction();
     UFUNCTION() void CancelConfirmation();
     UFUNCTION() void TabGame();
