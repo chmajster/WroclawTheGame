@@ -16,6 +16,7 @@ class WROCLAWTHEGAME_API USliceSave : public USaveGame
     GENERATED_BODY()
   public:
     UPROPERTY(SaveGame) int32 Version = 3;
+    UPROPERTY(SaveGame) FString CoordinateSpace = TEXT("BlockoutV1");
     UPROPERTY(SaveGame) FCharacterCustomizationSaveData CharacterCustomization;
     UPROPERTY(SaveGame) int32 Variant = 0;
     UPROPERTY(SaveGame) FString WorldPayload;
