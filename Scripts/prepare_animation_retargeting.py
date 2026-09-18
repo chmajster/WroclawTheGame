@@ -153,7 +153,8 @@ def make_ik_rig(name, mesh, require_fbik, required_chains):
             missing = [chain_name for chain_name in required_chains if norm(chain_name) not in normalized]
         if missing:
             raise RuntimeError(f"{name}: missing retarget chains {missing}; got {chain_names}")
-    if not str(controller.get_retarget_root()):
+    root_name = str(controller.get_retarget_root())
+    if not root_name or root_name.lower() == "none":
         raise RuntimeError(f"{name}: retarget root is empty")
     if require_fbik and not controller.apply_auto_fbik():
         raise RuntimeError(f"Auto FBIK generation failed: {name}")
