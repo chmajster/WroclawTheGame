@@ -207,6 +207,7 @@ def generate(input_dir=DEFAULT_INPUT, output=DEFAULT_OUTPUT):
     source_chapter = json.loads((ROOT / "Data" / "chapter1.json").read_text(encoding="utf-8"))
     source_world = json.loads((ROOT / "Data" / "openworld.json").read_text(encoding="utf-8"))
     source_environment = json.loads((ROOT / "Data" / "environment.json").read_text(encoding="utf-8"))
+    source_opening = json.loads((ROOT / "Data" / "opening_scene_models.json").read_text(encoding="utf-8"))
     data = json.loads((input_dir / "sector.json").read_text(encoding="utf-8"))
     zones = _resolve(manifest, data)
 
@@ -214,6 +215,7 @@ def generate(input_dir=DEFAULT_INPUT, output=DEFAULT_OUTPUT):
     chapter = _transform_chapter(source_chapter, zones)
     world = _transform_openworld(source_world, zones)
     environment = _transform_environment(source_environment, zones)
+    opening = _transform_environment(source_opening, zones)
 
     report_zones = []
     for zone in zones:
@@ -257,6 +259,7 @@ def generate(input_dir=DEFAULT_INPUT, output=DEFAULT_OUTPUT):
         "chapter1.json": chapter,
         "openworld.json": world,
         "environment.json": environment,
+        "opening_scene_models.json": opening,
         "campaign_migration.json": report,
     }
     for name, payload in products.items():
