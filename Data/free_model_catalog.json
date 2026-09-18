@@ -1084,5 +1084,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/wine_bottles_01/wine_bottles_01_1k.fbx"
+  },
+  {
+    "slug": "fire_alarm",
+    "name": "Fire Alarm",
+    "intended_use": "Building safety/electrical wall prop.",
+    "source_page": "https://polyhaven.com/a/fire_alarm",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Slinc": "All"
+    },
+    "category": "Industrial & Infrastructure/Traffic & Safety/Hydrants & Fire Safety",
+    "dimensions_mm": [
+      99.44874793291092,
+      26.374715380370617,
+      143.64254474639893
+    ],
+    "files_hash": "6b0ddd79634cb983d93b7a29f3c0b96aeeaf9c4e",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/fire_alarm/fire_alarm_1k.fbx"
   }
 ]

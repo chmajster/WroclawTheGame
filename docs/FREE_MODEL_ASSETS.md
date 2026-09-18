@@ -55,3 +55,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Brass Pan 01 | Kitchen cookware prop. | Rico Cilliers | [Poly Haven](https://polyhaven.com/a/brass_pan_01) | CC0 1.0 |
 | Plastic Bottle Gallon | Bottle/distraction and garage clutter proxy. | Rahul Chaudhary | [Poly Haven](https://polyhaven.com/a/plastic_bottle_gallon) | CC0 1.0 |
 | Wine Bottles 01 | Bottle prop set for interiors and alley clutter. | Rico Cilliers, Jurita Burger | [Poly Haven](https://polyhaven.com/a/wine_bottles_01) | CC0 1.0 |
+| Fire Alarm | Building safety/electrical wall prop. | Slinc | [Poly Haven](https://polyhaven.com/a/fire_alarm) | CC0 1.0 |

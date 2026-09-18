@@ -1,0 +1,66 @@
+{
+  "slug": "fire_alarm",
+  "name": "Fire Alarm",
+  "intended_use": "Building safety/electrical wall prop.",
+  "source_page": "https://polyhaven.com/a/fire_alarm",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Slinc": "All"
+  },
+  "category": "Industrial & Infrastructure/Traffic & Safety/Hydrants & Fire Safety",
+  "tags": [
+    "alarm",
+    "emergency",
+    "red",
+    "safety",
+    "firefighting"
+  ],
+  "dimensions_mm": [
+    99.44874793291092,
+    26.374715380370617,
+    143.64254474639893
+  ],
+  "files_hash": "6b0ddd79634cb983d93b7a29f3c0b96aeeaf9c4e",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/fire_alarm/fire_alarm_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/fire_alarm/fire_alarm_1k.fbx",
+      "bytes": 107564,
+      "md5": "ef74f79293aec5a695ea8b5a5bd11836",
+      "sha256": "f0d59bf262fc2e6f57f7ae6ab906e938de301a07badf3a81d4779ffad9df0293",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/fire_alarm/fire_alarm_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/fire_alarm/textures/fire_alarm_diff_1k.jpg",
+      "bytes": 540983,
+      "md5": "43ddc895bc8eadfc583f0ded6ed4567f",
+      "sha256": "fc0558110922f7f5ae83e488b913857b576946a33ef46c89886f7c6de722e660",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/fire_alarm/fire_alarm_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/fire_alarm/textures/fire_alarm_metal_1k.exr",
+      "bytes": 65731,
+      "md5": "abf37c5fc3173cbdc320bbac3a6dbc62",
+      "sha256": "2e9a1ecccf1535ae71a622b006b0d359f843ed631c5380d409b52e0802b90c38",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/fire_alarm/fire_alarm_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/fire_alarm/textures/fire_alarm_nor_gl_1k.exr",
+      "bytes": 1508952,
+      "md5": "7201345bbf508acc9c57607825c3fcc9",
+      "sha256": "b10fcca28881a7e5b79e8f652cca7ff53be5749f5d728a6adf393576497678d3",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/fire_alarm/fire_alarm_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/fire_alarm/textures/fire_alarm_rough_1k.exr",
+      "bytes": 722397,
+      "md5": "04b9f6a75bf3d930a66116e971f7acca",
+      "sha256": "b6dad0b1a0cb47debb25a6611516d5398069f72a1c5f6d156926f684514128ed",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/fire_alarm/fire_alarm_rough_1k.exr"
+    }
+  ]
+}
