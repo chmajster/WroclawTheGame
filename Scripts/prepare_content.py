@@ -9,6 +9,9 @@ ROOT = Path(unreal.Paths.project_dir()).resolve()
 sys.path.insert(0, str(ROOT / 'Scripts'))
 from make_source_assets import generate, MATERIALS, SOUNDS, LOOPS
 MARKER = ROOT / 'Saved/GeneratedContent.ok'
+FREE_MODEL_IMPORT_MAP = ROOT / 'Saved/FreeModelImportMap.json'
+OPENING_MODELS = ROOT / 'Data/opening_scene_models.json'
+PROP_MODEL_BINDINGS = ROOT / 'Data/prop_model_bindings.json'
 
 
 def import_file(file, destination):
@@ -27,6 +30,32 @@ def import_file(file, destination):
         raise RuntimeError(f'Imported asset not readable: {paths[0]}')
     return asset
 
+
+def load_free_models(required_ids):
+    if not FREE_MODEL_IMPORT_MAP.is_file():
+        raise RuntimeError('Free model import map missing; run import_free_models.py before prepare_content.py')
+    imported = json.loads(FREE_MODEL_IMPORT_MAP.read_text(encoding='utf-8'))
+    resolved = {}
+    for model_id in sorted(required_ids):
+        metadata = imported.get(model_id)
+        object_path = metadata.get('primary_object') if metadata else None
+        if not object_path:
+            raise RuntimeError(f'Free model not imported: {model_id}')
+        asset = unreal.load_asset(object_path)
+        if not asset or not isinstance(asset, unreal.StaticMesh):
+            raise RuntimeError(f'Free model is not a StaticMesh: {model_id} -> {object_path}')
+        resolved[model_id] = asset
+    return resolved
+
+
+def apply_static_mesh(actor, mesh, scale):
+    component = actor.get_component_by_class(unreal.StaticMeshComponent)
+    if not component:
+        raise RuntimeError(f'StaticMeshComponent missing on {actor.get_actor_label()}')
+    component.set_static_mesh(mesh)
+    component.set_editor_property('cast_shadow', True)
+    actor.set_actor_scale3d(unreal.Vector(*scale))
+    return component
 
 def material(name, texture, roughness, metallic):
     path = f'/Game/Generated/M_{name}'
@@ -105,19 +134,42 @@ def prepare():
             component=actor.get_component_by_class(unreal.PointLightComponent)
             component.set_editor_property('intensity',record['intensity'])
             component.set_editor_property('attenuation_radius',record['radius'])
-            component.set_editor_property('cast_shadows',False)
+            component.set_editor_property('cast_shadows',record.get('cast_shadows', True))
+            component.set_editor_property('source_radius',record.get('source_radius', 4.0))
+            component.set_editor_property('soft_source_radius',record.get('soft_source_radius', 12.0))
             component.set_editor_property('light_color',unreal.Color(*[int(v*255) for v in record['color']],255))
         elif kind=='sign':
             actor=spawn(unreal.TextRenderActor,record['position'],record['id'],record['rotation'])
             component=actor.get_component_by_class(unreal.TextRenderComponent)
             component.set_text(record['text']);component.set_world_size(record['size'])
         else:raise RuntimeError('Unknown environment record')
+    opening_records=json.loads(OPENING_MODELS.read_text(encoding='utf-8'))
+    binding_records=json.loads(PROP_MODEL_BINDINGS.read_text(encoding='utf-8'))
+    prop_bindings={record['action']:record for record in binding_records}
+    required_models={record['model'] for record in opening_records}
+    required_models.update(record['model'] for record in binding_records)
+    free_models=load_free_models(required_models)
+    for record in opening_records:
+        actor=spawn(unreal.StaticMeshActor,record['position'],record['id'],record.get('rotation',[0,0,0]))
+        apply_static_mesh(actor,free_models[record['model']],record.get('scale',[1,1,1]))
+        actor.set_editor_property('hlod_layer',hlod)
+
     content=json.loads((ROOT/'Data/chapter1.json').read_text(encoding='utf-8'))
     for action in content['actions']:
         if action['kind'] in ('virtual','zone') or action['position'][:2]==[0,0]:continue
-        actor=spawn(unreal.SliceProp,action['position'],'action_'+action['id'])
+        binding=prop_bindings.get(action['id'])
+        position=list(action['position'])
+        rotation=[0,0,0]
+        if binding:
+            offset=binding.get('offset',[0,0,0])
+            position=[position[i]+offset[i] for i in range(3)]
+            rotation=binding.get('rotation',[0,0,0])
+        actor=spawn(unreal.SliceProp,position,'action_'+action['id'],rotation)
         actor.set_editor_property('action_id',action['id'])
-        actor.set_actor_scale3d(unreal.Vector(*[v/100 for v in action['size']]))
+        if binding:
+            apply_static_mesh(actor,free_models[binding['model']],binding.get('scale',[1,1,1]))
+        else:
+            actor.set_actor_scale3d(unreal.Vector(*[v/100 for v in action['size']]))
     world=json.loads((ROOT/'Data/openworld.json').read_text(encoding='utf-8'))
     for guard in world['guards']:
         actor=spawn(unreal.SliceEnemy,guard['position'],'guard_'+guard['id'])

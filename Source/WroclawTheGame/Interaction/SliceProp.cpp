@@ -34,12 +34,17 @@ void ASliceProp::Configure(const FString &Id, const FVector &Size)
     ActionId = Id;
     Puzzle->DefinitionId = FName(*Id);
     ClosedPosition = GetActorLocation();
-    Mesh->SetWorldScale3D(Size / 100);
+    const bool bFallbackCube =
+        Mesh->GetStaticMesh() && Mesh->GetStaticMesh()->GetPathName() == TEXT("/Engine/BasicShapes/Cube.Cube");
     const auto *A = Wroclaw::Progress::Find(TCHAR_TO_UTF8(*Id));
-    const TCHAR *Path =
-        A && A->gate ? TEXT("/Game/Generated/M_Wood.M_Wood") : TEXT("/Game/Generated/M_Paper.M_Paper");
-    if (auto *Mat = LoadObject<UMaterialInterface>(nullptr, Path))
-        Mesh->SetMaterial(0, Mat);
+    if (bFallbackCube)
+    {
+        Mesh->SetWorldScale3D(Size / 100);
+        const TCHAR *Path =
+            A && A->gate ? TEXT("/Game/Generated/M_Wood.M_Wood") : TEXT("/Game/Generated/M_Paper.M_Paper");
+        if (auto *Mat = LoadObject<UMaterialInterface>(nullptr, Path))
+            Mesh->SetMaterial(0, Mat);
+    }
     Tick(0);
 }
 FText ASliceProp::Prompt(ASliceCharacter *Player) const
