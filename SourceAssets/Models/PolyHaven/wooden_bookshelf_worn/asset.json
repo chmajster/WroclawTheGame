@@ -1,0 +1,77 @@
+{
+  "slug": "wooden_bookshelf_worn",
+  "name": "Wooden Bookshelf Worn",
+  "intended_use": "Garage hiding shelf and basement/workshop storage.",
+  "source_page": "https://polyhaven.com/a/wooden_bookshelf_worn",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Ulan Cabanilla": "All"
+  },
+  "category": "Furniture/Storage Furniture/Shelving & Bookcases",
+  "tags": [
+    "old",
+    "wooden",
+    "wood",
+    "worn",
+    "garage",
+    "shed",
+    "rustic",
+    "antique",
+    "distressed",
+    "aged",
+    "weathered",
+    "bookcase",
+    "shelves",
+    "carpentry",
+    "vintage",
+    "storage"
+  ],
+  "dimensions_mm": [
+    1373.95179271698,
+    581.3020169734955,
+    2063.442051410675
+  ],
+  "files_hash": "7db4a47cb5d2cf4dccb714c4ada6008321217fcb",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/wooden_bookshelf_worn/wooden_bookshelf_worn_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/wooden_bookshelf_worn/wooden_bookshelf_worn_1k.fbx",
+      "bytes": 314092,
+      "md5": "b08c221fe3f8c07b101ddf240a85bbac",
+      "sha256": "0e7b4870f4def36822d2466ed9e47bd5162279a64117e37a7e76eca97ae640ba",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/wooden_bookshelf_worn/wooden_bookshelf_worn_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/wooden_bookshelf_worn/textures/wooden_bookshelf_worn_diff_1k.jpg",
+      "bytes": 799126,
+      "md5": "8f92c92e6473010e7df9b11f32d1234a",
+      "sha256": "970f60178decadd0d8fb1e5872f718350a49b027fd69469210c41ead350cba56",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/wooden_bookshelf_worn/wooden_bookshelf_worn_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/wooden_bookshelf_worn/textures/wooden_bookshelf_worn_metal_1k.exr",
+      "bytes": 25047,
+      "md5": "30f343cffe827ab74c381466c812f607",
+      "sha256": "fcc874ac5bda40e6196165494961eab77226f91c8deed771c40dd3aac86022ec",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/wooden_bookshelf_worn/wooden_bookshelf_worn_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/wooden_bookshelf_worn/textures/wooden_bookshelf_worn_nor_gl_1k.exr",
+      "bytes": 2148373,
+      "md5": "e59c32876f29f95bd16dcdf1728a5d7e",
+      "sha256": "29aba81b6a68fdd77f83ef807c1fb8dfd25cf259df8f1828aaf3c9e2ac04bd5d",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/wooden_bookshelf_worn/wooden_bookshelf_worn_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/wooden_bookshelf_worn/textures/wooden_bookshelf_worn_rough_1k.exr",
+      "bytes": 975922,
+      "md5": "31d03e316a4808de6e9057c4b742dac5",
+      "sha256": "bf16b5f45c11bd2660eba64b6a2f053d2f5f7303ee6c11c7671bb43cba2e33ef",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/wooden_bookshelf_worn/wooden_bookshelf_worn_rough_1k.exr"
+    }
+  ]
+}

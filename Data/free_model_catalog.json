@@ -265,5 +265,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/plastic_container/plastic_container_1k.fbx"
+  },
+  {
+    "slug": "wooden_bookshelf_worn",
+    "name": "Wooden Bookshelf Worn",
+    "intended_use": "Garage hiding shelf and basement/workshop storage.",
+    "source_page": "https://polyhaven.com/a/wooden_bookshelf_worn",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Ulan Cabanilla": "All"
+    },
+    "category": "Furniture/Storage Furniture/Shelving & Bookcases",
+    "dimensions_mm": [
+      1373.95179271698,
+      581.3020169734955,
+      2063.442051410675
+    ],
+    "files_hash": "7db4a47cb5d2cf4dccb714c4ada6008321217fcb",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/wooden_bookshelf_worn/wooden_bookshelf_worn_1k.fbx"
   }
 ]
