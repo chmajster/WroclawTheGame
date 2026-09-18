@@ -1348,5 +1348,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/clipboard/clipboard_1k.fbx"
+  },
+  {
+    "slug": "CashRegister_01",
+    "name": "Cash Register 01",
+    "intended_use": "Shop cash register / terminal scene prop.",
+    "source_page": "https://polyhaven.com/a/CashRegister_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Joe Seabuhr": "All"
+    },
+    "category": "Electronics & Appliances/Devices & Instruments/Retail Machines",
+    "dimensions_mm": [
+      600.4907041788101,
+      624.2051124572754,
+      621.3557496666908
+    ],
+    "files_hash": "a28caf40c20cabd1ee08e639d41982066d7340c6",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/CashRegister_01/CashRegister_01_1k.fbx"
   }
 ]
