@@ -44,6 +44,20 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_navigation_has_active_indicator_and_live_context(self):
+        for token in (
+            "TabIndicators.Add(Indicator)",
+            "SetHeightOverride(2.0f)",
+            "TabIndicators[Index]->SetBrushColor",
+            "UpdateContextStatus()",
+            'TEXT("SESJA AKTYWNA")',
+            'TEXT("MENU GŁÓWNE")',
+            'TEXT("ZAPIS DOSTĘPNY")',
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertIn("TObjectPtr<class UTextBlock> ContextStatus", self.header)
+        self.assertIn("TArray<TObjectPtr<class UBorder>> TabIndicators", self.header)
+
     def test_long_menu_panels_are_scrollable(self):
         for token in (
             "ActionScroll = WidgetTree->ConstructWidget<UScrollBox>()",
