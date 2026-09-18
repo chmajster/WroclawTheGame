@@ -176,5 +176,28 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/vintage_radio_transceiver/vintage_radio_transceiver_1k.fbx"
+  },
+  {
+    "slug": "power_box_01",
+    "name": "Power Box 01",
+    "intended_use": "Fuse box, electrical panel and camera power-control interactions.",
+    "source_page": "https://polyhaven.com/a/power_box_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Rico Cilliers": "Modeling & Texturing",
+      "Yann Kervran": "Rigging"
+    },
+    "category": "Industrial & Infrastructure/Electrical/Utility & Power Boxes",
+    "dimensions_mm": [
+      377.4920701980591,
+      418.45703125,
+      503.142774105072
+    ],
+    "files_hash": "4df156d1369da9a74510ad2ff012212cea3d4cfa",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/power_box_01/power_box_01_1k.fbx"
   }
 ]

@@ -14,3 +14,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Sofa 03 | Apartment/interior seating replacing simple blockout geometry. | Fran Calvente | [Poly Haven](https://polyhaven.com/a/sofa_03) | CC0 1.0 |
 | Signal Flashlight | Gameplay flashlight pickup. | Jiří Ptáček | [Poly Haven](https://polyhaven.com/a/signal_flashlight) | CC0 1.0 |
 | Vintage Radio Transceiver | Radio-frequency puzzle / workshop communications prop. | Mateusz Sadek | [Poly Haven](https://polyhaven.com/a/vintage_radio_transceiver) | CC0 1.0 |
+| Power Box 01 | Fuse box, electrical panel and camera power-control interactions. | Rico Cilliers, Yann Kervran | [Poly Haven](https://polyhaven.com/a/power_box_01) | CC0 1.0 |
