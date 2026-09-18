@@ -1039,5 +1039,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/brass_pan_01/brass_pan_01_1k.fbx"
+  },
+  {
+    "slug": "plastic_bottle_gallon",
+    "name": "Plastic Bottle Gallon",
+    "intended_use": "Bottle/distraction and garage clutter proxy.",
+    "source_page": "https://polyhaven.com/a/plastic_bottle_gallon",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Rahul Chaudhary": "All"
+    },
+    "category": "Containers & Storage/Cans, Tins & Bottles/Jugs & Bottles",
+    "dimensions_mm": [
+      166.28039628267288,
+      126.3512596487999,
+      274.4927511084825
+    ],
+    "files_hash": "8e579852c844aa8beea73397b4e05717a2303d93",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/plastic_bottle_gallon/plastic_bottle_gallon_1k.fbx"
   }
 ]
