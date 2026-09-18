@@ -114,6 +114,19 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         self.assertIn("POSTĘP ROZDZIAŁU", self.cpp)
         self.assertIn("Progress->SetPercent", self.cpp)
 
+    def test_journal_uses_city_progress_and_visual_bars(self):
+        for token in (
+            "City->TrackableActivityCount()",
+            "City->CompletedActivityCount()",
+            "City->EventCount()",
+            "City->CompletedEventCount()",
+            'TEXT("AKTYWNOŚCI DZIELNIC")',
+            'TEXT("ZDARZENIA AMBIENTOWE")',
+            "MainProgress->SetPercent",
+            "SideProgress->SetPercent",
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_secondary_tabs_remain_data_driven_dashboards(self):
         for token in (
             "State.inventory", "OwnedClothing", "State.evidence",

@@ -1092,10 +1092,14 @@ void UPlayerMenuWidget::BuildJournalTab()
     auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
     auto* City = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
 
-    const int32 TotalMain = static_cast<int32>(Wroclaw::Quests().size());
-    int32 MainDone = 0;
-    int32 SideDone = 0;
-    if (Mission)
+    const bool bCity = City && City->IsActive();
+    int32 TotalMain = bCity ? City->TrackableActivityCount()
+                            : static_cast<int32>(Wroclaw::Quests().size());
+    int32 TotalSide = bCity ? City->EventCount()
+                            : static_cast<int32>(Wroclaw::SideQuests().size());
+    int32 MainDone = bCity ? City->CompletedActivityCount() : 0;
+    int32 SideDone = bCity ? City->CompletedEventCount() : 0;
+    if (!bCity && Mission)
     {
         for (const auto& Quest : Wroclaw::Quests())
             if (Mission->State.QuestComplete(Quest))
@@ -1109,21 +1113,56 @@ void UPlayerMenuWidget::BuildJournalTab()
     ActionColumn->AddChildToVerticalBox(MakeText(TEXT("DZIENNIK"), 20, true, TextPrimary))
         ->SetPadding(FMargin(2, 1, 2, 2));
     ActionColumn->AddChildToVerticalBox(MakeText(
-        City->IsActive() ? TEXT("TRYB MIASTA") : TEXT("KAMPANIA"), 9, true, Accent))
+        bCity ? TEXT("TRYB MIASTA") : TEXT("KAMPANIA"), 9, true, Accent))
         ->SetPadding(FMargin(2, 0, 2, 14));
     ActionColumn->AddChildToVerticalBox(MakeInfoRow(
-        FString::Printf(TEXT("%d / %d"), MainDone, TotalMain), TEXT("ETAPY GŁÓWNE"), true))
+        FString::Printf(TEXT("%d / %d"), MainDone, FMath::Max(TotalMain, 1)),
+        bCity ? TEXT("AKTYWNOŚCI DZIELNIC") : TEXT("ETAPY GŁÓWNE"), true))
         ->SetPadding(FMargin(0, 0, 0, 7));
     ActionColumn->AddChildToVerticalBox(MakeInfoRow(
-        FString::Printf(TEXT("%d / %d"), SideDone, static_cast<int32>(Wroclaw::SideQuests().size())),
-        TEXT("ZADANIA POBOCZNE")))
+        FString::Printf(TEXT("%d / %d"), SideDone, FMath::Max(TotalSide, 1)),
+        bCity ? TEXT("ZDARZENIA AMBIENTOWE") : TEXT("ZADANIA POBOCZNE")))
         ->SetPadding(FMargin(0, 0, 0, 7));
     ActionColumn->AddChildToVerticalBox(MakeInfoRow(
         Mission ? FString::Printf(TEXT("%d"), static_cast<int32>(Mission->State.evidence.size())) : TEXT("0"),
         TEXT("ZEBRANE DOWODY")));
 
-    CenterColumn->AddChildToVerticalBox(MakeText(TEXT("POSTĘP FABULARNY"), 26, true, TextPrimary))
+    CenterColumn->AddChildToVerticalBox(MakeText(
+        bCity ? TEXT("POSTĘP MIASTA") : TEXT("POSTĘP FABULARNY"), 26, true, TextPrimary))
         ->SetPadding(FMargin(8, 7, 8, 8));
+
+    auto* ProgressPanel = MakeCard(FMargin(14, 12, 14, 12));
+    CenterColumn->AddChildToVerticalBox(ProgressPanel)->SetPadding(FMargin(8, 0, 8, 12));
+    auto* ProgressBox = WidgetTree->ConstructWidget<UVerticalBox>();
+    ProgressPanel->AddChild(ProgressBox);
+
+    auto* MainProgressHead = WidgetTree->ConstructWidget<UHorizontalBox>();
+    ProgressBox->AddChildToVerticalBox(MainProgressHead)->SetPadding(FMargin(0, 0, 0, 5));
+    MainProgressHead->AddChildToHorizontalBox(MakeText(
+        bCity ? TEXT("AKTYWNOŚCI DZIELNIC") : TEXT("WĄTEK GŁÓWNY"), 9, true, Muted))
+        ->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    auto* MainProgressValue = MakeText(
+        FString::Printf(TEXT("%d / %d"), MainDone, FMath::Max(TotalMain, 1)), 9, true, Accent);
+    MainProgressValue->SetJustification(ETextJustify::Right);
+    MainProgressHead->AddChildToHorizontalBox(MainProgressValue);
+    auto* MainProgress = WidgetTree->ConstructWidget<UProgressBar>();
+    MainProgress->SetPercent(TotalMain > 0 ? static_cast<float>(MainDone) / TotalMain : 0.0f);
+    MainProgress->SetFillColorAndOpacity(Accent);
+    ProgressBox->AddChildToVerticalBox(MainProgress)->SetPadding(FMargin(0, 0, 0, 11));
+
+    auto* SideProgressHead = WidgetTree->ConstructWidget<UHorizontalBox>();
+    ProgressBox->AddChildToVerticalBox(SideProgressHead)->SetPadding(FMargin(0, 0, 0, 5));
+    SideProgressHead->AddChildToHorizontalBox(MakeText(
+        bCity ? TEXT("ZDARZENIA AMBIENTOWE") : TEXT("ZADANIA POBOCZNE"), 9, true, Muted))
+        ->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    auto* SideProgressValue = MakeText(
+        FString::Printf(TEXT("%d / %d"), SideDone, FMath::Max(TotalSide, 1)), 9, true, Accent);
+    SideProgressValue->SetJustification(ETextJustify::Right);
+    SideProgressHead->AddChildToHorizontalBox(SideProgressValue);
+    auto* SideProgress = WidgetTree->ConstructWidget<UProgressBar>();
+    SideProgress->SetPercent(TotalSide > 0 ? static_cast<float>(SideDone) / TotalSide : 0.0f);
+    SideProgress->SetFillColorAndOpacity(Accent);
+    ProgressBox->AddChildToVerticalBox(SideProgress);
 
     if (Mission)
     {
@@ -1137,7 +1176,7 @@ void UPlayerMenuWidget::BuildJournalTab()
     ScrollSlot->SetPadding(FMargin(8, 0, 8, 8));
     ScrollSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
-    if (City->IsActive())
+    if (bCity)
     {
         Scroll->AddChild(MakeInfoRow(TEXT("AKTYWNOŚCI DZIELNIC"), City->Journal(), true));
     }
