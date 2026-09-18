@@ -120,6 +120,17 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         for member in ("ActionScroll", "CenterScroll", "RightScroll"):
             self.assertIn(f"TObjectPtr<class UScrollBox> {member}", self.header)
 
+    def test_footer_uses_compact_keycap_shortcut_legend(self):
+        for token in (
+            "MakeKeycap(const FString& Label)",
+            "AddFooterShortcut",
+            'AddFooterShortcut(TEXT("ESC"), TEXT("WRÓĆ"))',
+            'AddFooterShortcut(TEXT("1–7"), TEXT("ZAKŁADKI"))',
+            'AddFooterShortcut(TEXT("ENTER / A"), TEXT("WYBIERZ"))',
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertIn("class UBorder* MakeKeycap(const FString& Label);", self.header)
+
     def test_game_hero_has_modern_summary_strip(self):
         for token in (
             'TEXT("NASTĘPNY CEL")',
