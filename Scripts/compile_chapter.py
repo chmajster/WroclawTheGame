@@ -1,5 +1,5 @@
 """Validate gameplay data and emit the portable catalog shared by Unreal and tests."""
-import argparse,json,math,re
+import argparse,json,math,re,os
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def compile_catalog(data):
@@ -77,7 +77,8 @@ def compile_catalog(data):
     return '\n'.join(lines)+'\n'
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--check',action='store_true');args=parser.parse_args()
-    out=ROOT/'Source/WroclawTheGame/Content/ChapterCatalog.h';text=compile_catalog(json.loads((ROOT/'Data/chapter1.json').read_text()))
+    source=Path(os.environ.get('WTG_CHAPTER_INPUT',ROOT/'Data/chapter1.json'))
+    out=ROOT/'Source/WroclawTheGame/Content/ChapterCatalog.h';text=compile_catalog(json.loads(source.read_text(encoding='utf-8')))
     if args.check:
         if not out.exists() or out.read_text()!=text:raise SystemExit('ChapterCatalog.h is stale')
     else:out.write_text(text,encoding='utf-8')
