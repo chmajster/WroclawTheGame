@@ -28,3 +28,19 @@ python3 Scripts/gis/build_meshes.py
 ```
 
 Na Windows użyj Build-Windows.ps1 lub Build-Geography.ps1 zgodnie z README. Dla assetów 3D użyj `Pipeline/Invoke-WTGAssetPipeline.ps1`; rzeczywisty PASS musi pochodzić z raportu wygenerowanego przez ten przebieg, nie z samej walidacji składni. Test silnikowy uruchom w Session Frontend → Automation → WTG.Save. Wyniki powinny trafić do raportu odbioru wraz z logami i identyfikatorem commitu. Workflow Windows wymaga własnego runnera z UE 5.6 i zmienną UE_ROOT; nie uruchamiano go na nieistniejącym runnerze.
+
+## Runtime Asset QA — implementacja
+
+Dodano bramki wykonywane przez UE 5.8:
+
+- `prepare_runtime_asset_quality.py`: LOD, collision, materials, bounds, Skeletal LOD, skeleton i Physics Asset,
+- `prepare_animation_retargeting.py`: IK Rig, auto/manual retarget chains, Full Body IK, dwa targety Quaternius oraz batch retarget semantic animations,
+- `validate_runtime_asset_scene.py`: transformy i komplet visual meshes kampanii,
+- `validate_geography_asset_scene.py`: modele i transformy GIS,
+- `capture_runtime_character_qa.py`: deterministyczne screenshoty krytycznych póz,
+- `record_runtime_asset_visual_review.py`: jawny PASS/FAIL po inspekcji obrazów,
+- `build_runtime_asset_qa_report.py`: końcowa bramka świeżości i kompletności.
+
+Packaging Windows/GIS został spięty z `Saved/RuntimeAssetQAPass.ok`.
+
+W bieżącym środowisku **nie ma UE 5.8/Windows**, więc nie wygenerowano i nie zadeklarowano PASS tych raportów. To jest implementacja procesu odbioru, a nie sfabrykowany wynik. Pierwszy rzeczywisty przebieg na maszynie z UE może ujawnić różnice API importera, auto-characterization szkieletu albo korekty transformów; każdy taki problem ma zatrzymać build i zostać naprawiony przed PASS.
