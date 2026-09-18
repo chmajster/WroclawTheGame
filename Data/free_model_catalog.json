@@ -132,5 +132,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/sofa_03/sofa_03_1k.fbx"
+  },
+  {
+    "slug": "signal_flashlight",
+    "name": "Signal Flashlight",
+    "intended_use": "Gameplay flashlight pickup.",
+    "source_page": "https://polyhaven.com/a/signal_flashlight",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Jiří Ptáček": "All"
+    },
+    "category": "Lighting/Portable/Flashlights & Torches",
+    "dimensions_mm": [
+      70.99152728915215,
+      44.537635520100594,
+      149.9275267124176
+    ],
+    "files_hash": "df6171714af44a5b9f0006e7a3247a0a8ef9e907",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/signal_flashlight/signal_flashlight_1k.fbx"
   }
 ]
