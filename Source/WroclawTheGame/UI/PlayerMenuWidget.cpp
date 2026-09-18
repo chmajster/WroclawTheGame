@@ -1291,6 +1291,32 @@ void UPlayerMenuWidget::BuildMapTab()
             HSlot->SetPosition(FVector2D(0.0f, MapHeight * I / 6.0f));
             HSlot->SetSize(FVector2D(MapWidth, 1.0f));
         }
+
+        auto AddCompassLabel = [&](const FString& Label, const FVector2D& Position)
+        {
+            auto* Badge = WidgetTree->ConstructWidget<UBorder>();
+            Badge->SetBrush(RoundedBrush(FLinearColor(0.015f, 0.040f, 0.055f, 0.94f), 7.0f));
+            Badge->SetPadding(FMargin(7, 4));
+            Badge->AddChild(MakeText(Label, 9, true, Accent));
+            auto* BadgeSlot = Canvas->AddChildToCanvas(Badge);
+            BadgeSlot->SetAutoSize(true);
+            BadgeSlot->SetAlignment(FVector2D(0.5f, 0.5f));
+            BadgeSlot->SetPosition(Position);
+        };
+        AddCompassLabel(TEXT("N"), FVector2D(MapWidth * 0.5f, 18.0f));
+        AddCompassLabel(TEXT("E"), FVector2D(MapWidth - 28.0f, MapHeight * 0.5f));
+        AddCompassLabel(TEXT("S"), FVector2D(MapWidth * 0.5f, MapHeight - 24.0f));
+        AddCompassLabel(TEXT("W"), FVector2D(20.0f, MapHeight * 0.5f));
+
+        auto* MapMode = WidgetTree->ConstructWidget<UBorder>();
+        MapMode->SetBrush(RoundedBrush(FLinearColor(0.010f, 0.028f, 0.040f, 0.92f), 8.0f));
+        MapMode->SetPadding(FMargin(10, 5));
+        MapMode->AddChild(MakeText(TEXT("WROCŁAW  •  MAPA 2D"), 8, true, Muted));
+        auto* ModeSlot = Canvas->AddChildToCanvas(MapMode);
+        ModeSlot->SetAutoSize(true);
+        ModeSlot->SetAlignment(FVector2D(1.0f, 0.0f));
+        ModeSlot->SetPosition(FVector2D(MapWidth - 18.0f, 16.0f));
+
         return Canvas;
     };
 
