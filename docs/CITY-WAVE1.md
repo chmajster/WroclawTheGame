@@ -18,7 +18,7 @@ Kampania `Przebudzenie_Source` nadal jest oddzielnym blockoutem. Migracja kampan
 python -m pip install -r Scripts/gis/requirements.txt
 python Scripts/gis/build_city.py
 # Przegląd raportu: Saved/CityData/coverage.json
-.\Scripts\Build-Geography.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.6' -City -Package
+.\Scripts\Build-Geography.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.8' -City -Package
 ```
 
 W edytorze otwórz `/Game/Maps/Nadodrze_GIS`. W Development komenda konsoli `CityCoverage` przełącza podgląd sektorów, ich statusów i pozycji gracza. Overlay nie jest dostępny w Shipping. Telefon pobiera listę obszarów z tego samego katalogu co overlay. Jest to lista, nie pełny GPS ani mapa drogowa.
