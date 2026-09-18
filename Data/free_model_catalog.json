@@ -818,5 +818,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/modern_wooden_cabinet/modern_wooden_cabinet_1k.fbx"
+  },
+  {
+    "slug": "painted_wooden_cabinet",
+    "name": "Painted Wooden Cabinet",
+    "intended_use": "Basement/workshop storage variant.",
+    "source_page": "https://polyhaven.com/a/painted_wooden_cabinet",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Kirill Sannikov": "All"
+    },
+    "category": "Furniture/Storage Furniture/Cabinets & Cupboards",
+    "dimensions_mm": [
+      1194.674551486969,
+      616.6356205940247,
+      1181.8697528215125
+    ],
+    "files_hash": "f8cce862d9eaac61abef0246a662aa937ec04332",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/painted_wooden_cabinet/painted_wooden_cabinet_1k.fbx"
   }
 ]

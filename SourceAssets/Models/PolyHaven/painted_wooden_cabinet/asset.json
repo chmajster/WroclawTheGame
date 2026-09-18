@@ -1,0 +1,72 @@
+{
+  "slug": "painted_wooden_cabinet",
+  "name": "Painted Wooden Cabinet",
+  "intended_use": "Basement/workshop storage variant.",
+  "source_page": "https://polyhaven.com/a/painted_wooden_cabinet",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Kirill Sannikov": "All"
+  },
+  "category": "Furniture/Storage Furniture/Cabinets & Cupboards",
+  "tags": [
+    "old",
+    "worn",
+    "antique",
+    "wooden",
+    "vintage",
+    "colonial",
+    "farmhouse",
+    "storage",
+    "aged",
+    "rustic",
+    "weathered"
+  ],
+  "dimensions_mm": [
+    1194.674551486969,
+    616.6356205940247,
+    1181.8697528215125
+  ],
+  "files_hash": "f8cce862d9eaac61abef0246a662aa937ec04332",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/painted_wooden_cabinet/painted_wooden_cabinet_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/painted_wooden_cabinet/painted_wooden_cabinet_1k.fbx",
+      "bytes": 101692,
+      "md5": "040884781ea5d2eb3661ef8ab35f2426",
+      "sha256": "036d3f16ad4114a98a950d2a1f6e832c5043c8ab8a24322f01563102dc797935",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/painted_wooden_cabinet/painted_wooden_cabinet_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/painted_wooden_cabinet/textures/painted_wooden_cabinet_diff_1k.jpg",
+      "bytes": 688654,
+      "md5": "cab7d6088249cb2687e0c79b2cdf62c5",
+      "sha256": "2dbed9f9ec8e49fc2e87de8cd86e2029a80e9001b5102b4e47c7dfa913f34d89",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/painted_wooden_cabinet/painted_wooden_cabinet_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/painted_wooden_cabinet/textures/painted_wooden_cabinet_metal_1k.exr",
+      "bytes": 76454,
+      "md5": "e9a819a159385b5e117c748c2f5339b8",
+      "sha256": "1ea2164e662e3f55cfce0dba6611e82f5d352b88c72a80b2c07c7f6cd7fa093d",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/painted_wooden_cabinet/painted_wooden_cabinet_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/painted_wooden_cabinet/textures/painted_wooden_cabinet_nor_gl_1k.exr",
+      "bytes": 957480,
+      "md5": "7d6932488df569d244299d4159019375",
+      "sha256": "b2ddc0ee1d7bc5fc4e6e079395ca2ec1779019442fc637e6483cdb4165aaac55",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/painted_wooden_cabinet/painted_wooden_cabinet_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/painted_wooden_cabinet/textures/painted_wooden_cabinet_rough_1k.exr",
+      "bytes": 568372,
+      "md5": "0cb971db49bb35aac730dd598346f5d6",
+      "sha256": "4d43c5640b67ae4cab5d082e27868ab8b6c47d4da522844a0c1a2eb84c355925",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/painted_wooden_cabinet/painted_wooden_cabinet_rough_1k.exr"
+    }
+  ]
+}
