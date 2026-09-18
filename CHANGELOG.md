@@ -1,3 +1,11 @@
+## Player menu — 2026-09-18
+
+- Dodano pełnoekranowe centrum gracza inspirowane układem lobby: górne zakładki, boczne akcje, centralny podgląd postaci i panel statusu.
+- Zakładki Gra, Postać, Ekwipunek, Dziennik, Mapa i Statystyki korzystają z bieżącego stanu kampanii zamiast danych demonstracyjnych.
+- Podgląd postaci renderuje aktualny zapis wyglądu w osobnej scenie i obsługuje obrót, zoom oraz kadry całej sylwetki, górnej części i twarzy.
+- Menu przejmuje pauzę, kursor i fokus wejścia; ESC/ENTER wznawia rozgrywkę, a start nowej gry przechodzi do istniejącego wyboru postaci.
+- Stary tekstowy panel pauzy pozostaje awaryjnie dostępny, lecz jest pomijany, gdy nowe menu działa.
+
 ## 0.3.1 — 2026-09-18 — realizm sceny startowej
 
 - Zastąpiono blockoutowe bryły mebli sceny otwierającej modelami CC0/PBR: łóżko, sofa, biurko, krzesło, szafka, kuchenka, zabudowa kuchenna i drobne wyposażenie.

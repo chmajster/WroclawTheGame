@@ -9,6 +9,9 @@ class WROCLAWTHEGAME_API ASliceController : public APlayerController
   public:
     virtual void SetupInputComponent() override;
     virtual void BeginPlay() override;
+    void OpenPlayerMenu();
+    void ResumeGame();
+    UPROPERTY() TObjectPtr<class UPlayerMenuWidget> PlayerMenuWidget;
     void OpenCCTV(class UTextureRenderTarget2D *Feed);
     void ContextAction();
     UPROPERTY() TObjectPtr<class UTextureRenderTarget2D> CCTVFeed;
@@ -46,6 +49,7 @@ class WROCLAWTHEGAME_API ASliceController : public APlayerController
   private:
     void Digit(int32 N);
     void CloseModal();
+    void HidePlayerMenu();
     void Suspend(bool bPause);
     void Reload();
     void Digit0();
