@@ -26,7 +26,7 @@ void ASliceHUD::Text(const FString &Value, float X, float Y, float Scale, const 
 void ASliceHUD::DrawFPSCounter()
 {
     const auto* Settings = UWTGPerformanceSettings::Get();
-    if (!Settings || !Settings->bShowFPS || !Canvas)
+    if (!Settings || !Settings->bShowFPS || !Canvas || !GEngine)
         return;
 
     const double Delta = FApp::GetDeltaTime();
