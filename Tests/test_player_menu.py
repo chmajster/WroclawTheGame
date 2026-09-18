@@ -199,6 +199,17 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         self.assertIn("Mission->bInGame", load_body)
         self.assertIn("ShowConfirmation(", load_body)
 
+    def test_context_hint_changes_with_active_menu_tab(self):
+        for token in (
+            "UpdateContextHint()",
+            'TEXT("PPM  OBRÓT',
+            'TEXT("C  NASTĘPNY CEL',
+            'TEXT("MAPA ODKRYĆ',
+            'TEXT("ENTER/A  ZMIEŃ',
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertIn("TObjectPtr<class UTextBlock> ContextHint", self.header)
+
     def test_direct_tab_shortcuts_and_dpad_navigation(self):
         for token in (
             "DirectTabKeys",

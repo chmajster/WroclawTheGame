@@ -40,6 +40,7 @@ private:
     UPROPERTY() TObjectPtr<class UVerticalBox> ShellLayout;
     UPROPERTY() TObjectPtr<class UTextBlock> PageTitle;
     UPROPERTY() TObjectPtr<class UTextBlock> ContextStatus;
+    UPROPERTY() TObjectPtr<class UTextBlock> ContextHint;
     UPROPERTY() TObjectPtr<class UTextBlock> PreviewViewStatus;
     UPROPERTY() TObjectPtr<class UTextBlock> PreviewLightingStatus;
     UPROPERTY() TArray<TObjectPtr<class UButton>> TabButtons;
@@ -81,6 +82,7 @@ private:
     void SelectTab(int32 Index);
     void UpdateTabStyle();
     void UpdateContextStatus();
+    void UpdateContextHint();
     void UpdateFocusPresentation();
     void FocusPrimaryAction();
     void UpdatePreviewStatus();

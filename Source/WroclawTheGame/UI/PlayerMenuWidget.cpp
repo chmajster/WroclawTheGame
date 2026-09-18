@@ -363,7 +363,7 @@ void UPlayerMenuWidget::BuildShell()
     ContextStatus->SetJustification(ETextJustify::Right);
     ContextBar->AddChildToHorizontalBox(ContextStatus)->SetPadding(FMargin(12, 0, 18, 0));
 
-    auto* ContextHint = MakeText(TEXT("1–7  Q/E  L1/R1  ZAKŁADKI    •    ENTER/A  WYBIERZ    •    ESC/B  WSTECZ"), 10, true, Muted);
+    ContextHint = MakeText(TEXT(""), 10, true, Muted);
     ContextHint->SetJustification(ETextJustify::Right);
     ContextBar->AddChildToHorizontalBox(ContextHint);
 
@@ -441,6 +441,7 @@ void UPlayerMenuWidget::Refresh()
     ActionButtons.Reset();
     UpdateTabStyle();
     UpdateContextStatus();
+    UpdateContextHint();
 
     bCollectActionButtons = true;
     switch (ActiveTab)
@@ -519,6 +520,33 @@ void UPlayerMenuWidget::UpdateContextStatus()
     ContextStatus->SetText(FText::FromString(FString::Printf(
         TEXT("%s  •  %s  •  %s"), *Mode, *Session, *Save)));
     ContextStatus->SetColorAndOpacity(FSlateColor(bHasSave ? Accent : Muted));
+}
+
+void UPlayerMenuWidget::UpdateContextHint()
+{
+    if (!ContextHint)
+        return;
+
+    FString Hint = TEXT("1–7  ZAKŁADKI    •    Q/E  L1/R1  PRZEŁĄCZ    •    ENTER/A  WYBIERZ    •    ESC/B  WSTECZ");
+
+    if (ActiveTab == 1)
+    {
+        Hint = TEXT("PPM  OBRÓT    •    KÓŁKO  ZOOM    •    Q/E  L1/R1  ZAKŁADKI    •    ESC/B  WSTECZ");
+    }
+    else if (ActiveTab == 4)
+    {
+        auto* CityGameplay = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+        auto* MapSubsystem = GetWorld()->GetSubsystem<UWroclawMapSubsystem>();
+        Hint = CityGameplay && CityGameplay->IsActive() && MapSubsystem
+            ? TEXT("C  NASTĘPNY CEL    •    BACKSPACE  USUŃ CEL    •    Q/E  L1/R1  ZAKŁADKI")
+            : TEXT("MAPA ODKRYĆ    •    Q/E  L1/R1  ZAKŁADKI    •    ESC/B  WSTECZ");
+    }
+    else if (ActiveTab == 6)
+    {
+        Hint = TEXT("ENTER/A  ZMIEŃ    •    Q/E  L1/R1  ZAKŁADKI    •    ESC/B  WSTECZ");
+    }
+
+    ContextHint->SetText(FText::FromString(Hint));
 }
 
 void UPlayerMenuWidget::UpdateFocusPresentation()
