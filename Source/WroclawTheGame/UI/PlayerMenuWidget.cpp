@@ -846,23 +846,25 @@ void UPlayerMenuWidget::CycleResolution()
             FIntPoint(2560, 1440), FIntPoint(3840, 2160)
         };
         const FIntPoint Current = UserSettings->GetScreenResolution();
-        int32 NextIndex = 0;
-        bool bMatched = false;
-        for (int32 Index = 0; Index < UE_ARRAY_COUNT(Presets); ++Index)
+        const FIntPoint Desktop = UserSettings->GetDesktopResolution();
+
+        TArray<FIntPoint> Supported;
+        for (const FIntPoint& Preset : Presets)
+            if ((Preset.X <= Desktop.X && Preset.Y <= Desktop.Y) || Preset == Current)
+                Supported.Add(Preset);
+        if (Supported.IsEmpty())
+            Supported.Add(Current);
+
+        int32 NextIndex = Supported.IndexOfByKey(Current);
+        if (NextIndex != INDEX_NONE)
+            NextIndex = (NextIndex + 1) % Supported.Num();
+        else
         {
-            if (Presets[Index] == Current)
-            {
-                NextIndex = (Index + 1) % UE_ARRAY_COUNT(Presets);
-                bMatched = true;
-                break;
-            }
-        }
-        if (!bMatched)
-        {
+            NextIndex = 0;
             const int64 CurrentPixels = static_cast<int64>(Current.X) * Current.Y;
-            for (int32 Index = 0; Index < UE_ARRAY_COUNT(Presets); ++Index)
+            for (int32 Index = 0; Index < Supported.Num(); ++Index)
             {
-                const int64 PresetPixels = static_cast<int64>(Presets[Index].X) * Presets[Index].Y;
+                const int64 PresetPixels = static_cast<int64>(Supported[Index].X) * Supported[Index].Y;
                 if (PresetPixels > CurrentPixels)
                 {
                     NextIndex = Index;
@@ -871,7 +873,7 @@ void UPlayerMenuWidget::CycleResolution()
             }
         }
 
-        UserSettings->SetScreenResolution(Presets[NextIndex]);
+        UserSettings->SetScreenResolution(Supported[NextIndex]);
         UserSettings->ApplyResolutionSettings(false);
         UserSettings->ConfirmVideoMode();
         UserSettings->SaveSettings();
