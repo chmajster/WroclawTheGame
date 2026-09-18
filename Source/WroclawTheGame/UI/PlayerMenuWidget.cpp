@@ -43,7 +43,6 @@ const FLinearColor PanelHover(0.055f, 0.078f, 0.105f, 1.0f);
 const FLinearColor Accent(0.18f, 0.79f, 0.96f, 1.0f);
 const FLinearColor AccentHover(0.32f, 0.86f, 1.0f, 1.0f);
 const FLinearColor AccentPressed(0.10f, 0.61f, 0.78f, 1.0f);
-const FLinearColor AccentWarm(0.96f, 0.66f, 0.22f, 1.0f);
 const FLinearColor TextPrimary(0.95f, 0.97f, 1.0f, 1.0f);
 const FLinearColor Muted(0.57f, 0.64f, 0.72f, 1.0f);
 const FLinearColor Divider(0.11f, 0.16f, 0.21f, 1.0f);
