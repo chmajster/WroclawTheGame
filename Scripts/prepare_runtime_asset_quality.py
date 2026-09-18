@@ -110,14 +110,24 @@ def make_fallback_material():
 
 
 def static_materials(mesh, subsystem):
-    count = int(subsystem.get_number_materials(mesh))
-    values = []
-    for index in range(count):
-        try:
-            values.append(mesh.get_material(index))
-        except Exception:
-            values.append(None)
-    return values
+    try:
+        slots = list(mesh.get_editor_property("static_materials"))
+        values = []
+        for slot in slots:
+            try:
+                values.append(slot.get_editor_property("material_interface"))
+            except Exception:
+                values.append(None)
+        return values
+    except Exception:
+        count = int(subsystem.get_number_materials(mesh))
+        values = []
+        for index in range(count):
+            try:
+                values.append(mesh.get_material(index))
+            except Exception:
+                values.append(None)
+        return values
 
 
 def repair_static_material(mesh, subsystem, fallback):
