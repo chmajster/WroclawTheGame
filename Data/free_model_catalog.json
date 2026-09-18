@@ -1150,5 +1150,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/modern_arm_chair_01/modern_arm_chair_01_1k.fbx"
+  },
+  {
+    "slug": "round_wooden_table_01",
+    "name": "Round Wooden Table 01",
+    "intended_use": "Apartment/shop table.",
+    "source_page": "https://polyhaven.com/a/round_wooden_table_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Ulan Cabanilla": "All"
+    },
+    "category": "Furniture/Tables/Dining Tables",
+    "dimensions_mm": [
+      1399.3489742279053,
+      1399.3489146232605,
+      1005.0213932991028
+    ],
+    "files_hash": "68d8afc5c698ecb2b91c3773864c78f58fa75c5a",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/round_wooden_table_01/round_wooden_table_01_1k.fbx"
   }
 ]
