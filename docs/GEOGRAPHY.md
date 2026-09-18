@@ -8,7 +8,7 @@ Obszar: długość 17.025–17.038° E, szerokość 51.118–51.126° N. Obejmuj
 - `Data/source/wroclaw/terrain/nadodrze.csv`: wycinek oryginalnej siatki wysokości z [N51E017.hgt.gz](https://s3.amazonaws.com/elevation-tiles-prod/skadi/N51/N51E017.hgt.gz), udostępnionej w [Terrain Tiles](https://registry.opendata.aws/terrain-tiles/). Źródła: Mapzen, Copernicus EU-DEM oraz USGS SRTM/GMTED2010; [warunki i atrybucja dostawców](https://github.com/tilezen/joerd/blob/master/docs/attribution.md). EU-DEM: dane opracowane z wykorzystaniem informacji Copernicus finansowanych przez Unię Europejską. Dane SRTM/GMTED2010 dzięki USGS. CSV jest przycięciem źródła; nie zatwierdza go ani nie gwarantuje dostawca. To raster rzędu dziesiątek metrów, **nie LiDAR ani dokładny model krawężników**.
 - Metadane obok źródeł zapisują URL, datę pobrania, licencję/warunki, CRS, datę importu, wersję przetwarzania i SHA256. `SourceDate` oznacza snapshot pobrania, nie datę pomiaru każdego obiektu.
 
-Nie użyto modeli ani zrzutów Google Maps. Nie pobrano jeszcze zasobów miejskiego GIS ani GUGiK. Ogólna etykieta `Terrain-Tiles-provider-terms` odsyła do warunków konkretnych źródeł, nie oznacza public domain całego rastra.
+Nie użyto modeli ani zrzutów Google Maps. Dodano odtwarzalny tor pobierania oficjalnych modeli budynków GUGiK przez usługę `ModeleBudynkow3D`; paczka, URL i SHA-256 są zapisywane w `Saved/OfficialBuildings3D`, a wybrane landmarki zastępują proste bryły OSM. Miejski model 3D Wrocławia jest referencją wizualną, nie kopiowanym źródłem danych. Szczegóły: [oficjalne budynki 3D](OFFICIAL_BUILDINGS_3D.md). Ogólna etykieta `Terrain-Tiles-provider-terms` odsyła do warunków konkretnych źródeł, nie oznacza public domain całego rastra.
 
 ## Konwersja i powtarzalność
 
@@ -30,4 +30,4 @@ Siatki grupowane są przestrzennie w komórki 128 m, a następnie zapisywane jak
 
 ## Otwarte zadania
 
-Importer wykonuje obecnie OSM XML + wysokości CSV. Obsługa PBF/GeoJSON/SHP, kafli Landscape, landmarków, pełnych relacji turn-restriction, grafu pasów, walidacja nakładania/ciągłości całej sieci oraz ręczne punkty kontroli geodezyjnej nie są ukończone. Graf pieszy współdzieli krawędzie z grafem dróg; nie jest osobnym kompletnym modelem chodników i przejść. Kampania wymaga osobnego umieszczenia w rzeczywistych budynkach i migracji zapisów.
+Importer wykonuje obecnie OSM XML + wysokości CSV oraz opcjonalny import wybranych oficjalnych budynków CityGML GUGiK. Hero-pass fototeksturowanych landmarków, obsługa PBF/GeoJSON/SHP, kafli Landscape, pełnych relacji turn-restriction, grafu pasów, walidacja nakładania/ciągłości całej sieci oraz ręczne punkty kontroli geodezyjnej nie są ukończone. Graf pieszy współdzieli krawędzie z grafem dróg; nie jest osobnym kompletnym modelem chodników i przejść. Kampania wymaga osobnego umieszczenia w rzeczywistych budynkach i migracji zapisów.
