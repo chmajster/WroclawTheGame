@@ -422,16 +422,26 @@ void UPlayerMenuWidget::BuildShell()
     BodySlot->SetPadding(FMargin(30, 0, 30, 0));
     BodySlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
-    auto* LeftCard = MakeCard(FMargin(18, 18, 18, 18));
+    auto* LeftCard = MakeCard(FMargin(14, 12, 14, 14));
     auto* LeftSize = WidgetTree->ConstructWidget<USizeBox>();
     LeftSize->SetWidthOverride(285.0f);
     LeftSize->AddChild(LeftCard);
     Body->AddChildToHorizontalBox(LeftSize)->SetPadding(FMargin(0, 0, 16, 0));
+    auto* LeftPanel = WidgetTree->ConstructWidget<UVerticalBox>();
+    LeftCard->AddChild(LeftPanel);
+    ActionPanelLabel = MakeText(TEXT("AKCJE"), 8, true, Muted);
+    LeftPanel->AddChildToVerticalBox(ActionPanelLabel)->SetPadding(FMargin(4, 0, 4, 8));
+    auto* LeftDivider = WidgetTree->ConstructWidget<UBorder>();
+    LeftDivider->SetBrushColor(FLinearColor(Divider.R, Divider.G, Divider.B, 0.72f));
+    auto* LeftDividerSize = WidgetTree->ConstructWidget<USizeBox>();
+    LeftDividerSize->SetHeightOverride(1.0f);
+    LeftDividerSize->AddChild(LeftDivider);
+    LeftPanel->AddChildToVerticalBox(LeftDividerSize)->SetPadding(FMargin(4, 0, 4, 10));
     ActionScroll = WidgetTree->ConstructWidget<UScrollBox>();
     ActionScroll->SetScrollBarVisibility(ESlateVisibility::Hidden);
     ActionScroll->SetAnimateWheelScrolling(true);
     ActionScroll->SetWheelScrollMultiplier(42.0f);
-    LeftCard->AddChild(ActionScroll);
+    LeftPanel->AddChildToVerticalBox(ActionScroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     ActionColumn = WidgetTree->ConstructWidget<UVerticalBox>();
     ActionScroll->AddChild(ActionColumn);
 
@@ -439,24 +449,44 @@ void UPlayerMenuWidget::BuildShell()
     auto* CenterSlot = Body->AddChildToHorizontalBox(CenterCard);
     CenterSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     CenterSlot->SetPadding(FMargin(0, 0, 16, 0));
+    auto* CenterPanel = WidgetTree->ConstructWidget<UVerticalBox>();
+    CenterCard->AddChild(CenterPanel);
+    CenterPanelLabel = MakeText(TEXT("ZAWARTOŚĆ"), 8, true, Accent);
+    CenterPanel->AddChildToVerticalBox(CenterPanelLabel)->SetPadding(FMargin(10, 2, 10, 8));
+    auto* CenterDivider = WidgetTree->ConstructWidget<UBorder>();
+    CenterDivider->SetBrushColor(FLinearColor(Divider.R, Divider.G, Divider.B, 0.72f));
+    auto* CenterDividerSize = WidgetTree->ConstructWidget<USizeBox>();
+    CenterDividerSize->SetHeightOverride(1.0f);
+    CenterDividerSize->AddChild(CenterDivider);
+    CenterPanel->AddChildToVerticalBox(CenterDividerSize)->SetPadding(FMargin(10, 0, 10, 8));
     CenterScroll = WidgetTree->ConstructWidget<UScrollBox>();
     CenterScroll->SetScrollBarVisibility(ESlateVisibility::Hidden);
     CenterScroll->SetAnimateWheelScrolling(true);
     CenterScroll->SetWheelScrollMultiplier(42.0f);
-    CenterCard->AddChild(CenterScroll);
+    CenterPanel->AddChildToVerticalBox(CenterScroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     CenterColumn = WidgetTree->ConstructWidget<UVerticalBox>();
     CenterScroll->AddChild(CenterColumn);
 
-    auto* RightCard = MakeCard(FMargin(20, 20, 20, 20));
+    auto* RightCard = MakeCard(FMargin(16, 14, 16, 16));
     auto* RightSize = WidgetTree->ConstructWidget<USizeBox>();
     RightSize->SetWidthOverride(320.0f);
     RightSize->AddChild(RightCard);
     Body->AddChildToHorizontalBox(RightSize);
+    auto* RightPanel = WidgetTree->ConstructWidget<UVerticalBox>();
+    RightCard->AddChild(RightPanel);
+    RightPanelLabel = MakeText(TEXT("KONTEKST"), 8, true, Muted);
+    RightPanel->AddChildToVerticalBox(RightPanelLabel)->SetPadding(FMargin(4, 0, 4, 8));
+    auto* RightDivider = WidgetTree->ConstructWidget<UBorder>();
+    RightDivider->SetBrushColor(FLinearColor(Divider.R, Divider.G, Divider.B, 0.72f));
+    auto* RightDividerSize = WidgetTree->ConstructWidget<USizeBox>();
+    RightDividerSize->SetHeightOverride(1.0f);
+    RightDividerSize->AddChild(RightDivider);
+    RightPanel->AddChildToVerticalBox(RightDividerSize)->SetPadding(FMargin(4, 0, 4, 10));
     RightScroll = WidgetTree->ConstructWidget<UScrollBox>();
     RightScroll->SetScrollBarVisibility(ESlateVisibility::Hidden);
     RightScroll->SetAnimateWheelScrolling(true);
     RightScroll->SetWheelScrollMultiplier(42.0f);
-    RightCard->AddChild(RightScroll);
+    RightPanel->AddChildToVerticalBox(RightScroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     RightColumn = WidgetTree->ConstructWidget<UVerticalBox>();
     RightScroll->AddChild(RightColumn);
 
@@ -514,6 +544,7 @@ void UPlayerMenuWidget::Refresh()
     UpdateTabStyle();
     UpdateContextStatus();
     UpdateContextHint();
+    UpdatePanelLabels();
 
     bCollectActionButtons = true;
     switch (ActiveTab)
@@ -624,6 +655,30 @@ void UPlayerMenuWidget::UpdateContextHint()
     }
 
     ContextHint->SetText(FText::FromString(Hint));
+}
+
+void UPlayerMenuWidget::UpdatePanelLabels()
+{
+    static const TCHAR* LeftLabels[] = {
+        TEXT("AKCJE"), TEXT("STEROWANIE"), TEXT("FILTRY"),
+        TEXT("NAWIGACJA"), TEXT("NAWIGACJA"), TEXT("NAWIGACJA"), TEXT("KATEGORIE")
+    };
+    static const TCHAR* CenterLabels[] = {
+        TEXT("SESJA"), TEXT("PODGLĄD"), TEXT("EKWIPUNEK"),
+        TEXT("POSTĘP"), TEXT("MAPA"), TEXT("METRYKI"), TEXT("OPCJE")
+    };
+    static const TCHAR* RightLabels[] = {
+        TEXT("STATUS"), TEXT("PROFIL"), TEXT("PODSUMOWANIE"),
+        TEXT("SZCZEGÓŁY"), TEXT("CEL"), TEXT("PODSUMOWANIE"), TEXT("BIEŻĄCE WARTOŚCI")
+    };
+
+    const int32 Index = FMath::Clamp(ActiveTab, 0, 6);
+    if (ActionPanelLabel)
+        ActionPanelLabel->SetText(FText::FromString(LeftLabels[Index]));
+    if (CenterPanelLabel)
+        CenterPanelLabel->SetText(FText::FromString(CenterLabels[Index]));
+    if (RightPanelLabel)
+        RightPanelLabel->SetText(FText::FromString(RightLabels[Index]));
 }
 
 void UPlayerMenuWidget::ShowToast(const FString& Message)
