@@ -336,6 +336,15 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             self.assertIn(token, self.cpp)
         self.assertIn("void UpdateFocusPresentation();", self.header)
 
+    def test_settings_refresh_preserves_focus_on_active_category(self):
+        for token in (
+            "ActiveTab == 6 && ActionButtons.IsValidIndex(SettingsSection)",
+            "UButton* ActiveSettingsSection = ActionButtons[SettingsSection]",
+            "ActiveSettingsSection->SetUserFocus",
+            "ActiveSettingsSection->SetKeyboardFocus",
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_keyboard_and_gamepad_navigation_remains_available(self):
         for token in (
             "Gamepad_LeftShoulder", "Gamepad_RightShoulder",
