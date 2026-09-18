@@ -1,19 +1,20 @@
 #include "World/CityActivity.h"
 #include "Systems/CityGameplaySubsystem.h"
 #include "Components/StaticMeshComponent.h"
-#include "Engine/StaticMesh.h"
+#include "Components/BoxComponent.h"
 #include "Engine/World.h"
-#include "UObject/ConstructorHelpers.h"
 ACityActivity::ACityActivity()
 {
-    auto *Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Marker"));
-    SetRootComponent(Mesh);
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
-    Mesh->SetStaticMesh(Cube.Object);
-    Mesh->SetRelativeScale3D(FVector(.4, .4, .6));
-    Mesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-    Mesh->SetCollisionResponseToAllChannels(ECR_Ignore);
-    Mesh->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+    Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("InteractionBounds"));
+    SetRootComponent(Collider);
+    Collider->SetBoxExtent(FVector(40,40,60));
+    Collider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+    Collider->SetCollisionResponseToAllChannels(ECR_Ignore);
+    Collider->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
+    Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Marker"));
+    Mesh->SetupAttachment(Collider);
+    Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    Mesh->SetCanEverAffectNavigation(false);
 }
 void ACityActivity::BeginPlay()
 {
