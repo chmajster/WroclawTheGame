@@ -65,6 +65,7 @@ private:
     float ShellAnimationTime = 0.28f;
     float AmbientAnimationTime = 0.0f;
     float ToastTimeRemaining = 0.0f;
+    float ToastAnimationTime = 0.18f;
     float ClockRefreshAccumulator = 0.0f;
     bool bRotatingPreview = false;
     bool bCollectActionButtons = false;
