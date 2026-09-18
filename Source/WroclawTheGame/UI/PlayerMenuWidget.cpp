@@ -2431,8 +2431,12 @@ void UPlayerMenuWidget::BuildSettingsTab()
 
     SFXVolumeSlider = WidgetTree->ConstructWidget<USlider>();
     auto* SFXSlider = SFXVolumeSlider.Get();
+    SFXSlider->SetMinValue(0.0f);
+    SFXSlider->SetMaxValue(1.0f);
     SFXSlider->SetValue(SFXVolume);
     SFXSlider->SetStepSize(0.05f);
+    SFXSlider->SetSliderBarColor(FLinearColor(0.08f, 0.13f, 0.17f, 1.0f));
+    SFXSlider->SetSliderHandleColor(Accent);
     SFXSlider->OnValueChanged.AddDynamic(this, &UPlayerMenuWidget::SetSFXVolumeFromSlider);
     SFXSlider->OnMouseCaptureEnd.AddDynamic(this, &UPlayerMenuWidget::CommitAudioSliderChange);
     SFXSlider->OnControllerCaptureEnd.AddDynamic(this, &UPlayerMenuWidget::CommitAudioSliderChange);
@@ -2451,8 +2455,12 @@ void UPlayerMenuWidget::BuildSettingsTab()
 
     UIVolumeSlider = WidgetTree->ConstructWidget<USlider>();
     auto* UISlider = UIVolumeSlider.Get();
+    UISlider->SetMinValue(0.0f);
+    UISlider->SetMaxValue(1.0f);
     UISlider->SetValue(UIVolume);
     UISlider->SetStepSize(0.05f);
+    UISlider->SetSliderBarColor(FLinearColor(0.08f, 0.13f, 0.17f, 1.0f));
+    UISlider->SetSliderHandleColor(Accent);
     UISlider->OnValueChanged.AddDynamic(this, &UPlayerMenuWidget::SetUIVolumeFromSlider);
     UISlider->OnMouseCaptureEnd.AddDynamic(this, &UPlayerMenuWidget::CommitAudioSliderChange);
     UISlider->OnControllerCaptureEnd.AddDynamic(this, &UPlayerMenuWidget::CommitAudioSliderChange);
