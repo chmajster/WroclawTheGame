@@ -40,6 +40,9 @@ class WROCLAWTHEGAME_API UCityGameplaySubsystem : public UTickableWorldSubsystem
     bool IsComplete(const FString &Id) const;
     int32 CompletedActivityCount() const;
     int32 TrackableActivityCount() const;
+    int32 CompletedEventCount() const;
+    int32 EventCount() const;
+    int32 AvailableActivityCount() const;
     FString Journal() const;
     FString NearbyObjective() const;
     virtual void Tick(float DeltaTime) override;

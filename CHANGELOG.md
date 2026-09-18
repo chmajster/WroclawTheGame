@@ -1,3 +1,11 @@
+## 2026-09-18 — statystyki otwartego świata
+
+- Zakładka Statystyki przełącza się na osobny dashboard miasta, gdy aktywny jest tryb GIS.
+- Dodano read-only liczniki ukończonych zdarzeń ambientowych, wszystkich zdarzeń oraz aktualnie dostępnych aktywności.
+- Dashboard miasta pokazuje postęp aktywności dzielnic, zdarzenia, liczbę odkryć, dostępne cele, Heat i stan automatycznego zapisu.
+- Prawy panel pokazuje najbliższy rzeczywisty cel oraz procent ukończenia aktywności miasta.
+- Statystyki kampanii pozostają bez zmian i nie są mieszane z danymi CityProgress.
+
 ## 2026-09-18 — menu zależne od trybu kampanii / miasta
 
 - Landing page rozpoznaje aktywny UCityGameplaySubsystem i nie pokazuje już tytułu Przebudzenie w trybie GIS.
