@@ -62,6 +62,13 @@ void AWTG_CharacterCreator::SetLighting(FName P)
                             (bNight ? FLinearColor(.25f,.42f,1.0f) : FLinearColor(.72f,.82f,1.0f)));
 }
 void AWTG_CharacterCreator::Rotate(float Degrees) { Yaw=FMath::UnwindDegrees(Yaw+Degrees); }
+void AWTG_CharacterCreator::ResetPresentation()
+{
+    Yaw = 0.0f;
+    TargetDistance = 290.0f;
+    TargetHeight = 92.0f;
+    SetLighting(TEXT("Modern"));
+}
 void AWTG_CharacterCreator::Zoom(float Amount) { TargetDistance=FMath::Clamp(TargetDistance+Amount,45.f,380.f); }
 void AWTG_CharacterCreator::Tick(float Dt)
 {
