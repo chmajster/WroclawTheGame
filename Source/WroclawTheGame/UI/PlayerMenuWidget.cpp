@@ -320,23 +320,38 @@ void UPlayerMenuWidget::BuildShell()
     LeftSize->SetWidthOverride(285.0f);
     LeftSize->AddChild(LeftCard);
     Body->AddChildToHorizontalBox(LeftSize)->SetPadding(FMargin(0, 0, 16, 0));
+    ActionScroll = WidgetTree->ConstructWidget<UScrollBox>();
+    ActionScroll->SetScrollBarVisibility(ESlateVisibility::Hidden);
+    ActionScroll->SetAnimateWheelScrolling(true);
+    ActionScroll->SetWheelScrollMultiplier(42.0f);
+    LeftCard->AddChild(ActionScroll);
     ActionColumn = WidgetTree->ConstructWidget<UVerticalBox>();
-    LeftCard->AddChild(ActionColumn);
+    ActionScroll->AddChild(ActionColumn);
 
     auto* CenterCard = MakeCard(FMargin(10, 10, 10, 10));
     auto* CenterSlot = Body->AddChildToHorizontalBox(CenterCard);
     CenterSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     CenterSlot->SetPadding(FMargin(0, 0, 16, 0));
+    CenterScroll = WidgetTree->ConstructWidget<UScrollBox>();
+    CenterScroll->SetScrollBarVisibility(ESlateVisibility::Hidden);
+    CenterScroll->SetAnimateWheelScrolling(true);
+    CenterScroll->SetWheelScrollMultiplier(42.0f);
+    CenterCard->AddChild(CenterScroll);
     CenterColumn = WidgetTree->ConstructWidget<UVerticalBox>();
-    CenterCard->AddChild(CenterColumn);
+    CenterScroll->AddChild(CenterColumn);
 
     auto* RightCard = MakeCard(FMargin(20, 20, 20, 20));
     auto* RightSize = WidgetTree->ConstructWidget<USizeBox>();
     RightSize->SetWidthOverride(320.0f);
     RightSize->AddChild(RightCard);
     Body->AddChildToHorizontalBox(RightSize);
+    RightScroll = WidgetTree->ConstructWidget<UScrollBox>();
+    RightScroll->SetScrollBarVisibility(ESlateVisibility::Hidden);
+    RightScroll->SetAnimateWheelScrolling(true);
+    RightScroll->SetWheelScrollMultiplier(42.0f);
+    RightCard->AddChild(RightScroll);
     RightColumn = WidgetTree->ConstructWidget<UVerticalBox>();
-    RightCard->AddChild(RightColumn);
+    RightScroll->AddChild(RightColumn);
 
     auto* Footer = WidgetTree->ConstructWidget<UHorizontalBox>();
     auto* FooterSlot = Layout->AddChildToVerticalBox(Footer);
@@ -358,6 +373,9 @@ void UPlayerMenuWidget::Refresh()
     ActionColumn->ClearChildren();
     CenterColumn->ClearChildren();
     RightColumn->ClearChildren();
+    if (ActionScroll) ActionScroll->ScrollToStart();
+    if (CenterScroll) CenterScroll->ScrollToStart();
+    if (RightScroll) RightScroll->ScrollToStart();
     ActionButtons.Reset();
     UpdateTabStyle();
 
