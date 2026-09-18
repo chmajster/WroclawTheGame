@@ -28,11 +28,12 @@ class WROCLAWTHEGAME_API ACityAmbientAgent : public AActor
     ACityAmbientAgent();
     UPROPERTY() TObjectPtr<class UBoxComponent> Body;
     UPROPERTY() TObjectPtr<class UStaticMeshComponent> Visual;
+    UPROPERTY() TObjectPtr<class USkeletalMeshComponent> PedestrianVisual;
     UPROPERTY() TArray<FVector> Route;
     int32 Target = 1;
     bool bVehicle = false;
     virtual void Tick(float DeltaTime) override;
-    void Configure(const FCityPopulationRoute &Definition, int32 StartIndex);
+    void Configure(const FCityPopulationRoute &Definition, int32 StartIndex, class UStaticMesh *VehicleMesh, class USkeletalMesh *PedestrianMesh);
     void SetSimulationLevel(ECityAgentSimulationLevel Level);
     ECityAgentSimulationLevel GetSimulationLevel() const { return SimulationLevel; }
 
@@ -58,6 +59,10 @@ class WROCLAWTHEGAME_API ACityPopulation : public AActor
     int32 MaxTrafficVehicles = 6;
     UPROPERTY(EditAnywhere, Category = "Population", meta = (ClampMin = "1000"))
     float TrafficActivationRadius = 12000.0f;
+    UPROPERTY(EditAnywhere) TObjectPtr<class UStaticMesh> VehicleMesh;
+    UPROPERTY(EditAnywhere) TObjectPtr<class USkeletalMesh> PedestrianMesh;
+    UPROPERTY(EditAnywhere) TObjectPtr<class UStaticMesh> TrafficBodyMesh;
+    UPROPERTY(EditAnywhere) TObjectPtr<class UStaticMesh> TrafficWheelMesh;
     virtual void Tick(float DeltaTime) override;
 
   private:
