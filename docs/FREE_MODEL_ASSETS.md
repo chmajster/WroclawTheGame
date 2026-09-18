@@ -7,3 +7,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Model | Zastosowanie | Autorzy | Źródło | Licencja |
 |---|---|---|---|---|
 | Security Camera 02 | CCTV / surveillance prop; replaces the current generic surveillance placeholder. | Garrison Gager, Yann Kervran | [Poly Haven](https://polyhaven.com/a/security_camera_02) | CC0 1.0 |
+| Street Lamp 01 | Urban street lighting prop for authored city detail passes. | Josh Dean | [Poly Haven](https://polyhaven.com/a/street_lamp_01) | CC0 1.0 |

@@ -21,5 +21,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/security_camera_02/security_camera_02_1k.fbx"
+  },
+  {
+    "slug": "street_lamp_01",
+    "name": "Street Lamp 01",
+    "intended_use": "Urban street lighting prop for authored city detail passes.",
+    "source_page": "https://polyhaven.com/a/street_lamp_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Josh Dean": "All"
+    },
+    "category": "Lighting/Street & Outdoor/Street Lamps",
+    "dimensions_mm": [
+      704.3362259864807,
+      386.49316132068634,
+      3870.5554008483887
+    ],
+    "files_hash": "002d697fa195d73f627e82804612208853212519",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/street_lamp_01/street_lamp_01_1k.fbx"
   }
 ]
