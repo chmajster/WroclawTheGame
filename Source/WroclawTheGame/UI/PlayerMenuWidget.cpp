@@ -25,6 +25,7 @@
 #include "Components/OverlaySlot.h"
 #include "Components/ProgressBar.h"
 #include "Components/ScaleBox.h"
+#include "Components/SafeZone.h"
 #include "Components/ScrollBox.h"
 #include "Components/SizeBox.h"
 #include "Components/TextBlock.h"
@@ -271,12 +272,15 @@ void UPlayerMenuWidget::BuildShell()
 
     // Fixed design canvas scaled as one unit keeps spacing and typography stable
     // from 1280x720 up to ultrawide/4K while the backdrop still fills the screen.
+    auto* SafeArea = WidgetTree->ConstructWidget<USafeZone>();
+    auto* SafeAreaSlot = RootOverlay->AddChildToOverlay(SafeArea);
+    SafeAreaSlot->SetHorizontalAlignment(HAlign_Fill);
+    SafeAreaSlot->SetVerticalAlignment(VAlign_Fill);
+
     auto* Scale = WidgetTree->ConstructWidget<UScaleBox>();
     Scale->SetStretch(EStretch::ScaleToFit);
     Scale->SetStretchDirection(EStretchDirection::Both);
-    auto* ScaleSlot = RootOverlay->AddChildToOverlay(Scale);
-    ScaleSlot->SetHorizontalAlignment(HAlign_Fill);
-    ScaleSlot->SetVerticalAlignment(VAlign_Fill);
+    SafeArea->AddChild(Scale);
 
     auto* Frame = WidgetTree->ConstructWidget<USizeBox>();
     Frame->SetWidthOverride(1600.0f);

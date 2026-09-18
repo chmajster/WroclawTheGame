@@ -47,6 +47,14 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_menu_content_respects_platform_safe_zone(self):
+        for token in (
+            '#include "Components/SafeZone.h"',
+            "ConstructWidget<USafeZone>()",
+            "SafeArea->AddChild(Scale)",
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_modern_visual_shell_is_not_removed(self):
         for token in (
             "FSlateRoundedBoxBrush", "UBackgroundBlur", "SetBlurStrength",
