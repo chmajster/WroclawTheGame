@@ -3,6 +3,7 @@
 #include "UI/SliceController.h"
 #include "UI/PerformanceSettings.h"
 #include "Audio/SliceAudio.h"
+#include "Audio/AudioSettings.h"
 #include "Character/CharacterCreator.h"
 #include "Character/CharacterCreatorSubsystem.h"
 #include "Character/CharacterAppearanceComponent.h"
@@ -111,6 +112,15 @@ FString ProjectVersionLabel()
             TEXT("/Script/EngineSettings.GeneralProjectSettings"),
             TEXT("ProjectVersion"), Version, GGameIni);
     return FString::Printf(TEXT("v%s  •  %s"), *Version, *BuildLabel());
+}
+
+float NextAudioVolume(float Current)
+{
+    constexpr float Levels[] = {0.0f, 0.25f, 0.50f, 0.75f, 1.0f};
+    for (float Level : Levels)
+        if (Level > Current + 0.01f)
+            return Level;
+    return 0.0f;
 }
 }
 
@@ -1857,6 +1867,7 @@ void UPlayerMenuWidget::BuildStatsTab()
 void UPlayerMenuWidget::BuildSettingsTab()
 {
     auto* Preferences = UWTGPerformanceSettings::Get();
+    auto* AudioPreferences = UWTGAudioSettings::Get();
     UGameUserSettings* UserSettings = GEngine ? GEngine->GetGameUserSettings() : nullptr;
 
     ActionColumn->AddChildToVerticalBox(MakeText(TEXT("USTAWIENIA"), 20, true, TextPrimary))
@@ -1874,7 +1885,11 @@ void UPlayerMenuWidget::BuildSettingsTab()
 
     auto* InterfaceSection = MakeButton(TEXT("INTERFEJS"), SettingsSection == 2);
     InterfaceSection->OnClicked.AddDynamic(this, &UPlayerMenuWidget::SettingsInterface);
-    ActionColumn->AddChildToVerticalBox(InterfaceSection)->SetPadding(FMargin(0, 0, 0, 18));
+    ActionColumn->AddChildToVerticalBox(InterfaceSection)->SetPadding(FMargin(0, 0, 0, 7));
+
+    auto* AudioSection = MakeButton(TEXT("DŹWIĘK"), SettingsSection == 3);
+    AudioSection->OnClicked.AddDynamic(this, &UPlayerMenuWidget::SettingsAudio);
+    ActionColumn->AddChildToVerticalBox(AudioSection)->SetPadding(FMargin(0, 0, 0, 18));
 
     auto* ResetButton = MakeButton(TEXT("PRZYWRÓĆ DOMYŚLNE"));
     ResetButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ResetSettings);
@@ -1899,6 +1914,8 @@ void UPlayerMenuWidget::BuildSettingsTab()
     const bool bReduceMotion = Preferences && Preferences->bReduceUIMotion;
     const bool bMenuBlur = !Preferences || Preferences->bMenuBackgroundBlur;
     const bool bUISounds = !Preferences || Preferences->bUISounds;
+    const float SFXVolume = AudioPreferences ? AudioPreferences->SFXVolume : 1.0f;
+    const float UIVolume = AudioPreferences ? AudioPreferences->UIVolume : 1.0f;
     const bool bVSync = UserSettings->IsVSyncEnabled();
     const bool bDynamicResolution = UserSettings->IsDynamicResolutionEnabled();
     const int32 Limit = Preferences ? Preferences->FPSLimit : 60;
@@ -2058,45 +2075,80 @@ void UPlayerMenuWidget::BuildSettingsTab()
         return;
     }
 
-    SettingsSection = 2;
-    PageTitle->SetText(FText::FromString(TEXT("USTAWIENIA  /  INTERFEJS")));
-    CenterColumn->AddChildToVerticalBox(MakeText(TEXT("INTERFEJS"), 22, true, TextPrimary))
+    if (SettingsSection == 2)
+    {
+        PageTitle->SetText(FText::FromString(TEXT("USTAWIENIA  /  INTERFEJS")));
+        CenterColumn->AddChildToVerticalBox(MakeText(TEXT("INTERFEJS"), 22, true, TextPrimary))
+            ->SetPadding(FMargin(18, 16, 18, 3));
+        CenterColumn->AddChildToVerticalBox(MakeText(
+            TEXT("ANIMACJE, TŁO I DŹWIĘKI MENU"), 9, true, Accent))
+            ->SetPadding(FMargin(18, 0, 18, 18));
+
+        auto* MotionButton = MakeButton(
+            FString::Printf(TEXT("ANIMACJE UI  •  %s"), bReduceMotion ? TEXT("OGRANICZONE") : TEXT("PEŁNE")),
+            bReduceMotion);
+        MotionButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleReduceUIMotion);
+        AddCenterButton(MotionButton);
+
+        auto* BlurButton = MakeButton(
+            FString::Printf(TEXT("ROZMYCIE TŁA  •  %s"), bMenuBlur ? TEXT("WŁ.") : TEXT("WYŁ.")),
+            bMenuBlur);
+        BlurButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleMenuBackgroundBlur);
+        AddCenterButton(BlurButton);
+
+        auto* UISoundButton = MakeButton(
+            FString::Printf(TEXT("DŹWIĘKI UI  •  %s"), bUISounds ? TEXT("WŁ.") : TEXT("WYŁ.")),
+            bUISounds);
+        UISoundButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleUISounds);
+        AddCenterButton(UISoundButton);
+
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("DOSTĘPNOŚĆ UI"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 0, 0, 8));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            bReduceMotion ? TEXT("OGRANICZONE") : TEXT("PEŁNE"), TEXT("ANIMACJE"), bReduceMotion))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            bMenuBlur ? TEXT("WŁĄCZONE") : TEXT("WYŁĄCZONE"), TEXT("ROZMYCIE TŁA")))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            bUISounds ? TEXT("WŁĄCZONE") : TEXT("WYŁĄCZONE"), TEXT("DŹWIĘKI UI")))
+            ->SetPadding(FMargin(0, 0, 0, 14));
+        RightColumn->AddChildToVerticalBox(MakeText(
+            TEXT("Opcja ograniczenia animacji wyłącza ruchome przejścia i ambientowe animacje menu."),
+            10, false, Muted));
+        return;
+    }
+
+    SettingsSection = 3;
+    PageTitle->SetText(FText::FromString(TEXT("USTAWIENIA  /  DŹWIĘK")));
+    CenterColumn->AddChildToVerticalBox(MakeText(TEXT("DŹWIĘK"), 22, true, TextPrimary))
         ->SetPadding(FMargin(18, 16, 18, 3));
     CenterColumn->AddChildToVerticalBox(MakeText(
-        TEXT("ANIMACJE, TŁO I DŹWIĘKI MENU"), 9, true, Accent))
+        TEXT("GŁOŚNOŚĆ EFEKTÓW ŚWIATA I INTERFEJSU"), 9, true, Accent))
         ->SetPadding(FMargin(18, 0, 18, 18));
 
-    auto* MotionButton = MakeButton(
-        FString::Printf(TEXT("ANIMACJE UI  •  %s"), bReduceMotion ? TEXT("OGRANICZONE") : TEXT("PEŁNE")),
-        bReduceMotion);
-    MotionButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleReduceUIMotion);
-    AddCenterButton(MotionButton);
+    auto* SFXButton = MakeButton(FString::Printf(
+        TEXT("EFEKTY ŚWIATA  •  %d%%"), FMath::RoundToInt(SFXVolume * 100.0f)), true);
+    SFXButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleSFXVolume);
+    AddCenterButton(SFXButton);
 
-    auto* BlurButton = MakeButton(
-        FString::Printf(TEXT("ROZMYCIE TŁA  •  %s"), bMenuBlur ? TEXT("WŁ.") : TEXT("WYŁ.")),
-        bMenuBlur);
-    BlurButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleMenuBackgroundBlur);
-    AddCenterButton(BlurButton);
+    auto* UIVolumeButton = MakeButton(FString::Printf(
+        TEXT("INTERFEJS  •  %d%%"), FMath::RoundToInt(UIVolume * 100.0f)));
+    UIVolumeButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleUIVolume);
+    AddCenterButton(UIVolumeButton);
 
-    auto* UISoundButton = MakeButton(
-        FString::Printf(TEXT("DŹWIĘKI UI  •  %s"), bUISounds ? TEXT("WŁ.") : TEXT("WYŁ.")),
-        bUISounds);
-    UISoundButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleUISounds);
-    AddCenterButton(UISoundButton);
-
-    RightColumn->AddChildToVerticalBox(MakeText(TEXT("DOSTĘPNOŚĆ UI"), 9, true, Accent))
+    RightColumn->AddChildToVerticalBox(MakeText(TEXT("POZIOMY GŁOŚNOŚCI"), 9, true, Accent))
         ->SetPadding(FMargin(0, 0, 0, 8));
     RightColumn->AddChildToVerticalBox(MakeInfoRow(
-        bReduceMotion ? TEXT("OGRANICZONE") : TEXT("PEŁNE"), TEXT("ANIMACJE"), bReduceMotion))
+        FString::Printf(TEXT("%d%%"), FMath::RoundToInt(SFXVolume * 100.0f)),
+        TEXT("EFEKTY ŚWIATA"), true))
         ->SetPadding(FMargin(0, 0, 0, 7));
     RightColumn->AddChildToVerticalBox(MakeInfoRow(
-        bMenuBlur ? TEXT("WŁĄCZONE") : TEXT("WYŁĄCZONE"), TEXT("ROZMYCIE TŁA")))
-        ->SetPadding(FMargin(0, 0, 0, 7));
-    RightColumn->AddChildToVerticalBox(MakeInfoRow(
-        bUISounds ? TEXT("WŁĄCZONE") : TEXT("WYŁĄCZONE"), TEXT("DŹWIĘKI UI")))
+        FString::Printf(TEXT("%d%%"), FMath::RoundToInt(UIVolume * 100.0f)),
+        TEXT("INTERFEJS")))
         ->SetPadding(FMargin(0, 0, 0, 14));
     RightColumn->AddChildToVerticalBox(MakeText(
-        TEXT("Opcja ograniczenia animacji wyłącza ruchome przejścia i ambientowe animacje menu."),
+        TEXT("Projekt nie ma jeszcze osobnego kanału muzyki. Menu pokazuje wyłącznie kanały faktycznie obsługiwane przez runtime."),
         10, false, Muted));
 }
 
@@ -2110,13 +2162,28 @@ void UPlayerMenuWidget::TabSettings() { SelectTab(6); }
 void UPlayerMenuWidget::SettingsDisplay() { SettingsSection = 0; Refresh(); }
 void UPlayerMenuWidget::SettingsPerformance() { SettingsSection = 1; Refresh(); }
 void UPlayerMenuWidget::SettingsInterface() { SettingsSection = 2; Refresh(); }
+void UPlayerMenuWidget::SettingsAudio() { SettingsSection = 3; Refresh(); }
+
+void UPlayerMenuWidget::CycleSFXVolume()
+{
+    if (auto* Settings = UWTGAudioSettings::Get())
+        Settings->SetSFXVolume(NextAudioVolume(Settings->SFXVolume));
+    Refresh();
+}
+
+void UPlayerMenuWidget::CycleUIVolume()
+{
+    if (auto* Settings = UWTGAudioSettings::Get())
+        Settings->SetUIVolume(NextAudioVolume(Settings->UIVolume));
+    Refresh();
+}
 
 void UPlayerMenuWidget::ResetSettings()
 {
     ShowConfirmation(
         5,
         TEXT("PRZYWRÓCIĆ USTAWIENIA DOMYŚLNE?"),
-        TEXT("Zostaną przywrócone domyślne ustawienia jakości, skali renderu, VSync, dynamicznej rozdzielczości, limitu FPS oraz interfejsu. Tryb ekranu i rozdzielczość pozostaną bez zmian."),
+        TEXT("Zostaną przywrócone domyślne ustawienia jakości, skali renderu, VSync, dynamicznej rozdzielczości, limitu FPS, interfejsu i dźwięku. Tryb ekranu i rozdzielczość pozostaną bez zmian."),
         TEXT("PRZYWRÓĆ"));
 }
 
@@ -2340,6 +2407,8 @@ void UPlayerMenuWidget::ConfirmPendingAction()
 
         if (auto* Preferences = UWTGPerformanceSettings::Get())
             Preferences->ResetToDefaults();
+        if (auto* AudioPreferences = UWTGAudioSettings::Get())
+            AudioPreferences->ResetToDefaults();
 
         if (GEngine)
         {

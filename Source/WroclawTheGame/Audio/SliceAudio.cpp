@@ -1,4 +1,5 @@
 #include "Audio/SliceAudio.h"
+#include "Audio/AudioSettings.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundBase.h"
 #include "Mission/SliceMission.h"
@@ -16,7 +17,12 @@ void USliceAudio::Play(const UObject *Context, const FString &Name, const FVecto
         Sound = LoadObject<USoundBase>(nullptr, *Path);
     }
     if (Sound)
-        UGameplayStatics::PlaySoundAtLocation(Context, Sound, Location, Volume);
+    {
+        const auto* Settings = UWTGAudioSettings::Get();
+        const float EffectiveVolume = Volume * (Settings ? Settings->SFXVolume : 1.0f);
+        if (EffectiveVolume > KINDA_SMALL_NUMBER)
+            UGameplayStatics::PlaySoundAtLocation(Context, Sound, Location, EffectiveVolume);
+    }
 }
 
 void USliceAudio::PlayUI(const UObject *Context, const FString &Name, float Volume)
@@ -32,5 +38,10 @@ void USliceAudio::PlayUI(const UObject *Context, const FString &Name, float Volu
         Sound = LoadObject<USoundBase>(nullptr, *Path);
     }
     if (Sound)
-        UGameplayStatics::PlaySound2D(Context, Sound, Volume, 1.0f, 0.0f, nullptr, nullptr, true);
+    {
+        const auto* Settings = UWTGAudioSettings::Get();
+        const float EffectiveVolume = Volume * (Settings ? Settings->UIVolume : 1.0f);
+        if (EffectiveVolume > KINDA_SMALL_NUMBER)
+            UGameplayStatics::PlaySound2D(Context, Sound, EffectiveVolume, 1.0f, 0.0f, nullptr, nullptr, true);
+    }
 }

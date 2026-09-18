@@ -103,6 +103,7 @@ private:
     UFUNCTION() void SettingsDisplay();
     UFUNCTION() void SettingsPerformance();
     UFUNCTION() void SettingsInterface();
+    UFUNCTION() void SettingsAudio();
     UFUNCTION() void ResetSettings();
 
     UFUNCTION() void Resume();
@@ -123,6 +124,8 @@ private:
     UFUNCTION() void ToggleReduceUIMotion();
     UFUNCTION() void ToggleMenuBackgroundBlur();
     UFUNCTION() void ToggleUISounds();
+    UFUNCTION() void CycleSFXVolume();
+    UFUNCTION() void CycleUIVolume();
     UFUNCTION() void ToggleFPSCounter();
     UFUNCTION() void ToggleVSync();
     UFUNCTION() void ToggleDynamicResolution();
