@@ -466,5 +466,16 @@
     "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-cash-bundle/wtg-original-cash-bundle.obj",
     "generated": true,
     "generator": "bootstrap-original-fallback-models.yml"
+  },
+  {
+    "id": "wtg-original-wall-outlet",
+    "name": "Wall Outlet",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Apartment outlet interaction fallback.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-wall-outlet/wtg-original-wall-outlet.obj",
+    "generated": true,
+    "generator": "bootstrap-original-fallback-models.yml"
   }
 ]
