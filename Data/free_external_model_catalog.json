@@ -587,5 +587,16 @@
     "intended_use": "Tram warning signal for authored tram crossings and intersection infrastructure.",
     "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Schutzblinker_Strassenbahn_Mast/Schutzblinker_Strassenbahn_Mast.glb",
     "source_git_blob_sha1": "2fe228af62b16c6a5e3f16172f399a2b65437023"
+  },
+  {
+    "id": "rostock-traffic-ampel-strassenbahn-1-mast",
+    "name": "Tram traffic light mast",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Ampel_Strassenbahn_1_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Tram traffic light model for authored Wroclaw tram intersections.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Ampel_Strassenbahn_1_Mast/Ampel_Strassenbahn_1_Mast.glb",
+    "source_git_blob_sha1": "68e7e9bf1ee3e7afb8c59e7c0ef34e1f3fe03337"
   }
 ]
