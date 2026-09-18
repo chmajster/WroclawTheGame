@@ -16,6 +16,7 @@
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "InputModifiers.h"
+#include "Input/ControlSettings.h"
 #include "Interaction/Interactable.h"
 #include "Mission/SliceMission.h"
 #include "UI/SliceController.h"
@@ -146,11 +147,16 @@ void ASliceCharacter::MoveRight(const FInputActionValue &V)
 }
 void ASliceCharacter::LookX(const FInputActionValue &V)
 {
-    AddControllerYawInput(V.Get<float>());
+    const auto* Settings = UWTGControlSettings::Get();
+    const float Sensitivity = Settings ? Settings->MouseSensitivity : 1.0f;
+    AddControllerYawInput(V.Get<float>() * Sensitivity);
 }
 void ASliceCharacter::LookY(const FInputActionValue &V)
 {
-    AddControllerPitchInput(-V.Get<float>());
+    const auto* Settings = UWTGControlSettings::Get();
+    const float Sensitivity = Settings ? Settings->MouseSensitivity : 1.0f;
+    const float Direction = Settings && Settings->bInvertY ? 1.0f : -1.0f;
+    AddControllerPitchInput(V.Get<float>() * Sensitivity * Direction);
 }
 void ASliceCharacter::CrouchToggle()
 {
