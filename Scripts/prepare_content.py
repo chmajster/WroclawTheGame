@@ -16,6 +16,7 @@ MARKER = ROOT / 'Saved/GeneratedContent.ok'
 FREE_MODEL_IMPORT_MAP = ROOT / 'Saved/FreeModelImportMap.json'
 OPENING_MODELS = ROOT / 'Data/opening_scene_models.json'
 PROP_MODEL_BINDINGS = ROOT / 'Data/prop_model_bindings.json'
+MODEL_BINDINGS = ROOT / 'Data/model_bindings.json'
 
 
 def import_file(file, destination):
@@ -46,8 +47,8 @@ def load_free_models(required_ids):
         if not object_path:
             raise RuntimeError(f'Free model not imported: {model_id}')
         asset = unreal.load_asset(object_path)
-        if not asset or not isinstance(asset, unreal.StaticMesh):
-            raise RuntimeError(f'Free model is not a StaticMesh: {model_id} -> {object_path}')
+        if not asset or not isinstance(asset, (unreal.StaticMesh, unreal.SkeletalMesh)):
+            raise RuntimeError(f'Free model is not a mesh: {model_id} -> {object_path}')
         resolved[model_id] = asset
     return resolved
 
@@ -58,8 +59,46 @@ def apply_static_mesh(actor, mesh, scale):
         raise RuntimeError(f'StaticMeshComponent missing on {actor.get_actor_label()}')
     component.set_static_mesh(mesh)
     component.set_editor_property('cast_shadow', True)
-    actor.set_actor_scale3d(unreal.Vector(*scale))
+    if actor.get_root_component() == component:
+        actor.set_actor_scale3d(unreal.Vector(*scale))
+    else:
+        component.set_relative_scale3d(unreal.Vector(*scale))
     return component
+
+
+def hide_static_visuals(actor):
+    for component in actor.get_components_by_class(unreal.StaticMeshComponent):
+        component.set_visibility(False, True)
+        component.set_editor_property('cast_shadow', False)
+
+
+def apply_skeletal_mesh(actor, mesh, scale=(1, 1, 1), rotation=None):
+    component = actor.get_component_by_class(unreal.SkeletalMeshComponent)
+    if not component:
+        raise RuntimeError(f'SkeletalMeshComponent missing on {actor.get_actor_label()}')
+    component.set_skeletal_mesh_asset(mesh)
+    component.set_collision_profile_name('NoCollision')
+    component.set_visibility(True, True)
+    component.set_editor_property('cast_shadow', True)
+    component.set_relative_scale3d(unreal.Vector(*scale))
+    capsule = actor.get_component_by_class(unreal.CapsuleComponent)
+    if capsule:
+        component.set_relative_location(unreal.Vector(0,0,-capsule.get_unscaled_capsule_half_height()))
+    component.set_relative_rotation(unreal.Rotator(*(rotation or [0,-90,0])))
+    hide_static_visuals(actor)
+    return component
+
+
+def spawn_skeletal_visual(spawn, mesh, position, label, rotation=None, scale=(1, 1, 1)):
+    visual = spawn(unreal.SkeletalMeshActor, position, label, rotation or [0, 0, 0])
+    component = visual.get_component_by_class(unreal.SkeletalMeshComponent)
+    if not component:
+        raise RuntimeError(f'SkeletalMeshComponent missing on {label}')
+    component.set_skeletal_mesh_asset(mesh)
+    component.set_collision_profile_name('NoCollision')
+    component.set_editor_property('cast_shadow', True)
+    visual.set_actor_scale3d(unreal.Vector(*scale))
+    return visual
 
 def material(name, texture, roughness, metallic):
     path = f'/Game/Generated/M_{name}'
@@ -123,7 +162,8 @@ def prepare():
         actor.set_editor_property('data_layer_assets',[layer_assets['Architecture' if label.startswith('environment_') else 'Gameplay']])
         return actor
     cube=unreal.load_asset('/Engine/BasicShapes/Cube')
-    for record in json.loads(ENVIRONMENT_INPUT.read_text(encoding='utf-8')):
+    environment_records=json.loads(ENVIRONMENT_INPUT.read_text(encoding='utf-8'))
+    for record in environment_records:
         kind=record['type']
         if kind=='box':
             actor=spawn(unreal.StaticMeshActor,record['position'],record['id'])
@@ -149,10 +189,23 @@ def prepare():
         else:raise RuntimeError('Unknown environment record')
     opening_records=json.loads(OPENING_MODELS.read_text(encoding='utf-8'))
     binding_records=json.loads(PROP_MODEL_BINDINGS.read_text(encoding='utf-8'))
+    model_bindings=json.loads(MODEL_BINDINGS.read_text(encoding='utf-8'))
     prop_bindings={record['action']:record for record in binding_records}
     required_models={record['model'] for record in opening_records}
     required_models.update(record['model'] for record in binding_records)
+    required_models.update(model_bindings['actions'].values())
+    required_models.update(model_bindings['systems'].values())
     free_models=load_free_models(required_models)
+    street_lamp_mesh=free_models[model_bindings['systems']['street_lamp']]
+    street_lamp_ids={'environment_253','environment_255','environment_257','environment_259','environment_261','environment_263','environment_265'}
+    for record in environment_records:
+        if record['id'] not in street_lamp_ids:continue
+        position=[record['position'][0],record['position'][1],record['position'][2]-360]
+        lamp=spawn(unreal.StaticMeshActor,position,'environment_lamp_'+record['id'])
+        component=apply_static_mesh(lamp,street_lamp_mesh,[1,1,1])
+        component.set_collision_profile_name('NoCollision')
+        lamp.set_editor_property('hlod_layer',hlod)
+
     for record in opening_records:
         actor=spawn(unreal.StaticMeshActor,record['position'],record['id'],record.get('rotation',[0,0,0]))
         apply_static_mesh(actor,free_models[record['model']],record.get('scale',[1,1,1]))
@@ -161,33 +214,60 @@ def prepare():
     content=json.loads(CHAPTER_INPUT.read_text(encoding='utf-8'))
     for action in content['actions']:
         if action['kind'] in ('virtual','zone') or action['position'][:2]==[0,0]:continue
-        binding=prop_bindings.get(action['id'])
+        authored=prop_bindings.get(action['id'],{})
+        model_id=authored.get('model') or model_bindings['actions'].get(action['id'])
+        if not model_id:
+            raise RuntimeError('Physical action has no model binding: '+action['id'])
         position=list(action['position'])
-        rotation=[0,0,0]
-        if binding:
-            offset=binding.get('offset',[0,0,0])
-            position=[position[i]+offset[i] for i in range(3)]
-            rotation=binding.get('rotation',[0,0,0])
+        offset=authored.get('offset',[0,0,0])
+        position=[position[i]+offset[i] for i in range(3)]
+        rotation=authored.get('rotation',[0,0,0])
+        scale=authored.get('scale',[1,1,1])
         actor=spawn(unreal.SliceProp,position,'action_'+action['id'],rotation)
         actor.set_editor_property('action_id',action['id'])
-        if binding:
-            apply_static_mesh(actor,free_models[binding['model']],binding.get('scale',[1,1,1]))
+        mesh=free_models[model_id]
+        if isinstance(mesh,unreal.StaticMesh):
+            apply_static_mesh(actor,mesh,scale)
         else:
-            actor.set_actor_scale3d(unreal.Vector(*[v/100 for v in action['size']]))
+            hide_static_visuals(actor)
+            spawn_skeletal_visual(spawn,mesh,position,'action_visual_'+action['id'],rotation,scale)
     world=json.loads(WORLD_INPUT.read_text(encoding='utf-8'))
+    guard_mesh=free_models[model_bindings['systems']['enemy_guard']]
+    resident_mesh=free_models[model_bindings['systems']['resident_npc']]
+    camera_mesh=free_models[model_bindings['systems']['surveillance_camera']]
+    monitor_mesh=free_models[model_bindings['systems']['cctv_monitor']]
+    hide_models={
+        'container':model_bindings['systems']['hide_container'],
+        'garage_hiding':model_bindings['systems']['hide_shelf'],
+    }
     for guard in world['guards']:
         actor=spawn(unreal.SliceEnemy,guard['position'],'guard_'+guard['id'])
         actor.set_editor_property('guard_id',guard['id'])
+        if isinstance(guard_mesh,unreal.SkeletalMesh):
+            apply_skeletal_mesh(actor,guard_mesh)
     for hiding in world['hides']:
         actor=spawn(unreal.WorldInteraction,hiding['position'],'hide_'+hiding['id'])
         actor.set_editor_property('definition_id',hiding['id']);actor.set_editor_property('kind','Hide')
+        model_id=hide_models.get(hiding['id'])
+        if model_id:
+            mesh=free_models[model_id]
+            if isinstance(mesh,unreal.StaticMesh):
+                apply_static_mesh(actor,mesh,[1,1,1])
+        else:
+            hide_static_visuals(actor)
     for camera in world['cameras']:
         actor=spawn(unreal.SurveillanceCamera,camera['position'],'camera_'+camera['id'],camera['rotation'])
         actor.set_editor_property('definition_id',camera['id'])
+        if isinstance(camera_mesh,unreal.StaticMesh):
+            apply_static_mesh(actor,camera_mesh,[1,1,1])
         actor=spawn(unreal.WorldInteraction,[camera['position'][0]-180,camera['position'][1],100],'monitor_'+camera['id'])
         actor.set_editor_property('definition_id',camera['id']);actor.set_editor_property('kind','CCTV')
+        if isinstance(monitor_mesh,unreal.StaticMesh):
+            apply_static_mesh(actor,monitor_mesh,[0.55,0.55,0.55])
     for npc in world['npc']:
         actor=spawn(unreal.ResidentNPC,npc['position'],'npc_'+npc['id']);actor.set_editor_property('definition_id',npc['id'])
+        if isinstance(resident_mesh,unreal.SkeletalMesh):
+            apply_skeletal_mesh(actor,resident_mesh)
     definition=unreal.load_asset('/Game/Generated/ChapterDefinition')
     if not definition:
         factory=unreal.DataAssetFactory();factory.set_editor_property('data_asset_class',unreal.ChapterDefinition)
