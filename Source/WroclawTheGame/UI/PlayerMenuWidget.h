@@ -25,6 +25,8 @@ protected:
 private:
     UPROPERTY() TObjectPtr<class UOverlay> RootOverlay;
     UPROPERTY() TObjectPtr<class UBorder> ConfirmationOverlay;
+    UPROPERTY() TObjectPtr<class UBorder> AmbientGlowA;
+    UPROPERTY() TObjectPtr<class UBorder> AmbientGlowB;
     UPROPERTY() TObjectPtr<class UTextBlock> ConfirmationCountdown;
     UPROPERTY() TObjectPtr<class UVerticalBox> ActionColumn;
     UPROPERTY() TObjectPtr<class UVerticalBox> CenterColumn;
@@ -38,6 +40,7 @@ private:
     int32 PendingConfirmation = 0;
     float ConfirmationSecondsRemaining = 0.0f;
     float PageAnimationTime = 0.22f;
+    float AmbientAnimationTime = 0.0f;
     bool bRotatingPreview = false;
     bool bCollectActionButtons = false;
 
