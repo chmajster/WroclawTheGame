@@ -2,7 +2,9 @@
 #include "Vehicles/CityTrafficVehicle.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/SkeletalMesh.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
@@ -18,6 +20,12 @@ ACityAmbientAgent::ACityAmbientAgent()
     static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
     Visual->SetStaticMesh(Cube.Object);
     Visual->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    Visual->SetCanEverAffectNavigation(false);
+    PedestrianVisual = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("PedestrianVisual"));
+    PedestrianVisual->SetupAttachment(Body);
+    PedestrianVisual->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    PedestrianVisual->SetCanEverAffectNavigation(false);
+    PedestrianVisual->SetVisibility(false);
     SetSimulationLevel(ECityAgentSimulationLevel::Dormant);
 }
 
@@ -48,14 +56,29 @@ void ACityAmbientAgent::SetSimulationLevel(ECityAgentSimulationLevel Level)
     }
 }
 
-void ACityAmbientAgent::Configure(const FCityPopulationRoute &Definition, int32 StartIndex)
+void ACityAmbientAgent::Configure(const FCityPopulationRoute &Definition, int32 StartIndex, UStaticMesh *VehicleMesh, USkeletalMesh *PedestrianMesh)
 {
     Route = Definition.Points;
     bVehicle = Definition.Vehicle;
     CurrentSpeed = 0.0f;
     const FVector Size = bVehicle ? FVector(180,80,50) : FVector(25,25,85);
     Body->SetBoxExtent(Size);
-    Visual->SetRelativeScale3D(Size / 50);
+    if (bVehicle)
+    {
+        Visual->SetStaticMesh(VehicleMesh);
+        Visual->SetVisibility(VehicleMesh != nullptr);
+        Visual->SetRelativeScale3D(FVector(1));
+        PedestrianVisual->SetVisibility(false);
+    }
+    else
+    {
+        PedestrianVisual->SetSkeletalMesh(PedestrianMesh);
+        PedestrianVisual->SetVisibility(PedestrianMesh != nullptr);
+        PedestrianVisual->SetRelativeScale3D(FVector(1));
+        PedestrianVisual->SetRelativeLocation(FVector(0,0,-97));
+        PedestrianVisual->SetRelativeRotation(FRotator(0,-90,0));
+        Visual->SetVisibility(false);
+    }
     if (Route.Num() < 2)
     {
         SetSimulationLevel(ECityAgentSimulationLevel::Dormant);
@@ -161,6 +184,7 @@ void ACityPopulation::Tick(float Dt)
         auto *Traffic = GetWorld()->SpawnActor<ACityTrafficVehicle>();
         if (!Traffic)
             break;
+        Traffic->SetVisualMeshes(TrafficBodyMesh, TrafficWheelMesh);
         Traffic->DeactivateTraffic();
         TrafficPool.Add(Traffic);
         AssignedTrafficRoutes.Add(INDEX_NONE);
@@ -210,7 +234,7 @@ void ACityPopulation::Tick(float Dt)
             const int32 Start = (I % 3) * (Route.Points.Num() - 1) / 3;
             if (FVector::DistSquared(Route.Points[Start], PlayerPosition) < FMath::Square(600.0))
                 continue;
-            Pool[I]->Configure(Route, Start);
+            Pool[I]->Configure(Route, Start, VehicleMesh, PedestrianMesh);
             AssignedRoutes[I] = RouteIndex;
         }
 
