@@ -1,0 +1,11 @@
+{
+  "id": "rostock-traffic-fussgaengerampel-rot-mast",
+  "name": "Pedestrian traffic light — red",
+  "provider": "Rostock 3DModels",
+  "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Fussgaengerampel_rot_Mast.glb",
+  "license": "CC0-1.0",
+  "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+  "intended_use": "Pedestrian traffic signal variant for authored Wroclaw intersections.",
+  "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Fussgaengerampel_rot_Mast/Fussgaengerampel_rot_Mast.glb",
+  "source_git_blob_sha1": "dd205f9e0e9c8ad5fe3c6604cea37cdc7f65da71"
+}
