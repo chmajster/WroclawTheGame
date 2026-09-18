@@ -343,6 +343,8 @@ class PlayerMenuRegressionTests(unittest.TestCase):
 
     def test_keyboard_and_gamepad_focus_has_visible_feedback(self):
         for token in (
+            "FocusTint",
+            "Button->SetBackgroundColor(bFocused ? FocusTint : FLinearColor::White)",
             "UpdateFocusPresentation()",
             "HasAnyUserFocus()",
             "HasKeyboardFocus()",
