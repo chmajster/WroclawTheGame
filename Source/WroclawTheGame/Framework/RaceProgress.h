@@ -15,16 +15,31 @@ enum class RaceStatus
     Finished,
     Failed
 };
+enum class RaceMode
+{
+    TimeTrial,
+    Delivery,
+    Escape,
+    Follow,
+    Navigation
+};
 class RaceProgress
 {
   public:
     std::vector<RoadPoint> checkpoints;
     RaceStatus status = RaceStatus::Idle;
+    RaceMode mode = RaceMode::TimeTrial;
     unsigned next = 0;
     double elapsed = 0, limit = 0, radius = 250, cargo = 100;
-    bool delivery = false;
+    double followSuspicion = 0, lostTarget = 0;
+    bool delivery = false, pursuitLost = false;
     RoadPoint previous, courseStart;
+
     bool Start(const std::vector<RoadPoint> &points, RoadPoint start, double seconds, bool isDelivery = false)
+    {
+        return Start(points, start, seconds, isDelivery ? RaceMode::Delivery : RaceMode::TimeTrial);
+    }
+    bool Start(const std::vector<RoadPoint> &points, RoadPoint start, double seconds, RaceMode raceMode)
     {
         if (!std::isfinite(start.x) || !std::isfinite(start.y) || !std::isfinite(start.z))
             return false;
@@ -40,7 +55,11 @@ class RaceProgress
         limit = seconds;
         next = 0;
         cargo = 100;
-        delivery = isDelivery;
+        followSuspicion = 0;
+        lostTarget = 0;
+        pursuitLost = false;
+        mode = raceMode;
+        delivery = raceMode == RaceMode::Delivery;
         status = RaceStatus::Running;
         return true;
     }
@@ -61,9 +80,14 @@ class RaceProgress
             status = RaceStatus::Failed;
             return;
         }
+        if (mode == RaceMode::Follow)
+        {
+            previous = position;
+            return;
+        }
+
         const double dx = position.x - previous.x, dy = position.y - previous.y, dz = position.z - previous.z;
         const double length = dx * dx + dy * dy + dz * dz;
-        // Consume only the next ordered gate, intersecting the swept movement segment.
         while (next < checkpoints.size() && length > 1e-9)
         {
             const auto &point = checkpoints[next];
@@ -81,7 +105,56 @@ class RaceProgress
             ++next;
         }
         previous = position;
-        if (next == checkpoints.size())
+        if (mode != RaceMode::Escape && next == checkpoints.size())
+            status = RaceStatus::Finished;
+        else if (mode == RaceMode::Escape && pursuitLost)
+            status = RaceStatus::Finished;
+    }
+    void MarkPursuitLost()
+    {
+        if (status == RaceStatus::Running && mode == RaceMode::Escape)
+        {
+            pursuitLost = true;
+            status = RaceStatus::Finished;
+        }
+    }
+    void TickFollow(double dt, double distance, bool targetVisible, bool targetFinished,
+                    double minDistance, double maxDistance, double lostSeconds)
+    {
+        if (status != RaceStatus::Running || mode != RaceMode::Follow || !std::isfinite(dt) || dt <= 0)
+            return;
+        if (!std::isfinite(distance) || !std::isfinite(minDistance) || !std::isfinite(maxDistance) ||
+            !std::isfinite(lostSeconds) || minDistance <= 0 || maxDistance <= minDistance || lostSeconds <= 0)
+        {
+            status = RaceStatus::Failed;
+            return;
+        }
+        elapsed += dt;
+        if (elapsed > limit)
+        {
+            status = RaceStatus::Failed;
+            return;
+        }
+
+        if (!targetVisible || distance > maxDistance)
+            lostTarget += dt;
+        else
+            lostTarget = 0;
+
+        if (distance < minDistance)
+        {
+            const double closeness = std::clamp((minDistance - distance) / minDistance, 0.0, 1.0);
+            followSuspicion = std::min(100.0, followSuspicion + dt * (15.0 + 35.0 * closeness));
+        }
+        else
+            followSuspicion = std::max(0.0, followSuspicion - dt * 8.0);
+
+        if (lostTarget > lostSeconds || followSuspicion >= 100.0)
+        {
+            status = RaceStatus::Failed;
+            return;
+        }
+        if (targetFinished && distance <= maxDistance)
             status = RaceStatus::Finished;
     }
 };

@@ -23,8 +23,12 @@ class WROCLAWTHEGAME_API ADriveableVehicle : public APawn,
     virtual bool OpenStorage_Implementation(APawn *User) override;
     bool Exit();
     FString Status() const;
+    void SetAIControl(bool bEnabled, float Throttle = 0.0f, float Steering = 0.0f, bool bBrake = false);
+    bool IsAIControlled() const { return bAIControlled; }
     UFUNCTION(BlueprintCallable) void SetVisualMeshes(class UStaticMesh *BodyMesh, class UStaticMesh *WheelMesh);
     UPROPERTY(EditAnywhere) TObjectPtr<class UVehicleDefinition> Definition;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Vehicle|Persistence")
+    bool bPersistentPlayerVehicle = true;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UBoxComponent> Chassis;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UStaticMeshComponent> BodyVisual;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UStaticMeshComponent> CabinVisual;
@@ -41,6 +45,8 @@ class WROCLAWTHEGAME_API ADriveableVehicle : public APawn,
   private:
     UPROPERTY() TObjectPtr<class ACityStreamingProbe> StreamingProbe;
     bool bWaitingForGround = true;
+    bool bAIControlled = false, bAIBrake = false;
+    float AIThrottle = 0.0f, AISteering = 0.0f;
     double EnteredAt = 0, LastImpact = 0, LastHorn = 0;
     UFUNCTION()
     void Collision(UPrimitiveComponent *Hit, AActor *Other, UPrimitiveComponent *OtherComponent,

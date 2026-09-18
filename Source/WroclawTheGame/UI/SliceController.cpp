@@ -5,6 +5,7 @@
 #include "Engine/TextureRenderTarget2D.h"
 #include "Systems/DebugCheatManager.h"
 #include "Systems/CityGameplaySubsystem.h"
+#include "Systems/WroclawMapSubsystem.h"
 #include "Mission/SliceMission.h"
 #include "Character/SliceCharacter.h"
 #include "Kismet/GameplayStatics.h"
@@ -457,7 +458,13 @@ void ASliceController::Digit(int32 N)
 void ASliceController::Backspace()
 {
     if (bKeypad && !Code.IsEmpty())
+    {
         Code.LeftChopInline(1);
+        return;
+    }
+    if (bPhone && Page >= 0 && Page < static_cast<int32>(Wroclaw::PhoneApps().size()) &&
+        Wroclaw::PhoneApps()[Page].id == "map")
+        GetWorld()->GetSubsystem<UWroclawMapSubsystem>()->ClearWaypoint();
 }
 #define DIGIT(N)                                                                                             \
     void ASliceController::Digit##N()                                                                        \
@@ -508,7 +515,12 @@ void ASliceController::ContextAction()
         for (int I = 0; I < static_cast<int32>(Wroclaw::Combinations().size()); ++I)
             M->CombineEvidence(I);
     }
-    else if (bPhone && Page >= 0 && Page < static_cast<int32>(Wroclaw::PhoneApps().size()) &&
-             Wroclaw::PhoneApps()[Page].id == "camera")
-        M->CapturePhoto();
+    else if (bPhone && Page >= 0 && Page < static_cast<int32>(Wroclaw::PhoneApps().size()))
+    {
+        const auto &AppId = Wroclaw::PhoneApps()[Page].id;
+        if (AppId == "camera")
+            M->CapturePhoto();
+        else if (AppId == "map" && !GetWorld()->GetSubsystem<UWroclawMapSubsystem>()->CycleWaypoint())
+            M->Notify(TEXT("Brak dostępnego sektora dla celu mapy."));
+    }
 }

@@ -2,7 +2,7 @@
 
 Żaden punkt wymagający działającego silnika lub Windows nie został uznany za wykonany. Testy modelu opisano w VALIDATION.md. Poniższa lista uzupełnia historyczny odbiór rozdziału.
 
-- [ ] UHT/UBT UE 5.6 bez błędów; również Shipping.
+- [ ] UHT/UBT UE 5.8 bez błędów; również Shipping.
 - [ ] Assety i obie mapy zapisują się, a commandlety kończą bez błędów.
 - [ ] Data Layers i World Partition rzeczywiście streamują aktorów; brak spadania przez niezaładowaną podłogę.
 - [ ] HLOD, nawigacja, powrót AI do patrolu, wykrywanie z profili i lokalne alarmowanie sprawdzone w grze.
@@ -19,7 +19,7 @@
 - [ ] Raster zdjęć telefonu, rzeczywista mapa GIS w telefonie i komplet wymaganych producentów typów celów.
 - [ ] Akceptacja licencji/atrybucji danych w dystrybuowanym pakiecie i dołączenie źródłowej bazy ODbL.
 
-PR pozostaje draft. `Nadodrze_GIS` jest laboratorium integracji, nie ukończonym rozdziałem w rzeczywistym mieście. Trzy próby drogowe nie oznaczają wykonania sześciu scenariuszy z rozszerzenia.
+PR pozostaje draft. `Nadodrze_GIS` jest laboratorium integracji, nie ukończonym rozdziałem w rzeczywistym mieście. Sześć scenariuszy jest zaimplementowanych w danych/logice, ale nie zalicza bramki odbioru bez kompilacji UE, playtestu i powiązania nagród z kampanią.
 
 ---
 
@@ -29,7 +29,7 @@ Implementacja 0.2 rozszerza zakres do 45–90 minut. Nie uznawać etapu za ukoń
 
 | Bramka | Wymagany dowód | Stan |
 |---|---|---|
-| UE5.6 Editor | UHT/UBT i uruchomienie edytora | Niewykonane |
+| UE5.8 Editor | UHT/UBT i uruchomienie edytora | Niewykonane |
 | Content | Import materiałów/audio, mapa i poprawny navmesh całego obszaru | Niewykonane w UE |
 | Windows x64 | Development/Shipping EXE uruchomione bez edytora | Niewykonane |
 | Pełny rozdział | Menu → mieszkanie → jedna z dwóch dróg → sklep → paczka → zasadzka → garaż → warsztat → rozdział 2 | Niewykonane w grze |
@@ -47,6 +47,6 @@ W Development zbierz `stat unit`, `stat gpu`, `stat rhi`, `stat memory` i ślad 
 
 ## Ograniczenia oprawy i implementacji
 
-Geometria i postacie są bryłowymi proxy. Dokumenty, fotografie, monitoring i finał przekazują obecnie informacje głównie tekstowo; nie ma finalnych fotografii, nagranego materiału CCTV, dialogów głosowych ani filmowej sceny finałowej. Wizjer korzysta z rzeczywistej kamery korytarza. Audio jest syntezowane. Źródłowa animacja CC0 wstawania (`Lie_StandUp`) jest dodana i zmapowana; retargeting na docelowy szkielet oraz odbiór jej odtwarzania w UE pozostają niewykonane.
+Geometria i postacie są bryłowymi proxy. Dokumenty, fotografie, monitoring i finał przekazują obecnie informacje głównie tekstowo; nie ma finalnych fotografii, nagranego materiału CCTV, dialogów głosowych ani filmowej sceny finałowej. Wizjer korzysta z rzeczywistej kamery korytarza. Audio jest syntezowane. Wstawanie jest interakcją rozpoczynającą zadanie, bez finalnej animacji. Źródłowa animacja CC0 wstawania (`Lie_StandUp`) jest dodana i zmapowana; retargeting na docelowy szkielet oraz odbiór jej odtwarzania w UE pozostają niewykonane.
 
 AI używa natywnej maszyny stanów, bez Behavior Tree/Blackboard. Drugi rozdział jest odblokowany logicznie, ale nie ma jeszcze zawartości. Mapa nie używa World Partition ani level streamingu — dotyczy zamkniętego fragmentu miasta. Zgodność API UE, kolizji, rozmieszczenia interakcji oraz trudności wymaga kompilacji i przejścia w silniku. Nie dodano sztucznych pauz wydłużających czas do 45–90 minut.

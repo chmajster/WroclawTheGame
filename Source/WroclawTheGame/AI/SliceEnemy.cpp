@@ -5,12 +5,16 @@
 #include "Content/WorldCatalog.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
+#include "UObject/ConstructorHelpers.h"
+#include "Engine/StaticMesh.h"
+#include "Materials/MaterialInterface.h"
 #include "Engine/DamageEvents.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISense_Sight.h"
 #include "Perception/AISense_Hearing.h"
+#include "Components/StaticMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Character/SliceCharacter.h"
@@ -30,6 +34,13 @@ ASliceEnemy::ASliceEnemy()
     GetCharacterMovement()->MaxWalkSpeed = 210;
     GetCharacterMovement()->bOrientRotationToMovement = true;
     bUseControllerRotationYaw = false;
+    auto *Body = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ProxyBody"));
+    Body->SetupAttachment(RootComponent);
+    static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
+    Body->SetStaticMesh(Cube.Object);
+    Body->SetRelativeScale3D(FVector(0.45, 0.5, 1.75));
+    Body->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    Body->SetCanEverAffectNavigation(false);
 }
 void ASliceEnemy::BeginPlay()
 {
@@ -58,6 +69,8 @@ void ASliceEnemy::BeginPlay()
         SetActorEnableCollision(false);
     }
 
+    if (auto *M = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Generated/M_Enemy.M_Enemy")))
+        FindComponentByClass<UStaticMeshComponent>()->SetMaterial(0, M);
 }
 float ASliceEnemy::TakeDamage(float Damage, const FDamageEvent &Event, AController *EventInstigator,
                               AActor *Causer)
@@ -138,6 +151,7 @@ void ASliceEnemyController::ResetBrain()
     bSees = false;
     bVisualCandidate = false;
     bRadioSent = false;
+    Suspicion = 0.0f;
     AlertSince = -1;
     LastSeen = -100;
     LastMove = -100;
@@ -171,16 +185,8 @@ void ASliceEnemyController::Perceived(AActor *Actor, FAIStimulus Stimulus)
     if (Stimulus.Type == UAISense::GetSenseID<UAISense_Sight>())
     {
         bVisualCandidate = Stimulus.WasSuccessfullySensed();
-        bSees = bVisualCandidate &&
-                GetWorld()->GetSubsystem<UOpenWorldSubsystem>()->VisibilityTo(Enemy, Player) > .12f;
-        if (bSees)
-        {
+        if (bVisualCandidate)
             LastKnown = Player->GetActorLocation();
-            LastSeen = GetWorld()->GetTimeSeconds();
-            Transition(EEnemyState::Chase);
-            if (!Player->Mission()->State.Tagged("Achievement.CourtyardPassed"))
-                Player->Mission()->State.courtyardDetected = true;
-        }
     }
     else if (Stimulus.WasSuccessfullySensed() && !bSees)
     {
@@ -226,25 +232,42 @@ void ASliceEnemyController::Tick(float Dt)
     SetActorTickInterval(.15f);
     const double Now = GetWorld()->GetTimeSeconds();
     const float Distance = FVector::Dist(Enemy->GetActorLocation(), Player->GetActorLocation());
-    bSees = bVisualCandidate &&
-            GetWorld()->GetSubsystem<UOpenWorldSubsystem>()->VisibilityTo(Enemy, Player) > .12f;
-    if (bSees && LineOfSightTo(Player))
+    const float Visibility = GetWorld()->GetSubsystem<UOpenWorldSubsystem>()->VisibilityTo(Enemy, Player);
+    bSees = bVisualCandidate && Visibility > .12f && LineOfSightTo(Player);
+    if (bSees)
     {
         LastKnown = Player->GetActorLocation();
-        LastSeen = Now;
-        Transition(Distance < 155 ? EEnemyState::Attack : EEnemyState::Chase);
+        const float HeatVigilance = 1.0f + Player->Mission()->WorldState.HeatLevel() * 0.12f;
+        Suspicion = FMath::Clamp(
+            Suspicion + Dt * FMath::Lerp(0.35f, 1.6f, Visibility) * HeatVigilance,
+            0.0f, 1.0f);
+        if (Suspicion >= 0.25f && (State == EEnemyState::Patrol || State == EEnemyState::ReturnToPatrol))
+            Transition(EEnemyState::Suspicious);
+        if (Suspicion >= 0.78f)
+        {
+            LastSeen = Now;
+            Transition(Distance < 155 ? EEnemyState::Attack : EEnemyState::Chase);
+            if (!Player->Mission()->State.Tagged("Achievement.CourtyardPassed"))
+                Player->Mission()->State.courtyardDetected = true;
+        }
     }
-    else if ((State == EEnemyState::Chase || State == EEnemyState::Attack) && Now - LastSeen > 1.8)
+    else
+    {
+        Suspicion = FMath::Max(0.0f, Suspicion - Dt * 0.22f);
+    }
+    if (!bSees && (State == EEnemyState::Chase || State == EEnemyState::Attack) && Now - LastSeen > 1.8)
     {
         bSees = false;
         Transition(EEnemyState::LostPlayer);
     }
     FVector Goal = LastKnown;
-    if (bSees)
+    if (bSees && (State == EEnemyState::Chase || State == EEnemyState::Attack))
     {
         if (AlertSince < 0)
             AlertSince = Now;
-        if (!bRadioSent && Now - AlertSince >= Definition->radio_delay)
+        const double EffectiveRadioDelay =
+            FMath::Max(0.6, Definition->radio_delay * (1.0 - Player->Mission()->WorldState.HeatLevel() * 0.08));
+        if (!bRadioSent && Suspicion >= 0.95f && Now - AlertSince >= EffectiveRadioDelay)
         {
             bRadioSent = true;
             GetWorld()->GetSubsystem<UGameplayEventBus>()->Emit(
@@ -255,6 +278,7 @@ void ASliceEnemyController::Tick(float Dt)
     {
         AlertSince = -1;
         bRadioSent = false;
+        Suspicion = FMath::Max(0.0f, Suspicion - Dt * 0.35f);
     }
     Enemy->GetCharacterMovement()->MaxWalkSpeed =
         (State == EEnemyState::Chase) ? Definition->chase : Definition->walk;

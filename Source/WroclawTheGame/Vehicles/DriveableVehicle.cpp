@@ -90,7 +90,8 @@ void ADriveableVehicle::SetVisualMeshes(UStaticMesh *BodyMesh, UStaticMesh *Whee
 void ADriveableVehicle::BeginPlay()
 {
     Super::BeginPlay();
-    StreamingProbe=GetWorld()->SpawnActor<ACityStreamingProbe>();
+    if (bPersistentPlayerVehicle)
+        StreamingProbe = GetWorld()->SpawnActor<ACityStreamingProbe>();
     if (!Definition)
         Definition = NewObject<UVehicleDefinition>(this);
     Chassis->SetMassOverrideInKg(NAME_None, FMath::Clamp(Definition->MassKg, 400.f, 5000.f));
@@ -102,7 +103,29 @@ void ADriveableVehicle::BeginPlay()
 }
 bool ADriveableVehicle::CanEnterVehicle_Implementation(APawn *Passenger) const
 {
-    return Passenger && !Driver && Health > 0 && Chassis->GetPhysicsLinearVelocity().Size() < 100;
+    return Passenger && !Driver && !bAIControlled && Health > 0 &&
+           Chassis->GetPhysicsLinearVelocity().Size() < 100;
+}
+void ADriveableVehicle::SetAIControl(bool bEnabled, float Throttle, float Steering, bool bBrake)
+{
+    const bool bWasAIControlled = bAIControlled;
+    bAIControlled = bEnabled;
+    AIThrottle = bEnabled ? FMath::Clamp(Throttle, -1.0f, 1.0f) : 0.0f;
+    AISteering = bEnabled ? FMath::Clamp(Steering, -1.0f, 1.0f) : 0.0f;
+    bAIBrake = bEnabled && bBrake;
+    if (bEnabled)
+    {
+        bEngine = Health > 0;
+        if (!bWasAIControlled)
+            bWaitingForGround = true;
+        SetActorTickEnabled(true);
+    }
+    else if (!Driver)
+    {
+        bEngine = false;
+        Speed = 0.0f;
+        Chassis->SetSimulatePhysics(false);
+    }
 }
 bool ADriveableVehicle::OpenStorage_Implementation(APawn *User)
 {
@@ -186,7 +209,7 @@ void ADriveableVehicle::Tick(float Dt)
         Chassis->SetSimulatePhysics(true);
         bWaitingForGround = false;
     }
-    if (!Driver) { Chassis->SetSimulatePhysics(false); Speed=0; return; }
+    if (!Driver && !bAIControlled) { Chassis->SetSimulatePhysics(false); Speed=0; return; }
     if (!Chassis->IsSimulatingPhysics())
         return;
     const FVector Velocity = Chassis->GetPhysicsLinearVelocity(), Forward = GetActorForwardVector(),
@@ -201,10 +224,11 @@ void ADriveableVehicle::Tick(float Dt)
         }
         else StreamingProbe->Source->DisableStreamingSource();
     }
-    float Throttle = 0, Steering = 0;
-    bool Brake = false;
+    float Throttle = bAIControlled ? AIThrottle : 0.0f;
+    float Steering = bAIControlled ? AISteering : 0.0f;
+    bool Brake = bAIControlled && bAIBrake;
     auto *PC = Cast<ASliceController>(GetController());
-    if (PC && !PC->GameplayBlocked() && !PC->IsPaused())
+    if (Driver && PC && !PC->GameplayBlocked() && !PC->IsPaused())
     {
         if (PC->WasInputKeyJustPressed(EKeys::E) && GetWorld()->GetTimeSeconds() - EnteredAt > .4)
         {
@@ -256,7 +280,7 @@ void ADriveableVehicle::Tick(float Dt)
     {
         const bool Opposing = Throttle * Speed < -30;
         const float Target = Throttle >= 0 ? Definition->MaxSpeed : Definition->ReverseSpeed;
-        if (Brake || Opposing || !Driver)
+        if (Brake || Opposing || (!Driver && !bAIControlled))
             Chassis->AddForce(-Forward *
                               FMath::Clamp(Speed / FMath::Max(Dt, .005f), -Definition->BrakeDeceleration,
                                            Definition->BrakeDeceleration) *
@@ -289,7 +313,13 @@ void ADriveableVehicle::Collision(UPrimitiveComponent *Hit, AActor *Other,
     if (Now - LastImpact < .3 || Impulse.Size() / Chassis->GetMass() < 250)
         return;
     LastImpact = Now;
-    TakeDamage((Impulse.Size() / Chassis->GetMass() - 250) * .035f, FDamageEvent(), nullptr, Other);
+    const float Severity = Impulse.Size() / Chassis->GetMass() - 250.0f;
+    TakeDamage(Severity * .035f, FDamageEvent(), nullptr, Other);
+    if (bPersistentPlayerVehicle && Driver)
+    {
+        auto *Mission = GetWorld()->GetGameInstance()->GetSubsystem<USliceMission>();
+        Mission->WorldState.AddHeat(FMath::Clamp(Severity * 0.003f, 0.5f, 4.0f));
+    }
 }
 FString ADriveableVehicle::Status() const
 {

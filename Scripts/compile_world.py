@@ -1,5 +1,5 @@
 """Validated world profiles -> portable definitions. No per-district code generation."""
-import json,argparse,math
+import json,argparse,math,os
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 SCHEMAS={
@@ -62,7 +62,9 @@ def generate(w,c):
  return '\n'.join(lines)+'\n'
 if __name__=='__main__':
  parser=argparse.ArgumentParser();parser.add_argument('--check',action='store_true');args=parser.parse_args()
- text=generate(json.loads((ROOT/'Data/openworld.json').read_text()),json.loads((ROOT/'Data/chapter1.json').read_text()));p=ROOT/'Source/WroclawTheGame/Content/WorldCatalog.h'
+ world_source=Path(os.environ.get('WTG_WORLD_INPUT',ROOT/'Data/openworld.json'))
+ chapter_source=Path(os.environ.get('WTG_CHAPTER_INPUT',ROOT/'Data/chapter1.json'))
+ text=generate(json.loads(world_source.read_text(encoding='utf-8')),json.loads(chapter_source.read_text(encoding='utf-8')));p=ROOT/'Source/WroclawTheGame/Content/WorldCatalog.h'
  if args.check:
   if not p.exists() or p.read_text()!=text:raise SystemExit('WorldCatalog.h is stale')
  else:p.write_text(text,encoding='utf-8')

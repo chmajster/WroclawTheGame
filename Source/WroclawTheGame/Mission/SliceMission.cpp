@@ -10,7 +10,14 @@
 #include "Systems/GameplayEventBus.h"
 #include "Core/WTGLog.h"
 #include "Data/ChapterDefinition.h"
+#include "Data/CampaignMigrationDefinition.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SceneCaptureComponent2D.h"
+#include "Engine/TextureRenderTarget2D.h"
+#include "ImageUtils.h"
+#include "Misc/FileHelper.h"
+#include "Misc/Paths.h"
+#include "HAL/FileManager.h"
 #include "Save/SliceSave.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
@@ -24,6 +31,31 @@ const TCHAR *SaveSlotName = TEXT("Przebudzenie_v3");
 FString U(const std::string &S)
 {
     return UTF8_TO_TCHAR(S.c_str());
+}
+bool ValidCampaignWorldPosition(const FVector &Position)
+{
+    constexpr double MaxHorizontal = 5000000.0; // 50 km from project origin.
+    constexpr double MinVertical = -200000.0;
+    constexpr double MaxVertical = 200000.0;
+    return !Position.ContainsNaN() &&
+           FMath::Abs(Position.X) <= MaxHorizontal &&
+           FMath::Abs(Position.Y) <= MaxHorizontal &&
+           Position.Z >= MinVertical && Position.Z <= MaxVertical;
+}
+const UCampaignMigrationDefinition *ActiveCampaignMigration(const UWorld *World)
+{
+    if (!World || !World->GetMapName().Contains(TEXT("Nadodrze_GIS")))
+        return nullptr;
+    for (TActorIterator<ACampaignMigrationRegistry> It(World); It; ++It)
+        if (It->Definition)
+            return It->Definition;
+    return nullptr;
+}
+FString CurrentCoordinateSpace(const UWorld *World)
+{
+    if (const auto *Migration = ActiveCampaignMigration(World))
+        return Migration->TargetSpace;
+    return TEXT("BlockoutV1");
 }
 
 } // namespace
@@ -41,7 +73,10 @@ void USliceMission::NewGame()
     WorldState.seed = static_cast<uint32>(FMath::RandRange(1, MAX_int32));
     bDebugSession = false;
     State = Wroclaw::Progress(FMath::RandRange(0, static_cast<int32>(Wroclaw::LightVariants().size()) - 1));
-    Anchor = FVector(250, 400, 456);
+    if (const auto *Awake = Wroclaw::Progress::Find("awake"))
+        Anchor = FVector(Awake->x, Awake->y, Awake->z);
+    else
+        Anchor = FVector(250, 400, 456);
     bInGame = true;
     bShowMenu = false;
     bDead = false;
@@ -70,10 +105,31 @@ bool USliceMission::LoadState(bool bApply)
         Cast<USliceSave>(
             UGameplayStatics::LoadGameFromSlot(Legacy ? TEXT("Przebudzenie_v2") : SaveSlotName, 0));
     if (!S || (S->Version != Wroclaw::Progress::Version && !(Legacy && S->Version == 2)) ||
-        S->History.Num() > static_cast<int32>(Wroclaw::Catalog().size()) || S->Anchor.ContainsNaN() ||
-        S->Anchor.X < 0 || S->Anchor.X > 15800 || S->Anchor.Y < 0 || S->Anchor.Y > 9300 ||
-        S->Anchor.Z < -400 || S->Anchor.Z > 1500)
+        S->History.Num() > static_cast<int32>(Wroclaw::Catalog().size()) ||
+        !ValidCampaignWorldPosition(S->Anchor))
         return false;
+
+    FVector LoadedAnchor = S->Anchor;
+    TMap<FString, FWTGNPCSnapshot> LoadedNPCs = S->NPCs;
+    FString SaveSpace = S->CoordinateSpace.IsEmpty() ? TEXT("BlockoutV1") : S->CoordinateSpace;
+    const FString ActiveSpace = CurrentCoordinateSpace(GetWorld());
+    if (SaveSpace != ActiveSpace)
+    {
+        const auto *Migration = ActiveCampaignMigration(GetWorld());
+        if (SaveSpace != TEXT("BlockoutV1") || ActiveSpace != TEXT("WroclawGISV1") || !Migration ||
+            !Migration->TransformLegacyPosition(LoadedAnchor, LoadedAnchor))
+            return false;
+        for (auto &Pair : LoadedNPCs)
+        {
+            FTransform Migrated;
+            if (!Migration->TransformLegacyTransform(Pair.Value.Transform, Migrated))
+                return false;
+            Pair.Value.Transform = Migrated;
+        }
+        if (!ValidCampaignWorldPosition(LoadedAnchor))
+            return false;
+    }
+
     Wroclaw::Progress Candidate(S->Variant);
     if (Legacy)
     {
@@ -141,15 +197,14 @@ bool USliceMission::LoadState(bool bApply)
     }
     if (!Candidate.Valid())
         return false;
-    if (S->NPCs.Num() > 128 || S->Settings.Num() > 64)
+    if (LoadedNPCs.Num() > 128 || S->Settings.Num() > 64)
         return false;
-    for (const auto &Pair : S->NPCs)
+    for (const auto &Pair : LoadedNPCs)
     {
         const auto &Snap = Pair.Value;
         const FVector Pos = Snap.Transform.GetLocation();
         if (Snap.Transform.ContainsNaN() || !FMath::IsFinite(Snap.Health) || Snap.Health < 0 ||
-            Snap.Health > 10000 || Pos.X < 0 || Pos.X > 15800 || Pos.Y < 0 || Pos.Y > 9300 || Pos.Z < -400 ||
-            Pos.Z > 1800)
+            Snap.Health > 10000 || !ValidCampaignWorldPosition(Pos))
             return false;
         const std::string Id = TCHAR_TO_UTF8(*Pair.Key);
         if (std::none_of(Wroclaw::Guards().begin(), Wroclaw::Guards().end(),
@@ -162,8 +217,8 @@ bool USliceMission::LoadState(bool bApply)
     {
         State = Candidate;
         WorldState = World;
-        Anchor = S->Anchor;
-        NPCs = S->NPCs;
+        Anchor = LoadedAnchor;
+        NPCs = MoveTemp(LoadedNPCs);
         Settings = S->Settings;
         GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Restore(S->CharacterCustomization);
     }
@@ -199,6 +254,7 @@ bool USliceMission::SaveCheckpoint()
         return false;
     }
     auto *S = Cast<USliceSave>(UGameplayStatics::CreateSaveGameObject(USliceSave::StaticClass()));
+    S->CoordinateSpace = CurrentCoordinateSpace(GetWorld());
     S->CharacterCustomization = GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Committed;
     if (!State.history.empty())
         for (TActorIterator<ASliceEnemy> It(GetWorld()); It; ++It)
@@ -452,8 +508,69 @@ bool USliceMission::CapturePhoto()
         Notify(TEXT("Brak czytelnego obiektu w kadrze."));
         return false;
     }
+    constexpr int32 PhotoWidth = 1280;
+    constexpr int32 PhotoHeight = 720;
+    auto *Target = NewObject<UTextureRenderTarget2D>(P);
+    if (!Target)
+    {
+        Notify(TEXT("Nie udało się utworzyć bufora zdjęcia."));
+        return false;
+    }
+    Target->RenderTargetFormat = ETextureRenderTargetFormat::RTF_RGBA8;
+    Target->InitAutoFormat(PhotoWidth, PhotoHeight);
+    Target->UpdateResourceImmediate(true);
+
+    auto *Capture = NewObject<USceneCaptureComponent2D>(P);
+    if (!Capture)
+    {
+        Notify(TEXT("Nie udało się uruchomić aparatu."));
+        return false;
+    }
+    Capture->RegisterComponent();
+    Capture->AttachToComponent(P->Camera, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+    Capture->TextureTarget = Target;
+    Capture->FOVAngle = P->Camera->FieldOfView;
+    Capture->CaptureSource = ESceneCaptureSource::SCS_FinalColorLDR;
+    Capture->bCaptureEveryFrame = false;
+    Capture->bCaptureOnMovement = false;
+    Capture->CaptureScene();
+
+    FTextureRenderTargetResource *Resource = Target->GameThread_GetRenderTargetResource();
+    TArray<FColor> Pixels;
+    if (!Resource || !Resource->ReadPixels(Pixels) || Pixels.Num() != PhotoWidth * PhotoHeight)
+    {
+        Capture->DestroyComponent();
+        Notify(TEXT("Nie udało się odczytać obrazu aparatu."));
+        return false;
+    }
+
+    TArray<uint8> Png;
+    FImageUtils::CompressImageArray(PhotoWidth, PhotoHeight, Pixels, Png);
+    if (Png.IsEmpty())
+    {
+        Capture->DestroyComponent();
+        Notify(TEXT("Nie udało się zakodować zdjęcia."));
+        return false;
+    }
+
+    FString SafeId = U(Best->id);
+    for (const TCHAR Invalid : FString(TEXT("/\\:*?\"<>|")))
+        SafeId.ReplaceCharInline(Invalid, TEXT('_'));
+    const FString Directory = FPaths::Combine(FPaths::ProjectSavedDir(), TEXT("Photos"));
+    IFileManager::Get().MakeDirectory(*Directory, true);
+    const FString Filename = FString::Printf(
+        TEXT("%s_%lld.png"), *SafeId, FDateTime::UtcNow().ToUnixTimestamp());
+    const FString FullPath = FPaths::Combine(Directory, Filename);
+    if (!FFileHelper::SaveArrayToFile(Png, *FullPath))
+    {
+        Capture->DestroyComponent();
+        Notify(TEXT("Nie udało się zapisać zdjęcia na dysku."));
+        return false;
+    }
+
+    Capture->DestroyComponent();
     WorldState.photos.insert(Best->id);
-    Notify(TEXT("Zapisano opis fotografii w galerii."));
+    Notify(TEXT("Zapisano zdjęcie PNG w galerii."));
     return true;
 }
 FString USliceMission::HintText() const

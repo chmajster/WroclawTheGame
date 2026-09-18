@@ -5,6 +5,8 @@
 #include "Systems/WroclawMapSubsystem.h"
 #include "Systems/CityGameplaySubsystem.h"
 #include "Engine/World.h"
+#include "Misc/Paths.h"
+#include "HAL/FileManager.h"
 USliceMission *UPhoneSystem::Mission() const
 {
     return GetLocalPlayer()->GetGameInstance()->GetSubsystem<USliceMission>();
@@ -31,13 +33,22 @@ void UPhoneSystem::Initialize(FSubsystemCollectionBase &C)
     });
     Register(TEXT("gallery"), [this]() {
         FString Text;
+        const FString Directory = FPaths::Combine(FPaths::ProjectSavedDir(), TEXT("Photos"));
         for (const auto &Id : Mission()->WorldState.photos)
         {
             const auto *A = Wroclaw::Progress::Find(Id);
-            if (A)
-                Text += FString(UTF8_TO_TCHAR(A->label.c_str())) + TEXT("\n");
+            if (!A)
+                continue;
+            FString SafeId = UTF8_TO_TCHAR(Id.c_str());
+            for (const TCHAR Invalid : FString(TEXT("/\\:*?\"<>|")))
+                SafeId.ReplaceCharInline(Invalid, TEXT('_'));
+            TArray<FString> Files;
+            IFileManager::Get().FindFiles(
+                Files, *FPaths::Combine(Directory, SafeId + TEXT("_*.png")), true, false);
+            Text += FString(UTF8_TO_TCHAR(A->label.c_str())) +
+                    (Files.IsEmpty() ? TEXT(" — brak rastra\n") : TEXT(" — PNG zapisany\n"));
         }
-        return Text;
+        return Text.IsEmpty() ? TEXT("Brak zdjęć") : Text;
     });
     Register(TEXT("map"), [this]() { return Mission()->WorldMapText() + GetWorld()->GetSubsystem<UWroclawMapSubsystem>()->PhoneMapText(); });
     Register(TEXT("notes"),

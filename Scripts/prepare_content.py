@@ -3,9 +3,13 @@ from pathlib import Path
 import sys
 import json
 import traceback
+import os
 import unreal
 
 ROOT = Path(unreal.Paths.project_dir()).resolve()
+CHAPTER_INPUT = Path(os.environ.get('WTG_CHAPTER_INPUT', ROOT / 'Data/chapter1.json'))
+WORLD_INPUT = Path(os.environ.get('WTG_WORLD_INPUT', ROOT / 'Data/openworld.json'))
+ENVIRONMENT_INPUT = Path(os.environ.get('WTG_ENVIRONMENT_INPUT', ROOT / 'Data/environment.json'))
 sys.path.insert(0, str(ROOT / 'Scripts'))
 from make_source_assets import generate, MATERIALS, SOUNDS, LOOPS
 MARKER = ROOT / 'Saved/GeneratedContent.ok'
@@ -132,7 +136,7 @@ def prepare():
     levels = unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
     actors = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
     map_path = '/Game/Maps/Przebudzenie_Source'
-    # This package is generated exclusively from Data/environment.json, never an authored user map.
+    # This package is generated exclusively from the selected validated environment input.
     if unreal.EditorAssetLibrary.does_asset_exist(map_path):
         if not levels.new_level('/Game/Maps/WTG_BakeScratch'):raise RuntimeError('Cannot switch away from generated map')
         if not unreal.EditorAssetLibrary.delete_asset(map_path):raise RuntimeError('Cannot replace generated map')
@@ -158,7 +162,7 @@ def prepare():
         actor.set_editor_property('data_layer_assets',[layer_assets['Architecture' if label.startswith('environment_') else 'Gameplay']])
         return actor
     cube=unreal.load_asset('/Engine/BasicShapes/Cube')
-    environment_records=json.loads((ROOT/'Data/environment.json').read_text(encoding='utf-8'))
+    environment_records=json.loads(ENVIRONMENT_INPUT.read_text(encoding='utf-8'))
     for record in environment_records:
         kind=record['type']
         if kind=='box':
@@ -207,7 +211,7 @@ def prepare():
         apply_static_mesh(actor,free_models[record['model']],record.get('scale',[1,1,1]))
         actor.set_editor_property('hlod_layer',hlod)
 
-    content=json.loads((ROOT/'Data/chapter1.json').read_text(encoding='utf-8'))
+    content=json.loads(CHAPTER_INPUT.read_text(encoding='utf-8'))
     for action in content['actions']:
         if action['kind'] in ('virtual','zone') or action['position'][:2]==[0,0]:continue
         authored=prop_bindings.get(action['id'],{})
@@ -227,7 +231,7 @@ def prepare():
         else:
             hide_static_visuals(actor)
             spawn_skeletal_visual(spawn,mesh,position,'action_visual_'+action['id'],rotation,scale)
-    world=json.loads((ROOT/'Data/openworld.json').read_text(encoding='utf-8'))
+    world=json.loads(WORLD_INPUT.read_text(encoding='utf-8'))
     guard_mesh=free_models[model_bindings['systems']['enemy_guard']]
     resident_mesh=free_models[model_bindings['systems']['resident_npc']]
     camera_mesh=free_models[model_bindings['systems']['surveillance_camera']]

@@ -53,6 +53,7 @@ class WROCLAWTHEGAME_API ASliceEnemyController : public AAIController
     UPROPERTY() TObjectPtr<class UAISenseConfig_Sight> Sight;
     UPROPERTY() TObjectPtr<class UAISenseConfig_Hearing> Hearing;
     bool bSees = false, bVisualCandidate = false, bRadioSent = false;
+    float Suspicion = 0.0f;
     double AlertSince = -1;
     FVector LastKnown = FVector::ZeroVector;
     double LastSeen = -100, StateSince = 0, LastAttack = -100, LastMove = -100;

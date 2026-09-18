@@ -10,6 +10,13 @@
 - Do not add new GitHub Actions workflow files unless the user explicitly requests them.
 - Keep each pull request focused on the requested change and perform local or static validation where practical.
 
+## Long-running implementation tasks
+
+- For multi-pass work that cannot be completed in one session, keep one draft PR open instead of merging partial work into `main`.
+- Maintain `docs/IMPLEMENTATION-STATE.md` as the source of truth for completed work, verification gaps, and the next concrete step.
+- Before ending a pass, update both that file and the draft PR description so the next agent can resume without reconstructing state from chat history.
+- Merge the PR only when the requested multi-pass scope reaches its acceptance gates or the user explicitly asks to merge the current partial state.
+
 ## Asset production
 
 - Route new or materially changed 3D environment/prop assets through `Pipeline/Invoke-WTGAssetPipeline.ps1`; do not treat a source model or imported FBX as finished work.

@@ -18,10 +18,10 @@ Kampania `Przebudzenie_Source` nadal jest oddzielnym blockoutem. Migracja kampan
 python -m pip install -r Scripts/gis/requirements.txt
 python Scripts/gis/build_city.py
 # Przegląd raportu: Saved/CityData/coverage.json
-.\Scripts\Build-Geography.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.6' -City -Package
+.\Scripts\Build-Geography.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.8' -City -Package
 ```
 
-W edytorze otwórz `/Game/Maps/Nadodrze_GIS`. W Development komenda konsoli `CityCoverage` przełącza podgląd sektorów, ich statusów i pozycji gracza. Overlay nie jest dostępny w Shipping. Telefon pobiera listę obszarów z tego samego katalogu co overlay. Jest to lista, nie pełny GPS ani mapa drogowa.
+W edytorze otwórz `/Game/Maps/Nadodrze_GIS`. W Development komenda konsoli `CityCoverage` przełącza podgląd sektorów, ich statusów i pozycji gracza. Overlay nie jest dostępny w Shipping. Telefon pobiera obszary z tego samego katalogu co overlay, wskazuje aktualny sektor i pozwala wybrać waypoint sektora z dystansem w linii prostej. Nie jest to jeszcze wizualna mapa 2D ani routing po grafie ulic w runtime.
 
 `UCityDefinition` jest importowany z wygenerowanego JSON i wskazywany przez stale załadowany `ACityRegistry`; dzięki twardej referencji katalog trafia do cookingu. `UWroclawMapSubsystem` udostępnia dane i wyszukuje sektor po położeniu. `UCityCoverageSubsystem` prezentuje status. Brak katalogu na mapie kampanii nie powoduje podmiany jej dzielnic.
 
@@ -47,7 +47,7 @@ Skrypt pobiera małe wycinki sekwencyjnie, dzieli zbyt gęste obszary, zachowuje
 
 `HierarchicalRouter` jest **implementacją offline w Pythonie**, testowaną względem globalnej najkrótszej ścieżki. Oddziela lokalne przeszukiwania wewnątrz sektora od przejść przez portale. Obsługuje ponowne wejście do tego samego sektora, jednokierunkowość i osobny tryb pieszy. Nie łączy bliskich geometrycznie dróg bez wspólnej topologii OSM. Graf district route można odczytać z sekwencji sektorów i ich przypisania do dzielnic; osobnego trzeciego poziomu optymalizacji jeszcze nie wdrożono.
 
-Mosty, tunele i niezerowe warstwy są wykluczane z tras do czasu opracowania wysokości. Wyjątkiem jest sześć jawnie skonfigurowanych pomostów z `Data/city_structures.json`: geometria i graf otrzymują te same interpolowane wysokości przyczółków. Są to powierzchnie prototypowe, nie pomiary geodezyjne mostów. Wszystkie sześć sektorów jest teraz osiągalne w obie strony w grafie samochodowym i pieszym. Osiągalność w grafie **nie dowodzi fizycznej przejezdności** w Unreal. Podstawowa populacja runtime odtwarza osiem zamkniętych tras obliczonych na tym grafie. Brakuje pełnego dynamicznego VehicleAI, ograniczeń skrętów OSM, pełnej sieci tramwajów i dynamicznych blokad.
+Mosty, tunele i niezerowe warstwy są wykluczane z tras do czasu opracowania wysokości. Wyjątkiem jest sześć jawnie skonfigurowanych pomostów z `Data/city_structures.json`: geometria i graf otrzymują te same interpolowane wysokości przyczółków. Są to powierzchnie prototypowe, nie pomiary geodezyjne mostów. Wszystkie sześć sektorów jest teraz osiągalne w obie strony w grafie samochodowym i pieszym. Osiągalność w grafie **nie dowodzi fizycznej przejezdności** w Unreal. Podstawowa populacja runtime odtwarza osiem zamkniętych tras obliczonych na tym grafie. Trasy piesze korzystają z agentów z poziomami Full/Simplified/Dormant, a trasy samochodowe z ograniczonej puli fizycznych `ACityTrafficVehicle` sterowanych przez `UVehicleAIDriverComponent`. Jest to pierwszy dynamiczny DriverAI, nadal bez pełnych skrzyżowań, ograniczeń skrętów OSM, sygnalizacji, pełnej sieci tramwajów, pościgów i dynamicznych blokad.
 
 ## Statusy i odbiór
 
@@ -85,15 +85,15 @@ Trzy pokoje Hub i kryjówka Borka są prostymi wnętrzami blockoutu z klatką, s
 
 `WroclawCity_v1` zapisuje tylko ukończone akcje, punkt wznowienia oraz położenie/stan samochodu. Nie zapisuje całego GIS ani populacji. Nieznane ID pozostają w zapisie przy aktualizacji mapy. Wadliwy/nowszy zapis blokuje automatyczne nadpisanie. Błąd zapisu wycofuje zaliczenie aktywności. `N` w menu miasta rozpoczyna nowy zapis miasta, `L` odczytuje go. Pliki kampanii nie są zmieniane.
 
-Populacja korzysta z puli maksymalnie 24 prostych agentów (po trzy na aktywną trasę). Agenci pojawiają się w pobliżu gracza, jadą/chodzą po zweryfikowanych krawędziach grafu i zatrzymują przed przeszkodą lub brakiem podłoża. To ruch kinematyczny blockoutu, bez pełnej symulacji skrzyżowań i zachowania kierowców. Zaparkowany samochód gracza wyłącza fizykę. Jazda aktywuje dodatkowe źródło streamingu 2,5 sekundy przed aktualnym wektorem prędkości, maksymalnie 150 metrów dalej.
+Populacja rozdziela pieszych i samochody. Piesi korzystają z puli maksymalnie 24 lekkich agentów z LOD symulacji. Samochody korzystają domyślnie z maksymalnie 6 transient fizycznych pojazdów opartych o ten sam `ADriveableVehicle` co samochód gracza; mają podążanie po trasie, płynny skręt/prędkość i hamowanie przed przeszkodą. Auta traffic nie są zapisywane jako pojazd gracza i nie tworzą własnych predykcyjnych źródeł streamingu. Brakuje odbioru w UE, zachowań skrzyżowań i zaawansowanego DriverAI. Zaparkowany samochód gracza wyłącza fizykę. Jazda aktywuje dodatkowe źródło streamingu 2,5 sekundy przed aktualnym wektorem prędkości, maksymalnie 150 metrów dalej.
 
 ## Odbiór w Unreal
 
 1. UHT/UBT, wypiek mapy przez `Build-Geography.ps1 -City`, kontrola World Partition, HLOD oraz jazda/pieszy przegląd sektorów.
 2. Sprawdzenie prześwitu i kolizji sześciu pomostów, wody, skrzyżowań oraz podłoża agentów. Pozostałe nieopracowane mosty i tunele nadal są pomijane.
 3. Przejście wszystkich czterech zadań, sekretów, zdarzeń i wnętrz; save/load na ulicy, we wnętrzu i podczas postoju samochodu. W Session Frontend uruchomić test `WTG.City.SaveMemoryRoundTrip` (dodany, lokalnie nieuruchomiony).
-4. Pomiar pamięci, FPS i pop-in przy szybkiej jeździe; ręczna poprawa landmarków, punktów interakcji i profili fasad. Markery, dynamiczni agenci, drzwi, samochód oraz bazowe wyposażenie wnętrz korzystają już z audytowanych modeli CC0 przez `Data/model_bindings.json`; pozostaje wizualny odbiór ich transformacji, LOD, kolizji i materiałów w Unreal.
-5. Migracja kampanii i jej wnętrz do GIS pozostaje osobnym zadaniem. Dopiero po odbiorze Wave 1 — pełny content pass Wave 2.
+4. Pomiar pamięci, FPS i pop-in przy szybkiej jeździe; ręczna poprawa landmarków, punktów interakcji i profili fasad. Markery, piesi, drzwi, samochód oraz bazowe wyposażenie wnętrz korzystają z audytowanych modeli przez `Data/model_bindings.json`; pozostaje wizualny odbiór transformacji, LOD, kolizji i materiałów w Unreal.
+5. Generator migracji kampanii do GIS jest zaimplementowany, ale linked blockouty wnętrz, save/load i rozmieszczenie w rzeczywistych budynkach wymagają odbioru w UE. Dopiero po odbiorze Wave 1 — pełny content pass Wave 2.
 
 Pozostałe wymagania załącznika, m.in. predykcja streamingu według trasy misji/wyścigu, pamięć według kategorii, questy wielodzielnicowe, AlleyNetwork, stany zagrożenia, trasy ucieczki i automatyczny city tour w silniku, pozostają niewdrożone. Nie zastąpiono ich pustymi klasami.
 
