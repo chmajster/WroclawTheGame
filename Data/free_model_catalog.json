@@ -309,5 +309,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/drawer_cabinet/drawer_cabinet_1k.fbx"
+  },
+  {
+    "slug": "GothicBed_01",
+    "name": "Gothic Bed 01",
+    "intended_use": "Bed proxy for the opening apartment scene.",
+    "source_page": "https://polyhaven.com/a/GothicBed_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Kirill Sannikov": "All"
+    },
+    "category": "Furniture/Beds",
+    "dimensions_mm": [
+      1493.751883506775,
+      2039.9999022483826,
+      1533.8402975614968
+    ],
+    "files_hash": "1ab8ed2b813d573962623fdafa37c84def8e8447",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/GothicBed_01/GothicBed_01_1k.fbx"
   }
 ]

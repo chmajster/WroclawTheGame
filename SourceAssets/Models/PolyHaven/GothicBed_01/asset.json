@@ -1,0 +1,67 @@
+{
+  "slug": "GothicBed_01",
+  "name": "Gothic Bed 01",
+  "intended_use": "Bed proxy for the opening apartment scene.",
+  "source_page": "https://polyhaven.com/a/GothicBed_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Kirill Sannikov": "All"
+  },
+  "category": "Furniture/Beds",
+  "tags": [
+    "vintage",
+    "gothic",
+    "furniture",
+    "bed",
+    "wood",
+    "decorative"
+  ],
+  "dimensions_mm": [
+    1493.751883506775,
+    2039.9999022483826,
+    1533.8402975614968
+  ],
+  "files_hash": "1ab8ed2b813d573962623fdafa37c84def8e8447",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/GothicBed_01/GothicBed_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/GothicBed_01/GothicBed_01_1k.fbx",
+      "bytes": 920572,
+      "md5": "25666b257690432d950304090e14ce09",
+      "sha256": "aaba4817451ddf7bcf40b69617064af61c21f49f704380b5e6533243db1417a1",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/GothicBed_01/GothicBed_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/GothicBed_01/textures/GothicBed_01_diff_1k.jpg",
+      "bytes": 116672,
+      "md5": "d716199b889debf74c6fb2a8435f3625",
+      "sha256": "f7e8611a731a87a42a35d92e59f78b848ac20475827b79cb8aa34df0dd5bcbd5",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/GothicBed_01/GothicBed_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/GothicBed_01/textures/GothicBed_01_metallic_1k.exr",
+      "bytes": 4784,
+      "md5": "837351cdc55dce819689ce9a20ee0acf",
+      "sha256": "2cd7f3309eda8ed96b5dba973b2dbd57d8520b9a960dcbf89e0d3ac5413219b9",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/GothicBed_01/GothicBed_01_metallic_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/GothicBed_01/textures/GothicBed_01_nor_gl_1k.exr",
+      "bytes": 1314922,
+      "md5": "0024bd16539c520d33cbbb5f2b08bb4f",
+      "sha256": "41c1c8d05f1c697223a32d75d7c6d49aa45f6ec6fe558edfcabeb5503f0bdb6a",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/GothicBed_01/GothicBed_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/GothicBed_01/textures/GothicBed_01_roughness_1k.jpg",
+      "bytes": 107427,
+      "md5": "047d5e5fe0779e731bb196d00ac59c3c",
+      "sha256": "5d10f42d4445042e95ccd51a72129672fd5d934e8da1955e6b5dba0c49b1b0ef",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/GothicBed_01/GothicBed_01_roughness_1k.jpg"
+    }
+  ]
+}
