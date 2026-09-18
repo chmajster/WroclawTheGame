@@ -118,6 +118,7 @@ for ($Index = $StartIndex; $Index -lt $Stages.Count; $Index++) {
                 if ($AutomationExit -ne 0) { throw "Unreal Automation failed with exit code $AutomationExit" }
             }
             'screenshots' {
+                Remove-Item -LiteralPath (Join-Path $ProjectRoot "Saved\Pipeline\visual\$AssetId.json") -Force -ErrorAction SilentlyContinue
                 $CaptureRoot = Join-Path $ProjectRoot "Saved\Pipeline\screenshots\$AssetId"
                 Remove-Item -LiteralPath (Join-Path $CaptureRoot 'capture.ok') -Force -ErrorAction SilentlyContinue
                 $Script = Join-Path $ProjectRoot 'Pipeline\unreal\capture_qa.py'
@@ -135,7 +136,7 @@ for ($Index = $StartIndex; $Index -lt $Stages.Count; $Index++) {
                         Write-State $Stage 'WAITING_FOR_VISUAL_REVIEW' "Inspect Saved/Pipeline/screenshots/$AssetId and record PASS/FAIL"
                         Write-Host "Visual review required. Inspect Saved/Pipeline/screenshots/$AssetId"
                         Write-Host ('Record result with: python Pipeline/qa/record_visual_review.py "{0}" --status PASS --notes "<comparison notes>"' -f $ManifestPath)
-                        exit 3
+                        throw 'VISUAL_REVIEW_REQUIRED'
                     }
                     $Review = Get-Content -LiteralPath $Visual -Raw | ConvertFrom-Json
                     if ($Review.status -ne 'PASS') { throw "Visual review is $($Review.status): $($Review.notes)" }
@@ -151,6 +152,9 @@ for ($Index = $StartIndex; $Index -lt $Stages.Count; $Index++) {
         Write-State $Stage 'PASS'
     }
     catch {
+        if ($Stage -eq 'visual_review' -and $_.Exception.Message -eq 'VISUAL_REVIEW_REQUIRED') {
+            throw
+        }
         Write-State $Stage 'FAIL' $_.Exception.Message
         throw
     }
