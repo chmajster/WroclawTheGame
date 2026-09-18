@@ -26,6 +26,8 @@ class WROCLAWTHEGAME_API ADriveableVehicle : public APawn,
     void SetAIControl(bool bEnabled, float Throttle = 0.0f, float Steering = 0.0f, bool bBrake = false);
     bool IsAIControlled() const { return bAIControlled; }
     UPROPERTY(EditAnywhere) TObjectPtr<class UVehicleDefinition> Definition;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Vehicle|Persistence")
+    bool bPersistentPlayerVehicle = true;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UBoxComponent> Chassis;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UWorldPartitionStreamingSourceComponent> StreamingSource;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class USpringArmComponent> Boom;
