@@ -541,6 +541,8 @@ void UPlayerMenuWidget::Refresh()
     if (CenterScroll) CenterScroll->ScrollToStart();
     if (RightScroll) RightScroll->ScrollToStart();
     ActionButtons.Reset();
+    PreviewViewButtons.Reset();
+    PreviewLightingButtons.Reset();
     UpdateTabStyle();
     UpdateContextStatus();
     UpdateContextHint();
@@ -1235,32 +1237,38 @@ void UPlayerMenuWidget::BuildCharacterTab()
     ActionColumn->AddChildToVerticalBox(MakeText(TEXT("KADR"), 9, true, Muted))
         ->SetPadding(FMargin(2, 0, 2, 7));
 
-    auto* Full = MakeButton(TEXT("CAŁA SYLWETKA"), true);
+    auto* Full = MakeButton(TEXT("CAŁA SYLWETKA"), PreviewViewLabel == TEXT("CAŁA SYLWETKA"));
     Full->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewFullBody);
     ActionColumn->AddChildToVerticalBox(Full)->SetPadding(FMargin(0, 0, 0, 7));
+    PreviewViewButtons.Add(Full);
 
-    auto* Upper = MakeButton(TEXT("GÓRNA CZĘŚĆ"));
+    auto* Upper = MakeButton(TEXT("GÓRNA CZĘŚĆ"), PreviewViewLabel == TEXT("GÓRNA CZĘŚĆ"));
     Upper->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewUpperBody);
     ActionColumn->AddChildToVerticalBox(Upper)->SetPadding(FMargin(0, 0, 0, 7));
+    PreviewViewButtons.Add(Upper);
 
-    auto* Face = MakeButton(TEXT("TWARZ"));
+    auto* Face = MakeButton(TEXT("TWARZ"), PreviewViewLabel == TEXT("TWARZ"));
     Face->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewFace);
     ActionColumn->AddChildToVerticalBox(Face)->SetPadding(FMargin(0, 0, 0, 14));
+    PreviewViewButtons.Add(Face);
 
     ActionColumn->AddChildToVerticalBox(MakeText(TEXT("ŚWIATŁO"), 9, true, Muted))
         ->SetPadding(FMargin(2, 0, 2, 7));
 
-    auto* Modern = MakeButton(TEXT("STUDIO"), true);
+    auto* Modern = MakeButton(TEXT("STUDIO"), PreviewLightingLabel == TEXT("STUDIO"));
     Modern->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewLightingModern);
     ActionColumn->AddChildToVerticalBox(Modern)->SetPadding(FMargin(0, 0, 0, 7));
+    PreviewLightingButtons.Add(Modern);
 
-    auto* Day = MakeButton(TEXT("DZIEŃ"));
+    auto* Day = MakeButton(TEXT("DZIEŃ"), PreviewLightingLabel == TEXT("DZIEŃ"));
     Day->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewLightingDaylight);
     ActionColumn->AddChildToVerticalBox(Day)->SetPadding(FMargin(0, 0, 0, 7));
+    PreviewLightingButtons.Add(Day);
 
-    auto* Night = MakeButton(TEXT("NOC"));
+    auto* Night = MakeButton(TEXT("NOC"), PreviewLightingLabel == TEXT("NOC"));
     Night->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewLightingNight);
     ActionColumn->AddChildToVerticalBox(Night)->SetPadding(FMargin(0, 0, 0, 14));
+    PreviewLightingButtons.Add(Night);
 
     auto* Reset = MakeButton(TEXT("RESET PODGLĄDU"));
     Reset->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewReset);
@@ -2915,6 +2923,7 @@ void UPlayerMenuWidget::PreviewFullBody()
     if (Studio) Studio->SetView(TEXT("FullBody"));
     PreviewViewLabel = TEXT("CAŁA SYLWETKA");
     UpdatePreviewStatus();
+    UpdatePreviewControlStyles();
 }
 
 void UPlayerMenuWidget::PreviewUpperBody()
@@ -2922,6 +2931,7 @@ void UPlayerMenuWidget::PreviewUpperBody()
     if (Studio) Studio->SetView(TEXT("UpperBody"));
     PreviewViewLabel = TEXT("GÓRNA CZĘŚĆ");
     UpdatePreviewStatus();
+    UpdatePreviewControlStyles();
 }
 
 void UPlayerMenuWidget::PreviewFace()
@@ -2929,6 +2939,7 @@ void UPlayerMenuWidget::PreviewFace()
     if (Studio) Studio->SetView(TEXT("Face"));
     PreviewViewLabel = TEXT("TWARZ");
     UpdatePreviewStatus();
+    UpdatePreviewControlStyles();
 }
 
 void UPlayerMenuWidget::PreviewRotateLeft()
@@ -2946,6 +2957,7 @@ void UPlayerMenuWidget::PreviewLightingModern()
     if (Studio) Studio->SetLighting(TEXT("Modern"));
     PreviewLightingLabel = TEXT("STUDIO");
     UpdatePreviewStatus();
+    UpdatePreviewControlStyles();
 }
 
 void UPlayerMenuWidget::PreviewLightingDaylight()
@@ -2953,6 +2965,7 @@ void UPlayerMenuWidget::PreviewLightingDaylight()
     if (Studio) Studio->SetLighting(TEXT("Daylight"));
     PreviewLightingLabel = TEXT("DZIEŃ");
     UpdatePreviewStatus();
+    UpdatePreviewControlStyles();
 }
 
 void UPlayerMenuWidget::PreviewLightingNight()
@@ -2960,6 +2973,7 @@ void UPlayerMenuWidget::PreviewLightingNight()
     if (Studio) Studio->SetLighting(TEXT("Night"));
     PreviewLightingLabel = TEXT("NOC");
     UpdatePreviewStatus();
+    UpdatePreviewControlStyles();
 }
 
 void UPlayerMenuWidget::PreviewReset()
@@ -2968,6 +2982,7 @@ void UPlayerMenuWidget::PreviewReset()
     PreviewViewLabel = TEXT("CAŁA SYLWETKA");
     PreviewLightingLabel = TEXT("STUDIO");
     UpdatePreviewStatus();
+    UpdatePreviewControlStyles();
 }
 
 void UPlayerMenuWidget::UpdatePreviewStatus()
@@ -2978,6 +2993,32 @@ void UPlayerMenuWidget::UpdatePreviewStatus()
     if (PreviewLightingStatus)
         PreviewLightingStatus->SetText(FText::FromString(
             FString::Printf(TEXT("ŚWIATŁO  •  %s"), *PreviewLightingLabel)));
+}
+
+void UPlayerMenuWidget::UpdatePreviewControlStyles()
+{
+    auto ApplySelectedStyle = [&](UButton* Button, bool bSelected)
+    {
+        if (!Button)
+            return;
+
+        FButtonStyle Style = Button->GetStyle();
+        Style.Normal = RoundedBrush(bSelected ? Accent : PanelSoft, 9.0f);
+        Style.Hovered = RoundedBrush(bSelected ? AccentHover : PanelHover, 9.0f);
+        Style.Pressed = RoundedBrush(bSelected ? AccentPressed : Panel, 9.0f);
+        Button->SetStyle(Style);
+
+        if (auto* Text = Cast<UTextBlock>(Button->GetContent()))
+            Text->SetColorAndOpacity(FSlateColor(bSelected ? Background : TextPrimary));
+    };
+
+    const FString ViewLabels[] = {TEXT("CAŁA SYLWETKA"), TEXT("GÓRNA CZĘŚĆ"), TEXT("TWARZ")};
+    for (int32 Index = 0; Index < PreviewViewButtons.Num() && Index < UE_ARRAY_COUNT(ViewLabels); ++Index)
+        ApplySelectedStyle(PreviewViewButtons[Index], PreviewViewLabel == ViewLabels[Index]);
+
+    const FString LightingLabels[] = {TEXT("STUDIO"), TEXT("DZIEŃ"), TEXT("NOC")};
+    for (int32 Index = 0; Index < PreviewLightingButtons.Num() && Index < UE_ARRAY_COUNT(LightingLabels); ++Index)
+        ApplySelectedStyle(PreviewLightingButtons[Index], PreviewLightingLabel == LightingLabels[Index]);
 }
 
 FReply UPlayerMenuWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
