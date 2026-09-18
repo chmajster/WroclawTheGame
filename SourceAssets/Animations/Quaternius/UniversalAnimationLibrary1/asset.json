@@ -1,0 +1,30 @@
+{
+  "name": "Universal Animation Library 1 [Standard]",
+  "author": "Quaternius",
+  "license": "CC0-1.0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "source_page": "https://quaternius.com/packs/universalanimationlibrary.html",
+  "retrieval_transport": {
+    "repo": "lluancarlo/ReadyToStrategize",
+    "commit": "1a9c05693f705cd7ebe0dd7af022d6b9e250d5c5",
+    "reason": "Pinned public byte mirror; official free itch.io flow is interactive."
+  },
+  "files": [
+    {
+      "path": "SourceAssets/Animations/Quaternius/UniversalAnimationLibrary1/License.txt",
+      "sha256": "d77329b05c4c206e76c83285ecdd1e5f2b3df2350ec80657ebdb5a706a0fc0de"
+    },
+    {
+      "path": "SourceAssets/Animations/Quaternius/UniversalAnimationLibrary1/README.txt",
+      "sha256": "179f2b6a09ba516650aab0d89d2e573a7486ee49ae1518cc6941400510db4e69"
+    },
+    {
+      "path": "SourceAssets/Animations/Quaternius/UniversalAnimationLibrary1/UAL1_Standard.glb",
+      "sha256": "69591853d817488edaa8fd9bf8fc1d821eaeaf789f8627b3cd23b41c4ed67997"
+    },
+    {
+      "path": "SourceAssets/Animations/Quaternius/UniversalAnimationLibrary1/UAL1_Standard_RM.glb",
+      "sha256": "be684571ed655a1b892c2c07e6e2aeca053b606c442d34004adaf1d944090d01"
+    }
+  ]
+}

@@ -1,3 +1,10 @@
+## 2026-09-18 — darmowe postacie i animacje CC0
+
+- Dodano reprodukowalny pipeline dla Quaternius Universal Base Characters [Standard]: męska i żeńska baza, fryzury, zarost i brwi.
+- Dodano Universal Animation Library 1/2 [Standard] w wariantach in-place i Root Motion; katalog klipów jest generowany bezpośrednio z GLB.
+- Każdy plik źródłowy jest przypięty do konkretnego commita i weryfikowany przez Git blob SHA-1.
+- Build Windows importuje modele oraz animacje przed walidacją Character Creator i zatrzymuje packaging przy błędzie importu.
+
 ## Player menu — 2026-09-18
 
 - Dodano pełnoekranowe centrum gracza inspirowane układem lobby: górne zakładki, boczne akcje, centralny podgląd postaci i panel statusu.
