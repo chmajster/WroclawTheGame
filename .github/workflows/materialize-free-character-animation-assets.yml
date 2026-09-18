@@ -1,0 +1,56 @@
+name: Materialize free character animation assets
+
+on:
+  push:
+    branches:
+      - assets/quaternius-character-animation-20260918
+    paths:
+      - Scripts/fetch_free_character_animation_assets.py
+      - .github/workflows/materialize-free-character-animation-assets.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout asset branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: assets/quaternius-character-animation-20260918
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Fetch pinned CC0 assets
+        run: python Scripts/fetch_free_character_animation_assets.py
+
+      - name: Verify downloaded bytes and generated catalogs
+        run: |
+          python Scripts/fetch_free_character_animation_assets.py --check
+          python -m unittest Tests.test_free_character_animation_assets -v
+          python -m compileall -q Scripts
+
+      - name: Commit materialized assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add SourceAssets/Characters/Quaternius
+          git add SourceAssets/Animations/Quaternius
+          git add Data/free_character_catalog.json Data/free_animation_catalog.json
+          git rm -- .github/workflows/materialize-free-character-animation-assets.yml
+          if git diff --cached --quiet; then
+            echo "No asset changes to commit"
+            exit 0
+          fi
+          git commit -m "assets: materialize Quaternius CC0 characters and animations"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
