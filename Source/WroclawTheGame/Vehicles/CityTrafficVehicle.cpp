@@ -8,7 +8,7 @@ ACityTrafficVehicle::ACityTrafficVehicle()
     TrafficDriver = CreateDefaultSubobject<UVehicleAIDriverComponent>(TEXT("TrafficDriver"));
 }
 
-bool ACityTrafficVehicle::ConfigureTraffic(const TArray<FVector> &Route, int32 StartIndex)
+bool ACityTrafficVehicle::ConfigureTraffic(const TArray<FVector> &Route, int32 StartIndex, bool bLoop)
 {
     if (Route.Num() < 2 || !TrafficDriver)
         return false;
@@ -22,7 +22,7 @@ bool ACityTrafficVehicle::ConfigureTraffic(const TArray<FVector> &Route, int32 S
     SetActorEnableCollision(true);
     SetActorTickEnabled(true);
     Health = Definition ? Definition->MaxHealth : 100.0f;
-    return TrafficDriver->ConfigureRoute(Route, StartIndex + 1, true);
+    return TrafficDriver->ConfigureRoute(Route, StartIndex + 1, bLoop);
 }
 
 void ACityTrafficVehicle::DeactivateTraffic()
