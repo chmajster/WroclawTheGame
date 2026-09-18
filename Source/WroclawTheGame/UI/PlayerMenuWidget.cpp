@@ -2772,7 +2772,7 @@ void UPlayerMenuWidget::ToggleUISounds()
 void UPlayerMenuWidget::SetSFXVolumeFromSlider(float Volume)
 {
     if (auto* Settings = UWTGAudioSettings::Get())
-        Settings->SetSFXVolume(Volume);
+        Settings->SFXVolume = FMath::Clamp(Volume, 0.0f, 1.0f);
 
     if (SFXVolumeMeter)
         SFXVolumeMeter->SetPercent(Volume);
@@ -2785,7 +2785,7 @@ void UPlayerMenuWidget::SetSFXVolumeFromSlider(float Volume)
 void UPlayerMenuWidget::SetUIVolumeFromSlider(float Volume)
 {
     if (auto* Settings = UWTGAudioSettings::Get())
-        Settings->SetUIVolume(Volume);
+        Settings->UIVolume = FMath::Clamp(Volume, 0.0f, 1.0f);
 
     if (UIVolumeMeter)
         UIVolumeMeter->SetPercent(Volume);
@@ -2797,6 +2797,8 @@ void UPlayerMenuWidget::SetUIVolumeFromSlider(float Volume)
 
 void UPlayerMenuWidget::CommitAudioSliderChange()
 {
+    if (auto* Settings = UWTGAudioSettings::Get())
+        Settings->SaveConfig();
     RefreshWithSettingsToast();
 }
 
