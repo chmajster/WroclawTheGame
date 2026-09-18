@@ -73,7 +73,7 @@ def select_only(objects: list[bpy.types.Object]) -> None:
 
 def apply_transforms(objects: list[bpy.types.Object]) -> None:
     select_only(objects)
-    bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
+    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
 
 
 def detach_keep_world(objects: list[bpy.types.Object]) -> None:
