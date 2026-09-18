@@ -73,6 +73,7 @@ def apply_skeletal_mesh(actor, mesh, scale=(1, 1, 1), rotation=None):
     if not component:
         raise RuntimeError(f'SkeletalMeshComponent missing on {actor.get_actor_label()}')
     component.set_skeletal_mesh_asset(mesh)
+    component.set_collision_profile_name('NoCollision')
     component.set_visibility(True, True)
     component.set_editor_property('cast_shadow', True)
     component.set_relative_scale3d(unreal.Vector(*scale))
@@ -90,7 +91,7 @@ def spawn_skeletal_visual(spawn, mesh, position, label, rotation=None, scale=(1,
     if not component:
         raise RuntimeError(f'SkeletalMeshComponent missing on {label}')
     component.set_skeletal_mesh_asset(mesh)
-    component.set_collision_enabled(unreal.CollisionEnabled.NO_COLLISION)
+    component.set_collision_profile_name('NoCollision')
     component.set_editor_property('cast_shadow', True)
     visual.set_actor_scale3d(unreal.Vector(*scale))
     return visual
