@@ -7,7 +7,12 @@
 - Wspólne karty informacyjne oraz toast ustawień otrzymały accent rail; toast ma reduced-motion-safe slide/fade-in.
 - Nawigacja ustawień ma numerowane sekcje, pasek postępu i zachowuje fokus na wybranej kategorii po odświeżeniu.
 - Obrót i zoom podglądu postaci przechwytują mysz tylko nad środkowym panelem, więc boczne listy zachowują poprawny scroll.
-- Rozszerzono Tests/test_player_menu.py o regresje dla nowego chrome, nagłówków, keycapów, ustawień, toastu, focusu i zakresu sterowania podglądem.
+- Podgląd postaci pokazuje rzeczywiście wybrany kadr i światło; sterowanie ma spójne keycapy, a profil używa nazw z katalogu zamiast PresetID/RandomSeed.
+- Ekwipunek rozwiązuje nazwy garderoby przez DisplayName, a zakładki Dziennik/Mapa/Statystyki nie pokazują już surowych bloków statusu ani terminów debugowych.
+- Ustawienia obrazu pokazują parametry jakości jako karty zamiast tekstowego dumpu.
+- Dźwięk ma precyzyjne suwaki 0–100% z krokiem 5%, mierniki, zapis po zakończeniu regulacji oraz poprawną obsługę D-pada na fokusowanym suwaku.
+- Wzmocniono kontrast focusu klawiatury/gamepada oraz uporządkowano produktowe stany awaryjne bez nazw klas Unreal.
+- Rozszerzono Tests/test_player_menu.py o regresje dla nowego chrome, nagłówków, keycapów, ustawień, toastu, focusu, audio, katalogu postaci i zakresu sterowania podglądem.
 
 ## 2026-09-18 — bezpieczne wczytywanie zapisu
 
