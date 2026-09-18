@@ -38,6 +38,8 @@ class WROCLAWTHEGAME_API UCityGameplaySubsystem : public UTickableWorldSubsystem
     bool SaveAppearance() { return Persist(SavedAnchor); }
     void RestoreVehicle(class ADriveableVehicle *Vehicle);
     bool IsComplete(const FString &Id) const;
+    int32 CompletedActivityCount() const;
+    int32 TrackableActivityCount() const;
     FString Journal() const;
     FString NearbyObjective() const;
     virtual void Tick(float DeltaTime) override;
