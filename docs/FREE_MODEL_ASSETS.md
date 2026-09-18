@@ -42,3 +42,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Dining Chair 02 | General apartment/shop seating. | James Ray Cock | [Poly Haven](https://polyhaven.com/a/dining_chair_02) | CC0 1.0 |
 | Desk Lamp Arm 01 | Desk/workshop task lighting prop. | Yann Kervran, Kuutti Siitonen | [Poly Haven](https://polyhaven.com/a/desk_lamp_arm_01) | CC0 1.0 |
 | Television 01 | CCTV monitor / apartment electronics proxy. | Gabriel Radić | [Poly Haven](https://polyhaven.com/a/Television_01) | CC0 1.0 |
+| Modern Wooden Cabinet | Apartment and safehouse storage furniture. | Patrik Pangerl | [Poly Haven](https://polyhaven.com/a/modern_wooden_cabinet) | CC0 1.0 |

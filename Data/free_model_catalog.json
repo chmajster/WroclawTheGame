@@ -796,5 +796,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/Television_01/Television_01_1k.fbx"
+  },
+  {
+    "slug": "modern_wooden_cabinet",
+    "name": "Modern Wooden Cabinet",
+    "intended_use": "Apartment and safehouse storage furniture.",
+    "source_page": "https://polyhaven.com/a/modern_wooden_cabinet",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Patrik Pangerl": "All"
+    },
+    "category": "Furniture/Storage Furniture/Cabinets & Cupboards",
+    "dimensions_mm": [
+      2440.0004148483276,
+      520.0000107288361,
+      680.1425069570541
+    ],
+    "files_hash": "ef2d266b0823d230f465b29bb32b110b4c71b3b2",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/modern_wooden_cabinet/modern_wooden_cabinet_1k.fbx"
   }
 ]
