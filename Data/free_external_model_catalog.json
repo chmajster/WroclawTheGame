@@ -433,5 +433,16 @@
     "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-usb-cable/wtg-original-usb-cable.obj",
     "generated": true,
     "generator": "bootstrap-original-fallback-models.yml"
+  },
+  {
+    "id": "wtg-original-wall-charger",
+    "name": "Wall Charger",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Phone charger pickup fallback.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-wall-charger/wtg-original-wall-charger.obj",
+    "generated": true,
+    "generator": "bootstrap-original-fallback-models.yml"
   }
 ]
