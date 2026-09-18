@@ -6,6 +6,7 @@
 #include "Components/WorldPartitionStreamingSourceComponent.h"
 #include "Character/SliceCharacter.h"
 #include "Vehicles/DriveableVehicle.h"
+#include "Vehicles/VehiclePursuitSubsystem.h"
 #include "Mission/SliceMission.h"
 #include "Audio/SliceAudio.h"
 #include "Engine/GameInstance.h"
@@ -149,6 +150,14 @@ void UCityGameplaySubsystem::Tick(float Dt)
     if (!Mission->bInGame || Mission->bDead || Mission->bShowMenu) return;
     auto *Player = UGameplayStatics::GetPlayerPawn(this, 0);
     if (!Player || !Player->GetActorEnableCollision()) return;
+
+    auto *Pursuit = GetWorld()->GetSubsystem<UVehiclePursuitSubsystem>();
+    const int32 HeatLevel = Mission->WorldState.HeatLevel();
+    if (Cast<ADriveableVehicle>(Player) && HeatLevel >= 3 &&
+        Pursuit->GetState() == EVehiclePursuitState::Inactive)
+        Pursuit->StartPursuit(HeatLevel >= 5 ? 3 : 2);
+    else if (HeatLevel <= 1 && Pursuit->GetState() != EVehiclePursuitState::Inactive)
+        Pursuit->StopPursuit();
     std::set<std::string> LoadedIds;
     for (int32 I = Activities.Num() - 1; I >= 0; --I)
     {
