@@ -70,6 +70,12 @@ private:
 
     UFUNCTION() void ToggleFPSCounter();
     UFUNCTION() void ToggleVSync();
+    UFUNCTION() void ToggleDynamicResolution();
+    UFUNCTION() void CycleWindowMode();
+    UFUNCTION() void CycleResolution();
+    UFUNCTION() void CycleQuality();
+    UFUNCTION() void CycleResolutionScale();
+    UFUNCTION() void CycleFPSLimit();
     UFUNCTION() void FPSUnlimited();
     UFUNCTION() void FPS30();
     UFUNCTION() void FPS60();
