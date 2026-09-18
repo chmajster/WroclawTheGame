@@ -3,29 +3,35 @@
 Status: IN PROGRESS (draft PR).
 
 Wykonane w tej fali:
-- nowy context chrome: numer strony 01–07, wskaźnik sesji, zegar/data i separator stopki,
-- keycapy skrótów w stopce,
+- context chrome: numer strony 01–07, wskaźnik sesji, zegar/data i separator stopki,
+- keycapy skrótów w stopce i modalu potwierdzenia,
 - numerowane zakładki i mocniejsza hierarchia aktywnej sekcji,
+- dynamiczne nagłówki i separatory trzech kolumn,
 - accent rail we wspólnych kartach statusowych,
-- testy regresyjne dla powyższych elementów.
+- numerowana nawigacja ustawień z paskiem postępu 1/4–4/4,
+- toast ustawień z accent rail i reduced-motion-safe slide/fade-in,
+- zachowanie focusu na aktywnej kategorii ustawień po Refresh(),
+- obrót/zoom podglądu postaci ograniczony do środkowego panelu,
+- rozszerzone regresje Tests/test_player_menu.py.
+
+Walidacja wykonana:
+- statyczny smoke-check connectora: PASS,
+- 46 testów regresyjnych wykrytych,
+- 50 deklaracji UFUNCTION ma odpowiadające definicje,
+- definicje siedmiu Build*Tab występują dokładnie po jednym razie,
+- bilans klamer PlayerMenuWidget.cpp: 242/242.
 
 Następny konkretny krok:
-1. dopracować nagłówki/separatory paneli i wizualną hierarchię ustawień,
-2. wykonać lokalne/static testy `Tests/test_player_menu.py`,
-3. sprawdzić diff pod kątem focus/keyboard/gamepad i reduced-motion,
-4. zaktualizować PR #65; pozostawić draft do czasu odbioru w Unreal.
+1. przejrzeć pełny diff PR #65 pod kątem niezamierzonych zmian,
+2. zweryfikować możliwość uruchomienia Scripts/test.sh w środowisku z lokalnym checkoutem,
+3. wykonać UHT/UBT oraz wizualny odbiór w UE 5.8,
+4. po zaliczeniu odbioru oznaczyć PR jako ready i zmergować zgodnie z AGENTS.md.
 
 Luki weryfikacyjne:
-- runtime UE 5.8 nie został jeszcze uruchomiony dla tego PR,
+- kontener tej sesji nie ma DNS do github.com, więc lokalny checkout/test.sh nie został uruchomiony,
+- runtime UE 5.8 nie został uruchomiony dla tego PR,
 - brak odbioru 16:9 / 16:10 / ultrawide / 4K,
 - brak wizualnego QA z blur off i reduced motion.
-
-# Full game expansion — implementation state
-
-Updated: 2026-09-18
-Working branch: `codex/official-wroclaw-buildings-3d`
-
-This file is the hand-off point for long-running implementation of the full WroclawTheGame expansion. Update it before ending every implementation pass. Do not mark runtime work as complete without an Unreal/Windows verification artifact.
 
 ## Current pass
 
