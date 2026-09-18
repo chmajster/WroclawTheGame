@@ -158,7 +158,8 @@ def prepare():
         actor.set_editor_property('data_layer_assets',[layer_assets['Architecture' if label.startswith('environment_') else 'Gameplay']])
         return actor
     cube=unreal.load_asset('/Engine/BasicShapes/Cube')
-    for record in json.loads((ROOT/'Data/environment.json').read_text(encoding='utf-8')):
+    environment_records=json.loads((ROOT/'Data/environment.json').read_text(encoding='utf-8'))
+    for record in environment_records:
         kind=record['type']
         if kind=='box':
             actor=spawn(unreal.StaticMeshActor,record['position'],record['id'])
@@ -191,6 +192,16 @@ def prepare():
     required_models.update(model_bindings['actions'].values())
     required_models.update(model_bindings['systems'].values())
     free_models=load_free_models(required_models)
+    street_lamp_mesh=free_models[model_bindings['systems']['street_lamp']]
+    street_lamp_ids={'environment_253','environment_255','environment_257','environment_259','environment_261','environment_263','environment_265'}
+    for record in environment_records:
+        if record['id'] not in street_lamp_ids:continue
+        position=[record['position'][0],record['position'][1],record['position'][2]-360]
+        lamp=spawn(unreal.StaticMeshActor,position,'environment_lamp_'+record['id'])
+        component=apply_static_mesh(lamp,street_lamp_mesh,[1,1,1])
+        component.set_collision_profile_name('NoCollision')
+        lamp.set_editor_property('hlod_layer',hlod)
+
     for record in opening_records:
         actor=spawn(unreal.StaticMeshActor,record['position'],record['id'],record.get('rotation',[0,0,0]))
         apply_static_mesh(actor,free_models[record['model']],record.get('scale',[1,1,1]))
