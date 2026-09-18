@@ -907,5 +907,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/street_lamp_02/street_lamp_02_1k.fbx"
+  },
+  {
+    "slug": "rollershutter_window_02",
+    "name": "Rollershutter Window 02",
+    "intended_use": "Second shop/garage shutter variation.",
+    "source_page": "https://polyhaven.com/a/rollershutter_window_02",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "MP": "All"
+    },
+    "category": "Architecture/Windows & Shutters/Roller Shutters",
+    "dimensions_mm": [
+      3600.000321865082,
+      168.07068698108196,
+      1560.8682408933419
+    ],
+    "files_hash": "97b51a0f6fdf27b52a7fda1eab44457391115806",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/rollershutter_window_02/rollershutter_window_02_1k.fbx"
   }
 ]

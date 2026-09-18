@@ -1,0 +1,74 @@
+{
+  "slug": "rollershutter_window_02",
+  "name": "Rollershutter Window 02",
+  "intended_use": "Second shop/garage shutter variation.",
+  "source_page": "https://polyhaven.com/a/rollershutter_window_02",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "MP": "All"
+  },
+  "category": "Architecture/Windows & Shutters/Roller Shutters",
+  "tags": [
+    "urban",
+    "security shutter",
+    "garage door",
+    "roller garage door",
+    "commercial",
+    "warehouse door"
+  ],
+  "dimensions_mm": [
+    3600.000321865082,
+    168.07068698108196,
+    1560.8682408933419
+  ],
+  "files_hash": "97b51a0f6fdf27b52a7fda1eab44457391115806",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/rollershutter_window_02/rollershutter_window_02_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/rollershutter_window_02/rollershutter_window_02_1k.fbx",
+      "bytes": 61388,
+      "md5": "e8f4fe78b30b47b2591e9c84ede40875",
+      "sha256": "78a20fbf1cf5ddc658ede3374586b70ec135838e88fbe9db35cf48fecabcc158",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/rollershutter_window_02/rollershutter_window_02_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/rollershutter_window_02/textures/rollershutter_window_02_diff_1k.jpg",
+      "bytes": 522591,
+      "md5": "6acc1f8335d675461ae973d490003064",
+      "sha256": "438cb8b4de91e7feb432494f457d62c81aa45073da4d0aa8def23620839a7c30",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/rollershutter_window_02/rollershutter_window_02_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/rollershutter_window_02/textures/rollershutter_window_02_graffiti_diff_1k.png",
+      "bytes": 1173316,
+      "md5": "03a28f21a83efe2520b59650d18e6045",
+      "sha256": "fe8b1cdf5f6031e1a49de192e5ff682926a3e0963e1b7573ab10066d41e5b557",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/rollershutter_window_02/rollershutter_window_02_graffiti_diff_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/rollershutter_window_02/textures/rollershutter_window_02_metal_1k.exr",
+      "bytes": 5296,
+      "md5": "b3c805e596313dec0a5ce623353cb525",
+      "sha256": "8baf0006da3cd2647df25d5828d50ccdd221b90f223b6556c8fb70e5249c6942",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/rollershutter_window_02/rollershutter_window_02_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/rollershutter_window_02/textures/rollershutter_window_02_nor_gl_1k.exr",
+      "bytes": 704483,
+      "md5": "6248b06e68b527ff2da4b47b9f135293",
+      "sha256": "917649b005e619db4b938b35e43128077734e02ff592be605a68ca3ffa879bb1",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/rollershutter_window_02/rollershutter_window_02_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/rollershutter_window_02/textures/rollershutter_window_02_rough_1k.exr",
+      "bytes": 619049,
+      "md5": "c6126a1ab11e9755bfe33a8536a350f1",
+      "sha256": "f366dc8fd09c380678e33467e5363471a8601e7e2715625bcbe80abdb143b2dd",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/rollershutter_window_02/rollershutter_window_02_rough_1k.exr"
+    }
+  ]
+}

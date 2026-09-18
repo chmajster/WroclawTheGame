@@ -47,3 +47,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Security Camera 01 | Second CCTV variation for urban scenes. | Alexander Otterbeck, Yann Kervran | [Poly Haven](https://polyhaven.com/a/security_camera_01) | CC0 1.0 |
 | Utility Box 02 | Second urban electrical utility box variation. | James Ray Cock | [Poly Haven](https://polyhaven.com/a/utility_box_02) | CC0 1.0 |
 | Street Lamp 02 | Wall-mounted urban street lighting variation. | Josh Dean | [Poly Haven](https://polyhaven.com/a/street_lamp_02) | CC0 1.0 |
+| Rollershutter Window 02 | Second shop/garage shutter variation. | MP | [Poly Haven](https://polyhaven.com/a/rollershutter_window_02) | CC0 1.0 |
