@@ -1,5 +1,6 @@
 """Run after prepare_content.py and Scripts/gis/build_meshes.py in Unreal 5.8.
-Extends the existing GIS map when WTG_CITY_INPUT is set. Campaign migration remains separate.
+Extends the GIS map when WTG_CITY_INPUT is set. WTG_CAMPAIGN_GIS_INPUT overlays
+the validated campaign migration and switches the map to the campaign game mode.
 """
 import json,traceback,os
 from pathlib import Path
@@ -8,6 +9,8 @@ ROOT=Path(unreal.Paths.project_dir()).resolve();MARKER=ROOT/'Saved/GeographyRead
 def prepare():
     MARKER.unlink(missing_ok=True)
     city_input=os.environ.get('WTG_CITY_INPUT')
+    campaign_input=os.environ.get('WTG_CAMPAIGN_GIS_INPUT')
+    campaign_dir=Path(campaign_input) if campaign_input else None
     input_dir=Path(city_input) if city_input else ROOT/'Data/processed/wroclaw'
     data=json.loads((input_dir/'sector.json').read_text(encoding='utf-8'))
     mesh_dir=input_dir/'Meshes' if city_input else ROOT/'Saved/GISMeshes'
@@ -21,7 +24,8 @@ def prepare():
             if unreal.EditorAssetLibrary.does_directory_exist(folder) and not unreal.EditorAssetLibrary.delete_directory(folder):raise RuntimeError('Cannot clear generated external actors')
     if not levels.new_level(map_path):raise RuntimeError('Cannot create GIS map')
     world=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
-    world.get_world_settings().set_editor_property('default_game_mode',unreal.GeoPreviewGameMode)
+    world.get_world_settings().set_editor_property(
+        'default_game_mode', unreal.SliceGameMode if campaign_dir else unreal.GeoPreviewGameMode)
     geo=actors.spawn_actor_from_class(unreal.GeoReferencingSystem,unreal.Vector())
     for key,value in {'projected_crs':'EPSG:32633','geographic_crs':'EPSG:4326','planet_shape':unreal.PlanetShape.FLAT_PLANET,
                       'origin_location_in_projected_crs':True,'origin_at_planet_center':False,
