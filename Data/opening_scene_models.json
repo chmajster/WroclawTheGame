@@ -1,0 +1,249 @@
+[
+  {
+    "id": "environment_model_bed",
+    "model": "GothicBed_01",
+    "position": [
+      245,
+      175,
+      360
+    ],
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      1.05,
+      1,
+      0.65
+    ]
+  },
+  {
+    "id": "environment_model_bedside_table",
+    "model": "side_table_01",
+    "position": [
+      390,
+      180,
+      360
+    ],
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      0.85,
+      0.85,
+      0.85
+    ]
+  },
+  {
+    "id": "environment_model_desk",
+    "model": "metal_office_desk",
+    "position": [
+      650,
+      130,
+      360
+    ],
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      0.9,
+      1,
+      0.83
+    ]
+  },
+  {
+    "id": "environment_model_desk_chair",
+    "model": "dining_chair_02",
+    "position": [
+      650,
+      245,
+      360
+    ],
+    "rotation": [
+      0,
+      180,
+      0
+    ],
+    "scale": [
+      0.85,
+      0.85,
+      0.85
+    ]
+  },
+  {
+    "id": "environment_model_desk_lamp",
+    "model": "desk_lamp_arm_01",
+    "position": [
+      735,
+      145,
+      425
+    ],
+    "rotation": [
+      0,
+      205,
+      0
+    ],
+    "scale": [
+      0.55,
+      0.55,
+      0.55
+    ]
+  },
+  {
+    "id": "environment_model_sofa",
+    "model": "sofa_03",
+    "position": [
+      1010,
+      125,
+      360
+    ],
+    "rotation": [
+      0,
+      180,
+      0
+    ],
+    "scale": [
+      0.78,
+      0.78,
+      0.78
+    ]
+  },
+  {
+    "id": "environment_model_drawer",
+    "model": "drawer_cabinet",
+    "position": [
+      95,
+      810,
+      360
+    ],
+    "rotation": [
+      0,
+      90,
+      0
+    ],
+    "scale": [
+      0.9,
+      1,
+      0.65
+    ]
+  },
+  {
+    "id": "environment_model_stove",
+    "model": "electric_stove",
+    "position": [
+      520,
+      835,
+      360
+    ],
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ]
+  },
+  {
+    "id": "environment_model_kitchen_cabinet",
+    "model": "modern_wooden_cabinet",
+    "position": [
+      760,
+      840,
+      360
+    ],
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      0.75,
+      0.75,
+      0.75
+    ]
+  },
+  {
+    "id": "environment_model_cutting_board",
+    "model": "wooden_cutting_board",
+    "position": [
+      690,
+      820,
+      414
+    ],
+    "rotation": [
+      0,
+      12,
+      0
+    ],
+    "scale": [
+      0.9,
+      0.9,
+      0.9
+    ]
+  },
+  {
+    "id": "environment_model_jug",
+    "model": "jug_01",
+    "position": [
+      805,
+      820,
+      420
+    ],
+    "rotation": [
+      0,
+      -18,
+      0
+    ],
+    "scale": [
+      0.9,
+      0.9,
+      0.9
+    ]
+  },
+  {
+    "id": "environment_model_pot",
+    "model": "brass_pot_01",
+    "position": [
+      525,
+      835,
+      447
+    ],
+    "rotation": [
+      0,
+      25,
+      0
+    ],
+    "scale": [
+      0.85,
+      0.85,
+      0.85
+    ]
+  },
+  {
+    "id": "environment_model_pan",
+    "model": "brass_pan_01",
+    "position": [
+      560,
+      820,
+      448
+    ],
+    "rotation": [
+      0,
+      -35,
+      0
+    ],
+    "scale": [
+      0.9,
+      0.9,
+      0.9
+    ]
+  }
+]
