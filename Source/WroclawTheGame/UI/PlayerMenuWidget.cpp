@@ -2187,23 +2187,26 @@ void UPlayerMenuWidget::BuildSettingsTab()
         RightColumn->AddChildToVerticalBox(MakeInfoRow(
             QualityLabel(Quality), TEXT("PRESET JAKOŚCI")))->SetPadding(FMargin(0, 0, 0, 14));
 
-        const FString QualityDetails = FString::Printf(
-            TEXT("Widoczność        %d / 4\nCienie             %d / 4\nTekstury            %d / 4\nAntyaliasing        %d / 4\n")
-            TEXT("Efekty             %d / 4\nPost-processing     %d / 4\nRoślinność          %d / 4\nGlobal illumination %d / 4\n")
-            TEXT("Odbicia            %d / 4\nShading             %d / 4"),
-            UserSettings->GetViewDistanceQuality(),
-            UserSettings->GetShadowQuality(),
-            UserSettings->GetTextureQuality(),
-            UserSettings->GetAntiAliasingQuality(),
-            UserSettings->GetVisualEffectQuality(),
-            UserSettings->GetPostProcessingQuality(),
-            UserSettings->GetFoliageQuality(),
-            UserSettings->GetGlobalIlluminationQuality(),
-            UserSettings->GetReflectionQuality(),
-            UserSettings->GetShadingQuality());
-        auto* Details = MakeText(QualityDetails, 10, false, Muted);
-        Details->SetLineHeightPercentage(1.28f);
-        RightColumn->AddChildToVerticalBox(Details);
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("SZCZEGÓŁY JAKOŚCI"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 0, 0, 8));
+
+        auto AddQualityRow = [&](const FString& Label, int32 Value, float Bottom = 6.0f)
+        {
+            RightColumn->AddChildToVerticalBox(MakeInfoRow(
+                FString::Printf(TEXT("%d / 4"), Value), Label))
+                ->SetPadding(FMargin(0, 0, 0, Bottom));
+        };
+
+        AddQualityRow(TEXT("WIDOCZNOŚĆ"), UserSettings->GetViewDistanceQuality());
+        AddQualityRow(TEXT("CIENIE"), UserSettings->GetShadowQuality());
+        AddQualityRow(TEXT("TEKSTURY"), UserSettings->GetTextureQuality());
+        AddQualityRow(TEXT("ANTYALIASING"), UserSettings->GetAntiAliasingQuality());
+        AddQualityRow(TEXT("EFEKTY"), UserSettings->GetVisualEffectQuality());
+        AddQualityRow(TEXT("POST-PROCESSING"), UserSettings->GetPostProcessingQuality());
+        AddQualityRow(TEXT("ROŚLINNOŚĆ"), UserSettings->GetFoliageQuality());
+        AddQualityRow(TEXT("GLOBALNE OŚWIETLENIE"), UserSettings->GetGlobalIlluminationQuality());
+        AddQualityRow(TEXT("ODBICIA"), UserSettings->GetReflectionQuality());
+        AddQualityRow(TEXT("CIENIOWANIE"), UserSettings->GetShadingQuality(), 0.0f);
         return;
     }
 
