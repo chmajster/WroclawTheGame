@@ -2,7 +2,8 @@
 param(
     [Parameter(Mandatory=$true)][string]$EngineRoot,
     [string]$Python='python',
-    [switch]$PrepareOnly
+    [switch]$PrepareOnly,
+    [string]$OfficialBuildingsArchive
 )
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
@@ -15,6 +16,7 @@ $Args=@{
     Campaign=$true
     OfficialBuildings=$true
 }
+if($OfficialBuildingsArchive){$Args.OfficialBuildingsArchive=$OfficialBuildingsArchive}
 if(-not $PrepareOnly){$Args.Package=$true}
 
 & (Join-Path $PSScriptRoot 'Build-Geography.ps1') @Args
