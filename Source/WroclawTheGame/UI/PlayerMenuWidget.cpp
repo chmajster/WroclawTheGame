@@ -1029,9 +1029,19 @@ void UPlayerMenuWidget::AddPreview()
     auto* Caption = MakeText(TEXT("AKTYWNA POSTAĆ"), 13, true, TextPrimary);
     Caption->SetJustification(ETextJustify::Center);
     CaptionBox->AddChildToVerticalBox(Caption);
-    auto* CaptionSub = MakeText(TEXT("PPM — OBRÓT   •   KÓŁKO — ZOOM"), 9, true, Muted);
-    CaptionSub->SetJustification(ETextJustify::Center);
-    CaptionBox->AddChildToVerticalBox(CaptionSub)->SetPadding(FMargin(0, 3, 0, 0));
+
+    auto* PreviewHints = WidgetTree->ConstructWidget<UHorizontalBox>();
+    PreviewHints->AddChildToHorizontalBox(MakeKeycap(TEXT("PPM")))
+        ->SetPadding(FMargin(0, 0, 6, 0));
+    PreviewHints->AddChildToHorizontalBox(MakeText(TEXT("OBRÓT"), 8, true, Muted))
+        ->SetPadding(FMargin(0, 3, 12, 0));
+    PreviewHints->AddChildToHorizontalBox(MakeKeycap(TEXT("KÓŁKO")))
+        ->SetPadding(FMargin(0, 0, 6, 0));
+    PreviewHints->AddChildToHorizontalBox(MakeText(TEXT("ZOOM"), 8, true, Muted))
+        ->SetPadding(FMargin(0, 3, 0, 0));
+    auto* PreviewHintsSlot = CaptionBox->AddChildToVerticalBox(PreviewHints);
+    PreviewHintsSlot->SetHorizontalAlignment(HAlign_Center);
+    PreviewHintsSlot->SetPadding(FMargin(0, 5, 0, 0));
 }
 
 void UPlayerMenuWidget::AddTextPage(const FString& Heading, const FString& Body)
