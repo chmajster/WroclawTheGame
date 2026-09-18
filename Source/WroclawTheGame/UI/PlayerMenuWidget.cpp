@@ -599,9 +599,42 @@ void UPlayerMenuWidget::AddGameHero()
             ? Mission->ObjectiveText()
             : (bHasSave ? TEXT("Wczytaj ostatni zapis i kontynuuj historię.")
                         : TEXT("Rozpocznij nową kampanię i obudź się we Wrocławiu.")));
-    auto* ObjectiveText = MakeText(Objective, 12, false, Muted);
+    HeroBox->AddChildToVerticalBox(MakeText(TEXT("NASTĘPNY CEL"), 9, true, Accent))
+        ->SetPadding(FMargin(0, 0, 0, 4));
+    auto* ObjectiveText = MakeText(Objective, 12, false, TextPrimary);
     ObjectiveText->SetLineHeightPercentage(1.18f);
-    HeroBox->AddChildToVerticalBox(ObjectiveText)->SetPadding(FMargin(0, 0, 0, 15));
+    HeroBox->AddChildToVerticalBox(ObjectiveText)->SetPadding(FMargin(0, 0, 0, 14));
+
+    const int32 ProgressPercent = Total > 0
+        ? FMath::Clamp(FMath::RoundToInt(static_cast<float>(Completed) * 100.0f / Total), 0, 100)
+        : 0;
+    auto MakeHeroPill = [&](const FString& Label, const FString& Value, bool bHighlight)
+    {
+        auto* Pill = WidgetTree->ConstructWidget<UBorder>();
+        Pill->SetBrush(RoundedBrush(
+            bHighlight ? FLinearColor(0.025f, 0.105f, 0.135f, 0.96f) : PanelSoft, 8.0f));
+        Pill->SetPadding(FMargin(10, 7, 10, 7));
+        auto* PillText = MakeText(
+            FString::Printf(TEXT("%s  •  %s"), *Label, *Value), 9, true,
+            bHighlight ? Accent : Muted);
+        Pill->AddChild(PillText);
+        return Pill;
+    };
+
+    auto* HeroSummary = WidgetTree->ConstructWidget<UHorizontalBox>();
+    HeroBox->AddChildToVerticalBox(HeroSummary)->SetPadding(FMargin(0, 0, 0, 14));
+
+    auto* SessionPill = MakeHeroPill(
+        TEXT("SESJA"), bInGame ? TEXT("AKTYWNA") : TEXT("MENU"), bInGame);
+    HeroSummary->AddChildToHorizontalBox(SessionPill)->SetPadding(FMargin(0, 0, 6, 0));
+
+    auto* SavePill = MakeHeroPill(
+        TEXT("ZAPIS"), bHasSave ? TEXT("DOSTĘPNY") : TEXT("BRAK"), bHasSave);
+    HeroSummary->AddChildToHorizontalBox(SavePill)->SetPadding(FMargin(0, 0, 6, 0));
+
+    auto* ProgressPill = MakeHeroPill(
+        TEXT("POSTĘP"), FString::Printf(TEXT("%d%%"), ProgressPercent), ProgressPercent > 0);
+    HeroSummary->AddChildToHorizontalBox(ProgressPill);
 
     auto* ProgressHead = WidgetTree->ConstructWidget<UHorizontalBox>();
     HeroBox->AddChildToVerticalBox(ProgressHead)->SetPadding(FMargin(0, 0, 0, 5));

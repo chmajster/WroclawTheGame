@@ -71,6 +71,18 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         for member in ("ActionScroll", "CenterScroll", "RightScroll"):
             self.assertIn(f"TObjectPtr<class UScrollBox> {member}", self.header)
 
+    def test_game_hero_has_modern_summary_strip(self):
+        for token in (
+            'TEXT("NASTĘPNY CEL")',
+            "ProgressPercent",
+            "MakeHeroPill",
+            'TEXT("SESJA")',
+            'TEXT("ZAPIS")',
+            'TEXT("POSTĘP")',
+            "HeroSummary",
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_game_tab_has_real_campaign_hero(self):
         self.assertIn("UPlayerMenuWidget::AddGameHero()", self.cpp)
         self.assertIn("Mission->State.QuestComplete(Quest)", self.cpp)
