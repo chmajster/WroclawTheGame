@@ -1,3 +1,11 @@
+## 2026-09-18 — oficjalne modele 3D budynków Wrocławia
+
+- Dodano pobieranie i konwersję oficjalnych modeli budynków GUGiK/Geoportal z CityGML do układu GIS gry.
+- Pierwszy zestaw: Stary Ratusz, bazylika św. Elżbiety, katedra, gmach główny UWr, Hala Targowa i Muzeum Narodowe.
+- Import preferuje LoD2 i automatycznie przechodzi na LoD1, gdy LoD2 nie ma pokrycia.
+- Prosta bryła OSM wybranego obiektu jest wykluczana przed wypiekiem, a model oficjalny trafia do `/Game/Generated/OfficialBuildings`.
+- Pełny build włącza `OfficialBuildings`; runtime/visual QA w UE 5.8 nadal jest wymagane.
+
 ## 2026-09-18 — nowoczesna postać i ustawienia FPS
 
 - Domyślny profil głównej postaci przebudowano na współczesny wariant miejski: atletyczna sylwetka, nowocześniejsza fryzura, zarost, subtelnie dopracowana twarz oraz spójny zestaw ubrań i dodatków.
