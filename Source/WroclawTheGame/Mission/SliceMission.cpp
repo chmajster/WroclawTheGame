@@ -46,8 +46,10 @@ const UCampaignMigrationDefinition *ActiveCampaignMigration(const UWorld *World)
 {
     if (!World || !World->GetMapName().Contains(TEXT("Nadodrze_GIS")))
         return nullptr;
-    return LoadObject<UCampaignMigrationDefinition>(
-        nullptr, TEXT("/Game/Generated/CampaignMigrationDefinition.CampaignMigrationDefinition"));
+    for (TActorIterator<ACampaignMigrationRegistry> It(World); It; ++It)
+        if (It->Definition)
+            return It->Definition;
+    return nullptr;
 }
 FString CurrentCoordinateSpace(const UWorld *World)
 {
