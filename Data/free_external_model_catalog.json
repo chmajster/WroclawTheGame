@@ -1,0 +1,14 @@
+[
+  {
+    "id": "kenney-car-sedan-sports",
+    "name": "sedan-sports",
+    "provider": "Kenney",
+    "pack": "Car Kit",
+    "source_page": "https://opengameart.org/content/car-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_car-kit_3.1.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Driveable and ambient vehicle prototypes with separate wheels.",
+    "archive_sha256": "fac7dacac5c7874348cf19729af3ef205f3d366493edaf0a827d93f4fdf3d0c4",
+    "primary_path": "SourceAssets/Models/Kenney/CarKit/sedan-sports/sedan-sports.fbx"
+  }
+]
