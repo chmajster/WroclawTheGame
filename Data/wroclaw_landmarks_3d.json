@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source": "GUGiK Geoportal - Modele 3D budynków",
-  "source_service": "https://integracja.gugik.gov.pl/cgi-bin/ModeleBudynkow3D",
+  "source_service": "https://mapy.geoportal.gov.pl/wss/service/PZGIK/FOTO/WMS/ModeleBudynkow3D",
   "source_info": "https://www.geoportal.gov.pl/pl/dane/inne-dane/modele-3d-budynkow/",
   "preferred_lod": "LoD1",
   "targets": [
@@ -78,5 +78,6 @@
     }
   ],
   "teryt": "0264",
-  "source_direct_url": "https://integracja.gugik.gov.pl/Budynki3D/pobierz.php?plik=powiaty/lod1/0264_gml.zip"
+  "preferred_year": 2024,
+  "fallback_direct_url": "https://integracja.gugik.gov.pl/Budynki3D/pobierz.php?plik=powiaty/lod1/0264_gml.zip"
 }
