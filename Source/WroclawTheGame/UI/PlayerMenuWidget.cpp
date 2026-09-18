@@ -158,19 +158,19 @@ void UPlayerMenuWidget::NativeDestruct()
 
 void UPlayerMenuWidget::BuildShell()
 {
-    auto* Root = WidgetTree->ConstructWidget<UOverlay>();
-    WidgetTree->RootWidget = Root;
+    RootOverlay = WidgetTree->ConstructWidget<UOverlay>();
+    WidgetTree->RootWidget = RootOverlay;
 
     auto* Backdrop = WidgetTree->ConstructWidget<UBorder>();
     Backdrop->SetBrushColor(Background);
-    Root->AddChildToOverlay(Backdrop);
+    RootOverlay->AddChildToOverlay(Backdrop);
 
     // Fixed design canvas scaled as one unit keeps spacing and typography stable
     // from 1280x720 up to ultrawide/4K while the backdrop still fills the screen.
     auto* Scale = WidgetTree->ConstructWidget<UScaleBox>();
     Scale->SetStretch(EStretch::ScaleToFit);
     Scale->SetStretchDirection(EStretchDirection::Both);
-    auto* ScaleSlot = Root->AddChildToOverlay(Scale);
+    auto* ScaleSlot = RootOverlay->AddChildToOverlay(Scale);
     ScaleSlot->SetHorizontalAlignment(HAlign_Fill);
     ScaleSlot->SetVerticalAlignment(VAlign_Fill);
 
@@ -762,8 +762,11 @@ void UPlayerMenuWidget::Resume()
 
 void UPlayerMenuWidget::NewGame()
 {
-    if (auto* Controller = Cast<ASliceController>(GetOwningPlayer()))
-        Controller->NewGame();
+    ShowConfirmation(
+        1,
+        TEXT("ROZPOCZĄĆ NOWĄ GRĘ?"),
+        TEXT("Rozpoczęcie nowej gry przejdzie do wyboru postaci. Bieżący postęp powinien być zapisany przed kontynuacją."),
+        TEXT("NOWA GRA"));
 }
 
 void UPlayerMenuWidget::LoadGame()
@@ -774,8 +777,136 @@ void UPlayerMenuWidget::LoadGame()
 
 void UPlayerMenuWidget::QuitGame()
 {
+    ShowConfirmation(
+        2,
+        TEXT("WYJŚĆ Z GRY?"),
+        TEXT("Gra zostanie zamknięta. Upewnij się, że ostatni zapis został wykonany poprawnie."),
+        TEXT("WYJDŹ"));
+}
+
+void UPlayerMenuWidget::ShowConfirmation(
+    int32 Action,
+    const FString& Title,
+    const FString& Body,
+    const FString& ConfirmLabel)
+{
+    if (!RootOverlay)
+        return;
+
+    ClearConfirmation();
+    PendingConfirmation = Action;
+    ConfirmationSecondsRemaining = Action == 3 ? 15.0f : 0.0f;
+
+    ConfirmationOverlay = WidgetTree->ConstructWidget<UBorder>();
+    ConfirmationOverlay->SetBrushColor(FLinearColor(0.0f, 0.0f, 0.0f, 0.78f));
+    auto* OverlaySlot = RootOverlay->AddChildToOverlay(ConfirmationOverlay);
+    OverlaySlot->SetHorizontalAlignment(HAlign_Fill);
+    OverlaySlot->SetVerticalAlignment(VAlign_Fill);
+
+    auto* Center = WidgetTree->ConstructWidget<UOverlay>();
+    ConfirmationOverlay->AddChild(Center);
+
+    auto* CardSize = WidgetTree->ConstructWidget<USizeBox>();
+    CardSize->SetWidthOverride(560.0f);
+    auto* CardSlot = Center->AddChildToOverlay(CardSize);
+    CardSlot->SetHorizontalAlignment(HAlign_Center);
+    CardSlot->SetVerticalAlignment(VAlign_Center);
+
+    auto* Card = MakeCard(FMargin(28, 26, 28, 24));
+    CardSize->AddChild(Card);
+
+    auto* Column = WidgetTree->ConstructWidget<UVerticalBox>();
+    Card->AddChild(Column);
+
+    Column->AddChildToVerticalBox(MakeText(TEXT("POTWIERDZENIE"), 9, true, Accent))
+        ->SetPadding(FMargin(0, 0, 0, 5));
+    Column->AddChildToVerticalBox(MakeText(Title, 24, true, TextPrimary))
+        ->SetPadding(FMargin(0, 0, 0, 12));
+
+    auto* Description = MakeText(Body, 12, false, Muted);
+    Description->SetLineHeightPercentage(1.25f);
+    Column->AddChildToVerticalBox(Description)->SetPadding(FMargin(0, 0, 0, 18));
+
+    if (Action == 3)
+    {
+        ConfirmationCountdown = MakeText(TEXT("AUTOMATYCZNE COFNIĘCIE ZA 15 S"), 10, true, Accent);
+        Column->AddChildToVerticalBox(ConfirmationCountdown)->SetPadding(FMargin(0, 0, 0, 12));
+    }
+
+    auto* Buttons = WidgetTree->ConstructWidget<UHorizontalBox>();
+    Column->AddChildToVerticalBox(Buttons);
+
+    auto* Cancel = MakeButton(Action == 3 ? TEXT("COFNIJ") : TEXT("ANULUJ"));
+    Cancel->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CancelConfirmation);
+    auto* CancelSlot = Buttons->AddChildToHorizontalBox(Cancel);
+    CancelSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    CancelSlot->SetPadding(FMargin(0, 0, 5, 0));
+
+    auto* Confirm = MakeButton(ConfirmLabel, true);
+    Confirm->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ConfirmPendingAction);
+    auto* ConfirmSlot = Buttons->AddChildToHorizontalBox(Confirm);
+    ConfirmSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    ConfirmSlot->SetPadding(FMargin(5, 0, 0, 0));
+
+    Confirm->SetKeyboardFocus();
+}
+
+void UPlayerMenuWidget::ClearConfirmation()
+{
+    if (ConfirmationOverlay)
+        ConfirmationOverlay->RemoveFromParent();
+    ConfirmationOverlay = nullptr;
+    ConfirmationCountdown = nullptr;
+    PendingConfirmation = 0;
+    ConfirmationSecondsRemaining = 0.0f;
+}
+
+void UPlayerMenuWidget::ConfirmPendingAction()
+{
+    const int32 Action = PendingConfirmation;
+
+    if (Action == 3)
+    {
+        if (GEngine)
+        {
+            if (UGameUserSettings* UserSettings = GEngine->GetGameUserSettings())
+            {
+                UserSettings->ConfirmVideoMode();
+                UserSettings->SaveSettings();
+            }
+        }
+        ClearConfirmation();
+        Refresh();
+        return;
+    }
+
+    ClearConfirmation();
+
     if (auto* Controller = Cast<ASliceController>(GetOwningPlayer()))
-        Controller->Quit();
+    {
+        if (Action == 1)
+            Controller->NewGame();
+        else if (Action == 2)
+            Controller->Quit();
+    }
+}
+
+void UPlayerMenuWidget::CancelConfirmation()
+{
+    const int32 Action = PendingConfirmation;
+    ClearConfirmation();
+
+    if (Action == 3 && GEngine)
+    {
+        if (UGameUserSettings* UserSettings = GEngine->GetGameUserSettings())
+        {
+            UserSettings->RevertVideoMode();
+            UserSettings->ApplyResolutionSettings(false);
+            UserSettings->SaveSettings();
+        }
+    }
+
+    Refresh();
 }
 
 void UPlayerMenuWidget::ToggleFPSCounter()
@@ -829,8 +960,12 @@ void UPlayerMenuWidget::CycleWindowMode()
         }
         UserSettings->SetFullscreenMode(Next);
         UserSettings->ApplyResolutionSettings(false);
-        UserSettings->ConfirmVideoMode();
-        UserSettings->SaveSettings();
+        ShowConfirmation(
+            3,
+            TEXT("ZACHOWAĆ TRYB EKRANU?"),
+            TEXT("Jeżeli nowy tryb nie działa poprawnie, wybierz COFNIJ. Bez potwierdzenia zmiana zostanie automatycznie cofnięta."),
+            TEXT("ZACHOWAJ"));
+        return;
     }
     Refresh();
 }
@@ -875,8 +1010,12 @@ void UPlayerMenuWidget::CycleResolution()
 
         UserSettings->SetScreenResolution(Supported[NextIndex]);
         UserSettings->ApplyResolutionSettings(false);
-        UserSettings->ConfirmVideoMode();
-        UserSettings->SaveSettings();
+        ShowConfirmation(
+            3,
+            TEXT("ZACHOWAĆ ROZDZIELCZOŚĆ?"),
+            TEXT("Jeżeli obraz jest nieczytelny lub monitor nie obsługuje ustawienia, wybierz COFNIJ. Bez potwierdzenia zmiana zostanie automatycznie cofnięta."),
+            TEXT("ZACHOWAJ"));
+        return;
     }
     Refresh();
 }
@@ -989,6 +1128,25 @@ void UPlayerMenuWidget::PreviewRotateLeft()
 void UPlayerMenuWidget::PreviewRotateRight()
 {
     if (Studio) Studio->Rotate(20);
+}
+
+void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+    Super::NativeTick(MyGeometry, InDeltaTime);
+
+    if (PendingConfirmation != 3 || !ConfirmationOverlay)
+        return;
+
+    ConfirmationSecondsRemaining = FMath::Max(0.0f, ConfirmationSecondsRemaining - InDeltaTime);
+    if (ConfirmationCountdown)
+    {
+        ConfirmationCountdown->SetText(FText::FromString(FString::Printf(
+            TEXT("AUTOMATYCZNE COFNIĘCIE ZA %d S"),
+            FMath::Max(0, FMath::CeilToInt(ConfirmationSecondsRemaining)))));
+    }
+
+    if (ConfirmationSecondsRemaining <= 0.0f)
+        CancelConfirmation();
 }
 
 FReply UPlayerMenuWidget::NativeOnMouseButtonDown(const FGeometry& Geometry, const FPointerEvent& Event)
