@@ -8,10 +8,12 @@
 #include "Engine/TextureRenderTarget2D.h"
 #include "Components/GameplayComponents.h"
 #include "UI/SliceController.h"
+#include "UI/PerformanceSettings.h"
 #include "Engine/Canvas.h"
 #include "Engine/Engine.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
+#include "Misc/App.h"
 #include "Character/SliceCharacter.h"
 #include "Mission/SliceMission.h"
 #include "Interaction/Interactable.h"
@@ -20,6 +22,28 @@
 void ASliceHUD::Text(const FString &Value, float X, float Y, float Scale, const FLinearColor &Color)
 {
     DrawText(Value, Color, X, Y, GEngine->GetMediumFont(), Scale, false);
+}
+void ASliceHUD::DrawFPSCounter()
+{
+    const auto* Settings = UWTGPerformanceSettings::Get();
+    if (!Settings || !Settings->bShowFPS || !Canvas || !GEngine)
+        return;
+
+    const double Delta = FApp::GetDeltaTime();
+    if (Delta > 0.0001 && Delta < 1.0)
+    {
+        const float InstantFPS = static_cast<float>(1.0 / Delta);
+        SmoothedFPS = SmoothedFPS <= 0.0f
+                          ? InstantFPS
+                          : FMath::FInterpTo(SmoothedFPS, InstantFPS, static_cast<float>(Delta), 8.0f);
+    }
+
+    const FString Label = FString::Printf(TEXT("%.0f FPS"), SmoothedFPS);
+    float Width = 0.0f, Height = 0.0f;
+    GetTextSize(Label, Width, Height, GEngine->GetMediumFont(), 0.85f);
+    const float X = Canvas->SizeX - Width - 24.0f;
+    DrawRect(FLinearColor(0.008f, 0.012f, 0.018f, 0.82f), X - 8.0f, 12.0f, Width + 16.0f, Height + 12.0f);
+    Text(Label, X, 18.0f, 0.85f, FLinearColor(0.65f, 0.96f, 0.72f, 1.0f));
 }
 void ASliceHUD::Panel(const FString &Title, const FString &Body)
 {
@@ -59,9 +83,10 @@ void ASliceHUD::Panel(const FString &Title, const FString &Body)
 void ASliceHUD::DrawHUD()
 {
     Super::DrawHUD();
-    if (GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->bEditing) return;
     if (!Canvas)
         return;
+    DrawFPSCounter();
+    if (GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->bEditing) return;
     auto *PC = Cast<ASliceController>(PlayerOwner);
     if (!PC)
         return;

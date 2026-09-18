@@ -85,6 +85,9 @@ def prepare():
             else:
                 part.set_editor_property('static_mesh', mesh)
         catalog.set_editor_property(property_name, parts)
+
+    # Keep the authored catalog compatible while upgrading the primary player preset.
+    catalog.apply_modern_hero_profile()
     unreal.EditorAssetLibrary.save_loaded_asset(catalog, False)
 
     material = unreal.load_asset(DEST + '/M_CharacterPlaceholder')

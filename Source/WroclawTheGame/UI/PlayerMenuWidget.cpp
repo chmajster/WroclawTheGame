@@ -1,6 +1,7 @@
 #include "UI/PlayerMenuWidget.h"
 
 #include "UI/SliceController.h"
+#include "UI/PerformanceSettings.h"
 #include "Character/CharacterCreator.h"
 #include "Character/CharacterCreatorSubsystem.h"
 #include "Character/CharacterAppearanceComponent.h"
@@ -25,8 +26,10 @@
 #include "Components/VerticalBox.h"
 #include "Components/VerticalBoxSlot.h"
 #include "Engine/GameInstance.h"
+#include "Engine/Engine.h"
 #include "Engine/TextureRenderTarget2D.h"
 #include "Engine/World.h"
+#include "GameFramework/GameUserSettings.h"
 #include "Input/Reply.h"
 #include "Materials/MaterialInstanceDynamic.h"
 
@@ -90,7 +93,7 @@ void UPlayerMenuWidget::NativeOnInitialized()
     {
         Studio->SetActorEnableCollision(false);
         Studio->SetView(TEXT("FullBody"));
-        Studio->SetLighting(TEXT("Neutral"));
+        Studio->SetLighting(TEXT("Modern"));
         if (auto* Creator = GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>())
             Studio->Appearance->ApplyAppearance(Creator->Committed.PlayerAppearanceData);
     }
@@ -130,8 +133,8 @@ void UPlayerMenuWidget::BuildShell()
     Top->AddChildToHorizontalBox(Brand);
 
     const TCHAR* Labels[] = {TEXT("GRA"), TEXT("POSTAĆ"), TEXT("EKWIPUNEK"),
-                             TEXT("DZIENNIK"), TEXT("MAPA"), TEXT("STATYSTYKI")};
-    for (int32 Index = 0; Index < 6; ++Index)
+                             TEXT("DZIENNIK"), TEXT("MAPA"), TEXT("STATYSTYKI"), TEXT("USTAWIENIA")};
+    for (int32 Index = 0; Index < 7; ++Index)
     {
         auto* Button = MakeButton(Labels[Index]);
         auto* Slot = Top->AddChildToHorizontalBox(Button);
@@ -146,6 +149,7 @@ void UPlayerMenuWidget::BuildShell()
     TabButtons[3]->OnClicked.AddDynamic(this, &UPlayerMenuWidget::TabJournal);
     TabButtons[4]->OnClicked.AddDynamic(this, &UPlayerMenuWidget::TabMap);
     TabButtons[5]->OnClicked.AddDynamic(this, &UPlayerMenuWidget::TabStats);
+    TabButtons[6]->OnClicked.AddDynamic(this, &UPlayerMenuWidget::TabSettings);
 
     auto* Line = WidgetTree->ConstructWidget<UBorder>();
     Line->SetBrushColor(Divider);
@@ -209,13 +213,14 @@ void UPlayerMenuWidget::Refresh()
         case 3: BuildJournalTab(); break;
         case 4: BuildMapTab(); break;
         case 5: BuildStatsTab(); break;
+        case 6: BuildSettingsTab(); break;
         default: ActiveTab = 0; BuildGameTab(); break;
     }
 }
 
 void UPlayerMenuWidget::SelectTab(int32 Index)
 {
-    ActiveTab = FMath::Clamp(Index, 0, 5);
+    ActiveTab = FMath::Clamp(Index, 0, 6);
     Refresh();
 }
 
@@ -482,12 +487,101 @@ void UPlayerMenuWidget::BuildStatsTab()
                  FLinearColor(0.9f, 0.92f, 0.95f)));
 }
 
+void UPlayerMenuWidget::BuildSettingsTab()
+{
+    PageTitle->SetText(FText::FromString(TEXT("USTAWIENIA / WYŚWIETLANIE")));
+
+    auto* Preferences = UWTGPerformanceSettings::Get();
+    UGameUserSettings* UserSettings = GEngine ? GEngine->GetGameUserSettings() : nullptr;
+
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("WYŚWIETLANIE"), 16, true, Accent))
+        ->SetPadding(FMargin(3, 0, 3, 12));
+
+    const bool bFPSVisible = Preferences && Preferences->bShowFPS;
+    auto* FPSButton = MakeButton(
+        FString::Printf(TEXT("LICZNIK FPS: %s"), bFPSVisible ? TEXT("WŁ.") : TEXT("WYŁ.")),
+        bFPSVisible);
+    FPSButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleFPSCounter);
+    ActionColumn->AddChildToVerticalBox(FPSButton)->SetPadding(FMargin(0, 0, 0, 8));
+
+    const bool bVSync = UserSettings && UserSettings->IsVSyncEnabled();
+    auto* VSyncButton = MakeButton(
+        FString::Printf(TEXT("VSYNC: %s"), bVSync ? TEXT("WŁ.") : TEXT("WYŁ.")),
+        bVSync);
+    VSyncButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleVSync);
+    ActionColumn->AddChildToVerticalBox(VSyncButton)->SetPadding(FMargin(0, 0, 0, 16));
+
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("LIMIT FPS"), 12, true, Muted))
+        ->SetPadding(FMargin(2, 0, 2, 8));
+
+    const int32 Limit = Preferences ? Preferences->FPSLimit : 60;
+
+    auto* Unlimited = MakeButton(TEXT("BEZ LIMITU"), Limit == 0);
+    Unlimited->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPSUnlimited);
+    ActionColumn->AddChildToVerticalBox(Unlimited)->SetPadding(FMargin(0, 0, 0, 5));
+
+    auto* B30 = MakeButton(TEXT("30 FPS"), Limit == 30);
+    B30->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPS30);
+    ActionColumn->AddChildToVerticalBox(B30)->SetPadding(FMargin(0, 0, 0, 5));
+
+    auto* B60 = MakeButton(TEXT("60 FPS"), Limit == 60);
+    B60->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPS60);
+    ActionColumn->AddChildToVerticalBox(B60)->SetPadding(FMargin(0, 0, 0, 5));
+
+    auto* B90 = MakeButton(TEXT("90 FPS"), Limit == 90);
+    B90->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPS90);
+    ActionColumn->AddChildToVerticalBox(B90)->SetPadding(FMargin(0, 0, 0, 5));
+
+    auto* B120 = MakeButton(TEXT("120 FPS"), Limit == 120);
+    B120->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPS120);
+    ActionColumn->AddChildToVerticalBox(B120)->SetPadding(FMargin(0, 0, 0, 5));
+
+    auto* B144 = MakeButton(TEXT("144 FPS"), Limit == 144);
+    B144->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPS144);
+    ActionColumn->AddChildToVerticalBox(B144)->SetPadding(FMargin(0, 0, 0, 5));
+
+    auto* B165 = MakeButton(TEXT("165 FPS"), Limit == 165);
+    B165->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPS165);
+    ActionColumn->AddChildToVerticalBox(B165)->SetPadding(FMargin(0, 0, 0, 5));
+
+    auto* B240 = MakeButton(TEXT("240 FPS"), Limit == 240);
+    B240->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPS240);
+    ActionColumn->AddChildToVerticalBox(B240);
+
+    const FString LimitText = Limit == 0 ? TEXT("bez limitu") : FString::Printf(TEXT("%d FPS"), Limit);
+    const FString Description = FString::Printf(
+        TEXT("LICZNIK FPS\n%s\n\nLIMIT KLATEK\n%s\n\nVSYNC\n%s\n\n")
+        TEXT("Limit jest zapisywany w ustawieniach użytkownika i stosowany przy następnym uruchomieniu. ")
+        TEXT("Przy włączonym VSync rzeczywista liczba FPS może być dodatkowo ograniczona częstotliwością monitora."),
+        bFPSVisible ? TEXT("Włączony") : TEXT("Wyłączony"),
+        *LimitText,
+        bVSync ? TEXT("Włączony") : TEXT("Wyłączony"));
+    AddTextPage(TEXT("WYDAJNOŚĆ"), Description);
+
+    RightColumn->AddChildToVerticalBox(MakeText(TEXT("AKTYWNY PROFIL"), 13, true, Accent))
+        ->SetPadding(FMargin(0, 0, 0, 10));
+
+    if (UserSettings)
+    {
+        const FIntPoint Resolution = UserSettings->GetScreenResolution();
+        const FString Status = FString::Printf(
+            TEXT("Rozdzielczość: %d × %d\nTryb ekranu: %d\nVSync: %s\nLimit: %s\nLicznik FPS: %s"),
+            Resolution.X, Resolution.Y,
+            static_cast<int32>(UserSettings->GetFullscreenMode()),
+            bVSync ? TEXT("Wł.") : TEXT("Wył."),
+            *LimitText,
+            bFPSVisible ? TEXT("Wł.") : TEXT("Wył."));
+        RightColumn->AddChildToVerticalBox(MakeText(Status, 13, false, FLinearColor(0.9f, 0.92f, 0.95f)));
+    }
+}
+
 void UPlayerMenuWidget::TabGame() { SelectTab(0); }
 void UPlayerMenuWidget::TabCharacter() { SelectTab(1); }
 void UPlayerMenuWidget::TabInventory() { SelectTab(2); }
 void UPlayerMenuWidget::TabJournal() { SelectTab(3); }
 void UPlayerMenuWidget::TabMap() { SelectTab(4); }
 void UPlayerMenuWidget::TabStats() { SelectTab(5); }
+void UPlayerMenuWidget::TabSettings() { SelectTab(6); }
 
 void UPlayerMenuWidget::Resume()
 {
@@ -512,6 +606,45 @@ void UPlayerMenuWidget::QuitGame()
     if (auto* Controller = Cast<ASliceController>(GetOwningPlayer()))
         Controller->Quit();
 }
+
+void UPlayerMenuWidget::ToggleFPSCounter()
+{
+    auto* Preferences = UWTGPerformanceSettings::Get();
+    if (!Preferences)
+        return;
+    Preferences->SetShowFPS(!Preferences->bShowFPS);
+    Refresh();
+}
+
+void UPlayerMenuWidget::ToggleVSync()
+{
+    if (GEngine)
+    {
+        if (UGameUserSettings* UserSettings = GEngine->GetGameUserSettings())
+        {
+            UserSettings->SetVSyncEnabled(!UserSettings->IsVSyncEnabled());
+            UserSettings->ApplySettings(false);
+            UserSettings->SaveSettings();
+        }
+    }
+    Refresh();
+}
+
+void UPlayerMenuWidget::SetFPSLimit(int32 Limit)
+{
+    if (auto* Preferences = UWTGPerformanceSettings::Get())
+        Preferences->SetFPSLimit(Limit);
+    Refresh();
+}
+
+void UPlayerMenuWidget::FPSUnlimited() { SetFPSLimit(0); }
+void UPlayerMenuWidget::FPS30() { SetFPSLimit(30); }
+void UPlayerMenuWidget::FPS60() { SetFPSLimit(60); }
+void UPlayerMenuWidget::FPS90() { SetFPSLimit(90); }
+void UPlayerMenuWidget::FPS120() { SetFPSLimit(120); }
+void UPlayerMenuWidget::FPS144() { SetFPSLimit(144); }
+void UPlayerMenuWidget::FPS165() { SetFPSLimit(165); }
+void UPlayerMenuWidget::FPS240() { SetFPSLimit(240); }
 
 void UPlayerMenuWidget::PreviewFullBody()
 {

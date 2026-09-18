@@ -1,3 +1,12 @@
+## 2026-09-18 — nowoczesna postać i ustawienia FPS
+
+- Domyślny profil głównej postaci przebudowano na współczesny wariant miejski: atletyczna sylwetka, nowocześniejsza fryzura, zarost, subtelnie dopracowana twarz oraz spójny zestaw ubrań i dodatków.
+- Podgląd postaci w menu i kreatorze dostał profil `Modern` z trzypunktowym oświetleniem key/fill/rim, dającym wyraźniejszą sylwetkę i separację od tła.
+- Dodano zakładkę `USTAWIENIA` w centrum gracza z przełącznikiem licznika FPS oraz VSync.
+- Dodano trwały limit klatek: bez limitu, 30, 60, 90, 120, 144, 165 i 240 FPS. Wybrana wartość jest zapisywana w ustawieniach użytkownika i stosowana przy uruchomieniu gry.
+- Licznik FPS jest rysowany przez HUD jako wygładzony odczyt i może działać także w menu pauzy.
+- Istniejące zapisane wyglądy postaci nie są nadpisywane; nowy profil dotyczy wartości domyślnej i nowych kampanii.
+
 ## 2026-09-18 — kompletne powiązanie modeli runtime
 
 - Model coverage obejmuje 115 audytowanych modeli: Poly Haven, Kenney, OpenGameArt, Quaternius i oryginalne fallbacki CC0.

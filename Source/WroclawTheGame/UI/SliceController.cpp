@@ -1,6 +1,7 @@
 #include "UI/SliceController.h"
 #include "UI/CharacterCreatorWidget.h"
 #include "UI/PlayerMenuWidget.h"
+#include "UI/PerformanceSettings.h"
 #include "Character/CharacterCreatorSubsystem.h"
 #include "Engine/TextureRenderTarget2D.h"
 #include "Systems/DebugCheatManager.h"
@@ -18,6 +19,7 @@
 void ASliceController::BeginPlay()
 {
     Super::BeginPlay();
+    UWTGPerformanceSettings::Get()->Apply();
 #if !UE_BUILD_SHIPPING
     CheatClass = UDebugCheatManager::StaticClass();
     EnableCheats();

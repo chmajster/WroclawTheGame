@@ -42,6 +42,7 @@ private:
     void BuildJournalTab();
     void BuildMapTab();
     void BuildStatsTab();
+    void BuildSettingsTab();
     void AddPreview();
     void AddTextPage(const FString& Heading, const FString& Body);
     void AddPlayerStatus();
@@ -54,6 +55,7 @@ private:
     UFUNCTION() void TabJournal();
     UFUNCTION() void TabMap();
     UFUNCTION() void TabStats();
+    UFUNCTION() void TabSettings();
 
     UFUNCTION() void Resume();
     UFUNCTION() void NewGame();
@@ -65,4 +67,16 @@ private:
     UFUNCTION() void PreviewFace();
     UFUNCTION() void PreviewRotateLeft();
     UFUNCTION() void PreviewRotateRight();
+
+    UFUNCTION() void ToggleFPSCounter();
+    UFUNCTION() void ToggleVSync();
+    UFUNCTION() void FPSUnlimited();
+    UFUNCTION() void FPS30();
+    UFUNCTION() void FPS60();
+    UFUNCTION() void FPS90();
+    UFUNCTION() void FPS120();
+    UFUNCTION() void FPS144();
+    UFUNCTION() void FPS165();
+    UFUNCTION() void FPS240();
+    void SetFPSLimit(int32 Limit);
 };

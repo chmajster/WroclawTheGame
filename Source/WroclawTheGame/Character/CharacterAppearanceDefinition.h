@@ -144,6 +144,7 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TArray<FLinearColor> EyePalette;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FCharacterAppearanceDefinition FallbackDefinition;
     UFUNCTION(BlueprintCallable) void BuildFallbackCatalog();
+    UFUNCTION(BlueprintCallable) void ApplyModernHeroProfile();
     const FBodyPresetDefinition* Body(FName ID) const;
     const FAppearancePartDefinition* Part(const TArray<FAppearancePartDefinition>& Parts, FName ID) const;
     bool Compatible(const FAppearancePartDefinition& Part, const FCharacterAppearanceDefinition& Appearance) const;
