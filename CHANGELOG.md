@@ -1,3 +1,15 @@
+## 2026-09-18 — pełna bramka Runtime Asset QA
+
+- Dodano politykę `Data/runtime_asset_qa.json` dla skali, LOD, kolizji, materiałów, Skeletal Mesh, Physics Asset, IK/FBIK i visual QA.
+- UE automatycznie generuje brakujące Static/Skeletal LOD, simple collision, neutralny materiał awaryjny oraz Physics Asset bazowych postaci; końcowy stan jest raportowany.
+- Dodano IK Rig/retarget chains/FBIK oraz batch retarget semantic animations na osobne męski i żeński szkielety Quaternius, z ręcznym fallbackiem chains dla nierozpoznanego humanoida.
+- Character Creator i runtime locomotion korzystają z retargetowanych Idle/Walk/Jog/Crouch zamiast zakładać zgodność osobno importowanych skeletonów.
+- Dodano walidację transformów i visual meshes kampanii oraz modeli GIS.
+- Dodano deterministyczną galerię screenshotów 1920×1080 dla Idle/Walk/Jog/Crouch/StandUp/Dodge, z wariantem męskim i żeńskim oraz skinowanymi częściami głowy.
+- Visual review zapisuje hashe screenshotów i fingerprint wejść; stary PASS jest odrzucany po rzeczywistej zmianie assetu/kodu.
+- `Build-Windows.ps1` i pakowanie GIS nie uruchamiają `BuildCookRun` bez końcowego `RuntimeAssetQAPass.ok`.
+- Rzeczywisty PASS silnikowy pozostaje do wygenerowania na Windows z UE 5.8; repo nie zapisuje fikcyjnego wyniku.
+
 ## 2026-09-18 — kompletne powiązanie modeli runtime
 
 - Model coverage obejmuje 115 audytowanych modeli: Poly Haven, Kenney, OpenGameArt, Quaternius i oryginalne fallbacki CC0.
