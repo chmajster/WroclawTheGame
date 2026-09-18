@@ -52,6 +52,30 @@ FSlateRoundedBoxBrush RoundedBrush(const FLinearColor& Color, float Radius)
 {
     return FSlateRoundedBoxBrush(Color, Radius, FVector2f(64.0f, 64.0f));
 }
+
+FString WindowModeLabel(EWindowMode::Type Mode)
+{
+    switch (Mode)
+    {
+        case EWindowMode::Fullscreen: return TEXT("PEŁNY EKRAN");
+        case EWindowMode::WindowedFullscreen: return TEXT("BEZ RAMKI");
+        case EWindowMode::Windowed: return TEXT("OKNO");
+        default: return TEXT("NIEZNANY");
+    }
+}
+
+FString QualityLabel(int32 Level)
+{
+    switch (Level)
+    {
+        case 0: return TEXT("NISKA");
+        case 1: return TEXT("ŚREDNIA");
+        case 2: return TEXT("WYSOKA");
+        case 3: return TEXT("EPICKA");
+        case 4: return TEXT("KINOWA");
+        default: return TEXT("NIESTANDARDOWA");
+    }
+}
 }
 
 UTextBlock* UPlayerMenuWidget::MakeText(const FString& Value, int32 Size, bool bBold, FLinearColor Color)
@@ -606,90 +630,120 @@ void UPlayerMenuWidget::BuildStatsTab()
 
 void UPlayerMenuWidget::BuildSettingsTab()
 {
-    PageTitle->SetText(FText::FromString(TEXT("USTAWIENIA / WYŚWIETLANIE")));
+    PageTitle->SetText(FText::FromString(TEXT("USTAWIENIA  /  OBRAZ I WYDAJNOŚĆ")));
 
     auto* Preferences = UWTGPerformanceSettings::Get();
     UGameUserSettings* UserSettings = GEngine ? GEngine->GetGameUserSettings() : nullptr;
 
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("WYŚWIETLANIE"), 16, true, Accent))
-        ->SetPadding(FMargin(3, 0, 3, 12));
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("OBRAZ"), 20, true, TextPrimary))
+        ->SetPadding(FMargin(2, 1, 2, 2));
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("USTAWIENIA NATYCHMIASTOWE"), 9, true, Accent))
+        ->SetPadding(FMargin(2, 0, 2, 14));
+
+    if (!UserSettings)
+    {
+        ActionColumn->AddChildToVerticalBox(MakeText(
+            TEXT("Ustawienia silnika są chwilowo niedostępne."), 11, false, Muted));
+        AddTextPage(TEXT("WYŚWIETLANIE"), TEXT("Nie udało się pobrać UGameUserSettings."));
+        return;
+    }
 
     const bool bFPSVisible = Preferences && Preferences->bShowFPS;
-    auto* FPSButton = MakeButton(
-        FString::Printf(TEXT("LICZNIK FPS: %s"), bFPSVisible ? TEXT("WŁ.") : TEXT("WYŁ.")),
-        bFPSVisible);
-    FPSButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleFPSCounter);
-    ActionColumn->AddChildToVerticalBox(FPSButton)->SetPadding(FMargin(0, 0, 0, 8));
+    const bool bVSync = UserSettings->IsVSyncEnabled();
+    const bool bDynamicResolution = UserSettings->IsDynamicResolutionEnabled();
+    const int32 Limit = Preferences ? Preferences->FPSLimit : 60;
+    const FIntPoint Resolution = UserSettings->GetScreenResolution();
+    const EWindowMode::Type WindowMode = UserSettings->GetFullscreenMode();
+    const int32 Quality = UserSettings->GetOverallScalabilityLevel();
 
-    const bool bVSync = UserSettings && UserSettings->IsVSyncEnabled();
+    float ScaleNormalized = 0.0f;
+    float ScaleValue = 100.0f;
+    float MinScale = 0.0f;
+    float MaxScale = 100.0f;
+    UserSettings->GetResolutionScaleInformationEx(ScaleNormalized, ScaleValue, MinScale, MaxScale);
+
+    auto* ModeButton = MakeButton(
+        FString::Printf(TEXT("TRYB: %s"), *WindowModeLabel(WindowMode)), true);
+    ModeButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleWindowMode);
+    ActionColumn->AddChildToVerticalBox(ModeButton)->SetPadding(FMargin(0, 0, 0, 7));
+
+    auto* ResolutionButton = MakeButton(
+        FString::Printf(TEXT("ROZDZIELCZOŚĆ: %d × %d"), Resolution.X, Resolution.Y));
+    ResolutionButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleResolution);
+    ActionColumn->AddChildToVerticalBox(ResolutionButton)->SetPadding(FMargin(0, 0, 0, 7));
+
+    auto* QualityButton = MakeButton(
+        FString::Printf(TEXT("JAKOŚĆ: %s"), *QualityLabel(Quality)));
+    QualityButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleQuality);
+    ActionColumn->AddChildToVerticalBox(QualityButton)->SetPadding(FMargin(0, 0, 0, 7));
+
+    auto* ScaleButton = MakeButton(
+        FString::Printf(TEXT("SKALA RENDERU: %.0f%%"), ScaleValue));
+    ScaleButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleResolutionScale);
+    ActionColumn->AddChildToVerticalBox(ScaleButton)->SetPadding(FMargin(0, 0, 0, 7));
+
     auto* VSyncButton = MakeButton(
         FString::Printf(TEXT("VSYNC: %s"), bVSync ? TEXT("WŁ.") : TEXT("WYŁ.")),
         bVSync);
     VSyncButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleVSync);
-    ActionColumn->AddChildToVerticalBox(VSyncButton)->SetPadding(FMargin(0, 0, 0, 16));
+    ActionColumn->AddChildToVerticalBox(VSyncButton)->SetPadding(FMargin(0, 0, 0, 7));
 
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("LIMIT FPS"), 12, true, Muted))
-        ->SetPadding(FMargin(2, 0, 2, 8));
+    auto* DynamicButton = MakeButton(
+        FString::Printf(TEXT("DYNAMICZNA ROZDZ.: %s"), bDynamicResolution ? TEXT("WŁ.") : TEXT("WYŁ.")),
+        bDynamicResolution);
+    DynamicButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleDynamicResolution);
+    ActionColumn->AddChildToVerticalBox(DynamicButton)->SetPadding(FMargin(0, 0, 0, 16));
 
-    const int32 Limit = Preferences ? Preferences->FPSLimit : 60;
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("PŁYNNOŚĆ"), 9, true, Muted))
+        ->SetPadding(FMargin(2, 0, 2, 7));
 
-    auto* Unlimited = MakeButton(TEXT("BEZ LIMITU"), Limit == 0);
-    Unlimited->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPSUnlimited);
-    ActionColumn->AddChildToVerticalBox(Unlimited)->SetPadding(FMargin(0, 0, 0, 5));
+    auto* FPSButton = MakeButton(
+        FString::Printf(TEXT("LICZNIK FPS: %s"), bFPSVisible ? TEXT("WŁ.") : TEXT("WYŁ.")),
+        bFPSVisible);
+    FPSButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleFPSCounter);
+    ActionColumn->AddChildToVerticalBox(FPSButton)->SetPadding(FMargin(0, 0, 0, 7));
 
-    auto* B30 = MakeButton(TEXT("30 FPS"), Limit == 30);
-    B30->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPS30);
-    ActionColumn->AddChildToVerticalBox(B30)->SetPadding(FMargin(0, 0, 0, 5));
+    const FString LimitLabel = Limit == 0 ? TEXT("BEZ LIMITU") : FString::Printf(TEXT("%d FPS"), Limit);
+    auto* LimitButton = MakeButton(FString::Printf(TEXT("LIMIT: %s"), *LimitLabel));
+    LimitButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleFPSLimit);
+    ActionColumn->AddChildToVerticalBox(LimitButton);
 
-    auto* B60 = MakeButton(TEXT("60 FPS"), Limit == 60);
-    B60->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPS60);
-    ActionColumn->AddChildToVerticalBox(B60)->SetPadding(FMargin(0, 0, 0, 5));
-
-    auto* B90 = MakeButton(TEXT("90 FPS"), Limit == 90);
-    B90->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPS90);
-    ActionColumn->AddChildToVerticalBox(B90)->SetPadding(FMargin(0, 0, 0, 5));
-
-    auto* B120 = MakeButton(TEXT("120 FPS"), Limit == 120);
-    B120->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPS120);
-    ActionColumn->AddChildToVerticalBox(B120)->SetPadding(FMargin(0, 0, 0, 5));
-
-    auto* B144 = MakeButton(TEXT("144 FPS"), Limit == 144);
-    B144->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPS144);
-    ActionColumn->AddChildToVerticalBox(B144)->SetPadding(FMargin(0, 0, 0, 5));
-
-    auto* B165 = MakeButton(TEXT("165 FPS"), Limit == 165);
-    B165->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPS165);
-    ActionColumn->AddChildToVerticalBox(B165)->SetPadding(FMargin(0, 0, 0, 5));
-
-    auto* B240 = MakeButton(TEXT("240 FPS"), Limit == 240);
-    B240->OnClicked.AddDynamic(this, &UPlayerMenuWidget::FPS240);
-    ActionColumn->AddChildToVerticalBox(B240);
-
-    const FString LimitText = Limit == 0 ? TEXT("bez limitu") : FString::Printf(TEXT("%d FPS"), Limit);
     const FString Description = FString::Printf(
-        TEXT("LICZNIK FPS\n%s\n\nLIMIT KLATEK\n%s\n\nVSYNC\n%s\n\n")
-        TEXT("Limit jest zapisywany w ustawieniach użytkownika i stosowany przy następnym uruchomieniu. ")
-        TEXT("Przy włączonym VSync rzeczywista liczba FPS może być dodatkowo ograniczona częstotliwością monitora."),
-        bFPSVisible ? TEXT("Włączony") : TEXT("Wyłączony"),
-        *LimitText,
-        bVSync ? TEXT("Włączony") : TEXT("Wyłączony"));
-    AddTextPage(TEXT("WYDAJNOŚĆ"), Description);
+        TEXT("TRYB EKRANU\n%s\n\nROZDZIELCZOŚĆ\n%d × %d\n\nSKALA RENDERU\n%.0f%%  (zakres %.0f–%.0f%%)\n\n")
+        TEXT("PRESET JAKOŚCI\n%s\n\nVSYNC\n%s\n\nDYNAMICZNA ROZDZIELCZOŚĆ\n%s\n\n")
+        TEXT("LIMIT KLATEK\n%s\n\nLICZNIK FPS\n%s\n\n")
+        TEXT("Zmiany są stosowane od razu i zapisywane w GameUserSettings. ")
+        TEXT("Tryb bez ramki może używać rozdzielczości pulpitu niezależnie od wybranego presetu."),
+        *WindowModeLabel(WindowMode),
+        Resolution.X, Resolution.Y,
+        ScaleValue, MinScale, MaxScale,
+        *QualityLabel(Quality),
+        bVSync ? TEXT("Włączony") : TEXT("Wyłączony"),
+        bDynamicResolution ? TEXT("Włączona") : TEXT("Wyłączona"),
+        *LimitLabel,
+        bFPSVisible ? TEXT("Włączony") : TEXT("Wyłączony"));
+    AddTextPage(TEXT("WYŚWIETLANIE"), Description);
 
-    RightColumn->AddChildToVerticalBox(MakeText(TEXT("AKTYWNY PROFIL"), 13, true, Accent))
-        ->SetPadding(FMargin(0, 0, 0, 10));
+    RightColumn->AddChildToVerticalBox(MakeText(TEXT("SZCZEGÓŁY JAKOŚCI"), 9, true, Accent))
+        ->SetPadding(FMargin(0, 0, 0, 8));
 
-    if (UserSettings)
-    {
-        const FIntPoint Resolution = UserSettings->GetScreenResolution();
-        const FString Status = FString::Printf(
-            TEXT("Rozdzielczość: %d × %d\nTryb ekranu: %d\nVSync: %s\nLimit: %s\nLicznik FPS: %s"),
-            Resolution.X, Resolution.Y,
-            static_cast<int32>(UserSettings->GetFullscreenMode()),
-            bVSync ? TEXT("Wł.") : TEXT("Wył."),
-            *LimitText,
-            bFPSVisible ? TEXT("Wł.") : TEXT("Wył."));
-        RightColumn->AddChildToVerticalBox(MakeText(Status, 13, false, FLinearColor(0.9f, 0.92f, 0.95f)));
-    }
+    const FString QualityDetails = FString::Printf(
+        TEXT("Widoczność       %d / 4\nCienie            %d / 4\nTekstury           %d / 4\nAntyaliasing       %d / 4\n")
+        TEXT("Efekty            %d / 4\nPost-processing    %d / 4\nRoślinność         %d / 4\nGlobal illumination %d / 4\n")
+        TEXT("Odbicia            %d / 4\nShading            %d / 4"),
+        UserSettings->GetViewDistanceQuality(),
+        UserSettings->GetShadowQuality(),
+        UserSettings->GetTextureQuality(),
+        UserSettings->GetAntiAliasingQuality(),
+        UserSettings->GetVisualEffectQuality(),
+        UserSettings->GetPostProcessingQuality(),
+        UserSettings->GetFoliageQuality(),
+        UserSettings->GetGlobalIlluminationQuality(),
+        UserSettings->GetReflectionQuality(),
+        UserSettings->GetShadingQuality());
+    auto* Details = MakeText(QualityDetails, 11, false, Muted);
+    Details->SetLineHeightPercentage(1.35f);
+    RightColumn->AddChildToVerticalBox(Details);
 }
 
 void UPlayerMenuWidget::TabGame() { SelectTab(0); }
@@ -744,6 +798,153 @@ void UPlayerMenuWidget::ToggleVSync()
             UserSettings->SaveSettings();
         }
     }
+    Refresh();
+}
+
+void UPlayerMenuWidget::ToggleDynamicResolution()
+{
+    if (GEngine)
+    {
+        if (UGameUserSettings* UserSettings = GEngine->GetGameUserSettings())
+        {
+            UserSettings->SetDynamicResolutionEnabled(!UserSettings->IsDynamicResolutionEnabled());
+            UserSettings->ApplySettings(false);
+        }
+    }
+    Refresh();
+}
+
+void UPlayerMenuWidget::CycleWindowMode()
+{
+    if (!GEngine)
+        return;
+    if (UGameUserSettings* UserSettings = GEngine->GetGameUserSettings())
+    {
+        EWindowMode::Type Next = EWindowMode::Fullscreen;
+        switch (UserSettings->GetFullscreenMode())
+        {
+            case EWindowMode::Fullscreen: Next = EWindowMode::WindowedFullscreen; break;
+            case EWindowMode::WindowedFullscreen: Next = EWindowMode::Windowed; break;
+            default: Next = EWindowMode::Fullscreen; break;
+        }
+        UserSettings->SetFullscreenMode(Next);
+        UserSettings->ApplyResolutionSettings(false);
+        UserSettings->ConfirmVideoMode();
+        UserSettings->SaveSettings();
+    }
+    Refresh();
+}
+
+void UPlayerMenuWidget::CycleResolution()
+{
+    if (!GEngine)
+        return;
+    if (UGameUserSettings* UserSettings = GEngine->GetGameUserSettings())
+    {
+        static const FIntPoint Presets[] = {
+            FIntPoint(1280, 720), FIntPoint(1600, 900), FIntPoint(1920, 1080),
+            FIntPoint(2560, 1440), FIntPoint(3840, 2160)
+        };
+        const FIntPoint Current = UserSettings->GetScreenResolution();
+        int32 NextIndex = 0;
+        bool bMatched = false;
+        for (int32 Index = 0; Index < UE_ARRAY_COUNT(Presets); ++Index)
+        {
+            if (Presets[Index] == Current)
+            {
+                NextIndex = (Index + 1) % UE_ARRAY_COUNT(Presets);
+                bMatched = true;
+                break;
+            }
+        }
+        if (!bMatched)
+        {
+            const int64 CurrentPixels = static_cast<int64>(Current.X) * Current.Y;
+            for (int32 Index = 0; Index < UE_ARRAY_COUNT(Presets); ++Index)
+            {
+                const int64 PresetPixels = static_cast<int64>(Presets[Index].X) * Presets[Index].Y;
+                if (PresetPixels > CurrentPixels)
+                {
+                    NextIndex = Index;
+                    break;
+                }
+            }
+        }
+
+        UserSettings->SetScreenResolution(Presets[NextIndex]);
+        UserSettings->ApplyResolutionSettings(false);
+        UserSettings->ConfirmVideoMode();
+        UserSettings->SaveSettings();
+    }
+    Refresh();
+}
+
+void UPlayerMenuWidget::CycleQuality()
+{
+    if (!GEngine)
+        return;
+    if (UGameUserSettings* UserSettings = GEngine->GetGameUserSettings())
+    {
+        const int32 Current = UserSettings->GetOverallScalabilityLevel();
+        const int32 Next = Current < 0 ? 3 : ((Current + 1) % 5);
+        UserSettings->SetOverallScalabilityLevel(Next);
+        UserSettings->ApplySettings(false);
+    }
+    Refresh();
+}
+
+void UPlayerMenuWidget::CycleResolutionScale()
+{
+    if (!GEngine)
+        return;
+    if (UGameUserSettings* UserSettings = GEngine->GetGameUserSettings())
+    {
+        float Normalized = 0.0f;
+        float Current = 100.0f;
+        float MinValue = 0.0f;
+        float MaxValue = 100.0f;
+        UserSettings->GetResolutionScaleInformationEx(Normalized, Current, MinValue, MaxValue);
+
+        static const float Presets[] = {50.0f, 67.0f, 75.0f, 85.0f, 100.0f};
+        float Next = FMath::Clamp(Presets[0], MinValue, MaxValue);
+        for (float Preset : Presets)
+        {
+            const float Candidate = FMath::Clamp(Preset, MinValue, MaxValue);
+            if (Candidate > Current + 0.5f)
+            {
+                Next = Candidate;
+                break;
+            }
+        }
+
+        UserSettings->SetResolutionScaleValueEx(Next);
+        UserSettings->ApplySettings(false);
+    }
+    Refresh();
+}
+
+void UPlayerMenuWidget::CycleFPSLimit()
+{
+    auto* Preferences = UWTGPerformanceSettings::Get();
+    if (!Preferences)
+        return;
+
+    static const int32 Limits[] = {0, 30, 60, 90, 120, 144, 165, 240};
+    int32 Next = Limits[0];
+    bool bMatched = false;
+    for (int32 Index = 0; Index < UE_ARRAY_COUNT(Limits); ++Index)
+    {
+        if (Limits[Index] == Preferences->FPSLimit)
+        {
+            Next = Limits[(Index + 1) % UE_ARRAY_COUNT(Limits)];
+            bMatched = true;
+            break;
+        }
+    }
+    if (!bMatched)
+        Next = 60;
+
+    Preferences->SetFPSLimit(Next);
     Refresh();
 }
 
