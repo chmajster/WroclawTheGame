@@ -7,8 +7,9 @@ from shapely.geometry import Polygon, box
 from shapely.ops import triangulate
 from import_sector import build, parts, OUTPUT, ROOT
 
-def generate(destination, data=None, geo=None):
+def generate(destination, data=None, geo=None, exclude_feature_ids=None):
     if data is None or geo is None: data,geo=build()
+    excluded=set(exclude_feature_ids or ())
     cells={};size=12800
     material=None
     def triangle(kind,points):
@@ -21,6 +22,7 @@ def generate(destination, data=None, geo=None):
         if kind in ('road','rail'):ring=list(reversed(ring))
         triangle(kind,[ring[0],ring[1],ring[2]]);triangle(kind,[ring[0],ring[2],ring[3]])
     for feature in data['features']:
+        if feature.get('id') in excluded:continue
         kind=feature['kind']
         material=feature.get('material')
         if kind in ('building','green','water'):
