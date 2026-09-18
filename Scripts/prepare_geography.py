@@ -218,7 +218,15 @@ def prepare():
     if not candidates:raise RuntimeError('No verified street spawn segment')
     edge=max(candidates,key=lambda e:e['length_cm']);a=unreal.Vector(*nodes[edge['from']]['position']);b=unreal.Vector(*nodes[edge['to']]['position'])
     point=(a+b)*.5;rotation=unreal.MathLibrary.find_look_at_rotation(a,b)
-    start=actors.spawn_actor_from_class(unreal.PlayerStart,point+unreal.Vector(0,0,150))
+    if campaign_dir:
+        awake=next((item for item in campaign_chapter['actions'] if item['id']=='awake'),None)
+        if not awake:raise RuntimeError('Migrated campaign has no awake action')
+        start_location=unreal.Vector(*awake['position'])+unreal.Vector(0,0,150)
+    else:
+        start_location=point+unreal.Vector(0,0,150)
+    start=actors.spawn_actor_from_class(unreal.PlayerStart,start_location)
+    if not start:raise RuntimeError('GIS PlayerStart creation failed')
+    start.set_actor_label('CampaignGIS_PlayerStart' if campaign_dir else 'GIS_PlayerStart')
     car=actors.spawn_actor_from_class(unreal.DriveableVehicle,point+(b-a)*(650/(b-a).length())+unreal.Vector(0,0,85),rotation)
     # The laboratory car stays loaded so its physics state cannot reset during a short drive.
     car.set_editor_property('is_spatially_loaded',False)
