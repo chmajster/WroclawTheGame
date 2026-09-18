@@ -72,6 +72,16 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         self.assertIn("DangerStyle", self.cpp)
         self.assertIn("OSTATNI ZAPIS: POPRAWNY", self.cpp)
 
+    def test_loading_during_active_session_is_guarded(self):
+        self.assertIn('TEXT("WCZYTAĆ OSTATNI ZAPIS?")', self.cpp)
+        self.assertIn("Action == 1 || Action == 2 || Action == 4", self.cpp)
+        self.assertIn("else if (Action == 4)", self.cpp)
+        load_body = self.cpp.split("void UPlayerMenuWidget::LoadGame()", 1)[1].split(
+            "void UPlayerMenuWidget::QuitGame()", 1
+        )[0]
+        self.assertIn("Mission->bInGame", load_body)
+        self.assertIn("ShowConfirmation(", load_body)
+
     def test_keyboard_and_gamepad_navigation_remains_available(self):
         for token in (
             "Gamepad_LeftShoulder", "Gamepad_RightShoulder",
