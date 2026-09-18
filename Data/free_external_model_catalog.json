@@ -286,5 +286,17 @@
     "intended_use": "Animated/structural door models replacing cube door placeholders.",
     "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
     "primary_path": "SourceAssets/Models/Kenney/BuildingKit/wall-doorway-square/wall-doorway-square.fbx"
+  },
+  {
+    "id": "kenney-door-wall-doorway-wide-round",
+    "name": "wall-doorway-wide-round",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/wall-doorway-wide-round/wall-doorway-wide-round.fbx"
   }
 ]
