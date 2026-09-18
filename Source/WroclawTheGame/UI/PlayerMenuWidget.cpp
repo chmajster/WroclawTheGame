@@ -191,14 +191,16 @@ void UPlayerMenuWidget::BuildShell()
     RootOverlay = WidgetTree->ConstructWidget<UOverlay>();
     WidgetTree->RootWidget = RootOverlay;
 
-    auto* WorldBlur = WidgetTree->ConstructWidget<UBackgroundBlur>();
-    WorldBlur->SetBlurStrength(12.0f);
-    WorldBlur->SetBlurRadius(18);
-    WorldBlur->SetApplyAlphaToBlur(false);
+    MenuBackgroundBlur = WidgetTree->ConstructWidget<UBackgroundBlur>();
+    const auto* UISettings = UWTGPerformanceSettings::Get();
+    const bool bBlurEnabled = !UISettings || UISettings->bMenuBackgroundBlur;
+    MenuBackgroundBlur->SetBlurStrength(bBlurEnabled ? 12.0f : 0.0f);
+    MenuBackgroundBlur->SetBlurRadius(bBlurEnabled ? 18 : 0);
+    MenuBackgroundBlur->SetApplyAlphaToBlur(false);
     auto* BlurFill = WidgetTree->ConstructWidget<UBorder>();
     BlurFill->SetBrushColor(FLinearColor(0, 0, 0, 0.01f));
-    WorldBlur->AddChild(BlurFill);
-    auto* BlurSlot = RootOverlay->AddChildToOverlay(WorldBlur);
+    MenuBackgroundBlur->AddChild(BlurFill);
+    auto* BlurSlot = RootOverlay->AddChildToOverlay(MenuBackgroundBlur);
     BlurSlot->SetHorizontalAlignment(HAlign_Fill);
     BlurSlot->SetVerticalAlignment(VAlign_Fill);
 
@@ -371,13 +373,15 @@ void UPlayerMenuWidget::Refresh()
     }
     bCollectActionButtons = false;
 
-    PageAnimationTime = 0.0f;
-    ActionColumn->SetRenderOpacity(0.0f);
-    CenterColumn->SetRenderOpacity(0.0f);
-    RightColumn->SetRenderOpacity(0.0f);
-    ActionColumn->SetRenderTranslation(FVector2D(-12.0f, 0.0f));
-    CenterColumn->SetRenderTranslation(FVector2D(0.0f, 8.0f));
-    RightColumn->SetRenderTranslation(FVector2D(12.0f, 0.0f));
+    const auto* UISettings = UWTGPerformanceSettings::Get();
+    const bool bReduceMotion = UISettings && UISettings->bReduceUIMotion;
+    PageAnimationTime = bReduceMotion ? 0.22f : 0.0f;
+    ActionColumn->SetRenderOpacity(bReduceMotion ? 1.0f : 0.0f);
+    CenterColumn->SetRenderOpacity(bReduceMotion ? 1.0f : 0.0f);
+    RightColumn->SetRenderOpacity(bReduceMotion ? 1.0f : 0.0f);
+    ActionColumn->SetRenderTranslation(bReduceMotion ? FVector2D::ZeroVector : FVector2D(-12.0f, 0.0f));
+    CenterColumn->SetRenderTranslation(bReduceMotion ? FVector2D::ZeroVector : FVector2D(0.0f, 8.0f));
+    RightColumn->SetRenderTranslation(bReduceMotion ? FVector2D::ZeroVector : FVector2D(12.0f, 0.0f));
 
     FocusPrimaryAction();
 }
@@ -1219,6 +1223,9 @@ void UPlayerMenuWidget::BuildSettingsTab()
     }
 
     const bool bFPSVisible = Preferences && Preferences->bShowFPS;
+    const bool bReduceMotion = Preferences && Preferences->bReduceUIMotion;
+    const bool bMenuBlur = !Preferences || Preferences->bMenuBackgroundBlur;
+    const bool bUISounds = !Preferences || Preferences->bUISounds;
     const bool bVSync = UserSettings->IsVSyncEnabled();
     const bool bDynamicResolution = UserSettings->IsDynamicResolutionEnabled();
     const int32 Limit = Preferences ? Preferences->FPSLimit : 60;
@@ -1276,12 +1283,34 @@ void UPlayerMenuWidget::BuildSettingsTab()
     const FString LimitLabel = Limit == 0 ? TEXT("BEZ LIMITU") : FString::Printf(TEXT("%d FPS"), Limit);
     auto* LimitButton = MakeButton(FString::Printf(TEXT("LIMIT: %s"), *LimitLabel));
     LimitButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleFPSLimit);
-    ActionColumn->AddChildToVerticalBox(LimitButton);
+    ActionColumn->AddChildToVerticalBox(LimitButton)->SetPadding(FMargin(0, 0, 0, 16));
+
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("INTERFEJS"), 9, true, Muted))
+        ->SetPadding(FMargin(2, 0, 2, 7));
+
+    auto* MotionButton = MakeButton(
+        FString::Printf(TEXT("ANIMACJE UI: %s"), bReduceMotion ? TEXT("OGRANICZONE") : TEXT("PEŁNE")),
+        bReduceMotion);
+    MotionButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleReduceUIMotion);
+    ActionColumn->AddChildToVerticalBox(MotionButton)->SetPadding(FMargin(0, 0, 0, 7));
+
+    auto* BlurButton = MakeButton(
+        FString::Printf(TEXT("ROZMYCIE TŁA: %s"), bMenuBlur ? TEXT("WŁ.") : TEXT("WYŁ.")),
+        bMenuBlur);
+    BlurButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleMenuBackgroundBlur);
+    ActionColumn->AddChildToVerticalBox(BlurButton)->SetPadding(FMargin(0, 0, 0, 7));
+
+    auto* UISoundButton = MakeButton(
+        FString::Printf(TEXT("DŹWIĘKI UI: %s"), bUISounds ? TEXT("WŁ.") : TEXT("WYŁ.")),
+        bUISounds);
+    UISoundButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleUISounds);
+    ActionColumn->AddChildToVerticalBox(UISoundButton);
 
     const FString Description = FString::Printf(
         TEXT("TRYB EKRANU\n%s\n\nROZDZIELCZOŚĆ\n%d × %d\n\nSKALA RENDERU\n%.0f%%  (zakres %.0f–%.0f%%)\n\n")
         TEXT("PRESET JAKOŚCI\n%s\n\nVSYNC\n%s\n\nDYNAMICZNA ROZDZIELCZOŚĆ\n%s\n\n")
         TEXT("LIMIT KLATEK\n%s\n\nLICZNIK FPS\n%s\n\n")
+        TEXT("ANIMACJE UI\n%s\n\nROZMYCIE TŁA\n%s\n\nDŹWIĘKI UI\n%s\n\n")
         TEXT("Zmiany są stosowane od razu i zapisywane w GameUserSettings. ")
         TEXT("Tryb bez ramki może używać rozdzielczości pulpitu niezależnie od wybranego presetu."),
         *WindowModeLabel(WindowMode),
@@ -1291,7 +1320,10 @@ void UPlayerMenuWidget::BuildSettingsTab()
         bVSync ? TEXT("Włączony") : TEXT("Wyłączony"),
         bDynamicResolution ? TEXT("Włączona") : TEXT("Wyłączona"),
         *LimitLabel,
-        bFPSVisible ? TEXT("Włączony") : TEXT("Wyłączony"));
+        bFPSVisible ? TEXT("Włączony") : TEXT("Wyłączony"),
+        bReduceMotion ? TEXT("Ograniczone") : TEXT("Pełne"),
+        bMenuBlur ? TEXT("Włączone") : TEXT("Wyłączone"),
+        bUISounds ? TEXT("Włączone") : TEXT("Wyłączone"));
     AddTextPage(TEXT("WYŚWIETLANIE"), Description);
 
     RightColumn->AddChildToVerticalBox(MakeText(TEXT("SZCZEGÓŁY JAKOŚCI"), 9, true, Accent))
@@ -1356,12 +1388,16 @@ void UPlayerMenuWidget::QuitGame()
 
 void UPlayerMenuWidget::PlayUIHover()
 {
-    USliceAudio::PlayUI(this, TEXT("UIHover"), 0.16f);
+    const auto* Settings = UWTGPerformanceSettings::Get();
+    if (!Settings || Settings->bUISounds)
+        USliceAudio::PlayUI(this, TEXT("UIHover"), 0.16f);
 }
 
 void UPlayerMenuWidget::PlayUIClick()
 {
-    USliceAudio::PlayUI(this, TEXT("UIClick"), 0.26f);
+    const auto* Settings = UWTGPerformanceSettings::Get();
+    if (!Settings || Settings->bUISounds)
+        USliceAudio::PlayUI(this, TEXT("UIClick"), 0.26f);
 }
 
 void UPlayerMenuWidget::ShowConfirmation(
@@ -1395,8 +1431,12 @@ void UPlayerMenuWidget::ShowConfirmation(
 
     ConfirmationCard = MakeCard(FMargin(28, 26, 28, 24));
     CardSize->AddChild(ConfirmationCard);
-    ConfirmationCard->SetRenderOpacity(0.0f);
-    ConfirmationCard->SetRenderTranslation(FVector2D(0.0f, 18.0f));
+    const auto* UISettings = UWTGPerformanceSettings::Get();
+    const bool bReduceMotion = UISettings && UISettings->bReduceUIMotion;
+    ConfirmationAnimationTime = bReduceMotion ? 0.18f : 0.0f;
+    ConfirmationCard->SetRenderOpacity(bReduceMotion ? 1.0f : 0.0f);
+    ConfirmationCard->SetRenderTranslation(
+        bReduceMotion ? FVector2D::ZeroVector : FVector2D(0.0f, 18.0f));
 
     auto* Column = WidgetTree->ConstructWidget<UVerticalBox>();
     ConfirmationCard->AddChild(Column);
@@ -1524,6 +1564,34 @@ void UPlayerMenuWidget::CancelConfirmation()
         }
     }
 
+    Refresh();
+}
+
+void UPlayerMenuWidget::ToggleReduceUIMotion()
+{
+    if (auto* Settings = UWTGPerformanceSettings::Get())
+        Settings->SetReduceUIMotion(!Settings->bReduceUIMotion);
+    Refresh();
+}
+
+void UPlayerMenuWidget::ToggleMenuBackgroundBlur()
+{
+    if (auto* Settings = UWTGPerformanceSettings::Get())
+    {
+        Settings->SetMenuBackgroundBlur(!Settings->bMenuBackgroundBlur);
+        if (MenuBackgroundBlur)
+        {
+            MenuBackgroundBlur->SetBlurStrength(Settings->bMenuBackgroundBlur ? 12.0f : 0.0f);
+            MenuBackgroundBlur->SetBlurRadius(Settings->bMenuBackgroundBlur ? 18 : 0);
+        }
+    }
+    Refresh();
+}
+
+void UPlayerMenuWidget::ToggleUISounds()
+{
+    if (auto* Settings = UWTGPerformanceSettings::Get())
+        Settings->SetUISounds(!Settings->bUISounds);
     Refresh();
 }
 
@@ -1821,9 +1889,13 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
 {
     Super::NativeTick(MyGeometry, InDeltaTime);
 
-    AmbientAnimationTime += InDeltaTime;
+    const auto* UISettings = UWTGPerformanceSettings::Get();
+    const bool bReduceMotion = UISettings && UISettings->bReduceUIMotion;
 
-    if (ConfirmationCard && ConfirmationAnimationTime < 0.18f)
+    if (!bReduceMotion)
+        AmbientAnimationTime += InDeltaTime;
+
+    if (!bReduceMotion && ConfirmationCard && ConfirmationAnimationTime < 0.18f)
     {
         ConfirmationAnimationTime = FMath::Min(0.18f, ConfirmationAnimationTime + InDeltaTime);
         const float T = FMath::Clamp(ConfirmationAnimationTime / 0.18f, 0.0f, 1.0f);
@@ -1831,14 +1903,14 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
         ConfirmationCard->SetRenderOpacity(Ease);
         ConfirmationCard->SetRenderTranslation(FVector2D(0.0f, FMath::Lerp(18.0f, 0.0f, Ease)));
     }
-    if (AmbientGlowA)
+    if (!bReduceMotion && AmbientGlowA)
     {
         AmbientGlowA->SetRenderTranslation(FVector2D(
             FMath::Sin(AmbientAnimationTime * 0.22f) * 18.0f,
             FMath::Cos(AmbientAnimationTime * 0.17f) * 12.0f));
         AmbientGlowA->SetRenderOpacity(0.78f + FMath::Sin(AmbientAnimationTime * 0.31f) * 0.12f);
     }
-    if (AmbientGlowB)
+    if (!bReduceMotion && AmbientGlowB)
     {
         AmbientGlowB->SetRenderTranslation(FVector2D(
             FMath::Cos(AmbientAnimationTime * 0.19f) * 14.0f,
@@ -1846,7 +1918,7 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
         AmbientGlowB->SetRenderOpacity(0.72f + FMath::Cos(AmbientAnimationTime * 0.27f) * 0.10f);
     }
 
-    if (PageAnimationTime < 0.22f && ActionColumn && CenterColumn && RightColumn)
+    if (!bReduceMotion && PageAnimationTime < 0.22f && ActionColumn && CenterColumn && RightColumn)
     {
         PageAnimationTime = FMath::Min(0.22f, PageAnimationTime + InDeltaTime);
         const float T = FMath::Clamp(PageAnimationTime / 0.22f, 0.0f, 1.0f);
