@@ -50,3 +50,14 @@ void UWTGPerformanceSettings::Apply() const
         UserSettings->SaveSettings();
     }
 }
+
+void UWTGPerformanceSettings::ResetToDefaults()
+{
+    bShowFPS = false;
+    FPSLimit = 60;
+    bReduceUIMotion = false;
+    bMenuBackgroundBlur = true;
+    bUISounds = true;
+    SaveConfig();
+    Apply();
+}
