@@ -2034,22 +2034,31 @@ void UPlayerMenuWidget::BuildSettingsTab()
 
     ActionColumn->AddChildToVerticalBox(MakeText(TEXT("USTAWIENIA"), 20, true, TextPrimary))
         ->SetPadding(FMargin(2, 1, 2, 2));
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("KATEGORIE"), 9, true, Accent))
-        ->SetPadding(FMargin(2, 0, 2, 14));
+    ActionColumn->AddChildToVerticalBox(MakeText(
+        FString::Printf(TEXT("KATEGORIE  •  %d / 4"), SettingsSection + 1), 9, true, Accent))
+        ->SetPadding(FMargin(2, 0, 2, 7));
 
-    auto* DisplaySection = MakeButton(TEXT("OBRAZ"), SettingsSection == 0);
+    auto* SettingsNavProgress = WidgetTree->ConstructWidget<UProgressBar>();
+    SettingsNavProgress->SetPercent(FMath::Clamp((SettingsSection + 1) / 4.0f, 0.0f, 1.0f));
+    SettingsNavProgress->SetFillColorAndOpacity(Accent);
+    auto* SettingsNavProgressSize = WidgetTree->ConstructWidget<USizeBox>();
+    SettingsNavProgressSize->SetHeightOverride(3.0f);
+    SettingsNavProgressSize->AddChild(SettingsNavProgress);
+    ActionColumn->AddChildToVerticalBox(SettingsNavProgressSize)->SetPadding(FMargin(2, 0, 2, 13));
+
+    auto* DisplaySection = MakeButton(TEXT("01  OBRAZ"), SettingsSection == 0);
     DisplaySection->OnClicked.AddDynamic(this, &UPlayerMenuWidget::SettingsDisplay);
     ActionColumn->AddChildToVerticalBox(DisplaySection)->SetPadding(FMargin(0, 0, 0, 7));
 
-    auto* PerformanceSection = MakeButton(TEXT("WYDAJNOŚĆ"), SettingsSection == 1);
+    auto* PerformanceSection = MakeButton(TEXT("02  WYDAJNOŚĆ"), SettingsSection == 1);
     PerformanceSection->OnClicked.AddDynamic(this, &UPlayerMenuWidget::SettingsPerformance);
     ActionColumn->AddChildToVerticalBox(PerformanceSection)->SetPadding(FMargin(0, 0, 0, 7));
 
-    auto* InterfaceSection = MakeButton(TEXT("INTERFEJS"), SettingsSection == 2);
+    auto* InterfaceSection = MakeButton(TEXT("03  INTERFEJS"), SettingsSection == 2);
     InterfaceSection->OnClicked.AddDynamic(this, &UPlayerMenuWidget::SettingsInterface);
     ActionColumn->AddChildToVerticalBox(InterfaceSection)->SetPadding(FMargin(0, 0, 0, 7));
 
-    auto* AudioSection = MakeButton(TEXT("DŹWIĘK"), SettingsSection == 3);
+    auto* AudioSection = MakeButton(TEXT("04  DŹWIĘK"), SettingsSection == 3);
     AudioSection->OnClicked.AddDynamic(this, &UPlayerMenuWidget::SettingsAudio);
     ActionColumn->AddChildToVerticalBox(AudioSection)->SetPadding(FMargin(0, 0, 0, 18));
 
