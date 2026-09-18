@@ -3,7 +3,7 @@
   "source": "GUGiK Geoportal - Modele 3D budynków",
   "source_service": "https://integracja.gugik.gov.pl/cgi-bin/ModeleBudynkow3D",
   "source_info": "https://www.geoportal.gov.pl/pl/dane/inne-dane/modele-3d-budynkow/",
-  "preferred_lod": "LoD2",
+  "preferred_lod": "auto",
   "targets": [
     {
       "id": "old_town_hall",
