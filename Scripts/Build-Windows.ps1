@@ -66,6 +66,9 @@ foreach ($File in @($BuildTool, $Editor, $Automation, $UnrealPython)) {
 }
 if (-not $OutputDirectory) { $OutputDirectory = Join-Path $ProjectRoot "Builds\$Configuration" }
 $OutputDirectory = [IO.Path]::GetFullPath($OutputDirectory)
+$PipelineValidator = Join-Path $ProjectRoot 'Pipeline\qa\validate_manifest.py'
+& $UnrealPython $PipelineValidator --all
+if ($LASTEXITCODE -ne 0) { throw 'Asset production manifest validation failed' }
 & $UnrealPython (Join-Path $PSScriptRoot 'compile_chapter.py')
 if ($LASTEXITCODE -ne 0) { throw 'Chapter data validation failed before compilation' }
 & $UnrealPython (Join-Path $PSScriptRoot 'compile_city_gameplay.py')
