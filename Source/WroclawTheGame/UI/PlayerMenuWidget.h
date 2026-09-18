@@ -37,7 +37,9 @@ private:
     UPROPERTY() TObjectPtr<class UVerticalBox> CenterColumn;
     UPROPERTY() TObjectPtr<class UVerticalBox> RightColumn;
     UPROPERTY() TObjectPtr<class UTextBlock> PageTitle;
+    UPROPERTY() TObjectPtr<class UTextBlock> ContextStatus;
     UPROPERTY() TArray<TObjectPtr<class UButton>> TabButtons;
+    UPROPERTY() TArray<TObjectPtr<class UBorder>> TabIndicators;
     UPROPERTY() TArray<TObjectPtr<class UButton>> ActionButtons;
     UPROPERTY() TObjectPtr<class AWTG_CharacterCreator> Studio;
 
@@ -69,6 +71,7 @@ private:
     void AddPlayerStatus();
     void SelectTab(int32 Index);
     void UpdateTabStyle();
+    void UpdateContextStatus();
     void FocusPrimaryAction();
     void ShowConfirmation(int32 Action, const FString& Title, const FString& Body, const FString& ConfirmLabel);
     void ClearConfirmation();
