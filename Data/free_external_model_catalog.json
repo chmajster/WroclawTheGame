@@ -422,5 +422,16 @@
     "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-usb-flash-drive/wtg-original-usb-flash-drive.obj",
     "generated": true,
     "generator": "bootstrap-original-fallback-models.yml"
+  },
+  {
+    "id": "wtg-original-usb-cable",
+    "name": "USB Cable",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "USB cable pickup fallback.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-usb-cable/wtg-original-usb-cable.obj",
+    "generated": true,
+    "generator": "bootstrap-original-fallback-models.yml"
   }
 ]
