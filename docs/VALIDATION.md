@@ -14,7 +14,7 @@ Lokalne uruchomienie: `ASAN_OPTIONS=detect_leaks=0 bash Scripts/test.sh`. Wyłą
 
 ## Nie wykonano
 
-Nie ma tutaj instalacji UE 5.6 ani Windows toolchain. Nie skompilowano klas Unreal ani nagłówków refleksji. Nie wykonano testu `WTG.Save.Version3MemoryRoundTrip`, generacji binarnych assetów w edytorze, konwersji WP, HLOD, cookingu, pakowania, testu gameplayu, migracji pliku SaveGame z dysku ani profilowania GPU/CPU.
+Nie ma tutaj instalacji UE 5.8 ani Windows toolchain. Nie skompilowano klas Unreal ani nagłówków refleksji. Nie wykonano testu `WTG.Save.Version3MemoryRoundTrip`, generacji binarnych assetów w edytorze, konwersji WP, HLOD, cookingu, pakowania, testu gameplayu, migracji pliku SaveGame z dysku ani profilowania GPU/CPU.
 
 Nie wolno wnioskować o działaniu UE na podstawie kompilacji przenośnych modeli C++. Procedury Python/PowerShell oraz nowy kod komponentów mogą wymagać poprawek po pierwszym rzeczywistym uruchomieniu silnika. To jest jawna bramka przed odbiorem, a nie wynik zaliczony.
 
@@ -26,4 +26,4 @@ bash Scripts/test.sh
 python3 Scripts/gis/build_meshes.py
 ```
 
-Na Windows użyj Build-Windows.ps1 lub Build-Geography.ps1 zgodnie z README. Test silnikowy uruchom w Session Frontend → Automation → WTG.Save. Wyniki powinny trafić do raportu odbioru wraz z logami i identyfikatorem commitu. Workflow Windows wymaga własnego runnera z UE 5.6 i zmienną UE_ROOT; nie uruchamiano go na nieistniejącym runnerze.
+Na Windows użyj Build-Windows.ps1 lub Build-Geography.ps1 zgodnie z README. Test silnikowy uruchom w Session Frontend → Automation → WTG.Save. Wyniki powinny trafić do raportu odbioru wraz z logami i identyfikatorem commitu. Workflow Windows wymaga własnego runnera z UE 5.8 i zmienną UE_ROOT; nie uruchamiano go na nieistniejącym runnerze.
