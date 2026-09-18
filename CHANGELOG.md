@@ -1,3 +1,10 @@
+## 2026-09-18 — test regresyjny nowoczesnego menu
+
+- Dodano Tests/test_player_menu.py do standardowego unittest discovery uruchamianego przez Scripts/test.sh.
+- Test pilnuje siedmiu głównych zakładek, nowoczesnego shellu, hero kampanii i dashboardów opartych o rzeczywisty stan gry.
+- Walidowane są również modalne potwierdzenia i auto-revert wideo, gamepad/klawiatura, trwałe ustawienia dostępności, blur oraz UI audio.
+- Test jest źródłową bramką regresji; nie zastępuje kompilacji UHT/UBT ani wizualnego odbioru w UE 5.8.
+
 ## 2026-09-18 — dostępność efektów interfejsu
 
 - Dodano trwałe ustawienie ograniczenia animacji UI; wyłącza wejścia stron, ruch ambientowych poświat i animację modala.
