@@ -21,6 +21,24 @@ void UWTGPerformanceSettings::SetFPSLimit(int32 Limit)
     Apply();
 }
 
+void UWTGPerformanceSettings::SetReduceUIMotion(bool bEnabled)
+{
+    bReduceUIMotion = bEnabled;
+    SaveConfig();
+}
+
+void UWTGPerformanceSettings::SetMenuBackgroundBlur(bool bEnabled)
+{
+    bMenuBackgroundBlur = bEnabled;
+    SaveConfig();
+}
+
+void UWTGPerformanceSettings::SetUISounds(bool bEnabled)
+{
+    bUISounds = bEnabled;
+    SaveConfig();
+}
+
 void UWTGPerformanceSettings::Apply() const
 {
     if (!GEngine)
