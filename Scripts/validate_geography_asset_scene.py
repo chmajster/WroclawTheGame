@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import traceback
 from pathlib import Path
 
@@ -31,6 +32,21 @@ def check_scale(label, vector, policy, errors):
         return
     if max(values) / max(min(values), minimum) > float(policy["transform"]["max_nonuniform_ratio"]):
         errors.append(f"{label}: excessive non-uniform scale {values}")
+
+
+def actor_visuals(actor):
+    result = []
+    result.extend(actor.get_components_by_class(unreal.StaticMeshComponent))
+    result.extend(actor.get_components_by_class(unreal.SkeletalMeshComponent))
+    visuals = []
+    for component in result:
+        if isinstance(component, unreal.StaticMeshComponent):
+            mesh = component.get_editor_property("static_mesh")
+        else:
+            mesh = component.get_skeletal_mesh_asset()
+        if mesh is not None:
+            visuals.append(component)
+    return visuals
 
 
 def check_mesh_component(label, component, errors):
@@ -68,6 +84,7 @@ def run():
     if not levels.load_level(MAP):
         raise RuntimeError(f"Cannot load {MAP}")
     actors = list(unreal.get_editor_subsystem(unreal.EditorActorSubsystem).get_all_level_actors())
+    by_label = {actor.get_actor_label(): actor for actor in actors}
 
     doors = [actor for actor in actors if isinstance(actor, unreal.CityInteriorDoor)]
     activities = [actor for actor in actors if isinstance(actor, unreal.CityActivity)]
@@ -121,6 +138,74 @@ def run():
             if not isinstance(wheel.get_editor_property("static_mesh"), unreal.StaticMesh):
                 errors.append(f"DriveableVehicle wheel {index} mesh is missing")
 
+    campaign_input = os.environ.get("WTG_CAMPAIGN_GIS_INPUT")
+    campaign_counts = None
+    if campaign_input:
+        campaign_dir = Path(campaign_input)
+        chapter = json.loads((campaign_dir/"chapter1.json").read_text(encoding="utf-8"))
+        world = json.loads((campaign_dir/"openworld.json").read_text(encoding="utf-8"))
+        environment = json.loads((campaign_dir/"environment.json").read_text(encoding="utf-8"))
+        physical = [
+            action for action in chapter["actions"]
+            if action["kind"] not in ("virtual", "zone")
+            and action.get("position", [0, 0])[:2] != [0, 0]
+        ]
+
+        missing_actions = []
+        invisible_actions = []
+        for action in physical:
+            label = "CampaignGIS_action_" + action["id"]
+            visual_label = "CampaignGIS_action_visual_" + action["id"]
+            actor = by_label.get(label)
+            visual = by_label.get(visual_label)
+            if actor is None:
+                missing_actions.append(action["id"])
+                continue
+            if not actor_visuals(actor) and (visual is None or not actor_visuals(visual)):
+                invisible_actions.append(action["id"])
+        if missing_actions:
+            errors.append("Campaign GIS missing action actors: " + ", ".join(missing_actions))
+        if invisible_actions:
+            errors.append("Campaign GIS action actors without visual meshes: " + ", ".join(invisible_actions))
+
+        expected_groups = {
+            "guards": ("CampaignGIS_guard_", len(world["guards"])),
+            "npcs": ("CampaignGIS_npc_", len(world["npc"])),
+            "hides": ("CampaignGIS_hide_", len(world["hides"])),
+            "cameras": ("CampaignGIS_camera_", len(world["cameras"])),
+            "monitors": ("CampaignGIS_monitor_", len(world["cameras"])),
+            "sign_backings": (
+                "CampaignGIS_environment_signback_",
+                sum(1 for item in environment if item["type"] == "sign"),
+            ),
+        }
+        campaign_counts = {}
+        for name, (prefix, expected) in expected_groups.items():
+            group = [(label, actor) for label, actor in by_label.items() if label.startswith(prefix)]
+            campaign_counts[name] = {"expected": expected, "actual": len(group)}
+            if len(group) != expected:
+                errors.append(f"Campaign GIS {name}: actor count {len(group)} != {expected}")
+            for label, actor in group:
+                if not actor_visuals(actor):
+                    errors.append(f"{label}: migrated campaign actor has no visual mesh")
+
+        expected_lamps = sum(
+            1 for item in environment
+            if item["type"] == "light"
+            and item["id"] in {
+                "environment_253","environment_255","environment_257",
+                "environment_259","environment_261","environment_263","environment_265"
+            }
+        )
+        actual_lamps = sum(1 for label in by_label if label.startswith("CampaignGIS_environment_lamp_"))
+        campaign_counts["street_lamps"] = {"expected": expected_lamps, "actual": actual_lamps}
+        if actual_lamps != expected_lamps:
+            errors.append(f"Campaign GIS street_lamps: actor count {actual_lamps} != {expected_lamps}")
+
+        for label, actor in by_label.items():
+            if label.startswith("CampaignGIS_environment_lamp_") and not actor_visuals(actor):
+                errors.append(f"{label}: migrated street lamp has no visual mesh")
+
     report = {
         "status": "PASS" if not errors else "FAIL",
         "map": MAP,
@@ -131,6 +216,7 @@ def run():
             "cars": len(cars),
             "interior_props": len(interior_props),
         },
+        "campaign_counts": campaign_counts,
         "bindings": {
             key: bindings[key]
             for key in (
