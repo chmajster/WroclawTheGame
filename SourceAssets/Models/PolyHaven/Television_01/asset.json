@@ -1,0 +1,70 @@
+{
+  "slug": "Television_01",
+  "name": "Television 01",
+  "intended_use": "CCTV monitor / apartment electronics proxy.",
+  "source_page": "https://polyhaven.com/a/Television_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Gabriel Radić": "All"
+  },
+  "category": "Electronics & Appliances/Audio & Video/Televisions",
+  "tags": [
+    "vintage",
+    "prop",
+    "furniture",
+    "metal",
+    "wood",
+    "tv",
+    "television",
+    "video",
+    "audio"
+  ],
+  "dimensions_mm": [
+    599.9999642372131,
+    470.8106815814972,
+    456.84892892313655
+  ],
+  "files_hash": "c00ac1c3a4f0cf9e01639ba242ce3748fb690ae7",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/Television_01/Television_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/Television_01/Television_01_1k.fbx",
+      "bytes": 79228,
+      "md5": "3abf6b33cc956c0c42c6e7f88e30bdb2",
+      "sha256": "702e5876bbeab73a28c7f2a91728fc24ff20ebb70b8b22020e6c383eece663f4",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/Television_01/Television_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/Television_01/textures/Television_01_diff_1k.jpg",
+      "bytes": 102231,
+      "md5": "bf1b3d0563c279557acfed2402c421b1",
+      "sha256": "38e45263d115ab2832a4a2e99f93f03ff5f49c0aa0d5256528677a77c3ca4568",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/Television_01/Television_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/Television_01/textures/Television_01_metallic_1k.exr",
+      "bytes": 166176,
+      "md5": "431c36e43ccca19611204eeba757e691",
+      "sha256": "4942ff1608f706f18e623499c36e41475dff50f9e6833f49a4e92d712f4c2b5a",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/Television_01/Television_01_metallic_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/Television_01/textures/Television_01_nor_gl_1k.exr",
+      "bytes": 919355,
+      "md5": "249402994145210273800cf3164a72f4",
+      "sha256": "8644c302a84031e53942f40e7bb75c8093f4d6f4496721fde3bb7db06f822c74",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/Television_01/Television_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/Television_01/textures/Television_01_roughness_1k.jpg",
+      "bytes": 207596,
+      "md5": "a48cd146481eadd564c75a5ebb067ac6",
+      "sha256": "679559b531f9d898e819ade69c3ba6455522b75080b525a9ac6f574ccc48f585",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/Television_01/Television_01_roughness_1k.jpg"
+    }
+  ]
+}

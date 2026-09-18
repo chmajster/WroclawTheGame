@@ -774,5 +774,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/desk_lamp_arm_01/desk_lamp_arm_01_1k.fbx"
+  },
+  {
+    "slug": "Television_01",
+    "name": "Television 01",
+    "intended_use": "CCTV monitor / apartment electronics proxy.",
+    "source_page": "https://polyhaven.com/a/Television_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Gabriel Radić": "All"
+    },
+    "category": "Electronics & Appliances/Audio & Video/Televisions",
+    "dimensions_mm": [
+      599.9999642372131,
+      470.8106815814972,
+      456.84892892313655
+    ],
+    "files_hash": "c00ac1c3a4f0cf9e01639ba242ce3748fb690ae7",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/Television_01/Television_01_1k.fbx"
   }
 ]
