@@ -326,5 +326,21 @@
         "sha256": "850315207655e5fcefc9c13f015c13e9bef4444cc15d1a2aed691356a680c32f"
       }
     ]
+  },
+  {
+    "id": "oga-first-aid-kit",
+    "name": "First Aid Kit 3D",
+    "provider": "OpenGameArt",
+    "source_page": "https://opengameart.org/content/first-aid-kit-3d",
+    "license": "CC0-1.0",
+    "intended_use": "Medkit / dressing consumable world model.",
+    "primary_path": "SourceAssets/Models/OpenGameArt/oga-first-aid-kit/FirstAid.obj",
+    "sources": [
+      {
+        "archive_url": "https://opengameart.org/sites/default/files/_first_aid_kit_3d_v1.1.zip",
+        "bytes": 492566,
+        "sha256": "c1dd2d49bfb9d19bc5d84362bcfa1e4a5e850d3cecf76b3b9bf3f48d4dc51a00"
+      }
+    ]
   }
 ]
