@@ -516,5 +516,19 @@
     "license": "CC0-1.0",
     "intended_use": "Residential facade/window module for the opening apartment and authored urban buildings.",
     "primary_path": "SourceAssets/Models/Kenney/BuildingKit/wall-window-square-detailed/wall-window-square-detailed.glb"
+  },
+  {
+    "id": "kenney-window-wall-window-wide-square",
+    "name": "wall-window-wide-square",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://kenney.nl/assets/building-kit",
+    "source_repository": "https://github.com/shorepine/kenney",
+    "source_commit": "3694c6879e487c108f55677be7dd2ca75b07cc3b",
+    "source_path": "3d/building/wall-window-wide-square.glb",
+    "source_blob_sha": "197f11d7d5bb33c21293e8986d7f08534d0da650",
+    "license": "CC0-1.0",
+    "intended_use": "Residential facade/window module for the opening apartment and authored urban buildings.",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/wall-window-wide-square/wall-window-wide-square.glb"
   }
 ]
