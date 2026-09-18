@@ -254,7 +254,7 @@ def run(
                 output, "LoD1", click_lon, click_lat, None
             )
         except Exception:
-            fallback = config.get("source_direct_url")
+            fallback = config.get("fallback_direct_url")
             if not fallback:
                 raise
             archive, download_url = source.download_source(
