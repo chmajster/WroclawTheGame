@@ -390,6 +390,9 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             "OnMouseCaptureEnd.AddDynamic",
             "OnControllerCaptureEnd.AddDynamic",
             "CommitAudioSliderChange()",
+            "Settings->SFXVolume = FMath::Clamp(Volume, 0.0f, 1.0f)",
+            "Settings->UIVolume = FMath::Clamp(Volume, 0.0f, 1.0f)",
+            "Settings->SaveConfig()",
             'TEXT("SUWAK: PRECYZYJNA REGULACJA  •  PRZYCISK: SKOK CO 25%")',
         ):
             self.assertIn(token, self.cpp)
