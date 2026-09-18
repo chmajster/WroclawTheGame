@@ -21,3 +21,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Wooden Bookshelf Worn | Garage hiding shelf and basement/workshop storage. | Ulan Cabanilla | [Poly Haven](https://polyhaven.com/a/wooden_bookshelf_worn) | CC0 1.0 |
 | Drawer Cabinet | Apartment drawer/cabinet furniture for phone and clue interactions. | Ulan Cabanilla | [Poly Haven](https://polyhaven.com/a/drawer_cabinet) | CC0 1.0 |
 | Gothic Bed 01 | Bed proxy for the opening apartment scene. | Kirill Sannikov | [Poly Haven](https://polyhaven.com/a/GothicBed_01) | CC0 1.0 |
+| Electric Stove | Kitchen appliance for the apartment kitchen. | Kuutti Siitonen | [Poly Haven](https://polyhaven.com/a/electric_stove) | CC0 1.0 |

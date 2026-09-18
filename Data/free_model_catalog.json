@@ -331,5 +331,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/GothicBed_01/GothicBed_01_1k.fbx"
+  },
+  {
+    "slug": "electric_stove",
+    "name": "Electric Stove",
+    "intended_use": "Kitchen appliance for the apartment kitchen.",
+    "source_page": "https://polyhaven.com/a/electric_stove",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Kuutti Siitonen": "All"
+    },
+    "category": "Electronics & Appliances/Home Appliances/Stoves & Heaters",
+    "dimensions_mm": [
+      502.59482860565186,
+      647.6211845874786,
+      858.6971759796143
+    ],
+    "files_hash": "750ee10bdfe78eb6b0b620ef7b5a898e436fb696",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/electric_stove/electric_stove_1k.fbx"
   }
 ]
