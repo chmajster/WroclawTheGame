@@ -64,15 +64,75 @@
     "position": [
       600,
       900,
-      510
+      400
     ],
     "size": [
       1200,
       20,
-      300
+      80
     ],
     "material": "Plaster",
     "id": "environment_4"
+  },
+  {
+    "type": "box",
+    "position": [
+      600,
+      900,
+      625
+    ],
+    "size": [
+      1200,
+      20,
+      70
+    ],
+    "material": "Plaster",
+    "id": "environment_opening_street_wall_top"
+  },
+  {
+    "type": "box",
+    "position": [
+      87.5,
+      900,
+      515
+    ],
+    "size": [
+      175,
+      20,
+      150
+    ],
+    "material": "Plaster",
+    "id": "environment_opening_street_wall_left"
+  },
+  {
+    "type": "box",
+    "position": [
+      600,
+      900,
+      515
+    ],
+    "size": [
+      350,
+      20,
+      150
+    ],
+    "material": "Plaster",
+    "id": "environment_opening_street_wall_middle"
+  },
+  {
+    "type": "box",
+    "position": [
+      1112.5,
+      900,
+      515
+    ],
+    "size": [
+      175,
+      20,
+      150
+    ],
+    "material": "Plaster",
+    "id": "environment_opening_street_wall_right"
   },
   {
     "type": "box",

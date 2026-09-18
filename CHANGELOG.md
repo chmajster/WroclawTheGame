@@ -1,3 +1,12 @@
+## 2026-09-18 — okna uliczne sceny startowej i pełny zestaw Kenney
+
+- Dodano 8 wariantów zwykłych modułów okiennych z Kenney Building Kit: prostokątne i łukowe, standardowe oraz detailed, w wersjach zwykłych i szerokich.
+- Każdy model jest zapisany osobnym commitem, ma wpis w katalogu CC0 i manifest pipeline'u produkcyjnego.
+- Domyślne mieszkanie startowe otrzymało dwa szerokie, detaliczne okna na ścianie od strony ulicy.
+- Pełną ścianę od strony ulicy podzielono na nadproże, podokiennik i filary, dzięki czemu za modelami okien nie pozostaje pełna bryła blokująca otwór.
+- Źródło Kenney jest przypięte do konkretnego commita publicznego mirrora; licencja Building Kit: CC0 1.0.
+- Geometria i rozmieszczenie wymagają końcowego odbioru w UE 5.8: widok z wnętrza i ulicy, materiały, kolizja, LOD oraz screenshot QA.
+
 ## 2026-09-18 — oficjalne modele 3D budynków Wrocławia
 
 - Dodano pobieranie i konwersję oficjalnych modeli budynków GUGiK/Geoportal z CityGML do układu GIS gry.

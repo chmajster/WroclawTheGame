@@ -245,5 +245,43 @@
       0.9,
       0.9
     ]
+  },
+  {
+    "id": "environment_model_street_window_left",
+    "model": "kenney-window-wall-window-wide-square-detailed",
+    "position": [
+      300,
+      900,
+      440
+    ],
+    "rotation": [
+      0,
+      90,
+      0
+    ],
+    "scale": [
+      0.625,
+      0.625,
+      0.625
+    ]
+  },
+  {
+    "id": "environment_model_street_window_right",
+    "model": "kenney-window-wall-window-wide-square-detailed",
+    "position": [
+      900,
+      900,
+      440
+    ],
+    "rotation": [
+      0,
+      90,
+      0
+    ],
+    "scale": [
+      0.625,
+      0.625,
+      0.625
+    ]
   }
 ]
