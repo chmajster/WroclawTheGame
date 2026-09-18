@@ -310,5 +310,21 @@
     "intended_use": "Animated/structural door models replacing cube door placeholders.",
     "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
     "primary_path": "SourceAssets/Models/Kenney/BuildingKit/wall-doorway-wide-square/wall-doorway-wide-square.fbx"
+  },
+  {
+    "id": "oga-key-low-poly",
+    "name": "Key - low poly",
+    "provider": "OpenGameArt",
+    "source_page": "https://opengameart.org/content/key-low-poly",
+    "license": "CC0-1.0",
+    "intended_use": "Apartment, basement, shop and garage key pickup proxy.",
+    "primary_path": "SourceAssets/Models/OpenGameArt/oga-key-low-poly/key.fbx",
+    "sources": [
+      {
+        "archive_url": "https://opengameart.org/sites/default/files/key_0.zip",
+        "bytes": 89077,
+        "sha256": "850315207655e5fcefc9c13f015c13e9bef4444cc15d1a2aed691356a680c32f"
+      }
+    ]
   }
 ]
