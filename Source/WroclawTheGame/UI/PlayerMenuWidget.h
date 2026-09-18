@@ -53,6 +53,8 @@ private:
     UPROPERTY() TArray<TObjectPtr<class UButton>> TabButtons;
     UPROPERTY() TArray<TObjectPtr<class UBorder>> TabIndicators;
     UPROPERTY() TArray<TObjectPtr<class UButton>> ActionButtons;
+    UPROPERTY() TArray<TObjectPtr<class UButton>> PreviewViewButtons;
+    UPROPERTY() TArray<TObjectPtr<class UButton>> PreviewLightingButtons;
     UPROPERTY() TObjectPtr<class AWTG_CharacterCreator> Studio;
 
     int32 ActiveTab = 0;
@@ -100,6 +102,7 @@ private:
     void UpdateFocusPresentation();
     void FocusPrimaryAction();
     void UpdatePreviewStatus();
+    void UpdatePreviewControlStyles();
     void ShowConfirmation(int32 Action, const FString& Title, const FString& Body, const FString& ConfirmLabel);
     void ClearConfirmation();
 
