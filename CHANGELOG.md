@@ -1,3 +1,13 @@
+## 2026-09-18 — nowoczesne menu gry
+
+- Przebudowano centrum gracza na skalowany layout 1600×900 z zachowaniem proporcji na niższych rozdzielczościach, ultrawide i 4K.
+- Wprowadzono system wizualny „urban glass”: zaokrąglone karty, nową paletę, stany hover/pressed/disabled oraz wyraźniejszą hierarchię typografii.
+- Przeprojektowano branding WROCŁAW / THE GAME / PRZEBUDZENIE, pasek kontekstu i stopkę.
+- Ekran GRA rozróżnia aktywną i nieaktywną sesję, eksponuje właściwą akcję główną i porządkuje nową grę, zapis, profil oraz ustawienia.
+- Podgląd postaci otrzymał nową oprawę, badge „Podgląd na żywo” i czytelne skróty sterowania.
+- Panel profilu/statusu otrzymał kartę aktualnego celu i uporządkowane metryki sesji.
+- Zmiana dotyczy runtime UMG/C++; końcowy odbiór wizualny i kompilacja w UE 5.8 nadal są wymagane.
+
 ## 2026-09-18 — okna uliczne sceny startowej i pełny zestaw Kenney
 
 - Dodano 8 wariantów zwykłych modułów okiennych z Kenney Building Kit: prostokątne i łukowe, standardowe oraz detailed, w wersjach zwykłych i szerokich.

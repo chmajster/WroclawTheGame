@@ -32,15 +32,26 @@
 #include "GameFramework/GameUserSettings.h"
 #include "Input/Reply.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "Brushes/SlateRoundedBoxBrush.h"
 
 namespace
 {
-const FLinearColor Background(0.008f, 0.012f, 0.018f, 0.985f);
-const FLinearColor Panel(0.022f, 0.031f, 0.043f, 0.96f);
-const FLinearColor PanelSoft(0.035f, 0.046f, 0.061f, 0.92f);
-const FLinearColor Accent(0.95f, 0.72f, 0.16f, 1.0f);
-const FLinearColor Muted(0.63f, 0.68f, 0.74f, 1.0f);
-const FLinearColor Divider(0.12f, 0.14f, 0.17f, 1.0f);
+const FLinearColor Background(0.005f, 0.009f, 0.016f, 0.995f);
+const FLinearColor Panel(0.020f, 0.030f, 0.044f, 0.985f);
+const FLinearColor PanelSoft(0.034f, 0.049f, 0.069f, 0.98f);
+const FLinearColor PanelHover(0.055f, 0.078f, 0.105f, 1.0f);
+const FLinearColor Accent(0.18f, 0.79f, 0.96f, 1.0f);
+const FLinearColor AccentHover(0.32f, 0.86f, 1.0f, 1.0f);
+const FLinearColor AccentPressed(0.10f, 0.61f, 0.78f, 1.0f);
+const FLinearColor TextPrimary(0.95f, 0.97f, 1.0f, 1.0f);
+const FLinearColor Muted(0.57f, 0.64f, 0.72f, 1.0f);
+const FLinearColor Divider(0.11f, 0.16f, 0.21f, 1.0f);
+const FLinearColor Disabled(0.028f, 0.038f, 0.050f, 0.72f);
+
+FSlateRoundedBoxBrush RoundedBrush(const FLinearColor& Color, float Radius)
+{
+    return FSlateRoundedBoxBrush(Color, Radius, FVector2f(64.0f, 64.0f));
+}
 }
 
 UTextBlock* UPlayerMenuWidget::MakeText(const FString& Value, int32 Size, bool bBold, FLinearColor Color)
@@ -60,10 +71,21 @@ UTextBlock* UPlayerMenuWidget::MakeText(const FString& Value, int32 Size, bool b
 UButton* UPlayerMenuWidget::MakeButton(const FString& Label, bool bAccent)
 {
     auto* Button = WidgetTree->ConstructWidget<UButton>();
-    Button->SetBackgroundColor(bAccent ? Accent : PanelSoft);
+    Button->SetBackgroundColor(FLinearColor::White);
     Button->SetColorAndOpacity(FLinearColor::White);
-    auto* Text = MakeText(Label, 14, true, bAccent ? FLinearColor(0.05f, 0.05f, 0.05f) : FLinearColor::White);
+
+    FButtonStyle Style = Button->GetStyle();
+    Style.Normal = RoundedBrush(bAccent ? Accent : PanelSoft, 9.0f);
+    Style.Hovered = RoundedBrush(bAccent ? AccentHover : PanelHover, 9.0f);
+    Style.Pressed = RoundedBrush(bAccent ? AccentPressed : Panel, 9.0f);
+    Style.Disabled = RoundedBrush(Disabled, 9.0f);
+    Style.NormalPadding = FMargin(15.0f, 11.0f, 15.0f, 11.0f);
+    Style.PressedPadding = FMargin(15.0f, 12.0f, 15.0f, 10.0f);
+    Button->SetStyle(Style);
+
+    auto* Text = MakeText(Label, 13, true, bAccent ? Background : TextPrimary);
     Text->SetJustification(ETextJustify::Center);
+    Text->SetLineHeightPercentage(1.0f);
     Button->AddChild(Text);
     return Button;
 }
@@ -71,7 +93,7 @@ UButton* UPlayerMenuWidget::MakeButton(const FString& Label, bool bAccent)
 UBorder* UPlayerMenuWidget::MakeCard(const FMargin& Padding)
 {
     auto* Border = WidgetTree->ConstructWidget<UBorder>();
-    Border->SetBrushColor(Panel);
+    Border->SetBrush(RoundedBrush(Panel, 16.0f));
     Border->SetPadding(Padding);
     return Border;
 }
@@ -119,18 +141,42 @@ void UPlayerMenuWidget::BuildShell()
     Backdrop->SetBrushColor(Background);
     Root->AddChildToOverlay(Backdrop);
 
+    // Fixed design canvas scaled as one unit keeps spacing and typography stable
+    // from 1280x720 up to ultrawide/4K while the backdrop still fills the screen.
+    auto* Scale = WidgetTree->ConstructWidget<UScaleBox>();
+    Scale->SetStretch(EStretch::ScaleToFit);
+    Scale->SetStretchDirection(EStretchDirection::Both);
+    auto* ScaleSlot = Root->AddChildToOverlay(Scale);
+    ScaleSlot->SetHorizontalAlignment(HAlign_Fill);
+    ScaleSlot->SetVerticalAlignment(VAlign_Fill);
+
+    auto* Frame = WidgetTree->ConstructWidget<USizeBox>();
+    Frame->SetWidthOverride(1600.0f);
+    Frame->SetHeightOverride(900.0f);
+    Scale->AddChild(Frame);
+
     auto* Layout = WidgetTree->ConstructWidget<UVerticalBox>();
-    auto* LayoutSlot = Root->AddChildToOverlay(Layout);
-    LayoutSlot->SetPadding(FMargin(24, 18, 24, 16));
+    Frame->AddChild(Layout);
+    Layout->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
+
+    auto* Header = MakeCard(FMargin(18, 14, 18, 14));
+    auto* HeaderSlot = Layout->AddChildToVerticalBox(Header);
+    HeaderSlot->SetPadding(FMargin(30, 24, 30, 0));
 
     auto* Top = WidgetTree->ConstructWidget<UHorizontalBox>();
-    auto* TopSlot = Layout->AddChildToVerticalBox(Top);
-    TopSlot->SetPadding(FMargin(0, 0, 0, 12));
+    Header->AddChild(Top);
 
-    auto* Brand = WidgetTree->ConstructWidget<USizeBox>();
-    Brand->SetWidthOverride(265);
-    Brand->AddChild(MakeText(TEXT("WROCŁAW THE GAME"), 18, true, Accent));
-    Top->AddChildToHorizontalBox(Brand);
+    auto* BrandSize = WidgetTree->ConstructWidget<USizeBox>();
+    BrandSize->SetWidthOverride(325.0f);
+    auto* Brand = WidgetTree->ConstructWidget<UVerticalBox>();
+    BrandSize->AddChild(Brand);
+    Top->AddChildToHorizontalBox(BrandSize)->SetPadding(FMargin(4, 0, 22, 0));
+
+    auto* BrandTitle = MakeText(TEXT("WROCŁAW"), 27, true, TextPrimary);
+    BrandTitle->SetLineHeightPercentage(0.9f);
+    Brand->AddChildToVerticalBox(BrandTitle);
+    Brand->AddChildToVerticalBox(MakeText(TEXT("THE GAME  /  PRZEBUDZENIE"), 10, true, Accent))
+        ->SetPadding(FMargin(1, 3, 0, 0));
 
     const TCHAR* Labels[] = {TEXT("GRA"), TEXT("POSTAĆ"), TEXT("EKWIPUNEK"),
                              TEXT("DZIENNIK"), TEXT("MAPA"), TEXT("STATYSTYKI"), TEXT("USTAWIENIA")};
@@ -138,7 +184,7 @@ void UPlayerMenuWidget::BuildShell()
     {
         auto* Button = MakeButton(Labels[Index]);
         auto* Slot = Top->AddChildToHorizontalBox(Button);
-        Slot->SetPadding(FMargin(3, 0));
+        Slot->SetPadding(FMargin(3, 1, 3, 1));
         Slot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
         TabButtons.Add(Button);
     }
@@ -151,34 +197,40 @@ void UPlayerMenuWidget::BuildShell()
     TabButtons[5]->OnClicked.AddDynamic(this, &UPlayerMenuWidget::TabStats);
     TabButtons[6]->OnClicked.AddDynamic(this, &UPlayerMenuWidget::TabSettings);
 
-    auto* Line = WidgetTree->ConstructWidget<UBorder>();
-    Line->SetBrushColor(Divider);
-    auto* LineSlot = Layout->AddChildToVerticalBox(Line);
-    LineSlot->SetPadding(FMargin(0, 0, 0, 12));
-    LineSlot->SetSize(FSlateChildSize(ESlateSizeRule::Automatic));
+    auto* ContextBar = WidgetTree->ConstructWidget<UHorizontalBox>();
+    auto* ContextSlot = Layout->AddChildToVerticalBox(ContextBar);
+    ContextSlot->SetPadding(FMargin(34, 13, 34, 12));
+
+    PageTitle = MakeText(TEXT(""), 11, true, Accent);
+    ContextBar->AddChildToHorizontalBox(PageTitle)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+    auto* ContextHint = MakeText(TEXT("ESC  WRÓĆ DO GRY    •    PPM  OBRÓT    •    KÓŁKO  ZOOM"), 10, true, Muted);
+    ContextHint->SetJustification(ETextJustify::Right);
+    ContextBar->AddChildToHorizontalBox(ContextHint);
 
     auto* Body = WidgetTree->ConstructWidget<UHorizontalBox>();
     auto* BodySlot = Layout->AddChildToVerticalBox(Body);
+    BodySlot->SetPadding(FMargin(30, 0, 30, 0));
     BodySlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
-    auto* LeftCard = MakeCard(FMargin(14));
+    auto* LeftCard = MakeCard(FMargin(18, 18, 18, 18));
     auto* LeftSize = WidgetTree->ConstructWidget<USizeBox>();
-    LeftSize->SetWidthOverride(255);
+    LeftSize->SetWidthOverride(285.0f);
     LeftSize->AddChild(LeftCard);
-    Body->AddChildToHorizontalBox(LeftSize)->SetPadding(FMargin(0, 0, 12, 0));
+    Body->AddChildToHorizontalBox(LeftSize)->SetPadding(FMargin(0, 0, 16, 0));
     ActionColumn = WidgetTree->ConstructWidget<UVerticalBox>();
     LeftCard->AddChild(ActionColumn);
 
-    auto* CenterCard = MakeCard(FMargin(12));
+    auto* CenterCard = MakeCard(FMargin(10, 10, 10, 10));
     auto* CenterSlot = Body->AddChildToHorizontalBox(CenterCard);
     CenterSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
-    CenterSlot->SetPadding(FMargin(0, 0, 12, 0));
+    CenterSlot->SetPadding(FMargin(0, 0, 16, 0));
     CenterColumn = WidgetTree->ConstructWidget<UVerticalBox>();
     CenterCard->AddChild(CenterColumn);
 
-    auto* RightCard = MakeCard(FMargin(16));
+    auto* RightCard = MakeCard(FMargin(20, 20, 20, 20));
     auto* RightSize = WidgetTree->ConstructWidget<USizeBox>();
-    RightSize->SetWidthOverride(330);
+    RightSize->SetWidthOverride(320.0f);
     RightSize->AddChild(RightCard);
     Body->AddChildToHorizontalBox(RightSize);
     RightColumn = WidgetTree->ConstructWidget<UVerticalBox>();
@@ -186,13 +238,14 @@ void UPlayerMenuWidget::BuildShell()
 
     auto* Footer = WidgetTree->ConstructWidget<UHorizontalBox>();
     auto* FooterSlot = Layout->AddChildToVerticalBox(Footer);
-    FooterSlot->SetPadding(FMargin(0, 12, 0, 0));
+    FooterSlot->SetPadding(FMargin(34, 12, 34, 20));
 
-    PageTitle = MakeText(TEXT(""), 13, true, Muted);
-    Footer->AddChildToHorizontalBox(PageTitle)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
-    auto* Hint = MakeText(TEXT("ESC — wróć do gry   •   PPM — obrót postaci   •   kółko — zoom"), 12, false, Muted);
-    Hint->SetJustification(ETextJustify::Right);
-    Footer->AddChildToHorizontalBox(Hint);
+    auto* Location = MakeText(TEXT("WROCŁAW  /  DOLNY ŚLĄSK"), 10, true, Muted);
+    Footer->AddChildToHorizontalBox(Location)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+    auto* FooterHint = MakeText(TEXT("CENTRUM GRACZA"), 10, true, Accent);
+    FooterHint->SetJustification(ETextJustify::Right);
+    Footer->AddChildToHorizontalBox(FooterHint);
 }
 
 void UPlayerMenuWidget::Refresh()
@@ -227,8 +280,21 @@ void UPlayerMenuWidget::SelectTab(int32 Index)
 void UPlayerMenuWidget::UpdateTabStyle()
 {
     for (int32 Index = 0; Index < TabButtons.Num(); ++Index)
-        if (TabButtons[Index])
-            TabButtons[Index]->SetBackgroundColor(Index == ActiveTab ? Accent : PanelSoft);
+    {
+        auto* Button = TabButtons[Index];
+        if (!Button)
+            continue;
+
+        const bool bActive = Index == ActiveTab;
+        FButtonStyle Style = Button->GetStyle();
+        Style.Normal = RoundedBrush(bActive ? Accent : PanelSoft, 9.0f);
+        Style.Hovered = RoundedBrush(bActive ? AccentHover : PanelHover, 9.0f);
+        Style.Pressed = RoundedBrush(bActive ? AccentPressed : Panel, 9.0f);
+        Button->SetStyle(Style);
+
+        if (auto* Text = Cast<UTextBlock>(Button->GetContent()))
+            Text->SetColorAndOpacity(FSlateColor(bActive ? Background : TextPrimary));
+    }
 }
 
 void UPlayerMenuWidget::AddPreview()
@@ -246,14 +312,14 @@ void UPlayerMenuWidget::AddPreview()
     StageSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
     auto* StageBg = WidgetTree->ConstructWidget<UBorder>();
-    StageBg->SetBrushColor(FLinearColor(0.01f, 0.014f, 0.02f, 1.0f));
+    StageBg->SetBrush(RoundedBrush(FLinearColor(0.008f, 0.014f, 0.024f, 1.0f), 14.0f));
     Stage->AddChildToOverlay(StageBg);
 
     auto* Scale = WidgetTree->ConstructWidget<UScaleBox>();
     Scale->SetStretch(EStretch::ScaleToFit);
     Scale->SetStretchDirection(EStretchDirection::Both);
     auto* ScaleSlot = Stage->AddChildToOverlay(Scale);
-    ScaleSlot->SetPadding(FMargin(8));
+    ScaleSlot->SetPadding(FMargin(22, 20, 22, 70));
     ScaleSlot->SetHorizontalAlignment(HAlign_Center);
     ScaleSlot->SetVerticalAlignment(VAlign_Center);
 
@@ -264,29 +330,52 @@ void UPlayerMenuWidget::AddPreview()
     Image->SetBrush(Brush);
     Scale->AddChild(Image);
 
+    auto* TopBadge = WidgetTree->ConstructWidget<UBorder>();
+    TopBadge->SetBrush(RoundedBrush(FLinearColor(0.015f, 0.024f, 0.036f, 0.92f), 8.0f));
+    TopBadge->SetPadding(FMargin(11, 6, 11, 6));
+    auto* TopBadgeSlot = Stage->AddChildToOverlay(TopBadge);
+    TopBadgeSlot->SetHorizontalAlignment(HAlign_Left);
+    TopBadgeSlot->SetVerticalAlignment(VAlign_Top);
+    TopBadgeSlot->SetPadding(FMargin(18));
+    TopBadge->AddChild(MakeText(TEXT("PODGLĄD NA ŻYWO"), 9, true, Accent));
+
     auto* CaptionCard = WidgetTree->ConstructWidget<UBorder>();
-    CaptionCard->SetBrushColor(FLinearColor(0.0f, 0.0f, 0.0f, 0.62f));
-    CaptionCard->SetPadding(FMargin(12, 8));
+    CaptionCard->SetBrush(RoundedBrush(FLinearColor(0.005f, 0.009f, 0.015f, 0.88f), 10.0f));
+    CaptionCard->SetPadding(FMargin(16, 11, 16, 11));
     auto* CaptionSlot = Stage->AddChildToOverlay(CaptionCard);
     CaptionSlot->SetHorizontalAlignment(HAlign_Fill);
     CaptionSlot->SetVerticalAlignment(VAlign_Bottom);
-    CaptionSlot->SetPadding(FMargin(14));
-    auto* Caption = MakeText(TEXT("AKTYWNA POSTAĆ  •  PODGLĄD NA ŻYWO"), 12, true, Accent);
+    CaptionSlot->SetPadding(FMargin(18));
+
+    auto* CaptionBox = WidgetTree->ConstructWidget<UVerticalBox>();
+    CaptionCard->AddChild(CaptionBox);
+    auto* Caption = MakeText(TEXT("AKTYWNA POSTAĆ"), 13, true, TextPrimary);
     Caption->SetJustification(ETextJustify::Center);
-    CaptionCard->AddChild(Caption);
+    CaptionBox->AddChildToVerticalBox(Caption);
+    auto* CaptionSub = MakeText(TEXT("PPM — OBRÓT   •   KÓŁKO — ZOOM"), 9, true, Muted);
+    CaptionSub->SetJustification(ETextJustify::Center);
+    CaptionBox->AddChildToVerticalBox(CaptionSub)->SetPadding(FMargin(0, 3, 0, 0));
 }
 
 void UPlayerMenuWidget::AddTextPage(const FString& Heading, const FString& Body)
 {
-    auto* Header = MakeText(Heading, 22, true, Accent);
-    CenterColumn->AddChildToVerticalBox(Header)->SetPadding(FMargin(6, 4, 6, 14));
+    auto* Eyebrow = MakeText(TEXT("CENTRUM INFORMACJI"), 9, true, Accent);
+    CenterColumn->AddChildToVerticalBox(Eyebrow)->SetPadding(FMargin(10, 8, 10, 3));
+
+    auto* Header = MakeText(Heading, 27, true, TextPrimary);
+    CenterColumn->AddChildToVerticalBox(Header)->SetPadding(FMargin(10, 0, 10, 10));
+
+    auto* Line = WidgetTree->ConstructWidget<UBorder>();
+    Line->SetBrushColor(Divider);
+    CenterColumn->AddChildToVerticalBox(Line)->SetPadding(FMargin(10, 0, 10, 14));
 
     auto* Scroll = WidgetTree->ConstructWidget<UScrollBox>();
     auto* ScrollSlot = CenterColumn->AddChildToVerticalBox(Scroll);
+    ScrollSlot->SetPadding(FMargin(10, 0, 10, 8));
     ScrollSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
-    auto* BodyText = MakeText(Body.IsEmpty() ? TEXT("Brak danych.") : Body, 15, false, FLinearColor(0.9f, 0.92f, 0.95f));
-    BodyText->SetLineHeightPercentage(1.15f);
+    auto* BodyText = MakeText(Body.IsEmpty() ? TEXT("Brak danych.") : Body, 14, false, TextPrimary);
+    BodyText->SetLineHeightPercentage(1.22f);
     Scroll->AddChild(BodyText);
 }
 
@@ -299,74 +388,102 @@ void UPlayerMenuWidget::AddPlayerStatus()
     const FString Name = Creator && !Creator->Committed.PlayerAppearanceData.Name.IsEmpty()
                              ? Creator->Committed.PlayerAppearanceData.Name
                              : TEXT("Gracz");
-    RightColumn->AddChildToVerticalBox(MakeText(Name.ToUpper(), 20, true, FLinearColor::White))
-        ->SetPadding(FMargin(0, 0, 0, 3));
-    RightColumn->AddChildToVerticalBox(MakeText(TEXT("WROCŁAW • DOLNY ŚLĄSK"), 11, true, Accent))
-        ->SetPadding(FMargin(0, 0, 0, 16));
+
+    RightColumn->AddChildToVerticalBox(MakeText(TEXT("PROFIL"), 9, true, Accent))
+        ->SetPadding(FMargin(0, 0, 0, 4));
+    RightColumn->AddChildToVerticalBox(MakeText(Name.ToUpper(), 23, true, TextPrimary))
+        ->SetPadding(FMargin(0, 0, 0, 2));
+    RightColumn->AddChildToVerticalBox(MakeText(TEXT("WROCŁAW  /  DOLNY ŚLĄSK"), 10, true, Muted))
+        ->SetPadding(FMargin(0, 0, 0, 18));
 
     if (Player && Player->HealthState && Player->StaminaState)
     {
-        RightColumn->AddChildToVerticalBox(MakeText(TEXT("ZDROWIE"), 11, true, Muted));
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("ZDROWIE"), 9, true, Muted));
         auto* Health = WidgetTree->ConstructWidget<UProgressBar>();
         Health->SetPercent(FMath::Clamp(Player->HealthState->Value / 100.0f, 0.0f, 1.0f));
-        Health->SetFillColorAndOpacity(FLinearColor(0.72f, 0.18f, 0.16f, 1));
-        RightColumn->AddChildToVerticalBox(Health)->SetPadding(FMargin(0, 4, 0, 12));
+        Health->SetFillColorAndOpacity(FLinearColor(0.91f, 0.29f, 0.28f, 1.0f));
+        RightColumn->AddChildToVerticalBox(Health)->SetPadding(FMargin(0, 5, 0, 12));
 
-        RightColumn->AddChildToVerticalBox(MakeText(TEXT("KONDYCJA"), 11, true, Muted));
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("KONDYCJA"), 9, true, Muted));
         auto* Stamina = WidgetTree->ConstructWidget<UProgressBar>();
         Stamina->SetPercent(FMath::Clamp(Player->StaminaState->Value / 100.0f, 0.0f, 1.0f));
-        Stamina->SetFillColorAndOpacity(FLinearColor(0.18f, 0.68f, 0.58f, 1));
-        RightColumn->AddChildToVerticalBox(Stamina)->SetPadding(FMargin(0, 4, 0, 18));
+        Stamina->SetFillColorAndOpacity(Accent);
+        RightColumn->AddChildToVerticalBox(Stamina)->SetPadding(FMargin(0, 5, 0, 18));
     }
 
     if (Mission)
     {
-        RightColumn->AddChildToVerticalBox(MakeText(TEXT("AKTUALNY CEL"), 11, true, Muted))
-            ->SetPadding(FMargin(0, 0, 0, 5));
-        auto* Objective = MakeText(Mission->ObjectiveText(), 14, true, FLinearColor(0.94f, 0.95f, 0.97f));
-        RightColumn->AddChildToVerticalBox(Objective)->SetPadding(FMargin(0, 0, 0, 16));
+        auto* ObjectiveCard = WidgetTree->ConstructWidget<UBorder>();
+        ObjectiveCard->SetBrush(RoundedBrush(PanelSoft, 11.0f));
+        ObjectiveCard->SetPadding(FMargin(13, 12, 13, 12));
+        RightColumn->AddChildToVerticalBox(ObjectiveCard)->SetPadding(FMargin(0, 0, 0, 14));
 
+        auto* ObjectiveBox = WidgetTree->ConstructWidget<UVerticalBox>();
+        ObjectiveCard->AddChild(ObjectiveBox);
+        ObjectiveBox->AddChildToVerticalBox(MakeText(TEXT("AKTUALNY CEL"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 0, 0, 6));
+        ObjectiveBox->AddChildToVerticalBox(
+            MakeText(Mission->ObjectiveText(), 13, true, TextPrimary));
+
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("SESJA"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 0, 0, 7));
         const FString Meta = FString::Printf(
-            TEXT("Zagrożenie: %d / 5\nCzas rozgrywki: %.0f min\nOsiągnięcia: %d\nZapis: %s"),
+            TEXT("Zagrożenie        %d / 5\nCzas rozgrywki    %.0f min\nOsiągnięcia       %d\nZapis             %s"),
             Mission->WorldState.HeatLevel(),
             Mission->State.elapsed / 60.0,
             Mission->LifetimeAchievements,
             Mission->bLastSaveSucceeded ? TEXT("OK") : TEXT("BŁĄD"));
-        RightColumn->AddChildToVerticalBox(MakeText(Meta, 12, false, Muted));
+        auto* MetaText = MakeText(Meta, 11, false, Muted);
+        MetaText->SetLineHeightPercentage(1.35f);
+        RightColumn->AddChildToVerticalBox(MetaText);
     }
 }
 
 void UPlayerMenuWidget::BuildGameTab()
 {
-    PageTitle->SetText(FText::FromString(TEXT("GRA / CENTRUM GRACZA")));
-
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("GRA"), 16, true, Accent))
-        ->SetPadding(FMargin(3, 0, 3, 12));
+    PageTitle->SetText(FText::FromString(TEXT("CENTRUM GRACZA  /  GRA")));
 
     auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
+    const bool bInGame = Mission && Mission->bInGame;
 
-    auto* ResumeButton = MakeButton(TEXT("WZNÓW"), true);
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("PRZEBUDZENIE"), 21, true, TextPrimary))
+        ->SetPadding(FMargin(2, 1, 2, 2));
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("KAMPANIA FABULARNA"), 9, true, Accent))
+        ->SetPadding(FMargin(2, 0, 2, 12));
+    ActionColumn->AddChildToVerticalBox(MakeText(
+        bInGame ? TEXT("Wróć do bieżącej sesji albo zarządzaj zapisem.")
+                : TEXT("Rozpocznij nową historię albo wczytaj istniejący zapis."),
+        11, false, Muted))->SetPadding(FMargin(2, 0, 2, 18));
+
+    auto* ResumeButton = MakeButton(bInGame ? TEXT("KONTYNUUJ") : TEXT("BRAK AKTYWNEJ SESJI"), bInGame);
     ResumeButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::Resume);
-    ResumeButton->SetIsEnabled(Mission && Mission->bInGame);
+    ResumeButton->SetIsEnabled(bInGame);
     ActionColumn->AddChildToVerticalBox(ResumeButton)->SetPadding(FMargin(0, 0, 0, 8));
 
-    auto* NewButton = MakeButton(TEXT("NOWA GRA"));
+    auto* NewButton = MakeButton(TEXT("NOWA GRA"), !bInGame);
     NewButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::NewGame);
     ActionColumn->AddChildToVerticalBox(NewButton)->SetPadding(FMargin(0, 0, 0, 8));
 
-    auto* LoadButton = MakeButton(TEXT("WCZYTAJ OSTATNI ZAPIS"));
+    auto* LoadButton = MakeButton(TEXT("WCZYTAJ ZAPIS"));
     LoadButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::LoadGame);
     const bool CityActive = GetWorld()->GetSubsystem<UCityGameplaySubsystem>()->IsActive();
     LoadButton->SetIsEnabled(CityActive || (Mission && Mission->HasSave()));
-    ActionColumn->AddChildToVerticalBox(LoadButton)->SetPadding(FMargin(0, 0, 0, 8));
+    ActionColumn->AddChildToVerticalBox(LoadButton)->SetPadding(FMargin(0, 0, 0, 18));
 
-    auto* CharacterButton = MakeButton(TEXT("POSTAĆ"));
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("CENTRUM GRACZA"), 9, true, Muted))
+        ->SetPadding(FMargin(2, 0, 2, 8));
+
+    auto* CharacterButton = MakeButton(TEXT("POSTAĆ I PROFIL"));
     CharacterButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::TabCharacter);
-    ActionColumn->AddChildToVerticalBox(CharacterButton)->SetPadding(FMargin(0, 8, 0, 8));
+    ActionColumn->AddChildToVerticalBox(CharacterButton)->SetPadding(FMargin(0, 0, 0, 8));
 
-    auto* QuitButton = MakeButton(TEXT("WYJDŹ DO PULPITU"));
+    auto* SettingsButton = MakeButton(TEXT("USTAWIENIA"));
+    SettingsButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::TabSettings);
+    ActionColumn->AddChildToVerticalBox(SettingsButton)->SetPadding(FMargin(0, 0, 0, 8));
+
+    auto* QuitButton = MakeButton(TEXT("WYJDŹ Z GRY"));
     QuitButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::QuitGame);
-    ActionColumn->AddChildToVerticalBox(QuitButton)->SetPadding(FMargin(0, 18, 0, 0));
+    ActionColumn->AddChildToVerticalBox(QuitButton)->SetPadding(FMargin(0, 14, 0, 0));
 
     AddPreview();
     AddPlayerStatus();
