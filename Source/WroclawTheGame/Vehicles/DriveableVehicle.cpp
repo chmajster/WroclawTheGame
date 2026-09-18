@@ -289,7 +289,13 @@ void ADriveableVehicle::Collision(UPrimitiveComponent *Hit, AActor *Other,
     if (Now - LastImpact < .3 || Impulse.Size() / Chassis->GetMass() < 250)
         return;
     LastImpact = Now;
-    TakeDamage((Impulse.Size() / Chassis->GetMass() - 250) * .035f, FDamageEvent(), nullptr, Other);
+    const float Severity = Impulse.Size() / Chassis->GetMass() - 250.0f;
+    TakeDamage(Severity * .035f, FDamageEvent(), nullptr, Other);
+    if (bPersistentPlayerVehicle && Driver)
+    {
+        auto *Mission = GetWorld()->GetGameInstance()->GetSubsystem<USliceMission>();
+        Mission->WorldState.AddHeat(FMath::Clamp(Severity * 0.003f, 0.5f, 4.0f));
+    }
 }
 FString ADriveableVehicle::Status() const
 {
