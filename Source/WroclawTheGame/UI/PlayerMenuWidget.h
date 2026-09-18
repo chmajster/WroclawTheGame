@@ -36,6 +36,7 @@ private:
     UPROPERTY() TObjectPtr<class UVerticalBox> ActionColumn;
     UPROPERTY() TObjectPtr<class UVerticalBox> CenterColumn;
     UPROPERTY() TObjectPtr<class UVerticalBox> RightColumn;
+    UPROPERTY() TObjectPtr<class UVerticalBox> ShellLayout;
     UPROPERTY() TObjectPtr<class UTextBlock> PageTitle;
     UPROPERTY() TObjectPtr<class UTextBlock> ContextStatus;
     UPROPERTY() TArray<TObjectPtr<class UButton>> TabButtons;
@@ -49,6 +50,7 @@ private:
     float ConfirmationSecondsRemaining = 0.0f;
     float ConfirmationAnimationTime = 0.18f;
     float PageAnimationTime = 0.22f;
+    float ShellAnimationTime = 0.28f;
     float AmbientAnimationTime = 0.0f;
     bool bRotatingPreview = false;
     bool bCollectActionButtons = false;
