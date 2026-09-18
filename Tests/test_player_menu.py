@@ -143,6 +143,15 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_information_cards_use_modern_accent_rails(self):
+        for token in (
+            "auto* Content = WidgetTree->ConstructWidget<UHorizontalBox>()",
+            "auto* Rail = WidgetTree->ConstructWidget<UBorder>()",
+            "Rail->SetBrush(RoundedBrush(bHighlighted ? Accent : Divider, 2.0f))",
+            "RailSize->SetWidthOverride(3.0f)",
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_player_status_is_a_visual_dashboard_not_raw_bitmask_text(self):
         for token in (
             "HealthValue",
