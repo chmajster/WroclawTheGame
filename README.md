@@ -1,6 +1,6 @@
 # WroclawTheGame — Przebudzenie
 
-Unreal Engine **5.6 / C++20**, docelowo **Windows x64**. Wersja źródłowa 0.3 obejmuje rozdział, systemy otwartego świata oraz laboratorium rzeczywistej geografii i pojazdu.
+Unreal Engine **5.8 / C++20**, docelowo **Windows x64**. Wersja źródłowa 0.3 obejmuje rozdział, systemy otwartego świata oraz laboratorium rzeczywistej geografii i pojazdu.
 
 **Etap nie jest ukończony. Nie ma zweryfikowanego pakietu Windows.** Nie wykonano UHT/UBT, cookingu ani przejścia gry w Unreal. Czas rozgrywki i wydajność pozostają niezmierzone. Testy logiki nie stanowią dowodu grywalności.
 
@@ -43,7 +43,7 @@ Import GIS wymaga osobnego Pythona 3.12 lub nowszego (pyproj 3.8). Python wbudow
 
 ```powershell
 python -m pip install -r Scripts/gis/requirements.txt
-.\Scripts\Build-Geography.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.6' -Package
+.\Scripts\Build-Geography.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.8' -Package
 ```
 
 Otwórz `/Game/Maps/Nadodrze_GIS` w edytorze. W pakiecie Development z powyższego skryptu użyj konsoli `open /Game/Maps/Nadodrze_GIS`. Tryb nie zapisuje postępu kampanii. Ulice i trasy prób korzystają z tej samej importowanej sieci. **Kampania nie została jeszcze przeniesiona na prawdziwe budynki Nadodrza**; dotychczasowa mapa pozostaje fikcyjnym blockoutem gameplayu.
