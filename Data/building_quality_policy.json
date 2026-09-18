@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "precedence": [
+    "textured_mesh",
+    "lod2",
+    "lod1",
+    "osm"
+  ],
+  "requirements": {
+    "textured_mesh": {
+      "requires_qa_pass": true,
+      "requires_geometry": true,
+      "requires_texture": true,
+      "max_age_years": null
+    },
+    "lod2": {
+      "requires_qa_pass": false,
+      "requires_geometry": true,
+      "requires_texture": false,
+      "max_age_years": null
+    },
+    "lod1": {
+      "requires_qa_pass": false,
+      "requires_geometry": true,
+      "requires_texture": false,
+      "max_age_years": null
+    },
+    "osm": {
+      "requires_qa_pass": false,
+      "requires_geometry": true,
+      "requires_texture": false,
+      "max_age_years": null
+    }
+  },
+  "quality_labels": {
+    "textured_mesh": "hero",
+    "lod2": "detailed",
+    "lod1": "standard",
+    "osm": "background"
+  },
+  "reject_statuses": [
+    "failed",
+    "invalid",
+    "missing",
+    "stale_blocked"
+  ],
+  "accepted_qa_statuses": [
+    "PASS",
+    "pass"
+  ]
+}
