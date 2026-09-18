@@ -488,5 +488,16 @@
     "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-intercom/wtg-original-intercom.obj",
     "generated": true,
     "generator": "bootstrap-original-fallback-models.yml"
+  },
+  {
+    "id": "rostock-traffic-stahl-3500",
+    "name": "Stahl 3500 traffic-signal mast",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Stahl_3500.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Traffic-signal support mast for authored Wroclaw intersections and signal infrastructure.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Stahl_3500/Stahl_3500.glb",
+    "source_git_blob_sha1": "378734fed329f3cbfc5b9659ebcddbccc56d9a22"
   }
 ]
