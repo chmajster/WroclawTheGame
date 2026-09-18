@@ -18,6 +18,7 @@ This file is the hand-off point for long-running implementation of the full Wroc
 - [x] PR body updated with exact code scope, verification limits and remaining runtime gates.
 
 ### Last completed code change
+- Added an official GUGiK CityGML ingestion path for six central Wrocław landmarks. The full-game build downloads/caches the source, replaces matching OSM blockouts, and bakes the selected building geometry into `/Game/Generated/OfficialBuildings`; Unreal visual QA remains pending.
 - Reconciled PR #8 with the current `main` asset-production pipeline while preserving the UE 5.8 guard and the full-game GIS/AI changes.
 - Campaign GIS migration, six vehicle scenarios, first pursuit/roadblock runtime and position-aware phone map are present in code but remain subject to Unreal/Windows acceptance.
 
@@ -60,7 +61,7 @@ Status legend: `DONE`, `PARTIAL`, `NOT STARTED`, `REQUIRES UE`.
 | P1 | Puzzle depth | PARTIAL | Spatial/electrical/CCTV/cipher examples using reusable framework |
 | P1 | Multi-district quests | NOT STARTED | One quest traverses multiple streamed districts and survives save/load |
 | P1 | Interiors | PARTIAL | Replace isolated prototype rooms with building-linked gameplay interiors |
-| P1 | Wroclaw landmarks | NOT STARTED | Hand-authored recognizable landmark pass with licensed assets |
+| P1 | Wroclaw landmarks | PARTIAL | Official GUGiK import for six central landmarks is wired; run download + UE bake, verify LoD actually returned for Wrocław, then perform hero visual/LOD/collision QA |
 | P1 | City audio | PARTIAL | Exterior/interior ambience, traffic/trams, occlusion/reverb and event audio |
 | P1 | Dialogue | NOT STARTED | Data-driven conversations with state/quest consequences |
 | P1 | Cutscenes | NOT STARTED | Intro + key discovery + chapter ending sequences |
