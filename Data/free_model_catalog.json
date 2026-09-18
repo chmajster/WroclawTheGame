@@ -353,5 +353,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/electric_stove/electric_stove_1k.fbx"
+  },
+  {
+    "slug": "modular_street_seating",
+    "name": "Modular Street Seating",
+    "intended_use": "Street/park bench for clue placement and city dressing.",
+    "source_page": "https://polyhaven.com/a/modular_street_seating",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Stuart Attenborrow": "All"
+    },
+    "category": "Furniture/Seating/Benches",
+    "dimensions_mm": [
+      4339.9999141693115,
+      770.3700959682465,
+      950.000050743509
+    ],
+    "files_hash": "95d5a9ba8bf29d4db6c9089297b8bdb920994f6d",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/modular_street_seating/modular_street_seating_1k.fbx"
   }
 ]

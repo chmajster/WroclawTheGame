@@ -1,0 +1,139 @@
+{
+  "slug": "modular_street_seating",
+  "name": "Modular Street Seating",
+  "intended_use": "Street/park bench for clue placement and city dressing.",
+  "source_page": "https://polyhaven.com/a/modular_street_seating",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Stuart Attenborrow": "All"
+  },
+  "category": "Furniture/Seating/Benches",
+  "tags": [
+    "chair",
+    "outdoor",
+    "urban",
+    "cityscape",
+    "contemporary",
+    "bench",
+    "city",
+    "infrastructure"
+  ],
+  "dimensions_mm": [
+    4339.9999141693115,
+    770.3700959682465,
+    950.000050743509
+  ],
+  "files_hash": "95d5a9ba8bf29d4db6c9089297b8bdb920994f6d",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/modular_street_seating/modular_street_seating_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/modular_street_seating_1k.fbx",
+      "bytes": 842380,
+      "md5": "04a73d848d34b5f366b283580b1e253f",
+      "sha256": "93261a79163465f962ee213f58fa390cbaeaa4d655e8e4f4a79898dd0be25774",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/modular_street_seating/modular_street_seating_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/textures/modular_street_seating_armrests_diff_1k.png",
+      "bytes": 1361783,
+      "md5": "0565e8d2eb4ff198d0a880792b0b1624",
+      "sha256": "13aca6afde622385977b4a6fc5badfabdef9fb24c0c69ac39eb2c9b685116581",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_street_seating/modular_street_seating_armrests_diff_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/textures/modular_street_seating_armrests_metal_1k.png",
+      "bytes": 644545,
+      "md5": "0282e7b7d520ec66fbe8292807c3f7c4",
+      "sha256": "d0b87738db2395cf802cd7dc020da5f7d8edddc13311a7f4991911cd75dd57bd",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_street_seating/modular_street_seating_armrests_metal_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/textures/modular_street_seating_armrests_nor_gl_1k.png",
+      "bytes": 796874,
+      "md5": "d515b96121684937ba26d8fd680fb4a6",
+      "sha256": "8460c83099ff499149e788dc1cdcee020771921a480a3a00fca597c1654d8a2b",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_street_seating/modular_street_seating_armrests_nor_gl_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/textures/modular_street_seating_armrests_rough_1k.png",
+      "bytes": 536059,
+      "md5": "0d0a6d9b852dc8770d5cf56b19bf843c",
+      "sha256": "00e7ab0d2c87b781b6721a5e1f566d604128443eae2d5508c6777e1adeb7d00b",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_street_seating/modular_street_seating_armrests_rough_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/textures/modular_street_seating_connectors_diff_1k.png",
+      "bytes": 458064,
+      "md5": "3501b7e529f66e2e50ee43eb20d80fb7",
+      "sha256": "02b4f92b3f52093c51c6b03132c53205eab901ea7d9d8e9f2b63fef4432dc2f7",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_street_seating/modular_street_seating_connectors_diff_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/textures/modular_street_seating_connectors_nor_gl_1k.png",
+      "bytes": 950921,
+      "md5": "9281994ff23efe5badbc1eefa19b414e",
+      "sha256": "2aaa9ac61563468d141e9d5fad53413bd37c2441b498568a24ad5c6d39cb21e4",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_street_seating/modular_street_seating_connectors_nor_gl_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/textures/modular_street_seating_connectors_rough_1k.png",
+      "bytes": 489978,
+      "md5": "8d926ef08bd6f622aa8b3a5a5ac40dbf",
+      "sha256": "8eba01a701d9dc99cf1d1ecac5590e912c7e526866378d747ca1f9c4f540a099",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_street_seating/modular_street_seating_connectors_rough_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/textures/modular_street_seating_supports_diff_1k.png",
+      "bytes": 1569214,
+      "md5": "16c5276289ace6cf1240ed929ac3d68c",
+      "sha256": "16275b86529749d73b814bc515405a9602559449d7d08ebb8e88106eb1151943",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_street_seating/modular_street_seating_supports_diff_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/textures/modular_street_seating_supports_metal_1k.png",
+      "bytes": 729013,
+      "md5": "d32661aedfa14424e49086d068325520",
+      "sha256": "104112981e4b2f6fd5e6ee1b1d329c79f863698071eb7e15147780d2696f775e",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_street_seating/modular_street_seating_supports_metal_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/textures/modular_street_seating_supports_nor_gl_1k.png",
+      "bytes": 1080278,
+      "md5": "74baa2aa1097560c05e04dd99a3a4266",
+      "sha256": "8cb1a18a6be08d988df8f5b8f93a90a53ae52f34056df70895e5b44313404797",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_street_seating/modular_street_seating_supports_nor_gl_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/textures/modular_street_seating_supports_rough_1k.png",
+      "bytes": 607341,
+      "md5": "8b25764de291a3e2dc9d2241a749365f",
+      "sha256": "c5caea0687e69d7266cd59df8cf87c0b773a46787eed82aab129acf284e75fa0",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_street_seating/modular_street_seating_supports_rough_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/textures/modular_street_seating_timber_diff_1k.png",
+      "bytes": 1365124,
+      "md5": "0705d668a79b5e7b12842d8ff1c3fc75",
+      "sha256": "edd6df2cc7404d80f0072d3c24e3ea8652469e039bb2c66c84a512a0f383d8b1",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_street_seating/modular_street_seating_timber_diff_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/textures/modular_street_seating_timber_nor_gl_1k.png",
+      "bytes": 1141905,
+      "md5": "5c33140f0fcd6255050c0bdaaf5c78c5",
+      "sha256": "e4eeed0373e759284ff41a3bca1162df81698d4e4531a938804196514775e32a",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_street_seating/modular_street_seating_timber_nor_gl_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modular_street_seating/textures/modular_street_seating_timber_rough_1k.png",
+      "bytes": 653077,
+      "md5": "93b406e816b33d1ca567ee58318c9676",
+      "sha256": "d77f3fcb7431267fead68789bf3941ad6607feffb7be8a0bee1e229adcc48b64",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_street_seating/modular_street_seating_timber_rough_1k.png"
+    }
+  ]
+}
