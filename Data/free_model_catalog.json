@@ -885,5 +885,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/utility_box_02/utility_box_02_1k.fbx"
+  },
+  {
+    "slug": "street_lamp_02",
+    "name": "Street Lamp 02",
+    "intended_use": "Wall-mounted urban street lighting variation.",
+    "source_page": "https://polyhaven.com/a/street_lamp_02",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Josh Dean": "All"
+    },
+    "category": "Lighting/Street & Outdoor/Street Lamps",
+    "dimensions_mm": [
+      386.49316132068634,
+      806.7893021069672,
+      1675.0419437885284
+    ],
+    "files_hash": "2128f871d76c756f6779cac3286443d21eb9b40f",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/street_lamp_02/street_lamp_02_1k.fbx"
   }
 ]
