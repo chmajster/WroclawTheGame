@@ -227,7 +227,7 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             "Preferences->ResetToDefaults()",
             "SetOverallScalabilityLevel(3)",
             "SetResolutionScaleValueEx(100.0f)",
-            'TEXT("Tryb ekranu i rozdzielczość pozostaną bez zmian.")',
+            "Tryb ekranu i rozdzielczość pozostaną bez zmian.",
         ):
             self.assertIn(token, self.cpp)
         self.assertIn("void ResetToDefaults();", self.perf)
