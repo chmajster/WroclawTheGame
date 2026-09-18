@@ -1,0 +1,12 @@
+{
+  "id": "kenney-blocky-character-rig",
+  "name": "Kenney Blocky Character Rig",
+  "provider": "Kenney",
+  "pack": "Blocky Characters",
+  "source_page": "https://opengameart.org/content/blocky-characters",
+  "download_url": "https://opengameart.org/sites/default/files/kenney_blocky-characters_2.0.zip",
+  "license": "CC0-1.0",
+  "intended_use": "Rigged fallback NPC/enemy/pedestrian prototype with animations; not final photorealistic character art.",
+  "archive_sha256": "5e123859aa0c1598342b600c6db197024a1d63eb9ec531398b310725f589887e",
+  "primary_path": "SourceAssets/Characters/Kenney/BlockyCharacters/character-a.fbx"
+}
