@@ -60,6 +60,18 @@ Otwórz `/Game/Maps/Nadodrze_GIS` w edytorze. W pakiecie Development z powyższe
 | Samochód: Num 0 / Num + / Num * / E | Silnik / światła / klakson / wysiadanie |
 | Samochód: F5 / F6 | Start lub restart próby / wybór próby |
 
+## Pipeline produkcji assetów
+
+Projekt ma osobną warstwę produkcyjną `Pipeline/` dla pracy agentowej/Astra. Nie zastępuje ona istniejących generatorów kampanii ani GIS; przetwarza pojedynczy asset przez pełną ścieżkę: referencje → źródło 3D → Blender headless → LOD/kolizja → import Unreal/PBR/Nanite → Automation → screenshot QA → jawny visual review → raport → PR/merge.
+
+Każdy produkcyjny asset otrzymuje manifest `Pipeline/assets/<obszar>/<asset>.asset.json`. Stan wznowienia, raporty i screenshoty powstają w ignorowanym przez Git `Saved/Pipeline/`. Build Windows waliduje wszystkie manifesty przed kompilacją.
+
+```powershell
+.\Pipeline\Invoke-WTGAssetPipeline.ps1 -Manifest Pipeline/assets/rynek/latarnia_001.asset.json -EngineRoot 'C:\Program Files\Epic Games\UE_5.8' -BlenderExe 'C:\Program Files\Blender Foundation\Blender 4.5\blender.exe'
+```
+
+Pełna specyfikacja: [Pipeline produkcji assetów](Pipeline/README.md).
+
 ## Weryfikacja i rozszerzanie
 
 ```bash
