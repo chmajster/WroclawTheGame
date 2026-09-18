@@ -13,7 +13,7 @@ Unreal Engine **5.8 / C++20**, docelowo **Windows x64**. Wersja źródłowa 0.3 
 - Zapis v3: uporządkowane zdarzenia i zużycia, świat/Heat/pogoda, odkrycia, cooldowny, NPC, neutralizacja, wariant zagadek. Odczyt wcześniejszego v2 bez nadpisywania jego pliku. Debug blokuje zapis kampanii i osiągnięć.
 - Geometria kampanii jest wypiekana do aktorów edytora; skrypt konwertuje mapę do World Partition, sprawdza streaming i opcjonalnie buduje HLOD. **Są to nieuruchomione jeszcze procedury UE.**
 - Rzeczywisty sektor Nadodrza: OSM z 17.09.2026, EPSG:32633, skala 100 cm/m, źródłowe footprinty z dziedzińcami, ulice, tory, tereny zielone i wysokości. Import tworzy 3019 obiektów/linii, 5706 węzłów grafu i 281 grup siatek. Zachowuje kierunki jazdy i źródłową topologię. Mosty/tunele oczekują ręcznego opracowania wysokości.
-- Osobne laboratorium `Nadodrze_GIS`: samochód z napędem fizycznym, wsiadaniem/wysiadaniem, hamowaniem, biegiem wstecznym, światłami, klaksonem i uszkodzeniami. Trzy próby po prawdziwych drogach: sprint, czas, dostawa; kolejność checkpointów, restart bez przeładowania poziomu i osobny zapis rekordów. **Nie przetestowano fizyki w silniku.**
+- Osobne laboratorium `Nadodrze_GIS`: samochód z napędem fizycznym, wsiadaniem/wysiadaniem, hamowaniem, biegiem wstecznym, światłami, klaksonem i uszkodzeniami. Sześć scenariuszy po prawdziwych drogach: dwa time-triale, dostawa, ucieczka, śledzenie pojazdu i nawigacja po wskazówkach; kolejność checkpointów, restart bez przeładowania poziomu i osobny zapis rekordów. **Nie przetestowano fizyki w silniku.**
 
 ## Wave 1 — południowe sektory GIS
 
@@ -46,7 +46,7 @@ python -m pip install -r Scripts/gis/requirements.txt
 .\Scripts\Build-Geography.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.8' -Package
 ```
 
-Otwórz `/Game/Maps/Nadodrze_GIS` w edytorze. W pakiecie Development z powyższego skryptu użyj konsoli `open /Game/Maps/Nadodrze_GIS`. Tryb nie zapisuje postępu kampanii. Ulice i trasy prób korzystają z tej samej importowanej sieci. **Kampania nie została jeszcze przeniesiona na prawdziwe budynki Nadodrza**; dotychczasowa mapa pozostaje fikcyjnym blockoutem gameplayu.
+Otwórz `/Game/Maps/Nadodrze_GIS` w edytorze. W pakiecie Development z powyższego skryptu użyj konsoli `open /Game/Maps/Nadodrze_GIS`. Tryb nie zapisuje postępu kampanii. Ulice i trasy prób korzystają z tej samej importowanej sieci. Generator migracji kampanii potrafi przeliczyć blockout na kotwice GIS i wypiec akcje/NPC na `Nadodrze_GIS`, ale wnętrza nadal są powiązanymi blockoutami i wymagają autorskiego osadzenia oraz odbioru w UE.
 
 | Sterowanie | Działanie |
 |---|---|
@@ -60,6 +60,18 @@ Otwórz `/Game/Maps/Nadodrze_GIS` w edytorze. W pakiecie Development z powyższe
 | Samochód: Num 0 / Num + / Num * / E | Silnik / światła / klakson / wysiadanie |
 | Samochód: F5 / F6 | Start lub restart próby / wybór próby |
 
+## Pipeline produkcji assetów
+
+Projekt ma osobną warstwę produkcyjną `Pipeline/` dla pracy agentowej/Astra. Nie zastępuje ona istniejących generatorów kampanii ani GIS; przetwarza pojedynczy asset przez pełną ścieżkę: referencje → źródło 3D → Blender headless → LOD/kolizja → import Unreal/PBR/Nanite → Automation → screenshot QA → jawny visual review → raport → PR/merge.
+
+Każdy produkcyjny asset otrzymuje manifest `Pipeline/assets/<obszar>/<asset>.asset.json`. Stan wznowienia, raporty i screenshoty powstają w ignorowanym przez Git `Saved/Pipeline/`. Build Windows waliduje wszystkie manifesty przed kompilacją.
+
+```powershell
+.\Pipeline\Invoke-WTGAssetPipeline.ps1 -Manifest Pipeline/assets/rynek/latarnia_001.asset.json -EngineRoot 'C:\Program Files\Epic Games\UE_5.8' -BlenderExe 'C:\Program Files\Blender Foundation\Blender 4.5\blender.exe'
+```
+
+Pełna specyfikacja: [Pipeline produkcji assetów](Pipeline/README.md).
+
 ## Weryfikacja i rozszerzanie
 
 ```bash
@@ -71,4 +83,4 @@ Testy C++ z ASan/UBSan sprawdzają 12 ścieżek rozdziału, 50 000 mieszanych in
 
 Instrukcje: [architektura](docs/ARCHITECTURE.md), [dodawanie zawartości](docs/ADDING_CONTENT.md), [GIS i licencje](docs/GEOGRAPHY.md), [walidacja](docs/VALIDATION.md), [odbiór](docs/ACCEPTANCE.md).
 
-Nadal brakuje m.in. połączenia kampanii z GIS, pełnej migracji checkpointów na nowe współrzędne, odbioru nowego fizycznego ruchu AI w silniku, pełnych skrzyżowań i sygnalizacji, pościgów samochodowych, blokad drogowych, misji śledzenia pojazdu oraz trzech pozostałych scenariuszy samochodowych. Pełną listę braków zawiera dokument odbioru. Nie należy przedstawiać tego PR jako gotowej gry.
+Nadal brakuje m.in. odbioru migracji kampanii i ruchu AI w UE, autorskich wnętrz w rzeczywistych budynkach, pełnych skrzyżowań/sygnalizacji i ograniczeń skrętu, runtime routingu GPS po grafie ulic oraz powiązania scenariuszy samochodowych z nagrodami kampanii. Pełną listę braków zawiera dokument odbioru. Nie należy przedstawiać tego PR jako gotowej gry.
