@@ -488,5 +488,19 @@
     "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-intercom/wtg-original-intercom.obj",
     "generated": true,
     "generator": "bootstrap-original-fallback-models.yml"
+  },
+  {
+    "id": "kenney-window-wall-window-square",
+    "name": "wall-window-square",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://kenney.nl/assets/building-kit",
+    "source_repository": "https://github.com/shorepine/kenney",
+    "source_commit": "3694c6879e487c108f55677be7dd2ca75b07cc3b",
+    "source_path": "3d/building/wall-window-square.glb",
+    "source_blob_sha": "381a7aeef87f410514f21bd66c4153254be292c5",
+    "license": "CC0-1.0",
+    "intended_use": "Residential facade/window module for the opening apartment and authored urban buildings.",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/wall-window-square/wall-window-square.glb"
   }
 ]
