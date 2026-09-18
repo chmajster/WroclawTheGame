@@ -146,7 +146,7 @@ void UCharacterAppearanceComponent::Render()
         C->Boom->SocketOffset=FVector(0,35,55+(Appearance.Height-180)*.65f);
         C->GetCharacterMovement()->GetNavAgentPropertiesRef().AgentHeight=C->GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight()*2;
     }
-    bUsingPlaceholder=!B || B->bPlaceholder || !B->Mesh.Get();
+    bUsingPlaceholder=!B || !B->Mesh.Get();
     for (auto P:ModularParts) if (P) P->SetVisibility(false);
     for (auto& P:Primitives) P.Value->SetVisibility(false);
     BodyMesh->SetVisibility(!bUsingPlaceholder); FaceMesh->SetVisibility(!bUsingPlaceholder && B && B->FaceMesh.Get());
@@ -179,7 +179,7 @@ void UCharacterAppearanceComponent::Render()
             }
         }
         auto Attach=[&](FName Role,const FAppearancePartDefinition* P,FLinearColor Color) {
-            if (!P || P->ID==TEXT("None") || P->bPlaceholder) return;
+            if (!P || P->ID==TEXT("None") || (P->bPlaceholder && !P->Mesh.Get() && !P->StaticMesh.Get())) return;
             const FName Key(*(Role.ToString()+TEXT(":")+P->ID.ToString()));
             UMeshComponent* Part=CachedParts.FindRef(Key);
             if (!Part && P->Mesh.Get())

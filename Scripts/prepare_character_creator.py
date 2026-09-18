@@ -4,11 +4,13 @@ Creates missing assets only: authored replacements and their parameters are pres
 Catalog validation failures prevent the success marker used by packaging.
 """
 from pathlib import Path
+import json
 import unreal
 
 ROOT = Path(unreal.Paths.project_dir()).resolve()
 DEST = '/Game/CharacterCreator'
 MARKER = ROOT / 'Saved/CharacterCreatorReady.ok'
+FREE_MODEL_IMPORT_MAP = ROOT / 'Saved/FreeModelImportMap.json'
 
 
 def prepare():
@@ -24,6 +26,66 @@ def prepare():
             raise RuntimeError('Cannot create appearance catalog')
         catalog.build_fallback_catalog()
         unreal.EditorAssetLibrary.save_loaded_asset(catalog, False)
+
+    if not FREE_MODEL_IMPORT_MAP.is_file():
+        raise RuntimeError('Free model import map missing; character bodies cannot be resolved')
+    imported_models = json.loads(FREE_MODEL_IMPORT_MAP.read_text(encoding='utf-8'))
+    def imported_mesh(model_id):
+        metadata = imported_models.get(model_id)
+        object_path = metadata.get('primary_object') if metadata else None
+        mesh = unreal.load_asset(object_path) if object_path else None
+        if not mesh or not isinstance(mesh, (unreal.SkeletalMesh, unreal.StaticMesh)):
+            raise RuntimeError(f'Character source is not a mesh: {model_id} -> {object_path}')
+        return mesh
+
+    body_sources = {
+        'Male.Standard': 'quaternius-ubc-superhero-male',
+        'Female.Standard': 'quaternius-ubc-superhero-female',
+    }
+    bodies = list(catalog.get_editor_property('bodies'))
+    for body in bodies:
+        body_id = str(body.get_editor_property('id'))
+        model_id = body_sources.get(body_id)
+        if not model_id:
+            continue
+        mesh = imported_mesh(model_id)
+        if not isinstance(mesh, unreal.SkeletalMesh):
+            raise RuntimeError(f'Character body is not a SkeletalMesh: {model_id}')
+        body.set_editor_property('mesh', mesh)
+        body.set_editor_property('mesh_rotation', unreal.Rotator(0, -90, 0))
+    catalog.set_editor_property('bodies', bodies)
+
+    part_sources = {
+        'hair_style_definitions': {
+            'Short': 'quaternius-ubc-hair-simple-parted',
+            'Medium': 'quaternius-ubc-hair-long',
+            'Crop': 'quaternius-ubc-hair-buzzed',
+        },
+        'beard_style_definitions': {
+            'Stubble': 'quaternius-ubc-beard',
+            'Short': 'quaternius-ubc-beard',
+            'Medium': 'quaternius-ubc-beard',
+            'Full': 'quaternius-ubc-beard',
+        },
+        'eyebrow_style_definitions': {
+            'Natural': 'quaternius-ubc-eyebrows-regular',
+            'Fine': 'quaternius-ubc-eyebrows-female',
+            'Thick': 'quaternius-ubc-eyebrows-regular',
+        },
+    }
+    for property_name, sources in part_sources.items():
+        parts = list(catalog.get_editor_property(property_name))
+        for part in parts:
+            model_id = sources.get(str(part.get_editor_property('id')))
+            if not model_id:
+                continue
+            mesh = imported_mesh(model_id)
+            if isinstance(mesh, unreal.SkeletalMesh):
+                part.set_editor_property('mesh', mesh)
+            else:
+                part.set_editor_property('static_mesh', mesh)
+        catalog.set_editor_property(property_name, parts)
+    unreal.EditorAssetLibrary.save_loaded_asset(catalog, False)
 
     material = unreal.load_asset(DEST + '/M_CharacterPlaceholder')
     if material is None:

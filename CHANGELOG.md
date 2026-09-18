@@ -1,3 +1,15 @@
+## 2026-09-18 — kompletne powiązanie modeli runtime
+
+- Model coverage obejmuje 115 audytowanych modeli: Poly Haven, Kenney, OpenGameArt, Quaternius i oryginalne fallbacki CC0.
+- Wszystkie 15 pozycji inventory i 82 fizyczne akcje rozdziału mają binding modelu.
+- Usunięto widoczne `/Engine/BasicShapes/Cube` z klas gameplayowych: propsy, drzwi, aktywności, kryjówki, NPC, przeciwnicy, populacja, gracz i pojazd.
+- Player/NPC/guard korzystają z rigowanych baz Quaternius; Character Creator wiąże także dostępne włosy, zarost i brwi.
+- Samochód GIS korzysta z body i czterech osobnych kół Kenney; ambient traffic i piesi mają własne modele.
+- Generator kampanii umieszcza modele dla wszystkich fizycznych actionów, CCTV i siedmiu lamp ulicznych.
+- Wnętrza GIS otrzymały bazowe umeblowanie CC0; geometryczna powłoka pomieszczeń nadal jest generowana proceduralnie.
+- Dodano `Scripts/audit_model_coverage.py`; test źródłowy wymusza zero brakujących bindingów i zero cube-proxy w runtime.
+- Odbiór w UE nadal wymaga sprawdzenia transformacji, LOD, kolizji, retargetingu i clippingu; obecność źródła nie jest dowodem finalnej jakości wizualnej.
+
 ## 2026-09-18 — pipeline produkcyjny Astra / Blender / Unreal
 
 - Dodano manifestowy pipeline assetów: referencje/źródło 3D → Blender headless → LOD i kolizja → Unreal/PBR/Nanite → Automation → screenshot QA → visual review → raport.
