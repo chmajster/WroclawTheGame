@@ -641,5 +641,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/stone_01/stone_01_1k.fbx"
+  },
+  {
+    "slug": "wooden_crate_01",
+    "name": "Wooden Crate 01",
+    "intended_use": "Shop/garage storage and cover prop.",
+    "source_page": "https://polyhaven.com/a/wooden_crate_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Containers & Storage/Boxes & Crates/Wooden Crates",
+    "dimensions_mm": [
+      825.2729177474976,
+      408.9537411928177,
+      349.6182831004262
+    ],
+    "files_hash": "1ac5d053ce4c72e3fbb4c3065e7979522bf1908e",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/wooden_crate_01/wooden_crate_01_1k.fbx"
   }
 ]

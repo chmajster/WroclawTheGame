@@ -35,3 +35,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Metal Toolbox | Workshop/garage tool storage. | Mateusz Sadek | [Poly Haven](https://polyhaven.com/a/metal_toolbox) | CC0 1.0 |
 | Metal Tool Chest | Garage/workshop tool chest. | Yann Kervran, John Hutcheson | [Poly Haven](https://polyhaven.com/a/metal_tool_chest) | CC0 1.0 |
 | Stone 01 | Throwable stone pickup. | Dario Barresi, Rico Cilliers | [Poly Haven](https://polyhaven.com/a/stone_01) | CC0 1.0 |
+| Wooden Crate 01 | Shop/garage storage and cover prop. | James Ray Cock | [Poly Haven](https://polyhaven.com/a/wooden_crate_01) | CC0 1.0 |
