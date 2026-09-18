@@ -153,7 +153,7 @@ void UCharacterCreatorWidget::Action(FName ID)
     if (ID==TEXT("RotateLeft")) Studio->Rotate(-20); if (ID==TEXT("RotateRight")) Studio->Rotate(20);
     if (ID==TEXT("Debug")) Debug=!Debug;
     if (ID==TEXT("Reload")) Studio->Appearance->ReloadAppearance();
-    if (ID==TEXT("Lighting")) { static int32 Index=0; const FName P[]={TEXT("Neutral"),TEXT("Daylight"),TEXT("Night")}; Studio->SetLighting(P[(++Index)%3]); }
+    if (ID==TEXT("Lighting")) { static int32 Index=0; const FName P[]={TEXT("Modern"),TEXT("Neutral"),TEXT("Daylight"),TEXT("Night")}; Studio->SetLighting(P[(++Index)%4]); }
     if (ID==TEXT("Movement")) { const FName P[]={TEXT("Idle"),TEXT("Walk"),TEXT("Jog"),TEXT("Crouch")}; int32 I=0; for (; I<4 && P[I]!=Studio->Appearance->PreviewMovement; ++I) {} Studio->Appearance->PreviewMovement=P[(I+1)%4]; }
     Refresh();
     if (ID==TEXT("Validate")) { auto Issues=UCharacterCreatorValidator::ValidateCatalog(Creator->Catalog); Status->SetText(FText::FromString(Issues.IsEmpty()?TEXT("Walidacja OK (placeholdery dozwolone)"):FString::Join(Issues,TEXT("\n")))); }
