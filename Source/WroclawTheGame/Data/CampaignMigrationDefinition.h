@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "GameFramework/Actor.h"
 #include "CampaignMigrationDefinition.generated.h"
 
 USTRUCT(BlueprintType)
@@ -32,4 +33,17 @@ class WROCLAWTHEGAME_API UCampaignMigrationDefinition : public UDataAsset
 
     bool TransformLegacyPosition(const FVector &Source, FVector &Target) const;
     bool TransformLegacyTransform(const FTransform &Source, FTransform &Target) const;
+};
+
+UCLASS()
+class WROCLAWTHEGAME_API ACampaignMigrationRegistry : public AActor
+{
+    GENERATED_BODY()
+  public:
+    ACampaignMigrationRegistry()
+    {
+        PrimaryActorTick.bCanEverTick = false;
+    }
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wroclaw|Campaign Migration")
+    TObjectPtr<UCampaignMigrationDefinition> Definition;
 };
