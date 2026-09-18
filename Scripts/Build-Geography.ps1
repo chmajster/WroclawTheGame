@@ -29,6 +29,11 @@ try{
     else{[Environment]::SetEnvironmentVariable('WTG_CITY_INPUT',$null)}
     & $Editor $Project "-ExecutePythonScript=$Script" -unattended -nullrhi -stdout -FullStdOutLogOutput
     if($LASTEXITCODE -ne 0 -or -not(Test-Path $Marker)){throw 'GIS editor generation failed'}
+    $AssetMarker=Join-Path $Root 'Saved\RuntimeAssetGeographyReady.ok'
+    if(Test-Path $AssetMarker){Remove-Item $AssetMarker}
+    $AssetScript=Join-Path $PSScriptRoot 'validate_geography_asset_scene.py'
+    & $Editor $Project "-ExecutePythonScript=$AssetScript" -unattended -nullrhi -stdout -FullStdOutLogOutput
+    if($LASTEXITCODE -ne 0 -or -not(Test-Path $AssetMarker)){throw 'GIS runtime asset QA failed'}
 }finally{
     [Environment]::SetEnvironmentVariable('WTG_CITY_INPUT',$PreviousCityInput)
 }
@@ -48,6 +53,21 @@ try{
 & $Editor $Project /Game/Maps/Nadodrze_GIS -run=WorldPartitionBuilderCommandlet -Builder=WorldPartitionHLODsBuilder -SetupHLODs -BuildHLODs -AllowCommandletRendering -SCCProvider=None -unattended
 if($LASTEXITCODE -ne 0){throw 'GIS HLOD generation failed'}
 if($Package){
+    $CaptureMarker=Join-Path $Root 'Saved\RuntimeCharacterVisualsReady.ok'
+    if(Test-Path $CaptureMarker){Remove-Item $CaptureMarker}
+    $CaptureScript=Join-Path $PSScriptRoot 'capture_runtime_character_qa.py'
+    & $Editor $Project "-ExecutePythonScript=$CaptureScript" -unattended -nosplash -nop4 -stdout -FullStdOutLogOutput
+    if($LASTEXITCODE -ne 0 -or -not(Test-Path $CaptureMarker)){throw 'Character clipping/pose screenshot capture failed'}
+
+    $VisualReview=Join-Path $Root 'Saved\RuntimeAssetQA\visual_review.json'
+    if(-not(Test-Path $VisualReview)){throw 'Runtime asset visual review required before GIS packaging'}
+
+    $RuntimeQAMarker=Join-Path $Root 'Saved\RuntimeAssetQAPass.ok'
+    if(Test-Path $RuntimeQAMarker){Remove-Item $RuntimeQAMarker}
+    $UnrealPython=Join-Path $EngineRoot 'Engine\Binaries\ThirdParty\Python3\Win64\python.exe'
+    & $UnrealPython (Join-Path $PSScriptRoot 'build_runtime_asset_qa_report.py') --require-geography
+    if($LASTEXITCODE -ne 0 -or -not(Test-Path $RuntimeQAMarker)){throw 'Final campaign + GIS runtime asset QA is not PASS'}
+
     $UAT=Join-Path $EngineRoot 'Engine\Build\BatchFiles\RunUAT.bat'
     & $UAT BuildCookRun "-project=$Project" -noP4 -platform=Win64 -clientconfig=Development -build -cook '-map=/Game/Maps/Przebudzenie_Source+/Game/Maps/Nadodrze_GIS' -stage -pak -archive "-archivedirectory=$Root\Builds\Geography" -prereqs -utf8output -unattended
     if($LASTEXITCODE -ne 0){throw 'GIS package failed'}
