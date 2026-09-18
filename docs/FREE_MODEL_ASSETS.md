@@ -23,3 +23,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Gothic Bed 01 | Bed proxy for the opening apartment scene. | Kirill Sannikov | [Poly Haven](https://polyhaven.com/a/GothicBed_01) | CC0 1.0 |
 | Electric Stove | Kitchen appliance for the apartment kitchen. | Kuutti Siitonen | [Poly Haven](https://polyhaven.com/a/electric_stove) | CC0 1.0 |
 | Modular Street Seating | Street/park bench for clue placement and city dressing. | Stuart Attenborrow | [Poly Haven](https://polyhaven.com/a/modular_street_seating) | CC0 1.0 |
+| Covered Car | Static parked/garage car prop; not used as the driveable vehicle. | MP | [Poly Haven](https://polyhaven.com/a/covered_car) | CC0 1.0 |

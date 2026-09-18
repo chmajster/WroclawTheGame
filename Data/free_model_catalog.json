@@ -375,5 +375,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/modular_street_seating/modular_street_seating_1k.fbx"
+  },
+  {
+    "slug": "covered_car",
+    "name": "Covered Car",
+    "intended_use": "Static parked/garage car prop; not used as the driveable vehicle.",
+    "source_page": "https://polyhaven.com/a/covered_car",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "MP": "All"
+    },
+    "category": "Vehicles & Transport/Road Vehicles/Cars",
+    "dimensions_mm": [
+      1788.962960243225,
+      4380.25426864624,
+      1411.1130833625793
+    ],
+    "files_hash": "22592d3c2b16533339ed1bf4e4320e25e5a76cf2",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/covered_car/covered_car_1k.fbx"
   }
 ]
