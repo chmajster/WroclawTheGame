@@ -81,6 +81,7 @@ private:
     void SelectTab(int32 Index);
     void UpdateTabStyle();
     void UpdateContextStatus();
+    void UpdateFocusPresentation();
     void FocusPrimaryAction();
     void UpdatePreviewStatus();
     void ShowConfirmation(int32 Action, const FString& Title, const FString& Body, const FString& ConfirmLabel);
