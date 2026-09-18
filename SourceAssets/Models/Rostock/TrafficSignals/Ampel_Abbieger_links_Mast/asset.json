@@ -1,0 +1,11 @@
+{
+  "id": "rostock-traffic-ampel-abbieger-links-mast",
+  "name": "Left-turn traffic light mast",
+  "provider": "Rostock 3DModels",
+  "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Ampel_Abbieger_links_Mast.glb",
+  "license": "CC0-1.0",
+  "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+  "intended_use": "Dedicated left-turn signal model for authored Wroclaw intersections.",
+  "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Ampel_Abbieger_links_Mast/Ampel_Abbieger_links_Mast.glb",
+  "source_git_blob_sha1": "c21bf0eb34e0bc138b0fb63cb7e2ed3a5dbd9dc0"
+}
