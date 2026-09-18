@@ -929,5 +929,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/rollershutter_window_02/rollershutter_window_02_1k.fbx"
+  },
+  {
+    "slug": "Drill_01",
+    "name": "Drill 01",
+    "intended_use": "Workshop power-tool prop.",
+    "source_page": "https://polyhaven.com/a/Drill_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Fernando Quinn": "All"
+    },
+    "category": "Tools & Equipment/Power Tools/Drills",
+    "dimensions_mm": [
+      182.8799918293953,
+      52.41549015045166,
+      185.06235629320145
+    ],
+    "files_hash": "09a08d9e60a537490591e142ddef14428a140950",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/Drill_01/Drill_01_1k.fbx"
   }
 ]

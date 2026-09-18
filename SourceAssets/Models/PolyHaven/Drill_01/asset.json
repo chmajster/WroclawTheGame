@@ -1,0 +1,66 @@
+{
+  "slug": "Drill_01",
+  "name": "Drill 01",
+  "intended_use": "Workshop power-tool prop.",
+  "source_page": "https://polyhaven.com/a/Drill_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Fernando Quinn": "All"
+  },
+  "category": "Tools & Equipment/Power Tools/Drills",
+  "tags": [
+    "metal",
+    "plastic",
+    "tool",
+    "drill",
+    "prop"
+  ],
+  "dimensions_mm": [
+    182.8799918293953,
+    52.41549015045166,
+    185.06235629320145
+  ],
+  "files_hash": "09a08d9e60a537490591e142ddef14428a140950",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/Drill_01/Drill_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/Drill_01/Drill_01_1k.fbx",
+      "bytes": 116252,
+      "md5": "85a3d16064c3f7d55d9238a483c9542b",
+      "sha256": "d0a2c5099e13b12d172da4e1b066222848a49938a5f92a3c951a497a357de814",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/Drill_01/Drill_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/Drill_01/textures/Drill_01_diff_1k.jpg",
+      "bytes": 106186,
+      "md5": "08f24c9927e80f24144ef76b3e9ba74a",
+      "sha256": "2c1cfdc0d3e65ca490e0bd5cdc28173672bf68f9bb62278cc7094c9c5d6a7dcb",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/Drill_01/Drill_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/Drill_01/textures/Drill_01_metallic_1k.exr",
+      "bytes": 24529,
+      "md5": "8ee5116dd91523b103aae5e54ff32f39",
+      "sha256": "5b2c91e2df951b1621c39f7bfc04cd10ef044cc5e8f7bb31d10400e8e305a208",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/Drill_01/Drill_01_metallic_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/Drill_01/textures/Drill_01_nor_gl_1k.exr",
+      "bytes": 1004479,
+      "md5": "8548662b954a450e58ff019b089448fe",
+      "sha256": "a842147fcd812634c917f55c774e6fe1b675a334cad9033aaf3e48e373dbee38",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/Drill_01/Drill_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/Drill_01/textures/Drill_01_roughness_1k.jpg",
+      "bytes": 148333,
+      "md5": "66d4458cea865677aaba7dc5b189b998",
+      "sha256": "aba8df6fa19c20134b4cca18ff3335f40d8accb65ac30ba19eed1afc3eef8cdd",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/Drill_01/Drill_01_roughness_1k.jpg"
+    }
+  ]
+}
