@@ -1,3 +1,26 @@
+## 2026-09-18 — pipeline produkcyjny Astra / Blender / Unreal
+
+- Dodano manifestowy pipeline assetów: referencje/źródło 3D → Blender headless → LOD i kolizja → Unreal/PBR/Nanite → Automation → screenshot QA → visual review → raport.
+- Dodano wznawialny orchestrator PowerShell zapisujący bieżący etap w `Saved/Pipeline/status` oraz odrzucający kolejne bramki po błędzie.
+- Import Unreal sprawdza faktyczną liczbę LOD-ów i kolizję, ustawia Nanite oraz buduje materiał z BaseColor/Normal/ORM.
+- Dodano jawny zapis PASS/FAIL kontroli wizualnej i końcowy raport QA; publikator Git/PR odmawia działania bez `done/PASS`.
+- Build Windows i lokalny zestaw testów walidują produkcyjne manifesty; `AGENTS.md` wymaga tego pipeline'u dla nowych lub istotnie zmienianych assetów 3D.
+
+## 2026-09-18 — domknięcie darmowych animacji KayKit
+
+- Dodano cały darmowy KayKit Character Animations 1.1 dla `Rig_Medium`: 8 bibliotek GLB i 139 rzeczywistych klipów.
+- Dodano `Lie_Down`, `Lie_Idle` i `Lie_StandUp`, zamykając jawny brak źródłowej animacji wstawania.
+- Rozszerzono importer UE o katalog KayKit oraz semantyczne bindingi m.in. dla uników, crawl/sneak, lockpickingu, narzędzi i siadania.
+- Wszystkie GLB są przypięte do konkretnego commita publicznego mirrora i sprawdzane przez Git blob SHA-1; licencja źródłowa: CC0 1.0.
+- Retargeting KayKit `Rig_Medium` na docelowy szkielet postaci pozostaje bramką odbioru UE, a nie brakiem źródłowego assetu.
+
+## 2026-09-18 — darmowe postacie i animacje CC0
+
+- Dodano reprodukowalny pipeline dla Quaternius Universal Base Characters [Standard]: męska i żeńska baza, fryzury, zarost i brwi.
+- Dodano Universal Animation Library 1/2 [Standard] w wariantach in-place i Root Motion; katalog klipów jest generowany bezpośrednio z GLB.
+- Każdy plik źródłowy jest przypięty do konkretnego commita i weryfikowany przez Git blob SHA-1.
+- Build Windows importuje modele oraz animacje przed walidacją Character Creator i zatrzymuje packaging przy błędzie importu.
+
 ## Player menu — 2026-09-18
 
 - Dodano pełnoekranowe centrum gracza inspirowane układem lobby: górne zakładki, boczne akcje, centralny podgląd postaci i panel statusu.
