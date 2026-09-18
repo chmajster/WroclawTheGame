@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "source": "GUGiK Geoportal - Modele 3D budynków",
+  "source_service": "https://integracja.gugik.gov.pl/cgi-bin/ModeleBudynkow3D",
+  "source_info": "https://www.geoportal.gov.pl/pl/dane/inne-dane/modele-3d-budynkow/",
+  "preferred_lod": "LoD2",
+  "targets": [
+    {
+      "id": "old_town_hall",
+      "display_name": "Stary Ratusz we Wrocławiu",
+      "osm_names": [
+        "Ratusz",
+        "Stary Ratusz"
+      ],
+      "longitude": 17.03215,
+      "latitude": 51.10952,
+      "radius_m": 90,
+      "material": "Brick"
+    },
+    {
+      "id": "st_elizabeth_church",
+      "display_name": "Bazylika św. Elżbiety Węgierskiej",
+      "osm_names": [
+        "Bazylika św. Elżbiety Węgierskiej",
+        "Kościół św. Elżbiety"
+      ],
+      "longitude": 17.03038,
+      "latitude": 51.11162,
+      "radius_m": 110,
+      "material": "Brick"
+    },
+    {
+      "id": "wroclaw_cathedral",
+      "display_name": "Archikatedra św. Jana Chrzciciela",
+      "osm_names": [
+        "Archikatedra św. Jana Chrzciciela",
+        "Katedra św. Jana Chrzciciela"
+      ],
+      "longitude": 17.04663,
+      "latitude": 51.11422,
+      "radius_m": 130,
+      "material": "Brick"
+    },
+    {
+      "id": "university_main_building",
+      "display_name": "Gmach główny Uniwersytetu Wrocławskiego",
+      "osm_names": [
+        "Uniwersytet Wrocławski",
+        "Gmach główny Uniwersytetu Wrocławskiego"
+      ],
+      "longitude": 17.03393,
+      "latitude": 51.11399,
+      "radius_m": 140,
+      "material": "Plaster"
+    },
+    {
+      "id": "market_hall",
+      "display_name": "Hala Targowa",
+      "osm_names": [
+        "Hala Targowa"
+      ],
+      "longitude": 17.04078,
+      "latitude": 51.11245,
+      "radius_m": 100,
+      "material": "Brick"
+    },
+    {
+      "id": "national_museum",
+      "display_name": "Muzeum Narodowe we Wrocławiu",
+      "osm_names": [
+        "Muzeum Narodowe we Wrocławiu",
+        "Muzeum Narodowe"
+      ],
+      "longitude": 17.04675,
+      "latitude": 51.11079,
+      "radius_m": 110,
+      "material": "Brick"
+    }
+  ]
+}
