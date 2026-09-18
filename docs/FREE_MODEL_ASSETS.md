@@ -29,3 +29,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Metal Trash Can | Courtyard/street trash prop. | GurJas Studios | [Poly Haven](https://polyhaven.com/a/metal_trash_can) | CC0 1.0 |
 | Trashbag | Street/alley/courtyard clutter. | Benny Weimer | [Poly Haven](https://polyhaven.com/a/trashbag) | CC0 1.0 |
 | Plastic Crate 01 | Shop, garage and workshop storage prop. | PierreB3D | [Poly Haven](https://polyhaven.com/a/plastic_crate_01) | CC0 1.0 |
+| Decorative Book Set 01 | Apartment book clue and shelf dressing. | James Ray Cock | [Poly Haven](https://polyhaven.com/a/decorative_book_set_01) | CC0 1.0 |

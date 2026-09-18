@@ -507,5 +507,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/plastic_crate_01/plastic_crate_01_1k.fbx"
+  },
+  {
+    "slug": "decorative_book_set_01",
+    "name": "Decorative Book Set 01",
+    "intended_use": "Apartment book clue and shelf dressing.",
+    "source_page": "https://polyhaven.com/a/decorative_book_set_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Office & Stationery/Books & Documents/Books",
+    "dimensions_mm": [
+      2505.232434719801,
+      321.111761033535,
+      285.6543071102351
+    ],
+    "files_hash": "17b60199f281591c470612a06a05afa38780b4eb",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/decorative_book_set_01/decorative_book_set_01_1k.fbx"
   }
 ]
