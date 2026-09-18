@@ -1563,12 +1563,17 @@ void UPlayerMenuWidget::BuildJournalTab()
     {
         RightColumn->AddChildToVerticalBox(MakeText(TEXT("STATUS"), 9, true, Accent))
             ->SetPadding(FMargin(0, 0, 0, 7));
-        RightColumn->AddChildToVerticalBox(MakeText(
-            FString::Printf(TEXT("Czas sesji: %.0f min\nZagrożenie: %d / 5\nZapis: %s"),
-                Mission->State.elapsed / 60.0,
-                Mission->WorldState.HeatLevel(),
-                Mission->bLastSaveSucceeded ? TEXT("OK") : TEXT("BŁĄD")),
-            11, false, Muted));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%.0f MIN"), Mission->State.elapsed / 60.0),
+            TEXT("CZAS SESJI"), true))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%d / 5"), Mission->WorldState.HeatLevel()),
+            TEXT("POZIOM ZAGROŻENIA")))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            Mission->bLastSaveSucceeded ? TEXT("OK") : TEXT("BŁĄD"),
+            TEXT("OSTATNI ZAPIS"), Mission->bLastSaveSucceeded));
     }
 }
 
@@ -1790,8 +1795,16 @@ void UPlayerMenuWidget::BuildMapTab()
 
         RightColumn->AddChildToVerticalBox(MakeText(TEXT("STEROWANIE"), 9, true, Accent))
             ->SetPadding(FMargin(0, 14, 0, 7));
-        RightColumn->AddChildToVerticalBox(MakeText(
-            TEXT("C — następny sektor\nBACKSPACE — usuń cel"), 10, false, Muted));
+        auto* MapShortcuts = WidgetTree->ConstructWidget<UHorizontalBox>();
+        MapShortcuts->AddChildToHorizontalBox(MakeKeycap(TEXT("C")))
+            ->SetPadding(FMargin(0, 0, 6, 0));
+        MapShortcuts->AddChildToHorizontalBox(MakeText(TEXT("NASTĘPNY CEL"), 8, true, Muted))
+            ->SetPadding(FMargin(0, 3, 12, 0));
+        MapShortcuts->AddChildToHorizontalBox(MakeKeycap(TEXT("BACKSPACE")))
+            ->SetPadding(FMargin(0, 0, 6, 0));
+        MapShortcuts->AddChildToHorizontalBox(MakeText(TEXT("USUŃ CEL"), 8, true, Muted))
+            ->SetPadding(FMargin(0, 3, 0, 0));
+        RightColumn->AddChildToVerticalBox(MapShortcuts);
         return;
     }
 
@@ -1811,7 +1824,7 @@ void UPlayerMenuWidget::BuildMapTab()
         ->SetPadding(FMargin(0, 0, 0, 7));
     ActionColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("WYŁĄCZONA"), TEXT("SZYBKA PODRÓŻ")))
         ->SetPadding(FMargin(0, 0, 0, 7));
-    ActionColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("GPS"), TEXT("NAWIGACJA W ROZWOJU")));
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("RĘCZNA"), TEXT("NAWIGACJA")));
 
     CenterColumn->AddChildToVerticalBox(MakeText(TEXT("MAPA ODKRYĆ"), 26, true, TextPrimary))
         ->SetPadding(FMargin(8, 7, 8, 8));
@@ -1976,7 +1989,7 @@ void UPlayerMenuWidget::BuildStatsTab()
             ->SetPadding(FMargin(0, 0, 0, 7));
         Metrics->AddChildToVerticalBox(MakeInfoRow(
             FString::Printf(TEXT("%d / 5"), Mission->WorldState.HeatLevel()),
-            TEXT("AKTUALNY HEAT")));
+            TEXT("POZIOM ZAGROŻENIA")));
 
         RightColumn->AddChildToVerticalBox(MakeText(TEXT("NAJBLIŻSZY CEL"), 9, true, Accent))
             ->SetPadding(FMargin(0, 0, 0, 8));
