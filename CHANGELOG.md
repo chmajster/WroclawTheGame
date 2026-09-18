@@ -1,3 +1,11 @@
+## 2026-09-18 — widoczny fokus i focus trap
+
+- Fokus klawiatury/gamepada nie zależy już wyłącznie od domyślnego focus brush Slate.
+- Aktualnie zaznaczony przycisk dostaje prefiks › oraz delikatne powiększenie renderu.
+- Efekt działa dla zakładek, akcji strony oraz przycisków modalnych.
+- Gdy modal jest otwarty, główny 1600×900 frame zostaje wyłączony, więc D-pad/strzałki nie mogą przenieść fokusu do elementów pod modalem.
+- Po zamknięciu modala główna warstwa jest ponownie aktywowana i standardowy Refresh odbudowuje prawidłowy fokus.
+
 ## 2026-09-18 — bezpieczne wczytywanie zapisu
 
 - Wczytanie zapisu podczas aktywnej sesji wymaga teraz potwierdzenia.
