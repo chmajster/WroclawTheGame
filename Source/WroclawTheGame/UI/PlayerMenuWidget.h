@@ -101,6 +101,7 @@ private:
     UFUNCTION() void SettingsDisplay();
     UFUNCTION() void SettingsPerformance();
     UFUNCTION() void SettingsInterface();
+    UFUNCTION() void ResetSettings();
 
     UFUNCTION() void Resume();
     UFUNCTION() void NewGame();

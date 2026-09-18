@@ -45,4 +45,7 @@ public:
 
     UFUNCTION(BlueprintCallable, Category="Display")
     void Apply() const;
+
+    UFUNCTION(BlueprintCallable, Category="Settings")
+    void ResetToDefaults();
 };

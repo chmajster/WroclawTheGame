@@ -1811,6 +1811,10 @@ void UPlayerMenuWidget::BuildSettingsTab()
     InterfaceSection->OnClicked.AddDynamic(this, &UPlayerMenuWidget::SettingsInterface);
     ActionColumn->AddChildToVerticalBox(InterfaceSection)->SetPadding(FMargin(0, 0, 0, 18));
 
+    auto* ResetButton = MakeButton(TEXT("PRZYWRÓĆ DOMYŚLNE"));
+    ResetButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ResetSettings);
+    ActionColumn->AddChildToVerticalBox(ResetButton)->SetPadding(FMargin(0, 0, 0, 14));
+
     ActionColumn->AddChildToVerticalBox(MakeInfoRow(
         TEXT("AUTOMATYCZNY ZAPIS"),
         TEXT("ZMIANY USTAWIEŃ"),
@@ -2010,6 +2014,15 @@ void UPlayerMenuWidget::SettingsDisplay() { SettingsSection = 0; Refresh(); }
 void UPlayerMenuWidget::SettingsPerformance() { SettingsSection = 1; Refresh(); }
 void UPlayerMenuWidget::SettingsInterface() { SettingsSection = 2; Refresh(); }
 
+void UPlayerMenuWidget::ResetSettings()
+{
+    ShowConfirmation(
+        5,
+        TEXT("PRZYWRÓCIĆ USTAWIENIA DOMYŚLNE?"),
+        TEXT("Zostaną przywrócone domyślne ustawienia jakości, skali renderu, VSync, dynamicznej rozdzielczości, limitu FPS oraz interfejsu. Tryb ekranu i rozdzielczość pozostaną bez zmian."),
+        TEXT("PRZYWRÓĆ"));
+}
+
 void UPlayerMenuWidget::Resume()
 {
     if (auto* Controller = Cast<ASliceController>(GetOwningPlayer()))
@@ -2108,8 +2121,11 @@ void UPlayerMenuWidget::ShowConfirmation(
     ConfirmationCard->AddChild(Column);
 
     const bool bDestructive = Action == 1 || Action == 2 || Action == 4;
+    const FString ConfirmationCategory = bDestructive
+        ? TEXT("OSTRZEŻENIE")
+        : (Action == 5 ? TEXT("USTAWIENIA") : TEXT("USTAWIENIA WIDEO"));
     Column->AddChildToVerticalBox(MakeText(
-        bDestructive ? TEXT("OSTRZEŻENIE") : TEXT("USTAWIENIA WIDEO"),
+        ConfirmationCategory,
         9, true, bDestructive ? Danger : Accent))
         ->SetPadding(FMargin(0, 0, 0, 5));
     Column->AddChildToVerticalBox(MakeText(Title, 24, true, TextPrimary))
@@ -2212,6 +2228,36 @@ void UPlayerMenuWidget::ConfirmPendingAction()
             }
         }
         ClearConfirmation();
+        Refresh();
+        return;
+    }
+
+    if (Action == 5)
+    {
+        ClearConfirmation();
+
+        if (auto* Preferences = UWTGPerformanceSettings::Get())
+            Preferences->ResetToDefaults();
+
+        if (GEngine)
+        {
+            if (UGameUserSettings* UserSettings = GEngine->GetGameUserSettings())
+            {
+                UserSettings->SetOverallScalabilityLevel(3);
+                UserSettings->SetResolutionScaleValueEx(100.0f);
+                UserSettings->SetVSyncEnabled(false);
+                UserSettings->SetDynamicResolutionEnabled(false);
+                UserSettings->ApplySettings(false);
+                UserSettings->SaveSettings();
+            }
+        }
+
+        if (MenuBackgroundBlur)
+        {
+            MenuBackgroundBlur->SetBlurStrength(12.0f);
+            MenuBackgroundBlur->SetBlurRadius(18);
+        }
+
         Refresh();
         return;
     }
