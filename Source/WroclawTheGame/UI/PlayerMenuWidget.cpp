@@ -352,7 +352,7 @@ void UPlayerMenuWidget::BuildShell()
         Slot->SetPadding(FMargin(3, 1, 3, 1));
         Slot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
-        auto* Button = MakeButton(Labels[Index]);
+        auto* Button = MakeButton(FString::Printf(TEXT("%02d  %s"), Index + 1, Labels[Index]));
         auto* ButtonSlot = Tab->AddChildToVerticalBox(Button);
         ButtonSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
@@ -645,20 +645,32 @@ void UPlayerMenuWidget::RefreshWithSettingsToast()
 
 void UPlayerMenuWidget::UpdateFocusPresentation()
 {
-    auto UpdateButton = [](UButton* Button)
+    auto HasFocus = [](UButton* Button)
+    {
+        return Button && (Button->HasAnyUserFocus() || Button->HasKeyboardFocus());
+    };
+
+    for (int32 Index = 0; Index < TabButtons.Num(); ++Index)
+    {
+        UButton* Button = TabButtons[Index];
+        if (!Button)
+            continue;
+        const bool bFocused = HasFocus(Button);
+        const bool bActive = Index == ActiveTab;
+        const float Scale = bFocused ? 1.015f : (bActive ? 1.008f : 1.0f);
+        Button->SetRenderScale(FVector2D(Scale, Scale));
+        Button->SetRenderOpacity((bFocused || bActive) ? 1.0f : 0.94f);
+    }
+
+    for (UButton* Button : ActionButtons)
     {
         if (!Button)
-            return;
-        const bool bFocused = Button->HasAnyUserFocus() || Button->HasKeyboardFocus();
+            continue;
+        const bool bFocused = HasFocus(Button);
         const float Scale = bFocused ? 1.015f : 1.0f;
         Button->SetRenderScale(FVector2D(Scale, Scale));
         Button->SetRenderOpacity(bFocused ? 1.0f : 0.97f);
-    };
-
-    for (UButton* Button : TabButtons)
-        UpdateButton(Button);
-    for (UButton* Button : ActionButtons)
-        UpdateButton(Button);
+    }
 }
 
 void UPlayerMenuWidget::FocusPrimaryAction()
