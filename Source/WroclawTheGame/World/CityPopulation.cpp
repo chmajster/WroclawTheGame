@@ -6,7 +6,6 @@
 #include "Engine/SkeletalMesh.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
-#include "UObject/ConstructorHelpers.h"
 ACityAmbientAgent::ACityAmbientAgent()
 {
     PrimaryActorTick.bCanEverTick = true;
