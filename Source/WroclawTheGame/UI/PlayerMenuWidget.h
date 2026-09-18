@@ -39,8 +39,11 @@ private:
     UPROPERTY() TObjectPtr<class UVerticalBox> RightColumn;
     UPROPERTY() TObjectPtr<class UVerticalBox> ShellLayout;
     UPROPERTY() TObjectPtr<class UTextBlock> PageTitle;
+    UPROPERTY() TObjectPtr<class UTextBlock> PageCounter;
     UPROPERTY() TObjectPtr<class UTextBlock> ContextStatus;
     UPROPERTY() TObjectPtr<class UTextBlock> ContextHint;
+    UPROPERTY() TObjectPtr<class UTextBlock> ClockText;
+    UPROPERTY() TObjectPtr<class UBorder> SessionStateDot;
     UPROPERTY() TObjectPtr<class UTextBlock> PreviewViewStatus;
     UPROPERTY() TObjectPtr<class UTextBlock> PreviewLightingStatus;
     UPROPERTY() TObjectPtr<class UBorder> ToastCard;
@@ -59,6 +62,7 @@ private:
     float ShellAnimationTime = 0.28f;
     float AmbientAnimationTime = 0.0f;
     float ToastTimeRemaining = 0.0f;
+    float ClockRefreshAccumulator = 0.0f;
     bool bRotatingPreview = false;
     bool bCollectActionButtons = false;
     FString PreviewViewLabel = TEXT("CAŁA SYLWETKA");
