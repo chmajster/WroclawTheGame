@@ -11,6 +11,12 @@
 #include "Core/WTGLog.h"
 #include "Data/ChapterDefinition.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SceneCaptureComponent2D.h"
+#include "Engine/TextureRenderTarget2D.h"
+#include "ImageUtils.h"
+#include "Misc/FileHelper.h"
+#include "Misc/Paths.h"
+#include "HAL/FileManager.h"
 #include "Save/SliceSave.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
@@ -452,8 +458,69 @@ bool USliceMission::CapturePhoto()
         Notify(TEXT("Brak czytelnego obiektu w kadrze."));
         return false;
     }
+    constexpr int32 PhotoWidth = 1280;
+    constexpr int32 PhotoHeight = 720;
+    auto *Target = NewObject<UTextureRenderTarget2D>(P);
+    if (!Target)
+    {
+        Notify(TEXT("Nie udało się utworzyć bufora zdjęcia."));
+        return false;
+    }
+    Target->RenderTargetFormat = ETextureRenderTargetFormat::RTF_RGBA8;
+    Target->InitAutoFormat(PhotoWidth, PhotoHeight);
+    Target->UpdateResourceImmediate(true);
+
+    auto *Capture = NewObject<USceneCaptureComponent2D>(P);
+    if (!Capture)
+    {
+        Notify(TEXT("Nie udało się uruchomić aparatu."));
+        return false;
+    }
+    Capture->RegisterComponent();
+    Capture->AttachToComponent(P->Camera, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+    Capture->TextureTarget = Target;
+    Capture->FOVAngle = P->Camera->FieldOfView;
+    Capture->CaptureSource = ESceneCaptureSource::SCS_FinalColorLDR;
+    Capture->bCaptureEveryFrame = false;
+    Capture->bCaptureOnMovement = false;
+    Capture->CaptureScene();
+
+    FTextureRenderTargetResource *Resource = Target->GameThread_GetRenderTargetResource();
+    TArray<FColor> Pixels;
+    if (!Resource || !Resource->ReadPixels(Pixels) || Pixels.Num() != PhotoWidth * PhotoHeight)
+    {
+        Capture->DestroyComponent();
+        Notify(TEXT("Nie udało się odczytać obrazu aparatu."));
+        return false;
+    }
+
+    TArray<uint8> Png;
+    FImageUtils::CompressImageArray(PhotoWidth, PhotoHeight, Pixels, Png);
+    if (Png.IsEmpty())
+    {
+        Capture->DestroyComponent();
+        Notify(TEXT("Nie udało się zakodować zdjęcia."));
+        return false;
+    }
+
+    FString SafeId = U(Best->id);
+    for (const TCHAR Invalid : FString(TEXT("/\\:*?\"<>|")))
+        SafeId.ReplaceCharInline(Invalid, TEXT('_'));
+    const FString Directory = FPaths::Combine(FPaths::ProjectSavedDir(), TEXT("Photos"));
+    IFileManager::Get().MakeDirectory(*Directory, true);
+    const FString Filename = FString::Printf(
+        TEXT("%s_%lld.png"), *SafeId, FDateTime::UtcNow().ToUnixTimestamp());
+    const FString FullPath = FPaths::Combine(Directory, Filename);
+    if (!FFileHelper::SaveArrayToFile(Png, *FullPath))
+    {
+        Capture->DestroyComponent();
+        Notify(TEXT("Nie udało się zapisać zdjęcia na dysku."));
+        return false;
+    }
+
+    Capture->DestroyComponent();
     WorldState.photos.insert(Best->id);
-    Notify(TEXT("Zapisano opis fotografii w galerii."));
+    Notify(TEXT("Zapisano zdjęcie PNG w galerii."));
     return true;
 }
 FString USliceMission::HintText() const
