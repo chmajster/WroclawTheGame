@@ -26,6 +26,7 @@ private:
     UPROPERTY() TObjectPtr<class UOverlay> RootOverlay;
     UPROPERTY() TObjectPtr<class UBorder> ConfirmationOverlay;
     UPROPERTY() TObjectPtr<class UBorder> ConfirmationCard;
+    UPROPERTY() TObjectPtr<class UBackgroundBlur> MenuBackgroundBlur;
     UPROPERTY() TObjectPtr<class UBorder> AmbientGlowA;
     UPROPERTY() TObjectPtr<class UBorder> AmbientGlowB;
     UPROPERTY() TObjectPtr<class UTextBlock> ConfirmationCountdown;
@@ -96,6 +97,9 @@ private:
     UFUNCTION() void PreviewLightingNight();
     UFUNCTION() void PreviewReset();
 
+    UFUNCTION() void ToggleReduceUIMotion();
+    UFUNCTION() void ToggleMenuBackgroundBlur();
+    UFUNCTION() void ToggleUISounds();
     UFUNCTION() void ToggleFPSCounter();
     UFUNCTION() void ToggleVSync();
     UFUNCTION() void ToggleDynamicResolution();
