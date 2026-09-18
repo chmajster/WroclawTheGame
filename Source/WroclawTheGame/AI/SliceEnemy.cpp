@@ -237,7 +237,10 @@ void ASliceEnemyController::Tick(float Dt)
     if (bSees)
     {
         LastKnown = Player->GetActorLocation();
-        Suspicion = FMath::Clamp(Suspicion + Dt * FMath::Lerp(0.35f, 1.6f, Visibility), 0.0f, 1.0f);
+        const float HeatVigilance = 1.0f + Player->Mission()->WorldState.HeatLevel() * 0.12f;
+        Suspicion = FMath::Clamp(
+            Suspicion + Dt * FMath::Lerp(0.35f, 1.6f, Visibility) * HeatVigilance,
+            0.0f, 1.0f);
         if (Suspicion >= 0.25f && (State == EEnemyState::Patrol || State == EEnemyState::ReturnToPatrol))
             Transition(EEnemyState::Suspicious);
         if (Suspicion >= 0.78f)
@@ -262,7 +265,9 @@ void ASliceEnemyController::Tick(float Dt)
     {
         if (AlertSince < 0)
             AlertSince = Now;
-        if (!bRadioSent && Suspicion >= 0.95f && Now - AlertSince >= Definition->radio_delay)
+        const double EffectiveRadioDelay =
+            FMath::Max(0.6, Definition->radio_delay * (1.0 - Player->Mission()->WorldState.HeatLevel() * 0.08));
+        if (!bRadioSent && Suspicion >= 0.95f && Now - AlertSince >= EffectiveRadioDelay)
         {
             bRadioSent = true;
             GetWorld()->GetSubsystem<UGameplayEventBus>()->Emit(
