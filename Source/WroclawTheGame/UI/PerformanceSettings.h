@@ -17,6 +17,15 @@ public:
     UPROPERTY(Config, BlueprintReadOnly, Category="Display", meta=(ClampMin="0", ClampMax="1000"))
     int32 FPSLimit = 60;
 
+    UPROPERTY(Config, BlueprintReadOnly, Category="Interface")
+    bool bReduceUIMotion = false;
+
+    UPROPERTY(Config, BlueprintReadOnly, Category="Interface")
+    bool bMenuBackgroundBlur = true;
+
+    UPROPERTY(Config, BlueprintReadOnly, Category="Interface")
+    bool bUISounds = true;
+
     static UWTGPerformanceSettings* Get();
 
     UFUNCTION(BlueprintCallable, Category="Display")
@@ -24,6 +33,15 @@ public:
 
     UFUNCTION(BlueprintCallable, Category="Display")
     void SetFPSLimit(int32 Limit);
+
+    UFUNCTION(BlueprintCallable, Category="Interface")
+    void SetReduceUIMotion(bool bEnabled);
+
+    UFUNCTION(BlueprintCallable, Category="Interface")
+    void SetMenuBackgroundBlur(bool bEnabled);
+
+    UFUNCTION(BlueprintCallable, Category="Interface")
+    void SetUISounds(bool bEnabled);
 
     UFUNCTION(BlueprintCallable, Category="Display")
     void Apply() const;
