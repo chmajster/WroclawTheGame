@@ -57,6 +57,7 @@ private:
     void BuildMapTab();
     void BuildStatsTab();
     void BuildSettingsTab();
+    void AddGameHero();
     void AddPreview();
     void AddTextPage(const FString& Heading, const FString& Body);
     void AddPlayerStatus();
