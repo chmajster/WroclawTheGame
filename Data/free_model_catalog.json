@@ -751,5 +751,28 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/dining_chair_02/dining_chair_02_1k.fbx"
+  },
+  {
+    "slug": "desk_lamp_arm_01",
+    "name": "Desk Lamp Arm 01",
+    "intended_use": "Desk/workshop task lighting prop.",
+    "source_page": "https://polyhaven.com/a/desk_lamp_arm_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Yann Kervran": "Rigging",
+      "Kuutti Siitonen": "Modeling & texturing"
+    },
+    "category": "Lighting/Floor & Desk/Desk Lamps",
+    "dimensions_mm": [
+      617.3093914985657,
+      408.02252292633057,
+      879.0190517902374
+    ],
+    "files_hash": "e15dd68e575e78092f99c7179cd031525428bbc1",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/desk_lamp_arm_01/desk_lamp_arm_01_1k.fbx"
   }
 ]

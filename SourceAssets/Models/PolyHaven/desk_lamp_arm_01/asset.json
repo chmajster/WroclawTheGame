@@ -1,0 +1,77 @@
+{
+  "slug": "desk_lamp_arm_01",
+  "name": "Desk Lamp Arm 01",
+  "intended_use": "Desk/workshop task lighting prop.",
+  "source_page": "https://polyhaven.com/a/desk_lamp_arm_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Yann Kervran": "Rigging",
+    "Kuutti Siitonen": "Modeling & texturing"
+  },
+  "category": "Lighting/Floor & Desk/Desk Lamps",
+  "tags": [
+    "industrial",
+    "lamp",
+    "mounted",
+    "fixed",
+    "desk",
+    "table",
+    "light",
+    "arm"
+  ],
+  "dimensions_mm": [
+    617.3093914985657,
+    408.02252292633057,
+    879.0190517902374
+  ],
+  "files_hash": "e15dd68e575e78092f99c7179cd031525428bbc1",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/desk_lamp_arm_01/desk_lamp_arm_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/desk_lamp_arm_01/desk_lamp_arm_01_1k.fbx",
+      "bytes": 2304508,
+      "md5": "21f20854b6f97a147bdb093afbc3dedb",
+      "sha256": "f8c7a9e2b09ce34349c40426574dd22416477ef3f0218291d19231c35503e443",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/desk_lamp_arm_01/desk_lamp_arm_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/desk_lamp_arm_01/textures/desk_lamp_arm_01_diff_1k.jpg",
+      "bytes": 702522,
+      "md5": "a5c1bf5465da39ca6ca9039dd4e3fd66",
+      "sha256": "159eb178aba3271bd555cbe07ca36431d8af9a006f0b8e9d8c67030cbdc9e4d3",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/desk_lamp_arm_01/desk_lamp_arm_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/desk_lamp_arm_01/textures/desk_lamp_arm_01_mask01_1k.png",
+      "bytes": 8742,
+      "md5": "257324090e4b3eb60ed9c1789d7e0e74",
+      "sha256": "07b5669cc5366ccff274f4abcab98af4e938a0b7ff3ca04a475436f2c8e8fcb3",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/desk_lamp_arm_01/desk_lamp_arm_01_mask01_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/desk_lamp_arm_01/textures/desk_lamp_arm_01_metal_1k.exr",
+      "bytes": 911353,
+      "md5": "3c32b351f1b6235213a78144836c9a98",
+      "sha256": "8b0dfec9d8c40825b1aca08114fcdc38bb6f1a4fba497b4e7cd696219a63b622",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/desk_lamp_arm_01/desk_lamp_arm_01_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/desk_lamp_arm_01/textures/desk_lamp_arm_01_nor_gl_1k.exr",
+      "bytes": 1392656,
+      "md5": "3ff0e08c0682a525ef3b4e3d92c6873f",
+      "sha256": "83d10fa9bb42c3f34ff2b32b9643ebcd9278e40f3e93632b21935efae839c658",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/desk_lamp_arm_01/desk_lamp_arm_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/desk_lamp_arm_01/textures/desk_lamp_arm_01_rough_1k.exr",
+      "bytes": 1236466,
+      "md5": "ac30639027a5bf4404477682c4d45c2f",
+      "sha256": "61adadb0fa119dc20a7c730820bbbd6c3a16cfe21fd1599194c7fe112cf1167d",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/desk_lamp_arm_01/desk_lamp_arm_01_rough_1k.exr"
+    }
+  ]
+}
