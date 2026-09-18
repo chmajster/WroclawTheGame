@@ -69,8 +69,10 @@ class FreeModelCoverage(unittest.TestCase):
             "surveillance_camera",
             "cctv_monitor",
             "hide_container",
+            "hide_park",
             "hide_shelf",
             "street_lamp",
+            "environment_sign_backing",
             "city_interior_sofa",
             "city_interior_table",
             "city_interior_chair",
@@ -109,6 +111,37 @@ class FreeModelCoverage(unittest.TestCase):
         for script in ("Scripts/prepare_content.py", "Scripts/prepare_geography.py", "Scripts/prepare_character_creator.py"):
             source = (ROOT / script).read_text(encoding="utf-8")
             ast.parse(source, filename=script)
+
+
+    def test_all_world_hides_have_named_model_bindings(self):
+        world = json.loads((ROOT / "Data/openworld.json").read_text(encoding="utf-8"))
+        mapping = {
+            "container": self.bindings["systems"]["hide_container"],
+            "park_hiding": self.bindings["systems"]["hide_park"],
+            "garage_hiding": self.bindings["systems"]["hide_shelf"],
+        }
+        self.assertEqual({item["id"] for item in world["hides"]}, set(mapping))
+        self.assertTrue(all(mapping.values()))
+
+    def test_environment_signs_have_physical_backing_binding(self):
+        environment = json.loads((ROOT / "Data/environment.json").read_text(encoding="utf-8"))
+        self.assertGreater(sum(1 for item in environment if item["type"] == "sign"), 0)
+        self.assertEqual(self.bindings["systems"]["environment_sign_backing"], "wtg-original-sign-board")
+
+    def test_campaign_gis_migration_uses_complete_model_bindings(self):
+        text = (ROOT / "Scripts/prepare_geography.py").read_text(encoding="utf-8")
+        self.assertIn("model_bindings['actions']", text)
+        for token in (
+            "enemy_guard",
+            "resident_npc",
+            "surveillance_camera",
+            "cctv_monitor",
+            "hide_container",
+            "hide_park",
+            "hide_shelf",
+            "environment_sign_backing",
+        ):
+            self.assertIn(token, text)
 
 
 if __name__ == "__main__":
