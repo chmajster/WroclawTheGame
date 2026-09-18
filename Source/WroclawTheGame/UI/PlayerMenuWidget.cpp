@@ -2196,8 +2196,13 @@ void UPlayerMenuWidget::ShowConfirmation(
     OverlaySlot->SetHorizontalAlignment(HAlign_Fill);
     OverlaySlot->SetVerticalAlignment(VAlign_Fill);
 
+    auto* ModalBlur = WidgetTree->ConstructWidget<UBackgroundBlur>();
+    ModalBlur->SetBlurStrength(8.0f);
+    ModalBlur->SetBlurRadius(12);
+    ConfirmationOverlay->AddChild(ModalBlur);
+
     auto* Center = WidgetTree->ConstructWidget<UOverlay>();
-    ConfirmationOverlay->AddChild(Center);
+    ModalBlur->AddChild(Center);
 
     auto* CardSize = WidgetTree->ConstructWidget<USizeBox>();
     CardSize->SetWidthOverride(560.0f);
