@@ -83,6 +83,7 @@ bool ADriveableVehicle::CanEnterVehicle_Implementation(APawn *Passenger) const
 }
 void ADriveableVehicle::SetAIControl(bool bEnabled, float Throttle, float Steering, bool bBrake)
 {
+    const bool bWasAIControlled = bAIControlled;
     bAIControlled = bEnabled;
     AIThrottle = bEnabled ? FMath::Clamp(Throttle, -1.0f, 1.0f) : 0.0f;
     AISteering = bEnabled ? FMath::Clamp(Steering, -1.0f, 1.0f) : 0.0f;
@@ -90,7 +91,8 @@ void ADriveableVehicle::SetAIControl(bool bEnabled, float Throttle, float Steeri
     if (bEnabled)
     {
         bEngine = Health > 0;
-        bWaitingForGround = true;
+        if (!bWasAIControlled)
+            bWaitingForGround = true;
         SetActorTickEnabled(true);
     }
     else if (!Driver)
