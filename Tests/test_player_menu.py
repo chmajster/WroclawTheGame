@@ -107,6 +107,23 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         for member in ("PageCounter", "ClockText", "SessionStateDot"):
             self.assertIn(member, self.header)
 
+    def test_three_column_layout_has_dynamic_panel_headers(self):
+        for token in (
+            "ActionPanelLabel",
+            "CenterPanelLabel",
+            "RightPanelLabel",
+            "UpdatePanelLabels()",
+            'TEXT("STEROWANIE")',
+            'TEXT("PODGLĄD")',
+            'TEXT("BIEŻĄCE WARTOŚCI")',
+            "LeftDividerSize->SetHeightOverride(1.0f)",
+            "CenterDividerSize->SetHeightOverride(1.0f)",
+            "RightDividerSize->SetHeightOverride(1.0f)",
+        ):
+            self.assertIn(token, self.cpp)
+        for member in ("ActionPanelLabel", "CenterPanelLabel", "RightPanelLabel"):
+            self.assertIn(member, self.header)
+
     def test_long_menu_panels_are_scrollable(self):
         for token in (
             "ActionScroll = WidgetTree->ConstructWidget<UScrollBox>()",
