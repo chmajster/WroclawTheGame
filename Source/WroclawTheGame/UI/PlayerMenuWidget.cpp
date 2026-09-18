@@ -229,10 +229,12 @@ void UPlayerMenuWidget::BuildShell()
 
     auto* TopAccent = WidgetTree->ConstructWidget<UBorder>();
     TopAccent->SetBrushColor(FLinearColor(Accent.R, Accent.G, Accent.B, 0.62f));
-    auto* AccentSlot = RootOverlay->AddChildToOverlay(TopAccent);
+    auto* TopAccentSize = WidgetTree->ConstructWidget<USizeBox>();
+    TopAccentSize->SetHeightOverride(3.0f);
+    TopAccentSize->AddChild(TopAccent);
+    auto* AccentSlot = RootOverlay->AddChildToOverlay(TopAccentSize);
     AccentSlot->SetHorizontalAlignment(HAlign_Fill);
     AccentSlot->SetVerticalAlignment(VAlign_Top);
-    AccentSlot->SetPadding(FMargin(0, 0, 0, 897));
 
     // Fixed design canvas scaled as one unit keeps spacing and typography stable
     // from 1280x720 up to ultrawide/4K while the backdrop still fills the screen.
