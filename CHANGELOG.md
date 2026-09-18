@@ -1,3 +1,11 @@
+## 2026-09-18 — bezpieczne potwierdzenia menu
+
+- Dodano pełnoekranowy modal potwierdzający rozpoczęcie nowej gry i wyjście do pulpitu.
+- Zmiana trybu ekranu lub rozdzielczości nie jest już od razu zatwierdzana jako trwała.
+- Ustawienia obrazu można zachować lub cofnąć; brak potwierdzenia przez 15 sekund automatycznie wywołuje RevertVideoMode.
+- Modal przejmuje fokus klawiatury i odcina przypadkowe kliknięcia w menu pod spodem.
+- Po zatwierdzeniu ustawienia są zapisywane, a po cofnięciu wraca ostatni potwierdzony tryb wideo.
+
 ## 2026-09-18 — pełne ustawienia obrazu
 
 - Rozbudowano nowoczesną zakładkę USTAWIENIA o tryb pełnoekranowy, bezramkowy i okienkowy.
