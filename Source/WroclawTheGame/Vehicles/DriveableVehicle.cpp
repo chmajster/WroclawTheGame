@@ -66,7 +66,8 @@ ADriveableVehicle::ADriveableVehicle()
 void ADriveableVehicle::BeginPlay()
 {
     Super::BeginPlay();
-    StreamingProbe=GetWorld()->SpawnActor<ACityStreamingProbe>();
+    if (bPersistentPlayerVehicle)
+        StreamingProbe = GetWorld()->SpawnActor<ACityStreamingProbe>();
     if (!Definition)
         Definition = NewObject<UVehicleDefinition>(this);
     Chassis->SetMassOverrideInKg(NAME_None, FMath::Clamp(Definition->MassKg, 400.f, 5000.f));
