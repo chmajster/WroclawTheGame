@@ -39,25 +39,65 @@ def sha256_file(path):
     return digest.hexdigest()
 
 
+def stable_model_quality_payload():
+    report = json.loads(MODEL_REPORT.read_text(encoding="utf-8"))
+    stable_assets = {}
+    for model_id, item in sorted(report.get("assets", {}).items()):
+        stable_assets[model_id] = {
+            key: item.get(key)
+            for key in (
+                "type",
+                "category",
+                "path",
+                "dimensions_cm",
+                "vertices_lod0",
+                "lods_after",
+                "required_lods",
+                "collision_after",
+                "materials",
+                "physics_asset",
+                "errors",
+            )
+            if key in item
+        }
+    return {
+        "status": report.get("status"),
+        "asset_count": report.get("asset_count"),
+        "errors": report.get("errors", []),
+        "assets": stable_assets,
+    }
+
+
 def input_fingerprint():
     digest = hashlib.sha256()
-    paths = [
+    plain_paths = [
         POLICY,
-        MODEL_REPORT,
         RETARGET_REPORT,
         SCENE_REPORT,
         RETARGET_MAP,
         ROOT / "Scripts/capture_runtime_character_qa.py",
+        ROOT / "Scripts/prepare_runtime_asset_quality.py",
+        ROOT / "Scripts/prepare_animation_retargeting.py",
+        ROOT / "Scripts/validate_runtime_asset_scene.py",
         ROOT / "Scripts/prepare_character_creator.py",
         ROOT / "Source/WroclawTheGame/Character/CharacterAppearanceComponent.cpp",
     ]
-    for path in paths:
+    for path in plain_paths:
         if not path.is_file():
             raise RuntimeError(f"Character QA input missing: {path}")
         digest.update(str(path.relative_to(ROOT)).encode("utf-8"))
         digest.update(b"\0")
         digest.update(path.read_bytes())
         digest.update(b"\0")
+    digest.update(b"stable-model-quality\0")
+    digest.update(
+        json.dumps(
+            stable_model_quality_payload(),
+            sort_keys=True,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    )
     return digest.hexdigest()
 
 
