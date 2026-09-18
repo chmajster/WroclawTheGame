@@ -16,7 +16,6 @@
 #include "Engine/World.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/DamageEvents.h"
-#include "UObject/ConstructorHelpers.h"
 #include "Audio/SliceAudio.h"
 ADriveableVehicle::ADriveableVehicle()
 {
@@ -30,17 +29,12 @@ ADriveableVehicle::ADriveableVehicle()
     Chassis->SetNotifyRigidBodyCollision(true);
     Chassis->SetLinearDamping(.04);
     Chassis->SetAngularDamping(2);
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
     BodyVisual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
     BodyVisual->SetupAttachment(Chassis);
-    BodyVisual->SetStaticMesh(Cube.Object);
-    BodyVisual->SetRelativeScale3D(FVector(4.2, 1.8, .56));
     BodyVisual->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     CabinVisual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cabin"));
     CabinVisual->SetupAttachment(Chassis);
-    CabinVisual->SetStaticMesh(Cube.Object);
-    CabinVisual->SetRelativeScale3D(FVector(2.1, 1.65, .6));
-    CabinVisual->SetRelativeLocation(FVector(-25, 0, 55));
+    CabinVisual->SetVisibility(false, true);
     CabinVisual->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     int32 WheelIndex = 0;
     for (float X : {-145.f, 145.f})
