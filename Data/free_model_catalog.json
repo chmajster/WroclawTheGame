@@ -1304,5 +1304,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/barrel_stove/barrel_stove_1k.fbx"
+  },
+  {
+    "slug": "can_rusted",
+    "name": "Can Rusted",
+    "intended_use": "Can pickup/distraction and street/garage clutter.",
+    "source_page": "https://polyhaven.com/a/can_rusted",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Rahul Chaudhary": "All"
+    },
+    "category": "Containers & Storage/Cans, Tins & Bottles/Tins",
+    "dimensions_mm": [
+      124.53292682766914,
+      124.67572093009949,
+      151.37778513599187
+    ],
+    "files_hash": "df29f732f300aa0bbd6da5081ef7a6902397f551",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/can_rusted/can_rusted_1k.fbx"
   }
 ]
