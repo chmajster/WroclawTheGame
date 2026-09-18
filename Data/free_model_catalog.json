@@ -1172,5 +1172,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/round_wooden_table_01/round_wooden_table_01_1k.fbx"
+  },
+  {
+    "slug": "modern_coffee_table_01",
+    "name": "Modern Coffee Table 01",
+    "intended_use": "Apartment living-room table.",
+    "source_page": "https://polyhaven.com/a/modern_coffee_table_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Amin": "All"
+    },
+    "category": "Furniture/Tables/Coffee Tables",
+    "dimensions_mm": [
+      1201.8300294876099,
+      600.0000834465027,
+      389.99998569488525
+    ],
+    "files_hash": "31772c0aab6f930a18de82606146c0a97f08b7d0",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/modern_coffee_table_01/modern_coffee_table_01_1k.fbx"
   }
 ]

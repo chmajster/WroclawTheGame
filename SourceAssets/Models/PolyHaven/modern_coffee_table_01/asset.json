@@ -1,0 +1,62 @@
+{
+  "slug": "modern_coffee_table_01",
+  "name": "Modern Coffee Table 01",
+  "intended_use": "Apartment living-room table.",
+  "source_page": "https://polyhaven.com/a/modern_coffee_table_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Amin": "All"
+  },
+  "category": "Furniture/Tables/Coffee Tables",
+  "tags": [
+    "table",
+    "contemporary",
+    "modern",
+    "rectangular",
+    "stone",
+    "wood",
+    "deco",
+    "clean"
+  ],
+  "dimensions_mm": [
+    1201.8300294876099,
+    600.0000834465027,
+    389.99998569488525
+  ],
+  "files_hash": "31772c0aab6f930a18de82606146c0a97f08b7d0",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/modern_coffee_table_01/modern_coffee_table_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_coffee_table_01/modern_coffee_table_01_1k.fbx",
+      "bytes": 158780,
+      "md5": "c95c72d2090041842e39485c3cdd91b5",
+      "sha256": "fe168110e3d907dc379568ea258b78962280c6a8db133b096f2c4216861fc757",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/modern_coffee_table_01/modern_coffee_table_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_coffee_table_01/textures/modern_coffee_table_01_diff_1k.jpg",
+      "bytes": 410569,
+      "md5": "356014e027b59c21b3c99ac112e645f9",
+      "sha256": "069b89dd3ef03ddcbb7b2e6a124b1903aa7848394509121aa19f87bd0ef0218c",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/modern_coffee_table_01/modern_coffee_table_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_coffee_table_01/textures/modern_coffee_table_01_nor_gl_1k.exr",
+      "bytes": 836417,
+      "md5": "94ac0091b8b50d2396a5a7330ecc1937",
+      "sha256": "5c011edf233af9b0f3a2fd8dd4c1eab683743e47463057d5918d1dc308276ef7",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/modern_coffee_table_01/modern_coffee_table_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_coffee_table_01/textures/modern_coffee_table_01_rough_1k.exr",
+      "bytes": 874137,
+      "md5": "0b0d6100d116c9f091e5fe7e8b7d2929",
+      "sha256": "142c34709f56f3425ad38b5b69c31d875c1865b8c5849aa5875ca658dda62ccd",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/modern_coffee_table_01/modern_coffee_table_01_rough_1k.exr"
+    }
+  ]
+}
