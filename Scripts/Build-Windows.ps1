@@ -57,6 +57,7 @@ if (-not (Test-NetFxSdk)) {
 
 $ProjectRoot = Split-Path $PSScriptRoot -Parent
 $Project = Join-Path $ProjectRoot 'WroclawTheGame.uproject'
+& (Join-Path $PSScriptRoot 'Assert-UnrealVersion.ps1') -EngineRoot $EngineRoot -Project $Project -ExpectedVersion '5.8'
 $BuildTool = Join-Path $EngineRoot 'Engine\Build\BatchFiles\Build.bat'
 $Editor = Join-Path $EngineRoot 'Engine\Binaries\Win64\UnrealEditor-Cmd.exe'
 $UnrealPython = Join-Path $EngineRoot 'Engine\Binaries\ThirdParty\Python3\Win64\python.exe'
