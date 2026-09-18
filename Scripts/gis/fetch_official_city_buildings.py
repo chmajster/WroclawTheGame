@@ -17,6 +17,8 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 from pyproj import Transformer
+from shapely.geometry import MultiPoint, Polygon
+from shapely.validation import make_valid
 
 import fetch_official_buildings_3d as source
 
@@ -78,6 +80,10 @@ def osm_building_index(city: dict, cell_m: float = 50.0):
         y = sum(point[1] for point in ring) / len(ring)
         e = origin_e + x / 100.0
         n = origin_n - y / 100.0
+        polygon = make_valid(Polygon([
+            (origin_e + point[0] / 100.0, origin_n - point[1] / 100.0)
+            for point in ring
+        ]))
         record = {
             "feature_id": feature["id"],
             "easting": e,
@@ -85,6 +91,7 @@ def osm_building_index(city: dict, cell_m: float = 50.0):
             "base_z_cm": max(point[2] for point in ring),
             "material": feature.get("material", "Brick"),
             "sector": feature.get("sector"),
+            "polygon": polygon,
         }
         records[feature["id"]] = record
         key = (math.floor(e / cell_m), math.floor(n / cell_m))
@@ -94,18 +101,60 @@ def osm_building_index(city: dict, cell_m: float = 50.0):
     return records, grid, cell_m
 
 
-def nearest_osm(easting: float, northing: float, records, grid, cell_m: float, max_distance: float):
+def official_footprint(surfaces):
+    horizontal = []
+    points = []
+    for surface in surfaces:
+        if not surface or not surface[0]:
+            continue
+        exterior = surface[0]
+        points.extend((point[0], point[1]) for ring in surface for point in ring)
+        z_values = [point[2] for point in exterior]
+        if max(z_values) - min(z_values) > 0.35:
+            continue
+        polygon = make_valid(Polygon(
+            [(point[0], point[1]) for point in exterior],
+            [[(point[0], point[1]) for point in ring] for ring in surface[1:]],
+        ))
+        if not polygon.is_empty and polygon.area > 1.0:
+            horizontal.append((sum(z_values) / len(z_values), polygon))
+    if horizontal:
+        return min(horizontal, key=lambda item: item[0])[1]
+    hull = MultiPoint(points).convex_hull if points else None
+    return hull if hull and not hull.is_empty and hull.area > 1.0 else None
+
+
+def nearest_osm(footprint, easting: float, northing: float, records, grid, cell_m: float, max_distance: float):
     key = (math.floor(easting / cell_m), math.floor(northing / cell_m))
-    radius = max(1, math.ceil(max_distance / cell_m))
-    best = None
+    radius = max(2, math.ceil(max_distance / cell_m))
+    best_overlap = None
+    best_distance = None
     for dx in range(-radius, radius + 1):
         for dy in range(-radius, radius + 1):
             for feature_id in grid.get((key[0] + dx, key[1] + dy), []):
                 record = records[feature_id]
                 distance = math.hypot(easting - record["easting"], northing - record["northing"])
-                if distance <= max_distance and (best is None or distance < best[0]):
-                    best = (distance, record)
-    return best
+                overlap = 0.0
+                if footprint is not None and record["polygon"] is not None:
+                    try:
+                        common = footprint.intersection(record["polygon"]).area
+                        denominator = min(footprint.area, record["polygon"].area)
+                        overlap = common / denominator if denominator > 0 else 0.0
+                    except Exception:
+                        overlap = 0.0
+                if overlap >= 0.15:
+                    candidate = (-overlap, distance, record)
+                    if best_overlap is None or candidate[:2] < best_overlap[:2]:
+                        best_overlap = candidate
+                elif distance <= max_distance:
+                    candidate = (distance, record)
+                    if best_distance is None or distance < best_distance[0]:
+                        best_distance = candidate
+    if best_overlap is not None:
+        return best_overlap[1], best_overlap[2], -best_overlap[0]
+    if best_distance is not None:
+        return best_distance[0], best_distance[1], 0.0
+    return None
 
 
 def merge_mesh(group: dict, record: dict):
@@ -139,37 +188,39 @@ def parse_active_buildings(
                 skipped["no_surface"] += 1
                 element.clear()
                 continue
-            points = [point for surface in surfaces for ring in surface for point in ring]
-            cx = sum(point[0] for point in points) / len(points)
-            cy = sum(point[1] for point in points) / len(points)
-            ce, cn = to_utm.transform(cx, cy)
+            transformed = source.transform_surfaces(surfaces, to_utm)
+            points = [point for surface in transformed for ring in surface for point in ring]
+            ce = sum(point[0] for point in points) / len(points)
+            cn = sum(point[1] for point in points) / len(points)
+            footprint = official_footprint(transformed)
             sector = sector_at(ce, cn, sectors)
             if not sector:
                 skipped["outside_sectors"] += 1
                 element.clear()
                 continue
-            match = nearest_osm(ce, cn, records, grid, grid_size, max_match_distance)
+            match = nearest_osm(footprint, ce, cn, records, grid, grid_size, max_match_distance)
             if not match:
                 skipped["no_osm_match"] += 1
                 element.clear()
                 continue
-            distance, reference = match
+            distance, reference, overlap_ratio = match
             if reference["feature_id"] in used_osm:
                 skipped["duplicate_osm"] += 1
                 element.clear()
                 continue
 
             gml_id = source.building_id(element)
+            unique_key = f"{gml_id}:{path.name}:{ce:.2f}:{cn:.2f}"
             candidate = {
                 "distance_m": distance,
                 "gml_id": gml_id,
                 "source_file": path.name,
                 "source_crs": crs,
                 "centroid_utm": [ce, cn],
-                "surfaces": source.transform_surfaces(surfaces, to_utm),
+                "surfaces": transformed,
             }
             target = {
-                "id": "gugik_" + safe_id(gml_id),
+                "id": "gugik_" + safe_id(unique_key),
                 "display_name": gml_id,
                 "material": reference["material"],
                 "reference": reference,
@@ -196,6 +247,7 @@ def parse_active_buildings(
                 "source_file": path.name,
                 "source_crs": crs,
                 "distance_to_osm_reference_m": round(distance, 3),
+                "footprint_overlap_ratio": round(overlap_ratio, 4),
                 "replaced_feature_id": reference["feature_id"],
                 "sector": sector,
                 "material": reference["material"],
