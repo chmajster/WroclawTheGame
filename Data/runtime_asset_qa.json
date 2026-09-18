@@ -49,10 +49,16 @@
     "required_lods": 2,
     "require_material": true,
     "require_skeleton": true,
-    "require_physics_asset": true,
+    "require_physics_asset": false,
     "min_height_cm": 80,
     "max_height_cm": 260,
-    "max_dimension_cm": 500
+    "max_dimension_cm": 500,
+    "require_physics_asset_for_categories": [
+      "body"
+    ],
+    "height_limits_for_categories": [
+      "body"
+    ]
   },
   "transform": {
     "min_abs_scale": 0.001,
