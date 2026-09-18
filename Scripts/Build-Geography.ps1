@@ -13,6 +13,8 @@ if($City){
     # Preserve the existing laboratory trials in their original coordinate frame.
     & $Python (Join-Path $PSScriptRoot 'gis\import_sector.py')
     if($LASTEXITCODE -ne 0){throw 'Existing GIS import failed'}
+    & $Python (Join-Path $PSScriptRoot 'gis\migrate_campaign.py') --input (Join-Path $Root 'Saved\CityData') --output (Join-Path $Root 'Saved\CampaignGIS')
+    if($LASTEXITCODE -ne 0){throw 'Campaign GIS migration data generation failed'}
 }else{
     & $Python (Join-Path $PSScriptRoot 'gis\build_meshes.py')
     if($LASTEXITCODE -ne 0){throw 'GIS import failed'}
