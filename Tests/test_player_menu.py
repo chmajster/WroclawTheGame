@@ -261,7 +261,7 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             "ConfirmationSecondsRemaining / ConfirmationSecondsTotal",
             'MakeKeycap(TEXT("ENTER / A"))',
             'MakeKeycap(TEXT("ESC / B"))',
-            'TEXT("POTWIERDŹ")',
+            'MakeText(TEXT("WYBIERZ"), 8, true, Muted)',
             'TEXT("ANULUJ")',
         ):
             self.assertIn(token, self.cpp)
