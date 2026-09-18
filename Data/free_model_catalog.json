@@ -199,5 +199,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/power_box_01/power_box_01_1k.fbx"
+  },
+  {
+    "slug": "classic_laptop",
+    "name": "Classic Laptop",
+    "intended_use": "Apartment computer and terminal interaction prop.",
+    "source_page": "https://polyhaven.com/a/classic_laptop",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Arrangemonk": "All"
+    },
+    "category": "Electronics & Appliances/Computing/Computers",
+    "dimensions_mm": [
+      651.9346237182617,
+      485.9423041343689,
+      542.8108091000468
+    ],
+    "files_hash": "44e244f74d7fc5329b69795c5c95f105803aadc2",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/classic_laptop/classic_laptop_1k.fbx"
   }
 ]
