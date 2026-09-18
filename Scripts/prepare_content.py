@@ -55,7 +55,10 @@ def apply_static_mesh(actor, mesh, scale):
         raise RuntimeError(f'StaticMeshComponent missing on {actor.get_actor_label()}')
     component.set_static_mesh(mesh)
     component.set_editor_property('cast_shadow', True)
-    actor.set_actor_scale3d(unreal.Vector(*scale))
+    if actor.get_root_component() == component:
+        actor.set_actor_scale3d(unreal.Vector(*scale))
+    else:
+        component.set_relative_scale3d(unreal.Vector(*scale))
     return component
 
 
@@ -72,9 +75,11 @@ def apply_skeletal_mesh(actor, mesh, scale=(1, 1, 1), rotation=None):
     component.set_skeletal_mesh_asset(mesh)
     component.set_visibility(True, True)
     component.set_editor_property('cast_shadow', True)
-    actor.set_actor_scale3d(unreal.Vector(*scale))
-    if rotation is not None:
-        component.set_relative_rotation(unreal.Rotator(*rotation))
+    component.set_relative_scale3d(unreal.Vector(*scale))
+    capsule = actor.get_component_by_class(unreal.CapsuleComponent)
+    if capsule:
+        component.set_relative_location(unreal.Vector(0,0,-capsule.get_unscaled_capsule_half_height()))
+    component.set_relative_rotation(unreal.Rotator(*(rotation or [0,-90,0])))
     hide_static_visuals(actor)
     return component
 
@@ -238,9 +243,7 @@ def prepare():
         actor=spawn(unreal.SurveillanceCamera,camera['position'],'camera_'+camera['id'],camera['rotation'])
         actor.set_editor_property('definition_id',camera['id'])
         if isinstance(camera_mesh,unreal.StaticMesh):
-            visual=spawn(unreal.StaticMeshActor,camera['position'],'camera_visual_'+camera['id'],camera['rotation'])
-            apply_static_mesh(visual,camera_mesh,[1,1,1])
-            visual.get_component_by_class(unreal.StaticMeshComponent).set_collision_enabled(unreal.CollisionEnabled.NO_COLLISION)
+            apply_static_mesh(actor,camera_mesh,[1,1,1])
         actor=spawn(unreal.WorldInteraction,[camera['position'][0]-180,camera['position'][1],100],'monitor_'+camera['id'])
         actor.set_editor_property('definition_id',camera['id']);actor.set_editor_property('kind','CCTV')
         if isinstance(monitor_mesh,unreal.StaticMesh):
