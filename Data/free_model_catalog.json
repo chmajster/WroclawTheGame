@@ -1260,5 +1260,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/exterior_aircon_unit/exterior_aircon_unit_1k.fbx"
+  },
+  {
+    "slug": "portable_generator",
+    "name": "Portable Generator",
+    "intended_use": "Garage/workshop and emergency-power prop.",
+    "source_page": "https://polyhaven.com/a/portable_generator",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Industrial & Infrastructure/Utility Equipment",
+    "dimensions_mm": [
+      818.3408081531525,
+      564.0000104904175,
+      576.9232391612604
+    ],
+    "files_hash": "1eb1caabd255ee5d737842cb7d92dc325c77d0f4",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/portable_generator/portable_generator_1k.fbx"
   }
 ]

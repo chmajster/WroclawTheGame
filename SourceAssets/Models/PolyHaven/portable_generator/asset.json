@@ -1,0 +1,83 @@
+{
+  "slug": "portable_generator",
+  "name": "Portable Generator",
+  "intended_use": "Garage/workshop and emergency-power prop.",
+  "source_page": "https://polyhaven.com/a/portable_generator",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "James Ray Cock": "All"
+  },
+  "category": "Industrial & Infrastructure/Utility Equipment",
+  "tags": [
+    "gasoline",
+    "backup power",
+    "construction equipment",
+    "power generator",
+    "petrol",
+    "garage",
+    "power",
+    "engine"
+  ],
+  "dimensions_mm": [
+    818.3408081531525,
+    564.0000104904175,
+    576.9232391612604
+  ],
+  "files_hash": "1eb1caabd255ee5d737842cb7d92dc325c77d0f4",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/portable_generator/portable_generator_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/portable_generator/portable_generator_1k.fbx",
+      "bytes": 873900,
+      "md5": "3069d48c5abf51ff98b0d9b900cca21b",
+      "sha256": "60e725eb5356028e7721e95b2616c3de2fa8331c2e8fe06ab5ebf16bc1f1025e",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/portable_generator/portable_generator_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/portable_generator/textures/portable_generator_alpha_1k.png",
+      "bytes": 134342,
+      "md5": "5e66992234b814ad5ffcbd92f004bee7",
+      "sha256": "112a74af62ccb842a22916e51a79364e7121f948e231b8ce9deac797417ef6bd",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/portable_generator/portable_generator_alpha_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/portable_generator/textures/portable_generator_diff_1k.jpg",
+      "bytes": 755079,
+      "md5": "3d572e1716148ca5d641d8a199fe9192",
+      "sha256": "32acc300105a2df2290d872889b24e1b29ff1ca2c56c0a0cf8fbba0c5966a063",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/portable_generator/portable_generator_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/portable_generator/textures/portable_generator_metal_1k.exr",
+      "bytes": 795306,
+      "md5": "fd9b609198d41fcc6336652956d12d31",
+      "sha256": "5cc02ee2b460b6719ecd07324984259adcd3e04749f0cb6bbd7c000c7297b60f",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/portable_generator/portable_generator_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/portable_generator/textures/portable_generator_nor_gl_1k.exr",
+      "bytes": 1772190,
+      "md5": "d6e2a886135cc8868861b19159d1c590",
+      "sha256": "fb32bd134bb3a705042d6b6257a3f16afdfac229659325c6fdc984d93702bd3a",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/portable_generator/portable_generator_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/portable_generator/textures/portable_generator_rough_1k.exr",
+      "bytes": 767846,
+      "md5": "a9e241c16a67401faa051d23a502193e",
+      "sha256": "f2204b89a44753fbe1d616c42d58c3a7ba6b81f7f057f5ae2e424efb2fd7721d",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/portable_generator/portable_generator_rough_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/portable_generator/textures/portable_generator_spec_1k.png",
+      "bytes": 20913,
+      "md5": "a758db046b624c9813fe40f1b84162f6",
+      "sha256": "a4d07b06b77dc20ae86aed2abac0941c0d41b061792022b976e3c8fec31ce760",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/portable_generator/portable_generator_spec_1k.png"
+    }
+  ]
+}
