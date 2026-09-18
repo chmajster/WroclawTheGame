@@ -13,12 +13,12 @@ if($City){
     # Preserve the existing laboratory trials in their original coordinate frame.
     & $Python (Join-Path $PSScriptRoot 'gis\import_sector.py')
     if($LASTEXITCODE -ne 0){throw 'Existing GIS import failed'}
-    & $Python (Join-Path $PSScriptRoot 'gis\make_routes.py')
-    if($LASTEXITCODE -ne 0){throw 'Race route preparation failed'}
 }else{
     & $Python (Join-Path $PSScriptRoot 'gis\build_meshes.py')
     if($LASTEXITCODE -ne 0){throw 'GIS import failed'}
 }
+& $Python (Join-Path $PSScriptRoot 'gis\make_routes.py')
+if($LASTEXITCODE -ne 0){throw 'Race route preparation failed'}
 & (Join-Path $PSScriptRoot 'Build-Windows.ps1') -EngineRoot $EngineRoot -PrepareOnly
 if(-not $?){throw 'Campaign content preparation failed'}
 $Marker=Join-Path $Root 'Saved\GeographyReady.ok'
