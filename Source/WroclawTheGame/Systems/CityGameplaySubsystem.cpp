@@ -60,6 +60,8 @@ bool UCityGameplaySubsystem::Persist(const FVector &Anchor, bool IncludeVehicle)
     if (IncludeVehicle)
     for (TActorIterator<ADriveableVehicle> It(GetWorld());It;++It)
     {
+        if (!It->bPersistentPlayerVehicle)
+            continue;
         Save->HasVehicle=true;Save->VehicleAnchor=It->GetActorLocation();Save->VehicleYaw=It->GetActorRotation().Yaw;
         Save->VehicleHealth=FMath::Clamp(It->Health,0.f,100.f);break;
     }
@@ -200,7 +202,7 @@ void UCityGameplaySubsystem::Travel(ASliceCharacter *Player, const FVector &Dest
 
 void UCityGameplaySubsystem::RestoreVehicle(ADriveableVehicle *Vehicle)
 {
-    if (!Vehicle || !LoadedSave || !LoadedSave->HasVehicle) return;
+    if (!Vehicle || !Vehicle->bPersistentPlayerVehicle || !LoadedSave || !LoadedSave->HasVehicle) return;
     Vehicle->Chassis->SetSimulatePhysics(false);
     Vehicle->SetActorLocation(LoadedSave->VehicleAnchor,false,nullptr,ETeleportType::TeleportPhysics);
     Vehicle->SetActorRotation(FRotator(0,LoadedSave->VehicleYaw,0));Vehicle->Health=LoadedSave->VehicleHealth;
