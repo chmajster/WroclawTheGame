@@ -54,9 +54,15 @@ class WROCLAWTHEGAME_API ACityPopulation : public AActor
     float SimplifiedSimulationRadius = 22000.0f;
     UPROPERTY(EditAnywhere, Category = "Population", meta = (ClampMin = "1", ClampMax = "128"))
     int32 MaxAgents = 24;
+    UPROPERTY(EditAnywhere, Category = "Population", meta = (ClampMin = "0", ClampMax = "24"))
+    int32 MaxTrafficVehicles = 6;
+    UPROPERTY(EditAnywhere, Category = "Population", meta = (ClampMin = "1000"))
+    float TrafficActivationRadius = 12000.0f;
     virtual void Tick(float DeltaTime) override;
 
   private:
     UPROPERTY() TArray<TObjectPtr<ACityAmbientAgent>> Pool;
     TArray<int32> AssignedRoutes;
+    UPROPERTY() TArray<TObjectPtr<class ACityTrafficVehicle>> TrafficPool;
+    TArray<int32> AssignedTrafficRoutes;
 };
