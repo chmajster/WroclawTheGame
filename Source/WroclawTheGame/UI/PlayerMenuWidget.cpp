@@ -226,10 +226,21 @@ UBorder* UPlayerMenuWidget::MakeInfoRow(const FString& Title, const FString& Sub
     auto* Row = WidgetTree->ConstructWidget<UBorder>();
     Row->SetBrush(RoundedBrush(
         bHighlighted ? FLinearColor(0.025f, 0.105f, 0.135f, 0.98f) : PanelSoft, 10.0f));
-    Row->SetPadding(FMargin(12, 10, 12, 10));
+    Row->SetPadding(FMargin(10, 9, 12, 9));
+
+    auto* Content = WidgetTree->ConstructWidget<UHorizontalBox>();
+    Row->AddChild(Content);
+
+    auto* Rail = WidgetTree->ConstructWidget<UBorder>();
+    Rail->SetBrush(RoundedBrush(bHighlighted ? Accent : Divider, 2.0f));
+    auto* RailSize = WidgetTree->ConstructWidget<USizeBox>();
+    RailSize->SetWidthOverride(3.0f);
+    RailSize->AddChild(Rail);
+    Content->AddChildToHorizontalBox(RailSize)->SetPadding(FMargin(0, 1, 10, 1));
 
     auto* Column = WidgetTree->ConstructWidget<UVerticalBox>();
-    Row->AddChild(Column);
+    auto* ColumnSlot = Content->AddChildToHorizontalBox(Column);
+    ColumnSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
     Column->AddChildToVerticalBox(MakeText(Title, 13, true, TextPrimary));
     if (!Subtitle.IsEmpty())
