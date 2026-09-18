@@ -92,6 +92,21 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         self.assertIn("TObjectPtr<class UTextBlock> ContextStatus", self.header)
         self.assertIn("TArray<TObjectPtr<class UBorder>> TabIndicators", self.header)
 
+    def test_context_chrome_has_page_badge_session_state_and_live_clock(self):
+        for token in (
+            'TEXT("01 / 07")',
+            'TEXT("%02d / 07")',
+            "PageCounter",
+            "SessionStateDot",
+            "ClockText",
+            'FDateTime::Now().ToString(TEXT("%d.%m.%Y  •  %H:%M"))',
+            "ClockRefreshAccumulator",
+            "FooterDivider",
+        ):
+            self.assertIn(token, self.cpp)
+        for member in ("PageCounter", "ClockText", "SessionStateDot"):
+            self.assertIn(member, self.header)
+
     def test_long_menu_panels_are_scrollable(self):
         for token in (
             "ActionScroll = WidgetTree->ConstructWidget<UScrollBox>()",
