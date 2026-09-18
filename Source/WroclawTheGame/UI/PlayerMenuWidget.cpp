@@ -1572,21 +1572,38 @@ void UPlayerMenuWidget::BuildStatsTab()
 
 void UPlayerMenuWidget::BuildSettingsTab()
 {
-    PageTitle->SetText(FText::FromString(TEXT("USTAWIENIA  /  OBRAZ I WYDAJNOŚĆ")));
-
     auto* Preferences = UWTGPerformanceSettings::Get();
     UGameUserSettings* UserSettings = GEngine ? GEngine->GetGameUserSettings() : nullptr;
 
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("OBRAZ"), 20, true, TextPrimary))
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("USTAWIENIA"), 20, true, TextPrimary))
         ->SetPadding(FMargin(2, 1, 2, 2));
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("USTAWIENIA NATYCHMIASTOWE"), 9, true, Accent))
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("KATEGORIE"), 9, true, Accent))
         ->SetPadding(FMargin(2, 0, 2, 14));
+
+    auto* DisplaySection = MakeButton(TEXT("OBRAZ"), SettingsSection == 0);
+    DisplaySection->OnClicked.AddDynamic(this, &UPlayerMenuWidget::SettingsDisplay);
+    ActionColumn->AddChildToVerticalBox(DisplaySection)->SetPadding(FMargin(0, 0, 0, 7));
+
+    auto* PerformanceSection = MakeButton(TEXT("WYDAJNOŚĆ"), SettingsSection == 1);
+    PerformanceSection->OnClicked.AddDynamic(this, &UPlayerMenuWidget::SettingsPerformance);
+    ActionColumn->AddChildToVerticalBox(PerformanceSection)->SetPadding(FMargin(0, 0, 0, 7));
+
+    auto* InterfaceSection = MakeButton(TEXT("INTERFEJS"), SettingsSection == 2);
+    InterfaceSection->OnClicked.AddDynamic(this, &UPlayerMenuWidget::SettingsInterface);
+    ActionColumn->AddChildToVerticalBox(InterfaceSection)->SetPadding(FMargin(0, 0, 0, 18));
+
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+        TEXT("AUTOMATYCZNY ZAPIS"),
+        TEXT("ZMIANY USTAWIEŃ"),
+        true))->SetPadding(FMargin(0, 0, 0, 10));
+    ActionColumn->AddChildToVerticalBox(MakeText(
+        TEXT("Ustawienia są stosowane od razu. Zmiany trybu obrazu mają bezpieczne potwierdzenie z automatycznym cofnięciem."),
+        10, false, Muted));
 
     if (!UserSettings)
     {
-        ActionColumn->AddChildToVerticalBox(MakeText(
-            TEXT("Ustawienia silnika są chwilowo niedostępne."), 11, false, Muted));
-        AddTextPage(TEXT("WYŚWIETLANIE"), TEXT("Nie udało się pobrać UGameUserSettings."));
+        PageTitle->SetText(FText::FromString(TEXT("USTAWIENIA  /  NIEDOSTĘPNE")));
+        AddTextPage(TEXT("USTAWIENIA"), TEXT("Nie udało się pobrać UGameUserSettings."));
         return;
     }
 
@@ -1606,114 +1623,161 @@ void UPlayerMenuWidget::BuildSettingsTab()
     float MinScale = 0.0f;
     float MaxScale = 100.0f;
     UserSettings->GetResolutionScaleInformationEx(ScaleNormalized, ScaleValue, MinScale, MaxScale);
-
-    auto* ModeButton = MakeButton(
-        FString::Printf(TEXT("TRYB: %s"), *WindowModeLabel(WindowMode)), true);
-    ModeButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleWindowMode);
-    ActionColumn->AddChildToVerticalBox(ModeButton)->SetPadding(FMargin(0, 0, 0, 7));
-
-    auto* ResolutionButton = MakeButton(
-        FString::Printf(TEXT("ROZDZIELCZOŚĆ: %d × %d"), Resolution.X, Resolution.Y));
-    ResolutionButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleResolution);
-    ActionColumn->AddChildToVerticalBox(ResolutionButton)->SetPadding(FMargin(0, 0, 0, 7));
-
-    auto* QualityButton = MakeButton(
-        FString::Printf(TEXT("JAKOŚĆ: %s"), *QualityLabel(Quality)));
-    QualityButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleQuality);
-    ActionColumn->AddChildToVerticalBox(QualityButton)->SetPadding(FMargin(0, 0, 0, 7));
-
-    auto* ScaleButton = MakeButton(
-        FString::Printf(TEXT("SKALA RENDERU: %.0f%%"), ScaleValue));
-    ScaleButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleResolutionScale);
-    ActionColumn->AddChildToVerticalBox(ScaleButton)->SetPadding(FMargin(0, 0, 0, 7));
-
-    auto* VSyncButton = MakeButton(
-        FString::Printf(TEXT("VSYNC: %s"), bVSync ? TEXT("WŁ.") : TEXT("WYŁ.")),
-        bVSync);
-    VSyncButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleVSync);
-    ActionColumn->AddChildToVerticalBox(VSyncButton)->SetPadding(FMargin(0, 0, 0, 7));
-
-    auto* DynamicButton = MakeButton(
-        FString::Printf(TEXT("DYNAMICZNA ROZDZ.: %s"), bDynamicResolution ? TEXT("WŁ.") : TEXT("WYŁ.")),
-        bDynamicResolution);
-    DynamicButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleDynamicResolution);
-    ActionColumn->AddChildToVerticalBox(DynamicButton)->SetPadding(FMargin(0, 0, 0, 16));
-
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("PŁYNNOŚĆ"), 9, true, Muted))
-        ->SetPadding(FMargin(2, 0, 2, 7));
-
-    auto* FPSButton = MakeButton(
-        FString::Printf(TEXT("LICZNIK FPS: %s"), bFPSVisible ? TEXT("WŁ.") : TEXT("WYŁ.")),
-        bFPSVisible);
-    FPSButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleFPSCounter);
-    ActionColumn->AddChildToVerticalBox(FPSButton)->SetPadding(FMargin(0, 0, 0, 7));
-
     const FString LimitLabel = Limit == 0 ? TEXT("BEZ LIMITU") : FString::Printf(TEXT("%d FPS"), Limit);
-    auto* LimitButton = MakeButton(FString::Printf(TEXT("LIMIT: %s"), *LimitLabel));
-    LimitButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleFPSLimit);
-    ActionColumn->AddChildToVerticalBox(LimitButton)->SetPadding(FMargin(0, 0, 0, 16));
 
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("INTERFEJS"), 9, true, Muted))
-        ->SetPadding(FMargin(2, 0, 2, 7));
+    auto AddCenterButton = [&](UButton* Button, float Bottom = 8.0f)
+    {
+        CenterColumn->AddChildToVerticalBox(Button)->SetPadding(FMargin(18, 0, 18, Bottom));
+    };
+
+    if (SettingsSection == 0)
+    {
+        PageTitle->SetText(FText::FromString(TEXT("USTAWIENIA  /  OBRAZ")));
+        CenterColumn->AddChildToVerticalBox(MakeText(TEXT("OBRAZ"), 22, true, TextPrimary))
+            ->SetPadding(FMargin(18, 16, 18, 3));
+        CenterColumn->AddChildToVerticalBox(MakeText(
+            TEXT("TRYB EKRANU, ROZDZIELCZOŚĆ I JAKOŚĆ RENDEROWANIA"), 9, true, Accent))
+            ->SetPadding(FMargin(18, 0, 18, 18));
+
+        auto* ModeButton = MakeButton(
+            FString::Printf(TEXT("TRYB EKRANU  •  %s"), *WindowModeLabel(WindowMode)), true);
+        ModeButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleWindowMode);
+        AddCenterButton(ModeButton);
+
+        auto* ResolutionButton = MakeButton(
+            FString::Printf(TEXT("ROZDZIELCZOŚĆ  •  %d × %d"), Resolution.X, Resolution.Y));
+        ResolutionButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleResolution);
+        AddCenterButton(ResolutionButton);
+
+        auto* QualityButton = MakeButton(
+            FString::Printf(TEXT("PRESET JAKOŚCI  •  %s"), *QualityLabel(Quality)));
+        QualityButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleQuality);
+        AddCenterButton(QualityButton);
+
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("AKTUALNY OBRAZ"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 0, 0, 8));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            WindowModeLabel(WindowMode), TEXT("TRYB EKRANU"), true))->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%d × %d"), Resolution.X, Resolution.Y), TEXT("ROZDZIELCZOŚĆ")))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            QualityLabel(Quality), TEXT("PRESET JAKOŚCI")))->SetPadding(FMargin(0, 0, 0, 14));
+
+        const FString QualityDetails = FString::Printf(
+            TEXT("Widoczność        %d / 4\nCienie             %d / 4\nTekstury            %d / 4\nAntyaliasing        %d / 4\n")
+            TEXT("Efekty             %d / 4\nPost-processing     %d / 4\nRoślinność          %d / 4\nGlobal illumination %d / 4\n")
+            TEXT("Odbicia            %d / 4\nShading             %d / 4"),
+            UserSettings->GetViewDistanceQuality(),
+            UserSettings->GetShadowQuality(),
+            UserSettings->GetTextureQuality(),
+            UserSettings->GetAntiAliasingQuality(),
+            UserSettings->GetVisualEffectQuality(),
+            UserSettings->GetPostProcessingQuality(),
+            UserSettings->GetFoliageQuality(),
+            UserSettings->GetGlobalIlluminationQuality(),
+            UserSettings->GetReflectionQuality(),
+            UserSettings->GetShadingQuality());
+        auto* Details = MakeText(QualityDetails, 10, false, Muted);
+        Details->SetLineHeightPercentage(1.28f);
+        RightColumn->AddChildToVerticalBox(Details);
+        return;
+    }
+
+    if (SettingsSection == 1)
+    {
+        PageTitle->SetText(FText::FromString(TEXT("USTAWIENIA  /  WYDAJNOŚĆ")));
+        CenterColumn->AddChildToVerticalBox(MakeText(TEXT("WYDAJNOŚĆ"), 22, true, TextPrimary))
+            ->SetPadding(FMargin(18, 16, 18, 3));
+        CenterColumn->AddChildToVerticalBox(MakeText(
+            TEXT("PŁYNNOŚĆ, SKALOWANIE I LIMIT KLATEK"), 9, true, Accent))
+            ->SetPadding(FMargin(18, 0, 18, 18));
+
+        auto* ScaleButton = MakeButton(
+            FString::Printf(TEXT("SKALA RENDERU  •  %.0f%%"), ScaleValue), true);
+        ScaleButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleResolutionScale);
+        AddCenterButton(ScaleButton);
+
+        auto* VSyncButton = MakeButton(
+            FString::Printf(TEXT("VSYNC  •  %s"), bVSync ? TEXT("WŁ.") : TEXT("WYŁ.")), bVSync);
+        VSyncButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleVSync);
+        AddCenterButton(VSyncButton);
+
+        auto* DynamicButton = MakeButton(
+            FString::Printf(TEXT("DYNAMICZNA ROZDZIELCZOŚĆ  •  %s"),
+                bDynamicResolution ? TEXT("WŁ.") : TEXT("WYŁ.")), bDynamicResolution);
+        DynamicButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleDynamicResolution);
+        AddCenterButton(DynamicButton);
+
+        auto* LimitButton = MakeButton(FString::Printf(TEXT("LIMIT KLATEK  •  %s"), *LimitLabel));
+        LimitButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleFPSLimit);
+        AddCenterButton(LimitButton);
+
+        auto* FPSButton = MakeButton(
+            FString::Printf(TEXT("LICZNIK FPS  •  %s"), bFPSVisible ? TEXT("WŁ.") : TEXT("WYŁ.")),
+            bFPSVisible);
+        FPSButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleFPSCounter);
+        AddCenterButton(FPSButton);
+
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("METRYKI RENDERU"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 0, 0, 8));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%.0f%%"), ScaleValue), TEXT("SKALA RENDERU"), true))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            LimitLabel, TEXT("LIMIT KLATEK")))->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            bVSync ? TEXT("WŁĄCZONY") : TEXT("WYŁĄCZONY"), TEXT("VSYNC")))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            bDynamicResolution ? TEXT("WŁĄCZONA") : TEXT("WYŁĄCZONA"), TEXT("DYNAMICZNA ROZDZIELCZOŚĆ")))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeText(
+            FString::Printf(TEXT("Zakres skali renderu: %.0f–%.0f%%"), MinScale, MaxScale),
+            10, false, Muted))->SetPadding(FMargin(2, 8, 2, 0));
+        return;
+    }
+
+    SettingsSection = 2;
+    PageTitle->SetText(FText::FromString(TEXT("USTAWIENIA  /  INTERFEJS")));
+    CenterColumn->AddChildToVerticalBox(MakeText(TEXT("INTERFEJS"), 22, true, TextPrimary))
+        ->SetPadding(FMargin(18, 16, 18, 3));
+    CenterColumn->AddChildToVerticalBox(MakeText(
+        TEXT("ANIMACJE, TŁO I DŹWIĘKI MENU"), 9, true, Accent))
+        ->SetPadding(FMargin(18, 0, 18, 18));
 
     auto* MotionButton = MakeButton(
-        FString::Printf(TEXT("ANIMACJE UI: %s"), bReduceMotion ? TEXT("OGRANICZONE") : TEXT("PEŁNE")),
+        FString::Printf(TEXT("ANIMACJE UI  •  %s"), bReduceMotion ? TEXT("OGRANICZONE") : TEXT("PEŁNE")),
         bReduceMotion);
     MotionButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleReduceUIMotion);
-    ActionColumn->AddChildToVerticalBox(MotionButton)->SetPadding(FMargin(0, 0, 0, 7));
+    AddCenterButton(MotionButton);
 
     auto* BlurButton = MakeButton(
-        FString::Printf(TEXT("ROZMYCIE TŁA: %s"), bMenuBlur ? TEXT("WŁ.") : TEXT("WYŁ.")),
+        FString::Printf(TEXT("ROZMYCIE TŁA  •  %s"), bMenuBlur ? TEXT("WŁ.") : TEXT("WYŁ.")),
         bMenuBlur);
     BlurButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleMenuBackgroundBlur);
-    ActionColumn->AddChildToVerticalBox(BlurButton)->SetPadding(FMargin(0, 0, 0, 7));
+    AddCenterButton(BlurButton);
 
     auto* UISoundButton = MakeButton(
-        FString::Printf(TEXT("DŹWIĘKI UI: %s"), bUISounds ? TEXT("WŁ.") : TEXT("WYŁ.")),
+        FString::Printf(TEXT("DŹWIĘKI UI  •  %s"), bUISounds ? TEXT("WŁ.") : TEXT("WYŁ.")),
         bUISounds);
     UISoundButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ToggleUISounds);
-    ActionColumn->AddChildToVerticalBox(UISoundButton);
+    AddCenterButton(UISoundButton);
 
-    const FString Description = FString::Printf(
-        TEXT("TRYB EKRANU\n%s\n\nROZDZIELCZOŚĆ\n%d × %d\n\nSKALA RENDERU\n%.0f%%  (zakres %.0f–%.0f%%)\n\n")
-        TEXT("PRESET JAKOŚCI\n%s\n\nVSYNC\n%s\n\nDYNAMICZNA ROZDZIELCZOŚĆ\n%s\n\n")
-        TEXT("LIMIT KLATEK\n%s\n\nLICZNIK FPS\n%s\n\n")
-        TEXT("ANIMACJE UI\n%s\n\nROZMYCIE TŁA\n%s\n\nDŹWIĘKI UI\n%s\n\n")
-        TEXT("Zmiany są stosowane od razu i zapisywane w GameUserSettings. ")
-        TEXT("Tryb bez ramki może używać rozdzielczości pulpitu niezależnie od wybranego presetu."),
-        *WindowModeLabel(WindowMode),
-        Resolution.X, Resolution.Y,
-        ScaleValue, MinScale, MaxScale,
-        *QualityLabel(Quality),
-        bVSync ? TEXT("Włączony") : TEXT("Wyłączony"),
-        bDynamicResolution ? TEXT("Włączona") : TEXT("Wyłączona"),
-        *LimitLabel,
-        bFPSVisible ? TEXT("Włączony") : TEXT("Wyłączony"),
-        bReduceMotion ? TEXT("Ograniczone") : TEXT("Pełne"),
-        bMenuBlur ? TEXT("Włączone") : TEXT("Wyłączone"),
-        bUISounds ? TEXT("Włączone") : TEXT("Wyłączone"));
-    AddTextPage(TEXT("WYŚWIETLANIE"), Description);
-
-    RightColumn->AddChildToVerticalBox(MakeText(TEXT("SZCZEGÓŁY JAKOŚCI"), 9, true, Accent))
+    RightColumn->AddChildToVerticalBox(MakeText(TEXT("DOSTĘPNOŚĆ UI"), 9, true, Accent))
         ->SetPadding(FMargin(0, 0, 0, 8));
-
-    const FString QualityDetails = FString::Printf(
-        TEXT("Widoczność       %d / 4\nCienie            %d / 4\nTekstury           %d / 4\nAntyaliasing       %d / 4\n")
-        TEXT("Efekty            %d / 4\nPost-processing    %d / 4\nRoślinność         %d / 4\nGlobal illumination %d / 4\n")
-        TEXT("Odbicia            %d / 4\nShading            %d / 4"),
-        UserSettings->GetViewDistanceQuality(),
-        UserSettings->GetShadowQuality(),
-        UserSettings->GetTextureQuality(),
-        UserSettings->GetAntiAliasingQuality(),
-        UserSettings->GetVisualEffectQuality(),
-        UserSettings->GetPostProcessingQuality(),
-        UserSettings->GetFoliageQuality(),
-        UserSettings->GetGlobalIlluminationQuality(),
-        UserSettings->GetReflectionQuality(),
-        UserSettings->GetShadingQuality());
-    auto* Details = MakeText(QualityDetails, 11, false, Muted);
-    Details->SetLineHeightPercentage(1.35f);
-    RightColumn->AddChildToVerticalBox(Details);
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(
+        bReduceMotion ? TEXT("OGRANICZONE") : TEXT("PEŁNE"), TEXT("ANIMACJE"), bReduceMotion))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(
+        bMenuBlur ? TEXT("WŁĄCZONE") : TEXT("WYŁĄCZONE"), TEXT("ROZMYCIE TŁA")))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(
+        bUISounds ? TEXT("WŁĄCZONE") : TEXT("WYŁĄCZONE"), TEXT("DŹWIĘKI UI")))
+        ->SetPadding(FMargin(0, 0, 0, 14));
+    RightColumn->AddChildToVerticalBox(MakeText(
+        TEXT("Opcja ograniczenia animacji wyłącza ruchome przejścia i ambientowe animacje menu."),
+        10, false, Muted));
 }
 
 void UPlayerMenuWidget::TabGame() { SelectTab(0); }
@@ -1723,6 +1787,9 @@ void UPlayerMenuWidget::TabJournal() { SelectTab(3); }
 void UPlayerMenuWidget::TabMap() { SelectTab(4); }
 void UPlayerMenuWidget::TabStats() { SelectTab(5); }
 void UPlayerMenuWidget::TabSettings() { SelectTab(6); }
+void UPlayerMenuWidget::SettingsDisplay() { SettingsSection = 0; Refresh(); }
+void UPlayerMenuWidget::SettingsPerformance() { SettingsSection = 1; Refresh(); }
+void UPlayerMenuWidget::SettingsInterface() { SettingsSection = 2; Refresh(); }
 
 void UPlayerMenuWidget::Resume()
 {

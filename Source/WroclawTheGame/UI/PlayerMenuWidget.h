@@ -44,6 +44,7 @@ private:
     UPROPERTY() TObjectPtr<class AWTG_CharacterCreator> Studio;
 
     int32 ActiveTab = 0;
+    int32 SettingsSection = 0;
     int32 PendingConfirmation = 0;
     float ConfirmationSecondsRemaining = 0.0f;
     float ConfirmationAnimationTime = 0.18f;
@@ -87,6 +88,9 @@ private:
     UFUNCTION() void TabMap();
     UFUNCTION() void TabStats();
     UFUNCTION() void TabSettings();
+    UFUNCTION() void SettingsDisplay();
+    UFUNCTION() void SettingsPerformance();
+    UFUNCTION() void SettingsInterface();
 
     UFUNCTION() void Resume();
     UFUNCTION() void NewGame();
