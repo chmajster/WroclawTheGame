@@ -1,3 +1,25 @@
+## Menu polish — PR #65 — 2026-09-19
+
+Status: IN PROGRESS (draft PR).
+
+Wykonane w tej fali:
+- nowy context chrome: numer strony 01–07, wskaźnik sesji, zegar/data i separator stopki,
+- keycapy skrótów w stopce,
+- numerowane zakładki i mocniejsza hierarchia aktywnej sekcji,
+- accent rail we wspólnych kartach statusowych,
+- testy regresyjne dla powyższych elementów.
+
+Następny konkretny krok:
+1. dopracować nagłówki/separatory paneli i wizualną hierarchię ustawień,
+2. wykonać lokalne/static testy `Tests/test_player_menu.py`,
+3. sprawdzić diff pod kątem focus/keyboard/gamepad i reduced-motion,
+4. zaktualizować PR #65; pozostawić draft do czasu odbioru w Unreal.
+
+Luki weryfikacyjne:
+- runtime UE 5.8 nie został jeszcze uruchomiony dla tego PR,
+- brak odbioru 16:9 / 16:10 / ultrawide / 4K,
+- brak wizualnego QA z blur off i reduced motion.
+
 # Full game expansion — implementation state
 
 Updated: 2026-09-18
