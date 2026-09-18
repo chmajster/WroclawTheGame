@@ -643,6 +643,16 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_unavailable_states_are_player_facing_not_engine_debug(self):
+        for token in (
+            'TEXT("PODGLĄD NIEDOSTĘPNY")',
+            "Pozostałe informacje profilu są nadal dostępne.",
+            "Nie udało się wczytać ustawień obrazu.",
+            "Bieżące ustawienia gry nie zostały zmienione.",
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertNotIn("Nie udało się pobrać UGameUserSettings.", self.cpp)
+
     def test_character_preview_keeps_camera_and_lighting_controls(self):
         for token in (
             "PreviewFullBody", "PreviewUpperBody", "PreviewFace",
