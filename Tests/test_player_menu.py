@@ -220,6 +220,18 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_settings_have_safe_restore_defaults_flow(self):
+        for token in (
+            'TEXT("PRZYWRÓĆ DOMYŚLNE")',
+            "ResetSettings()",
+            "Preferences->ResetToDefaults()",
+            "SetOverallScalabilityLevel(3)",
+            "SetResolutionScaleValueEx(100.0f)",
+            'TEXT("Tryb ekranu i rozdzielczość pozostaną bez zmian.")',
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertIn("void ResetToDefaults();", self.perf)
+
     def test_settings_are_split_into_modern_sections(self):
         for token in (
             'TEXT("KATEGORIE")',
