@@ -56,6 +56,7 @@ class WROCLAWTHEGAME_API UCityGameplaySubsystem : public UTickableWorldSubsystem
     UPROPERTY() TObjectPtr<UCityProgressSave> LoadedSave;
     bool bActive = false, bWriteBlocked = false;
     double NextSaveAttempt = 0;
+    double NextSecurityUpdate = 0;
     bool Persist(const FVector &Anchor, bool IncludeVehicle = true);
     void Apply(class ACityActivity *Actor, class APawn *Player, float DeltaTime, bool bInteract);
 };
