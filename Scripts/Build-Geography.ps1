@@ -5,13 +5,15 @@ param(
     [switch]$Package,
     [switch]$City,
     [switch]$Campaign,
-    [switch]$OfficialBuildings
+    [switch]$OfficialBuildings,
+    [string]$OfficialBuildingsArchive
 )
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
 $Root=Split-Path $PSScriptRoot -Parent
 $Project=Join-Path $Root 'WroclawTheGame.uproject'
 if($Campaign -and -not $City){throw '-Campaign requires -City because campaign anchors resolve against the combined city GIS dataset.'}
+if($OfficialBuildingsArchive){$OfficialBuildings=$true}
 if($OfficialBuildings -and -not $City){throw '-OfficialBuildings requires -City.'}
 & (Join-Path $PSScriptRoot 'Assert-UnrealVersion.ps1') -EngineRoot $EngineRoot -Project $Project -ExpectedVersion '5.8'
 $Editor=Join-Path $EngineRoot 'Engine\Binaries\Win64\UnrealEditor-Cmd.exe'
@@ -22,7 +24,9 @@ if($City){
         $OfficialData=Join-Path $Root 'Saved\OfficialBuildings3D'
         & $Python (Join-Path $PSScriptRoot 'gis\build_city.py') --output $CityData
         if($LASTEXITCODE -ne 0){throw 'City GIS preparation for official buildings failed'}
-        & $Python (Join-Path $PSScriptRoot 'gis\fetch_official_buildings_3d.py') --city-data $CityData --output $OfficialData --require-all
+        $OfficialArgs=@('--city-data',$CityData,'--output',$OfficialData,'--require-all')
+        if($OfficialBuildingsArchive){$OfficialArgs+=@('--archive',$OfficialBuildingsArchive)}
+        & $Python (Join-Path $PSScriptRoot 'gis\fetch_official_buildings_3d.py') @OfficialArgs
         if($LASTEXITCODE -ne 0){throw 'Official Wroclaw 3D building download/conversion failed'}
         & $Python (Join-Path $PSScriptRoot 'gis\build_city.py') --output $CityData --meshes --official-catalog (Join-Path $OfficialData 'catalog.json')
         if($LASTEXITCODE -ne 0){throw 'City GIS mesh build with official buildings failed'}
