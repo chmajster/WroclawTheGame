@@ -1,3 +1,13 @@
+## 2026-09-18 — pełne ustawienia obrazu
+
+- Rozbudowano nowoczesną zakładkę USTAWIENIA o tryb pełnoekranowy, bezramkowy i okienkowy.
+- Dodano przełączanie typowych rozdzielczości od 1280×720 do 3840×2160 z natychmiastowym zastosowaniem i zapisem.
+- Dodano presety jakości od niskiej do kinowej oraz szczegółowy podgląd poziomów jakości renderingu.
+- Dodano skalę renderu 50/67/75/85/100%, dynamiczną rozdzielczość, VSync, licznik FPS i cykliczny limit FPS.
+- Ekran ustawień został uproszczony do jednego zwartego panelu sterowania i dwóch paneli informacyjnych, bez przepełniania menu.
+- Zmiany korzystają bezpośrednio z UGameUserSettings UE 5.8 i są zapisywane po zastosowaniu.
+- Końcowy odbiór nadal wymaga kompilacji i sprawdzenia zmian trybu ekranu na docelowym Windows x64.
+
 ## 2026-09-18 — nowoczesne menu gry
 
 - Przebudowano centrum gracza na skalowany layout 1600×900 z zachowaniem proporcji na niższych rozdzielczościach, ultrawide i 4K.
