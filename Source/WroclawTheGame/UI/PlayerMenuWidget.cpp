@@ -284,11 +284,24 @@ void UPlayerMenuWidget::BuildShell()
                              TEXT("DZIENNIK"), TEXT("MAPA"), TEXT("STATYSTYKI"), TEXT("USTAWIENIA")};
     for (int32 Index = 0; Index < 7; ++Index)
     {
-        auto* Button = MakeButton(Labels[Index]);
-        auto* Slot = Top->AddChildToHorizontalBox(Button);
+        auto* Tab = WidgetTree->ConstructWidget<UVerticalBox>();
+        auto* Slot = Top->AddChildToHorizontalBox(Tab);
         Slot->SetPadding(FMargin(3, 1, 3, 1));
         Slot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+        auto* Button = MakeButton(Labels[Index]);
+        auto* ButtonSlot = Tab->AddChildToVerticalBox(Button);
+        ButtonSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+        auto* IndicatorSize = WidgetTree->ConstructWidget<USizeBox>();
+        IndicatorSize->SetHeightOverride(2.0f);
+        auto* Indicator = WidgetTree->ConstructWidget<UBorder>();
+        Indicator->SetBrushColor(Accent);
+        IndicatorSize->AddChild(Indicator);
+        Tab->AddChildToVerticalBox(IndicatorSize)->SetPadding(FMargin(8, 4, 8, 0));
+
         TabButtons.Add(Button);
+        TabIndicators.Add(Indicator);
     }
 
     TabButtons[0]->OnClicked.AddDynamic(this, &UPlayerMenuWidget::TabGame);
@@ -305,6 +318,10 @@ void UPlayerMenuWidget::BuildShell()
 
     PageTitle = MakeText(TEXT(""), 11, true, Accent);
     ContextBar->AddChildToHorizontalBox(PageTitle)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+    ContextStatus = MakeText(TEXT(""), 9, true, Muted);
+    ContextStatus->SetJustification(ETextJustify::Right);
+    ContextBar->AddChildToHorizontalBox(ContextStatus)->SetPadding(FMargin(12, 0, 18, 0));
 
     auto* ContextHint = MakeText(TEXT("Q/E  L1/R1  ZAKŁADKI    •    ENTER/A  WYBIERZ    •    ESC/B  WSTECZ"), 10, true, Muted);
     ContextHint->SetJustification(ETextJustify::Right);
@@ -378,6 +395,7 @@ void UPlayerMenuWidget::Refresh()
     if (RightScroll) RightScroll->ScrollToStart();
     ActionButtons.Reset();
     UpdateTabStyle();
+    UpdateContextStatus();
 
     bCollectActionButtons = true;
     switch (ActiveTab)
@@ -429,7 +447,33 @@ void UPlayerMenuWidget::UpdateTabStyle()
 
         if (auto* Text = Cast<UTextBlock>(Button->GetContent()))
             Text->SetColorAndOpacity(FSlateColor(bActive ? Background : TextPrimary));
+
+        if (TabIndicators.IsValidIndex(Index) && TabIndicators[Index])
+        {
+            TabIndicators[Index]->SetBrushColor(bActive ? Accent : Divider);
+            TabIndicators[Index]->SetRenderOpacity(bActive ? 1.0f : 0.24f);
+        }
     }
+}
+
+void UPlayerMenuWidget::UpdateContextStatus()
+{
+    if (!ContextStatus)
+        return;
+
+    auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
+    auto* City = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+    const bool bCity = City && City->IsActive();
+    const bool bInGame = Mission && Mission->bInGame;
+    const bool bHasSave = bCity || (Mission && Mission->HasSave());
+
+    const FString Mode = bCity ? TEXT("OTWARTY ŚWIAT") : TEXT("KAMPANIA");
+    const FString Session = bInGame ? TEXT("SESJA AKTYWNA") : TEXT("MENU GŁÓWNE");
+    const FString Save = bHasSave ? TEXT("ZAPIS DOSTĘPNY") : TEXT("BRAK ZAPISU");
+
+    ContextStatus->SetText(FText::FromString(FString::Printf(
+        TEXT("%s  •  %s  •  %s"), *Mode, *Session, *Save)));
+    ContextStatus->SetColorAndOpacity(FSlateColor(bHasSave ? Accent : Muted));
 }
 
 void UPlayerMenuWidget::FocusPrimaryAction()
