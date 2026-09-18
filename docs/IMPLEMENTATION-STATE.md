@@ -1,7 +1,7 @@
 # Full game expansion — implementation state
 
 Updated: 2026-09-18
-Working branch: `codex/full-game-expansion-pass-1`
+Working branch: `codex/official-wroclaw-buildings-3d`
 
 This file is the hand-off point for long-running implementation of the full WroclawTheGame expansion. Update it before ending every implementation pass. Do not mark runtime work as complete without an Unreal/Windows verification artifact.
 
@@ -18,6 +18,7 @@ This file is the hand-off point for long-running implementation of the full Wroc
 - [x] PR body updated with exact code scope, verification limits and remaining runtime gates.
 
 ### Last completed code change
+- Expanded official GUGiK CityGML ingestion from six named landmarks to every safely footprint-matched building inside active game sectors. Results are grouped into 128 m mesh cells, matching OSM blockouts are excluded, and six central landmarks remain the manual hero-QA set. Unreal visual/performance QA remains pending.
 - Reconciled PR #8 with the current `main` asset-production pipeline while preserving the UE 5.8 guard and the full-game GIS/AI changes.
 - Campaign GIS migration, six vehicle scenarios, first pursuit/roadblock runtime and position-aware phone map are present in code but remain subject to Unreal/Windows acceptance.
 
@@ -60,7 +61,7 @@ Status legend: `DONE`, `PARTIAL`, `NOT STARTED`, `REQUIRES UE`.
 | P1 | Puzzle depth | PARTIAL | Spatial/electrical/CCTV/cipher examples using reusable framework |
 | P1 | Multi-district quests | NOT STARTED | One quest traverses multiple streamed districts and survives save/load |
 | P1 | Interiors | PARTIAL | Replace isolated prototype rooms with building-linked gameplay interiors |
-| P1 | Wroclaw landmarks | NOT STARTED | Hand-authored recognizable landmark pass with licensed assets |
+| P1 | Wroclaw landmarks | PARTIAL | City-wide official GUGiK LoD1 import is wired for active sectors and six central landmarks are tracked for hero QA; run real download + UE bake, measure match coverage, then perform visual/LOD/collision QA |
 | P1 | City audio | PARTIAL | Exterior/interior ambience, traffic/trams, occlusion/reverb and event audio |
 | P1 | Dialogue | NOT STARTED | Data-driven conversations with state/quest consequences |
 | P1 | Cutscenes | NOT STARTED | Intro + key discovery + chapter ending sequences |

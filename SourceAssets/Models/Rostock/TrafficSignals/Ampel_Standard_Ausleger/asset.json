@@ -1,0 +1,21 @@
+{
+  "id": "rostock-traffic-ampel-standard-ausleger",
+  "name": "Standard overhead traffic light",
+  "provider": "Rostock 3DModels",
+  "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/obj/Ampel_Standard_Ausleger.obj",
+  "license": "CC0-1.0",
+  "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+  "intended_use": "Standard overhead vehicle traffic light for authored Wroclaw intersections.",
+  "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Ampel_Standard_Ausleger/obj/Ampel_Standard_Ausleger.obj",
+  "source_git_blob_sha1": "eed7d62a8aed089de56f0b87b95dd36198c68741",
+  "companion_mtl": "SourceAssets/Models/Rostock/TrafficSignals/Ampel_Standard_Ausleger/obj/Ampel_Standard_Ausleger.mtl",
+  "texture_source_git_blob_sha1": {
+    "gelb.jpg": "b1ccdd49c3951d3f6ca7c04c98cf84f37a8b10b3",
+    "gruen.jpg": "24bcfeb2a9e20f732dd6806c5a85fc27f85830a6",
+    "rot.jpg": "2d256a45000b3607ac9280ef6206b4b1fbfd1cd5",
+    "RAL_7004_Signalgrau.jpg": "16c611b3dd616809f107c9d374d76a3a44cd7b50",
+    "RAL_9005_Tiefschwarz.jpg": "e249cd3bf41309b69cbd7b188feac9a57918a243",
+    "Kontrastblende.jpg": "677b5e1cd4e6a492e8dbd8e8e23083449bbd3527",
+    "galvanized-metal-texture-seamless-hr.jpg": "22b8a917f975d2eca9de937d102150a7121ffc8b"
+  }
+}

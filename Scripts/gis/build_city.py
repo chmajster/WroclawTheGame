@@ -82,7 +82,7 @@ def connectivity(data, catalog, owners):
     return result, anchors, seed
 
 
-def generate(output=DEFAULT_OUTPUT, catalog_path=ROOT/'Data/city.json', evidence_path=None):
+def generate(output=DEFAULT_OUTPUT, catalog_path=ROOT/'Data/city.json', evidence_path=None, official_catalog_path=None):
     catalog = json.loads(catalog_path.read_text(encoding='utf-8')); validate_catalog(catalog)
     data, geo = build(output=output, name=catalog['dataset'], origin=catalog['origin_projected_m'])
     structures=json.loads((ROOT/'Data/city_structures.json').read_text())
@@ -128,6 +128,10 @@ def generate(output=DEFAULT_OUTPUT, catalog_path=ROOT/'Data/city.json', evidence
     for edge in data['road_graph']['edges']:
         if edge['foot']: stats[owners[edge['from']]]['foot_edges'] += 1
     gameplay=json.loads((ROOT/'Data/city_gameplay.json').read_text(encoding='utf-8'))
+    official_catalog=None
+    if official_catalog_path:
+        official_catalog=json.loads(Path(official_catalog_path).read_text(encoding='utf-8'))
+        if official_catalog.get('schema_version')!=1:raise ValueError('Unsupported official building catalogue')
     content=generate_content(data,catalog,gameplay,owners)
     connections, anchors, seed = connectivity(data, catalog, owners)
     pipeline = hashlib.sha256()
@@ -135,7 +139,9 @@ def generate(output=DEFAULT_OUTPUT, catalog_path=ROOT/'Data/city.json', evidence
     paths += list((ROOT/'Config').glob('*.ini')) + [ROOT/'Scripts/prepare_geography.py', ROOT/'WroclawTheGame.uproject']
     for path in sorted(paths):
         pipeline.update(path.relative_to(ROOT).as_posix().encode()); pipeline.update(path.read_bytes())
-    digest = fingerprint(catalog, [*data['sources'], structures, gameplay, {'pipeline_sha256': pipeline.hexdigest()}])
+    digest_sources=[*data['sources'], structures, gameplay, {'pipeline_sha256': pipeline.hexdigest()}]
+    if official_catalog: digest_sources.append({'official_buildings':official_catalog})
+    digest = fingerprint(catalog, digest_sources)
     evidence = json.loads(evidence_path.read_text()) if evidence_path else None
     report = evaluate(catalog, stats, connections, digest, evidence)
     sector_link_modes = {}
@@ -176,10 +182,15 @@ if __name__ == '__main__':
     parser.add_argument('--evidence', type=Path)
     parser.add_argument('--meshes', action='store_true')
     parser.add_argument('--require-playable', action='store_true')
-    args = parser.parse_args(); data, geo, report = generate(args.output, evidence_path=args.evidence)
+    parser.add_argument('--official-catalog', type=Path)
+    args = parser.parse_args(); data, geo, report = generate(args.output, evidence_path=args.evidence, official_catalog_path=args.official_catalog)
     print(json.dumps({k:v for k,v in report.items() if k != 'sectors'}, indent=2))
     if args.require_playable and any(s['wave'] == 1 and s['status'] not in ('Playable','Detailed','Final') for s in report['sectors']):
         raise SystemExit('Wave 1 is not playable: inspect coverage.json blockers')
     if args.meshes:
         from build_meshes import generate as meshes
-        print('City mesh cells:', meshes(args.output/'Meshes', data, geo))
+        excluded=[]
+        if args.official_catalog:
+            official=json.loads(args.official_catalog.read_text(encoding='utf-8'))
+            excluded=[item['replaced_feature_id'] for item in official.get('buildings',[]) if item.get('status')=='generated' and item.get('replaced_feature_id')]
+        print('City mesh cells:', meshes(args.output/'Meshes', data, geo, excluded))

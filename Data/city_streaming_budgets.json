@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "note": "Initial engineering budgets. They are constraints for planning, not measured UE 5.8 performance results.",
+  "cell_size_m": 128,
+  "quality_cost_triangles": {
+    "hero": 750000,
+    "detailed": 180000,
+    "standard": 45000,
+    "background": 12000,
+    "missing": 12000
+  },
+  "rings": {
+    "1": {
+      "full_detail_radius_m": 350,
+      "hlod_radius_m": 900,
+      "background_radius_m": 1800,
+      "max_estimated_visible_triangles": 12000000,
+      "max_full_detail_buildings": 120,
+      "max_hero_buildings": 12,
+      "hlod_cluster_target_m": 128
+    },
+    "2": {
+      "full_detail_radius_m": 260,
+      "hlod_radius_m": 750,
+      "background_radius_m": 1500,
+      "max_estimated_visible_triangles": 8500000,
+      "max_full_detail_buildings": 90,
+      "max_hero_buildings": 8,
+      "hlod_cluster_target_m": 160
+    },
+    "3": {
+      "full_detail_radius_m": 190,
+      "hlod_radius_m": 600,
+      "background_radius_m": 1200,
+      "max_estimated_visible_triangles": 6000000,
+      "max_full_detail_buildings": 60,
+      "max_hero_buildings": 5,
+      "hlod_cluster_target_m": 192
+    }
+  },
+  "representation_by_distance": [
+    {
+      "max_ratio": 1,
+      "representation": "selected_full"
+    },
+    {
+      "max_ratio": 2.5,
+      "representation": "hlod"
+    },
+    {
+      "max_ratio": 5,
+      "representation": "background_proxy"
+    },
+    {
+      "max_ratio": null,
+      "representation": "unloaded"
+    }
+  ]
+}

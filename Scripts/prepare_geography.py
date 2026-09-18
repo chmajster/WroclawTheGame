@@ -33,6 +33,8 @@ def prepare():
     city_input=os.environ.get('WTG_CITY_INPUT')
     campaign_input=os.environ.get('WTG_CAMPAIGN_GIS_INPUT')
     campaign_dir=Path(campaign_input) if campaign_input else None
+    official_input=os.environ.get('WTG_OFFICIAL_BUILDINGS_INPUT')
+    official_dir=Path(official_input) if official_input else None
     input_dir=Path(city_input) if city_input else ROOT/'Data/processed/wroclaw'
     data=json.loads((input_dir/'sector.json').read_text(encoding='utf-8'))
     mesh_dir=input_dir/'Meshes' if city_input else ROOT/'Saved/GISMeshes'
@@ -75,6 +77,36 @@ def prepare():
         actor.set_actor_label('GIS_'+name);component=actor.get_component_by_class(unreal.StaticMeshComponent);component.set_static_mesh(mesh)
         if record['kind']=='water':component.set_collision_profile_name('NoCollision')
         if hlod:actor.set_editor_property('hlod_layer',hlod)
+    if official_dir:
+        official_catalog=json.loads((official_dir/'catalog.json').read_text(encoding='utf-8'))
+        if official_catalog.get('schema_version')!=1:
+            raise RuntimeError('Unsupported official building catalogue')
+        expected_origin=[float(v) for v in data['origin_projected_m']]
+        actual_origin=[float(v) for v in official_catalog.get('city_origin_projected_m',[])]
+        if len(actual_origin)!=3 or any(abs(a-b)>0.001 for a,b in zip(expected_origin,actual_origin)):
+            raise RuntimeError('Official building catalogue uses a different GIS origin')
+        official_mesh_dir=official_dir/'Meshes'
+        for filename in json.loads((official_mesh_dir/'meshes.json').read_text(encoding='utf-8')):
+            record=json.loads((official_mesh_dir/filename).read_text(encoding='utf-8'))
+            name=Path(filename).stem
+            path='/Game/Generated/OfficialBuildings/'+name
+            if unreal.EditorAssetLibrary.does_asset_exist(path) and not unreal.EditorAssetLibrary.delete_asset(path):
+                raise RuntimeError('Cannot replace official building mesh '+name)
+            mesh=unreal.GeoMeshLibrary.bake_mesh(
+                path,[unreal.Vector(*v) for v in record['vertices']],record['triangles'])
+            if not mesh:raise RuntimeError('Official building mesh bake failed '+name)
+            surface_name=record.get('material','Brick')
+            material=unreal.load_asset('/Game/SurfaceQuality/Instances/MI_'+surface_name) or unreal.load_asset('/Game/Generated/M_'+surface_name)
+            if material:mesh.set_material(0,material)
+            if not unreal.EditorAssetLibrary.save_loaded_asset(mesh,False):
+                raise RuntimeError('Official building mesh save failed '+name)
+            actor=actors.spawn_actor_from_class(unreal.StaticMeshActor,unreal.Vector(*record['origin']))
+            if not actor:raise RuntimeError('Cannot spawn official building '+name)
+            actor.set_actor_label('OfficialBuilding_'+name)
+            component=actor.get_component_by_class(unreal.StaticMeshComponent)
+            component.set_static_mesh(mesh)
+            component.set_collision_profile_name('BlockAll')
+            if hlod:actor.set_editor_property('hlod_layer',hlod)
     if city_input:
         path='/Game/Generated/CityDefinition';definition=unreal.load_asset(path)
         if not definition:

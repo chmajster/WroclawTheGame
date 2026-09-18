@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "tenement": {
+      "fallback_shapes": [
+        "gabled",
+        "hipped"
+      ],
+      "roof_height_ratio": 0.18,
+      "chimney_area_m2": 220,
+      "dormer_spacing_m": 8
+    },
+    "estate": {
+      "fallback_shapes": [
+        "flat"
+      ],
+      "roof_height_ratio": 0.05,
+      "chimney_area_m2": 450,
+      "dormer_spacing_m": 0
+    },
+    "villa": {
+      "fallback_shapes": [
+        "gabled",
+        "hipped"
+      ],
+      "roof_height_ratio": 0.22,
+      "chimney_area_m2": 180,
+      "dormer_spacing_m": 7
+    },
+    "mixed": {
+      "fallback_shapes": [
+        "flat",
+        "gabled",
+        "hipped"
+      ],
+      "roof_height_ratio": 0.15,
+      "chimney_area_m2": 280,
+      "dormer_spacing_m": 9
+    }
+  },
+  "max_chimneys": 12,
+  "max_dormers_per_edge": 8
+}

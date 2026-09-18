@@ -5,16 +5,12 @@
 #include "Content/WorldCatalog.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
-#include "UObject/ConstructorHelpers.h"
-#include "Engine/StaticMesh.h"
-#include "Materials/MaterialInterface.h"
 #include "Engine/DamageEvents.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISense_Sight.h"
 #include "Perception/AISense_Hearing.h"
-#include "Components/StaticMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Character/SliceCharacter.h"
@@ -34,13 +30,6 @@ ASliceEnemy::ASliceEnemy()
     GetCharacterMovement()->MaxWalkSpeed = 210;
     GetCharacterMovement()->bOrientRotationToMovement = true;
     bUseControllerRotationYaw = false;
-    auto *Body = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ProxyBody"));
-    Body->SetupAttachment(RootComponent);
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
-    Body->SetStaticMesh(Cube.Object);
-    Body->SetRelativeScale3D(FVector(0.45, 0.5, 1.75));
-    Body->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    Body->SetCanEverAffectNavigation(false);
 }
 void ASliceEnemy::BeginPlay()
 {
@@ -69,8 +58,6 @@ void ASliceEnemy::BeginPlay()
         SetActorEnableCollision(false);
     }
 
-    if (auto *M = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Generated/M_Enemy.M_Enemy")))
-        FindComponentByClass<UStaticMeshComponent>()->SetMaterial(0, M);
 }
 float ASliceEnemy::TakeDamage(float Damage, const FDamageEvent &Event, AController *EventInstigator,
                               AActor *Causer)

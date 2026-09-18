@@ -7,7 +7,6 @@
 #include "Engine/SkeletalMesh.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
-#include "UObject/ConstructorHelpers.h"
 
 ACityAmbientAgent::ACityAmbientAgent()
 {
@@ -17,8 +16,6 @@ ACityAmbientAgent::ACityAmbientAgent()
     Body->SetCollisionProfileName(TEXT("BlockAllDynamic"));
     Visual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Visual"));
     Visual->SetupAttachment(Body);
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
-    Visual->SetStaticMesh(Cube.Object);
     Visual->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     Visual->SetCanEverAffectNavigation(false);
     PedestrianVisual = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("PedestrianVisual"));

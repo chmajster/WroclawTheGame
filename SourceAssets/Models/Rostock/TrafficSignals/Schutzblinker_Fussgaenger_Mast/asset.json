@@ -1,0 +1,11 @@
+{
+  "id": "rostock-traffic-schutzblinker-fussgaenger-mast",
+  "name": "Pedestrian warning flasher mast",
+  "provider": "Rostock 3DModels",
+  "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Schutzblinker_Fussgaenger_Mast.glb",
+  "license": "CC0-1.0",
+  "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+  "intended_use": "Pedestrian warning-signal variant for authored intersection safety infrastructure.",
+  "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Schutzblinker_Fussgaenger_Mast/Schutzblinker_Fussgaenger_Mast.glb",
+  "source_git_blob_sha1": "24d8e548365bfc5e69a4c76a116906e1bd06cda8"
+}

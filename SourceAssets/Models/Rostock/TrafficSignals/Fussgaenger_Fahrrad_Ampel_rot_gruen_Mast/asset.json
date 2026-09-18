@@ -1,0 +1,11 @@
+{
+  "id": "rostock-traffic-fussgaenger-fahrrad-ampel-rot-gruen-mast",
+  "name": "Pedestrian/bicycle traffic light — red/green",
+  "provider": "Rostock 3DModels",
+  "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Fussgaenger_Fahrrad_Ampel_rot_gruen_Mast.glb",
+  "license": "CC0-1.0",
+  "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+  "intended_use": "Combined pedestrian and bicycle signal for authored crossings and cycle routes.",
+  "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Fussgaenger_Fahrrad_Ampel_rot_gruen_Mast/Fussgaenger_Fahrrad_Ampel_rot_gruen_Mast.glb",
+  "source_git_blob_sha1": "2c24bd5c523e993cd7cd1674a83ea6ba359f52a4"
+}
