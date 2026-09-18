@@ -463,5 +463,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/metal_trash_can/metal_trash_can_1k.fbx"
+  },
+  {
+    "slug": "trashbag",
+    "name": "Trashbag",
+    "intended_use": "Street/alley/courtyard clutter.",
+    "source_page": "https://polyhaven.com/a/trashbag",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Benny Weimer": "All"
+    },
+    "category": "Containers & Storage/Bags/Waste Bags",
+    "dimensions_mm": [
+      528.0700623989105,
+      462.893009185791,
+      574.9993845820427
+    ],
+    "files_hash": "d291da0b535dffda7f7262b5e9210c93892576f7",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/trashbag/trashbag_1k.fbx"
   }
 ]
