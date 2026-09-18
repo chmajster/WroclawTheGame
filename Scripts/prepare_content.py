@@ -96,7 +96,8 @@ def prepare():
             actor=spawn(unreal.StaticMeshActor,record['position'],record['id'])
             component=actor.get_component_by_class(unreal.StaticMeshComponent)
             component.set_static_mesh(cube)
-            component.set_material(0,unreal.load_asset('/Game/Generated/M_'+record['material']))
+            surface=unreal.load_asset('/Game/SurfaceQuality/Instances/MI_'+record['material'])
+            component.set_material(0,surface or unreal.load_asset('/Game/Generated/M_'+record['material']))
             actor.set_editor_property('hlod_layer',hlod)
             actor.set_actor_scale3d(unreal.Vector(*[v/100 for v in record['size']]))
         elif kind=='light':

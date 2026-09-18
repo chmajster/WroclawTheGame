@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
+#include "Character/CharacterAppearanceDefinition.h"
 #include "SliceSave.generated.h"
 USTRUCT()
 struct FWTGNPCSnapshot
@@ -15,6 +16,7 @@ class WROCLAWTHEGAME_API USliceSave : public USaveGame
     GENERATED_BODY()
   public:
     UPROPERTY(SaveGame) int32 Version = 3;
+    UPROPERTY(SaveGame) FCharacterCustomizationSaveData CharacterCustomization;
     UPROPERTY(SaveGame) int32 Variant = 0;
     UPROPERTY(SaveGame) FString WorldPayload;
     UPROPERTY(SaveGame) TMap<FString, FWTGNPCSnapshot> NPCs;

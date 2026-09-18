@@ -44,7 +44,8 @@ class WROCLAWTHEGAME_API USliceMission : public UGameInstanceSubsystem
     FString AchievementsText() const;
     FVector SpawnPoint() const
     {
-        return Anchor;
+        // Checkpoints retain their legacy 90 cm reference half-height.
+        return Anchor + FVector(0, 0, 10);
     }
     void UpdateAchievements();
 

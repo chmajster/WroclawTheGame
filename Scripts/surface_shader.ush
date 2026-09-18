@@ -1,0 +1,68 @@
+// Source of the generated UE Custom expression. Cm-based, triplanar environment projection.
+// No lighting in albedo. Vertex paint: R dirt, G wear, B water shelter, A runoff.
+// White (unpainted) vertices add no authored wear/runoff.
+struct SurfaceSampling
+{
+    float3 normal(float4 v)
+    {
+        float2 xy = v.xy * 2 - 1;
+        return float3(xy, sqrt(saturate(1-dot(xy,xy))));
+    }
+};
+SurfaceSampling s;
+float3 n = normalize(GeometricNormal);
+float3 w = pow(abs(n), 4);
+w /= max(w.x+w.y+w.z, .0001);
+float3 p = Position / max(TileSizeCm, 1);
+float2 a = p.yz, b = p.xz, c = p.xy;
+float3 base;
+float3 packed;
+float3 detail;
+if (UseUV > .5)
+{
+    a = UV * UVScale;
+    base = Texture2DSample(Albedo, AlbedoSampler, a).rgb;
+    packed = Texture2DSample(ARM, ARMSampler, a).rgb;
+    detail = s.normal(Texture2DSample(NormalMap, NormalMapSampler, a));
+    float3 micro = s.normal(Texture2DSample(DetailNormal, DetailNormalSampler, a*DetailTiling));
+    detail = normalize(float3(detail.xy*NormalStrength + micro.xy*DetailStrength, detail.z));
+}
+else
+{
+    base = Texture2DSample(Albedo, AlbedoSampler, a).rgb*w.x
+         + Texture2DSample(Albedo, AlbedoSampler, b).rgb*w.y
+         + Texture2DSample(Albedo, AlbedoSampler, c).rgb*w.z;
+    packed = Texture2DSample(ARM, ARMSampler, a).rgb*w.x
+           + Texture2DSample(ARM, ARMSampler, b).rgb*w.y
+           + Texture2DSample(ARM, ARMSampler, c).rgb*w.z;
+    float3 nx = s.normal(Texture2DSample(NormalMap, NormalMapSampler, a));
+    float3 ny = s.normal(Texture2DSample(NormalMap, NormalMapSampler, b));
+    float3 nz = s.normal(Texture2DSample(NormalMap, NormalMapSampler, c));
+    nx.xy *= NormalStrength; ny.xy *= NormalStrength; nz.xy *= NormalStrength;
+    float fade = saturate(1-distance(CameraPosition,Position)/DetailFadeCm);
+    nx.xy += s.normal(Texture2DSample(DetailNormal, DetailNormalSampler, a*DetailTiling)).xy*DetailStrength*fade;
+    ny.xy += s.normal(Texture2DSample(DetailNormal, DetailNormalSampler, b*DetailTiling)).xy*DetailStrength*fade;
+    nz.xy += s.normal(Texture2DSample(DetailNormal, DetailNormalSampler, c*DetailTiling)).xy*DetailStrength*fade;
+    // Reorient perturbations around the actual vertex normal, preserving smooth geometry.
+    float3 perturb = float3(0,nx.x,nx.y)*w.x + float3(ny.x,0,ny.y)*w.y + float3(nz.x,nz.y,0)*w.z;
+    detail = normalize(n + perturb - n*dot(n,perturb));
+}
+float macro = sin(Position.x*.0017+sin(Position.y*.0021))*sin(Position.z*.0023+Position.y*.0011);
+float ground = saturate(1-max(0,Position.z-GroundLevelCm)/max(DirtHeightCm,1));
+float vertical = 1-abs(n.z);
+float dirt = saturate(DirtAmount*(ground*vertical + (1-VertexMask.r)));
+float runoff = RainStreakAmount*(1-VertexMask.a)*vertical;
+float wear = saturate(WearAmount*(1-VertexMask.g));
+float water = saturate(Wetness*WeatherExposure*VertexMask.b*(.3+.7*saturate(n.z)));
+float rust = saturate(OxidationAmount*(1-VertexMask.g));
+base *= Tint.rgb * (1+macro*ColorVariation);
+base = lerp(base,base*float3(.52,.48,.39),saturate(dirt+runoff));
+base = lerp(base,base*1.08,wear);
+base = lerp(base,float3(.13,.046,.018),rust);
+base *= lerp(1,.64,water);
+RoughnessOut = clamp(packed.g*RoughnessScale + macro*RoughnessVariation + dirt*.09 + rust*.25 - wear*.08,.06,.98);
+RoughnessOut = lerp(RoughnessOut,max(.09,RoughnessOut*.25),water);
+MetallicOut = saturate(packed.b*(1-rust));
+AOOut = packed.r;
+NormalOut = detail;
+return clamp(base,0,.94);

@@ -1,9 +1,11 @@
 #include "Geography/GeoPreviewGameMode.h"
+#include "World/SurfaceQualityDirector.h"
 #include "Systems/CityGameplaySubsystem.h"
 #include "Data/CityDefinition.h"
 #include "EngineUtils.h"
 #include "Vehicles/DriveableVehicle.h"
 #include "Character/SliceCharacter.h"
+#include "Components/CapsuleComponent.h"
 #include "UI/SliceController.h"
 #include "UI/SliceHUD.h"
 #include "Mission/SliceMission.h"
@@ -22,6 +24,7 @@ AGeoPreviewGameMode::AGeoPreviewGameMode()
 void AGeoPreviewGameMode::BeginPlay()
 {
     Super::BeginPlay();
+    GetWorld()->SpawnActor<ASurfaceQualityDirector>();
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     M->State = Wroclaw::Progress{};
     M->bDebugSession = true;
@@ -47,6 +50,11 @@ void AGeoPreviewGameMode::BeginPlay()
     if (!GetWorld()->GetSubsystem<UCityGameplaySubsystem>()->IsWriteBlocked())
     M->Notify(TEXT("Wrocław — świat GIS. B: dziennik. Postęp miasta zapisuje się oddzielnie od kampanii."));
 }
+void AGeoPreviewGameMode::InitGame(const FString& MapName,const FString& Options,FString& ErrorMessage)
+{
+    Super::InitGame(MapName,Options,ErrorMessage);
+    if (auto* Class=LoadClass<ASliceCharacter>(nullptr,TEXT("/Game/CharacterCreator/BP_WTG_PlayerCharacter.BP_WTG_PlayerCharacter_C"))) DefaultPawnClass=Class;
+}
 void AGeoPreviewGameMode::Tick(float Dt)
 {
     Super::Tick(Dt);
@@ -61,7 +69,7 @@ void AGeoPreviewGameMode::Tick(float Dt)
                                               ECC_Visibility, Params))
         return;
     P->SetActorEnableCollision(true);
-    if (!P->TeleportTo(Hit.ImpactPoint + FVector(0, 0, 94), FRotator::ZeroRotator, false, false))
+    if (!P->TeleportTo(Hit.ImpactPoint + FVector(0, 0, P->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()+4), FRotator::ZeroRotator, false, false))
     {
         P->SetActorEnableCollision(false);
         return;

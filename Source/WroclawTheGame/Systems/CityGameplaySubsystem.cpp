@@ -1,4 +1,6 @@
 #include "Systems/CityGameplaySubsystem.h"
+#include "Character/CharacterCreatorSubsystem.h"
+#include "Character/CharacterAppearanceComponent.h"
 #include "World/CityActivity.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/WorldPartitionStreamingSourceComponent.h"
@@ -10,6 +12,7 @@
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 namespace { const TCHAR *CitySlot = TEXT("WroclawCity_v1"); }
 void UCityGameplaySubsystem::Activate(const FVector &DefaultSpawn)
@@ -39,6 +42,10 @@ bool UCityGameplaySubsystem::LoadSaved()
         return false;
     }
     LoadedSave=Save;
+    auto* Creator=GetWorld()->GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>();
+    Creator->Restore(Save->CharacterCustomization);
+    if (auto* Pawn=UGameplayStatics::GetPlayerPawn(this,0))
+        if (auto* Appearance=Pawn->FindComponentByClass<UCharacterAppearanceComponent>()) Appearance->ApplyAppearance(Creator->Committed.PlayerAppearanceData);
     Progress = MoveTemp(Loaded); SavedAnchor = Save->Anchor; bWriteBlocked = false; NextSaveAttempt = 0;
     return true;
 }
@@ -49,6 +56,7 @@ bool UCityGameplaySubsystem::Persist(const FVector &Anchor, bool IncludeVehicle)
     if (Payload.empty()) return false;
     auto *Save = Cast<UCityProgressSave>(UGameplayStatics::CreateSaveGameObject(UCityProgressSave::StaticClass()));
     Save->Payload = UTF8_TO_TCHAR(Payload.c_str()); Save->Anchor = Anchor;
+    Save->CharacterCustomization=GetWorld()->GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Committed;
     if (IncludeVehicle)
     for (TActorIterator<ADriveableVehicle> It(GetWorld());It;++It)
     {
@@ -116,8 +124,9 @@ void UCityGameplaySubsystem::Tick(float Dt)
         const bool Loaded=Character->StreamingSource->IsStreamingCompleted();
         if (Loaded && GetWorld()->LineTraceSingleByChannel(Floor,TravelTarget+FVector(0,0,100),TravelTarget-FVector(0,0,250),ECC_Visibility,Params))
         {
-            const FVector Point=Floor.ImpactPoint+FVector(0,0,94);
-            if (!GetWorld()->OverlapBlockingTestByChannel(Point,FQuat::Identity,ECC_Pawn,FCollisionShape::MakeCapsule(36,92),Params))
+            const float Half=Character->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+            const FVector Point=Floor.ImpactPoint+FVector(0,0,Half+4);
+            if (!GetWorld()->OverlapBlockingTestByChannel(Point,FQuat::Identity,ECC_Pawn,FCollisionShape::MakeCapsule(36,Half+2),Params))
             {
                 Character->SetActorLocation(Point);Character->SetActorEnableCollision(true);
                 Character->GetCharacterMovement()->SetMovementMode(MOVE_Walking);Travelling.Reset();

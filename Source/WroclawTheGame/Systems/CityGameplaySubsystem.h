@@ -3,6 +3,7 @@
 #include "Subsystems/WorldSubsystem.h"
 #include "GameFramework/SaveGame.h"
 #include "Framework/CityProgress.h"
+#include "Character/CharacterAppearanceDefinition.h"
 #include "CityGameplaySubsystem.generated.h"
 
 UCLASS()
@@ -11,6 +12,7 @@ class WROCLAWTHEGAME_API UCityProgressSave : public USaveGame
     GENERATED_BODY()
   public:
     UPROPERTY(SaveGame) int32 Version = 1;
+    UPROPERTY(SaveGame) FCharacterCustomizationSaveData CharacterCustomization;
     UPROPERTY(SaveGame) FString Payload;
     UPROPERTY(SaveGame) FVector Anchor = FVector::ZeroVector;
     UPROPERTY(SaveGame) bool HasVehicle = false;
@@ -33,6 +35,7 @@ class WROCLAWTHEGAME_API UCityGameplaySubsystem : public UTickableWorldSubsystem
     void Interact(class ACityActivity *Actor, class ASliceCharacter *Player);
     bool LoadSaved();
     bool NewRun();
+    bool SaveAppearance() { return Persist(SavedAnchor); }
     void RestoreVehicle(class ADriveableVehicle *Vehicle);
     bool IsComplete(const FString &Id) const;
     FString Journal() const;

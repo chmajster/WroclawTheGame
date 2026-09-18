@@ -22,6 +22,8 @@ class WROCLAWTHEGAME_API ASliceCharacter : public ACharacter
     void Dodge();
     void Heal();
     void ToggleFlashlight();
+    UPROPERTY(VisibleAnywhere,BlueprintReadOnly) TObjectPtr<class UCharacterAppearanceComponent> Appearance;
+    UPROPERTY(VisibleAnywhere,BlueprintReadOnly) TObjectPtr<class UWardrobeComponent> Wardrobe;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class USpotLightComponent> Flashlight;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UWorldPartitionStreamingSourceComponent> StreamingSource;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UNavigationInvokerComponent> NavigationInvoker;

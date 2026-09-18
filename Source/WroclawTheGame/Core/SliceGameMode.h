@@ -8,6 +8,7 @@ class WROCLAWTHEGAME_API ASliceGameMode : public AGameModeBase
     GENERATED_BODY()
   public:
     ASliceGameMode();
+    virtual void InitGame(const FString& MapName,const FString& Options,FString& ErrorMessage) override;
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaSeconds) override;
     void Relocate(const FVector &Location);

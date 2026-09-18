@@ -16,6 +16,7 @@
 #include "Mission/SliceMission.h"
 #include "Interaction/Interactable.h"
 #include "Core/SliceGameMode.h"
+#include "Character/CharacterCreatorSubsystem.h"
 void ASliceHUD::Text(const FString &Value, float X, float Y, float Scale, const FLinearColor &Color)
 {
     DrawText(Value, Color, X, Y, GEngine->GetMediumFont(), Scale, false);
@@ -58,6 +59,7 @@ void ASliceHUD::Panel(const FString &Title, const FString &Body)
 void ASliceHUD::DrawHUD()
 {
     Super::DrawHUD();
+    if (GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->bEditing) return;
     if (!Canvas)
         return;
     auto *PC = Cast<ASliceController>(PlayerOwner);

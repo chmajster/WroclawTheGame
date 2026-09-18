@@ -1,4 +1,6 @@
 #include "UI/SliceController.h"
+#include "UI/CharacterCreatorWidget.h"
+#include "Character/CharacterCreatorSubsystem.h"
 #include "Engine/TextureRenderTarget2D.h"
 #include "Systems/DebugCheatManager.h"
 #include "Systems/CityGameplaySubsystem.h"
@@ -164,6 +166,7 @@ void ASliceController::Peek()
 }
 void ASliceController::Escape()
 {
+    if (CharacterCreatorWidget) { CancelCharacterCreator(); return; }
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     if (M->bDead || M->State.Finished())
         return;
@@ -184,6 +187,7 @@ void ASliceController::Escape()
 }
 void ASliceController::Confirm()
 {
+    if (CharacterCreatorWidget) return;
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     if (M->bDead)
     {
@@ -243,21 +247,48 @@ void ASliceController::Reload()
 }
 void ASliceController::NewGame()
 {
+    if (CharacterCreatorWidget) return;
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     if (!M->bShowMenu && !M->bDead && !M->State.Finished())
         return;
-    auto *City = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
-    if (City->IsActive())
+    CloseModal();
+    GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->BeginCreation();
+    auto* Class=LoadClass<UCharacterCreatorWidget>(nullptr,TEXT("/Game/CharacterCreator/WBP_CharacterCreator.WBP_CharacterCreator_C"));
+    CharacterCreatorWidget=CreateWidget<UCharacterCreatorWidget>(this,Class?Class:UCharacterCreatorWidget::StaticClass());
+    CharacterCreatorWidget->AddToViewport(100);
+    SetPause(true); SetIgnoreMoveInput(true); SetIgnoreLookInput(true);
+    FInputModeUIOnly Mode; Mode.SetWidgetToFocus(CharacterCreatorWidget->TakeWidget()); SetInputMode(Mode); bShowMouseCursor=true;
+}
+void ASliceController::CancelCharacterCreator()
+{
+    if (CharacterCreatorWidget) CharacterCreatorWidget->RemoveFromParent(); CharacterCreatorWidget=nullptr;
+    GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Cancel();
+    ResetIgnoreMoveInput(); ResetIgnoreLookInput(); SetInputMode(FInputModeGameOnly()); bShowMouseCursor=false;
+    SetPause(GetGameInstance()->GetSubsystem<USliceMission>()->bShowMenu);
+}
+bool ASliceController::StartCreatedCampaign()
+{
+    auto* Creator=GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>();
+    if (!Creator->bEditing || !Creator->bSummary) return false;
+    const auto Previous=Creator->Committed; Creator->Restore(Creator->MakeSaveData());
+    auto* M=GetGameInstance()->GetSubsystem<USliceMission>(); auto* City=GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+    bool Saved=false;
+    if (City->IsActive()) Saved=City->NewRun();
+    else
     {
-        if (City->NewRun()) Reload();
-        else M->Notify(TEXT("Nie udało się rozpocząć nowego zapisu miasta."));
-        return;
+        const auto OldState=M->State; const auto OldWorld=M->WorldState; const auto OldNPCs=M->NPCs; const auto OldAnchor=M->Anchor;
+        const bool WasInGame=M->bInGame, WasMenu=M->bShowMenu, WasDead=M->bDead, WasDebug=M->bDebugSession;
+        M->NewGame(); Saved=M->bLastSaveSucceeded;
+        if (!Saved) { M->State=OldState; M->WorldState=OldWorld; M->NPCs=OldNPCs; M->Anchor=OldAnchor; M->bInGame=WasInGame; M->bShowMenu=WasMenu; M->bDead=WasDead; M->bDebugSession=WasDebug; }
     }
-    M->NewGame();
-    Reload();
+    if (!Saved) { Creator->Restore(Previous); return false; }
+    Creator->bEditing=false; Creator->bSummary=false;
+    CharacterCreatorWidget->RemoveFromParent(); CharacterCreatorWidget=nullptr;
+    SetInputMode(FInputModeGameOnly()); bShowMouseCursor=false; Reload(); return true;
 }
 void ASliceController::LoadGame()
 {
+    if (CharacterCreatorWidget) return;
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     if (!M->bShowMenu && !M->bDead)
         return;
@@ -271,6 +302,7 @@ void ASliceController::LoadGame()
 }
 void ASliceController::Quit()
 {
+    if (CharacterCreatorWidget) return;
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     if (M->bShowMenu || M->bDead || M->State.Finished())
         UKismetSystemLibrary::QuitGame(this, this, EQuitPreference::Quit, false);

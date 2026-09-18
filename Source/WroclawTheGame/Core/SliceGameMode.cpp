@@ -3,6 +3,7 @@
 #include "Engine/World.h"
 #include "Character/SliceCharacter.h"
 #include "World/SliceWorld.h"
+#include "World/SurfaceQualityDirector.h"
 #include "UI/SliceController.h"
 #include "UI/SliceHUD.h"
 #include "Mission/SliceMission.h"
@@ -26,6 +27,7 @@ void ASliceGameMode::BeginPlay()
     Started = FPlatformTime::Seconds();
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     GetWorld()->SpawnActor<ASliceWorld>();
+    GetWorld()->SpawnActor<ASurfaceQualityDirector>();
     auto *PC = Cast<ASliceController>(UGameplayStatics::GetPlayerController(this, 0));
     if (auto *P = Cast<ASliceCharacter>(PC ? PC->GetPawn() : nullptr))
     {
@@ -37,6 +39,11 @@ void ASliceGameMode::BeginPlay()
     }
     if (PC && (M->bShowMenu || M->State.Finished()))
         PC->SetPause(true);
+}
+void ASliceGameMode::InitGame(const FString& MapName,const FString& Options,FString& ErrorMessage)
+{
+    Super::InitGame(MapName,Options,ErrorMessage);
+    if (auto* Class=LoadClass<ASliceCharacter>(nullptr,TEXT("/Game/CharacterCreator/BP_WTG_PlayerCharacter.BP_WTG_PlayerCharacter_C"))) DefaultPawnClass=Class;
 }
 bool ASliceGameMode::HasThreat() const
 {

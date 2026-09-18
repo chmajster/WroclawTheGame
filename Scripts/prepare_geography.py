@@ -35,14 +35,15 @@ def prepare():
     converted=unreal.GeoReferenceLibrary.lat_lon_to_world(geo,lat,lon,height)
     expected=unreal.Vector(*node['position'])
     if (converted-expected).length()>2:raise RuntimeError('Offline/UE geography mismatch > 2 cm')
-    materials={'building':'Plaster','terrain':'Concrete','road':'Asphalt','rail':'Metal','green':'Wood','water':'Metal'}
+    materials={'building':'Plaster','terrain':'Concrete','road':'Asphalt','rail':'Metal','green':'Soil','water':'Water'}
     hlod=unreal.load_asset('/Game/Generated/HLOD_Instancing')
     for filename in meshes:
         record=json.loads((mesh_dir/filename).read_text());name=Path(filename).stem;path='/Game/Generated/GIS/'+name
         if unreal.EditorAssetLibrary.does_asset_exist(path) and not unreal.EditorAssetLibrary.delete_asset(path):raise RuntimeError('Cannot replace mesh '+name)
         mesh=unreal.GeoMeshLibrary.bake_mesh(path,[unreal.Vector(*v) for v in record['vertices']],record['triangles'])
         if not mesh:raise RuntimeError('Mesh bake failed '+name)
-        material=unreal.load_asset('/Game/Generated/M_'+(record.get('material') or materials[record['kind']]))
+        surface_name=record.get('material') or materials[record['kind']]
+        material=unreal.load_asset('/Game/SurfaceQuality/Instances/MI_'+surface_name) or unreal.load_asset('/Game/Generated/M_'+surface_name)
         if material:mesh.set_material(0,material)
         if not unreal.EditorAssetLibrary.save_loaded_asset(mesh,False):raise RuntimeError('Mesh save failed '+name)
         actor=actors.spawn_actor_from_class(unreal.StaticMeshActor,unreal.Vector(*record['origin']))

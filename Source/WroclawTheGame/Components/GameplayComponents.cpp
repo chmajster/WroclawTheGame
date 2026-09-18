@@ -1,4 +1,5 @@
 #include "Components/GameplayComponents.h"
+#include "Character/CharacterAppearanceComponent.h"
 #include "Engine/World.h"
 #include "Engine/GameInstance.h"
 #include "Engine/DamageEvents.h"
@@ -129,6 +130,8 @@ FString UBasePuzzleComponent::Hint() const
 }
 bool UInventoryComponent::Has(FName Item) const
 {
+    if (const auto* Wardrobe=GetOwner()->FindComponentByClass<UWardrobeComponent>())
+        if (Wardrobe->OwnedClothing().Contains(Item)) return true;
     return Mission(this)->State.Has(TCHAR_TO_UTF8(*Item.ToString()));
 }
 bool UInventoryComponent::Use(FName Item)

@@ -76,6 +76,16 @@ if ($LASTEXITCODE -ne 0) { throw 'World profile validation failed' }
 if ($LASTEXITCODE -ne 0) { throw 'Gameplay tag generation failed' }
 & $BuildTool WroclawTheGameEditor Win64 Development "-Project=$Project" -WaitMutex -NoHotReloadFromIDE
 if ($LASTEXITCODE -ne 0) { throw "Editor target build failed ($LASTEXITCODE)" }
+$CreatorMarker = Join-Path $ProjectRoot 'Saved\CharacterCreatorReady.ok'
+$SurfaceMarker = Join-Path $ProjectRoot 'Saved\SurfaceQualityReady.ok'
+if (Test-Path -LiteralPath $SurfaceMarker) { Remove-Item -LiteralPath $SurfaceMarker }
+$SurfaceScript = Join-Path $PSScriptRoot 'prepare_surface_quality.py'
+& $Editor $Project "-ExecutePythonScript=$SurfaceScript" -unattended -nosplash -stdout -FullStdOutLogOutput
+if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $SurfaceMarker)) { throw 'Surface PBR validation failed; packaging stopped' }
+if (Test-Path -LiteralPath $CreatorMarker) { Remove-Item -LiteralPath $CreatorMarker }
+$CreatorScript = Join-Path $PSScriptRoot 'prepare_character_creator.py'
+& $Editor $Project "-ExecutePythonScript=$CreatorScript" -unattended -nosplash -nullrhi -stdout -FullStdOutLogOutput
+if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $CreatorMarker)) { throw 'Character Creator asset validation failed; packaging stopped' }
 $Marker = Join-Path $ProjectRoot 'Saved\GeneratedContent.ok'
 if (Test-Path -LiteralPath $Marker) { Remove-Item -LiteralPath $Marker }
 $Script = Join-Path $PSScriptRoot 'prepare_content.py'

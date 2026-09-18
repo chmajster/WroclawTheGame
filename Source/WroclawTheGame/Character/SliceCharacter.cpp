@@ -1,4 +1,5 @@
 #include "Character/SliceCharacter.h"
+#include "Character/CharacterAppearanceComponent.h"
 #include "Geography/GeoPreviewGameMode.h"
 #include "Components/WorldPartitionStreamingSourceComponent.h"
 #include "NavigationInvokerComponent.h"
@@ -33,6 +34,8 @@
 ASliceCharacter::ASliceCharacter()
 {
     PrimaryActorTick.bCanEverTick = true;
+    Appearance=CreateDefaultSubobject<UCharacterAppearanceComponent>(TEXT("Appearance"));
+    Wardrobe=CreateDefaultSubobject<UWardrobeComponent>(TEXT("Wardrobe"));
     StreamingSource =
         CreateDefaultSubobject<UWorldPartitionStreamingSourceComponent>(TEXT("StreamingSource"));
     NavigationInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>(TEXT("NavigationInvoker"));
@@ -43,7 +46,8 @@ ASliceCharacter::ASliceCharacter()
     Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat"));
     InventoryState = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
     Interaction = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction"));
-    GetCapsuleComponent()->InitCapsuleSize(34, 90);
+    // Stable movement envelope accommodates every allowed 160–195 cm appearance.
+    GetCapsuleComponent()->InitCapsuleSize(34, 100);
     bUseControllerRotationYaw = false;
     GetCharacterMovement()->bOrientRotationToMovement = true;
     GetCharacterMovement()->RotationRate = FRotator(0, 600, 0);
@@ -81,6 +85,7 @@ ASliceCharacter::ASliceCharacter()
         Part->SetRelativeScale3D(Sizes[I] / 100);
         Part->SetCollisionEnabled(ECollisionEnabled::NoCollision);
         Part->SetCanEverAffectNavigation(false);
+        Part->SetVisibility(false);
         Limbs.Add(Part);
     }
 }

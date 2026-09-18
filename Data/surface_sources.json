@@ -1,0 +1,224 @@
+{
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "resolution": 2048,
+  "profiles": {
+    "Asphalt": {
+      "slug": "asphalt_02",
+      "page": "https://polyhaven.com/a/asphalt_02",
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "legacy_scale_label": "3M x 3M",
+      "dimensions_mm": [
+        3000.000238418579,
+        3000
+      ],
+      "tile_cm": 300.0000238418579,
+      "files": {
+        "BC": {
+          "file": "T_Asphalt_BC_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/asphalt_02/asphalt_02_diff_2k.png",
+          "md5": "fefc3f8f46ac2cf1d701380d67616c33",
+          "sha256": "0f33cc1f8142bc1c19858b95f694dbf3a7be99a3c385462b1729cf65804af1d3",
+          "bytes": 9989224
+        },
+        "N": {
+          "file": "T_Asphalt_N_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/asphalt_02/asphalt_02_nor_dx_2k.png",
+          "md5": "8efb99b8fc265ced7728974d9bfb0acd",
+          "sha256": "5005be1e5825b4a28b701e60a1a9f73569447deecf59574b1cfa7b1394d4293b",
+          "bytes": 9117875
+        },
+        "ARM": {
+          "file": "T_Asphalt_ARM_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/asphalt_02/asphalt_02_arm_2k.png",
+          "md5": "4002a43c5941707d51f572358ad30d0c",
+          "sha256": "d55172b4aeb248cb85742321125d608b7da5f09d26328c55735e88fa7c483129",
+          "bytes": 7120781
+        }
+      }
+    },
+    "Brick": {
+      "slug": "brick_wall_001",
+      "page": "https://polyhaven.com/a/brick_wall_001",
+      "authors": {
+        "Rob Tuytel": "Processing",
+        "Dimitrios Savva": "Photography"
+      },
+      "legacy_scale_label": "1.5x1.5",
+      "dimensions_mm": [
+        3000,
+        3000
+      ],
+      "tile_cm": 300.0,
+      "files": {
+        "BC": {
+          "file": "T_Brick_BC_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/brick_wall_001/brick_wall_001_diffuse_2k.png",
+          "md5": "5389c8dd00a522e135646fd07239629c",
+          "sha256": "6c4646b0322d5c60a62a58474d4d1a594f8ee8a4741a241bba85d47f5ba31937",
+          "bytes": 6676088
+        },
+        "N": {
+          "file": "T_Brick_N_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/brick_wall_001/brick_wall_001_nor_dx_2k.png",
+          "md5": "2a397ef55e89508c7f0798fb586915a3",
+          "sha256": "d9a8b93d3ec650eca785fbf752b084a3d1a0d37946672a0571cdea1647949f33",
+          "bytes": 10161296
+        },
+        "ARM": {
+          "file": "T_Brick_ARM_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/brick_wall_001/brick_wall_001_arm_2k.png",
+          "md5": "5cd7613a76461a1e9823b51162e5f1bd",
+          "sha256": "2aaca532406b37a92b20ce7c718560df535195a8eb0dcc2ef275154dccc69ce0",
+          "bytes": 4353360
+        }
+      }
+    },
+    "Plaster": {
+      "slug": "plastered_wall_02",
+      "page": "https://polyhaven.com/a/plastered_wall_02",
+      "authors": {
+        "Charlotte Baglioni": "All"
+      },
+      "legacy_scale_label": "",
+      "dimensions_mm": [
+        2229.999542236328,
+        2229.999542236328
+      ],
+      "tile_cm": 222.9999542236328,
+      "files": {
+        "BC": {
+          "file": "T_Plaster_BC_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/plastered_wall_02/plastered_wall_02_diff_2k.png",
+          "md5": "5b4fcd31087cb39e2a5c987de1872034",
+          "sha256": "860b571ef9fc6cb8013143b6cd8ad96d8f09b2538a17c437d5e6c89a0d409c3b",
+          "bytes": 19484527
+        },
+        "N": {
+          "file": "T_Plaster_N_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/plastered_wall_02/plastered_wall_02_nor_dx_2k.png",
+          "md5": "5e61c1f17bdf5247aa92bdaf0c69585a",
+          "sha256": "f38d9c91c6d6c48b69a10923fda3d4643ea27526ead61f5cc5141a660ca02476",
+          "bytes": 22396176
+        },
+        "ARM": {
+          "file": "T_Plaster_ARM_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/plastered_wall_02/plastered_wall_02_arm_2k.png",
+          "md5": "5a08cb51e461eb1eab5e6160497b0dba",
+          "sha256": "5927701fdec20e69dbf4df2a707387437c251a9e1337850329163f9ba105eef9",
+          "bytes": 15503390
+        }
+      }
+    },
+    "Concrete": {
+      "slug": "concrete_floor_02",
+      "page": "https://polyhaven.com/a/concrete_floor_02",
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "legacy_scale_label": "",
+      "dimensions_mm": [
+        2000,
+        2000
+      ],
+      "tile_cm": 200.0,
+      "files": {
+        "BC": {
+          "file": "T_Concrete_BC_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/concrete_floor_02/concrete_floor_02_diff_2k.png",
+          "md5": "e6328911fe7cd3a74f11486f06a5ad60",
+          "sha256": "c438815b55874b9bbab5befa559c9ef2b635f674ebf9415c7341f6865156b03b",
+          "bytes": 10037331
+        },
+        "N": {
+          "file": "T_Concrete_N_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/concrete_floor_02/concrete_floor_02_nor_dx_2k.png",
+          "md5": "4415523cadab47446e5cb4e37d64d7ee",
+          "sha256": "81e096adffba252a9e8bd4444fa46a52a17079dce6b57632957d809b5c8b3aa4",
+          "bytes": 22408075
+        },
+        "ARM": {
+          "file": "T_Concrete_ARM_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/concrete_floor_02/concrete_floor_02_arm_2k.png",
+          "md5": "b544106ab5142f1e15731dc52c9586cf",
+          "sha256": "e191d359dc99575393d314a8195f67007661b49e313131693accecf022584256",
+          "bytes": 5957227
+        }
+      }
+    },
+    "Cobble": {
+      "slug": "cobblestone_floor_03",
+      "page": "https://polyhaven.com/a/cobblestone_floor_03",
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "legacy_scale_label": "1,2",
+      "dimensions_mm": [
+        2400.0000953674316,
+        2400.0000953674316
+      ],
+      "tile_cm": 240.00000953674316,
+      "files": {
+        "BC": {
+          "file": "T_Cobble_BC_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/cobblestone_floor_03/cobblestone_floor_03_diff_2k.png",
+          "md5": "0ba0074518b672354a75a9f6b36eb5d9",
+          "sha256": "96c8b2dadbfc32c13232f2143a64d478f6fdb5152a5cc2e911e0a4a101308596",
+          "bytes": 7991910
+        },
+        "N": {
+          "file": "T_Cobble_N_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/cobblestone_floor_03/cobblestone_floor_03_nor_dx_2k.png",
+          "md5": "e1083d4bf98e87ab740a7c2da461c6ed",
+          "sha256": "4c88060023b983a5ee39efa9aac9cf1dea606feefe6bd6fd23e4d0d12568ed1f",
+          "bytes": 5689967
+        },
+        "ARM": {
+          "file": "T_Cobble_ARM_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/cobblestone_floor_03/cobblestone_floor_03_arm_2k.png",
+          "md5": "38186d6f37baee55ba423e10ad2cafdb",
+          "sha256": "cff36bb64bdd4924464d178404bf6b271f705236fe2da5fe197e1d4b1a4478cd",
+          "bytes": 4806788
+        }
+      }
+    },
+    "Wood": {
+      "slug": "wood_floor",
+      "page": "https://polyhaven.com/a/wood_floor",
+      "authors": {
+        "Dimitrios Savva": "All"
+      },
+      "legacy_scale_label": "",
+      "dimensions_mm": [
+        1699.9996900558472,
+        1699.9996900558472
+      ],
+      "tile_cm": 169.99996900558472,
+      "files": {
+        "BC": {
+          "file": "T_Wood_BC_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/wood_floor/wood_floor_diff_2k.png",
+          "md5": "4801d7ad3720166655a251920197646f",
+          "sha256": "33040146e3ea6fa47d7bbf4ccdecdf3443cdb831e72e1f33dede6ad6542b2b7c",
+          "bytes": 21423099
+        },
+        "N": {
+          "file": "T_Wood_N_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/wood_floor/wood_floor_nor_dx_2k.png",
+          "md5": "8ef284ac79b8f0e60d9d38e513e843ae",
+          "sha256": "cc3cbbc24f92fc40bb9536b2bae73aabd7cba82156bf35179e0d72212e77757c",
+          "bytes": 19399487
+        },
+        "ARM": {
+          "file": "T_Wood_ARM_CC0.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/wood_floor/wood_floor_arm_2k.png",
+          "md5": "3b70701a77ebab5a9495967c2adc94d0",
+          "sha256": "8e586020caf49073e3a3e7e6af3ab298dcd468db9ffa6dc4c62dd37728d38b45",
+          "bytes": 16651290
+        }
+      }
+    }
+  }
+}

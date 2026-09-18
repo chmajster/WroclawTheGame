@@ -47,7 +47,7 @@ void ASliceWorld::BeginPlay()
     Atmosphere->RegisterComponent();
     Sun = GetWorld()->SpawnActor<ADirectionalLight>(FVector(0, 0, 2000), FRotator(-32, -35, 0));
     Sun->GetLightComponent()->SetMobility(EComponentMobility::Movable);
-    Sun->GetLightComponent()->SetIntensity(2.5f);
+    Sun->GetLightComponent()->SetIntensity(25000.f);
     auto *Sky = GetWorld()->SpawnActor<ASkyLight>();
     Sky->GetLightComponent()->SetMobility(EComponentMobility::Movable);
     Sky->GetLightComponent()->SetIntensity(.55);
@@ -75,6 +75,8 @@ void ASliceWorld::Tick(float Dt)
     if (Sun)
     {
         Sun->SetActorRotation(FRotator((M->WorldState.hour - 6) * -15, -35, 0));
-        Sun->GetLightComponent()->SetIntensity(M->WorldState.hour > 6 && M->WorldState.hour < 20 ? 2.5 : .08);
+        const bool Day = M->WorldState.hour > 6 && M->WorldState.hour < 20;
+        const float Cloud = W && (W->id == "Cloudy" || W->id == "Rain" || W->id == "Storm") ? .3f : 1.f;
+        Sun->GetLightComponent()->SetIntensity(Day ? 25000.f * Cloud : .2f);
     }
 }

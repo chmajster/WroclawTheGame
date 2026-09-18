@@ -9,6 +9,7 @@ class WROCLAWTHEGAME_API AGeoPreviewGameMode : public AGameModeBase
     GENERATED_BODY()
   public:
     AGeoPreviewGameMode();
+    virtual void InitGame(const FString& MapName,const FString& Options,FString& ErrorMessage) override;
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaSeconds) override;
 

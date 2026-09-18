@@ -20,6 +20,9 @@ class WROCLAWTHEGAME_API ASliceController : public APlayerController
     void Escape();
     void Confirm();
     void NewGame();
+    void CancelCharacterCreator();
+    bool StartCreatedCampaign();
+    UPROPERTY() TObjectPtr<class UCharacterCreatorWidget> CharacterCreatorWidget;
     void LoadGame();
     void Quit();
     void Inventory();
@@ -32,7 +35,7 @@ class WROCLAWTHEGAME_API ASliceController : public APlayerController
     void ScrollDown();
     bool GameplayBlocked() const
     {
-        return bCCTV || bKeypad || bPeek || bInventory || bPhone || bInvestigation || !Message.IsEmpty();
+        return CharacterCreatorWidget != nullptr || bCCTV || bKeypad || bPeek || bInventory || bPhone || bInvestigation || !Message.IsEmpty();
     }
     bool bKeypad = false, bInventory = false, bPhone = false, bInvestigation = false, bPeek = false;
     FString Code, Message, PuzzleId;

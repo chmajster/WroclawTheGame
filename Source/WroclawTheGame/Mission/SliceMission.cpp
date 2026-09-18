@@ -1,4 +1,5 @@
 #include "Mission/SliceMission.h"
+#include "Character/CharacterCreatorSubsystem.h"
 #include "Systems/PhoneSystem.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/PlayerController.h"
@@ -164,6 +165,7 @@ bool USliceMission::LoadState(bool bApply)
         Anchor = S->Anchor;
         NPCs = S->NPCs;
         Settings = S->Settings;
+        GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Restore(S->CharacterCustomization);
     }
     return true;
 }
@@ -197,6 +199,7 @@ bool USliceMission::SaveCheckpoint()
         return false;
     }
     auto *S = Cast<USliceSave>(UGameplayStatics::CreateSaveGameObject(USliceSave::StaticClass()));
+    S->CharacterCustomization = GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Committed;
     if (!State.history.empty())
         for (TActorIterator<ASliceEnemy> It(GetWorld()); It; ++It)
         {
@@ -351,6 +354,10 @@ FString USliceMission::ObjectiveText() const
 FString USliceMission::InventoryText() const
 {
     FString Text;
+    const auto& Appearance=GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Committed;
+    Text+=TEXT("UBRANIA (garderoba)\n");
+    for (FName ID:Appearance.OwnedClothing) Text+=ID.ToString()+TEXT("\n");
+    Text+=TEXT("\nPRZEDMIOTY\n");
     for (const auto &Pair : State.inventory)
         if (Pair.second > 0)
         {
