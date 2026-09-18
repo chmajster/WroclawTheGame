@@ -1106,5 +1106,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/fire_alarm/fire_alarm_1k.fbx"
+  },
+  {
+    "slug": "gate_latch_01",
+    "name": "Gate Latch 01",
+    "intended_use": "Basement/courtyard gate hardware.",
+    "source_page": "https://polyhaven.com/a/gate_latch_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Desktoy": "All"
+    },
+    "category": "Architecture/Gates/Gate Hardware",
+    "dimensions_mm": [
+      205.09500801563263,
+      74.74934868514538,
+      85.42444556951523
+    ],
+    "files_hash": "bfe033e15d12c2513652457660c429e5ede95e1a",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/gate_latch_01/gate_latch_01_1k.fbx"
   }
 ]
