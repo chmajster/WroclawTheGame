@@ -1,7 +1,8 @@
 """Import all audited CC0 model sources committed to the repository.
 
-No network access is performed. Poly Haven, Kenney, OpenGameArt and project-owned
-fallbacks are read from the two source catalogs and imported into /Game/FreeModels.
+No network access is performed. Poly Haven, Kenney, OpenGameArt, Quaternius and
+project-owned fallbacks are read from the audited source catalogs and imported into
+/Game/FreeModels.
 The resolved Unreal object paths are written to Saved/FreeModelImportMap.json.
 """
 from pathlib import Path
@@ -13,6 +14,7 @@ import unreal
 ROOT = Path(unreal.Paths.project_dir()).resolve()
 POLY_CATALOG = ROOT / "Data/free_model_catalog.json"
 EXTERNAL_CATALOG = ROOT / "Data/free_external_model_catalog.json"
+CHARACTER_CATALOG = ROOT / "Data/free_character_catalog.json"
 MARKER = ROOT / "Saved/FreeModelsReady.ok"
 IMPORT_MAP = ROOT / "Saved/FreeModelImportMap.json"
 
@@ -36,6 +38,13 @@ def catalog_entries():
             "provider": item.get("provider", "External"),
             "primary_path": item["primary_path"],
         })
+    if CHARACTER_CATALOG.is_file():
+        for item in json.loads(CHARACTER_CATALOG.read_text(encoding="utf-8")):
+            entries.append({
+                "id": item["id"],
+                "provider": item.get("provider", "External"),
+                "primary_path": item["primary_path"],
+            })
     ids = [x["id"] for x in entries]
     if len(ids) != len(set(ids)):
         raise RuntimeError("Duplicate free-model IDs across catalogs")
