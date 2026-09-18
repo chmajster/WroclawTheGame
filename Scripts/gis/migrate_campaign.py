@@ -235,6 +235,9 @@ def generate(input_dir=DEFAULT_INPUT, output=DEFAULT_OUTPUT):
         report_zones.append({
             "id": zone["id"],
             "anchor_street": zone["anchor_street"],
+            "source_min_x": zone["source_min_x"],
+            "source_max_x": zone["source_max_x"],
+            "source_anchor": zone["source_anchor"],
             "edge": zone["edge"],
             "building_id": zone["building"]["building_id"] if zone["building"] else None,
             "target_anchor": zone["target_anchor"],
