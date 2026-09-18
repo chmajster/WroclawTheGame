@@ -1,0 +1,76 @@
+{
+  "slug": "utility_box_01",
+  "name": "Utility Box 01",
+  "intended_use": "Urban electrical infrastructure and clue dressing.",
+  "source_page": "https://polyhaven.com/a/utility_box_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "James Ray Cock": "All"
+  },
+  "category": "Industrial & Infrastructure/Electrical/Utility & Power Boxes",
+  "tags": [
+    "utility",
+    "box",
+    "electrical",
+    "power",
+    "circuit",
+    "breakers",
+    "transformer",
+    "distributionpanel",
+    "junction box",
+    "control panel",
+    "utility box",
+    "infrastructure",
+    "urban",
+    "city",
+    "road"
+  ],
+  "dimensions_mm": [
+    520.0002193450928,
+    431.999996304512,
+    1120.3334331512451
+  ],
+  "files_hash": "af6d53ad17db23473c84e6ccf3f09270e76d3583",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/utility_box_01/utility_box_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/utility_box_01/utility_box_01_1k.fbx",
+      "bytes": 140860,
+      "md5": "e262c1f569c924242e171e3fc40a65e7",
+      "sha256": "74777342eb9ea303109137c9b844f1bafe38557a2db643261e83082273fb2b84",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/utility_box_01/utility_box_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/utility_box_01/textures/utility_box_01_diff_1k.jpg",
+      "bytes": 558681,
+      "md5": "3e76f9da5032c98ed48e1b3e4cad2511",
+      "sha256": "6a703a4cdf20c3fc3d0400fa815e5a1834836c96c207bdb57ba9e4a5db3a5532",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/utility_box_01/utility_box_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/utility_box_01/textures/utility_box_01_metal_1k.exr",
+      "bytes": 809856,
+      "md5": "7a3618847b9a3c800e977c8bf14245b4",
+      "sha256": "dd1427ab6bb753d4aa5c70274a121a6f66b41a7dd51a182bd6b941d6bc04cf9e",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/utility_box_01/utility_box_01_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/utility_box_01/textures/utility_box_01_nor_gl_1k.exr",
+      "bytes": 1273262,
+      "md5": "7222b23dd2a8911566c2f4dce8690517",
+      "sha256": "3b2c20764b333994757d137f590fdfd6519cd5e7e2a74e94626121f9f2c3edd3",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/utility_box_01/utility_box_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/utility_box_01/textures/utility_box_01_rough_1k.exr",
+      "bytes": 1058253,
+      "md5": "b5a0ad225328000ef2ed5f4ebf95dcc6",
+      "sha256": "f1ffe30301246006cb32bd77fa40d83f0460d0465c0802d03d1dc1cdbbff4227",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/utility_box_01/utility_box_01_rough_1k.exr"
+    }
+  ]
+}

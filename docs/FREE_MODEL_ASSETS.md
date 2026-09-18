@@ -37,3 +37,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Stone 01 | Throwable stone pickup. | Dario Barresi, Rico Cilliers | [Poly Haven](https://polyhaven.com/a/stone_01) | CC0 1.0 |
 | Wooden Crate 01 | Shop/garage storage and cover prop. | James Ray Cock | [Poly Haven](https://polyhaven.com/a/wooden_crate_01) | CC0 1.0 |
 | Fire Hydrant | Urban street infrastructure dressing. | Gonçalo Felício | [Poly Haven](https://polyhaven.com/a/fire_hydrant) | CC0 1.0 |
+| Utility Box 01 | Urban electrical infrastructure and clue dressing. | James Ray Cock | [Poly Haven](https://polyhaven.com/a/utility_box_01) | CC0 1.0 |
