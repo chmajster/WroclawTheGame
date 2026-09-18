@@ -395,5 +395,21 @@
         "sha256": "6cf0471c9fe0f505d44d620920f767098418d27f7223926e3af2e23f8db5982e"
       }
     ]
+  },
+  {
+    "id": "oga-vault-door",
+    "name": "Vault Door",
+    "provider": "OpenGameArt",
+    "source_page": "https://opengameart.org/content/vault-door",
+    "license": "CC0-1.0",
+    "intended_use": "Safe/vault interaction proxy where the project still uses cube geometry.",
+    "primary_path": "SourceAssets/Models/OpenGameArt/oga-vault-door/door/door.fbx",
+    "sources": [
+      {
+        "url": "https://opengameart.org/sites/default/files/vault_door_and_wall_0.zip",
+        "bytes": 1530704,
+        "sha256": "2f6f4f0dc8963c12fa64fa39355108ecb6a7328944f8b2726ab29768334e8815"
+      }
+    ]
   }
 ]
