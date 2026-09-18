@@ -200,6 +200,18 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_keyboard_and_gamepad_focus_has_visible_feedback(self):
+        for token in (
+            "UpdateFocusPresentation()",
+            "HasAnyUserFocus()",
+            "HasKeyboardFocus()",
+            "SetRenderScale",
+            "SetRenderOpacity",
+            "1.015f",
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertIn("void UpdateFocusPresentation();", self.header)
+
     def test_keyboard_and_gamepad_navigation_remains_available(self):
         for token in (
             "Gamepad_LeftShoulder", "Gamepad_RightShoulder",
