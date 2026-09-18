@@ -127,6 +127,17 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_inventory_has_stable_sorting_counts_and_empty_states(self):
+        for token in (
+            'TEXT("GARDEROBA  •  %d")',
+            'TEXT("PRZEDMIOTY  •  %d")',
+            "Clothing.Sort",
+            "DisplayItems.Sort",
+            'TEXT("PUSTO")',
+            'TEXT("BRAK PRZEDMIOTÓW")',
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_secondary_tabs_remain_data_driven_dashboards(self):
         for token in (
             "State.inventory", "OwnedClothing", "State.evidence",
