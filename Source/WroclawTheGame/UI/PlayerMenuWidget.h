@@ -44,6 +44,9 @@ private:
     UPROPERTY() TObjectPtr<class UTextBlock> ContextHint;
     UPROPERTY() TObjectPtr<class UTextBlock> ClockText;
     UPROPERTY() TObjectPtr<class UBorder> SessionStateDot;
+    UPROPERTY() TObjectPtr<class UTextBlock> ActionPanelLabel;
+    UPROPERTY() TObjectPtr<class UTextBlock> CenterPanelLabel;
+    UPROPERTY() TObjectPtr<class UTextBlock> RightPanelLabel;
     UPROPERTY() TObjectPtr<class UTextBlock> PreviewViewStatus;
     UPROPERTY() TObjectPtr<class UTextBlock> PreviewLightingStatus;
     UPROPERTY() TObjectPtr<class UBorder> ToastCard;
@@ -90,6 +93,7 @@ private:
     void UpdateTabStyle();
     void UpdateContextStatus();
     void UpdateContextHint();
+    void UpdatePanelLabels();
     void ShowToast(const FString& Message);
     void RefreshWithSettingsToast();
     void UpdateFocusPresentation();
