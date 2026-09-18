@@ -6,6 +6,7 @@ MENU_CPP = ROOT / "Source" / "WroclawTheGame" / "UI" / "PlayerMenuWidget.cpp"
 MENU_H = ROOT / "Source" / "WroclawTheGame" / "UI" / "PlayerMenuWidget.h"
 PERF_H = ROOT / "Source" / "WroclawTheGame" / "UI" / "PerformanceSettings.h"
 AUDIO_CPP = ROOT / "Source" / "WroclawTheGame" / "Audio" / "SliceAudio.cpp"
+AUDIO_SETTINGS_H = ROOT / "Source" / "WroclawTheGame" / "Audio" / "AudioSettings.h"
 ASSETS = ROOT / "Scripts" / "make_source_assets.py"
 
 
@@ -16,6 +17,7 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         cls.header = MENU_H.read_text(encoding="utf-8")
         cls.perf = PERF_H.read_text(encoding="utf-8")
         cls.audio = AUDIO_CPP.read_text(encoding="utf-8")
+        cls.audio_settings = AUDIO_SETTINGS_H.read_text(encoding="utf-8")
         cls.assets = ASSETS.read_text(encoding="utf-8")
 
     def test_all_primary_tabs_are_present(self):
@@ -264,6 +266,22 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             'TEXT("∞")',
         ):
             self.assertIn(token, self.cpp)
+
+    def test_audio_settings_are_real_and_runtime_backed(self):
+        for token in (
+            'TEXT("DŹWIĘK")',
+            "SettingsAudio()",
+            "CycleSFXVolume()",
+            "CycleUIVolume()",
+            'TEXT("EFEKTY ŚWIATA  •  %d%%")',
+            'TEXT("INTERFEJS  •  %d%%")',
+        ):
+            self.assertIn(token, self.cpp)
+        for token in ("SFXVolume", "UIVolume", "SetSFXVolume", "SetUIVolume"):
+            self.assertIn(token, self.audio_settings)
+        self.assertIn("Settings->SFXVolume", self.audio)
+        self.assertIn("Settings->UIVolume", self.audio)
+        self.assertIn("EffectiveVolume", self.audio)
 
     def test_settings_have_safe_restore_defaults_flow(self):
         for token in (
