@@ -391,6 +391,20 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         self.assertIn("Settings->UIVolume", self.audio)
         self.assertIn("EffectiveVolume", self.audio)
 
+    def test_display_quality_details_use_visual_metric_cards(self):
+        for token in (
+            'TEXT("SZCZEGÓŁY JAKOŚCI")',
+            "AddQualityRow",
+            'TEXT("WIDOCZNOŚĆ")',
+            'TEXT("CIENIE")',
+            'TEXT("TEKSTURY")',
+            'TEXT("GLOBALNE OŚWIETLENIE")',
+            'TEXT("ODBICIA")',
+            'TEXT("CIENIOWANIE")',
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertNotIn("const FString QualityDetails", self.cpp)
+
     def test_settings_navigation_has_numbered_sections_and_progress(self):
         for token in (
             'TEXT("KATEGORIE  •  %d / 4")',
