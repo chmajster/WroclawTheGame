@@ -618,5 +618,28 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/metal_tool_chest/metal_tool_chest_1k.fbx"
+  },
+  {
+    "slug": "stone_01",
+    "name": "Stone 01",
+    "intended_use": "Throwable stone pickup.",
+    "source_page": "https://polyhaven.com/a/stone_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Dario Barresi": "Photography",
+      "Rico Cilliers": "photography, processing"
+    },
+    "category": "Nature/Rocks & Stone/Boulders",
+    "dimensions_mm": [
+      147.15217798948288,
+      89.41811323165894,
+      71.89157977700233
+    ],
+    "files_hash": "3b541260ddde766b6bcfae56be426b81ce1a1e81",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/stone_01/stone_01_1k.fbx"
   }
 ]
