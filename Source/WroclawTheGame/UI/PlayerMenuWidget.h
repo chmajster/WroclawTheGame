@@ -24,6 +24,7 @@ protected:
 
 private:
     UPROPERTY() TObjectPtr<class UOverlay> RootOverlay;
+    UPROPERTY() TObjectPtr<class USizeBox> MainMenuFrame;
     UPROPERTY() TObjectPtr<class UBorder> ConfirmationOverlay;
     UPROPERTY() TObjectPtr<class UBorder> ConfirmationCard;
     UPROPERTY() TObjectPtr<class UBackgroundBlur> MenuBackgroundBlur;
@@ -67,6 +68,7 @@ private:
     void SelectTab(int32 Index);
     void UpdateTabStyle();
     void FocusPrimaryAction();
+    void UpdateFocusVisuals();
     void ShowConfirmation(int32 Action, const FString& Title, const FString& Body, const FString& ConfirmLabel);
     void ClearConfirmation();
 
