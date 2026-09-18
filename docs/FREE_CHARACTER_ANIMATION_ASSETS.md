@@ -53,3 +53,13 @@ w UE 5.8. Skrypt importu celowo zatrzymuje packaging, jeśli biblioteka nie twor
 Katalog `Data/free_animation_catalog.json` jest generowany z samych GLB i zawiera
 rzeczywistą listę nazw klipów oraz ich liczbę, zamiast deklarowanej liczby z opisu
 produktu.
+
+## KayKit — domknięcie biblioteki ruchu
+
+Dodatkowo vendored jest kompletny darmowy zestaw KayKit Character Animations 1.1 dla
+`Rig_Medium`: osiem bibliotek i 139 klipów odczytanych z GLB. Zestaw dostarcza m.in.
+`Lie_Down`, `Lie_Idle`, `Lie_StandUp`, czterokierunkowe uniki, crawl/sneak,
+lockpicking, narzędzia, walkę melee/ranged oraz animacje społeczne.
+
+Katalog: `Data/free_kaykit_animation_catalog.json`.
+Szczegóły provenance i retargetingu: `docs/KAYKIT_CHARACTER_ANIMATIONS.md`.
