@@ -232,6 +232,19 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_performance_settings_have_direct_fps_presets(self):
+        for token in (
+            'TEXT("SZYBKI LIMIT FPS")',
+            "AddFPSPreset",
+            "&UPlayerMenuWidget::FPS60",
+            "&UPlayerMenuWidget::FPS120",
+            "&UPlayerMenuWidget::FPS144",
+            "&UPlayerMenuWidget::FPS165",
+            "&UPlayerMenuWidget::FPSUnlimited",
+            'TEXT("∞")',
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_settings_have_safe_restore_defaults_flow(self):
         for token in (
             'TEXT("PRZYWRÓĆ DOMYŚLNE")',
