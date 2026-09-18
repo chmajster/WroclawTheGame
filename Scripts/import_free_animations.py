@@ -10,7 +10,7 @@ import traceback
 import unreal
 
 ROOT = Path(unreal.Paths.project_dir()).resolve()
-CATALOG = ROOT / "Data/free_animation_catalog.json"
+CATALOGS = [\n    ROOT / "Data/free_animation_catalog.json",\n    ROOT / "Data/free_kaykit_animation_catalog.json",\n]
 MARKER = ROOT / "Saved/FreeAnimationsReady.ok"
 IMPORT_MAP = ROOT / "Saved/FreeAnimationImportMap.json"
 
@@ -76,12 +76,14 @@ def import_one(tools, item):
 def run():
     MARKER.unlink(missing_ok=True)
     IMPORT_MAP.unlink(missing_ok=True)
-    if not CATALOG.is_file():
-        raise RuntimeError(f"Missing animation catalog: {CATALOG}")
-
-    entries = json.loads(CATALOG.read_text(encoding="utf-8"))
-    if not entries:
-        raise RuntimeError("Animation catalog is empty")
+    entries = []
+    for catalog in CATALOGS:
+        if not catalog.is_file():
+            raise RuntimeError(f"Missing animation catalog: {catalog}")
+        batch = json.loads(catalog.read_text(encoding="utf-8"))
+        if not batch:
+            raise RuntimeError(f"Animation catalog is empty: {catalog}")
+        entries.extend(batch)
     ids = [item["id"] for item in entries]
     if len(ids) != len(set(ids)):
         raise RuntimeError("Duplicate animation IDs")
