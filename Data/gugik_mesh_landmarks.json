@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "source": "GUGiK / Geoportal - Modele siatkowe 3D",
+  "service_url": "https://mapy.geoportal.gov.pl/wss/service/PZGIK/NMT/WMS/ModeleSiatkowe3D",
+  "source_crs": "EPSG:2177",
+  "output_crs": "EPSG:2177",
+  "default_crop_radius_m": 90,
+  "targets": [
+    {
+      "id": "old_town_hall",
+      "name": "Stary Ratusz",
+      "longitude": 17.03215,
+      "latitude": 51.10952,
+      "crop_radius_m": 85,
+      "quality": "hero"
+    },
+    {
+      "id": "centennial_hall",
+      "name": "Hala Stulecia",
+      "longitude": 17.07716,
+      "latitude": 51.10659,
+      "crop_radius_m": 160,
+      "quality": "hero"
+    },
+    {
+      "id": "wroclaw_cathedral",
+      "name": "Archikatedra św. Jana Chrzciciela",
+      "longitude": 17.04663,
+      "latitude": 51.11422,
+      "crop_radius_m": 120,
+      "quality": "hero"
+    },
+    {
+      "id": "university_main",
+      "name": "Gmach główny Uniwersytetu Wrocławskiego",
+      "longitude": 17.03393,
+      "latitude": 51.11399,
+      "crop_radius_m": 130,
+      "quality": "hero"
+    },
+    {
+      "id": "market_hall",
+      "name": "Hala Targowa",
+      "longitude": 17.04078,
+      "latitude": 51.11245,
+      "crop_radius_m": 100,
+      "quality": "hero"
+    },
+    {
+      "id": "national_museum",
+      "name": "Muzeum Narodowe",
+      "longitude": 17.04675,
+      "latitude": 51.11079,
+      "crop_radius_m": 100,
+      "quality": "hero"
+    },
+    {
+      "id": "main_station",
+      "name": "Dworzec Wrocław Główny",
+      "longitude": 17.0366,
+      "latitude": 51.098,
+      "crop_radius_m": 180,
+      "quality": "hero"
+    },
+    {
+      "id": "wroclaw_opera",
+      "name": "Opera Wrocławska",
+      "longitude": 17.0321,
+      "latitude": 51.1042,
+      "crop_radius_m": 90,
+      "quality": "hero"
+    },
+    {
+      "id": "nfm",
+      "name": "Narodowe Forum Muzyki",
+      "longitude": 17.028,
+      "latitude": 51.107,
+      "crop_radius_m": 130,
+      "quality": "hero"
+    },
+    {
+      "id": "hydropolis",
+      "name": "Hydropolis",
+      "longitude": 17.0567,
+      "latitude": 51.1042,
+      "crop_radius_m": 150,
+      "quality": "hero"
+    }
+  ]
+}
