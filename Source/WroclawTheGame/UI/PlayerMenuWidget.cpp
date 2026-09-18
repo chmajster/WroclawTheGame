@@ -1170,19 +1170,87 @@ void UPlayerMenuWidget::BuildMapTab()
 
 void UPlayerMenuWidget::BuildStatsTab()
 {
-    PageTitle->SetText(FText::FromString(TEXT("STATYSTYKI  /  SESJA")));
-
     auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
+    auto* City = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+    const bool bCity = City && City->IsActive();
 
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("SESJA"), 20, true, TextPrimary))
+    PageTitle->SetText(FText::FromString(
+        bCity ? TEXT("STATYSTYKI  /  OTWARTY ŚWIAT") : TEXT("STATYSTYKI  /  SESJA")));
+
+    ActionColumn->AddChildToVerticalBox(MakeText(
+        bCity ? TEXT("MIASTO") : TEXT("SESJA"), 20, true, TextPrimary))
         ->SetPadding(FMargin(2, 1, 2, 2));
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("PODSUMOWANIE"), 9, true, Accent))
+    ActionColumn->AddChildToVerticalBox(MakeText(
+        bCity ? TEXT("WROCŁAW / GIS") : TEXT("PODSUMOWANIE"), 9, true, Accent))
         ->SetPadding(FMargin(2, 0, 2, 14));
 
     if (!Mission)
     {
         ActionColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("BRAK"), TEXT("AKTYWNEJ SESJI")));
         AddTextPage(TEXT("STATYSTYKI"), TEXT("Brak danych."));
+        return;
+    }
+
+    if (bCity)
+    {
+        const int32 Completed = City->CompletedActivityCount();
+        const int32 Total = City->TrackableActivityCount();
+        const int32 EventsDone = City->CompletedEventCount();
+        const int32 EventsTotal = City->EventCount();
+        const int32 Available = City->AvailableActivityCount();
+        const int32 Discoveries = static_cast<int32>(Mission->WorldState.discoveries.size());
+
+        ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+            TEXT("AKTYWNY"), TEXT("TRYB OTWARTEGO ŚWIATA"), true))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+            City->IsWriteBlocked() ? TEXT("ZABLOKOWANY") : TEXT("POPRAWNY"),
+            TEXT("AUTOMATYCZNY ZAPIS"), !City->IsWriteBlocked()))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%d / 5"), Mission->WorldState.HeatLevel()),
+            TEXT("ZAGROŻENIE")));
+
+        CenterColumn->AddChildToVerticalBox(MakeText(TEXT("METRYKI MIASTA"), 26, true, TextPrimary))
+            ->SetPadding(FMargin(8, 7, 8, 10));
+
+        auto* Metrics = WidgetTree->ConstructWidget<UVerticalBox>();
+        CenterColumn->AddChildToVerticalBox(Metrics)->SetPadding(FMargin(8, 0, 8, 8));
+
+        Metrics->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%d / %d"), Completed, FMath::Max(Total, 1)),
+            TEXT("AKTYWNOŚCI DZIELNIC"), true))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        Metrics->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%d / %d"), EventsDone, FMath::Max(EventsTotal, 1)),
+            TEXT("ZDARZENIA AMBIENTOWE")))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        Metrics->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%d"), Available), TEXT("DOSTĘPNE TERAZ")))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        Metrics->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%d"), Discoveries), TEXT("ODKRYTE LOKACJE")))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        Metrics->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%d / 5"), Mission->WorldState.HeatLevel()),
+            TEXT("AKTUALNY HEAT")));
+
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("NAJBLIŻSZY CEL"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 0, 0, 8));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            City->NearbyObjective(), TEXT("OTWARTY ŚWIAT"), true))
+            ->SetPadding(FMargin(0, 0, 0, 14));
+
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("POSTĘP"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 0, 0, 8));
+        auto* Progress = WidgetTree->ConstructWidget<UProgressBar>();
+        Progress->SetPercent(Total > 0 ? static_cast<float>(Completed) / Total : 0.0f);
+        Progress->SetFillColorAndOpacity(Accent);
+        RightColumn->AddChildToVerticalBox(Progress)->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeText(
+            FString::Printf(TEXT("%.0f%% aktywności dzielnic ukończonych"),
+                Total > 0 ? 100.0f * Completed / Total : 0.0f),
+            10, false, Muted));
         return;
     }
 
