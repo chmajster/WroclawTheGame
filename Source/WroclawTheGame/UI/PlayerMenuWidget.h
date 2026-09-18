@@ -50,6 +50,10 @@ private:
     UPROPERTY() TObjectPtr<class UTextBlock> PreviewViewStatus;
     UPROPERTY() TObjectPtr<class UTextBlock> PreviewLightingStatus;
     UPROPERTY() TObjectPtr<class UBorder> ToastCard;
+    UPROPERTY() TObjectPtr<class UButton> SFXVolumeButton;
+    UPROPERTY() TObjectPtr<class UButton> UIVolumeButton;
+    UPROPERTY() TObjectPtr<class UProgressBar> SFXVolumeMeter;
+    UPROPERTY() TObjectPtr<class UProgressBar> UIVolumeMeter;
     UPROPERTY() TArray<TObjectPtr<class UButton>> TabButtons;
     UPROPERTY() TArray<TObjectPtr<class UBorder>> TabIndicators;
     UPROPERTY() TArray<TObjectPtr<class UButton>> ActionButtons;
@@ -143,6 +147,8 @@ private:
     UFUNCTION() void ToggleUISounds();
     UFUNCTION() void CycleSFXVolume();
     UFUNCTION() void CycleUIVolume();
+    UFUNCTION() void SetSFXVolumeFromSlider(float Volume);
+    UFUNCTION() void SetUIVolumeFromSlider(float Volume);
     UFUNCTION() void ToggleFPSCounter();
     UFUNCTION() void ToggleVSync();
     UFUNCTION() void ToggleDynamicResolution();
