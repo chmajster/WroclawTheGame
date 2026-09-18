@@ -24,3 +24,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Electric Stove | Kitchen appliance for the apartment kitchen. | Kuutti Siitonen | [Poly Haven](https://polyhaven.com/a/electric_stove) | CC0 1.0 |
 | Modular Street Seating | Street/park bench for clue placement and city dressing. | Stuart Attenborrow | [Poly Haven](https://polyhaven.com/a/modular_street_seating) | CC0 1.0 |
 | Covered Car | Static parked/garage car prop; not used as the driveable vehicle. | MP | [Poly Haven](https://polyhaven.com/a/covered_car) | CC0 1.0 |
+| Old Tyre | Garage/workshop automotive clutter. | MP | [Poly Haven](https://polyhaven.com/a/old_tyre) | CC0 1.0 |

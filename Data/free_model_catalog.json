@@ -397,5 +397,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/covered_car/covered_car_1k.fbx"
+  },
+  {
+    "slug": "old_tyre",
+    "name": "Old Tyre",
+    "intended_use": "Garage/workshop automotive clutter.",
+    "source_page": "https://polyhaven.com/a/old_tyre",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "MP": "All"
+    },
+    "category": "Vehicles & Transport/Parts & Accessories/Wheels & Tyres",
+    "dimensions_mm": [
+      600.0000238418579,
+      164.99999910593033,
+      600.0000238418579
+    ],
+    "files_hash": "8b7362724dd9d54081fe99703e32f434f75d1f0e",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/old_tyre/old_tyre_1k.fbx"
   }
 ]
