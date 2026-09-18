@@ -546,6 +546,8 @@ void UPlayerMenuWidget::Refresh()
     UIVolumeButton = nullptr;
     SFXVolumeMeter = nullptr;
     UIVolumeMeter = nullptr;
+    SFXVolumeSlider = nullptr;
+    UIVolumeSlider = nullptr;
     PreviewViewButtons.Reset();
     PreviewLightingButtons.Reset();
     UpdateTabStyle();
@@ -2365,7 +2367,8 @@ void UPlayerMenuWidget::BuildSettingsTab()
     SFXMeter->SetFillColorAndOpacity(Accent);
     CenterColumn->AddChildToVerticalBox(SFXMeter)->SetPadding(FMargin(18, 0, 18, 5));
 
-    auto* SFXSlider = WidgetTree->ConstructWidget<USlider>();
+    SFXVolumeSlider = WidgetTree->ConstructWidget<USlider>();
+    auto* SFXSlider = SFXVolumeSlider.Get();
     SFXSlider->SetValue(SFXVolume);
     SFXSlider->SetStepSize(0.05f);
     SFXSlider->OnValueChanged.AddDynamic(this, &UPlayerMenuWidget::SetSFXVolumeFromSlider);
@@ -2384,7 +2387,8 @@ void UPlayerMenuWidget::BuildSettingsTab()
     UIVolumeMeter->SetFillColorAndOpacity(Accent);
     CenterColumn->AddChildToVerticalBox(UIVolumeMeter)->SetPadding(FMargin(18, 0, 18, 5));
 
-    auto* UISlider = WidgetTree->ConstructWidget<USlider>();
+    UIVolumeSlider = WidgetTree->ConstructWidget<USlider>();
+    auto* UISlider = UIVolumeSlider.Get();
     UISlider->SetValue(UIVolume);
     UISlider->SetStepSize(0.05f);
     UISlider->OnValueChanged.AddDynamic(this, &UPlayerMenuWidget::SetUIVolumeFromSlider);
@@ -3154,13 +3158,24 @@ FReply UPlayerMenuWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, co
         return FReply::Handled();
     }
 
-    if (Key == EKeys::Q || Key == EKeys::Gamepad_LeftShoulder || Key == EKeys::Gamepad_DPad_Left)
+    const bool bAudioSliderFocused =
+        ActiveTab == 6 && SettingsSection == 3 &&
+        ((SFXVolumeSlider && (SFXVolumeSlider->HasAnyUserFocus() || SFXVolumeSlider->HasKeyboardFocus())) ||
+         (UIVolumeSlider && (UIVolumeSlider->HasAnyUserFocus() || UIVolumeSlider->HasKeyboardFocus())));
+
+    const bool bPreviousTab =
+        Key == EKeys::Q || Key == EKeys::Gamepad_LeftShoulder ||
+        (Key == EKeys::Gamepad_DPad_Left && !bAudioSliderFocused);
+    if (bPreviousTab)
     {
         SelectTab((ActiveTab + TabButtons.Num() - 1) % TabButtons.Num());
         return FReply::Handled();
     }
 
-    if (Key == EKeys::E || Key == EKeys::Gamepad_RightShoulder || Key == EKeys::Gamepad_DPad_Right)
+    const bool bNextTab =
+        Key == EKeys::E || Key == EKeys::Gamepad_RightShoulder ||
+        (Key == EKeys::Gamepad_DPad_Right && !bAudioSliderFocused);
+    if (bNextTab)
     {
         SelectTab((ActiveTab + 1) % TabButtons.Num());
         return FReply::Handled();
