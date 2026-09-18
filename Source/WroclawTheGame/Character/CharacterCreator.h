@@ -16,6 +16,7 @@ public:
     UPROPERTY(VisibleAnywhere) TObjectPtr<class USceneComponent> ModelRoot;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UPointLightComponent> KeyLight;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UPointLightComponent> FillLight;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<class UPointLightComponent> RimLight;
     UPROPERTY(BlueprintReadOnly) TObjectPtr<class UTextureRenderTarget2D> RenderTarget;
     UFUNCTION(BlueprintCallable) void SetView(FName View);
     UFUNCTION(BlueprintCallable) void SetLighting(FName Profile);
