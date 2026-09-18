@@ -91,12 +91,22 @@ class OfficialBuildingImporterTests(unittest.TestCase):
         meshes = (ROOT / "Scripts" / "gis" / "build_meshes.py").read_text(encoding="utf-8")
         self.assertIn("OfficialBuildings=$true", build)
         self.assertIn("OfficialBuildingsArchive", build)
-        self.assertIn("fetch_official_buildings_3d.py", geography)
+        self.assertIn("fetch_official_city_buildings.py", geography)
         self.assertIn("OfficialBuildingsArchive", geography)
         self.assertIn("WTG_OFFICIAL_BUILDINGS_INPUT", geography)
         self.assertIn("/Game/Generated/OfficialBuildings/", editor)
         self.assertIn("--official-catalog", city)
         self.assertIn("exclude_feature_ids", meshes)
+
+    def test_citywide_background_import_is_wired(self):
+        city_importer = (ROOT / "Scripts" / "gis" / "fetch_official_city_buildings.py").read_text(encoding="utf-8")
+        self.assertIn("active_game_sectors", city_importer)
+        self.assertIn("max_buildings", city_importer)
+        self.assertIn("nearest_osm", city_importer)
+        self.assertIn("write_groups", city_importer)
+        self.assertIn("fallback_direct_url", city_importer)
+        self.assertIn("building_count", city_importer)
+        self.assertIn("mesh_group_count", city_importer)
 
     def test_landmark_catalog_has_unique_real_targets(self):
         data = json.loads((ROOT / "Data" / "wroclaw_landmarks_3d.json").read_text(encoding="utf-8"))
@@ -106,7 +116,9 @@ class OfficialBuildingImporterTests(unittest.TestCase):
         self.assertEqual(len(ids), len(set(ids)))
         self.assertGreaterEqual(len(ids), 6)
         self.assertEqual(data["teryt"], "0264")
-        self.assertIn("0264_gml.zip", data["source_direct_url"])
+        self.assertEqual(data["preferred_year"], 2024)
+        self.assertIn("ModeleBudynkow3D", data["source_service"])
+        self.assertIn("0264_gml.zip", data["fallback_direct_url"])
         for item in data["targets"]:
             self.assertTrue(16.9 < item["longitude"] < 17.2)
             self.assertTrue(51.0 < item["latitude"] < 51.2)
