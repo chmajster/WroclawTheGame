@@ -532,8 +532,10 @@ def triangulated_surface(rings):
 
 def mesh_record(target: dict, candidate: dict, city_origin: list[float]) -> dict:
     reference = target["reference"]
-    shift_e = reference["easting"] - candidate["centroid_utm"][0]
-    shift_n = reference["northing"] - candidate["centroid_utm"][1]
+    # OSM is used only to identify the blockout to replace. Preserve authoritative
+    # GUGiK horizontal coordinates instead of snapping the model to OSM.
+    shift_e = 0.0
+    shift_n = 0.0
     source_z = [point[2] for surface in candidate["surfaces"] for ring in surface for point in ring]
     min_z = min(source_z)
     origin_e, origin_n, _ = city_origin
