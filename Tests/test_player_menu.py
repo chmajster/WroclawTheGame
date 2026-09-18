@@ -366,6 +366,19 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         self.assertIn("Settings->UIVolume", self.audio)
         self.assertIn("EffectiveVolume", self.audio)
 
+    def test_settings_navigation_has_numbered_sections_and_progress(self):
+        for token in (
+            'TEXT("KATEGORIE  •  %d / 4")',
+            "SettingsNavProgress",
+            "SettingsNavProgress->SetPercent",
+            "SettingsNavProgressSize->SetHeightOverride(3.0f)",
+            'TEXT("01  OBRAZ")',
+            'TEXT("02  WYDAJNOŚĆ")',
+            'TEXT("03  INTERFEJS")',
+            'TEXT("04  DŹWIĘK")',
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_settings_have_safe_restore_defaults_flow(self):
         for token in (
             'TEXT("PRZYWRÓĆ DOMYŚLNE")',
