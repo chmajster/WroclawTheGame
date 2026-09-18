@@ -84,5 +84,57 @@ void UCharacterAppearanceCatalog::BuildFallbackCatalog()
         for (int32 S=0; S<4; ++S) { A.Clothing.Add(static_cast<EClothingSlot>(S),FName(*(FString(IDs[S])+TEXT("01")))); A.ClothingVariants.Add(static_cast<EClothingSlot>(S),I%4); }
         Presets.Add(A);
     }
-    FallbackDefinition=Presets[0];
+    ApplyModernHeroProfile();
+}
+
+void UCharacterAppearanceCatalog::ApplyModernHeroProfile()
+{
+    if (Presets.IsEmpty())
+        return;
+
+    FCharacterAppearanceDefinition Hero = Presets[0];
+    Hero.PresetID = TEXT("Preset01");
+    Hero.Name = TEXT("Alex");
+    Hero.Sex = EAppearanceSex::Male;
+    Hero.BodyPreset = TEXT("Male.Standard");
+    Hero.BodyBuild = TEXT("Athletic");
+    Hero.Height = 182.0f;
+    Hero.VisualAge = 27.0f;
+    Hero.HairStyle = TEXT("Short");
+    Hero.BeardStyle = TEXT("Stubble");
+    Hero.EyebrowStyle = TEXT("Natural");
+    Hero.SkinRoughness = 0.44f;
+    Hero.Freckles = 0.04f;
+    Hero.SkinImperfections = 0.12f;
+    Hero.EyeShape = TEXT("Almond");
+
+    Hero.FaceMorphs.Add(TEXT("Face.Width"), 0.04f);
+    Hero.FaceMorphs.Add(TEXT("Face.Length"), 0.02f);
+    Hero.FaceMorphs.Add(TEXT("Jaw.Width"), 0.10f);
+    Hero.FaceMorphs.Add(TEXT("Chin.Projection"), 0.04f);
+    Hero.FaceMorphs.Add(TEXT("Eyes.Brows"), 0.03f);
+
+    Hero.Clothing.Empty();
+    Hero.ClothingVariants.Empty();
+    const auto Equip = [&](EClothingSlot Slot, FName ID, int32 Variant)
+    {
+        if (const auto* Item = Part(ClothingDefinitions, ID))
+        {
+            if (Item->Slot == Slot)
+            {
+                Hero.Clothing.Add(Slot, ID);
+                Hero.ClothingVariants.Add(Slot, FMath::Clamp(Variant, 0, FMath::Max(0, Item->Variants.Num() - 1)));
+            }
+        }
+    };
+
+    Equip(EClothingSlot::Outerwear, TEXT("Jacket02"), 0);
+    Equip(EClothingSlot::Top, TEXT("TShirt02"), 1);
+    Equip(EClothingSlot::Bottom, TEXT("Jeans02"), 1);
+    Equip(EClothingSlot::Shoes, TEXT("Sneakers02"), 3);
+    Equip(EClothingSlot::Accessory, TEXT("Glasses01"), 0);
+    Equip(EClothingSlot::Back, TEXT("Backpack01"), 0);
+
+    Presets[0] = Hero;
+    FallbackDefinition = Hero;
 }
