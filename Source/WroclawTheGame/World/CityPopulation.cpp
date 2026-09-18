@@ -1,4 +1,5 @@
 #include "World/CityPopulation.h"
+#include "Vehicles/CityTrafficVehicle.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
@@ -84,7 +85,7 @@ void ACityAmbientAgent::Tick(float Dt)
         return;
     }
 
-    FVector NextDirection = Delta.GetSafeNormal2D();
+    const FVector NextDirection = Delta.GetSafeNormal2D();
     float DesiredSpeed = CruiseSpeed;
     FCollisionQueryParams Params(SCENE_QUERY_STAT(CityAmbientFloor), false, this);
 
@@ -142,8 +143,10 @@ void ACityPopulation::Tick(float Dt)
         return;
 
     MaxAgents = FMath::Clamp(MaxAgents, 1, 128);
+    MaxTrafficVehicles = FMath::Clamp(MaxTrafficVehicles, 0, 24);
     SimplifiedSimulationRadius = FMath::Max(SimplifiedSimulationRadius, 1000.0f);
     FullSimulationRadius = FMath::Clamp(FullSimulationRadius, 1000.0f, SimplifiedSimulationRadius);
+    TrafficActivationRadius = FMath::Max(TrafficActivationRadius, 1000.0f);
 
     while (Pool.Num() < MaxAgents)
     {
@@ -153,16 +156,31 @@ void ACityPopulation::Tick(float Dt)
         Pool.Add(Agent);
         AssignedRoutes.Add(INDEX_NONE);
     }
+    while (TrafficPool.Num() < MaxTrafficVehicles)
+    {
+        auto *Traffic = GetWorld()->SpawnActor<ACityTrafficVehicle>();
+        if (!Traffic)
+            break;
+        Traffic->DeactivateTraffic();
+        TrafficPool.Add(Traffic);
+        AssignedTrafficRoutes.Add(INDEX_NONE);
+    }
 
-    TArray<int32> Near;
+    TArray<int32> NearPedestrianRoutes;
+    TArray<int32> NearTrafficRoutes;
+    const FVector PlayerPosition = Player->GetActorLocation();
     const double SimplifiedRadiusSq = FMath::Square(static_cast<double>(SimplifiedSimulationRadius));
+    const double TrafficRadiusSq = FMath::Square(static_cast<double>(TrafficActivationRadius));
     for (int32 R = 0; R < Routes.Num(); ++R)
-        for (const auto &Point : Routes[R].Points)
-            if (FVector::DistSquared(Point, Player->GetActorLocation()) < SimplifiedRadiusSq)
+    {
+        const double RadiusSq = Routes[R].Vehicle ? TrafficRadiusSq : SimplifiedRadiusSq;
+        for (const FVector &Point : Routes[R].Points)
+            if (FVector::DistSquared(Point, PlayerPosition) < RadiusSq)
             {
-                Near.Add(R);
+                (Routes[R].Vehicle ? NearTrafficRoutes : NearPedestrianRoutes).Add(R);
                 break;
             }
+    }
 
     const double FullRadiusSq = FMath::Square(static_cast<double>(FullSimulationRadius));
     for (int32 I = 0; I < Pool.Num(); ++I)
@@ -170,15 +188,10 @@ void ACityPopulation::Tick(float Dt)
         if (!Pool[I])
             continue;
 
-        if (I >= MaxAgents)
-        {
-            Pool[I]->SetSimulationLevel(ECityAgentSimulationLevel::Dormant);
-            AssignedRoutes[I] = INDEX_NONE;
-            continue;
-        }
-
-        const int32 RouteIndex = Near.IsEmpty() ? INDEX_NONE : Near[(I / 3) % Near.Num()];
-        if (I >= Near.Num() * 3 || RouteIndex == INDEX_NONE)
+        const int32 RouteIndex = NearPedestrianRoutes.IsEmpty()
+                                     ? INDEX_NONE
+                                     : NearPedestrianRoutes[(I / 3) % NearPedestrianRoutes.Num()];
+        if (I >= MaxAgents || I >= NearPedestrianRoutes.Num() * 3 || RouteIndex == INDEX_NONE)
         {
             Pool[I]->SetSimulationLevel(ECityAgentSimulationLevel::Dormant);
             AssignedRoutes[I] = INDEX_NONE;
@@ -195,16 +208,61 @@ void ACityPopulation::Tick(float Dt)
                 continue;
             }
             const int32 Start = (I % 3) * (Route.Points.Num() - 1) / 3;
-            if (FVector::DistSquared(Route.Points[Start], Player->GetActorLocation()) < FMath::Square(600.0))
+            if (FVector::DistSquared(Route.Points[Start], PlayerPosition) < FMath::Square(600.0))
                 continue;
             Pool[I]->Configure(Route, Start);
             AssignedRoutes[I] = RouteIndex;
         }
 
-        const double DistanceSq = FVector::DistSquared(Pool[I]->GetActorLocation(), Player->GetActorLocation());
+        const double DistanceSq = FVector::DistSquared(Pool[I]->GetActorLocation(), PlayerPosition);
         Pool[I]->SetSimulationLevel(
             DistanceSq <= FullRadiusSq
                 ? ECityAgentSimulationLevel::Full
                 : ECityAgentSimulationLevel::Simplified);
+    }
+
+    for (int32 I = 0; I < TrafficPool.Num(); ++I)
+    {
+        auto *Traffic = TrafficPool[I].Get();
+        if (!Traffic)
+            continue;
+
+        const int32 RouteIndex = NearTrafficRoutes.IsEmpty()
+                                     ? INDEX_NONE
+                                     : NearTrafficRoutes[(I / 2) % NearTrafficRoutes.Num()];
+        if (I >= MaxTrafficVehicles || I >= NearTrafficRoutes.Num() * 2 || RouteIndex == INDEX_NONE)
+        {
+            Traffic->DeactivateTraffic();
+            AssignedTrafficRoutes[I] = INDEX_NONE;
+            continue;
+        }
+
+        if (AssignedTrafficRoutes[I] != RouteIndex)
+        {
+            const auto &Route = Routes[RouteIndex];
+            if (Route.Points.Num() < 2)
+            {
+                Traffic->DeactivateTraffic();
+                AssignedTrafficRoutes[I] = INDEX_NONE;
+                continue;
+            }
+            const int32 Start = (I % 2) * (Route.Points.Num() - 1) / 2;
+            if (FVector::DistSquared(Route.Points[Start], PlayerPosition) < FMath::Square(1200.0))
+                continue;
+            if (!Traffic->ConfigureTraffic(Route.Points, Start))
+            {
+                Traffic->DeactivateTraffic();
+                AssignedTrafficRoutes[I] = INDEX_NONE;
+                continue;
+            }
+            AssignedTrafficRoutes[I] = RouteIndex;
+        }
+
+        if (FVector::DistSquared(Traffic->GetActorLocation(), PlayerPosition) >
+            FMath::Square(static_cast<double>(TrafficActivationRadius * 1.35f)))
+        {
+            Traffic->DeactivateTraffic();
+            AssignedTrafficRoutes[I] = INDEX_NONE;
+        }
     }
 }
