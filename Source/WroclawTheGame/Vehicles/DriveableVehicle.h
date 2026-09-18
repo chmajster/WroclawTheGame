@@ -25,10 +25,14 @@ class WROCLAWTHEGAME_API ADriveableVehicle : public APawn,
     FString Status() const;
     void SetAIControl(bool bEnabled, float Throttle = 0.0f, float Steering = 0.0f, bool bBrake = false);
     bool IsAIControlled() const { return bAIControlled; }
+    UFUNCTION(BlueprintCallable) void SetVisualMeshes(class UStaticMesh *BodyMesh, class UStaticMesh *WheelMesh);
     UPROPERTY(EditAnywhere) TObjectPtr<class UVehicleDefinition> Definition;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Vehicle|Persistence")
     bool bPersistentPlayerVehicle = true;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UBoxComponent> Chassis;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<class UStaticMeshComponent> BodyVisual;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<class UStaticMeshComponent> CabinVisual;
+    UPROPERTY(VisibleAnywhere) TArray<TObjectPtr<class UStaticMeshComponent>> WheelVisuals;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UWorldPartitionStreamingSourceComponent> StreamingSource;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class USpringArmComponent> Boom;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UCameraComponent> Camera;
