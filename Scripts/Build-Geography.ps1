@@ -24,10 +24,10 @@ if($City){
         $OfficialData=Join-Path $Root 'Saved\OfficialBuildings3D'
         & $Python (Join-Path $PSScriptRoot 'gis\build_city.py') --output $CityData
         if($LASTEXITCODE -ne 0){throw 'City GIS preparation for official buildings failed'}
-        $OfficialArgs=@('--city-data',$CityData,'--output',$OfficialData,'--require-all')
+        $OfficialArgs=@('--city-data',$CityData,'--output',$OfficialData)
         if($OfficialBuildingsArchive){$OfficialArgs+=@('--archive',$OfficialBuildingsArchive)}
-        & $Python (Join-Path $PSScriptRoot 'gis\fetch_official_buildings_3d.py') @OfficialArgs
-        if($LASTEXITCODE -ne 0){throw 'Official Wroclaw 3D building download/conversion failed'}
+        & $Python (Join-Path $PSScriptRoot 'gis\fetch_official_city_buildings.py') @OfficialArgs
+        if($LASTEXITCODE -ne 0){throw 'Official Wroclaw city building download/conversion failed'}
         & $Python (Join-Path $PSScriptRoot 'gis\build_city.py') --output $CityData --meshes --official-catalog (Join-Path $OfficialData 'catalog.json')
         if($LASTEXITCODE -ne 0){throw 'City GIS mesh build with official buildings failed'}
     }else{
