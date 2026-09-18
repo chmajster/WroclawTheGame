@@ -2,13 +2,20 @@ import importlib.util
 import json
 import tempfile
 import unittest
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-MODULE_PATH = ROOT / "Scripts" / "gis" / "fetch_official_buildings_3d.py"
+GIS_DIR = ROOT / "Scripts" / "gis"
+sys.path.insert(0, str(GIS_DIR))
+MODULE_PATH = GIS_DIR / "fetch_official_buildings_3d.py"
 SPEC = importlib.util.spec_from_file_location("official_buildings_3d", MODULE_PATH)
 MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
+CITY_MODULE_PATH = GIS_DIR / "fetch_official_city_buildings.py"
+CITY_SPEC = importlib.util.spec_from_file_location("official_city_buildings", CITY_MODULE_PATH)
+CITY_MODULE = importlib.util.module_from_spec(CITY_SPEC)
+CITY_SPEC.loader.exec_module(CITY_MODULE)
 
 
 class OfficialBuildingImporterTests(unittest.TestCase):
@@ -97,6 +104,32 @@ class OfficialBuildingImporterTests(unittest.TestCase):
         self.assertIn("/Game/Generated/OfficialBuildings/", editor)
         self.assertIn("--official-catalog", city)
         self.assertIn("exclude_feature_ids", meshes)
+
+    def test_citywide_matching_prefers_footprint_overlap(self):
+        official = CITY_MODULE.Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])
+        records = {
+            "overlap": {
+                "feature_id": "overlap",
+                "easting": 8.0,
+                "northing": 5.0,
+                "polygon": CITY_MODULE.Polygon([(1, 1), (9, 1), (9, 9), (1, 9)]),
+            },
+            "near": {
+                "feature_id": "near",
+                "easting": 5.1,
+                "northing": 5.0,
+                "polygon": CITY_MODULE.Polygon([(20, 20), (21, 20), (21, 21), (20, 21)]),
+            },
+        }
+        grid = {}
+        for key, record in records.items():
+            cell = (int(record["easting"] // 50), int(record["northing"] // 50))
+            grid.setdefault(cell, []).append(key)
+        match = CITY_MODULE.nearest_osm(official, 5.0, 5.0, records, grid, 50.0, 35.0)
+        self.assertIsNotNone(match)
+        _, record, overlap = match
+        self.assertEqual(record["feature_id"], "overlap")
+        self.assertGreater(overlap, 0.5)
 
     def test_citywide_background_import_is_wired(self):
         city_importer = (ROOT / "Scripts" / "gis" / "fetch_official_city_buildings.py").read_text(encoding="utf-8")
