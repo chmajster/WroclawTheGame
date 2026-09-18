@@ -90,6 +90,14 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_focus_is_visible_and_modal_traps_background_menu(self):
+        self.assertIn("HasUserFocus(PlayerController)", self.cpp)
+        self.assertIn("HasKeyboardFocus()", self.cpp)
+        self.assertIn("SetRenderScale", self.cpp)
+        self.assertIn('StartsWith(TEXT("› "))', self.cpp)
+        self.assertIn("MainMenuFrame->SetIsEnabled(false)", self.cpp)
+        self.assertIn("MainMenuFrame->SetIsEnabled(true)", self.cpp)
+
     def test_accessibility_preferences_are_persistent_and_used(self):
         for field in ("bReduceUIMotion", "bMenuBackgroundBlur", "bUISounds"):
             self.assertIn(f"bool {field}", self.perf)
