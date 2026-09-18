@@ -117,6 +117,21 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_settings_are_split_into_modern_sections(self):
+        for token in (
+            'TEXT("KATEGORIE")',
+            'TEXT("WYDAJNOŚĆ")',
+            'TEXT("INTERFEJS")',
+            "SettingsDisplay",
+            "SettingsPerformance",
+            "SettingsInterface",
+            'TEXT("AKTUALNY OBRAZ")',
+            'TEXT("METRYKI RENDERU")',
+            'TEXT("DOSTĘPNOŚĆ UI")',
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertIn("int32 SettingsSection = 0", self.header)
+
     def test_accessibility_preferences_are_persistent_and_used(self):
         for field in ("bReduceUIMotion", "bMenuBackgroundBlur", "bUISounds"):
             self.assertIn(f"bool {field}", self.perf)
