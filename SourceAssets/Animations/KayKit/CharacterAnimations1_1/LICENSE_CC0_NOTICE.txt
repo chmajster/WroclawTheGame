@@ -1,0 +1,7 @@
+KayKit Character Animations 1.1
+Author: Kay Lousberg (KayKit)
+License: CC0 1.0 Universal
+Official source: https://kaylousberg.itch.io/kaykit-character-animations
+License reference: https://creativecommons.org/publicdomain/zero/1.0/
+Pinned byte mirror: https://github.com/georg-doc/kayfabizarro/commit/11d7df978c63b9e375707bd8d9431b4c8358cda8
+Only the Rig_Medium GLB animation libraries required by WroclawTheGame are vendored here.

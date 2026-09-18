@@ -1,0 +1,55 @@
+{
+  "name": "KayKit Character Animations 1.1 — Rig_Medium",
+  "author": "Kay Lousberg",
+  "provider": "KayKit",
+  "license": "CC0-1.0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "source_page": "https://kaylousberg.itch.io/kaykit-character-animations",
+  "retrieval_transport": {
+    "repo": "georg-doc/kayfabizarro",
+    "commit": "11d7df978c63b9e375707bd8d9431b4c8358cda8",
+    "reason": "Pinned public byte mirror of the current free pack."
+  },
+  "files": [
+    {
+      "path": "SourceAssets/Animations/KayKit/CharacterAnimations1_1/Rig_Medium/Rig_Medium_General.glb",
+      "git_blob_sha1": "5d16cb6815fc8371705147188813f851c10ba26a",
+      "sha256": "5f725c0f745f36078c7238968cd5c04843cbc6260689eb6e7f5e2bbd7ffdd7ad"
+    },
+    {
+      "path": "SourceAssets/Animations/KayKit/CharacterAnimations1_1/Rig_Medium/Rig_Medium_MovementBasic.glb",
+      "git_blob_sha1": "98e965e886ec539e80f8984a77a29b0c1c02e5e5",
+      "sha256": "11422afd50abf7e8c92ea107e2e0bc94abd38023d6d15f55ad580347efbfa29e"
+    },
+    {
+      "path": "SourceAssets/Animations/KayKit/CharacterAnimations1_1/Rig_Medium/Rig_Medium_MovementAdvanced.glb",
+      "git_blob_sha1": "f3ea309627f3ad76b92b85877ebc46f945cd4f1d",
+      "sha256": "8b2317cf81e3f24149e4b791c27e1932bebd46cd378ed962e7d27d642fad8c56"
+    },
+    {
+      "path": "SourceAssets/Animations/KayKit/CharacterAnimations1_1/Rig_Medium/Rig_Medium_CombatMelee.glb",
+      "git_blob_sha1": "0ab63f221ca5d5c7c485a245199fb6107f1f3764",
+      "sha256": "c55e6ec1c79e83ae21d46fe1cd921c1b64be8b9a524a24517e51c6ba99231459"
+    },
+    {
+      "path": "SourceAssets/Animations/KayKit/CharacterAnimations1_1/Rig_Medium/Rig_Medium_CombatRanged.glb",
+      "git_blob_sha1": "df56bad0071108e4d735771483233aa4fc85456c",
+      "sha256": "7fef1fc0e7b0feafd34b8e12d23f514c8c1f9d068047a691b854b56f1774dff5"
+    },
+    {
+      "path": "SourceAssets/Animations/KayKit/CharacterAnimations1_1/Rig_Medium/Rig_Medium_Tools.glb",
+      "git_blob_sha1": "bc9db031f6608ce4b5e2b1c07f3cfae0c9b152a3",
+      "sha256": "e3b62dc122c5073373376a846e354137add2088ddcce8731c389fc5c20734aad"
+    },
+    {
+      "path": "SourceAssets/Animations/KayKit/CharacterAnimations1_1/Rig_Medium/Rig_Medium_Simulation.glb",
+      "git_blob_sha1": "c64056cda5d2fca14ecb3b61d02d9dde56d1b401",
+      "sha256": "ab6ffeed40c8281dd0ce0506534eadf7385151f1c266643a10fa2a0f0a7ba3b1"
+    },
+    {
+      "path": "SourceAssets/Animations/KayKit/CharacterAnimations1_1/Rig_Medium/Rig_Medium_Special.glb",
+      "git_blob_sha1": "4c2277dee56909c52800430f0a0daa419fe58654",
+      "sha256": "74047dd2178fbed388656051664158e921b7bfc613abb119860aeb7b646bd640"
+    }
+  ]
+}
