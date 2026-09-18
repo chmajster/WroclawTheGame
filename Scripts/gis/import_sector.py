@@ -109,6 +109,7 @@ def build(source=SOURCE, output=OUTPUT, name="nadodrze", origin=None):
         raise ValueError('Uncompressed OSM checksum mismatch')
     root = ET.fromstring(xml)
     nodes = {n.attrib['id']: (float(n.attrib['lon']),float(n.attrib['lat'])) for n in root.findall('node')}
+    node_tags = {n.attrib['id']: {t.attrib['k']:t.attrib['v'] for t in n.findall('tag')} for n in root.findall('node')}
     ways = {w.attrib['id']: ([n.attrib['ref'] for n in w.findall('nd')],
                             {t.attrib['k']:t.attrib['v'] for t in w.findall('tag')}) for w in root.findall('way')}
     features=[]; graph_nodes={}; edges=[]; unsupported=[]; building_members=set()
@@ -179,6 +180,20 @@ def build(source=SOURCE, output=OUTPUT, name="nadodrze", origin=None):
                               'tunnel':tags.get('tunnel','no'),
                               'length_cm':math.dist(geo.world(*p),geo.world(*q))})
                 if tags.get('bridge','no')!='no' or tags.get('tunnel','no')!='no':unsupported.append(identifier)
+    # Preserve real entrance/address nodes for building-link and gameplay pipelines.
+    for node_id, coord in nodes.items():
+        tags = node_tags.get(node_id, {})
+        if not (tags.get('entrance') or tags.get('addr:housenumber') or tags.get('addr:street')):
+            continue
+        features.append({
+            'id':'node/'+node_id,
+            'kind':'entrance',
+            'name':tags.get('name',''),
+            'points':[geo.world(*coord)],
+            'height_m':0,
+            'height_estimated':False,
+            'tags':tags,
+        })
     result={'version':1,'bbox':bbox,'projected_crs':'EPSG:32633','geographic_crs':'EPSG:4326',
             'vertical_crs':'EGM96 orthometric metres','origin_projected_m':geo.origin,'units_per_metre':100,
             'axes':'X=east,Y=south,Z=up','sources':sources,'features':features,
