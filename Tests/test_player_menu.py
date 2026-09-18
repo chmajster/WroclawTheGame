@@ -510,6 +510,16 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_character_preview_uses_consistent_keycap_hints(self):
+        for token in (
+            'MakeKeycap(TEXT("PPM"))',
+            'MakeKeycap(TEXT("KÓŁKO"))',
+            'MakeText(TEXT("OBRÓT"), 8, true, Muted)',
+            'MakeText(TEXT("ZOOM"), 8, true, Muted)',
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertNotIn('TEXT("PPM — OBRÓT   •   KÓŁKO — ZOOM")', self.cpp)
+
     def test_character_preview_controls_show_real_selected_state(self):
         for token in (
             'PreviewViewLabel == TEXT("CAŁA SYLWETKA")',
