@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "example_key_prop",
+  "display_name": "Pipeline example key",
+  "area": "PipelineExamples",
+  "type": "static_mesh",
+  "quality": "standard",
+  "source": {
+    "model": "SourceAssets/Models/OpenGameArt/oga-key-low-poly/key.obj",
+    "license": "See source package license",
+    "reference_directory": null
+  },
+  "dimensions": {
+    "height_m": 0.12
+  },
+  "mesh": {
+    "max_triangles": 20000,
+    "combine": true,
+    "generate_uv_if_missing": true
+  },
+  "lod": {
+    "ratios": [1.0, 0.5, 0.25, 0.1]
+  },
+  "collision": {
+    "mode": "simple",
+    "max_hulls": 1
+  },
+  "textures": {
+    "base_color": null,
+    "normal": null,
+    "orm": null
+  },
+  "unreal": {
+    "destination": "/Game/Wroclaw/PipelineExamples",
+    "nanite": false,
+    "qa_map": "/Game/Maps/Przebudzenie_Source"
+  },
+  "qa": {
+    "automation_filter": "WTG",
+    "cameras": [],
+    "screenshot_width": 1920,
+    "screenshot_height": 1080
+  }
+}
