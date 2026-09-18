@@ -2,6 +2,8 @@
 #include "Character/CharacterCreatorSubsystem.h"
 #include "Character/CharacterAppearanceComponent.h"
 #include "World/CityActivity.h"
+#include "World/CityPopulation.h"
+#include "World/RoadBlockSystem.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/WorldPartitionStreamingSourceComponent.h"
 #include "Character/SliceCharacter.h"
@@ -152,12 +154,37 @@ void UCityGameplaySubsystem::Tick(float Dt)
     if (!Player || !Player->GetActorEnableCollision()) return;
 
     auto *Pursuit = GetWorld()->GetSubsystem<UVehiclePursuitSubsystem>();
-    const int32 HeatLevel = Mission->WorldState.HeatLevel();
-    if (Cast<ADriveableVehicle>(Player) && HeatLevel >= 3 &&
-        Pursuit->GetState() == EVehiclePursuitState::Inactive)
-        Pursuit->StartPursuit(HeatLevel >= 5 ? 3 : 2);
-    else if (HeatLevel <= 1 && Pursuit->GetState() != EVehiclePursuitState::Inactive)
-        Pursuit->StopPursuit();
+    auto *PlayerVehicle = Cast<ADriveableVehicle>(Player);
+    if (PlayerVehicle)
+    {
+        const auto PursuitState = Pursuit->GetState();
+        const bool bPursuitThreat = PursuitState == EVehiclePursuitState::Locate ||
+                                    PursuitState == EVehiclePursuitState::Chase;
+        // UOpenWorldSubsystem follows the possessed character. While the player possesses a car,
+        // advance the same world clock/Heat model here instead of freezing world state.
+        Mission->WorldState.Tick(Dt, bPursuitThreat, false);
+    }
+
+    const double Now = GetWorld()->GetTimeSeconds();
+    if (Now >= NextSecurityUpdate)
+    {
+        NextSecurityUpdate = Now + 1.0;
+        const int32 HeatLevel = Mission->WorldState.HeatLevel();
+        if (PlayerVehicle && HeatLevel >= 3 &&
+            Pursuit->GetState() == EVehiclePursuitState::Inactive)
+            Pursuit->StartPursuit(HeatLevel >= 5 ? 3 : 2);
+        else if (HeatLevel <= 1 && Pursuit->GetState() != EVehiclePursuitState::Inactive)
+            Pursuit->StopPursuit();
+
+        ACityPopulation *Population = nullptr;
+        for (TActorIterator<ACityPopulation> It(GetWorld()); It; ++It)
+        {
+            Population = *It;
+            break;
+        }
+        GetWorld()->GetSubsystem<URoadBlockSubsystem>()->UpdateForHeat(
+            HeatLevel, PlayerVehicle, Population);
+    }
     std::set<std::string> LoadedIds;
     for (int32 I = Activities.Num() - 1; I >= 0; --I)
     {
