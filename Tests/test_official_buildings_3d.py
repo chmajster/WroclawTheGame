@@ -101,10 +101,12 @@ class OfficialBuildingImporterTests(unittest.TestCase):
     def test_landmark_catalog_has_unique_real_targets(self):
         data = json.loads((ROOT / "Data" / "wroclaw_landmarks_3d.json").read_text(encoding="utf-8"))
         self.assertEqual(data["schema_version"], 1)
-        self.assertEqual(data["preferred_lod"], "auto")
+        self.assertEqual(data["preferred_lod"], "LoD1")
         ids = [item["id"] for item in data["targets"]]
         self.assertEqual(len(ids), len(set(ids)))
         self.assertGreaterEqual(len(ids), 6)
+        self.assertEqual(data["teryt"], "0264")
+        self.assertIn("0264_gml.zip", data["source_direct_url"])
         for item in data["targets"]:
             self.assertTrue(16.9 < item["longitude"] < 17.2)
             self.assertTrue(51.0 < item["latitude"] < 51.2)
