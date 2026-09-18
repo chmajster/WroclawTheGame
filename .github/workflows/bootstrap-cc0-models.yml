@@ -1,0 +1,298 @@
+name: Bootstrap audited CC0 models
+
+on:
+  push:
+    branches:
+      - assets/cc0-models-20260918
+    paths:
+      - .github/workflows/bootstrap-cc0-models.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-models:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch Poly Haven models and commit each separately
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path, PurePosixPath
+          import subprocess
+          import time
+          import urllib.request
+          from urllib.parse import urlparse
+
+          ROOT = Path.cwd()
+          API = "https://api.polyhaven.com"
+          LICENSE_URL = "https://polyhaven.com/license"
+          USER_AGENT = "WroclawTheGame-CC0-ModelFetcher/1.0"
+          MAX_FILE = 95 * 1024 * 1024
+          MAX_ASSET = 180 * 1024 * 1024
+
+          ASSETS = [
+              {
+                  "slug": "security_camera_02",
+                  "name": "Security Camera 02",
+                  "use": "CCTV / surveillance prop; replaces the current generic surveillance placeholder.",
+              },
+              {
+                  "slug": "street_lamp_01",
+                  "name": "Street Lamp 01",
+                  "use": "Urban street lighting prop for authored city detail passes.",
+              },
+              {
+                  "slug": "concrete_road_barrier_02",
+                  "name": "Concrete Road Barrier 02",
+                  "use": "Roadblock and traffic-control prop for chase and blockade scenes.",
+              },
+              {
+                  "slug": "bench_vice_01",
+                  "name": "Bench Vice 01",
+                  "use": "Garage/workshop prop for the campaign workshop environment.",
+              },
+              {
+                  "slug": "side_table_01",
+                  "name": "Side Table 01",
+                  "use": "Apartment/interior furniture replacing simple blockout geometry.",
+              },
+              {
+                  "slug": "sofa_03",
+                  "name": "Sofa 03",
+                  "use": "Apartment/interior seating replacing simple blockout geometry.",
+              },
+          ]
+
+          def request(url, binary=False):
+              req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+              last = None
+              for attempt in range(3):
+                  try:
+                      with urllib.request.urlopen(req, timeout=120) as response:
+                          if response.status != 200:
+                              raise RuntimeError(f"HTTP {response.status}: {url}")
+                          return response.read() if binary else json.load(response)
+                  except Exception as exc:
+                      last = exc
+                      if attempt < 2:
+                          time.sleep(2 ** attempt)
+              raise RuntimeError(f"Fetch failed: {url}: {last}")
+
+          def safe_url(url, api=False):
+              parsed = urlparse(url)
+              allowed = {"api.polyhaven.com"} if api else {"dl.polyhaven.org"}
+              if parsed.scheme != "https" or parsed.hostname not in allowed:
+                  raise ValueError(f"Unexpected source URL: {url}")
+
+          def safe_relative(path):
+              rel = PurePosixPath(path)
+              if rel.is_absolute() or ".." in rel.parts or not rel.parts:
+                  raise ValueError(f"Unsafe include path: {path}")
+              return Path(*rel.parts)
+
+          def verify_and_write(entry, destination):
+              url = entry.get("url")
+              md5 = entry.get("md5")
+              size = int(entry.get("size") or 0)
+              if not url or not md5:
+                  raise ValueError(f"Incomplete file metadata for {destination}")
+              safe_url(url)
+              if size and size > MAX_FILE:
+                  raise ValueError(f"File exceeds GitHub-safe limit: {destination} ({size})")
+              data = request(url, binary=True)
+              if len(data) > MAX_FILE:
+                  raise ValueError(f"Downloaded file exceeds GitHub-safe limit: {destination}")
+              digest = hashlib.md5(data).hexdigest()
+              if digest.lower() != md5.lower():
+                  raise ValueError(f"MD5 mismatch for {destination}: {digest} != {md5}")
+              destination.parent.mkdir(parents=True, exist_ok=True)
+              destination.write_bytes(data)
+              return {
+                  "path": destination.relative_to(ROOT).as_posix(),
+                  "bytes": len(data),
+                  "md5": digest,
+                  "sha256": hashlib.sha256(data).hexdigest(),
+                  "source_url": url,
+              }
+
+          IMPORTER = r'''"""Import the audited Poly Haven FBX source bundles into Unreal Engine.
+
+          This script performs no network access. Source files and provenance are committed
+          under SourceAssets/Models/PolyHaven and Data/free_model_catalog.json.
+          """
+          from pathlib import Path
+          import json
+          import traceback
+          import unreal
+
+          ROOT = Path(unreal.Paths.project_dir()).resolve()
+          CATALOG = ROOT / "Data/free_model_catalog.json"
+          MARKER = ROOT / "Saved/FreeModelsReady.ok"
+
+          def run():
+              MARKER.unlink(missing_ok=True)
+              entries = json.loads(CATALOG.read_text(encoding="utf-8"))
+              tools = unreal.AssetToolsHelpers.get_asset_tools()
+              for item in entries:
+                  source = ROOT / item["primary_path"]
+                  if not source.is_file():
+                      raise RuntimeError(f"Missing model source: {source}")
+                  task = unreal.AssetImportTask()
+                  task.set_editor_property("filename", str(source))
+                  task.set_editor_property(
+                      "destination_path",
+                      f"/Game/FreeModels/PolyHaven/{item['slug']}",
+                  )
+                  task.set_editor_property("automated", True)
+                  task.set_editor_property("replace_existing", True)
+                  task.set_editor_property("save", True)
+                  tools.import_asset_tasks([task])
+                  imported = task.get_editor_property("imported_object_paths")
+                  if not imported:
+                      raise RuntimeError(f"FBX import failed: {item['slug']}")
+                  for object_path in imported:
+                      if not unreal.load_asset(object_path):
+                          raise RuntimeError(f"Imported asset unreadable: {object_path}")
+              unreal.EditorAssetLibrary.save_directory("/Game/FreeModels", False, True)
+              MARKER.parent.mkdir(parents=True, exist_ok=True)
+              MARKER.write_text("Audited Poly Haven CC0 model sources imported\n", encoding="utf-8")
+              unreal.log("WROCLAW_FREE_MODELS_READY")
+
+          try:
+              run()
+          except Exception:
+              unreal.log_error(traceback.format_exc())
+              MARKER.unlink(missing_ok=True)
+              raise
+          '''
+
+          catalog_path = ROOT / "Data/free_model_catalog.json"
+          catalog = json.loads(catalog_path.read_text(encoding="utf-8")) if catalog_path.exists() else []
+          existing = {item["slug"] for item in catalog}
+
+          for asset in ASSETS:
+              slug = asset["slug"]
+              if slug in existing:
+                  print(f"Skipping already catalogued {slug}")
+                  continue
+
+              info_url = f"{API}/info/{slug}"
+              files_url = f"{API}/files/{slug}"
+              safe_url(info_url, api=True)
+              safe_url(files_url, api=True)
+              info = request(info_url)
+              files = request(files_url)
+              if int(info.get("type", -1)) != 2:
+                  raise ValueError(f"{slug} is not a Poly Haven model")
+
+              block = files.get("fbx", {}).get("1k", {}).get("fbx", {})
+              if not block.get("url"):
+                  raise ValueError(f"No 1K FBX bundle published for {slug}")
+
+              target = ROOT / "SourceAssets/Models/PolyHaven" / slug
+              target.mkdir(parents=True, exist_ok=True)
+              downloaded = []
+
+              main_url = block["url"]
+              safe_url(main_url)
+              main_name = Path(urlparse(main_url).path).name
+              if not main_name.lower().endswith(".fbx"):
+                  raise ValueError(f"Unexpected primary FBX filename: {main_name}")
+              downloaded.append(verify_and_write(block, target / main_name))
+
+              for rel, entry in sorted((block.get("include") or {}).items()):
+                  downloaded.append(verify_and_write(entry, target / safe_relative(rel)))
+
+              total = sum(item["bytes"] for item in downloaded)
+              if total > MAX_ASSET:
+                  raise ValueError(f"Asset bundle too large for repository policy: {slug} ({total})")
+
+              record = {
+                  "slug": slug,
+                  "name": info.get("name") or asset["name"],
+                  "intended_use": asset["use"],
+                  "source_page": f"https://polyhaven.com/a/{slug}",
+                  "provider": "Poly Haven",
+                  "license": "CC0-1.0",
+                  "license_url": LICENSE_URL,
+                  "authors": info.get("authors", {}),
+                  "category": info.get("category"),
+                  "tags": info.get("tags", []),
+                  "dimensions_mm": info.get("dimensions"),
+                  "files_hash": info.get("files_hash"),
+                  "format": "fbx",
+                  "resolution": "1k",
+                  "primary_path": (target / main_name).relative_to(ROOT).as_posix(),
+                  "files": downloaded,
+              }
+              (target / "asset.json").write_text(
+                  json.dumps(record, indent=2, ensure_ascii=False) + "\n",
+                  encoding="utf-8",
+              )
+
+              catalog.append({
+                  key: record[key]
+                  for key in (
+                      "slug", "name", "intended_use", "source_page", "provider",
+                      "license", "license_url", "authors", "category", "dimensions_mm",
+                      "files_hash", "format", "resolution", "primary_path"
+                  )
+              })
+              catalog_path.parent.mkdir(parents=True, exist_ok=True)
+              catalog_path.write_text(
+                  json.dumps(catalog, indent=2, ensure_ascii=False) + "\n",
+                  encoding="utf-8",
+              )
+
+              docs = [
+                  "# Darmowe modele 3D — audyt źródeł",
+                  "",
+                  "Źródła w tym katalogu pochodzą z Poly Haven i są publikowane na licencji CC0 1.0.",
+                  "Do repozytorium trafia wariant FBX z teksturami 1K oraz lokalny manifest z MD5/SHA-256.",
+                  "Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłącznie pliki zatwierdzone w repo.",
+                  "",
+                  "| Model | Zastosowanie | Autorzy | Źródło | Licencja |",
+                  "|---|---|---|---|---|",
+              ]
+              for item in catalog:
+                  authors = ", ".join(item.get("authors", {}).keys()) or "Poly Haven"
+                  docs.append(
+                      f"| {item['name']} | {item['intended_use']} | {authors} | "
+                      f"[Poly Haven]({item['source_page']}) | CC0 1.0 |"
+                  )
+              docs.append("")
+              docs_path = ROOT / "docs/FREE_MODEL_ASSETS.md"
+              docs_path.write_text("\n".join(docs), encoding="utf-8")
+
+              importer_path = ROOT / "Scripts/import_free_models.py"
+              if not importer_path.exists():
+                  importer_path.write_text(IMPORTER, encoding="utf-8")
+
+              subprocess.run(
+                  [
+                      "git", "add",
+                      str(target.relative_to(ROOT)),
+                      str(catalog_path.relative_to(ROOT)),
+                      str(docs_path.relative_to(ROOT)),
+                      str(importer_path.relative_to(ROOT)),
+                  ],
+                  check=True,
+              )
+              subprocess.run(
+                  ["git", "commit", "-m", f"assets: add {slug} CC0 model"],
+                  check=True,
+              )
+              existing.add(slug)
+
+          subprocess.run(["git", "push", "origin", f"HEAD:{os.environ['GITHUB_REF_NAME']}"], check=True)
+          PY
