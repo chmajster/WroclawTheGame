@@ -105,6 +105,7 @@ UButton* UPlayerMenuWidget::MakeButton(const FString& Label, bool bAccent)
 {
     auto* Button = WidgetTree->ConstructWidget<UButton>();
     Button->SetIsFocusable(true);
+    Button->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
     Button->OnHovered.AddDynamic(this, &UPlayerMenuWidget::PlayUIHover);
     Button->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PlayUIClick);
     Button->SetBackgroundColor(FLinearColor::White);
@@ -252,13 +253,13 @@ void UPlayerMenuWidget::BuildShell()
     ScaleSlot->SetHorizontalAlignment(HAlign_Fill);
     ScaleSlot->SetVerticalAlignment(VAlign_Fill);
 
-    auto* Frame = WidgetTree->ConstructWidget<USizeBox>();
-    Frame->SetWidthOverride(1600.0f);
-    Frame->SetHeightOverride(900.0f);
-    Scale->AddChild(Frame);
+    MainMenuFrame = WidgetTree->ConstructWidget<USizeBox>();
+    MainMenuFrame->SetWidthOverride(1600.0f);
+    MainMenuFrame->SetHeightOverride(900.0f);
+    Scale->AddChild(MainMenuFrame);
 
     auto* Layout = WidgetTree->ConstructWidget<UVerticalBox>();
-    Frame->AddChild(Layout);
+    MainMenuFrame->AddChild(Layout);
     Layout->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
 
     auto* Header = MakeCard(FMargin(18, 14, 18, 14));
@@ -438,6 +439,38 @@ void UPlayerMenuWidget::FocusPrimaryAction()
         else
             TabButtons[ActiveTab]->SetKeyboardFocus();
     }
+}
+
+void UPlayerMenuWidget::UpdateFocusVisuals()
+{
+    APlayerController* PlayerController = GetOwningPlayer();
+
+    auto Apply = [&](UButton* Button)
+    {
+        if (!Button)
+            return;
+
+        const bool bFocused =
+            (PlayerController && Button->HasUserFocus(PlayerController)) ||
+            Button->HasKeyboardFocus();
+
+        Button->SetRenderScale(bFocused ? FVector2D(1.025f, 1.025f) : FVector2D(1.0f, 1.0f));
+
+        if (auto* Text = Cast<UTextBlock>(Button->GetContent()))
+        {
+            FString Label = Text->GetText().ToString();
+            const bool bMarked = Label.StartsWith(TEXT("› "));
+            if (bFocused && !bMarked)
+                Text->SetText(FText::FromString(TEXT("› ") + Label));
+            else if (!bFocused && bMarked)
+                Text->SetText(FText::FromString(Label.RightChop(2)));
+        }
+    };
+
+    for (UButton* Button : TabButtons)
+        Apply(Button);
+    for (UButton* Button : ActionButtons)
+        Apply(Button);
 }
 
 void UPlayerMenuWidget::AddGameHero()
@@ -1728,6 +1761,8 @@ void UPlayerMenuWidget::ShowConfirmation(
 
     ClearConfirmation();
     PendingConfirmation = Action;
+    if (MainMenuFrame)
+        MainMenuFrame->SetIsEnabled(false);
     ConfirmationSecondsRemaining = Action == 3 ? 15.0f : 0.0f;
     ConfirmationAnimationTime = 0.0f;
 
@@ -1802,6 +1837,8 @@ void UPlayerMenuWidget::ShowConfirmation(
     CancelSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     CancelSlot->SetPadding(FMargin(0, 0, 5, 0));
 
+    ActionButtons.Add(Cancel);
+
     auto* Confirm = MakeButton(ConfirmLabel, true);
     if (bDestructive)
     {
@@ -1814,6 +1851,7 @@ void UPlayerMenuWidget::ShowConfirmation(
             ConfirmText->SetColorAndOpacity(FSlateColor(FLinearColor::White));
     }
     Confirm->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ConfirmPendingAction);
+    ActionButtons.Add(Confirm);
     auto* ConfirmSlot = Buttons->AddChildToHorizontalBox(Confirm);
     ConfirmSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     ConfirmSlot->SetPadding(FMargin(5, 0, 0, 0));
@@ -1834,6 +1872,8 @@ void UPlayerMenuWidget::ClearConfirmation()
     ConfirmationCountdown = nullptr;
     PendingConfirmation = 0;
     ConfirmationSecondsRemaining = 0.0f;
+    if (MainMenuFrame)
+        MainMenuFrame->SetIsEnabled(true);
 }
 
 void UPlayerMenuWidget::ConfirmPendingAction()
@@ -2231,6 +2271,8 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
 
     const auto* UISettings = UWTGPerformanceSettings::Get();
     const bool bReduceMotion = UISettings && UISettings->bReduceUIMotion;
+
+    UpdateFocusVisuals();
 
     if (!bReduceMotion)
         AmbientAnimationTime += InDeltaTime;
