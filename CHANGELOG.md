@@ -1,3 +1,12 @@
+## 2026-09-18 — pozycja gracza i właściwa mapa GIS
+
+- Zakładka Mapa rozróżnia mapę odkryć kampanii od rzeczywistej mapy sektorów miasta.
+- W trybie GIS granice UCityDefinition wyznaczają wspólny zakres mapy, a sektory są pozycjonowane przez swoje centroidy.
+- Dodano marker TY z rzeczywistej pozycji Pawn, wyróżnienie aktualnego sektora oraz złoty marker wybranego waypointu.
+- Panel boczny pokazuje aktualny sektor, nazwę celu i dystans w linii prostej.
+- W kampanii marker gracza jest rysowany tylko, gdy pozycja mieści się w zakresie mapy odkryć; pokazywane jest też najbliższe odkryte miejsce i dystans.
+- Dzięki rozdzieleniu przestrzeni współrzędnych pozycja GIS nie jest już błędnie nakładana na legacy mapę kampanii.
+
 ## 2026-09-18 — statystyki otwartego świata
 
 - Zakładka Statystyki przełącza się na osobny dashboard miasta, gdy aktywny jest tryb GIS.
