@@ -31,6 +31,16 @@ FString U(const std::string &S)
 {
     return UTF8_TO_TCHAR(S.c_str());
 }
+bool ValidCampaignWorldPosition(const FVector &Position)
+{
+    constexpr double MaxHorizontal = 5000000.0; // 50 km from project origin.
+    constexpr double MinVertical = -200000.0;
+    constexpr double MaxVertical = 200000.0;
+    return !Position.ContainsNaN() &&
+           FMath::Abs(Position.X) <= MaxHorizontal &&
+           FMath::Abs(Position.Y) <= MaxHorizontal &&
+           Position.Z >= MinVertical && Position.Z <= MaxVertical;
+}
 
 } // namespace
 void USliceMission::Initialize(FSubsystemCollectionBase &Collection)
@@ -47,7 +57,10 @@ void USliceMission::NewGame()
     WorldState.seed = static_cast<uint32>(FMath::RandRange(1, MAX_int32));
     bDebugSession = false;
     State = Wroclaw::Progress(FMath::RandRange(0, static_cast<int32>(Wroclaw::LightVariants().size()) - 1));
-    Anchor = FVector(250, 400, 456);
+    if (const auto *Awake = Wroclaw::Progress::Find("awake"))
+        Anchor = FVector(Awake->x, Awake->y, Awake->z);
+    else
+        Anchor = FVector(250, 400, 456);
     bInGame = true;
     bShowMenu = false;
     bDead = false;
@@ -76,9 +89,8 @@ bool USliceMission::LoadState(bool bApply)
         Cast<USliceSave>(
             UGameplayStatics::LoadGameFromSlot(Legacy ? TEXT("Przebudzenie_v2") : SaveSlotName, 0));
     if (!S || (S->Version != Wroclaw::Progress::Version && !(Legacy && S->Version == 2)) ||
-        S->History.Num() > static_cast<int32>(Wroclaw::Catalog().size()) || S->Anchor.ContainsNaN() ||
-        S->Anchor.X < 0 || S->Anchor.X > 15800 || S->Anchor.Y < 0 || S->Anchor.Y > 9300 ||
-        S->Anchor.Z < -400 || S->Anchor.Z > 1500)
+        S->History.Num() > static_cast<int32>(Wroclaw::Catalog().size()) ||
+        !ValidCampaignWorldPosition(S->Anchor))
         return false;
     Wroclaw::Progress Candidate(S->Variant);
     if (Legacy)
@@ -154,8 +166,7 @@ bool USliceMission::LoadState(bool bApply)
         const auto &Snap = Pair.Value;
         const FVector Pos = Snap.Transform.GetLocation();
         if (Snap.Transform.ContainsNaN() || !FMath::IsFinite(Snap.Health) || Snap.Health < 0 ||
-            Snap.Health > 10000 || Pos.X < 0 || Pos.X > 15800 || Pos.Y < 0 || Pos.Y > 9300 || Pos.Z < -400 ||
-            Pos.Z > 1800)
+            Snap.Health > 10000 || !ValidCampaignWorldPosition(Pos))
             return false;
         const std::string Id = TCHAR_TO_UTF8(*Pair.Key);
         if (std::none_of(Wroclaw::Guards().begin(), Wroclaw::Guards().end(),
