@@ -29,6 +29,7 @@
 #include "Components/SafeZone.h"
 #include "Components/ScrollBox.h"
 #include "Components/SizeBox.h"
+#include "Components/Slider.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "Components/VerticalBoxSlot.h"
@@ -541,6 +542,10 @@ void UPlayerMenuWidget::Refresh()
     if (CenterScroll) CenterScroll->ScrollToStart();
     if (RightScroll) RightScroll->ScrollToStart();
     ActionButtons.Reset();
+    SFXVolumeButton = nullptr;
+    UIVolumeButton = nullptr;
+    SFXVolumeMeter = nullptr;
+    UIVolumeMeter = nullptr;
     PreviewViewButtons.Reset();
     PreviewLightingButtons.Reset();
     UpdateTabStyle();
@@ -2348,26 +2353,48 @@ void UPlayerMenuWidget::BuildSettingsTab()
         TEXT("GŁOŚNOŚĆ EFEKTÓW ŚWIATA I INTERFEJSU"), 9, true, Accent))
         ->SetPadding(FMargin(18, 0, 18, 18));
 
-    auto* SFXButton = MakeButton(FString::Printf(
+    SFXVolumeButton = MakeButton(FString::Printf(
         TEXT("EFEKTY ŚWIATA  •  %d%%"), FMath::RoundToInt(SFXVolume * 100.0f)), true);
+    auto* SFXButton = SFXVolumeButton.Get();
     SFXButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleSFXVolume);
     AddCenterButton(SFXButton, 5.0f);
-    auto* SFXMeter = WidgetTree->ConstructWidget<UProgressBar>();
+
+    SFXVolumeMeter = WidgetTree->ConstructWidget<UProgressBar>();
+    auto* SFXMeter = SFXVolumeMeter.Get();
     SFXMeter->SetPercent(SFXVolume);
     SFXMeter->SetFillColorAndOpacity(Accent);
-    CenterColumn->AddChildToVerticalBox(SFXMeter)->SetPadding(FMargin(18, 0, 18, 13));
+    CenterColumn->AddChildToVerticalBox(SFXMeter)->SetPadding(FMargin(18, 0, 18, 5));
 
-    auto* UIVolumeButton = MakeButton(FString::Printf(
+    auto* SFXSlider = WidgetTree->ConstructWidget<USlider>();
+    SFXSlider->SetValue(SFXVolume);
+    SFXSlider->SetStepSize(0.05f);
+    SFXSlider->OnValueChanged.AddDynamic(this, &UPlayerMenuWidget::SetSFXVolumeFromSlider);
+    SFXSlider->OnMouseCaptureEnd.AddDynamic(this, &UPlayerMenuWidget::CommitAudioSliderChange);
+    SFXSlider->OnControllerCaptureEnd.AddDynamic(this, &UPlayerMenuWidget::CommitAudioSliderChange);
+    CenterColumn->AddChildToVerticalBox(SFXSlider)->SetPadding(FMargin(18, 0, 18, 13));
+
+    UIVolumeButton = MakeButton(FString::Printf(
         TEXT("INTERFEJS  •  %d%%"), FMath::RoundToInt(UIVolume * 100.0f)));
-    UIVolumeButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleUIVolume);
-    AddCenterButton(UIVolumeButton, 5.0f);
-    auto* UIVolumeMeter = WidgetTree->ConstructWidget<UProgressBar>();
-    UIVolumeMeter->SetPercent(UIVolume);
-    UIVolumeMeter->SetFillColorAndOpacity(Accent);
-    CenterColumn->AddChildToVerticalBox(UIVolumeMeter)->SetPadding(FMargin(18, 0, 18, 10));
+    auto* UILevelButton = UIVolumeButton.Get();
+    UILevelButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleUIVolume);
+    AddCenterButton(UILevelButton, 5.0f);
+
+    UIVolumeMeter = WidgetTree->ConstructWidget<UProgressBar>();
+    auto* UIMeter = UIVolumeMeter.Get();
+    UIMeter->SetPercent(UIVolume);
+    UIMeter->SetFillColorAndOpacity(Accent);
+    CenterColumn->AddChildToVerticalBox(UIMeter)->SetPadding(FMargin(18, 0, 18, 5));
+
+    auto* UISlider = WidgetTree->ConstructWidget<USlider>();
+    UISlider->SetValue(UIVolume);
+    UISlider->SetStepSize(0.05f);
+    UISlider->OnValueChanged.AddDynamic(this, &UPlayerMenuWidget::SetUIVolumeFromSlider);
+    UISlider->OnMouseCaptureEnd.AddDynamic(this, &UPlayerMenuWidget::CommitAudioSliderChange);
+    UISlider->OnControllerCaptureEnd.AddDynamic(this, &UPlayerMenuWidget::CommitAudioSliderChange);
+    CenterColumn->AddChildToVerticalBox(UISlider)->SetPadding(FMargin(18, 0, 18, 10));
 
     CenterColumn->AddChildToVerticalBox(MakeText(
-        TEXT("WYBIERZ KONTROLKĘ, ABY ZMIENIĆ POZIOM CO 25%"), 9, true, Muted))
+        TEXT("SUWAK: PRECYZYJNA REGULACJA  •  PRZYCISK: SKOK CO 25%"), 9, true, Muted))
         ->SetPadding(FMargin(18, 0, 18, 8));
 
     RightColumn->AddChildToVerticalBox(MakeText(TEXT("POZIOMY GŁOŚNOŚCI"), 9, true, Accent))
@@ -2736,6 +2763,37 @@ void UPlayerMenuWidget::ToggleUISounds()
 {
     if (auto* Settings = UWTGPerformanceSettings::Get())
         Settings->SetUISounds(!Settings->bUISounds);
+    RefreshWithSettingsToast();
+}
+
+void UPlayerMenuWidget::SetSFXVolumeFromSlider(float Volume)
+{
+    if (auto* Settings = UWTGAudioSettings::Get())
+        Settings->SetSFXVolume(Volume);
+
+    if (SFXVolumeMeter)
+        SFXVolumeMeter->SetPercent(Volume);
+    if (SFXVolumeButton)
+        if (auto* Label = Cast<UTextBlock>(SFXVolumeButton->GetContent()))
+            Label->SetText(FText::FromString(FString::Printf(
+                TEXT("EFEKTY ŚWIATA  •  %d%%"), FMath::RoundToInt(Volume * 100.0f))));
+}
+
+void UPlayerMenuWidget::SetUIVolumeFromSlider(float Volume)
+{
+    if (auto* Settings = UWTGAudioSettings::Get())
+        Settings->SetUIVolume(Volume);
+
+    if (UIVolumeMeter)
+        UIVolumeMeter->SetPercent(Volume);
+    if (UIVolumeButton)
+        if (auto* Label = Cast<UTextBlock>(UIVolumeButton->GetContent()))
+            Label->SetText(FText::FromString(FString::Printf(
+                TEXT("INTERFEJS  •  %d%%"), FMath::RoundToInt(Volume * 100.0f))));
+}
+
+void UPlayerMenuWidget::CommitAudioSliderChange()
+{
     RefreshWithSettingsToast();
 }
 
