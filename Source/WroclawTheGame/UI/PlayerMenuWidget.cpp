@@ -968,9 +968,21 @@ void UPlayerMenuWidget::AddPreview()
 {
     if (!Studio || !Studio->RenderTarget)
     {
-        auto* Fallback = MakeText(TEXT("Podgląd postaci jest chwilowo niedostępny."), 18, true, Muted);
-        Fallback->SetJustification(ETextJustify::Center);
-        CenterColumn->AddChildToVerticalBox(Fallback)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+        auto* FallbackCard = MakeCard(FMargin(24, 22, 24, 22));
+        auto* FallbackSlot = CenterColumn->AddChildToVerticalBox(FallbackCard);
+        FallbackSlot->SetPadding(FMargin(18));
+        FallbackSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+        auto* FallbackBox = WidgetTree->ConstructWidget<UVerticalBox>();
+        FallbackCard->AddChild(FallbackBox);
+        auto* FallbackTitle = MakeText(TEXT("PODGLĄD NIEDOSTĘPNY"), 18, true, TextPrimary);
+        FallbackTitle->SetJustification(ETextJustify::Center);
+        FallbackBox->AddChildToVerticalBox(FallbackTitle)->SetPadding(FMargin(0, 0, 0, 7));
+        auto* FallbackText = MakeText(
+            TEXT("Postać nie może zostać teraz wyświetlona. Pozostałe informacje profilu są nadal dostępne."),
+            11, false, Muted);
+        FallbackText->SetJustification(ETextJustify::Center);
+        FallbackBox->AddChildToVerticalBox(FallbackText);
         return;
     }
 
@@ -2176,7 +2188,9 @@ void UPlayerMenuWidget::BuildSettingsTab()
     if (!UserSettings)
     {
         PageTitle->SetText(FText::FromString(TEXT("USTAWIENIA  /  NIEDOSTĘPNE")));
-        AddTextPage(TEXT("USTAWIENIA"), TEXT("Nie udało się pobrać UGameUserSettings."));
+        AddTextPage(
+            TEXT("USTAWIENIA"),
+            TEXT("Nie udało się wczytać ustawień obrazu. Bieżące ustawienia gry nie zostały zmienione."));
         return;
     }
 
