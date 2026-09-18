@@ -273,6 +273,15 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_tab_navigation_has_numbered_labels_and_active_hierarchy(self):
+        for token in (
+            'FString::Printf(TEXT("%02d  %s"), Index + 1, Labels[Index])',
+            "const bool bActive = Index == ActiveTab",
+            "bActive ? 1.008f : 1.0f",
+            "(bFocused || bActive) ? 1.0f : 0.94f",
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_keyboard_and_gamepad_focus_has_visible_feedback(self):
         for token in (
             "UpdateFocusPresentation()",
