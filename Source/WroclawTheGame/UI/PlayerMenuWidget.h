@@ -15,12 +15,16 @@ public:
     void Refresh();
 
 protected:
+    virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
     virtual FReply NativeOnMouseButtonDown(const FGeometry& Geometry, const FPointerEvent& Event) override;
     virtual FReply NativeOnMouseButtonUp(const FGeometry& Geometry, const FPointerEvent& Event) override;
     virtual FReply NativeOnMouseMove(const FGeometry& Geometry, const FPointerEvent& Event) override;
     virtual FReply NativeOnMouseWheel(const FGeometry& Geometry, const FPointerEvent& Event) override;
 
 private:
+    UPROPERTY() TObjectPtr<class UOverlay> RootOverlay;
+    UPROPERTY() TObjectPtr<class UBorder> ConfirmationOverlay;
+    UPROPERTY() TObjectPtr<class UTextBlock> ConfirmationCountdown;
     UPROPERTY() TObjectPtr<class UVerticalBox> ActionColumn;
     UPROPERTY() TObjectPtr<class UVerticalBox> CenterColumn;
     UPROPERTY() TObjectPtr<class UVerticalBox> RightColumn;
@@ -29,6 +33,8 @@ private:
     UPROPERTY() TObjectPtr<class AWTG_CharacterCreator> Studio;
 
     int32 ActiveTab = 0;
+    int32 PendingConfirmation = 0;
+    float ConfirmationSecondsRemaining = 0.0f;
     bool bRotatingPreview = false;
 
     class UTextBlock* MakeText(const FString& Value, int32 Size = 16, bool bBold = false,
@@ -48,7 +54,11 @@ private:
     void AddPlayerStatus();
     void SelectTab(int32 Index);
     void UpdateTabStyle();
+    void ShowConfirmation(int32 Action, const FString& Title, const FString& Body, const FString& ConfirmLabel);
+    void ClearConfirmation();
 
+    UFUNCTION() void ConfirmPendingAction();
+    UFUNCTION() void CancelConfirmation();
     UFUNCTION() void TabGame();
     UFUNCTION() void TabCharacter();
     UFUNCTION() void TabInventory();
