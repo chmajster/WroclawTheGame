@@ -62,3 +62,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Modern Coffee Table 01 | Apartment living-room table. | Amin | [Poly Haven](https://polyhaven.com/a/modern_coffee_table_01) | CC0 1.0 |
 | Bar Chair Round 01 | Shop/bar-style seating. | Dairon Sanchez | [Poly Haven](https://polyhaven.com/a/bar_chair_round_01) | CC0 1.0 |
 | Ladder Sectioned 01 | Garage/workshop ladder. | MP | [Poly Haven](https://polyhaven.com/a/ladder_sectioned_01) | CC0 1.0 |
+| Exterior Aircon Unit | Urban facade/detail prop. | Monsta3D | [Poly Haven](https://polyhaven.com/a/exterior_aircon_unit) | CC0 1.0 |

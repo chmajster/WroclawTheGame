@@ -1238,5 +1238,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/ladder_sectioned_01/ladder_sectioned_01_1k.fbx"
+  },
+  {
+    "slug": "exterior_aircon_unit",
+    "name": "Exterior Aircon Unit",
+    "intended_use": "Urban facade/detail prop.",
+    "source_page": "https://polyhaven.com/a/exterior_aircon_unit",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Monsta3D": "All"
+    },
+    "category": "Industrial & Infrastructure/Utility Equipment/Aircon Units",
+    "dimensions_mm": [
+      1799.971342086792,
+      374.15920197963715,
+      927.8970956802368
+    ],
+    "files_hash": "afd5b9eb4b3cfc2544044a00f4acb2a92d2f310e",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/exterior_aircon_unit/exterior_aircon_unit_1k.fbx"
   }
 ]
