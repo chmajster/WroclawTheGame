@@ -36,6 +36,17 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             self.assertEqual(self.cpp.count(definition), 1, builder)
             self.assertIn(f"void {builder}();", self.header, builder)
 
+    def test_footer_shows_project_version_and_build_configuration(self):
+        for token in (
+            "ProjectVersionLabel()",
+            "BuildLabel()",
+            "ProjectVersion",
+            "GGameIni",
+            "UE_BUILD_SHIPPING",
+            "UE_BUILD_DEVELOPMENT",
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_modern_visual_shell_is_not_removed(self):
         for token in (
             "FSlateRoundedBoxBrush", "UBackgroundBlur", "SetBlurStrength",
