@@ -1,0 +1,71 @@
+{
+  "slug": "sofa_03",
+  "name": "Sofa 03",
+  "intended_use": "Apartment/interior seating replacing simple blockout geometry.",
+  "source_page": "https://polyhaven.com/a/sofa_03",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Fran Calvente": "All"
+  },
+  "category": "Furniture/Seating/Sofas & Couches",
+  "tags": [
+    "vintage",
+    "chair",
+    "couch",
+    "seat",
+    "fancy",
+    "mansion",
+    "manor",
+    "victorian",
+    "antique",
+    "leather"
+  ],
+  "dimensions_mm": [
+    2731.17733001709,
+    925.0842034816742,
+    1118.2640366605483
+  ],
+  "files_hash": "6304a0e5c6e96371ba5b427ce5baa763f1405e2c",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/sofa_03/sofa_03_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/sofa_03/sofa_03_1k.fbx",
+      "bytes": 281644,
+      "md5": "b3ea4523f917f6cb7151d83d798ae993",
+      "sha256": "777d39e323eeab5611a0e76518a6359ba226747b87c16c8af67aec785238487a",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/sofa_03/sofa_03_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/sofa_03/textures/sofa_03_diff_1k.jpg",
+      "bytes": 151815,
+      "md5": "1f33a1431d98e1560a04b661e786b45b",
+      "sha256": "c0bc221e4cacc3de75aff7744dab1600d008bcf70b5c67fb10ad6847b695a84e",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/sofa_03/sofa_03_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/sofa_03/textures/sofa_03_nor_gl_1k.exr",
+      "bytes": 655796,
+      "md5": "ceacabeb3f4411ed807f9c3cf883f189",
+      "sha256": "f90d7bf7e6dff7ceebca0cc11a0248dc7aa3771311d41f501dbcb27bbc4596d6",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/sofa_03/sofa_03_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/sofa_03/textures/sofa_03_opacity_1k.png",
+      "bytes": 24606,
+      "md5": "31caada26019e56c95446313c28ba57d",
+      "sha256": "b9c7fbbac2db04999cbb49bdd42a44c15f0590ce3d6f3bcd619e20f7eb08ad4d",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/sofa_03/sofa_03_opacity_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/sofa_03/textures/sofa_03_rough_1k.jpg",
+      "bytes": 170206,
+      "md5": "c3fe733eb2cef0424d5530e067518d60",
+      "sha256": "b03b45c92365cddf787db158d7499915d6ba0d67ec51947453f6598f51361e47",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/sofa_03/sofa_03_rough_1k.jpg"
+    }
+  ]
+}

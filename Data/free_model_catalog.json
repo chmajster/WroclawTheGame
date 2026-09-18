@@ -110,5 +110,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/side_table_01/side_table_01_1k.fbx"
+  },
+  {
+    "slug": "sofa_03",
+    "name": "Sofa 03",
+    "intended_use": "Apartment/interior seating replacing simple blockout geometry.",
+    "source_page": "https://polyhaven.com/a/sofa_03",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Fran Calvente": "All"
+    },
+    "category": "Furniture/Seating/Sofas & Couches",
+    "dimensions_mm": [
+      2731.17733001709,
+      925.0842034816742,
+      1118.2640366605483
+    ],
+    "files_hash": "6304a0e5c6e96371ba5b427ce5baa763f1405e2c",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/sofa_03/sofa_03_1k.fbx"
   }
 ]
