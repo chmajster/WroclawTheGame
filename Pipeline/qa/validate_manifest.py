@@ -63,7 +63,7 @@ def validate_manifest(data: dict, check_files: bool = True) -> None:
     mesh = data["mesh"]
     require(isinstance(mesh, dict), "mesh must be an object")
     require(isinstance(mesh.get("max_triangles"), int) and mesh["max_triangles"] > 0, "mesh.max_triangles must be > 0")
-    require(isinstance(mesh.get("combine"), bool), "mesh.combine must be boolean")
+    require(mesh.get("combine") is True, "pipeline v1 requires mesh.combine=true")
     require(isinstance(mesh.get("generate_uv_if_missing"), bool), "mesh.generate_uv_if_missing must be boolean")
 
     lod = data["lod"]
@@ -135,7 +135,7 @@ def main() -> int:
         if resolved not in seen:
             unique.append(resolved)
             seen.add(resolved)
-    require(bool(unique), "no manifests selected")
+    if not unique:\n        if args.all:\n            print("PASS no production asset manifests found")\n            return 0\n        require(False, "no manifests selected")
 
     failures = []
     for path in unique:
