@@ -1017,5 +1017,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/brass_pot_01/brass_pot_01_1k.fbx"
+  },
+  {
+    "slug": "brass_pan_01",
+    "name": "Brass Pan 01",
+    "intended_use": "Kitchen cookware prop.",
+    "source_page": "https://polyhaven.com/a/brass_pan_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Rico Cilliers": "All"
+    },
+    "category": "Food & Kitchen/Cookware/Pots & Pans",
+    "dimensions_mm": [
+      191.2703588604927,
+      449.6646225452423,
+      52.509385510347784
+    ],
+    "files_hash": "3ec9abfb8af6f1cd8a8188f2869476420e4d54f5",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/brass_pan_01/brass_pan_01_1k.fbx"
   }
 ]

@@ -1,0 +1,74 @@
+{
+  "slug": "brass_pan_01",
+  "name": "Brass Pan 01",
+  "intended_use": "Kitchen cookware prop.",
+  "source_page": "https://polyhaven.com/a/brass_pan_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Rico Cilliers": "All"
+  },
+  "category": "Food & Kitchen/Cookware/Pots & Pans",
+  "tags": [
+    "brass",
+    "pan",
+    "copper",
+    "old",
+    "metal",
+    "prop",
+    "container",
+    "cooking",
+    "pot",
+    "cookware",
+    "decorative",
+    "fancy",
+    "gold"
+  ],
+  "dimensions_mm": [
+    191.2703588604927,
+    449.6646225452423,
+    52.509385510347784
+  ],
+  "files_hash": "3ec9abfb8af6f1cd8a8188f2869476420e4d54f5",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/brass_pan_01/brass_pan_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/brass_pan_01/brass_pan_01_1k.fbx",
+      "bytes": 214684,
+      "md5": "bd28deaaabe9454b1aa92cfcd90d52bb",
+      "sha256": "5f90574127ffb21b6b0a94bbd42481ea7c2eb3f6c2f3265289efc3c4cfd2f0c4",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/brass_pan_01/brass_pan_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/brass_pan_01/textures/brass_pan_01_diff_1k.jpg",
+      "bytes": 595029,
+      "md5": "50d7fe9790c6ad162674e7b536ff3e49",
+      "sha256": "e8beb65e8a9e52207934d63a684d5104322238e2693e0f0447bd298c14bc3418",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/brass_pan_01/brass_pan_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/brass_pan_01/textures/brass_pan_01_metal_1k.exr",
+      "bytes": 18259,
+      "md5": "cef006070b40ccd84d0f00b7bcaba832",
+      "sha256": "a163c95e8ccb7186d35a1f7411805311bde4aa5db4de101625ee01ee83359749",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/brass_pan_01/brass_pan_01_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/brass_pan_01/textures/brass_pan_01_nor_gl_1k.exr",
+      "bytes": 693518,
+      "md5": "0296a2aa776ed1f509c833ccbdcae195",
+      "sha256": "596beaf097a62512bd13a91bd3080296ad6fcb617465da208b88baf5a38b77c1",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/brass_pan_01/brass_pan_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/brass_pan_01/textures/brass_pan_01_rough_1k.exr",
+      "bytes": 1109336,
+      "md5": "0da1c4fc813ea0f7abbab607c8594369",
+      "sha256": "5c286cf152c41ed8a79ba4a9fa32ab0c72c11c7f9ebbb8c5fd592cad50c09847",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/brass_pan_01/brass_pan_01_rough_1k.exr"
+    }
+  ]
+}
