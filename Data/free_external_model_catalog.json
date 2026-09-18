@@ -444,5 +444,16 @@
     "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-wall-charger/wtg-original-wall-charger.obj",
     "generated": true,
     "generator": "bootstrap-original-fallback-models.yml"
+  },
+  {
+    "id": "wtg-original-cartridge-fuse",
+    "name": "Cartridge Fuse",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Fuse pickup fallback used by the apartment power puzzle.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-cartridge-fuse/wtg-original-cartridge-fuse.obj",
+    "generated": true,
+    "generator": "bootstrap-original-fallback-models.yml"
   }
 ]
