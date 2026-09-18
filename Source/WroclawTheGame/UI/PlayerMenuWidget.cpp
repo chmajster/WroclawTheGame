@@ -844,17 +844,34 @@ void UPlayerMenuWidget::AddPlayerStatus()
 
     if (Player && Player->HealthState && Player->StaminaState)
     {
-        RightColumn->AddChildToVerticalBox(MakeText(TEXT("ZDROWIE"), 9, true, Muted));
-        auto* Health = WidgetTree->ConstructWidget<UProgressBar>();
-        Health->SetPercent(FMath::Clamp(Player->HealthState->Value / 100.0f, 0.0f, 1.0f));
-        Health->SetFillColorAndOpacity(FLinearColor(0.91f, 0.29f, 0.28f, 1.0f));
-        RightColumn->AddChildToVerticalBox(Health)->SetPadding(FMargin(0, 5, 0, 12));
+        const float HealthValue = FMath::Clamp(Player->HealthState->Value, 0.0f, 100.0f);
+        const float StaminaValue = FMath::Clamp(Player->StaminaState->Value, 0.0f, 100.0f);
 
-        RightColumn->AddChildToVerticalBox(MakeText(TEXT("KONDYCJA"), 9, true, Muted));
+        auto* HealthHead = WidgetTree->ConstructWidget<UHorizontalBox>();
+        RightColumn->AddChildToVerticalBox(HealthHead)->SetPadding(FMargin(0, 0, 0, 5));
+        HealthHead->AddChildToHorizontalBox(MakeText(TEXT("ZDROWIE"), 9, true, Muted))
+            ->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+        auto* HealthValueText = MakeText(
+            FString::Printf(TEXT("%.0f%%"), HealthValue), 9, true, TextPrimary);
+        HealthValueText->SetJustification(ETextJustify::Right);
+        HealthHead->AddChildToHorizontalBox(HealthValueText);
+        auto* Health = WidgetTree->ConstructWidget<UProgressBar>();
+        Health->SetPercent(HealthValue / 100.0f);
+        Health->SetFillColorAndOpacity(FLinearColor(0.91f, 0.29f, 0.28f, 1.0f));
+        RightColumn->AddChildToVerticalBox(Health)->SetPadding(FMargin(0, 0, 0, 12));
+
+        auto* StaminaHead = WidgetTree->ConstructWidget<UHorizontalBox>();
+        RightColumn->AddChildToVerticalBox(StaminaHead)->SetPadding(FMargin(0, 0, 0, 5));
+        StaminaHead->AddChildToHorizontalBox(MakeText(TEXT("KONDYCJA"), 9, true, Muted))
+            ->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+        auto* StaminaValueText = MakeText(
+            FString::Printf(TEXT("%.0f%%"), StaminaValue), 9, true, TextPrimary);
+        StaminaValueText->SetJustification(ETextJustify::Right);
+        StaminaHead->AddChildToHorizontalBox(StaminaValueText);
         auto* Stamina = WidgetTree->ConstructWidget<UProgressBar>();
-        Stamina->SetPercent(FMath::Clamp(Player->StaminaState->Value / 100.0f, 0.0f, 1.0f));
+        Stamina->SetPercent(StaminaValue / 100.0f);
         Stamina->SetFillColorAndOpacity(Accent);
-        RightColumn->AddChildToVerticalBox(Stamina)->SetPadding(FMargin(0, 5, 0, 18));
+        RightColumn->AddChildToVerticalBox(Stamina)->SetPadding(FMargin(0, 0, 0, 18));
     }
 
     if (Mission)
@@ -877,22 +894,42 @@ void UPlayerMenuWidget::AddPlayerStatus()
         RightColumn->AddChildToVerticalBox(MakeText(
             bCity ? TEXT("MIASTO") : TEXT("SESJA"), 9, true, Accent))
             ->SetPadding(FMargin(0, 0, 0, 7));
-        const FString Meta = bCity
-            ? FString::Printf(
-                TEXT("Aktywności       %d / %d\nZagrożenie        %d / 5\nZapis miasta      %s"),
-                City->CompletedActivityCount(),
-                City->TrackableActivityCount(),
-                Mission->WorldState.HeatLevel(),
-                City->IsWriteBlocked() ? TEXT("ZABLOKOWANY") : TEXT("OK"))
-            : FString::Printf(
-                TEXT("Zagrożenie        %d / 5\nCzas rozgrywki    %.0f min\nOsiągnięcia       %d\nZapis             %s"),
-                Mission->WorldState.HeatLevel(),
-                Mission->State.elapsed / 60.0,
-                Mission->LifetimeAchievements,
-                Mission->bLastSaveSucceeded ? TEXT("OK") : TEXT("BŁĄD"));
-        auto* MetaText = MakeText(Meta, 11, false, Muted);
-        MetaText->SetLineHeightPercentage(1.35f);
-        RightColumn->AddChildToVerticalBox(MetaText);
+
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%d / 5"), Mission->WorldState.HeatLevel()),
+            TEXT("ZAGROŻENIE")))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+
+        if (bCity)
+        {
+            RightColumn->AddChildToVerticalBox(MakeInfoRow(
+                FString::Printf(TEXT("%d / %d"), City->CompletedActivityCount(),
+                    FMath::Max(City->TrackableActivityCount(), 1)),
+                TEXT("AKTYWNOŚCI DZIELNIC"), true))
+                ->SetPadding(FMargin(0, 0, 0, 7));
+            RightColumn->AddChildToVerticalBox(MakeInfoRow(
+                City->IsWriteBlocked() ? TEXT("ZABLOKOWANY") : TEXT("OK"),
+                TEXT("ZAPIS MIASTA"), !City->IsWriteBlocked()));
+        }
+        else
+        {
+            int32 AchievementCount = 0;
+            for (int32 Index = 0; Index < 6; ++Index)
+                if ((Mission->LifetimeAchievements & (1 << Index)) != 0)
+                    ++AchievementCount;
+
+            RightColumn->AddChildToVerticalBox(MakeInfoRow(
+                FString::Printf(TEXT("%.0f MIN"), Mission->State.elapsed / 60.0),
+                TEXT("CZAS ROZGRYWKI")))
+                ->SetPadding(FMargin(0, 0, 0, 7));
+            RightColumn->AddChildToVerticalBox(MakeInfoRow(
+                FString::Printf(TEXT("%d / 6"), AchievementCount),
+                TEXT("OSIĄGNIĘCIA")))
+                ->SetPadding(FMargin(0, 0, 0, 7));
+            RightColumn->AddChildToVerticalBox(MakeInfoRow(
+                Mission->bLastSaveSucceeded ? TEXT("OK") : TEXT("BŁĄD"),
+                TEXT("OSTATNI ZAPIS"), Mission->bLastSaveSucceeded));
+        }
     }
 }
 
