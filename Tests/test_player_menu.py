@@ -168,6 +168,19 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_settings_show_modern_saved_toast_feedback(self):
+        for token in (
+            "ShowToast(const FString& Message)",
+            'TEXT("USTAWIENIA ZAPISANE")',
+            'TEXT("USTAWIENIA OBRAZU ZAPISANE")',
+            'TEXT("USTAWIENIA DOMYŚLNE PRZYWRÓCONE")',
+            "ToastTimeRemaining = 1.8f",
+            "ToastCard->SetRenderOpacity",
+            "ToastCard->RemoveFromParent",
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertIn("TObjectPtr<class UBorder> ToastCard", self.header)
+
     def test_confirmation_modal_blurs_background(self):
         for token in (
             "ModalBlur = WidgetTree->ConstructWidget<UBackgroundBlur>()",
