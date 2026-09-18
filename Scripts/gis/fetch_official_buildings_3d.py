@@ -29,7 +29,7 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG = ROOT / "Data/wroclaw_landmarks_3d.json"
 DEFAULT_CITY_DATA = ROOT / "Saved/CityData"
 DEFAULT_OUTPUT = ROOT / "Saved/OfficialBuildings3D"
-SERVICE_URL = "https://integracja.gugik.gov.pl/cgi-bin/ModeleBudynkow3D"
+SERVICE_URL = "https://mapy.geoportal.gov.pl/wss/service/PZGIK/FOTO/WMS/ModeleBudynkow3D"
 USER_AGENT = "WroclawTheGame/official-buildings-3d (+https://github.com/chmajster/WroclawTheGame)"
 
 
