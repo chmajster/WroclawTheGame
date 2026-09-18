@@ -18,6 +18,15 @@ enum class SimulationLevel
     Simplified,
     Dormant
 };
+enum class HeatResponseLevel
+{
+    Quiet,
+    Watch,
+    Search,
+    Pursuit,
+    Lockdown,
+    Manhunt
+};
 struct WorldState
 {
     static constexpr int SaveVersion = 1;
@@ -38,6 +47,10 @@ struct WorldState
     int HeatLevel() const
     {
         return std::min(5, static_cast<int>(heat / 20));
+    }
+    HeatResponseLevel HeatResponse() const
+    {
+        return static_cast<HeatResponseLevel>(HeatLevel());
     }
     void AddHeat(double amount)
     {
