@@ -1,3 +1,11 @@
+## 2026-09-18 — dashboardy Ekwipunku, Dziennika, Mapy i Statystyk
+
+- Ekwipunek przestał być blokiem tekstu: osobne kolumny garderoby i przedmiotów, ilości oraz podsumowanie zasobów.
+- Dziennik pokazuje aktualny cel, postęp główny/poboczny, dowody i każdy etap kampanii jako osobną kartę statusu.
+- Mapa dostała rzeczywisty canvas pozycyjny generowany z Wroclaw::Locations; widoczne są tylko odkryte miejsca, a bezpieczne punkty mają osobne oznaczenie.
+- Statystyki pokazują czas sesji, postęp, liczbę ukończonych akcji, dowody, neutralizacje, Heat oraz sześć osiągnięć jako osobne karty.
+- Dodano wspólny komponent MakeInfoRow, aby kolejne ekrany zachowywały identyczny rytm wizualny i hierarchię.
+
 ## 2026-09-18 — dźwięki i mikroanimacje menu
 
 - Dodano osobne, deterministycznie generowane dźwięki UIHover i UIClick do pipeline'u źródłowych assetów.

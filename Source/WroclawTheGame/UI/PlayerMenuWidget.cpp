@@ -14,6 +14,8 @@
 #include "Blueprint/WidgetTree.h"
 #include "Components/Border.h"
 #include "Components/Button.h"
+#include "Components/CanvasPanel.h"
+#include "Components/CanvasPanelSlot.h"
 #include "Components/HorizontalBox.h"
 #include "Components/HorizontalBoxSlot.h"
 #include "Components/Image.h"
@@ -160,6 +162,24 @@ void UPlayerMenuWidget::NativeDestruct()
         Studio->Destroy();
     Studio = nullptr;
     Super::NativeDestruct();
+}
+
+UBorder* UPlayerMenuWidget::MakeInfoRow(const FString& Title, const FString& Subtitle, bool bHighlighted)
+{
+    auto* Row = WidgetTree->ConstructWidget<UBorder>();
+    Row->SetBrush(RoundedBrush(
+        bHighlighted ? FLinearColor(0.025f, 0.105f, 0.135f, 0.98f) : PanelSoft, 10.0f));
+    Row->SetPadding(FMargin(12, 10, 12, 10));
+
+    auto* Column = WidgetTree->ConstructWidget<UVerticalBox>();
+    Row->AddChild(Column);
+
+    Column->AddChildToVerticalBox(MakeText(Title, 13, true, TextPrimary));
+    if (!Subtitle.IsEmpty())
+        Column->AddChildToVerticalBox(MakeText(Subtitle, 9, true, bHighlighted ? Accent : Muted))
+            ->SetPadding(FMargin(0, 3, 0, 0));
+
+    return Row;
 }
 
 void UPlayerMenuWidget::BuildShell()
@@ -604,73 +624,384 @@ void UPlayerMenuWidget::BuildCharacterTab()
 
 void UPlayerMenuWidget::BuildInventoryTab()
 {
-    PageTitle->SetText(FText::FromString(TEXT("EKWIPUNEK")));
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("EKWIPUNEK"), 16, true, Accent));
-    ActionColumn->AddChildToVerticalBox(MakeText(
-        TEXT("Przedmioty fabularne, użytkowe i zasoby zapisane w aktualnym stanie kampanii."),
-        12, false, Muted))->SetPadding(FMargin(0, 10, 0, 0));
+    PageTitle->SetText(FText::FromString(TEXT("EKWIPUNEK  /  ZASOBY")));
 
     auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
-    AddTextPage(TEXT("ZAWARTOŚĆ"), Mission ? Mission->InventoryText() : TEXT("Brak danych."));
+    auto* Creator = GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>();
+
+    int32 ItemTypes = 0;
+    int32 ItemCount = 0;
+    if (Mission)
+    {
+        for (const auto& Pair : Mission->State.inventory)
+            if (Pair.second > 0)
+            {
+                ++ItemTypes;
+                ItemCount += Pair.second;
+            }
+    }
+    const int32 ClothingCount = Creator ? Creator->Committed.OwnedClothing.Num() : 0;
+
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("EKWIPUNEK"), 20, true, TextPrimary))
+        ->SetPadding(FMargin(2, 1, 2, 2));
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("AKTUALNE ZASOBY"), 9, true, Accent))
+        ->SetPadding(FMargin(2, 0, 2, 14));
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%d"), ItemCount), TEXT("PRZEDMIOTÓW ŁĄCZNIE"), true))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%d"), ItemTypes), TEXT("TYPÓW PRZEDMIOTÓW")))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%d"), ClothingCount), TEXT("ELEMENTÓW GARDEROBY")));
+
+    auto* Header = MakeText(TEXT("ZAWARTOŚĆ"), 26, true, TextPrimary);
+    CenterColumn->AddChildToVerticalBox(Header)->SetPadding(FMargin(8, 7, 8, 12));
+
+    auto* Columns = WidgetTree->ConstructWidget<UHorizontalBox>();
+    auto* ColumnsSlot = CenterColumn->AddChildToVerticalBox(Columns);
+    ColumnsSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+    auto* Wardrobe = MakeCard(FMargin(14));
+    auto* WardrobeSlot = Columns->AddChildToHorizontalBox(Wardrobe);
+    WardrobeSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    WardrobeSlot->SetPadding(FMargin(0, 0, 6, 0));
+    auto* WardrobeBox = WidgetTree->ConstructWidget<UVerticalBox>();
+    Wardrobe->AddChild(WardrobeBox);
+    WardrobeBox->AddChildToVerticalBox(MakeText(TEXT("GARDEROBA"), 10, true, Accent))
+        ->SetPadding(FMargin(0, 0, 0, 9));
+    auto* ClothesScroll = WidgetTree->ConstructWidget<UScrollBox>();
+    WardrobeBox->AddChildToVerticalBox(ClothesScroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    if (Creator && !Creator->Committed.OwnedClothing.IsEmpty())
+    {
+        for (const FName& Id : Creator->Committed.OwnedClothing)
+            ClothesScroll->AddChild(MakeInfoRow(Id.ToString().ToUpper(), TEXT("ELEMENT UBIORU")));
+    }
+    else
+        ClothesScroll->AddChild(MakeText(TEXT("Brak zapisanych elementów garderoby."), 11, false, Muted));
+
+    auto* Items = MakeCard(FMargin(14));
+    auto* ItemsSlot = Columns->AddChildToHorizontalBox(Items);
+    ItemsSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    ItemsSlot->SetPadding(FMargin(6, 0, 0, 0));
+    auto* ItemsBox = WidgetTree->ConstructWidget<UVerticalBox>();
+    Items->AddChild(ItemsBox);
+    ItemsBox->AddChildToVerticalBox(MakeText(TEXT("PRZEDMIOTY"), 10, true, Accent))
+        ->SetPadding(FMargin(0, 0, 0, 9));
+    auto* ItemsScroll = WidgetTree->ConstructWidget<UScrollBox>();
+    ItemsBox->AddChildToVerticalBox(ItemsScroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+    bool bAnyItem = false;
+    if (Mission)
+    {
+        for (const auto& Pair : Mission->State.inventory)
+        {
+            if (Pair.second <= 0)
+                continue;
+            bAnyItem = true;
+            const auto* Item = Wroclaw::Progress::Item(Pair.first);
+            const FString Name = Item ? UTF8_TO_TCHAR(Item->name.c_str()) : UTF8_TO_TCHAR(Pair.first.c_str());
+            ItemsScroll->AddChild(MakeInfoRow(
+                Name.ToUpper(), FString::Printf(TEXT("ILOŚĆ  × %d"), Pair.second), Pair.second > 1));
+        }
+    }
+    if (!bAnyItem)
+        ItemsScroll->AddChild(MakeText(TEXT("Brak przedmiotów w ekwipunku."), 11, false, Muted));
+
     AddPlayerStatus();
 }
 
 void UPlayerMenuWidget::BuildJournalTab()
 {
-    PageTitle->SetText(FText::FromString(TEXT("DZIENNIK / POSTĘP")));
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("DZIENNIK"), 16, true, Accent));
-    ActionColumn->AddChildToVerticalBox(MakeText(
-        TEXT("Bieżące zadania, tropy i postęp dzielnic. Dane są czytane z aktywnego zapisu."),
-        12, false, Muted))->SetPadding(FMargin(0, 10, 0, 0));
+    PageTitle->SetText(FText::FromString(TEXT("DZIENNIK  /  POSTĘP")));
 
     auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
     auto* City = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
-    const FString Body = City->IsActive() ? City->Journal() : (Mission ? Mission->QuestLogText() : TEXT(""));
-    AddTextPage(TEXT("AKTUALNE WPISY"), Body);
-    AddPlayerStatus();
+
+    const int32 TotalMain = static_cast<int32>(Wroclaw::Quests().size());
+    int32 MainDone = 0;
+    int32 SideDone = 0;
+    if (Mission)
+    {
+        for (const auto& Quest : Wroclaw::Quests())
+            if (Mission->State.QuestComplete(Quest))
+                ++MainDone;
+        Wroclaw::QuestFramework Framework;
+        for (const auto& Quest : Wroclaw::SideQuests())
+            if (Framework.Complete(Quest, Mission->State))
+                ++SideDone;
+    }
+
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("DZIENNIK"), 20, true, TextPrimary))
+        ->SetPadding(FMargin(2, 1, 2, 2));
+    ActionColumn->AddChildToVerticalBox(MakeText(
+        City->IsActive() ? TEXT("TRYB MIASTA") : TEXT("KAMPANIA"), 9, true, Accent))
+        ->SetPadding(FMargin(2, 0, 2, 14));
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%d / %d"), MainDone, TotalMain), TEXT("ETAPY GŁÓWNE"), true))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%d / %d"), SideDone, static_cast<int32>(Wroclaw::SideQuests().size())),
+        TEXT("ZADANIA POBOCZNE")))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+        Mission ? FString::Printf(TEXT("%d"), static_cast<int32>(Mission->State.evidence.size())) : TEXT("0"),
+        TEXT("ZEBRANE DOWODY")));
+
+    CenterColumn->AddChildToVerticalBox(MakeText(TEXT("POSTĘP FABULARNY"), 26, true, TextPrimary))
+        ->SetPadding(FMargin(8, 7, 8, 8));
+
+    if (Mission)
+    {
+        CenterColumn->AddChildToVerticalBox(MakeInfoRow(
+            Mission->ObjectiveText(), TEXT("AKTUALNY CEL"), true))
+            ->SetPadding(FMargin(8, 0, 8, 12));
+    }
+
+    auto* Scroll = WidgetTree->ConstructWidget<UScrollBox>();
+    auto* ScrollSlot = CenterColumn->AddChildToVerticalBox(Scroll);
+    ScrollSlot->SetPadding(FMargin(8, 0, 8, 8));
+    ScrollSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+    if (City->IsActive())
+    {
+        Scroll->AddChild(MakeInfoRow(TEXT("AKTYWNOŚCI DZIELNIC"), City->Journal(), true));
+    }
+    else if (Mission)
+    {
+        int32 Index = 0;
+        const int32 Current = Mission->State.Current();
+        for (const auto& Quest : Wroclaw::Quests())
+        {
+            const bool bDone = Mission->State.QuestComplete(Quest);
+            const bool bCurrent = !bDone && Index == Current;
+            Scroll->AddChild(MakeInfoRow(
+                FString::Printf(TEXT("%02d  %s"), Index + 1, UTF8_TO_TCHAR(Quest.title.c_str())),
+                bDone ? TEXT("UKOŃCZONO") : (bCurrent ? TEXT("AKTUALNY ETAP") : TEXT("DO WYKONANIA")),
+                bCurrent));
+            ++Index;
+        }
+
+        Scroll->AddChild(MakeText(TEXT("ZADANIA POBOCZNE"), 10, true, Accent))
+            ->SetPadding(FMargin(2, 16, 2, 8));
+
+        Wroclaw::QuestFramework Framework;
+        for (const auto& Quest : Wroclaw::SideQuests())
+        {
+            const bool bDone = Framework.Complete(Quest, Mission->State);
+            Scroll->AddChild(MakeInfoRow(
+                UTF8_TO_TCHAR(Quest.title.c_str()),
+                bDone ? TEXT("UKOŃCZONO") : TEXT("OPCJONALNE")));
+        }
+    }
+
+    RightColumn->AddChildToVerticalBox(MakeText(TEXT("PODPOWIEDŹ"), 9, true, Accent))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(
+        Mission ? Mission->HintText() : TEXT("Brak aktywnej kampanii."),
+        TEXT("BEZ UJAWNIANIA ROZWIĄZANIA")))
+        ->SetPadding(FMargin(0, 0, 0, 14));
+
+    if (Mission)
+    {
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("STATUS"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeText(
+            FString::Printf(TEXT("Czas sesji: %.0f min\nZagrożenie: %d / 5\nZapis: %s"),
+                Mission->State.elapsed / 60.0,
+                Mission->WorldState.HeatLevel(),
+                Mission->bLastSaveSucceeded ? TEXT("OK") : TEXT("BŁĄD")),
+            11, false, Muted));
+    }
 }
 
 void UPlayerMenuWidget::BuildMapTab()
 {
-    PageTitle->SetText(FText::FromString(TEXT("MAPA / WROCŁAW")));
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("MAPA"), 16, true, Accent));
-    ActionColumn->AddChildToVerticalBox(MakeText(
-        TEXT("Widok tekstowy aktywnej mapy świata. Punkty i sektory pochodzą z bieżącego stanu gry."),
-        12, false, Muted))->SetPadding(FMargin(0, 10, 0, 0));
+    PageTitle->SetText(FText::FromString(TEXT("MAPA  /  WROCŁAW")));
 
     auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
-    AddTextPage(TEXT("WROCŁAW"), Mission ? Mission->WorldMapText() : TEXT("Brak danych mapy."));
-    AddPlayerStatus();
+    const auto& Locations = Wroclaw::Locations();
+
+    int32 Discovered = 0;
+    for (const auto& Location : Locations)
+        if (Mission && Mission->WorldState.discoveries.count(Location.id))
+            ++Discovered;
+
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("WROCŁAW"), 20, true, TextPrimary))
+        ->SetPadding(FMargin(2, 1, 2, 2));
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("ODKRYWANIE ŚWIATA"), 9, true, Accent))
+        ->SetPadding(FMargin(2, 0, 2, 14));
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%d / %d"), Discovered, static_cast<int32>(Locations.size())),
+        TEXT("ODKRYTE MIEJSCA"), true))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("WYŁĄCZONA"), TEXT("SZYBKA PODRÓŻ")))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("GPS"), TEXT("NAWIGACJA W ROZWOJU")));
+
+    CenterColumn->AddChildToVerticalBox(MakeText(TEXT("MAPA ODKRYĆ"), 26, true, TextPrimary))
+        ->SetPadding(FMargin(8, 7, 8, 8));
+
+    constexpr float MapWidth = 760.0f;
+    constexpr float MapHeight = 470.0f;
+
+    auto* MapSize = WidgetTree->ConstructWidget<USizeBox>();
+    MapSize->SetWidthOverride(MapWidth);
+    MapSize->SetHeightOverride(MapHeight);
+    auto* MapSizeSlot = CenterColumn->AddChildToVerticalBox(MapSize);
+    MapSizeSlot->SetHorizontalAlignment(HAlign_Center);
+    MapSizeSlot->SetVerticalAlignment(VAlign_Center);
+    MapSizeSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+    auto* MapFrame = WidgetTree->ConstructWidget<UBorder>();
+    MapFrame->SetBrush(RoundedBrush(FLinearColor(0.008f, 0.018f, 0.027f, 1.0f), 14.0f));
+    MapFrame->SetPadding(FMargin(12));
+    MapSize->AddChild(MapFrame);
+
+    auto* Canvas = WidgetTree->ConstructWidget<UCanvasPanel>();
+    MapFrame->AddChild(Canvas);
+
+    for (int32 I = 1; I < 6; ++I)
+    {
+        auto* Vertical = WidgetTree->ConstructWidget<UBorder>();
+        Vertical->SetBrushColor(FLinearColor(0.12f, 0.18f, 0.23f, 0.28f));
+        auto* VSlot = Canvas->AddChildToCanvas(Vertical);
+        VSlot->SetPosition(FVector2D(MapWidth * I / 6.0f, 0.0f));
+        VSlot->SetSize(FVector2D(1.0f, MapHeight));
+
+        auto* Horizontal = WidgetTree->ConstructWidget<UBorder>();
+        Horizontal->SetBrushColor(FLinearColor(0.12f, 0.18f, 0.23f, 0.28f));
+        auto* HSlot = Canvas->AddChildToCanvas(Horizontal);
+        HSlot->SetPosition(FVector2D(0.0f, MapHeight * I / 6.0f));
+        HSlot->SetSize(FVector2D(MapWidth, 1.0f));
+    }
+
+    if (!Locations.empty())
+    {
+        double MinX = Locations.front().position[0];
+        double MaxX = MinX;
+        double MinY = Locations.front().position[1];
+        double MaxY = MinY;
+        for (const auto& Location : Locations)
+        {
+            MinX = FMath::Min(MinX, static_cast<double>(Location.position[0]));
+            MaxX = FMath::Max(MaxX, static_cast<double>(Location.position[0]));
+            MinY = FMath::Min(MinY, static_cast<double>(Location.position[1]));
+            MaxY = FMath::Max(MaxY, static_cast<double>(Location.position[1]));
+        }
+        const double SpanX = FMath::Max(MaxX - MinX, 1.0);
+        const double SpanY = FMath::Max(MaxY - MinY, 1.0);
+
+        for (const auto& Location : Locations)
+        {
+            if (!Mission || !Mission->WorldState.discoveries.count(Location.id))
+                continue;
+
+            const float X = 28.0f + static_cast<float>((Location.position[0] - MinX) / SpanX) * (MapWidth - 80.0f);
+            const float Y = 24.0f + (1.0f - static_cast<float>((Location.position[1] - MinY) / SpanY)) * (MapHeight - 60.0f);
+
+            auto* Marker = WidgetTree->ConstructWidget<UBorder>();
+            Marker->SetBrush(RoundedBrush(
+                Location.safehouse ? FLinearColor(0.06f, 0.30f, 0.34f, 0.98f)
+                                   : FLinearColor(0.04f, 0.08f, 0.11f, 0.95f), 7.0f));
+            Marker->SetPadding(FMargin(8, 5, 8, 5));
+            Marker->AddChild(MakeText(
+                UTF8_TO_TCHAR(Location.name.c_str()), 9, true,
+                Location.safehouse ? Accent : TextPrimary));
+
+            auto* MarkerSlot = Canvas->AddChildToCanvas(Marker);
+            MarkerSlot->SetAutoSize(true);
+            MarkerSlot->SetAlignment(FVector2D(0.5f, 0.5f));
+            MarkerSlot->SetPosition(FVector2D(X, Y));
+        }
+    }
+
+    RightColumn->AddChildToVerticalBox(MakeText(TEXT("LEGENDA"), 9, true, Accent))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("TURKUSOWY"), TEXT("BEZPIECZNY PUNKT"), true))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("JASNY"), TEXT("ODKRYTA LOKACJA")))
+        ->SetPadding(FMargin(0, 0, 0, 14));
+
+    if (Mission)
+    {
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("AKTUALNY CEL"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(Mission->ObjectiveText(), TEXT("KAMPANIA")));
+    }
 }
 
 void UPlayerMenuWidget::BuildStatsTab()
 {
-    PageTitle->SetText(FText::FromString(TEXT("STATYSTYKI / SESJA")));
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("STATYSTYKI"), 16, true, Accent));
-    ActionColumn->AddChildToVerticalBox(MakeText(
-        TEXT("Podsumowanie aktywnej sesji i stanu zapisu."),
-        12, false, Muted))->SetPadding(FMargin(0, 10, 0, 0));
+    PageTitle->SetText(FText::FromString(TEXT("STATYSTYKI  /  SESJA")));
 
     auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
-    FString Body = TEXT("Brak aktywnej sesji.");
-    if (Mission)
-    {
-        Body = FString::Printf(
-            TEXT("CZAS ROZGRYWKI\n%.0f minut\n\nPOZIOM ZAGROŻENIA\n%d / 5\n\nOSIĄGNIĘCIA\n%d\n\nSTAN ZAPISU\n%s\n\nSTATUS KAMPANII\n%s"),
-            Mission->State.elapsed / 60.0,
-            Mission->WorldState.HeatLevel(),
-            Mission->LifetimeAchievements,
-            Mission->bLastSaveSucceeded ? TEXT("Poprawny") : TEXT("Błąd zapisu"),
-            Mission->State.Finished() ? TEXT("Rozdział ukończony") :
-            (Mission->bInGame ? TEXT("W toku") : TEXT("Menu główne")));
-    }
-    AddTextPage(TEXT("SESJA"), Body);
 
-    RightColumn->AddChildToVerticalBox(MakeText(TEXT("OSIĄGNIĘCIA"), 13, true, Accent))
-        ->SetPadding(FMargin(0, 0, 0, 10));
-    RightColumn->AddChildToVerticalBox(
-        MakeText(Mission ? Mission->AchievementsText() : TEXT("Brak danych."), 13, false,
-                 FLinearColor(0.9f, 0.92f, 0.95f)));
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("SESJA"), 20, true, TextPrimary))
+        ->SetPadding(FMargin(2, 1, 2, 2));
+    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("PODSUMOWANIE"), 9, true, Accent))
+        ->SetPadding(FMargin(2, 0, 2, 14));
+
+    if (!Mission)
+    {
+        ActionColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("BRAK"), TEXT("AKTYWNEJ SESJI")));
+        AddTextPage(TEXT("STATYSTYKI"), TEXT("Brak danych."));
+        return;
+    }
+
+    int32 MainDone = 0;
+    for (const auto& Quest : Wroclaw::Quests())
+        if (Mission->State.QuestComplete(Quest))
+            ++MainDone;
+
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+        Mission->bInGame ? TEXT("AKTYWNA") : TEXT("MENU"), TEXT("STATUS"), Mission->bInGame))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+        Mission->bLastSaveSucceeded ? TEXT("POPRAWNY") : TEXT("BŁĄD"), TEXT("OSTATNI ZAPIS"),
+        Mission->bLastSaveSucceeded))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%d / 5"), Mission->WorldState.HeatLevel()), TEXT("ZAGROŻENIE")));
+
+    CenterColumn->AddChildToVerticalBox(MakeText(TEXT("METRYKI"), 26, true, TextPrimary))
+        ->SetPadding(FMargin(8, 7, 8, 10));
+
+    auto* Metrics = WidgetTree->ConstructWidget<UVerticalBox>();
+    CenterColumn->AddChildToVerticalBox(Metrics)->SetPadding(FMargin(8, 0, 8, 8));
+
+    Metrics->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%.0f MIN"), Mission->State.elapsed / 60.0), TEXT("CZAS ROZGRYWKI"), true))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    Metrics->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%d / %d"), MainDone, static_cast<int32>(Wroclaw::Quests().size())),
+        TEXT("POSTĘP GŁÓWNY")))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    Metrics->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%d"), static_cast<int32>(Mission->State.history.size())),
+        TEXT("UKOŃCZONE AKCJE")))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    Metrics->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%d"), static_cast<int32>(Mission->State.evidence.size())),
+        TEXT("ZEBRANE DOWODY")))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    Metrics->AddChildToVerticalBox(MakeInfoRow(
+        FString::Printf(TEXT("%d"), Mission->State.kills), TEXT("NEUTRALIZACJE")));
+
+    RightColumn->AddChildToVerticalBox(MakeText(TEXT("OSIĄGNIĘCIA"), 9, true, Accent))
+        ->SetPadding(FMargin(0, 0, 0, 8));
+
+    const TCHAR* Names[] = {
+        TEXT("Pierwsze kroki"), TEXT("Escape Artist"), TEXT("Bez śladu"),
+        TEXT("Detektyw"), TEXT("Pacyfista"), TEXT("Szybkie myślenie")
+    };
+    for (int32 Index = 0; Index < 6; ++Index)
+    {
+        const bool bUnlocked = (Mission->LifetimeAchievements & (1 << Index)) != 0;
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            Names[Index], bUnlocked ? TEXT("ZDOBYTE") : TEXT("ZABLOKOWANE"), bUnlocked))
+            ->SetPadding(FMargin(0, 0, 0, 6));
+    }
 }
 
 void UPlayerMenuWidget::BuildSettingsTab()
