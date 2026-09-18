@@ -1,0 +1,99 @@
+{
+  "slug": "fire_hydrant",
+  "name": "Fire Hydrant",
+  "intended_use": "Urban street infrastructure dressing.",
+  "source_page": "https://polyhaven.com/a/fire_hydrant",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Gonçalo Felício": "All"
+  },
+  "category": "Industrial & Infrastructure/Traffic & Safety/Hydrants & Fire Safety",
+  "tags": [
+    "city",
+    "urban",
+    "street",
+    "road",
+    "emergency",
+    "valve",
+    "extinguisher",
+    "utility",
+    "municipal",
+    "infrastructure"
+  ],
+  "dimensions_mm": [
+    874.623566865921,
+    317.74356961250305,
+    799.4560238003032
+  ],
+  "files_hash": "392eed954362d55b55022af83c0b7150bf977853",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/fire_hydrant/fire_hydrant_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/fire_hydrant/fire_hydrant_1k.fbx",
+      "bytes": 2678188,
+      "md5": "95708b93c2552e0f804fc577c23a5012",
+      "sha256": "334c945782a1b0cb9e500ed0a0abc125bebd7b133bd4400c3644fc1d30142ba6",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/fire_hydrant/fire_hydrant_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/fire_hydrant/textures/fire_hydrant_aged_diff_1k.png",
+      "bytes": 5905873,
+      "md5": "1b61ea61c5873488633b5d047c16c78d",
+      "sha256": "5b3b337fb2f2a0aad2b8ff0134614042d579946ac1ac66ee2a679fa27958ef51",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/fire_hydrant/fire_hydrant_aged_diff_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/fire_hydrant/textures/fire_hydrant_aged_metal_1k.png",
+      "bytes": 3038237,
+      "md5": "fc4892c5baea1b947229af81832265b4",
+      "sha256": "bf32d1cc95534b8da670beefaa06fcc277af5acbe79a9aa1def06beae03c8a8c",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/fire_hydrant/fire_hydrant_aged_metal_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/fire_hydrant/textures/fire_hydrant_aged_nor_gl_1k.png",
+      "bytes": 5557966,
+      "md5": "bc1d23e3aa0841d3f0b5862e512526a6",
+      "sha256": "e15c07a5413bd4bb71426b12b3336e5651ede4700d1e7419c3e9a62aeaad78cd",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/fire_hydrant/fire_hydrant_aged_nor_gl_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/fire_hydrant/textures/fire_hydrant_aged_rough_1k.png",
+      "bytes": 3499489,
+      "md5": "372f65869a2ca5600252af1b3af6c5bd",
+      "sha256": "79e7cc064fb6b989d98517051e15e4edcb206146e3f5ac8912c4b9c01521c7d4",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/fire_hydrant/fire_hydrant_aged_rough_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/fire_hydrant/textures/fire_hydrant_diff_1k.jpg",
+      "bytes": 570746,
+      "md5": "ecd42c8726c77692c8ff2d5a236896b2",
+      "sha256": "a3d0b8b6fcd8a39c8d5067f8ef95e3290053131887398f89baf57c1f8d24ab45",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/fire_hydrant/fire_hydrant_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/fire_hydrant/textures/fire_hydrant_metal_1k.exr",
+      "bytes": 860259,
+      "md5": "4cd4f9b3bf7f4e6af24f8acfd5f608ab",
+      "sha256": "5936a0b6af7228c521ca1d469e8467d818e2d2ecccb736289a45c886ce16620e",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/fire_hydrant/fire_hydrant_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/fire_hydrant/textures/fire_hydrant_nor_gl_1k.exr",
+      "bytes": 1009237,
+      "md5": "400fdd6bf3ce2362631d66e559ce3a70",
+      "sha256": "f56dbeabe95fc230cb56169306d28fc1a42c029a157cf76b0e78090b6b714627",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/fire_hydrant/fire_hydrant_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/fire_hydrant/textures/fire_hydrant_rough_1k.exr",
+      "bytes": 570570,
+      "md5": "b641162825b88bd8b9b12828c9069ae9",
+      "sha256": "1d84448d3c209904b00f24ec59eacd37f27a25a874f80c1e93332792a38a6541",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/fire_hydrant/fire_hydrant_rough_1k.exr"
+    }
+  ]
+}

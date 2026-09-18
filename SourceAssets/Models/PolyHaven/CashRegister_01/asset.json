@@ -1,0 +1,108 @@
+{
+  "slug": "CashRegister_01",
+  "name": "Cash Register 01",
+  "intended_use": "Shop cash register / terminal scene prop.",
+  "source_page": "https://polyhaven.com/a/CashRegister_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Joe Seabuhr": "All"
+  },
+  "category": "Electronics & Appliances/Devices & Instruments/Retail Machines",
+  "tags": [
+    "commercial",
+    "store",
+    "vintage",
+    "cash",
+    "transaction",
+    "register",
+    "money",
+    "sales",
+    "convenience store",
+    "cashier",
+    "retail",
+    "business"
+  ],
+  "dimensions_mm": [
+    600.4907041788101,
+    624.2051124572754,
+    621.3557496666908
+  ],
+  "files_hash": "a28caf40c20cabd1ee08e639d41982066d7340c6",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/CashRegister_01/CashRegister_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/CashRegister_01/CashRegister_01_1k.fbx",
+      "bytes": 393100,
+      "md5": "5837b972368eb10faef9faf3467b10dc",
+      "sha256": "c26a5710d584768173b0492cbf09ba779277c089bd1a37d57a5570dd5eb80492",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/CashRegister_01/CashRegister_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/CashRegister_01/textures/CashRegister_01_diff_1k.jpg",
+      "bytes": 133109,
+      "md5": "bfa598c754195bfd8e639f169c58a379",
+      "sha256": "0f048e68054f480d773a6d997a5a853610fde80ecb5bae1c3994ed434c02ce84",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/CashRegister_01/CashRegister_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/CashRegister_01/textures/CashRegister_01_glass_diff_1k.png",
+      "bytes": 651378,
+      "md5": "d66a450eb5573325db686d9e6c7d2ff8",
+      "sha256": "ca5bae6a571bb926eeeb2d7ad496548ae790ba130665535fc74dd98b76008e8b",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/CashRegister_01/CashRegister_01_glass_diff_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/CashRegister_01/textures/CashRegister_01_glass_metallic_1k.png",
+      "bytes": 1139,
+      "md5": "14c604b27ea726bc5b38e48671f77ce0",
+      "sha256": "f70df063f10fe18dfbcd2dc37fcb162bce203218bca713c1f33588803b3b02ac",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/CashRegister_01/CashRegister_01_glass_metallic_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/CashRegister_01/textures/CashRegister_01_glass_nor_gl_1k.png",
+      "bytes": 5377,
+      "md5": "a824b4f1ae03e13ec56c9b2dc2a33d20",
+      "sha256": "ddc6cd383951b613a2f1edb59ba15938408a2ce4de12e9fb425befe5a0262e19",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/CashRegister_01/CashRegister_01_glass_nor_gl_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/CashRegister_01/textures/CashRegister_01_glass_opacity_1k.png",
+      "bytes": 196144,
+      "md5": "e79d5d89f44c31b04ee18ec269238ecc",
+      "sha256": "0f7ba402d0ddf36f47449f18467d86f31f46ad34fcb5b52bc863a7e6b6f9fd4b",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/CashRegister_01/CashRegister_01_glass_opacity_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/CashRegister_01/textures/CashRegister_01_glass_roughness_1k.png",
+      "bytes": 144801,
+      "md5": "764840d1e2b2ac56b7bc6fe626392fe8",
+      "sha256": "cbc164fb8c670322b43f520d93bd7e22b783774e6e480b5e8abd1571205c2c78",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/CashRegister_01/CashRegister_01_glass_roughness_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/CashRegister_01/textures/CashRegister_01_metallic_1k.exr",
+      "bytes": 349722,
+      "md5": "01062afe4bbd05b71486fcba06d52e9f",
+      "sha256": "4ef1376054745ed72ba685508911750c20b700384e22802456f2dda293cebbad",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/CashRegister_01/CashRegister_01_metallic_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/CashRegister_01/textures/CashRegister_01_nor_gl_1k.exr",
+      "bytes": 908852,
+      "md5": "1807f06507e8267e94c169f662c40dcf",
+      "sha256": "2bdcdea81abf99fa80a14de7d8eeaaa4c9e2d3e6170e6fff59ac883694e668df",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/CashRegister_01/CashRegister_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/CashRegister_01/textures/CashRegister_01_roughness_1k.jpg",
+      "bytes": 155480,
+      "md5": "99cadf40ceafedf2099473e3344b4fbb",
+      "sha256": "f62ddaea9f5b81f185dcc0e1ac1d04252556f151c3d81e319f17940162540b54",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/CashRegister_01/CashRegister_01_roughness_1k.jpg"
+    }
+  ]
+}

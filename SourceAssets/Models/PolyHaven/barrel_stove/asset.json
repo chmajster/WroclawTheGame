@@ -1,0 +1,75 @@
+{
+  "slug": "barrel_stove",
+  "name": "Barrel Stove",
+  "intended_use": "Garage/workshop heating and industrial clutter.",
+  "source_page": "https://polyhaven.com/a/barrel_stove",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "MP": "All"
+  },
+  "category": "Electronics & Appliances/Home Appliances/Stoves & Heaters",
+  "tags": [
+    "urban",
+    "city",
+    "night",
+    "fire",
+    "heating",
+    "outdoor",
+    "barrel"
+  ],
+  "dimensions_mm": [
+    599.3210971355438,
+    598.1101393699646,
+    855.6039333343506
+  ],
+  "files_hash": "317d4401f290899072044a82841d94f4a8440c2f",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/barrel_stove/barrel_stove_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/barrel_stove/barrel_stove_1k.fbx",
+      "bytes": 295516,
+      "md5": "da93e643f5feacf4797beb1441c2ab72",
+      "sha256": "a40f35c86040e1e3182f4d52dac732539d1a67fd405efd1a0f98ab1d40ec946f",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/barrel_stove/barrel_stove_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/barrel_stove/textures/barrel_stove_diff_1k.jpg",
+      "bytes": 858608,
+      "md5": "3f20af89cf63352537c3c875dbc61f1e",
+      "sha256": "7661395a02b37db8dde222dd16947e41fa3b06d2ee9a198c57b6d015222afaeb",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/barrel_stove/barrel_stove_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/barrel_stove/textures/barrel_stove_metal_1k.exr",
+      "bytes": 917702,
+      "md5": "2edbc79e68cfb3478154538ccbe68609",
+      "sha256": "b3b03395f36eabfc752e2503f229acadb0b34c50a2279c69bbd6b90c2c1d72e6",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/barrel_stove/barrel_stove_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/barrel_stove/textures/barrel_stove_nor_gl_1k.exr",
+      "bytes": 417574,
+      "md5": "eea07773fafe38fb9a320008b527ae2d",
+      "sha256": "f1ac690d2be6ba66bd78b3ac5d298f1b28356711a9ebf4bb0402e27500b98486",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/barrel_stove/barrel_stove_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/barrel_stove/textures/barrel_stove_opacity_1k.png",
+      "bytes": 8728,
+      "md5": "da740ebc5b7327cbd0bee157d59f953b",
+      "sha256": "c5a64cfed43b84473317260db67e1f777f308519335a5dd3ba516a1d889ad3d1",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/barrel_stove/barrel_stove_opacity_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/barrel_stove/textures/barrel_stove_rough_1k.exr",
+      "bytes": 708326,
+      "md5": "208b6ae6d0457b0355dab7afe6b82024",
+      "sha256": "5ab81f71fef4aee0b0191864f84604495ebdd1da4a18a782d5d6f418e3f0e065",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/barrel_stove/barrel_stove_rough_1k.exr"
+    }
+  ]
+}

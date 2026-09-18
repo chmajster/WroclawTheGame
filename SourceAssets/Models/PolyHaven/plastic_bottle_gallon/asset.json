@@ -1,0 +1,65 @@
+{
+  "slug": "plastic_bottle_gallon",
+  "name": "Plastic Bottle Gallon",
+  "intended_use": "Bottle/distraction and garage clutter proxy.",
+  "source_page": "https://polyhaven.com/a/plastic_bottle_gallon",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Rahul Chaudhary": "All"
+  },
+  "category": "Containers & Storage/Cans, Tins & Bottles/Jugs & Bottles",
+  "tags": [
+    "rubbish",
+    "dirty",
+    "shed",
+    "outdoor",
+    "trash",
+    "clutter",
+    "garage",
+    "old",
+    "plastic",
+    "carton",
+    "milk"
+  ],
+  "dimensions_mm": [
+    166.28039628267288,
+    126.3512596487999,
+    274.4927511084825
+  ],
+  "files_hash": "8e579852c844aa8beea73397b4e05717a2303d93",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/plastic_bottle_gallon/plastic_bottle_gallon_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_bottle_gallon/plastic_bottle_gallon_1k.fbx",
+      "bytes": 457116,
+      "md5": "f15d5be5af797e2cbf3b2320ad7cfd27",
+      "sha256": "881b0c39a2fce66385fe14eaf64b06f7fa85c4efdc0b6ad17cdb93b316e52f67",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/plastic_bottle_gallon/plastic_bottle_gallon_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_bottle_gallon/textures/plastic_bottle_gallon_diff_1k.jpg",
+      "bytes": 317396,
+      "md5": "e3655eb80c6bce520865a4f4a2b37bd9",
+      "sha256": "b763c4dd071baf9aa319eb3a94e8045614fa7f52404fda9e61c660164f8444f2",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/plastic_bottle_gallon/plastic_bottle_gallon_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_bottle_gallon/textures/plastic_bottle_gallon_nor_gl_1k.exr",
+      "bytes": 917385,
+      "md5": "b9aeae72e9de4458cfb93a4d37e011bc",
+      "sha256": "66949bbbe3e324dbda4018fa9c92863246fa10db5bad1a95c04477f55e788ce1",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/plastic_bottle_gallon/plastic_bottle_gallon_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_bottle_gallon/textures/plastic_bottle_gallon_rough_1k.exr",
+      "bytes": 731791,
+      "md5": "dc101a4e75d0021bd7d04e106d133fd8",
+      "sha256": "ee186941563dac267cc4d7da319df282eeead96c5551a8d73473a88f27f89612",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/plastic_bottle_gallon/plastic_bottle_gallon_rough_1k.exr"
+    }
+  ]
+}

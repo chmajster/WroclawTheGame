@@ -1,0 +1,492 @@
+[
+  {
+    "id": "kenney-car-sedan-sports",
+    "name": "sedan-sports",
+    "provider": "Kenney",
+    "pack": "Car Kit",
+    "source_page": "https://opengameart.org/content/car-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_car-kit_3.1.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Driveable and ambient vehicle prototypes with separate wheels.",
+    "archive_sha256": "fac7dacac5c7874348cf19729af3ef205f3d366493edaf0a827d93f4fdf3d0c4",
+    "primary_path": "SourceAssets/Models/Kenney/CarKit/sedan-sports/sedan-sports.fbx"
+  },
+  {
+    "id": "kenney-car-sedan",
+    "name": "sedan",
+    "provider": "Kenney",
+    "pack": "Car Kit",
+    "source_page": "https://opengameart.org/content/car-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_car-kit_3.1.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Driveable and ambient vehicle prototypes with separate wheels.",
+    "archive_sha256": "fac7dacac5c7874348cf19729af3ef205f3d366493edaf0a827d93f4fdf3d0c4",
+    "primary_path": "SourceAssets/Models/Kenney/CarKit/sedan/sedan.fbx"
+  },
+  {
+    "id": "kenney-car-wheel-dark",
+    "name": "wheel-dark",
+    "provider": "Kenney",
+    "pack": "Car Kit",
+    "source_page": "https://opengameart.org/content/car-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_car-kit_3.1.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Driveable and ambient vehicle prototypes with separate wheels.",
+    "archive_sha256": "fac7dacac5c7874348cf19729af3ef205f3d366493edaf0a827d93f4fdf3d0c4",
+    "primary_path": "SourceAssets/Models/Kenney/CarKit/wheel-dark/wheel-dark.fbx"
+  },
+  {
+    "id": "kenney-car-wheel-default",
+    "name": "wheel-default",
+    "provider": "Kenney",
+    "pack": "Car Kit",
+    "source_page": "https://opengameart.org/content/car-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_car-kit_3.1.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Driveable and ambient vehicle prototypes with separate wheels.",
+    "archive_sha256": "fac7dacac5c7874348cf19729af3ef205f3d366493edaf0a827d93f4fdf3d0c4",
+    "primary_path": "SourceAssets/Models/Kenney/CarKit/wheel-default/wheel-default.fbx"
+  },
+  {
+    "id": "kenney-car-wheel-racing",
+    "name": "wheel-racing",
+    "provider": "Kenney",
+    "pack": "Car Kit",
+    "source_page": "https://opengameart.org/content/car-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_car-kit_3.1.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Driveable and ambient vehicle prototypes with separate wheels.",
+    "archive_sha256": "fac7dacac5c7874348cf19729af3ef205f3d366493edaf0a827d93f4fdf3d0c4",
+    "primary_path": "SourceAssets/Models/Kenney/CarKit/wheel-racing/wheel-racing.fbx"
+  },
+  {
+    "id": "kenney-car-wheel-tractor-back",
+    "name": "wheel-tractor-back",
+    "provider": "Kenney",
+    "pack": "Car Kit",
+    "source_page": "https://opengameart.org/content/car-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_car-kit_3.1.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Driveable and ambient vehicle prototypes with separate wheels.",
+    "archive_sha256": "fac7dacac5c7874348cf19729af3ef205f3d366493edaf0a827d93f4fdf3d0c4",
+    "primary_path": "SourceAssets/Models/Kenney/CarKit/wheel-tractor-back/wheel-tractor-back.fbx"
+  },
+  {
+    "id": "kenney-car-wheel-tractor-dark-back",
+    "name": "wheel-tractor-dark-back",
+    "provider": "Kenney",
+    "pack": "Car Kit",
+    "source_page": "https://opengameart.org/content/car-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_car-kit_3.1.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Driveable and ambient vehicle prototypes with separate wheels.",
+    "archive_sha256": "fac7dacac5c7874348cf19729af3ef205f3d366493edaf0a827d93f4fdf3d0c4",
+    "primary_path": "SourceAssets/Models/Kenney/CarKit/wheel-tractor-dark-back/wheel-tractor-dark-back.fbx"
+  },
+  {
+    "id": "kenney-car-wheel-tractor-dark-front",
+    "name": "wheel-tractor-dark-front",
+    "provider": "Kenney",
+    "pack": "Car Kit",
+    "source_page": "https://opengameart.org/content/car-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_car-kit_3.1.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Driveable and ambient vehicle prototypes with separate wheels.",
+    "archive_sha256": "fac7dacac5c7874348cf19729af3ef205f3d366493edaf0a827d93f4fdf3d0c4",
+    "primary_path": "SourceAssets/Models/Kenney/CarKit/wheel-tractor-dark-front/wheel-tractor-dark-front.fbx"
+  },
+  {
+    "id": "kenney-car-wheel-tractor-front",
+    "name": "wheel-tractor-front",
+    "provider": "Kenney",
+    "pack": "Car Kit",
+    "source_page": "https://opengameart.org/content/car-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_car-kit_3.1.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Driveable and ambient vehicle prototypes with separate wheels.",
+    "archive_sha256": "fac7dacac5c7874348cf19729af3ef205f3d366493edaf0a827d93f4fdf3d0c4",
+    "primary_path": "SourceAssets/Models/Kenney/CarKit/wheel-tractor-front/wheel-tractor-front.fbx"
+  },
+  {
+    "id": "kenney-car-wheel-truck",
+    "name": "wheel-truck",
+    "provider": "Kenney",
+    "pack": "Car Kit",
+    "source_page": "https://opengameart.org/content/car-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_car-kit_3.1.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Driveable and ambient vehicle prototypes with separate wheels.",
+    "archive_sha256": "fac7dacac5c7874348cf19729af3ef205f3d366493edaf0a827d93f4fdf3d0c4",
+    "primary_path": "SourceAssets/Models/Kenney/CarKit/wheel-truck/wheel-truck.fbx"
+  },
+  {
+    "id": "kenney-blocky-character-rig",
+    "name": "Kenney Blocky Character Rig",
+    "provider": "Kenney",
+    "pack": "Blocky Characters",
+    "source_page": "https://opengameart.org/content/blocky-characters",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_blocky-characters_2.0.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Rigged fallback NPC/enemy/pedestrian prototype with animations; not final photorealistic character art.",
+    "archive_sha256": "5e123859aa0c1598342b600c6db197024a1d63eb9ec531398b310725f589887e",
+    "primary_path": "SourceAssets/Characters/Kenney/BlockyCharacters/character-a.fbx"
+  },
+  {
+    "id": "kenney-door-barricade-doorway-a",
+    "name": "barricade-doorway-a",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/barricade-doorway-a/barricade-doorway-a.fbx"
+  },
+  {
+    "id": "kenney-door-barricade-doorway-b",
+    "name": "barricade-doorway-b",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/barricade-doorway-b/barricade-doorway-b.fbx"
+  },
+  {
+    "id": "kenney-door-barricade-doorway-c",
+    "name": "barricade-doorway-c",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/barricade-doorway-c/barricade-doorway-c.fbx"
+  },
+  {
+    "id": "kenney-door-door-rotate-round-a",
+    "name": "door-rotate-round-a",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/door-rotate-round-a/door-rotate-round-a.fbx"
+  },
+  {
+    "id": "kenney-door-door-rotate-round-b",
+    "name": "door-rotate-round-b",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/door-rotate-round-b/door-rotate-round-b.fbx"
+  },
+  {
+    "id": "kenney-door-door-rotate-round-c",
+    "name": "door-rotate-round-c",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/door-rotate-round-c/door-rotate-round-c.fbx"
+  },
+  {
+    "id": "kenney-door-door-rotate-round-d",
+    "name": "door-rotate-round-d",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/door-rotate-round-d/door-rotate-round-d.fbx"
+  },
+  {
+    "id": "kenney-door-door-rotate-square-a",
+    "name": "door-rotate-square-a",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/door-rotate-square-a/door-rotate-square-a.fbx"
+  },
+  {
+    "id": "kenney-door-door-rotate-square-b",
+    "name": "door-rotate-square-b",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/door-rotate-square-b/door-rotate-square-b.fbx"
+  },
+  {
+    "id": "kenney-door-door-rotate-square-c",
+    "name": "door-rotate-square-c",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/door-rotate-square-c/door-rotate-square-c.fbx"
+  },
+  {
+    "id": "kenney-door-door-rotate-square-d",
+    "name": "door-rotate-square-d",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/door-rotate-square-d/door-rotate-square-d.fbx"
+  },
+  {
+    "id": "kenney-door-wall-doorway-round",
+    "name": "wall-doorway-round",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/wall-doorway-round/wall-doorway-round.fbx"
+  },
+  {
+    "id": "kenney-door-wall-doorway-square",
+    "name": "wall-doorway-square",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/wall-doorway-square/wall-doorway-square.fbx"
+  },
+  {
+    "id": "kenney-door-wall-doorway-wide-round",
+    "name": "wall-doorway-wide-round",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/wall-doorway-wide-round/wall-doorway-wide-round.fbx"
+  },
+  {
+    "id": "kenney-door-wall-doorway-wide-square",
+    "name": "wall-doorway-wide-square",
+    "provider": "Kenney",
+    "pack": "Building Kit",
+    "source_page": "https://opengameart.org/content/building-kit",
+    "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+    "license": "CC0-1.0",
+    "intended_use": "Animated/structural door models replacing cube door placeholders.",
+    "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+    "primary_path": "SourceAssets/Models/Kenney/BuildingKit/wall-doorway-wide-square/wall-doorway-wide-square.fbx"
+  },
+  {
+    "id": "oga-key-low-poly",
+    "name": "Key - low poly",
+    "provider": "OpenGameArt",
+    "source_page": "https://opengameart.org/content/key-low-poly",
+    "license": "CC0-1.0",
+    "intended_use": "Apartment, basement, shop and garage key pickup proxy.",
+    "primary_path": "SourceAssets/Models/OpenGameArt/oga-key-low-poly/key.fbx",
+    "sources": [
+      {
+        "archive_url": "https://opengameart.org/sites/default/files/key_0.zip",
+        "bytes": 89077,
+        "sha256": "850315207655e5fcefc9c13f015c13e9bef4444cc15d1a2aed691356a680c32f"
+      }
+    ]
+  },
+  {
+    "id": "oga-first-aid-kit",
+    "name": "First Aid Kit 3D",
+    "provider": "OpenGameArt",
+    "source_page": "https://opengameart.org/content/first-aid-kit-3d",
+    "license": "CC0-1.0",
+    "intended_use": "Medkit / dressing consumable world model.",
+    "primary_path": "SourceAssets/Models/OpenGameArt/oga-first-aid-kit/FirstAid.obj",
+    "sources": [
+      {
+        "archive_url": "https://opengameart.org/sites/default/files/_first_aid_kit_3d_v1.1.zip",
+        "bytes": 492566,
+        "sha256": "c1dd2d49bfb9d19bc5d84362bcfa1e4a5e850d3cecf76b3b9bf3f48d4dc51a00"
+      }
+    ]
+  },
+  {
+    "id": "oga-survival-battery",
+    "name": "Lowpoly survival item pack — battery",
+    "provider": "OpenGameArt",
+    "source_page": "https://opengameart.org/content/lowpoly-survival-item-pack",
+    "license": "CC0-1.0",
+    "intended_use": "Battery pickup required by the flashlight gameplay step.",
+    "primary_path": "SourceAssets/Models/OpenGameArt/oga-survival-battery/Survival items/items.fbx",
+    "sources": [
+      {
+        "archive_url": "https://opengameart.org/sites/default/files/Survival%20items.zip",
+        "bytes": 286058,
+        "sha256": "217f67325fdfe5023b46492d4de143acb296b49163209a01b58766a60384569d"
+      }
+    ]
+  },
+  {
+    "id": "oga-keycard",
+    "name": "3D Keycard",
+    "provider": "OpenGameArt",
+    "source_page": "https://opengameart.org/content/3d-keycard",
+    "license": "CC0-1.0",
+    "intended_use": "Generic electronic key/card/remote proxy for secure access interactions.",
+    "primary_path": "SourceAssets/Models/OpenGameArt/oga-keycard/3d/keycard.fbx",
+    "sources": [
+      {
+        "archive_url": "https://opengameart.org/sites/default/files/keycard3d.zip",
+        "bytes": 219139,
+        "sha256": "257b4f7e4f459f74d9dddb3c9856ad7931cfbb84b356dc9b2f2fb4591ebe7125"
+      }
+    ]
+  },
+  {
+    "id": "oga-smartphone-redacted",
+    "name": "Smartphone",
+    "provider": "OpenGameArt",
+    "source_page": "https://opengameart.org/content/smartphone-1",
+    "license": "CC0-1.0",
+    "intended_use": "Phone pickup, abandoned phone and phone-related clue prop.",
+    "primary_path": "SourceAssets/Models/OpenGameArt/oga-smartphone-redacted/smartphone.obj",
+    "sources": [
+      {
+        "url": "https://opengameart.org/sites/default/files/samsung-sgh-i677_0.obj",
+        "bytes": 17410,
+        "sha256": "72c6ffae8b02a7672d6bc8a24cf5e94faf65c915a9082f03fb24ca2df0e74d85"
+      },
+      {
+        "url": "https://opengameart.org/sites/default/files/samsung-sgh-i677-redacted.png",
+        "bytes": 311273,
+        "sha256": "6cf0471c9fe0f505d44d620920f767098418d27f7223926e3af2e23f8db5982e"
+      }
+    ]
+  },
+  {
+    "id": "oga-vault-door",
+    "name": "Vault Door",
+    "provider": "OpenGameArt",
+    "source_page": "https://opengameart.org/content/vault-door",
+    "license": "CC0-1.0",
+    "intended_use": "Safe/vault interaction proxy where the project still uses cube geometry.",
+    "primary_path": "SourceAssets/Models/OpenGameArt/oga-vault-door/door/door.fbx",
+    "sources": [
+      {
+        "url": "https://opengameart.org/sites/default/files/vault_door_and_wall_0.zip",
+        "bytes": 1530704,
+        "sha256": "2f6f4f0dc8963c12fa64fa39355108ecb6a7328944f8b2726ab29768334e8815"
+      }
+    ]
+  },
+  {
+    "id": "wtg-original-usb-flash-drive",
+    "name": "USB Flash Drive",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Pendrive/evidence fallback because accessible CC0 download sources require account login.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-usb-flash-drive/wtg-original-usb-flash-drive.obj",
+    "generated": true,
+    "generator": "bootstrap-original-fallback-models.yml"
+  },
+  {
+    "id": "wtg-original-usb-cable",
+    "name": "USB Cable",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "USB cable pickup fallback.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-usb-cable/wtg-original-usb-cable.obj",
+    "generated": true,
+    "generator": "bootstrap-original-fallback-models.yml"
+  },
+  {
+    "id": "wtg-original-wall-charger",
+    "name": "Wall Charger",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Phone charger pickup fallback.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-wall-charger/wtg-original-wall-charger.obj",
+    "generated": true,
+    "generator": "bootstrap-original-fallback-models.yml"
+  },
+  {
+    "id": "wtg-original-cartridge-fuse",
+    "name": "Cartridge Fuse",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Fuse pickup fallback used by the apartment power puzzle.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-cartridge-fuse/wtg-original-cartridge-fuse.obj",
+    "generated": true,
+    "generator": "bootstrap-original-fallback-models.yml"
+  },
+  {
+    "id": "wtg-original-cash-bundle",
+    "name": "Cash Bundle",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Cash quest-item fallback.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-cash-bundle/wtg-original-cash-bundle.obj",
+    "generated": true,
+    "generator": "bootstrap-original-fallback-models.yml"
+  },
+  {
+    "id": "wtg-original-wall-outlet",
+    "name": "Wall Outlet",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Apartment outlet interaction fallback.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-wall-outlet/wtg-original-wall-outlet.obj",
+    "generated": true,
+    "generator": "bootstrap-original-fallback-models.yml"
+  },
+  {
+    "id": "wtg-original-intercom",
+    "name": "Wall Intercom",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Intercom/password puzzle fallback.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-intercom/wtg-original-intercom.obj",
+    "generated": true,
+    "generator": "bootstrap-original-fallback-models.yml"
+  }
+]

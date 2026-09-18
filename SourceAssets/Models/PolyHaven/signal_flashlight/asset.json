@@ -1,0 +1,75 @@
+{
+  "slug": "signal_flashlight",
+  "name": "Signal Flashlight",
+  "intended_use": "Gameplay flashlight pickup.",
+  "source_page": "https://polyhaven.com/a/signal_flashlight",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Jiří Ptáček": "All"
+  },
+  "category": "Lighting/Portable/Flashlights & Torches",
+  "tags": [
+    "handheld",
+    "light",
+    "torch",
+    "signal device",
+    "portable beacon",
+    "emergency signal",
+    "vintage"
+  ],
+  "dimensions_mm": [
+    70.99152728915215,
+    44.537635520100594,
+    149.9275267124176
+  ],
+  "files_hash": "df6171714af44a5b9f0006e7a3247a0a8ef9e907",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/signal_flashlight/signal_flashlight_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/signal_flashlight/signal_flashlight_1k.fbx",
+      "bytes": 293532,
+      "md5": "6b5389e0b21ba0d02718b231f1dd4415",
+      "sha256": "ecd95bdb75fee91d3e9d4cf1da3edb40fac4ae0251c4da41de892bbbc1d86872",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/signal_flashlight/signal_flashlight_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/signal_flashlight/textures/signal_flashlight_alpha_1k.png",
+      "bytes": 21850,
+      "md5": "f971c100857a779a8f0b46ab32ff277f",
+      "sha256": "618b9440282750a7531460d04fc02c6ed8fed4e744877b190f8461e30d9540af",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/signal_flashlight/signal_flashlight_alpha_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/signal_flashlight/textures/signal_flashlight_diff_1k.jpg",
+      "bytes": 530285,
+      "md5": "50aff163ecee821c22e0f9225c16f8b3",
+      "sha256": "8e35ddfae0bfd1756659a6604e83084eb53bec7348f75aff2654662aadc9cd43",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/signal_flashlight/signal_flashlight_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/signal_flashlight/textures/signal_flashlight_metal_1k.exr",
+      "bytes": 488749,
+      "md5": "4423e4e07387d707644fb007dd2a42fb",
+      "sha256": "8cab01d2e4900a840210239c47d3f49d8bf4b8fb0923919558158cda925b4d41",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/signal_flashlight/signal_flashlight_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/signal_flashlight/textures/signal_flashlight_nor_gl_1k.exr",
+      "bytes": 1052749,
+      "md5": "42a3f830b6087e9f84f2e8398a56c4c5",
+      "sha256": "1cf4e439002dd9ebb7c9f813c168367944b322ec8ac169415a8d13dbecce5cc7",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/signal_flashlight/signal_flashlight_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/signal_flashlight/textures/signal_flashlight_rough_1k.exr",
+      "bytes": 708783,
+      "md5": "c9f8ccbe39722f6493e81d97074a045b",
+      "sha256": "b51adc2639d0eee8004211884747ba6daf194f699a754814968a2fad0cefcb72",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/signal_flashlight/signal_flashlight_rough_1k.exr"
+    }
+  ]
+}

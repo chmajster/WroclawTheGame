@@ -1,0 +1,71 @@
+{
+  "slug": "metal_toolbox",
+  "name": "Metal Toolbox",
+  "intended_use": "Workshop/garage tool storage.",
+  "source_page": "https://polyhaven.com/a/metal_toolbox",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Mateusz Sadek": "All"
+  },
+  "category": "Tools & Equipment/Workshop Equipment/Tool Chests",
+  "tags": [
+    "vintage",
+    "rustic",
+    "garage",
+    "workshop",
+    "metal",
+    "storage",
+    "shed",
+    "construction",
+    "carpentry",
+    "tool chest"
+  ],
+  "dimensions_mm": [
+    400.0099003314972,
+    292.32875257730484,
+    347.10586071014404
+  ],
+  "files_hash": "df0982cb97ade9651921bf5d76047a33a388118a",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/metal_toolbox/metal_toolbox_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_toolbox/metal_toolbox_1k.fbx",
+      "bytes": 536476,
+      "md5": "54a40cdbd11fd72bd479bef1907e40ac",
+      "sha256": "bf46eab37ecae1d207cdf10cf67cd8b43004453bf0625930c038926d28d902b9",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/metal_toolbox/metal_toolbox_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_toolbox/textures/metal_toolbox_diff_1k.jpg",
+      "bytes": 661804,
+      "md5": "63f1832b685c2e55594b6bb82739dacb",
+      "sha256": "21e1d21880e49db3fde0457d53b78a70db61234a201da9f0181dd0880b110473",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/metal_toolbox/metal_toolbox_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_toolbox/textures/metal_toolbox_metal_1k.exr",
+      "bytes": 283593,
+      "md5": "0d441b7116f4f2324602e103fadda82f",
+      "sha256": "5db3e49d22e7619230b170870addc82873b9bacb62fe15a8f0a64870bc459244",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_toolbox/metal_toolbox_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_toolbox/textures/metal_toolbox_nor_gl_1k.exr",
+      "bytes": 1269369,
+      "md5": "816d897d604bbc0348fada36b823f263",
+      "sha256": "04a3ccd9e259842c4b7280700ddc86e4a540b4424de5b606961c262b1c307832",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_toolbox/metal_toolbox_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_toolbox/textures/metal_toolbox_rough_1k.exr",
+      "bytes": 909442,
+      "md5": "669a3a854ce787814b1de6dc72e3f03f",
+      "sha256": "496a6030e95f60e0cf48c188ca2999300537d4e112aab30e5138610dbcc0f04f",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_toolbox/metal_toolbox_rough_1k.exr"
+    }
+  ]
+}

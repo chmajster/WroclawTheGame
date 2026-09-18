@@ -1,0 +1,76 @@
+{
+  "slug": "power_box_01",
+  "name": "Power Box 01",
+  "intended_use": "Fuse box, electrical panel and camera power-control interactions.",
+  "source_page": "https://polyhaven.com/a/power_box_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Rico Cilliers": "Modeling & Texturing",
+    "Yann Kervran": "Rigging"
+  },
+  "category": "Industrial & Infrastructure/Electrical/Utility & Power Boxes",
+  "tags": [
+    "box",
+    "electrical",
+    "power",
+    "wiring",
+    "db board",
+    "circuit",
+    "breakers",
+    "board",
+    "switch",
+    "prop",
+    "modern",
+    "damaged",
+    "utility",
+    "infrastructure"
+  ],
+  "dimensions_mm": [
+    377.4920701980591,
+    418.45703125,
+    503.142774105072
+  ],
+  "files_hash": "4df156d1369da9a74510ad2ff012212cea3d4cfa",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/power_box_01/power_box_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/power_box_01/power_box_01_1k.fbx",
+      "bytes": 1099948,
+      "md5": "683dedd63d6d9ff4305c26a2b238ff5e",
+      "sha256": "9090b2490bd9d4037f0c2421c1ec24726937cdb25ab4de43bc165d45ddaee3e3",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/power_box_01/power_box_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/power_box_01/textures/power_box_01_diff_1k.jpg",
+      "bytes": 490782,
+      "md5": "c5d43a1a9cf48a616852a05401ad8f20",
+      "sha256": "845c425ebc0ded263a7d49909e2c26710dd6160da11c0ca44aebd723f4f6f168",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/power_box_01/power_box_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/power_box_01/textures/power_box_01_metal_1k.exr",
+      "bytes": 567990,
+      "md5": "a9fdd5ad0fbc3230de1d3371d0c1c58c",
+      "sha256": "22847011f60e934d8e7199e6965f281d782cb26be186837d9ba44ca5dc9a4bc5",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/power_box_01/power_box_01_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/power_box_01/textures/power_box_01_nor_gl_1k.exr",
+      "bytes": 1532007,
+      "md5": "de3cf096a3bb96c9d3afe8abb3c32f1d",
+      "sha256": "7b3a46a474208fb497c5afbc22ae822faef0f6730ef28b6b052e818e18f99aa7",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/power_box_01/power_box_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/power_box_01/textures/power_box_01_rough_1k.exr",
+      "bytes": 1271859,
+      "md5": "ba9e57fde89c9313c03c7ce2cba499d2",
+      "sha256": "53c0770b4c9b6a5adaa2d3c71375a89d733881c89c7f2d0e5333f7251ec778d7",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/power_box_01/power_box_01_rough_1k.exr"
+    }
+  ]
+}

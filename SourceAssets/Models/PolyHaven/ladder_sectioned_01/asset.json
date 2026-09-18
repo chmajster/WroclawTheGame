@@ -1,0 +1,71 @@
+{
+  "slug": "ladder_sectioned_01",
+  "name": "Ladder Sectioned 01",
+  "intended_use": "Garage/workshop ladder.",
+  "source_page": "https://polyhaven.com/a/ladder_sectioned_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "MP": "All"
+  },
+  "category": "Tools & Equipment/Workshop Equipment/Ladders",
+  "tags": [
+    "scaffolding",
+    "foldable",
+    "folding",
+    "steps",
+    "metal",
+    "building",
+    "construction",
+    "workshop",
+    "garage",
+    "shed"
+  ],
+  "dimensions_mm": [
+    661.5026593208313,
+    177.62134224176407,
+    2134.558429243043
+  ],
+  "files_hash": "13918cbf2df2d0f0321d29546ed2da162b44887a",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/ladder_sectioned_01/ladder_sectioned_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/ladder_sectioned_01/ladder_sectioned_01_1k.fbx",
+      "bytes": 954732,
+      "md5": "32ccfcec7ae9895e51b5354c95284656",
+      "sha256": "23629912948bf393705443851f5d9050cab2827924dfcdd584aecd1bd4c586cf",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/ladder_sectioned_01/ladder_sectioned_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/ladder_sectioned_01/textures/ladder_sectioned_01_diff_1k.jpg",
+      "bytes": 509874,
+      "md5": "998b6a0f9d956f962df3ff404155eac2",
+      "sha256": "3154595e9a43befafb994f7faf60f084cb929bbdf4b29be24d7d3cee62fa6a34",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/ladder_sectioned_01/ladder_sectioned_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/ladder_sectioned_01/textures/ladder_sectioned_01_metal_1k.exr",
+      "bytes": 679722,
+      "md5": "048a33658ea95333ca5ef4557ace43fe",
+      "sha256": "0d69ed27a30979b382369fb173d12f318e0913c68a6e9f563466e9ea4750ef6f",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/ladder_sectioned_01/ladder_sectioned_01_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/ladder_sectioned_01/textures/ladder_sectioned_01_nor_gl_1k.exr",
+      "bytes": 644768,
+      "md5": "2e96db9ff2d1cdda6e6fd4a4bfd5493a",
+      "sha256": "e98fb0bc8e9c713ab26b4ad6f7d509690b8794840a19dc0e24dff8c421c8268d",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/ladder_sectioned_01/ladder_sectioned_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/ladder_sectioned_01/textures/ladder_sectioned_01_rough_1k.exr",
+      "bytes": 756671,
+      "md5": "28797639f6fdf5f7afb6bd7ebe8aa5b9",
+      "sha256": "fb2647b96a029cf9a9c7f32c698ac39217fde7013e1d93fe87e7123d7ea850c4",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/ladder_sectioned_01/ladder_sectioned_01_rough_1k.exr"
+    }
+  ]
+}

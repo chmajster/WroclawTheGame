@@ -1,0 +1,62 @@
+{
+  "slug": "wooden_cutting_board",
+  "name": "Wooden Cutting Board",
+  "intended_use": "Apartment kitchen prop.",
+  "source_page": "https://polyhaven.com/a/wooden_cutting_board",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Kuutti Siitonen": "All"
+  },
+  "category": "Food & Kitchen/Utensils/Cutting Boards",
+  "tags": [
+    "culinary",
+    "cooking",
+    "kitchen",
+    "cutting",
+    "chopping",
+    "cheese",
+    "cooking equipment",
+    "wood"
+  ],
+  "dimensions_mm": [
+    449.8896151781082,
+    246.6525286436081,
+    41.25304119224893
+  ],
+  "files_hash": "bf62fd6c3b52e068d9f8f47a30ede3363c206b75",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/wooden_cutting_board/wooden_cutting_board_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/wooden_cutting_board/wooden_cutting_board_1k.fbx",
+      "bytes": 129596,
+      "md5": "130b28e45cab405b77d2d86e74451d9d",
+      "sha256": "e4749fee2d25b9a9783d37063d9ec5858c7f02ae9784120f2308b066256f77a8",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/wooden_cutting_board/wooden_cutting_board_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/wooden_cutting_board/textures/wooden_cutting_board_diff_1k.jpg",
+      "bytes": 788732,
+      "md5": "11be431e04b3a108eb74d3dd0559a9a4",
+      "sha256": "79274fb86cc7f62363e4448b4597f06933d640a79c746ff6f823d2e4e27ad143",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/wooden_cutting_board/wooden_cutting_board_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/wooden_cutting_board/textures/wooden_cutting_board_nor_gl_1k.exr",
+      "bytes": 1606720,
+      "md5": "1239fcff6a6bbff76ea1d3c2dd9046d9",
+      "sha256": "2b3c48442a236160cfe630fed3ffd0718e56e48cef824e136682b58f9b652ee2",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/wooden_cutting_board/wooden_cutting_board_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/wooden_cutting_board/textures/wooden_cutting_board_rough_1k.exr",
+      "bytes": 378915,
+      "md5": "c26cc79490312bfdc2039d96f8a02457",
+      "sha256": "37e1365eea2c720da82fd6db864fd78f0f0af80d82d53c79f0d4e4bcd9f57498",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/wooden_cutting_board/wooden_cutting_board_rough_1k.exr"
+    }
+  ]
+}

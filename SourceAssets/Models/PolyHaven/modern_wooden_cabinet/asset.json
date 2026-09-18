@@ -1,0 +1,62 @@
+{
+  "slug": "modern_wooden_cabinet",
+  "name": "Modern Wooden Cabinet",
+  "intended_use": "Apartment and safehouse storage furniture.",
+  "source_page": "https://polyhaven.com/a/modern_wooden_cabinet",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Patrik Pangerl": "All"
+  },
+  "category": "Furniture/Storage Furniture/Cabinets & Cupboards",
+  "tags": [
+    "cabinet",
+    "wood",
+    "modern",
+    "minimalist",
+    "interrior",
+    "living room",
+    "contemporary",
+    "design"
+  ],
+  "dimensions_mm": [
+    2440.0004148483276,
+    520.0000107288361,
+    680.1425069570541
+  ],
+  "files_hash": "ef2d266b0823d230f465b29bb32b110b4c71b3b2",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/modern_wooden_cabinet/modern_wooden_cabinet_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_wooden_cabinet/modern_wooden_cabinet_1k.fbx",
+      "bytes": 799676,
+      "md5": "f313bfb6a107dc766289effa0b757b65",
+      "sha256": "606c105e4ee2082fb179bf495965d83d21c1945f005649f99eb783698f590dbe",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/modern_wooden_cabinet/modern_wooden_cabinet_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_wooden_cabinet/textures/modern_wooden_cabinet_diff_1k.jpg",
+      "bytes": 670353,
+      "md5": "9c7e897741dd9aea6382f04e710d739b",
+      "sha256": "e494b67439da73775413d6aaea369ae05a8ebd7705be8df08dbcd2ee4fd545e4",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/modern_wooden_cabinet/modern_wooden_cabinet_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_wooden_cabinet/textures/modern_wooden_cabinet_nor_gl_1k.exr",
+      "bytes": 926115,
+      "md5": "2a6981ee98ea4017f485850122c41d9a",
+      "sha256": "b246b901d8c98427d20757a7cc7c60b529653c1edb2759ed11d963dd583d099c",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/modern_wooden_cabinet/modern_wooden_cabinet_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_wooden_cabinet/textures/modern_wooden_cabinet_rough_1k.exr",
+      "bytes": 995220,
+      "md5": "5e919db42c2bc9dfeb9b7725b1a2320d",
+      "sha256": "eb356c90feb8016c6ebd9a86ed77a034e4c282ba9c5805a80cf0cad9f8b004e4",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/modern_wooden_cabinet/modern_wooden_cabinet_rough_1k.exr"
+    }
+  ]
+}

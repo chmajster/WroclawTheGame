@@ -1,0 +1,16 @@
+{
+  "id": "oga-survival-battery",
+  "name": "Lowpoly survival item pack — battery",
+  "provider": "OpenGameArt",
+  "source_page": "https://opengameart.org/content/lowpoly-survival-item-pack",
+  "license": "CC0-1.0",
+  "intended_use": "Battery pickup required by the flashlight gameplay step.",
+  "primary_path": "SourceAssets/Models/OpenGameArt/oga-survival-battery/Survival items/items.fbx",
+  "sources": [
+    {
+      "archive_url": "https://opengameart.org/sites/default/files/Survival%20items.zip",
+      "bytes": 286058,
+      "sha256": "217f67325fdfe5023b46492d4de143acb296b49163209a01b58766a60384569d"
+    }
+  ]
+}

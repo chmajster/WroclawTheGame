@@ -1,0 +1,67 @@
+{
+  "slug": "classic_laptop",
+  "name": "Classic Laptop",
+  "intended_use": "Apartment computer and terminal interaction prop.",
+  "source_page": "https://polyhaven.com/a/classic_laptop",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Arrangemonk": "All"
+  },
+  "category": "Electronics & Appliances/Computing/Computers",
+  "tags": [
+    "old",
+    "vintage",
+    "beige",
+    "notebook",
+    "lcd",
+    "trackball"
+  ],
+  "dimensions_mm": [
+    651.9346237182617,
+    485.9423041343689,
+    542.8108091000468
+  ],
+  "files_hash": "44e244f74d7fc5329b69795c5c95f105803aadc2",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/classic_laptop/classic_laptop_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/classic_laptop/classic_laptop_1k.fbx",
+      "bytes": 487372,
+      "md5": "52aa4ccefab48d9ea82ba76aad25cc54",
+      "sha256": "df72a9795e91e20a1451a67c0ae686caa1f7861087700b94beb3b200071f28d7",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/classic_laptop/classic_laptop_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/classic_laptop/textures/classic_laptop_diff_1k.jpg",
+      "bytes": 524918,
+      "md5": "b16478b0bfdaf836180867d26054435a",
+      "sha256": "0b0d4a2a991f8ee45effdb0c038af7348c6c731bc9a251e09095abde6cd34974",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/classic_laptop/classic_laptop_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/classic_laptop/textures/classic_laptop_metal_1k.exr",
+      "bytes": 688778,
+      "md5": "8e394c89f67e230c09a7c3dffd2b4cee",
+      "sha256": "e1474de93b567b8d80c5b676c8109b52680605fd997018d41fee7eab92e11170",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/classic_laptop/classic_laptop_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/classic_laptop/textures/classic_laptop_nor_gl_1k.exr",
+      "bytes": 892239,
+      "md5": "5be168668e927b2602039a68c8ab5459",
+      "sha256": "df9c652047436419c3768f4c8d9c7cafeb9881b92815c9f5203869bf28e7c07f",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/classic_laptop/classic_laptop_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/classic_laptop/textures/classic_laptop_rough_1k.exr",
+      "bytes": 577635,
+      "md5": "57ff1527262855cf6a9c0e84be3e8bcd",
+      "sha256": "c7362a589f7327abbe828bd95dc68d88df47c3ce5ff3897b57d0b3a180d78b6b",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/classic_laptop/classic_laptop_rough_1k.exr"
+    }
+  ]
+}

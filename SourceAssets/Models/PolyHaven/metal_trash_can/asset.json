@@ -1,0 +1,98 @@
+{
+  "slug": "metal_trash_can",
+  "name": "Metal Trash Can",
+  "intended_use": "Courtyard/street trash prop.",
+  "source_page": "https://polyhaven.com/a/metal_trash_can",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "GurJas Studios": "All"
+  },
+  "category": "Containers & Storage/Cans, Tins & Bottles/Trash Cans",
+  "tags": [
+    "bin",
+    "rubbish",
+    "garbage",
+    "disposal",
+    "litter",
+    "dumpster",
+    "outdoor trash can",
+    " urban",
+    "utility"
+  ],
+  "dimensions_mm": [
+    1846.9352722167969,
+    556.2898814678192,
+    906.1697272554738
+  ],
+  "files_hash": "3ecbee3adbcc53b4af3c8f010e76e10c5b7558a2",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/metal_trash_can/metal_trash_can_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_trash_can/metal_trash_can_1k.fbx",
+      "bytes": 431724,
+      "md5": "dde180dd41cddaad272a54dcc45a0416",
+      "sha256": "e5f5176cccf94a09b05350f2500f11ec7ffed191247f5ccf908f9936324ebca0",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/metal_trash_can/metal_trash_can_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_trash_can/textures/metal_trash_can_diff_1k.jpg",
+      "bytes": 551939,
+      "md5": "55d375d8d51b268b6ed8a4308155959c",
+      "sha256": "920c895a31b1cd2c000123c0592c70c33d46562752987da98070e7e0eebb662f",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/metal_trash_can/metal_trash_can_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_trash_can/textures/metal_trash_can_metal_1k.exr",
+      "bytes": 863840,
+      "md5": "8085696b3d5bbe7065241a88705adf23",
+      "sha256": "0410cd3233a4da9483514b49fa9b32ff8aec83f9530ad33cb0b33ab8b039445a",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_trash_can/metal_trash_can_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_trash_can/textures/metal_trash_can_nor_gl_1k.exr",
+      "bytes": 1869600,
+      "md5": "432c42a8b044522fecacd7521a5444ea",
+      "sha256": "4d95deba7c0298686a84c1d575bf14fcc3c6704b6ce2fd7ab19a07cddcc96e50",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_trash_can/metal_trash_can_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_trash_can/textures/metal_trash_can_rough_1k.exr",
+      "bytes": 590561,
+      "md5": "c8efea31e2f5c074c29da8bf806709fe",
+      "sha256": "bb7bfefff419e75ca83afac9f1b88e5c05b08cd42b846c98991e2e7a2ee9ae42",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_trash_can/metal_trash_can_rough_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_trash_can/textures/metal_trash_can_rust_diff_1k.png",
+      "bytes": 4931239,
+      "md5": "16e1c4552a7a99a5977e61f6556c2ce4",
+      "sha256": "d6cf6cef352e8a638729f923c4f7680684d5205b749b0b1546c9b3ef1c805694",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/metal_trash_can/metal_trash_can_rust_diff_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_trash_can/textures/metal_trash_can_rust_metal_1k.png",
+      "bytes": 2248463,
+      "md5": "4681b1dba7e5049773732a59ea9f4b41",
+      "sha256": "a82e813a733e793e2f04eeab34429f48553f6c75289cc30d04722525d2cc4988",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/metal_trash_can/metal_trash_can_rust_metal_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_trash_can/textures/metal_trash_can_rust_nor_gl_1k.png",
+      "bytes": 5486372,
+      "md5": "682cf0a3b50a3a80c453005fb73935cd",
+      "sha256": "83664a21dc5732df5dea1980a58d1f836763e005c0bc7b4dc6153075649b2782",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/metal_trash_can/metal_trash_can_rust_nor_gl_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_trash_can/textures/metal_trash_can_rust_rough_1k.png",
+      "bytes": 1600483,
+      "md5": "6dddde4f4a855658c661080158b024dd",
+      "sha256": "c167de3c65cfb30dad9a64bef043ebe4fe485e9cff96e3b60f7c0268288d9a89",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/metal_trash_can/metal_trash_can_rust_rough_1k.png"
+    }
+  ]
+}

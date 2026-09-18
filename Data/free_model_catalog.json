@@ -1,0 +1,1462 @@
+[
+  {
+    "slug": "security_camera_02",
+    "name": "Security Camera 02",
+    "intended_use": "CCTV / surveillance prop; replaces the current generic surveillance placeholder.",
+    "source_page": "https://polyhaven.com/a/security_camera_02",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Garrison Gager": "Modeling & Texturing",
+      "Yann Kervran": "Rigging"
+    },
+    "category": "Industrial & Infrastructure/Utility Equipment/Surveillance Cameras",
+    "dimensions_mm": [
+      140.66611975431442,
+      393.7917649745941,
+      208.5888683795929
+    ],
+    "files_hash": "141ee900f27b02e86f21ef1c1b5a5500a7e22b40",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/security_camera_02/security_camera_02_1k.fbx"
+  },
+  {
+    "slug": "street_lamp_01",
+    "name": "Street Lamp 01",
+    "intended_use": "Urban street lighting prop for authored city detail passes.",
+    "source_page": "https://polyhaven.com/a/street_lamp_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Josh Dean": "All"
+    },
+    "category": "Lighting/Street & Outdoor/Street Lamps",
+    "dimensions_mm": [
+      704.3362259864807,
+      386.49316132068634,
+      3870.5554008483887
+    ],
+    "files_hash": "002d697fa195d73f627e82804612208853212519",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/street_lamp_01/street_lamp_01_1k.fbx"
+  },
+  {
+    "slug": "concrete_road_barrier_02",
+    "name": "Concrete Road Barrier 02",
+    "intended_use": "Roadblock and traffic-control prop for chase and blockade scenes.",
+    "source_page": "https://polyhaven.com/a/concrete_road_barrier_02",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "category": "Industrial & Infrastructure/Traffic & Safety/Road Barriers",
+    "dimensions_mm": [
+      1566.9698119163513,
+      442.20101833343506,
+      1111.9812715332955
+    ],
+    "files_hash": "fbcefc03483cf10e19d91653f3f1b10112be436d",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/concrete_road_barrier_02/concrete_road_barrier_02_1k.fbx"
+  },
+  {
+    "slug": "bench_vice_01",
+    "name": "Bench Vice 01",
+    "intended_use": "Garage/workshop prop for the campaign workshop environment.",
+    "source_page": "https://polyhaven.com/a/bench_vice_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Yann Kervran": "Rigging",
+      "Antanas Kep": "Modeling & Texturing"
+    },
+    "category": "Tools & Equipment/Workshop Equipment/Vices & Clamps",
+    "dimensions_mm": [
+      200.48236846923828,
+      395.7868218421936,
+      271.6780751943588
+    ],
+    "files_hash": "e1b894759ca8b4ed6359bd7503a34c974494a620",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/bench_vice_01/bench_vice_01_1k.fbx"
+  },
+  {
+    "slug": "side_table_01",
+    "name": "Side Table 01",
+    "intended_use": "Apartment/interior furniture replacing simple blockout geometry.",
+    "source_page": "https://polyhaven.com/a/side_table_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Furniture/Tables/Side & End Tables",
+    "dimensions_mm": [
+      550.0000715255737,
+      450.00001788139343,
+      550.6622816901654
+    ],
+    "files_hash": "c48d34c9a62887ad0c1175877ac69ffdd97e52b6",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/side_table_01/side_table_01_1k.fbx"
+  },
+  {
+    "slug": "sofa_03",
+    "name": "Sofa 03",
+    "intended_use": "Apartment/interior seating replacing simple blockout geometry.",
+    "source_page": "https://polyhaven.com/a/sofa_03",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Fran Calvente": "All"
+    },
+    "category": "Furniture/Seating/Sofas & Couches",
+    "dimensions_mm": [
+      2731.17733001709,
+      925.0842034816742,
+      1118.2640366605483
+    ],
+    "files_hash": "6304a0e5c6e96371ba5b427ce5baa763f1405e2c",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/sofa_03/sofa_03_1k.fbx"
+  },
+  {
+    "slug": "signal_flashlight",
+    "name": "Signal Flashlight",
+    "intended_use": "Gameplay flashlight pickup.",
+    "source_page": "https://polyhaven.com/a/signal_flashlight",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Jiří Ptáček": "All"
+    },
+    "category": "Lighting/Portable/Flashlights & Torches",
+    "dimensions_mm": [
+      70.99152728915215,
+      44.537635520100594,
+      149.9275267124176
+    ],
+    "files_hash": "df6171714af44a5b9f0006e7a3247a0a8ef9e907",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/signal_flashlight/signal_flashlight_1k.fbx"
+  },
+  {
+    "slug": "vintage_radio_transceiver",
+    "name": "Vintage Radio Transceiver",
+    "intended_use": "Radio-frequency puzzle / workshop communications prop.",
+    "source_page": "https://polyhaven.com/a/vintage_radio_transceiver",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Mateusz Sadek": "All"
+    },
+    "category": "Electronics & Appliances/Audio & Video/Radios & Portable Audio",
+    "dimensions_mm": [
+      618.1803643703461,
+      417.8741127252579,
+      434.39279100857675
+    ],
+    "files_hash": "f343f538ee1b638da93aeaf450e50e428a57a2f4",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/vintage_radio_transceiver/vintage_radio_transceiver_1k.fbx"
+  },
+  {
+    "slug": "power_box_01",
+    "name": "Power Box 01",
+    "intended_use": "Fuse box, electrical panel and camera power-control interactions.",
+    "source_page": "https://polyhaven.com/a/power_box_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Rico Cilliers": "Modeling & Texturing",
+      "Yann Kervran": "Rigging"
+    },
+    "category": "Industrial & Infrastructure/Electrical/Utility & Power Boxes",
+    "dimensions_mm": [
+      377.4920701980591,
+      418.45703125,
+      503.142774105072
+    ],
+    "files_hash": "4df156d1369da9a74510ad2ff012212cea3d4cfa",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/power_box_01/power_box_01_1k.fbx"
+  },
+  {
+    "slug": "classic_laptop",
+    "name": "Classic Laptop",
+    "intended_use": "Apartment computer and terminal interaction prop.",
+    "source_page": "https://polyhaven.com/a/classic_laptop",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Arrangemonk": "All"
+    },
+    "category": "Electronics & Appliances/Computing/Computers",
+    "dimensions_mm": [
+      651.9346237182617,
+      485.9423041343689,
+      542.8108091000468
+    ],
+    "files_hash": "44e244f74d7fc5329b69795c5c95f105803aadc2",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/classic_laptop/classic_laptop_1k.fbx"
+  },
+  {
+    "slug": "cardboard_box_01",
+    "name": "Cardboard Box 01",
+    "intended_use": "Package, shop backroom and garage clutter.",
+    "source_page": "https://polyhaven.com/a/cardboard_box_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Rahul Chaudhary": "All"
+    },
+    "category": "Containers & Storage/Boxes & Crates/Cardboard Boxes",
+    "dimensions_mm": [
+      387.02359795570374,
+      515.8704221248627,
+      341.7995423078537
+    ],
+    "files_hash": "2a37ded0aeebc15100db0e1d285ad36cf40b8f42",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/cardboard_box_01/cardboard_box_01_1k.fbx"
+  },
+  {
+    "slug": "plastic_container",
+    "name": "Plastic Container",
+    "intended_use": "Courtyard hiding/storage container.",
+    "source_page": "https://polyhaven.com/a/plastic_container",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "PierreB3D": "All"
+    },
+    "category": "Containers & Storage/Boxes & Crates/Bins",
+    "dimensions_mm": [
+      895.0786888599396,
+      626.3633966445923,
+      429.68997440377774
+    ],
+    "files_hash": "15344534f183e6b8c9fe2605822057d37d276f7c",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/plastic_container/plastic_container_1k.fbx"
+  },
+  {
+    "slug": "wooden_bookshelf_worn",
+    "name": "Wooden Bookshelf Worn",
+    "intended_use": "Garage hiding shelf and basement/workshop storage.",
+    "source_page": "https://polyhaven.com/a/wooden_bookshelf_worn",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Ulan Cabanilla": "All"
+    },
+    "category": "Furniture/Storage Furniture/Shelving & Bookcases",
+    "dimensions_mm": [
+      1373.95179271698,
+      581.3020169734955,
+      2063.442051410675
+    ],
+    "files_hash": "7db4a47cb5d2cf4dccb714c4ada6008321217fcb",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/wooden_bookshelf_worn/wooden_bookshelf_worn_1k.fbx"
+  },
+  {
+    "slug": "drawer_cabinet",
+    "name": "Drawer Cabinet",
+    "intended_use": "Apartment drawer/cabinet furniture for phone and clue interactions.",
+    "source_page": "https://polyhaven.com/a/drawer_cabinet",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Ulan Cabanilla": "All"
+    },
+    "category": "Furniture/Storage Furniture/Drawers & Dressers",
+    "dimensions_mm": [
+      1141.0778760910034,
+      488.08445036411285,
+      1881.253957748413
+    ],
+    "files_hash": "dda532faa842f6046d05e7ffcfddaea897152f78",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/drawer_cabinet/drawer_cabinet_1k.fbx"
+  },
+  {
+    "slug": "GothicBed_01",
+    "name": "Gothic Bed 01",
+    "intended_use": "Bed proxy for the opening apartment scene.",
+    "source_page": "https://polyhaven.com/a/GothicBed_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Kirill Sannikov": "All"
+    },
+    "category": "Furniture/Beds",
+    "dimensions_mm": [
+      1493.751883506775,
+      2039.9999022483826,
+      1533.8402975614968
+    ],
+    "files_hash": "1ab8ed2b813d573962623fdafa37c84def8e8447",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/GothicBed_01/GothicBed_01_1k.fbx"
+  },
+  {
+    "slug": "electric_stove",
+    "name": "Electric Stove",
+    "intended_use": "Kitchen appliance for the apartment kitchen.",
+    "source_page": "https://polyhaven.com/a/electric_stove",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Kuutti Siitonen": "All"
+    },
+    "category": "Electronics & Appliances/Home Appliances/Stoves & Heaters",
+    "dimensions_mm": [
+      502.59482860565186,
+      647.6211845874786,
+      858.6971759796143
+    ],
+    "files_hash": "750ee10bdfe78eb6b0b620ef7b5a898e436fb696",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/electric_stove/electric_stove_1k.fbx"
+  },
+  {
+    "slug": "modular_street_seating",
+    "name": "Modular Street Seating",
+    "intended_use": "Street/park bench for clue placement and city dressing.",
+    "source_page": "https://polyhaven.com/a/modular_street_seating",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Stuart Attenborrow": "All"
+    },
+    "category": "Furniture/Seating/Benches",
+    "dimensions_mm": [
+      4339.9999141693115,
+      770.3700959682465,
+      950.000050743509
+    ],
+    "files_hash": "95d5a9ba8bf29d4db6c9089297b8bdb920994f6d",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/modular_street_seating/modular_street_seating_1k.fbx"
+  },
+  {
+    "slug": "covered_car",
+    "name": "Covered Car",
+    "intended_use": "Static parked/garage car prop; not used as the driveable vehicle.",
+    "source_page": "https://polyhaven.com/a/covered_car",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "MP": "All"
+    },
+    "category": "Vehicles & Transport/Road Vehicles/Cars",
+    "dimensions_mm": [
+      1788.962960243225,
+      4380.25426864624,
+      1411.1130833625793
+    ],
+    "files_hash": "22592d3c2b16533339ed1bf4e4320e25e5a76cf2",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/covered_car/covered_car_1k.fbx"
+  },
+  {
+    "slug": "old_tyre",
+    "name": "Old Tyre",
+    "intended_use": "Garage/workshop automotive clutter.",
+    "source_page": "https://polyhaven.com/a/old_tyre",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "MP": "All"
+    },
+    "category": "Vehicles & Transport/Parts & Accessories/Wheels & Tyres",
+    "dimensions_mm": [
+      600.0000238418579,
+      164.99999910593033,
+      600.0000238418579
+    ],
+    "files_hash": "8b7362724dd9d54081fe99703e32f434f75d1f0e",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/old_tyre/old_tyre_1k.fbx"
+  },
+  {
+    "slug": "korean_fire_extinguisher_01",
+    "name": "Korean Fire Extinguisher 01",
+    "intended_use": "Building, basement and garage fire-safety prop.",
+    "source_page": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "UM JOORIN": "All"
+    },
+    "category": "Industrial & Infrastructure/Traffic & Safety/Hydrants & Fire Safety",
+    "dimensions_mm": [
+      279.957577586174,
+      367.44324862957,
+      659.2507164176169
+    ],
+    "files_hash": "bf286ac62105374e5c583367e80ce77dcbe6881c",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/korean_fire_extinguisher_01_1k.fbx"
+  },
+  {
+    "slug": "metal_trash_can",
+    "name": "Metal Trash Can",
+    "intended_use": "Courtyard/street trash prop.",
+    "source_page": "https://polyhaven.com/a/metal_trash_can",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "GurJas Studios": "All"
+    },
+    "category": "Containers & Storage/Cans, Tins & Bottles/Trash Cans",
+    "dimensions_mm": [
+      1846.9352722167969,
+      556.2898814678192,
+      906.1697272554738
+    ],
+    "files_hash": "3ecbee3adbcc53b4af3c8f010e76e10c5b7558a2",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/metal_trash_can/metal_trash_can_1k.fbx"
+  },
+  {
+    "slug": "trashbag",
+    "name": "Trashbag",
+    "intended_use": "Street/alley/courtyard clutter.",
+    "source_page": "https://polyhaven.com/a/trashbag",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Benny Weimer": "All"
+    },
+    "category": "Containers & Storage/Bags/Waste Bags",
+    "dimensions_mm": [
+      528.0700623989105,
+      462.893009185791,
+      574.9993845820427
+    ],
+    "files_hash": "d291da0b535dffda7f7262b5e9210c93892576f7",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/trashbag/trashbag_1k.fbx"
+  },
+  {
+    "slug": "plastic_crate_01",
+    "name": "Plastic Crate 01",
+    "intended_use": "Shop, garage and workshop storage prop.",
+    "source_page": "https://polyhaven.com/a/plastic_crate_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "PierreB3D": "All"
+    },
+    "category": "Containers & Storage/Boxes & Crates/Plastic Crates",
+    "dimensions_mm": [
+      298.00063371658325,
+      408.00413489341736,
+      264.1694247722626
+    ],
+    "files_hash": "74d27ffa75c1d477708f4dd344d500b65d376a84",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/plastic_crate_01/plastic_crate_01_1k.fbx"
+  },
+  {
+    "slug": "decorative_book_set_01",
+    "name": "Decorative Book Set 01",
+    "intended_use": "Apartment book clue and shelf dressing.",
+    "source_page": "https://polyhaven.com/a/decorative_book_set_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Office & Stationery/Books & Documents/Books",
+    "dimensions_mm": [
+      2505.232434719801,
+      321.111761033535,
+      285.6543071102351
+    ],
+    "files_hash": "17b60199f281591c470612a06a05afa38780b4eb",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/decorative_book_set_01/decorative_book_set_01_1k.fbx"
+  },
+  {
+    "slug": "rollershutter_window_01",
+    "name": "Rollershutter Window 01",
+    "intended_use": "Shop/garage shutter and industrial frontage.",
+    "source_page": "https://polyhaven.com/a/rollershutter_window_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "MP": "All"
+    },
+    "category": "Architecture/Windows & Shutters/Roller Shutters",
+    "dimensions_mm": [
+      5100.001215934753,
+      300.0859081512317,
+      1850.7245529547163
+    ],
+    "files_hash": "55133df3196203d6ddd5b3ef1a4225625ff3aab7",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/rollershutter_window_01/rollershutter_window_01_1k.fbx"
+  },
+  {
+    "slug": "wooden_display_shelves_01",
+    "name": "Wooden Display Shelves 01",
+    "intended_use": "Shop/apartment shelving.",
+    "source_page": "https://polyhaven.com/a/wooden_display_shelves_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Furniture/Storage Furniture/Shelving & Bookcases",
+    "dimensions_mm": [
+      1077.760934829712,
+      371.50970101356506,
+      1556.1838150024414
+    ],
+    "files_hash": "34b10f61944642400bd3d5686ea27350da9cbb66",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/wooden_display_shelves_01/wooden_display_shelves_01_1k.fbx"
+  },
+  {
+    "slug": "metal_toolbox",
+    "name": "Metal Toolbox",
+    "intended_use": "Workshop/garage tool storage.",
+    "source_page": "https://polyhaven.com/a/metal_toolbox",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Mateusz Sadek": "All"
+    },
+    "category": "Tools & Equipment/Workshop Equipment/Tool Chests",
+    "dimensions_mm": [
+      400.0099003314972,
+      292.32875257730484,
+      347.10586071014404
+    ],
+    "files_hash": "df0982cb97ade9651921bf5d76047a33a388118a",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/metal_toolbox/metal_toolbox_1k.fbx"
+  },
+  {
+    "slug": "metal_tool_chest",
+    "name": "Metal Tool Chest",
+    "intended_use": "Garage/workshop tool chest.",
+    "source_page": "https://polyhaven.com/a/metal_tool_chest",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Yann Kervran": "Rigging",
+      "John Hutcheson": "Modeling & Texturing"
+    },
+    "category": "Tools & Equipment/Workshop Equipment/Tool Chests",
+    "dimensions_mm": [
+      685.3884160518646,
+      407.15324878692627,
+      651.8355906009674
+    ],
+    "files_hash": "8fdd3f7409ad7cfd5a4fc3091933d1e1d3785b0e",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/metal_tool_chest/metal_tool_chest_1k.fbx"
+  },
+  {
+    "slug": "stone_01",
+    "name": "Stone 01",
+    "intended_use": "Throwable stone pickup.",
+    "source_page": "https://polyhaven.com/a/stone_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Dario Barresi": "Photography",
+      "Rico Cilliers": "photography, processing"
+    },
+    "category": "Nature/Rocks & Stone/Boulders",
+    "dimensions_mm": [
+      147.15217798948288,
+      89.41811323165894,
+      71.89157977700233
+    ],
+    "files_hash": "3b541260ddde766b6bcfae56be426b81ce1a1e81",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/stone_01/stone_01_1k.fbx"
+  },
+  {
+    "slug": "wooden_crate_01",
+    "name": "Wooden Crate 01",
+    "intended_use": "Shop/garage storage and cover prop.",
+    "source_page": "https://polyhaven.com/a/wooden_crate_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Containers & Storage/Boxes & Crates/Wooden Crates",
+    "dimensions_mm": [
+      825.2729177474976,
+      408.9537411928177,
+      349.6182831004262
+    ],
+    "files_hash": "1ac5d053ce4c72e3fbb4c3065e7979522bf1908e",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/wooden_crate_01/wooden_crate_01_1k.fbx"
+  },
+  {
+    "slug": "fire_hydrant",
+    "name": "Fire Hydrant",
+    "intended_use": "Urban street infrastructure dressing.",
+    "source_page": "https://polyhaven.com/a/fire_hydrant",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Gonçalo Felício": "All"
+    },
+    "category": "Industrial & Infrastructure/Traffic & Safety/Hydrants & Fire Safety",
+    "dimensions_mm": [
+      874.623566865921,
+      317.74356961250305,
+      799.4560238003032
+    ],
+    "files_hash": "392eed954362d55b55022af83c0b7150bf977853",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/fire_hydrant/fire_hydrant_1k.fbx"
+  },
+  {
+    "slug": "utility_box_01",
+    "name": "Utility Box 01",
+    "intended_use": "Urban electrical infrastructure and clue dressing.",
+    "source_page": "https://polyhaven.com/a/utility_box_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Industrial & Infrastructure/Electrical/Utility & Power Boxes",
+    "dimensions_mm": [
+      520.0002193450928,
+      431.999996304512,
+      1120.3334331512451
+    ],
+    "files_hash": "af6d53ad17db23473c84e6ccf3f09270e76d3583",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/utility_box_01/utility_box_01_1k.fbx"
+  },
+  {
+    "slug": "metal_office_desk",
+    "name": "Metal Office Desk",
+    "intended_use": "Desk for apartment, shop terminal and safehouse interiors.",
+    "source_page": "https://polyhaven.com/a/metal_office_desk",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Ulan Cabanilla": "All"
+    },
+    "category": "Furniture/Tables/Desks",
+    "dimensions_mm": [
+      2000.0003576278687,
+      947.2135305404663,
+      787.5000089406967
+    ],
+    "files_hash": "687c6d374d4674adb8d065aa3480b04f4f56f2b0",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/metal_office_desk/metal_office_desk_1k.fbx"
+  },
+  {
+    "slug": "dining_chair_02",
+    "name": "Dining Chair 02",
+    "intended_use": "General apartment/shop seating.",
+    "source_page": "https://polyhaven.com/a/dining_chair_02",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Furniture/Seating/Chairs",
+    "dimensions_mm": [
+      433.5707724094391,
+      576.4201134443283,
+      973.3776897192001
+    ],
+    "files_hash": "b99b2f907424bbc55b77541f9616fa9da770dcde",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/dining_chair_02/dining_chair_02_1k.fbx"
+  },
+  {
+    "slug": "desk_lamp_arm_01",
+    "name": "Desk Lamp Arm 01",
+    "intended_use": "Desk/workshop task lighting prop.",
+    "source_page": "https://polyhaven.com/a/desk_lamp_arm_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Yann Kervran": "Rigging",
+      "Kuutti Siitonen": "Modeling & texturing"
+    },
+    "category": "Lighting/Floor & Desk/Desk Lamps",
+    "dimensions_mm": [
+      617.3093914985657,
+      408.02252292633057,
+      879.0190517902374
+    ],
+    "files_hash": "e15dd68e575e78092f99c7179cd031525428bbc1",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/desk_lamp_arm_01/desk_lamp_arm_01_1k.fbx"
+  },
+  {
+    "slug": "Television_01",
+    "name": "Television 01",
+    "intended_use": "CCTV monitor / apartment electronics proxy.",
+    "source_page": "https://polyhaven.com/a/Television_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Gabriel Radić": "All"
+    },
+    "category": "Electronics & Appliances/Audio & Video/Televisions",
+    "dimensions_mm": [
+      599.9999642372131,
+      470.8106815814972,
+      456.84892892313655
+    ],
+    "files_hash": "c00ac1c3a4f0cf9e01639ba242ce3748fb690ae7",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/Television_01/Television_01_1k.fbx"
+  },
+  {
+    "slug": "modern_wooden_cabinet",
+    "name": "Modern Wooden Cabinet",
+    "intended_use": "Apartment and safehouse storage furniture.",
+    "source_page": "https://polyhaven.com/a/modern_wooden_cabinet",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Patrik Pangerl": "All"
+    },
+    "category": "Furniture/Storage Furniture/Cabinets & Cupboards",
+    "dimensions_mm": [
+      2440.0004148483276,
+      520.0000107288361,
+      680.1425069570541
+    ],
+    "files_hash": "ef2d266b0823d230f465b29bb32b110b4c71b3b2",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/modern_wooden_cabinet/modern_wooden_cabinet_1k.fbx"
+  },
+  {
+    "slug": "painted_wooden_cabinet",
+    "name": "Painted Wooden Cabinet",
+    "intended_use": "Basement/workshop storage variant.",
+    "source_page": "https://polyhaven.com/a/painted_wooden_cabinet",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Kirill Sannikov": "All"
+    },
+    "category": "Furniture/Storage Furniture/Cabinets & Cupboards",
+    "dimensions_mm": [
+      1194.674551486969,
+      616.6356205940247,
+      1181.8697528215125
+    ],
+    "files_hash": "f8cce862d9eaac61abef0246a662aa937ec04332",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/painted_wooden_cabinet/painted_wooden_cabinet_1k.fbx"
+  },
+  {
+    "slug": "security_camera_01",
+    "name": "Security Camera 01",
+    "intended_use": "Second CCTV variation for urban scenes.",
+    "source_page": "https://polyhaven.com/a/security_camera_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Alexander Otterbeck": "Modeling & Texturing",
+      "Yann Kervran": "Rigging"
+    },
+    "category": "Industrial & Infrastructure/Utility Equipment/Surveillance Cameras",
+    "dimensions_mm": [
+      169.5517897605896,
+      553.6733567714691,
+      286.04651242494583
+    ],
+    "files_hash": "1291611332590f75d3ecdaa72e8285241c5c3fc0",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/security_camera_01/security_camera_01_1k.fbx"
+  },
+  {
+    "slug": "utility_box_02",
+    "name": "Utility Box 02",
+    "intended_use": "Second urban electrical utility box variation.",
+    "source_page": "https://polyhaven.com/a/utility_box_02",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Industrial & Infrastructure/Electrical/Utility & Power Boxes",
+    "dimensions_mm": [
+      920.0001955032349,
+      431.999996304512,
+      1120.3334331512451
+    ],
+    "files_hash": "8420d634a09db8508124f2086be28b992d0a26c0",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/utility_box_02/utility_box_02_1k.fbx"
+  },
+  {
+    "slug": "street_lamp_02",
+    "name": "Street Lamp 02",
+    "intended_use": "Wall-mounted urban street lighting variation.",
+    "source_page": "https://polyhaven.com/a/street_lamp_02",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Josh Dean": "All"
+    },
+    "category": "Lighting/Street & Outdoor/Street Lamps",
+    "dimensions_mm": [
+      386.49316132068634,
+      806.7893021069672,
+      1675.0419437885284
+    ],
+    "files_hash": "2128f871d76c756f6779cac3286443d21eb9b40f",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/street_lamp_02/street_lamp_02_1k.fbx"
+  },
+  {
+    "slug": "rollershutter_window_02",
+    "name": "Rollershutter Window 02",
+    "intended_use": "Second shop/garage shutter variation.",
+    "source_page": "https://polyhaven.com/a/rollershutter_window_02",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "MP": "All"
+    },
+    "category": "Architecture/Windows & Shutters/Roller Shutters",
+    "dimensions_mm": [
+      3600.000321865082,
+      168.07068698108196,
+      1560.8682408933419
+    ],
+    "files_hash": "97b51a0f6fdf27b52a7fda1eab44457391115806",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/rollershutter_window_02/rollershutter_window_02_1k.fbx"
+  },
+  {
+    "slug": "Drill_01",
+    "name": "Drill 01",
+    "intended_use": "Workshop power-tool prop.",
+    "source_page": "https://polyhaven.com/a/Drill_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Fernando Quinn": "All"
+    },
+    "category": "Tools & Equipment/Power Tools/Drills",
+    "dimensions_mm": [
+      182.8799918293953,
+      52.41549015045166,
+      185.06235629320145
+    ],
+    "files_hash": "09a08d9e60a537490591e142ddef14428a140950",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/Drill_01/Drill_01_1k.fbx"
+  },
+  {
+    "slug": "wooden_cutting_board",
+    "name": "Wooden Cutting Board",
+    "intended_use": "Apartment kitchen prop.",
+    "source_page": "https://polyhaven.com/a/wooden_cutting_board",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Kuutti Siitonen": "All"
+    },
+    "category": "Food & Kitchen/Utensils/Cutting Boards",
+    "dimensions_mm": [
+      449.8896151781082,
+      246.6525286436081,
+      41.25304119224893
+    ],
+    "files_hash": "bf62fd6c3b52e068d9f8f47a30ede3363c206b75",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/wooden_cutting_board/wooden_cutting_board_1k.fbx"
+  },
+  {
+    "slug": "jug_01",
+    "name": "Jug 01",
+    "intended_use": "Apartment kitchen/tableware prop.",
+    "source_page": "https://polyhaven.com/a/jug_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Kuutti Siitonen": "All"
+    },
+    "category": "Food & Kitchen/Tableware/Jugs & Pitchers",
+    "dimensions_mm": [
+      275.3216624259949,
+      167.5262302160263,
+      211.31345149478875
+    ],
+    "files_hash": "c9c08b43eee157b95f9f8d0102a7a88259bbccfe",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/jug_01/jug_01_1k.fbx"
+  },
+  {
+    "slug": "brass_pot_01",
+    "name": "Brass Pot 01",
+    "intended_use": "Kitchen cookware prop.",
+    "source_page": "https://polyhaven.com/a/brass_pot_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Rico Cilliers": "All"
+    },
+    "category": "Food & Kitchen/Cookware/Pots & Pans",
+    "dimensions_mm": [
+      301.94565653800964,
+      301.69259011745453,
+      290.94765486661345
+    ],
+    "files_hash": "a2b74ef3895196b2e372fa43f1abfe896ee35ffe",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/brass_pot_01/brass_pot_01_1k.fbx"
+  },
+  {
+    "slug": "brass_pan_01",
+    "name": "Brass Pan 01",
+    "intended_use": "Kitchen cookware prop.",
+    "source_page": "https://polyhaven.com/a/brass_pan_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Rico Cilliers": "All"
+    },
+    "category": "Food & Kitchen/Cookware/Pots & Pans",
+    "dimensions_mm": [
+      191.2703588604927,
+      449.6646225452423,
+      52.509385510347784
+    ],
+    "files_hash": "3ec9abfb8af6f1cd8a8188f2869476420e4d54f5",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/brass_pan_01/brass_pan_01_1k.fbx"
+  },
+  {
+    "slug": "plastic_bottle_gallon",
+    "name": "Plastic Bottle Gallon",
+    "intended_use": "Bottle/distraction and garage clutter proxy.",
+    "source_page": "https://polyhaven.com/a/plastic_bottle_gallon",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Rahul Chaudhary": "All"
+    },
+    "category": "Containers & Storage/Cans, Tins & Bottles/Jugs & Bottles",
+    "dimensions_mm": [
+      166.28039628267288,
+      126.3512596487999,
+      274.4927511084825
+    ],
+    "files_hash": "8e579852c844aa8beea73397b4e05717a2303d93",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/plastic_bottle_gallon/plastic_bottle_gallon_1k.fbx"
+  },
+  {
+    "slug": "wine_bottles_01",
+    "name": "Wine Bottles 01",
+    "intended_use": "Bottle prop set for interiors and alley clutter.",
+    "source_page": "https://polyhaven.com/a/wine_bottles_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Rico Cilliers": "modeling",
+      "Jurita Burger": "graphic design"
+    },
+    "category": "Food & Kitchen/Drinks/Bottles & Wine",
+    "dimensions_mm": [
+      676.3246953487396,
+      80.56290075182915,
+      331.367195234634
+    ],
+    "files_hash": "9426086370c86485039d330f47b99c93d333ff38",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/wine_bottles_01/wine_bottles_01_1k.fbx"
+  },
+  {
+    "slug": "fire_alarm",
+    "name": "Fire Alarm",
+    "intended_use": "Building safety/electrical wall prop.",
+    "source_page": "https://polyhaven.com/a/fire_alarm",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Slinc": "All"
+    },
+    "category": "Industrial & Infrastructure/Traffic & Safety/Hydrants & Fire Safety",
+    "dimensions_mm": [
+      99.44874793291092,
+      26.374715380370617,
+      143.64254474639893
+    ],
+    "files_hash": "6b0ddd79634cb983d93b7a29f3c0b96aeeaf9c4e",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/fire_alarm/fire_alarm_1k.fbx"
+  },
+  {
+    "slug": "gate_latch_01",
+    "name": "Gate Latch 01",
+    "intended_use": "Basement/courtyard gate hardware.",
+    "source_page": "https://polyhaven.com/a/gate_latch_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Desktoy": "All"
+    },
+    "category": "Architecture/Gates/Gate Hardware",
+    "dimensions_mm": [
+      205.09500801563263,
+      74.74934868514538,
+      85.42444556951523
+    ],
+    "files_hash": "bfe033e15d12c2513652457660c429e5ede95e1a",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/gate_latch_01/gate_latch_01_1k.fbx"
+  },
+  {
+    "slug": "modern_arm_chair_01",
+    "name": "Modern Arm Chair 01",
+    "intended_use": "Apartment/safehouse seating.",
+    "source_page": "https://polyhaven.com/a/modern_arm_chair_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Vibrant Nordic": "All"
+    },
+    "category": "Furniture/Seating/Chairs",
+    "dimensions_mm": [
+      820.3444182872772,
+      986.5616858005524,
+      1022.8520567470696
+    ],
+    "files_hash": "6893f36e58dddba95bd0ae1f1ef38537c1852a0b",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/modern_arm_chair_01/modern_arm_chair_01_1k.fbx"
+  },
+  {
+    "slug": "round_wooden_table_01",
+    "name": "Round Wooden Table 01",
+    "intended_use": "Apartment/shop table.",
+    "source_page": "https://polyhaven.com/a/round_wooden_table_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Ulan Cabanilla": "All"
+    },
+    "category": "Furniture/Tables/Dining Tables",
+    "dimensions_mm": [
+      1399.3489742279053,
+      1399.3489146232605,
+      1005.0213932991028
+    ],
+    "files_hash": "68d8afc5c698ecb2b91c3773864c78f58fa75c5a",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/round_wooden_table_01/round_wooden_table_01_1k.fbx"
+  },
+  {
+    "slug": "modern_coffee_table_01",
+    "name": "Modern Coffee Table 01",
+    "intended_use": "Apartment living-room table.",
+    "source_page": "https://polyhaven.com/a/modern_coffee_table_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Amin": "All"
+    },
+    "category": "Furniture/Tables/Coffee Tables",
+    "dimensions_mm": [
+      1201.8300294876099,
+      600.0000834465027,
+      389.99998569488525
+    ],
+    "files_hash": "31772c0aab6f930a18de82606146c0a97f08b7d0",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/modern_coffee_table_01/modern_coffee_table_01_1k.fbx"
+  },
+  {
+    "slug": "bar_chair_round_01",
+    "name": "Bar Chair Round 01",
+    "intended_use": "Shop/bar-style seating.",
+    "source_page": "https://polyhaven.com/a/bar_chair_round_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Dairon Sanchez": "All"
+    },
+    "category": "Furniture/Seating/Stools & Bar Seating",
+    "dimensions_mm": [
+      483.1501990556717,
+      485.99570989608765,
+      750.5484623070515
+    ],
+    "files_hash": "3a4411b06fb8509e297c299acac13b2e6d5d71b0",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/bar_chair_round_01/bar_chair_round_01_1k.fbx"
+  },
+  {
+    "slug": "ladder_sectioned_01",
+    "name": "Ladder Sectioned 01",
+    "intended_use": "Garage/workshop ladder.",
+    "source_page": "https://polyhaven.com/a/ladder_sectioned_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "MP": "All"
+    },
+    "category": "Tools & Equipment/Workshop Equipment/Ladders",
+    "dimensions_mm": [
+      661.5026593208313,
+      177.62134224176407,
+      2134.558429243043
+    ],
+    "files_hash": "13918cbf2df2d0f0321d29546ed2da162b44887a",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/ladder_sectioned_01/ladder_sectioned_01_1k.fbx"
+  },
+  {
+    "slug": "exterior_aircon_unit",
+    "name": "Exterior Aircon Unit",
+    "intended_use": "Urban facade/detail prop.",
+    "source_page": "https://polyhaven.com/a/exterior_aircon_unit",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Monsta3D": "All"
+    },
+    "category": "Industrial & Infrastructure/Utility Equipment/Aircon Units",
+    "dimensions_mm": [
+      1799.971342086792,
+      374.15920197963715,
+      927.8970956802368
+    ],
+    "files_hash": "afd5b9eb4b3cfc2544044a00f4acb2a92d2f310e",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/exterior_aircon_unit/exterior_aircon_unit_1k.fbx"
+  },
+  {
+    "slug": "portable_generator",
+    "name": "Portable Generator",
+    "intended_use": "Garage/workshop and emergency-power prop.",
+    "source_page": "https://polyhaven.com/a/portable_generator",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Industrial & Infrastructure/Utility Equipment",
+    "dimensions_mm": [
+      818.3408081531525,
+      564.0000104904175,
+      576.9232391612604
+    ],
+    "files_hash": "1eb1caabd255ee5d737842cb7d92dc325c77d0f4",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/portable_generator/portable_generator_1k.fbx"
+  },
+  {
+    "slug": "barrel_stove",
+    "name": "Barrel Stove",
+    "intended_use": "Garage/workshop heating and industrial clutter.",
+    "source_page": "https://polyhaven.com/a/barrel_stove",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "MP": "All"
+    },
+    "category": "Electronics & Appliances/Home Appliances/Stoves & Heaters",
+    "dimensions_mm": [
+      599.3210971355438,
+      598.1101393699646,
+      855.6039333343506
+    ],
+    "files_hash": "317d4401f290899072044a82841d94f4a8440c2f",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/barrel_stove/barrel_stove_1k.fbx"
+  },
+  {
+    "slug": "can_rusted",
+    "name": "Can Rusted",
+    "intended_use": "Can pickup/distraction and street/garage clutter.",
+    "source_page": "https://polyhaven.com/a/can_rusted",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Rahul Chaudhary": "All"
+    },
+    "category": "Containers & Storage/Cans, Tins & Bottles/Tins",
+    "dimensions_mm": [
+      124.53292682766914,
+      124.67572093009949,
+      151.37778513599187
+    ],
+    "files_hash": "df29f732f300aa0bbd6da5081ef7a6902397f551",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/can_rusted/can_rusted_1k.fbx"
+  },
+  {
+    "slug": "clipboard",
+    "name": "Clipboard",
+    "intended_use": "Notes, schedules, plans and paper clue proxy.",
+    "source_page": "https://polyhaven.com/a/clipboard",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "ProgrammerOnCoffee": "All"
+    },
+    "category": "Office & Stationery/Stationery & Supplies/Clipboards & Boards",
+    "dimensions_mm": [
+      228.6001443862915,
+      336.55010163784027,
+      41.990341851487756
+    ],
+    "files_hash": "d67455f77731d7d7927333d699907dd6451e581c",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/clipboard/clipboard_1k.fbx"
+  },
+  {
+    "slug": "CashRegister_01",
+    "name": "Cash Register 01",
+    "intended_use": "Shop cash register / terminal scene prop.",
+    "source_page": "https://polyhaven.com/a/CashRegister_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Joe Seabuhr": "All"
+    },
+    "category": "Electronics & Appliances/Devices & Instruments/Retail Machines",
+    "dimensions_mm": [
+      600.4907041788101,
+      624.2051124572754,
+      621.3557496666908
+    ],
+    "files_hash": "a28caf40c20cabd1ee08e639d41982066d7340c6",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/CashRegister_01/CashRegister_01_1k.fbx"
+  },
+  {
+    "slug": "metal_jerrycan",
+    "name": "Metal Jerrycan",
+    "intended_use": "Garage/workshop fuel and industrial clutter.",
+    "source_page": "https://polyhaven.com/a/metal_jerrycan",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Sean Buckley": "All"
+    },
+    "category": "Containers & Storage/Tanks & Jerrycans/Jerrycans",
+    "dimensions_mm": [
+      350.3298610448837,
+      171.74389213323593,
+      455.1599698197606
+    ],
+    "files_hash": "dec5eb28e40431074a34abb2cc63354559218f46",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/metal_jerrycan/metal_jerrycan_1k.fbx"
+  },
+  {
+    "slug": "rusted_wheel_rim_01",
+    "name": "Rusted Wheel Rim 01",
+    "intended_use": "Garage/workshop automotive detail.",
+    "source_page": "https://polyhaven.com/a/rusted_wheel_rim_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "John Hutcheson": "All"
+    },
+    "category": "Vehicles & Transport/Parts & Accessories/Rims",
+    "dimensions_mm": [
+      402.85147726535797,
+      154.13154661655426,
+      395.4814374446869
+    ],
+    "files_hash": "c6ea2791df5e76adddaff24df87f21144350cd3a",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/rusted_wheel_rim_01/rusted_wheel_rim_01_1k.fbx"
+  },
+  {
+    "slug": "spray_paint_bottles",
+    "name": "Spray Paint Bottles",
+    "intended_use": "Garage/workshop and graffiti-related prop.",
+    "source_page": "https://polyhaven.com/a/spray_paint_bottles",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Containers & Storage/Cans, Tins & Bottles/Aerosol & Spray Cans",
+    "dimensions_mm": [
+      158.16618502140045,
+      65.64361602067947,
+      228.63975167274475
+    ],
+    "files_hash": "cd5a69aed9685418177fb5c8908e8f8290782ef4",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/spray_paint_bottles/spray_paint_bottles_1k.fbx"
+  },
+  {
+    "slug": "plastic_broom",
+    "name": "Plastic Broom",
+    "intended_use": "Apartment/shop/workshop utility prop.",
+    "source_page": "https://polyhaven.com/a/plastic_broom",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "L": "All"
+    },
+    "category": "Tools & Equipment/Garden Tools/Brooms & Cleaning",
+    "dimensions_mm": [
+      416.39260947704315,
+      566.5929764509201,
+      1197.52332335338
+    ],
+    "files_hash": "96b9f69289e9738a0bcfc8302e17575e0fd0a237",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/plastic_broom/plastic_broom_1k.fbx"
+  }
+]

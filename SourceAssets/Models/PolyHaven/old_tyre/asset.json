@@ -1,0 +1,65 @@
+{
+  "slug": "old_tyre",
+  "name": "Old Tyre",
+  "intended_use": "Garage/workshop automotive clutter.",
+  "source_page": "https://polyhaven.com/a/old_tyre",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "MP": "All"
+  },
+  "category": "Vehicles & Transport/Parts & Accessories/Wheels & Tyres",
+  "tags": [
+    "wheels",
+    "wheel",
+    "trash",
+    "garbage",
+    "garage",
+    "scrapyard",
+    "junkyard",
+    "abandoned",
+    "automotive",
+    "car",
+    "vehicle"
+  ],
+  "dimensions_mm": [
+    600.0000238418579,
+    164.99999910593033,
+    600.0000238418579
+  ],
+  "files_hash": "8b7362724dd9d54081fe99703e32f434f75d1f0e",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/old_tyre/old_tyre_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/old_tyre/old_tyre_1k.fbx",
+      "bytes": 96780,
+      "md5": "f43fdca9ad17ee17eda237136bee7270",
+      "sha256": "b5b6e3f5f43739e450f18112155386fae456a9e2e86a1db395ef48654d0cff70",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/old_tyre/old_tyre_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/old_tyre/textures/old_tyre_diff_1k.jpg",
+      "bytes": 650708,
+      "md5": "f52b712b8373b1d1a7c46702613f76cb",
+      "sha256": "0e34ce658c0844c0c94022233226d495930d514c917a5fa15ffee4760567439e",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/old_tyre/old_tyre_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/old_tyre/textures/old_tyre_nor_gl_1k.exr",
+      "bytes": 1630054,
+      "md5": "b5f8f67e48e1938ab05de25e7a48a77b",
+      "sha256": "a77ae894c3ff64705830ea0c9b6dbf71299343dda3376f95ff8f1bae936ab91a",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/old_tyre/old_tyre_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/old_tyre/textures/old_tyre_rough_1k.exr",
+      "bytes": 668075,
+      "md5": "61cf2ef41ce702ca99945e9aec7dffcd",
+      "sha256": "158800440c58a0e4d4d728b2c5b67e933eef5bac49e53f458c1b1a2f19b48630",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/old_tyre/old_tyre_rough_1k.exr"
+    }
+  ]
+}

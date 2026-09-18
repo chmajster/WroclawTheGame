@@ -1,0 +1,70 @@
+{
+  "slug": "bar_chair_round_01",
+  "name": "Bar Chair Round 01",
+  "intended_use": "Shop/bar-style seating.",
+  "source_page": "https://polyhaven.com/a/bar_chair_round_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Dairon Sanchez": "All"
+  },
+  "category": "Furniture/Seating/Stools & Bar Seating",
+  "tags": [
+    "bar",
+    "pub",
+    "stool",
+    "tall",
+    "wooden",
+    "classical",
+    "old",
+    "vintage",
+    "cigar"
+  ],
+  "dimensions_mm": [
+    483.1501990556717,
+    485.99570989608765,
+    750.5484623070515
+  ],
+  "files_hash": "3a4411b06fb8509e297c299acac13b2e6d5d71b0",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/bar_chair_round_01/bar_chair_round_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/bar_chair_round_01/bar_chair_round_01_1k.fbx",
+      "bytes": 665308,
+      "md5": "02fcae94460d16cedc63301ec7058217",
+      "sha256": "56a56fe25044df5414a38671ddb441d697e6e8e415ca6c9137b78bb064d3c95f",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/bar_chair_round_01/bar_chair_round_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/bar_chair_round_01/textures/bar_chair_round_01_diff_1k.jpg",
+      "bytes": 599006,
+      "md5": "f2f927c0536c4570fddb3825da824f36",
+      "sha256": "1b3912fe1102b4082d7421aeb2e2717d3ebe914d261700f8710c0fdb7d7463bb",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/bar_chair_round_01/bar_chair_round_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/bar_chair_round_01/textures/bar_chair_round_01_metal_1k.exr",
+      "bytes": 6888,
+      "md5": "d47b5711cd21c4feaebf39babd088844",
+      "sha256": "a92ab4abfeca9c68335173075c7e9a84d03f814456d4298c5b757d414ef4fe9a",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/bar_chair_round_01/bar_chair_round_01_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/bar_chair_round_01/textures/bar_chair_round_01_nor_gl_1k.exr",
+      "bytes": 921314,
+      "md5": "c4b0520139e378f47c504220d3358e40",
+      "sha256": "41c88ad3289f7782c2ceff0c32531924017d7a1a0687e0590091390f4756d768",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/bar_chair_round_01/bar_chair_round_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/bar_chair_round_01/textures/bar_chair_round_01_rough_1k.exr",
+      "bytes": 852123,
+      "md5": "980329462e9db9104c8ab9cf49f9bcf1",
+      "sha256": "79d94a07a873f2bb00db53cd848ac7b66227425fa1f9b5b3171bbfd30f653681",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/bar_chair_round_01/bar_chair_round_01_rough_1k.exr"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "slug": "gate_latch_01",
+  "name": "Gate Latch 01",
+  "intended_use": "Basement/courtyard gate hardware.",
+  "source_page": "https://polyhaven.com/a/gate_latch_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Desktoy": "All"
+  },
+  "category": "Architecture/Gates/Gate Hardware",
+  "tags": [
+    "outdoor",
+    "metal",
+    "gate",
+    "lock",
+    "latch",
+    "bolt",
+    "fence",
+    "door",
+    "wooden",
+    "shed",
+    "farm",
+    "farmhouse"
+  ],
+  "dimensions_mm": [
+    205.09500801563263,
+    74.74934868514538,
+    85.42444556951523
+  ],
+  "files_hash": "bfe033e15d12c2513652457660c429e5ede95e1a",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/gate_latch_01/gate_latch_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/gate_latch_01/gate_latch_01_1k.fbx",
+      "bytes": 193292,
+      "md5": "39600bbfee31788d5f169f2090e767f3",
+      "sha256": "c96f29988d8e456e4de55380477fa9be6e1a1acbc65177aad3a45bc8d6d278a5",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/gate_latch_01/gate_latch_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/gate_latch_01/textures/gate_latch_01_diff_1k.jpg",
+      "bytes": 664394,
+      "md5": "dadd57b4894f23716034de2c21c0defb",
+      "sha256": "bc007d7fc182879bfff8cab350a4225f5700b159bf3c0b1b6c6b0974a4b7d1a9",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/gate_latch_01/gate_latch_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/gate_latch_01/textures/gate_latch_01_metal_1k.exr",
+      "bytes": 827498,
+      "md5": "8c0187d9fcf5f92cf199c62432b3e57c",
+      "sha256": "40eaaff910deee3d0e5ca8f52896e81f504a318c7efdc74f570d16ea0a32ea22",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/gate_latch_01/gate_latch_01_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/gate_latch_01/textures/gate_latch_01_nor_gl_1k.exr",
+      "bytes": 1338910,
+      "md5": "1bfc65b5e20af6558eee8536ed0f8029",
+      "sha256": "23a03cc24c477aa40f4e224bd4b77774992104c1f65000ff1578ceb31a8e5927",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/gate_latch_01/gate_latch_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/gate_latch_01/textures/gate_latch_01_rough_1k.exr",
+      "bytes": 986642,
+      "md5": "173f53b4f1b94b55fb29fc038071575d",
+      "sha256": "837e294bedb65f8715f8e39f4e3b5c2d5fbcd49267bc7468cc20219f79a27c43",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/gate_latch_01/gate_latch_01_rough_1k.exr"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "kenney-door-door-rotate-square-a",
+  "name": "door-rotate-square-a",
+  "provider": "Kenney",
+  "pack": "Building Kit",
+  "source_page": "https://opengameart.org/content/building-kit",
+  "download_url": "https://opengameart.org/sites/default/files/kenney_building-kit.zip",
+  "license": "CC0-1.0",
+  "intended_use": "Animated/structural door models replacing cube door placeholders.",
+  "archive_sha256": "b46e4fc873d02dad2ab2153846ede6cc242208e751b778d37f4e75bce23cb2be",
+  "primary_path": "SourceAssets/Models/Kenney/BuildingKit/door-rotate-square-a/door-rotate-square-a.fbx"
+}

@@ -1,0 +1,105 @@
+{
+  "slug": "spray_paint_bottles",
+  "name": "Spray Paint Bottles",
+  "intended_use": "Garage/workshop and graffiti-related prop.",
+  "source_page": "https://polyhaven.com/a/spray_paint_bottles",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "James Ray Cock": "All"
+  },
+  "category": "Containers & Storage/Cans, Tins & Bottles/Aerosol & Spray Cans",
+  "tags": [
+    "shed",
+    "cleaning",
+    "garage",
+    "workshop",
+    "metal",
+    "clutter",
+    "spray",
+    "can",
+    "storage",
+    "spray paint",
+    "art",
+    "graffiti",
+    "aerosol",
+    "art supplies",
+    "painting",
+    "metal can"
+  ],
+  "dimensions_mm": [
+    158.16618502140045,
+    65.64361602067947,
+    228.63975167274475
+  ],
+  "files_hash": "cd5a69aed9685418177fb5c8908e8f8290782ef4",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/spray_paint_bottles/spray_paint_bottles_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/spray_paint_bottles/spray_paint_bottles_1k.fbx",
+      "bytes": 142764,
+      "md5": "6984775d738eb1f67f622ff89710bd95",
+      "sha256": "a9b95aae518a857a68834fd8c40d11a599578d9c9ce22e51f055abf02e7ee082",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/spray_paint_bottles/spray_paint_bottles_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/spray_paint_bottles/textures/spray_paint_bottles_diff_1k.jpg",
+      "bytes": 317066,
+      "md5": "77953860affc9585cc2f351df32599f5",
+      "sha256": "1ec79098537b4cc6afeeda7eabcb49a736e67741d3217ea44a25b26d8d5073ec",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/spray_paint_bottles/spray_paint_bottles_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/spray_paint_bottles/textures/spray_paint_bottles_dirty_diff_1k.png",
+      "bytes": 1643787,
+      "md5": "ca93cf8a6e9d2ec0f68213b0d0301d9d",
+      "sha256": "8f367c2490098d43bee3c48ac004c268977881f9a9945e9ffd49a799dcc23111",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/spray_paint_bottles/spray_paint_bottles_dirty_diff_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/spray_paint_bottles/textures/spray_paint_bottles_dirty_metal_1k.png",
+      "bytes": 48001,
+      "md5": "e11f325a75c3e476a6403a94b405143a",
+      "sha256": "b9455b28ad03776c7b7c65a44ae22eb7d5512d75d8b8318930604c24b76e577b",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/spray_paint_bottles/spray_paint_bottles_dirty_metal_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/spray_paint_bottles/textures/spray_paint_bottles_dirty_nor_gl_1k.png",
+      "bytes": 2032588,
+      "md5": "55eeef1adb163ee9295ddcf84b3aaa4c",
+      "sha256": "1156e4a9097776fcc68bbeb62d35a4d5f71f1c81b0ef471ecb33b19327e7e475",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/spray_paint_bottles/spray_paint_bottles_dirty_nor_gl_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/spray_paint_bottles/textures/spray_paint_bottles_dirty_rough_1k.png",
+      "bytes": 1307323,
+      "md5": "7de9bd035731d8c812bb2cfde4fc6ea7",
+      "sha256": "d9b5a07222556b5dbd26a2d2b9c4f5435196eb9ac144bb396e72e492713da1f0",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/spray_paint_bottles/spray_paint_bottles_dirty_rough_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/spray_paint_bottles/textures/spray_paint_bottles_metal_1k.exr",
+      "bytes": 80827,
+      "md5": "a5fadf27f9633f68c39a4efe5045bdc2",
+      "sha256": "2d52ffb2d886515a92187fd0fbddb798b06542ce86477f215ed6a2ff5eb87448",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/spray_paint_bottles/spray_paint_bottles_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/spray_paint_bottles/textures/spray_paint_bottles_nor_gl_1k.exr",
+      "bytes": 272039,
+      "md5": "974231e65c3fa902e6a54d1325553e03",
+      "sha256": "ebf3360f626cbf34116828c61eb57a4100b0844ac1f5d715bbb5df34f7bd4409",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/spray_paint_bottles/spray_paint_bottles_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/spray_paint_bottles/textures/spray_paint_bottles_rough_1k.exr",
+      "bytes": 570586,
+      "md5": "afc190f94e63dbaae64c102fd7b666c0",
+      "sha256": "6965533be4b0bfa5c5a5d638b926c8d2b228151255186d76721bdedfcb6342d8",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/spray_paint_bottles/spray_paint_bottles_rough_1k.exr"
+    }
+  ]
+}

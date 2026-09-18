@@ -1,0 +1,60 @@
+{
+  "slug": "plastic_container",
+  "name": "Plastic Container",
+  "intended_use": "Courtyard hiding/storage container.",
+  "source_page": "https://polyhaven.com/a/plastic_container",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "PierreB3D": "All"
+  },
+  "category": "Containers & Storage/Boxes & Crates/Bins",
+  "tags": [
+    "storage bin",
+    "rectangular bin",
+    "storage",
+    "box",
+    "crate",
+    "stackable"
+  ],
+  "dimensions_mm": [
+    895.0786888599396,
+    626.3633966445923,
+    429.68997440377774
+  ],
+  "files_hash": "15344534f183e6b8c9fe2605822057d37d276f7c",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/plastic_container/plastic_container_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_container/plastic_container_1k.fbx",
+      "bytes": 176300,
+      "md5": "089ea22e37c5d97b1eb3d5258dd26937",
+      "sha256": "9319d3ce0f6e17f3b85e305027c825ce21f84f09b7a2e5bae075da1d639dffc6",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/plastic_container/plastic_container_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_container/textures/plastic_container_diff_1k.jpg",
+      "bytes": 356554,
+      "md5": "52ceb155a0cdef49f1ac612b1e9127b8",
+      "sha256": "26513f6fcd937b2d1f9ec42564bba7b5bed78265351b2479c298a3457c23bec6",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/plastic_container/plastic_container_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_container/textures/plastic_container_nor_gl_1k.exr",
+      "bytes": 737249,
+      "md5": "131ffac6b3b8721383401100953967a0",
+      "sha256": "ec02df13820c22c3215bc4ede1ad14e10a412fde10b5e8ed51b7a3aa3a70cf09",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/plastic_container/plastic_container_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_container/textures/plastic_container_rough_1k.exr",
+      "bytes": 445988,
+      "md5": "dc30b318a58831327dd2beeb37fc8f63",
+      "sha256": "aaa3b943008668f57c1a319f606331961bc04b5048985e60abef43b2eebb6869",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/plastic_container/plastic_container_rough_1k.exr"
+    }
+  ]
+}

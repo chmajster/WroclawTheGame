@@ -1,0 +1,77 @@
+{
+  "slug": "electric_stove",
+  "name": "Electric Stove",
+  "intended_use": "Kitchen appliance for the apartment kitchen.",
+  "source_page": "https://polyhaven.com/a/electric_stove",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Kuutti Siitonen": "All"
+  },
+  "category": "Electronics & Appliances/Home Appliances/Stoves & Heaters",
+  "tags": [
+    "kitchen appliance",
+    "cooking equipment",
+    "stovetop",
+    "oven",
+    "cooktop",
+    "simple",
+    "white",
+    "cooking",
+    "kitchen"
+  ],
+  "dimensions_mm": [
+    502.59482860565186,
+    647.6211845874786,
+    858.6971759796143
+  ],
+  "files_hash": "750ee10bdfe78eb6b0b620ef7b5a898e436fb696",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/electric_stove/electric_stove_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/electric_stove/electric_stove_1k.fbx",
+      "bytes": 1204988,
+      "md5": "70ae1911bc4fba4e77aec947f4d517e5",
+      "sha256": "7fc8b49dd2721f09dfd9c1ff85c5a0bcab62e95e5ab964a9c5f191099cc005b7",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/electric_stove/electric_stove_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/electric_stove/textures/electric_stove_diff_1k.jpg",
+      "bytes": 446916,
+      "md5": "dd6ba5a62587e4172853321ec58388fe",
+      "sha256": "61bc269714bf37f2bf057c113c17664e224c998c78ea50f1ed85b5d2e6f2e938",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/electric_stove/electric_stove_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/electric_stove/textures/electric_stove_metal_1k.exr",
+      "bytes": 584766,
+      "md5": "fc00bfe9bd59d164f2ae2a40cb39ceb4",
+      "sha256": "f12b2d7af734924c450e341e7609891690c25c9436b418ed2fa30489e0d3a485",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/electric_stove/electric_stove_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/electric_stove/textures/electric_stove_nor_gl_1k.exr",
+      "bytes": 940510,
+      "md5": "7d9745cea554be11d9b6f6f0abc36327",
+      "sha256": "0bac6d1f296aeff71abeb183a6ae98783bb4fcc7e7ef10452604e895af3219c3",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/electric_stove/electric_stove_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/electric_stove/textures/electric_stove_opacity_1k.png",
+      "bytes": 21547,
+      "md5": "12ddef9ab991d0c854890e8c34f40e6f",
+      "sha256": "1d169e788a55e68ce4b9dc8ec1a57df067e8c088a80e5dc71cb2c88c861310d2",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/electric_stove/electric_stove_opacity_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/electric_stove/textures/electric_stove_rough_1k.exr",
+      "bytes": 928415,
+      "md5": "bd8e0012eaf5c271b99e1e8316ff1c4d",
+      "sha256": "96d3a292a987182a04235885180539fe4cbcaa30de08970ec05ae4e017c2ec11",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/electric_stove/electric_stove_rough_1k.exr"
+    }
+  ]
+}

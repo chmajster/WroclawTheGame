@@ -1,0 +1,70 @@
+{
+  "slug": "metal_jerrycan",
+  "name": "Metal Jerrycan",
+  "intended_use": "Garage/workshop fuel and industrial clutter.",
+  "source_page": "https://polyhaven.com/a/metal_jerrycan",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Sean Buckley": "All"
+  },
+  "category": "Containers & Storage/Tanks & Jerrycans/Jerrycans",
+  "tags": [
+    "old",
+    "worn",
+    "rusted",
+    "petrol",
+    "gasoline",
+    "gas",
+    "fuel",
+    "red",
+    "metal"
+  ],
+  "dimensions_mm": [
+    350.3298610448837,
+    171.74389213323593,
+    455.1599698197606
+  ],
+  "files_hash": "dec5eb28e40431074a34abb2cc63354559218f46",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/metal_jerrycan/metal_jerrycan_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_jerrycan/metal_jerrycan_1k.fbx",
+      "bytes": 576396,
+      "md5": "cb109f8ed50c1521faf687c317199d3b",
+      "sha256": "ca15bab929a27842efc39d80a9c77d5f68ee2038f51e5d4ebf117cc725e28ce1",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/metal_jerrycan/metal_jerrycan_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_jerrycan/textures/metal_jerrycan_diff_1k.jpg",
+      "bytes": 673499,
+      "md5": "d265ad6d7ae3583dbd1212743092ecc7",
+      "sha256": "64781939c4b3f739c52c335d26473def75d736173f3cc11a50ac2876d511d123",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/metal_jerrycan/metal_jerrycan_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_jerrycan/textures/metal_jerrycan_metal_1k.exr",
+      "bytes": 614855,
+      "md5": "3638c2202ecb45f61f27bf5bda021a5f",
+      "sha256": "dbad3d94c8552489805b5be6c0226c2461abfad719fc6aee97df68da572d1bde",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_jerrycan/metal_jerrycan_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_jerrycan/textures/metal_jerrycan_nor_gl_1k.exr",
+      "bytes": 2020292,
+      "md5": "9b564948d963e813a4e6d4f30a8741e0",
+      "sha256": "4971859d2fe8e8a93def37772b93aba1cd65a3d8f27c0c63b32a117abb5e334f",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_jerrycan/metal_jerrycan_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_jerrycan/textures/metal_jerrycan_rough_1k.exr",
+      "bytes": 814850,
+      "md5": "93e770d477a8efe1d81f52a8056364ca",
+      "sha256": "09dd6d1b6b40d05d45c024623653640f9f3e98c60ed3da4be32d8ee3af6f9d59",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_jerrycan/metal_jerrycan_rough_1k.exr"
+    }
+  ]
+}

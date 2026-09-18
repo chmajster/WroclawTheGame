@@ -1,0 +1,67 @@
+{
+  "slug": "trashbag",
+  "name": "Trashbag",
+  "intended_use": "Street/alley/courtyard clutter.",
+  "source_page": "https://polyhaven.com/a/trashbag",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Benny Weimer": "All"
+  },
+  "category": "Containers & Storage/Bags/Waste Bags",
+  "tags": [
+    "garbage bag",
+    "refuse",
+    "street waste",
+    "trash",
+    "street",
+    "scrapyard",
+    "junkyard",
+    "garbage",
+    "bin",
+    "dumpster",
+    "disposal",
+    "litter",
+    "rubbish"
+  ],
+  "dimensions_mm": [
+    528.0700623989105,
+    462.893009185791,
+    574.9993845820427
+  ],
+  "files_hash": "d291da0b535dffda7f7262b5e9210c93892576f7",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/trashbag/trashbag_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/trashbag/trashbag_1k.fbx",
+      "bytes": 151148,
+      "md5": "af499779032990f49ccf890e97dead0d",
+      "sha256": "c4255ca3ee1b586a00a85cf57813b1701b642358dfe49119e5575841d6c77f7f",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/trashbag/trashbag_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/trashbag/textures/trashbag_diff_1k.jpg",
+      "bytes": 332301,
+      "md5": "255360a490bf3838f55e7f21c7ab57ab",
+      "sha256": "676e01cbeef39b51c9ecd67315c952a605c8db9c11544fbe11e14dcbd00be27f",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/trashbag/trashbag_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/trashbag/textures/trashbag_nor_gl_1k.exr",
+      "bytes": 1159600,
+      "md5": "81888d740e0838f66a8a55aa8cb1e2d7",
+      "sha256": "7e1d20e5672bc55030f3a6d2d56cba702768c98a879de5b5d636b54f3c55d121",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/trashbag/trashbag_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/trashbag/textures/trashbag_rough_1k.exr",
+      "bytes": 694395,
+      "md5": "4ce859eca77321b9c72a9044fd94ff1b",
+      "sha256": "708c1216062f01166a4a167fa9c6829ade2e459b43921504c39b5fb3c76d0f53",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/trashbag/trashbag_rough_1k.exr"
+    }
+  ]
+}

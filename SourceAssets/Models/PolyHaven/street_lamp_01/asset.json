@@ -1,0 +1,78 @@
+{
+  "slug": "street_lamp_01",
+  "name": "Street Lamp 01",
+  "intended_use": "Urban street lighting prop for authored city detail passes.",
+  "source_page": "https://polyhaven.com/a/street_lamp_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Josh Dean": "All"
+  },
+  "category": "Lighting/Street & Outdoor/Street Lamps",
+  "tags": [
+    "street",
+    "road",
+    "light",
+    "lamppost",
+    "outdoor",
+    "pole",
+    "sidewalk",
+    "night",
+    " urban",
+    "city"
+  ],
+  "dimensions_mm": [
+    704.3362259864807,
+    386.49316132068634,
+    3870.5554008483887
+  ],
+  "files_hash": "002d697fa195d73f627e82804612208853212519",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/street_lamp_01/street_lamp_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/street_lamp_01/street_lamp_01_1k.fbx",
+      "bytes": 941804,
+      "md5": "75d4509c53bd1762bf1cd1d061c796d6",
+      "sha256": "86ecce0d067aecde0d22c9903664bf4b223ca0aef5128e16967c0b55dc434fac",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/street_lamp_01/street_lamp_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/street_lamp_01/textures/street_lamp_01_diff_1k.jpg",
+      "bytes": 307889,
+      "md5": "82efb7531a25cda3ef8af2aff8ecccf7",
+      "sha256": "3e9d3471b33eb1f8075ed741c2b1932103598626d057ca12ef38005ea5fcb165",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/street_lamp_01/street_lamp_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/street_lamp_01/textures/street_lamp_01_metal_1k.exr",
+      "bytes": 376865,
+      "md5": "2fd4f606bc1974559498c8b911997d25",
+      "sha256": "781e4139e854d2be69ecf03c1eb62187b2dcf064382a12ce5f72d73cf4e6ab91",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/street_lamp_01/street_lamp_01_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/street_lamp_01/textures/street_lamp_01_nor_gl_1k.exr",
+      "bytes": 1023429,
+      "md5": "9b93445f8313f890dac0d5513f036d44",
+      "sha256": "feb5dbd7a4ffcb748d27b02a061cfc5c4d9c0f4e98fd3eb09ae4c124dcacdd66",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/street_lamp_01/street_lamp_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/street_lamp_01/textures/street_lamp_01_opacity_1k.png",
+      "bytes": 277215,
+      "md5": "f63e82f9ca1e66bf69a9abd8ef79db72",
+      "sha256": "e6f24fe077212093a16d501759db4ca7150f924b74b945f7f8bfa4f7e164eb7c",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/street_lamp_01/street_lamp_01_opacity_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/street_lamp_01/textures/street_lamp_01_rough_1k.exr",
+      "bytes": 648423,
+      "md5": "5a494cce4818c5e86a4b9f97d63a886e",
+      "sha256": "a880a955c5a2c1a0f24f7490b0c4fc467fa425b1502dd02dfcdf444d2cdf67fe",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/street_lamp_01/street_lamp_01_rough_1k.exr"
+    }
+  ]
+}

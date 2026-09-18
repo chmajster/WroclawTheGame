@@ -1,0 +1,69 @@
+{
+  "slug": "can_rusted",
+  "name": "Can Rusted",
+  "intended_use": "Can pickup/distraction and street/garage clutter.",
+  "source_page": "https://polyhaven.com/a/can_rusted",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Rahul Chaudhary": "All"
+  },
+  "category": "Containers & Storage/Cans, Tins & Bottles/Tins",
+  "tags": [
+    "shed",
+    "rubbish",
+    "dirty",
+    "outdoor",
+    "clutter",
+    "garage",
+    "used",
+    "old"
+  ],
+  "dimensions_mm": [
+    124.53292682766914,
+    124.67572093009949,
+    151.37778513599187
+  ],
+  "files_hash": "df29f732f300aa0bbd6da5081ef7a6902397f551",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/can_rusted/can_rusted_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/can_rusted/can_rusted_1k.fbx",
+      "bytes": 148428,
+      "md5": "d6c6d0b165355514dd7129d14518a647",
+      "sha256": "ebc3a128749adad7755917115eb544351a45026f2c0f5922244cb45312019d1d",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/can_rusted/can_rusted_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/can_rusted/textures/can_rusted_diff_1k.jpg",
+      "bytes": 739913,
+      "md5": "24b33db877edaec5188dce65173c0b21",
+      "sha256": "ed838bd8c1f0bd73d5a2914cebb68b394d97b18e191785f214b919a233b4b246",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/can_rusted/can_rusted_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/can_rusted/textures/can_rusted_metal_1k.exr",
+      "bytes": 859866,
+      "md5": "82fa85b297ec43178b73279d192a22b2",
+      "sha256": "e2dab69fd3e2bb087969a40a427d7cab5566d7eb690aa3d41e4cdd2e5cde4c8e",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/can_rusted/can_rusted_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/can_rusted/textures/can_rusted_nor_gl_1k.exr",
+      "bytes": 1372692,
+      "md5": "6eb53652f9d98746c6919ce35d6a29d3",
+      "sha256": "7ae3705d646d075dd3c40d67e55f595bd91b837c31371ec2c458a313f272a6fc",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/can_rusted/can_rusted_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/can_rusted/textures/can_rusted_rough_1k.exr",
+      "bytes": 849249,
+      "md5": "6797e9d9f963b97dca0c93325660eda3",
+      "sha256": "7bc35380bd28097b2fa22b51173c1c01ff70769c2ab770083e550b6a26b53a5c",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/can_rusted/can_rusted_rough_1k.exr"
+    }
+  ]
+}

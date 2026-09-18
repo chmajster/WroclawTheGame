@@ -1,0 +1,64 @@
+{
+  "slug": "cardboard_box_01",
+  "name": "Cardboard Box 01",
+  "intended_use": "Package, shop backroom and garage clutter.",
+  "source_page": "https://polyhaven.com/a/cardboard_box_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Rahul Chaudhary": "All"
+  },
+  "category": "Containers & Storage/Boxes & Crates/Cardboard Boxes",
+  "tags": [
+    "warehouse",
+    "shed",
+    "storage",
+    "box",
+    "paper",
+    "worn",
+    "old",
+    "broken",
+    "damaged",
+    "garage"
+  ],
+  "dimensions_mm": [
+    387.02359795570374,
+    515.8704221248627,
+    341.7995423078537
+  ],
+  "files_hash": "2a37ded0aeebc15100db0e1d285ad36cf40b8f42",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/cardboard_box_01/cardboard_box_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/cardboard_box_01/cardboard_box_01_1k.fbx",
+      "bytes": 546524,
+      "md5": "de7813a2652c0cbfc4e35293addbce7f",
+      "sha256": "292a3e5fd1f101babfac802836cc8364ded7d31af4596e022212f067b404d6b0",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/cardboard_box_01/cardboard_box_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/cardboard_box_01/textures/cardboard_box_01_diff_1k.jpg",
+      "bytes": 567741,
+      "md5": "a306e586325d1759ba3225d2b6ad5121",
+      "sha256": "122c7ba8c5935e289804a730b480677a4bffdf74a45c91970cba682df92e171c",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/cardboard_box_01/cardboard_box_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/cardboard_box_01/textures/cardboard_box_01_nor_gl_1k.exr",
+      "bytes": 1804042,
+      "md5": "9f66ac980dc8c755ef093f829b8f289c",
+      "sha256": "2c2c4f6ebbac965f9c231093fb46a49fad967239431a748c17117c70f8f1f177",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/cardboard_box_01/cardboard_box_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/cardboard_box_01/textures/cardboard_box_01_rough_1k.exr",
+      "bytes": 669411,
+      "md5": "f0afa732547682a239b7de8e30b8ecb6",
+      "sha256": "f1df3947649b4ee71824b5587b46b77570bc7736a7c90d1a697c4590cec86c13",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/cardboard_box_01/cardboard_box_01_rough_1k.exr"
+    }
+  ]
+}
