@@ -1,3 +1,4 @@
+import ast
 import json
 import unittest
 from pathlib import Path
@@ -72,6 +73,35 @@ class FreeModelCoverage(unittest.TestCase):
             "city_activity_marker",
         }
         self.assertEqual(required, set(self.bindings["systems"]))
+
+
+    def test_runtime_gameplay_classes_do_not_render_engine_cubes(self):
+        sources = [
+            "Source/WroclawTheGame/Interaction/SliceProp.cpp",
+            "Source/WroclawTheGame/World/CityActivity.cpp",
+            "Source/WroclawTheGame/World/CityInteriorDoor.cpp",
+            "Source/WroclawTheGame/World/WorldInteraction.cpp",
+            "Source/WroclawTheGame/World/ResidentNPC.cpp",
+            "Source/WroclawTheGame/World/CityPopulation.cpp",
+            "Source/WroclawTheGame/AI/SliceEnemy.cpp",
+            "Source/WroclawTheGame/Vehicles/DriveableVehicle.cpp",
+            "Source/WroclawTheGame/Character/SliceCharacter.cpp",
+        ]
+        for source in sources:
+            text = (ROOT / source).read_text(encoding="utf-8")
+            self.assertNotIn("/Engine/BasicShapes/Cube", text, source)
+
+    def test_humanoid_bindings_use_rigged_character_catalog(self):
+        character_ids = {x["id"] for x in self.characters if x.get("category") == "body"}
+        systems = self.bindings["systems"]
+        for key in ("player_fallback", "player_fallback_female", "resident_npc", "enemy_guard", "ambient_pedestrian"):
+            self.assertIn(systems[key], character_ids, key)
+        self.assertIn(self.bindings["actions"]["neighbor_help"], character_ids)
+
+    def test_model_generation_scripts_parse(self):
+        for script in ("Scripts/prepare_content.py", "Scripts/prepare_geography.py", "Scripts/prepare_character_creator.py"):
+            source = (ROOT / script).read_text(encoding="utf-8")
+            ast.parse(source, filename=script)
 
 
 if __name__ == "__main__":
