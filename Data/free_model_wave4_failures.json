@@ -1,0 +1,6 @@
+[
+  {
+    "slug": "small_oil_can",
+    "error": "fetch https://api.polyhaven.com/info/small_oil_can: HTTP Error 404: Not Found"
+  }
+]
