@@ -44,6 +44,19 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_menu_shell_has_reduced_motion_safe_entry_animation(self):
+        for token in (
+            "ShellLayout = WidgetTree->ConstructWidget<UVerticalBox>()",
+            "ShellAnimationTime",
+            "SetRenderOpacity",
+            "SetRenderTranslation",
+            "SetRenderScale",
+            "bReduceShellMotion",
+            "0.985f",
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertIn("TObjectPtr<class UVerticalBox> ShellLayout", self.header)
+
     def test_navigation_has_active_indicator_and_live_context(self):
         for token in (
             "TabIndicators.Add(Indicator)",
