@@ -595,5 +595,28 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/metal_toolbox/metal_toolbox_1k.fbx"
+  },
+  {
+    "slug": "metal_tool_chest",
+    "name": "Metal Tool Chest",
+    "intended_use": "Garage/workshop tool chest.",
+    "source_page": "https://polyhaven.com/a/metal_tool_chest",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Yann Kervran": "Rigging",
+      "John Hutcheson": "Modeling & Texturing"
+    },
+    "category": "Tools & Equipment/Workshop Equipment/Tool Chests",
+    "dimensions_mm": [
+      685.3884160518646,
+      407.15324878692627,
+      651.8355906009674
+    ],
+    "files_hash": "8fdd3f7409ad7cfd5a4fc3091933d1e1d3785b0e",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/metal_tool_chest/metal_tool_chest_1k.fbx"
   }
 ]

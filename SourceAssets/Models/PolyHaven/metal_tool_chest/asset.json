@@ -1,0 +1,73 @@
+{
+  "slug": "metal_tool_chest",
+  "name": "Metal Tool Chest",
+  "intended_use": "Garage/workshop tool chest.",
+  "source_page": "https://polyhaven.com/a/metal_tool_chest",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Yann Kervran": "Rigging",
+    "John Hutcheson": "Modeling & Texturing"
+  },
+  "category": "Tools & Equipment/Workshop Equipment/Tool Chests",
+  "tags": [
+    "old",
+    "metal",
+    "garage",
+    "workshop",
+    "storage",
+    "shed",
+    "worn",
+    "mechanics toolbox",
+    "rusted",
+    "steel",
+    "red"
+  ],
+  "dimensions_mm": [
+    685.3884160518646,
+    407.15324878692627,
+    651.8355906009674
+  ],
+  "files_hash": "8fdd3f7409ad7cfd5a4fc3091933d1e1d3785b0e",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/metal_tool_chest/metal_tool_chest_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_tool_chest/metal_tool_chest_1k.fbx",
+      "bytes": 440460,
+      "md5": "b01a4406007986e57489735d5b81e7ee",
+      "sha256": "1536f3683956db4780a71d9cbf8d9b00b8a9243b68dd79d47b5131e61dad1f80",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/metal_tool_chest/metal_tool_chest_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_tool_chest/textures/metal_tool_chest_diff_1k.jpg",
+      "bytes": 552016,
+      "md5": "4deaf0af07e8cadbfbd4975b49f597df",
+      "sha256": "da37ba2a8d064637c7206cb091597275986e788ce379bee58a96c949cce06511",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/metal_tool_chest/metal_tool_chest_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_tool_chest/textures/metal_tool_chest_metal_1k.exr",
+      "bytes": 186387,
+      "md5": "5a59c7842b5a6e3406e9a1a4a74b936f",
+      "sha256": "7f80d13522d474da1317337c9d61f51e6c71e6978484a12421e3059ef5ebb2b8",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_tool_chest/metal_tool_chest_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_tool_chest/textures/metal_tool_chest_nor_gl_1k.exr",
+      "bytes": 1366038,
+      "md5": "3e4e13fa7036015348a30378948d9b74",
+      "sha256": "e5fa8e74d0c5f21dd2419e8ce89f71dea04f4ca7a0994d663a25b60b3a5910b8",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_tool_chest/metal_tool_chest_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/metal_tool_chest/textures/metal_tool_chest_rough_1k.exr",
+      "bytes": 1076551,
+      "md5": "85a7e8699e090ce8bf28fe95a403e4fc",
+      "sha256": "cb82d86c8f19eb891706cfb68cce8e67db6f61a0f44d7a1b1f1edf5d435bf801",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/metal_tool_chest/metal_tool_chest_rough_1k.exr"
+    }
+  ]
+}

@@ -33,3 +33,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Rollershutter Window 01 | Shop/garage shutter and industrial frontage. | MP | [Poly Haven](https://polyhaven.com/a/rollershutter_window_01) | CC0 1.0 |
 | Wooden Display Shelves 01 | Shop/apartment shelving. | James Ray Cock | [Poly Haven](https://polyhaven.com/a/wooden_display_shelves_01) | CC0 1.0 |
 | Metal Toolbox | Workshop/garage tool storage. | Mateusz Sadek | [Poly Haven](https://polyhaven.com/a/metal_toolbox) | CC0 1.0 |
+| Metal Tool Chest | Garage/workshop tool chest. | Yann Kervran, John Hutcheson | [Poly Haven](https://polyhaven.com/a/metal_tool_chest) | CC0 1.0 |
