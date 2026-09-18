@@ -4,11 +4,13 @@ Creates missing assets only: authored replacements and their parameters are pres
 Catalog validation failures prevent the success marker used by packaging.
 """
 from pathlib import Path
+import json
 import unreal
 
 ROOT = Path(unreal.Paths.project_dir()).resolve()
 DEST = '/Game/CharacterCreator'
 MARKER = ROOT / 'Saved/CharacterCreatorReady.ok'
+FREE_MODEL_IMPORT_MAP = ROOT / 'Saved/FreeModelImportMap.json'
 
 
 def prepare():
@@ -24,6 +26,30 @@ def prepare():
             raise RuntimeError('Cannot create appearance catalog')
         catalog.build_fallback_catalog()
         unreal.EditorAssetLibrary.save_loaded_asset(catalog, False)
+
+    if not FREE_MODEL_IMPORT_MAP.is_file():
+        raise RuntimeError('Free model import map missing; character bodies cannot be resolved')
+    imported_models = json.loads(FREE_MODEL_IMPORT_MAP.read_text(encoding='utf-8'))
+    body_sources = {
+        'Male.Standard': 'quaternius-ubc-superhero-male',
+        'Female.Standard': 'quaternius-ubc-superhero-female',
+    }
+    bodies = list(catalog.get_editor_property('bodies'))
+    for body in bodies:
+        body_id = str(body.get_editor_property('id'))
+        model_id = body_sources.get(body_id)
+        if not model_id:
+            continue
+        metadata = imported_models.get(model_id)
+        object_path = metadata.get('primary_object') if metadata else None
+        mesh = unreal.load_asset(object_path) if object_path else None
+        if not mesh or not isinstance(mesh, unreal.SkeletalMesh):
+            raise RuntimeError(f'Character body is not a SkeletalMesh: {model_id} -> {object_path}')
+        body.set_editor_property('mesh', mesh)
+        body.set_editor_property('face_mesh', None)
+        body.set_editor_property('mesh_rotation', unreal.Rotator(0, -90, 0))
+    catalog.set_editor_property('bodies', bodies)
+    unreal.EditorAssetLibrary.save_loaded_asset(catalog, False)
 
     material = unreal.load_asset(DEST + '/M_CharacterPlaceholder')
     if material is None:
