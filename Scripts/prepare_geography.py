@@ -113,9 +113,21 @@ def prepare():
             nav.set_actor_scale3d(unreal.Vector((high[0]-low[0])/2/extent.x,(high[1]-low[1])/2/extent.y,5000/extent.z))
             nav.set_editor_property('is_spatially_loaded',False)
     if campaign_dir:
-        migration=json.loads((campaign_dir/'campaign_migration.json').read_text(encoding='utf-8'))
+        migration_text=(campaign_dir/'campaign_migration.json').read_text(encoding='utf-8')
+        migration=json.loads(migration_text)
         if not migration.get('stable_ids_preserved') or not migration.get('runtime_data_generated'):
             raise RuntimeError('Campaign GIS migration report is invalid')
+        migration_path='/Game/Generated/CampaignMigrationDefinition'
+        migration_definition=unreal.load_asset(migration_path)
+        if not migration_definition:
+            factory=unreal.DataAssetFactory()
+            factory.set_editor_property('data_asset_class',unreal.CampaignMigrationDefinition)
+            migration_definition=unreal.AssetToolsHelpers.get_asset_tools().create_asset(
+                'CampaignMigrationDefinition','/Game/Generated',unreal.CampaignMigrationDefinition,factory)
+        if not migration_definition or not migration_definition.import_json(migration_text):
+            raise RuntimeError('Campaign migration Data Asset import failed')
+        if not unreal.EditorAssetLibrary.save_loaded_asset(migration_definition,False):
+            raise RuntimeError('Campaign migration Data Asset save failed')
         campaign_environment=json.loads((campaign_dir/'environment.json').read_text(encoding='utf-8'))
         campaign_chapter=json.loads((campaign_dir/'chapter1.json').read_text(encoding='utf-8'))
         campaign_world=json.loads((campaign_dir/'openworld.json').read_text(encoding='utf-8'))
