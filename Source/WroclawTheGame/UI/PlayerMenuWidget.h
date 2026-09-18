@@ -54,6 +54,8 @@ private:
     UPROPERTY() TObjectPtr<class UButton> UIVolumeButton;
     UPROPERTY() TObjectPtr<class UProgressBar> SFXVolumeMeter;
     UPROPERTY() TObjectPtr<class UProgressBar> UIVolumeMeter;
+    UPROPERTY() TObjectPtr<class USlider> SFXVolumeSlider;
+    UPROPERTY() TObjectPtr<class USlider> UIVolumeSlider;
     UPROPERTY() TArray<TObjectPtr<class UButton>> TabButtons;
     UPROPERTY() TArray<TObjectPtr<class UBorder>> TabIndicators;
     UPROPERTY() TArray<TObjectPtr<class UButton>> ActionButtons;
