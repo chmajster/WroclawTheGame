@@ -358,5 +358,21 @@
         "sha256": "217f67325fdfe5023b46492d4de143acb296b49163209a01b58766a60384569d"
       }
     ]
+  },
+  {
+    "id": "oga-keycard",
+    "name": "3D Keycard",
+    "provider": "OpenGameArt",
+    "source_page": "https://opengameart.org/content/3d-keycard",
+    "license": "CC0-1.0",
+    "intended_use": "Generic electronic key/card/remote proxy for secure access interactions.",
+    "primary_path": "SourceAssets/Models/OpenGameArt/oga-keycard/3d/keycard.fbx",
+    "sources": [
+      {
+        "archive_url": "https://opengameart.org/sites/default/files/keycard3d.zip",
+        "bytes": 219139,
+        "sha256": "257b4f7e4f459f74d9dddb3c9856ad7931cfbb84b356dc9b2f2fb4591ebe7125"
+      }
+    ]
   }
 ]
