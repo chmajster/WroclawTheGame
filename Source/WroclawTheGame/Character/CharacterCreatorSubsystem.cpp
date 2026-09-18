@@ -116,6 +116,7 @@ void UCharacterCreatorSubsystem::Initialize(FSubsystemCollectionBase& Collection
     if (Catalog && !UCharacterCreatorValidator::ValidateCatalog(Catalog,false).IsEmpty())
     { UE_LOG(LogTemp,Warning,TEXT("Invalid Character Creator catalog; using built-in fallback.")); Catalog=nullptr; }
     if (!Catalog) { Catalog=NewObject<UCharacterAppearanceCatalog>(this); Catalog->BuildFallbackCatalog(); }
+    Catalog->ApplyModernHeroProfile();
     Committed.PlayerAppearanceData=UCharacterCreatorValidator::Normalize(*Catalog,Catalog->FallbackDefinition);
     Draft=Committed.PlayerAppearanceData;
 }
