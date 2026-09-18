@@ -32,7 +32,7 @@
 #include "GameFramework/GameUserSettings.h"
 #include "Input/Reply.h"
 #include "Materials/MaterialInstanceDynamic.h"
-#include "Styling/SlateRoundedBoxBrush.h"
+#include "Brushes/SlateRoundedBoxBrush.h"
 
 namespace
 {
@@ -47,6 +47,11 @@ const FLinearColor TextPrimary(0.95f, 0.97f, 1.0f, 1.0f);
 const FLinearColor Muted(0.57f, 0.64f, 0.72f, 1.0f);
 const FLinearColor Divider(0.11f, 0.16f, 0.21f, 1.0f);
 const FLinearColor Disabled(0.028f, 0.038f, 0.050f, 0.72f);
+
+FSlateRoundedBoxBrush RoundedBrush(const FLinearColor& Color, float Radius)
+{
+    return FSlateRoundedBoxBrush(Color, Radius, FVector2f(64.0f, 64.0f));
+}
 }
 
 UTextBlock* UPlayerMenuWidget::MakeText(const FString& Value, int32 Size, bool bBold, FLinearColor Color)
@@ -70,10 +75,10 @@ UButton* UPlayerMenuWidget::MakeButton(const FString& Label, bool bAccent)
     Button->SetColorAndOpacity(FLinearColor::White);
 
     FButtonStyle Style = Button->GetStyle();
-    Style.Normal = FSlateRoundedBoxBrush(bAccent ? Accent : PanelSoft, 9.0f);
-    Style.Hovered = FSlateRoundedBoxBrush(bAccent ? AccentHover : PanelHover, 9.0f);
-    Style.Pressed = FSlateRoundedBoxBrush(bAccent ? AccentPressed : Panel, 9.0f);
-    Style.Disabled = FSlateRoundedBoxBrush(Disabled, 9.0f);
+    Style.Normal = RoundedBrush(bAccent ? Accent : PanelSoft, 9.0f);
+    Style.Hovered = RoundedBrush(bAccent ? AccentHover : PanelHover, 9.0f);
+    Style.Pressed = RoundedBrush(bAccent ? AccentPressed : Panel, 9.0f);
+    Style.Disabled = RoundedBrush(Disabled, 9.0f);
     Style.NormalPadding = FMargin(15.0f, 11.0f, 15.0f, 11.0f);
     Style.PressedPadding = FMargin(15.0f, 12.0f, 15.0f, 10.0f);
     Button->SetStyle(Style);
@@ -88,7 +93,7 @@ UButton* UPlayerMenuWidget::MakeButton(const FString& Label, bool bAccent)
 UBorder* UPlayerMenuWidget::MakeCard(const FMargin& Padding)
 {
     auto* Border = WidgetTree->ConstructWidget<UBorder>();
-    Border->SetBrush(FSlateRoundedBoxBrush(Panel, 16.0f));
+    Border->SetBrush(RoundedBrush(Panel, 16.0f));
     Border->SetPadding(Padding);
     return Border;
 }
@@ -282,9 +287,9 @@ void UPlayerMenuWidget::UpdateTabStyle()
 
         const bool bActive = Index == ActiveTab;
         FButtonStyle Style = Button->GetStyle();
-        Style.Normal = FSlateRoundedBoxBrush(bActive ? Accent : PanelSoft, 9.0f);
-        Style.Hovered = FSlateRoundedBoxBrush(bActive ? AccentHover : PanelHover, 9.0f);
-        Style.Pressed = FSlateRoundedBoxBrush(bActive ? AccentPressed : Panel, 9.0f);
+        Style.Normal = RoundedBrush(bActive ? Accent : PanelSoft, 9.0f);
+        Style.Hovered = RoundedBrush(bActive ? AccentHover : PanelHover, 9.0f);
+        Style.Pressed = RoundedBrush(bActive ? AccentPressed : Panel, 9.0f);
         Button->SetStyle(Style);
 
         if (auto* Text = Cast<UTextBlock>(Button->GetContent()))
@@ -307,7 +312,7 @@ void UPlayerMenuWidget::AddPreview()
     StageSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
     auto* StageBg = WidgetTree->ConstructWidget<UBorder>();
-    StageBg->SetBrush(FSlateRoundedBoxBrush(FLinearColor(0.008f, 0.014f, 0.024f, 1.0f), 14.0f));
+    StageBg->SetBrush(RoundedBrush(FLinearColor(0.008f, 0.014f, 0.024f, 1.0f), 14.0f));
     Stage->AddChildToOverlay(StageBg);
 
     auto* Scale = WidgetTree->ConstructWidget<UScaleBox>();
@@ -326,7 +331,7 @@ void UPlayerMenuWidget::AddPreview()
     Scale->AddChild(Image);
 
     auto* TopBadge = WidgetTree->ConstructWidget<UBorder>();
-    TopBadge->SetBrush(FSlateRoundedBoxBrush(FLinearColor(0.015f, 0.024f, 0.036f, 0.92f), 8.0f));
+    TopBadge->SetBrush(RoundedBrush(FLinearColor(0.015f, 0.024f, 0.036f, 0.92f), 8.0f));
     TopBadge->SetPadding(FMargin(11, 6, 11, 6));
     auto* TopBadgeSlot = Stage->AddChildToOverlay(TopBadge);
     TopBadgeSlot->SetHorizontalAlignment(HAlign_Left);
@@ -335,7 +340,7 @@ void UPlayerMenuWidget::AddPreview()
     TopBadge->AddChild(MakeText(TEXT("PODGLĄD NA ŻYWO"), 9, true, Accent));
 
     auto* CaptionCard = WidgetTree->ConstructWidget<UBorder>();
-    CaptionCard->SetBrush(FSlateRoundedBoxBrush(FLinearColor(0.005f, 0.009f, 0.015f, 0.88f), 10.0f));
+    CaptionCard->SetBrush(RoundedBrush(FLinearColor(0.005f, 0.009f, 0.015f, 0.88f), 10.0f));
     CaptionCard->SetPadding(FMargin(16, 11, 16, 11));
     auto* CaptionSlot = Stage->AddChildToOverlay(CaptionCard);
     CaptionSlot->SetHorizontalAlignment(HAlign_Fill);
@@ -409,7 +414,7 @@ void UPlayerMenuWidget::AddPlayerStatus()
     if (Mission)
     {
         auto* ObjectiveCard = WidgetTree->ConstructWidget<UBorder>();
-        ObjectiveCard->SetBrush(FSlateRoundedBoxBrush(PanelSoft, 11.0f));
+        ObjectiveCard->SetBrush(RoundedBrush(PanelSoft, 11.0f));
         ObjectiveCard->SetPadding(FMargin(13, 12, 13, 12));
         RightColumn->AddChildToVerticalBox(ObjectiveCard)->SetPadding(FMargin(0, 0, 0, 14));
 
