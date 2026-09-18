@@ -179,7 +179,7 @@ void UCharacterAppearanceComponent::Render()
             }
         }
         auto Attach=[&](FName Role,const FAppearancePartDefinition* P,FLinearColor Color) {
-            if (!P || P->ID==TEXT("None") || P->bPlaceholder) return;
+            if (!P || P->ID==TEXT("None") || (P->bPlaceholder && !P->Mesh.Get() && !P->StaticMesh.Get())) return;
             const FName Key(*(Role.ToString()+TEXT(":")+P->ID.ToString()));
             UMeshComponent* Part=CachedParts.FindRef(Key);
             if (!Part && P->Mesh.Get())
