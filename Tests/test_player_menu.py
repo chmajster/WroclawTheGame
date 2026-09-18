@@ -540,6 +540,20 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_journal_map_and_stats_avoid_raw_debug_style_status_text(self):
+        for token in (
+            'TEXT("CZAS SESJI")',
+            'TEXT("POZIOM ZAGROŻENIA")',
+            'MakeKeycap(TEXT("C"))',
+            'MakeKeycap(TEXT("BACKSPACE"))',
+            'TEXT("RĘCZNA")',
+            'TEXT("NAWIGACJA")',
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertNotIn('TEXT("C — następny sektor\\nBACKSPACE — usuń cel")', self.cpp)
+        self.assertNotIn('TEXT("GPS"), TEXT("NAWIGACJA W ROZWOJU")', self.cpp)
+        self.assertNotIn('TEXT("AKTUALNY HEAT")', self.cpp)
+
     def test_map_has_compass_and_modern_map_chrome(self):
         for token in (
             "AddCompassLabel",
