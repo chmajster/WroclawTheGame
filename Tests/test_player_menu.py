@@ -345,6 +345,18 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_gamepad_dpad_adjusts_focused_audio_slider_instead_of_switching_tabs(self):
+        for token in (
+            "bAudioSliderFocused",
+            "SFXVolumeSlider->HasAnyUserFocus()",
+            "UIVolumeSlider->HasAnyUserFocus()",
+            "Key == EKeys::Gamepad_DPad_Left && !bAudioSliderFocused",
+            "Key == EKeys::Gamepad_DPad_Right && !bAudioSliderFocused",
+        ):
+            self.assertIn(token, self.cpp)
+        for member in ("SFXVolumeSlider", "UIVolumeSlider"):
+            self.assertIn(member, self.header)
+
     def test_keyboard_and_gamepad_navigation_remains_available(self):
         for token in (
             "Gamepad_LeftShoulder", "Gamepad_RightShoulder",
