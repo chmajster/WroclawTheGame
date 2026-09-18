@@ -366,6 +366,29 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_audio_settings_have_precise_interactive_sliders(self):
+        for token in (
+            '#include "Components/Slider.h"',
+            "ConstructWidget<USlider>()",
+            "SFXSlider->SetValue(SFXVolume)",
+            "UISlider->SetValue(UIVolume)",
+            "SetStepSize(0.05f)",
+            "SetSFXVolumeFromSlider(float Volume)",
+            "SetUIVolumeFromSlider(float Volume)",
+            "OnMouseCaptureEnd.AddDynamic",
+            "OnControllerCaptureEnd.AddDynamic",
+            "CommitAudioSliderChange()",
+            'TEXT("SUWAK: PRECYZYJNA REGULACJA  •  PRZYCISK: SKOK CO 25%")',
+        ):
+            self.assertIn(token, self.cpp)
+        for token in (
+            "SFXVolumeButton",
+            "UIVolumeButton",
+            "SFXVolumeMeter",
+            "UIVolumeMeter",
+        ):
+            self.assertIn(token, self.header)
+
     def test_audio_settings_have_visual_level_meters(self):
         for token in (
             "SFXMeter->SetPercent(SFXVolume)",
