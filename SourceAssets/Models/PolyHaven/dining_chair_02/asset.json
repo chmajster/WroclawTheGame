@@ -1,0 +1,67 @@
+{
+  "slug": "dining_chair_02",
+  "name": "Dining Chair 02",
+  "intended_use": "General apartment/shop seating.",
+  "source_page": "https://polyhaven.com/a/dining_chair_02",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "James Ray Cock": "All"
+  },
+  "category": "Furniture/Seating/Chairs",
+  "tags": [
+    "modern",
+    "chair",
+    "seat",
+    "dining",
+    "fancy",
+    "leather"
+  ],
+  "dimensions_mm": [
+    433.5707724094391,
+    576.4201134443283,
+    973.3776897192001
+  ],
+  "files_hash": "b99b2f907424bbc55b77541f9616fa9da770dcde",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/dining_chair_02/dining_chair_02_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/dining_chair_02/dining_chair_02_1k.fbx",
+      "bytes": 1032780,
+      "md5": "aac50f3c4b5b229c6c190b5238ee1b58",
+      "sha256": "6888abce1e21969cd1c1ffd2555d50b47b125f0c9d2e951f24c3cd265866a1c9",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/dining_chair_02/dining_chair_02_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/dining_chair_02/textures/dining_chair_02_diff_1k.jpg",
+      "bytes": 91518,
+      "md5": "6b7b8e4ac0a3aad9ecdf314a97b0ef75",
+      "sha256": "343990f764790da1149485a422dee2bc6797945a6af06a37d02d7a7de041acf5",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/dining_chair_02/dining_chair_02_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/dining_chair_02/textures/dining_chair_02_metal_1k.exr",
+      "bytes": 9410,
+      "md5": "c435072310c26aa86a0f29519e6ff3fc",
+      "sha256": "6f3bc566d28dbcb58da43739fcc33fe96bc02d65c829e4cb6c1ae4298b9a3719",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/dining_chair_02/dining_chair_02_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/dining_chair_02/textures/dining_chair_02_nor_gl_1k.exr",
+      "bytes": 1186823,
+      "md5": "b7dd5d68865e57c47bafc1c583066963",
+      "sha256": "4d4aa16630ddc0c8afa79a7534519bb40632ad0d914a49bbeff503bce3c6925c",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/dining_chair_02/dining_chair_02_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/dining_chair_02/textures/dining_chair_02_rough_1k.jpg",
+      "bytes": 137184,
+      "md5": "100ee7e1cb85cefe09c03031bf5ee2de",
+      "sha256": "0a502d3a2bbd0767d3111b95605a99ab2ed63e5ed42e092a511fecd6e9574c78",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/dining_chair_02/dining_chair_02_rough_1k.jpg"
+    }
+  ]
+}

@@ -39,3 +39,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Fire Hydrant | Urban street infrastructure dressing. | Gonçalo Felício | [Poly Haven](https://polyhaven.com/a/fire_hydrant) | CC0 1.0 |
 | Utility Box 01 | Urban electrical infrastructure and clue dressing. | James Ray Cock | [Poly Haven](https://polyhaven.com/a/utility_box_01) | CC0 1.0 |
 | Metal Office Desk | Desk for apartment, shop terminal and safehouse interiors. | Ulan Cabanilla | [Poly Haven](https://polyhaven.com/a/metal_office_desk) | CC0 1.0 |
+| Dining Chair 02 | General apartment/shop seating. | James Ray Cock | [Poly Haven](https://polyhaven.com/a/dining_chair_02) | CC0 1.0 |

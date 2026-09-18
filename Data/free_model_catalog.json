@@ -729,5 +729,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/metal_office_desk/metal_office_desk_1k.fbx"
+  },
+  {
+    "slug": "dining_chair_02",
+    "name": "Dining Chair 02",
+    "intended_use": "General apartment/shop seating.",
+    "source_page": "https://polyhaven.com/a/dining_chair_02",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Furniture/Seating/Chairs",
+    "dimensions_mm": [
+      433.5707724094391,
+      576.4201134443283,
+      973.3776897192001
+    ],
+    "files_hash": "b99b2f907424bbc55b77541f9616fa9da770dcde",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/dining_chair_02/dining_chair_02_1k.fbx"
   }
 ]
