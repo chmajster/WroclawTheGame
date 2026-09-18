@@ -175,6 +175,18 @@ UBorder* UPlayerMenuWidget::MakeCard(const FMargin& Padding)
     return Border;
 }
 
+UBorder* UPlayerMenuWidget::MakeKeycap(const FString& Label)
+{
+    auto* Keycap = WidgetTree->ConstructWidget<UBorder>();
+    Keycap->SetBrush(RoundedBrush(FLinearColor(0.055f, 0.075f, 0.098f, 0.96f), 6.0f));
+    Keycap->SetPadding(FMargin(7, 3, 7, 3));
+
+    auto* LabelText = MakeText(Label, 8, true, TextPrimary);
+    LabelText->SetJustification(ETextJustify::Center);
+    Keycap->AddChild(LabelText);
+    return Keycap;
+}
+
 void UPlayerMenuWidget::NativeOnInitialized()
 {
     Super::NativeOnInitialized();
@@ -460,9 +472,20 @@ void UPlayerMenuWidget::BuildShell()
     auto* BuildSlot = Footer->AddChildToHorizontalBox(Build);
     BuildSlot->SetPadding(FMargin(16, 0, 16, 0));
 
-    auto* FooterHint = MakeText(TEXT("MYSZ  •  KLAWIATURA  •  GAMEPAD"), 10, true, Accent);
-    FooterHint->SetJustification(ETextJustify::Right);
-    Footer->AddChildToHorizontalBox(FooterHint);
+    auto* InputLegend = WidgetTree->ConstructWidget<UHorizontalBox>();
+    auto* InputLegendSlot = Footer->AddChildToHorizontalBox(InputLegend);
+    InputLegendSlot->SetPadding(FMargin(10, 0, 0, 0));
+
+    auto AddFooterShortcut = [&](const FString& Key, const FString& Label)
+    {
+        InputLegend->AddChildToHorizontalBox(MakeKeycap(Key))->SetPadding(FMargin(0, 0, 6, 0));
+        auto* Hint = MakeText(Label, 8, true, Muted);
+        InputLegend->AddChildToHorizontalBox(Hint)->SetPadding(FMargin(0, 3, 12, 0));
+    };
+
+    AddFooterShortcut(TEXT("ESC"), TEXT("WRÓĆ"));
+    AddFooterShortcut(TEXT("1–7"), TEXT("ZAKŁADKI"));
+    AddFooterShortcut(TEXT("ENTER / A"), TEXT("WYBIERZ"));
 }
 
 void UPlayerMenuWidget::Refresh()
