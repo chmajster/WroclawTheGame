@@ -3185,7 +3185,10 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
 
 FReply UPlayerMenuWidget::NativeOnMouseButtonDown(const FGeometry& Geometry, const FPointerEvent& Event)
 {
-    if ((ActiveTab == 0 || ActiveTab == 1) && Studio && Event.GetEffectingButton() == EKeys::RightMouseButton)
+    const bool bPreviewPanelHovered = CenterScroll &&
+        CenterScroll->GetCachedGeometry().IsUnderLocation(Event.GetScreenSpacePosition());
+    if ((ActiveTab == 0 || ActiveTab == 1) && Studio && bPreviewPanelHovered &&
+        Event.GetEffectingButton() == EKeys::RightMouseButton)
     {
         bRotatingPreview = true;
         return FReply::Handled().CaptureMouse(TakeWidget());
@@ -3215,7 +3218,9 @@ FReply UPlayerMenuWidget::NativeOnMouseMove(const FGeometry& Geometry, const FPo
 
 FReply UPlayerMenuWidget::NativeOnMouseWheel(const FGeometry& Geometry, const FPointerEvent& Event)
 {
-    if ((ActiveTab == 0 || ActiveTab == 1) && Studio)
+    const bool bPreviewPanelHovered = CenterScroll &&
+        CenterScroll->GetCachedGeometry().IsUnderLocation(Event.GetScreenSpacePosition());
+    if ((ActiveTab == 0 || ActiveTab == 1) && Studio && bPreviewPanelHovered)
     {
         Studio->Zoom(-Event.GetWheelDelta() * 18.0f);
         return FReply::Handled();
