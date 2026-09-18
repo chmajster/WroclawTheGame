@@ -10,6 +10,7 @@
 #include "Components/GameplayComponents.h"
 #include "Mission/SliceMission.h"
 #include "Systems/CityGameplaySubsystem.h"
+#include "Systems/WroclawMapSubsystem.h"
 
 #include "Blueprint/WidgetTree.h"
 #include "Components/BackgroundBlur.h"
@@ -34,6 +35,7 @@
 #include "Engine/TextureRenderTarget2D.h"
 #include "Engine/World.h"
 #include "GameFramework/GameUserSettings.h"
+#include "GameFramework/Pawn.h"
 #include "Input/Reply.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Brushes/SlateRoundedBoxBrush.h"
@@ -1057,8 +1059,199 @@ void UPlayerMenuWidget::BuildMapTab()
     PageTitle->SetText(FText::FromString(TEXT("MAPA  /  WROCŁAW")));
 
     auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
-    const auto& Locations = Wroclaw::Locations();
+    auto* CityGameplay = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+    auto* MapSubsystem = GetWorld()->GetSubsystem<UWroclawMapSubsystem>();
+    const bool bCity = CityGameplay && CityGameplay->IsActive();
+    const APawn* Player = GetOwningPlayerPawn();
+    const FVector PlayerPosition = Player ? Player->GetActorLocation() : FVector::ZeroVector;
 
+    constexpr float MapWidth = 760.0f;
+    constexpr float MapHeight = 470.0f;
+
+    auto MakeCanvasFrame = [&]() -> UCanvasPanel*
+    {
+        auto* MapSize = WidgetTree->ConstructWidget<USizeBox>();
+        MapSize->SetWidthOverride(MapWidth);
+        MapSize->SetHeightOverride(MapHeight);
+        auto* MapSizeSlot = CenterColumn->AddChildToVerticalBox(MapSize);
+        MapSizeSlot->SetHorizontalAlignment(HAlign_Center);
+        MapSizeSlot->SetVerticalAlignment(VAlign_Center);
+        MapSizeSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+        auto* MapFrame = WidgetTree->ConstructWidget<UBorder>();
+        MapFrame->SetBrush(RoundedBrush(FLinearColor(0.008f, 0.018f, 0.027f, 1.0f), 14.0f));
+        MapFrame->SetPadding(FMargin(12));
+        MapSize->AddChild(MapFrame);
+
+        auto* Canvas = WidgetTree->ConstructWidget<UCanvasPanel>();
+        MapFrame->AddChild(Canvas);
+
+        for (int32 I = 1; I < 6; ++I)
+        {
+            auto* Vertical = WidgetTree->ConstructWidget<UBorder>();
+            Vertical->SetBrushColor(FLinearColor(0.12f, 0.18f, 0.23f, 0.28f));
+            auto* VSlot = Canvas->AddChildToCanvas(Vertical);
+            VSlot->SetPosition(FVector2D(MapWidth * I / 6.0f, 0.0f));
+            VSlot->SetSize(FVector2D(1.0f, MapHeight));
+
+            auto* Horizontal = WidgetTree->ConstructWidget<UBorder>();
+            Horizontal->SetBrushColor(FLinearColor(0.12f, 0.18f, 0.23f, 0.28f));
+            auto* HSlot = Canvas->AddChildToCanvas(Horizontal);
+            HSlot->SetPosition(FVector2D(0.0f, MapHeight * I / 6.0f));
+            HSlot->SetSize(FVector2D(MapWidth, 1.0f));
+        }
+        return Canvas;
+    };
+
+    auto AddCanvasMarker = [&](UCanvasPanel* Canvas, const FString& Label, const FVector2D& Position,
+                               const FLinearColor& Color, const FLinearColor& TextColor)
+    {
+        auto* Marker = WidgetTree->ConstructWidget<UBorder>();
+        Marker->SetBrush(RoundedBrush(Color, 7.0f));
+        Marker->SetPadding(FMargin(8, 5));
+        Marker->AddChild(MakeText(Label, 9, true, TextColor));
+        auto* Slot = Canvas->AddChildToCanvas(Marker);
+        Slot->SetAutoSize(true);
+        Slot->SetAlignment(FVector2D(0.5f, 0.5f));
+        Slot->SetPosition(Position);
+    };
+
+    if (bCity && MapSubsystem && MapSubsystem->GetCity() &&
+        !MapSubsystem->GetCity()->Sectors.IsEmpty())
+    {
+        const UCityDefinition* Definition = MapSubsystem->GetCity();
+        const FCitySectorDefinition* CurrentSector = Player ? MapSubsystem->SectorAt(PlayerPosition) : nullptr;
+        const FName WaypointId = MapSubsystem->GetWaypoint();
+
+        int32 VisibleSectors = 0;
+        int32 Buildings = 0;
+        int32 Roads = 0;
+        for (const auto& Sector : Definition->Sectors)
+        {
+            if (Sector.Status != ECityCoverageStatus::Missing)
+                ++VisibleSectors;
+            Buildings += Sector.BuildingCount;
+            Roads += Sector.RoadCount;
+        }
+
+        ActionColumn->AddChildToVerticalBox(MakeText(TEXT("WROCŁAW"), 20, true, TextPrimary))
+            ->SetPadding(FMargin(2, 1, 2, 2));
+        ActionColumn->AddChildToVerticalBox(MakeText(TEXT("MAPA GIS / SEKTORY"), 9, true, Accent))
+            ->SetPadding(FMargin(2, 0, 2, 14));
+        ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%d"), VisibleSectors), TEXT("AKTYWNE SEKTORY"), true))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%d"), Buildings), TEXT("BUDYNKI")))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        ActionColumn->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%d"), Roads), TEXT("ODCINKI DRÓG")));
+
+        CenterColumn->AddChildToVerticalBox(MakeText(TEXT("SEKTORY MIASTA"), 26, true, TextPrimary))
+            ->SetPadding(FMargin(8, 7, 8, 8));
+        UCanvasPanel* Canvas = MakeCanvasFrame();
+
+        double MinX = TNumericLimits<double>::Max();
+        double MaxX = TNumericLimits<double>::Lowest();
+        double MinY = TNumericLimits<double>::Max();
+        double MaxY = TNumericLimits<double>::Lowest();
+
+        for (const auto& Sector : Definition->Sectors)
+            for (const FVector2D& Point : Sector.Boundary)
+            {
+                MinX = FMath::Min(MinX, static_cast<double>(Point.X));
+                MaxX = FMath::Max(MaxX, static_cast<double>(Point.X));
+                MinY = FMath::Min(MinY, static_cast<double>(Point.Y));
+                MaxY = FMath::Max(MaxY, static_cast<double>(Point.Y));
+            }
+
+        const double SpanX = FMath::Max(MaxX - MinX, 1.0);
+        const double SpanY = FMath::Max(MaxY - MinY, 1.0);
+        auto ToCanvas = [&](double X, double Y)
+        {
+            return FVector2D(
+                28.0f + static_cast<float>((X - MinX) / SpanX) * (MapWidth - 80.0f),
+                24.0f + (1.0f - static_cast<float>((Y - MinY) / SpanY)) * (MapHeight - 60.0f));
+        };
+
+        for (const auto& Sector : Definition->Sectors)
+        {
+            if (Sector.Status == ECityCoverageStatus::Missing || Sector.Boundary.IsEmpty())
+                continue;
+
+            FVector2D Center = FVector2D::ZeroVector;
+            for (const FVector2D& Point : Sector.Boundary)
+                Center += Point;
+            Center /= Sector.Boundary.Num();
+
+            const bool bCurrent = CurrentSector && CurrentSector->Id == Sector.Id;
+            const bool bWaypoint = WaypointId == Sector.Id;
+            const FLinearColor MarkerColor = bCurrent
+                ? FLinearColor(0.04f, 0.30f, 0.35f, 0.98f)
+                : (bWaypoint ? FLinearColor(0.40f, 0.27f, 0.08f, 0.98f)
+                             : FLinearColor(0.035f, 0.075f, 0.10f, 0.94f));
+            const FString Prefix = bCurrent ? TEXT("● ") : (bWaypoint ? TEXT("◆ ") : TEXT(""));
+            AddCanvasMarker(
+                Canvas, Prefix + Sector.DisplayName, ToCanvas(Center.X, Center.Y),
+                MarkerColor, bCurrent ? Accent : TextPrimary);
+        }
+
+        if (Player)
+        {
+            AddCanvasMarker(
+                Canvas, TEXT("TY"),
+                ToCanvas(PlayerPosition.X, PlayerPosition.Y),
+                FLinearColor(Accent.R, Accent.G, Accent.B, 1.0f),
+                Background);
+        }
+
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("POZYCJA"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            CurrentSector ? CurrentSector->DisplayName.ToUpper() : TEXT("POZA SEKTORAMI"),
+            TEXT("AKTUALNY SEKTOR"), true))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+
+        FString WaypointName = TEXT("BRAK");
+        double WaypointDistance = 0.0;
+        if (!WaypointId.IsNone())
+        {
+            if (const FCitySectorDefinition* Waypoint = Definition->Sectors.FindByPredicate(
+                    [WaypointId](const FCitySectorDefinition& Sector) { return Sector.Id == WaypointId; }))
+            {
+                WaypointName = Waypoint->DisplayName.ToUpper();
+                if (!Waypoint->Boundary.IsEmpty() && Player)
+                {
+                    FVector2D Center = FVector2D::ZeroVector;
+                    for (const FVector2D& Point : Waypoint->Boundary)
+                        Center += Point;
+                    Center /= Waypoint->Boundary.Num();
+                    WaypointDistance = FVector2D::Distance(
+                        FVector2D(PlayerPosition.X, PlayerPosition.Y), Center) / 100.0;
+                }
+            }
+        }
+
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            WaypointName,
+            WaypointId.IsNone() ? TEXT("CEL SEKTORA")
+                                : FString::Printf(TEXT("CEL  •  %.0f M"), WaypointDistance)))
+            ->SetPadding(FMargin(0, 0, 0, 14));
+
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("LEGENDA"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("● TURKUS"), TEXT("TY / AKTUALNY SEKTOR"), true))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("◆ ZŁOTY"), TEXT("WYBRANY CEL")));
+
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("STEROWANIE"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 14, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeText(
+            TEXT("C — następny sektor\nBACKSPACE — usuń cel"), 10, false, Muted));
+        return;
+    }
+
+    const auto& Locations = Wroclaw::Locations();
     int32 Discovered = 0;
     for (const auto& Location : Locations)
         if (Mission && Mission->WorldState.discoveries.count(Location.id))
@@ -1078,40 +1271,7 @@ void UPlayerMenuWidget::BuildMapTab()
 
     CenterColumn->AddChildToVerticalBox(MakeText(TEXT("MAPA ODKRYĆ"), 26, true, TextPrimary))
         ->SetPadding(FMargin(8, 7, 8, 8));
-
-    constexpr float MapWidth = 760.0f;
-    constexpr float MapHeight = 470.0f;
-
-    auto* MapSize = WidgetTree->ConstructWidget<USizeBox>();
-    MapSize->SetWidthOverride(MapWidth);
-    MapSize->SetHeightOverride(MapHeight);
-    auto* MapSizeSlot = CenterColumn->AddChildToVerticalBox(MapSize);
-    MapSizeSlot->SetHorizontalAlignment(HAlign_Center);
-    MapSizeSlot->SetVerticalAlignment(VAlign_Center);
-    MapSizeSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
-
-    auto* MapFrame = WidgetTree->ConstructWidget<UBorder>();
-    MapFrame->SetBrush(RoundedBrush(FLinearColor(0.008f, 0.018f, 0.027f, 1.0f), 14.0f));
-    MapFrame->SetPadding(FMargin(12));
-    MapSize->AddChild(MapFrame);
-
-    auto* Canvas = WidgetTree->ConstructWidget<UCanvasPanel>();
-    MapFrame->AddChild(Canvas);
-
-    for (int32 I = 1; I < 6; ++I)
-    {
-        auto* Vertical = WidgetTree->ConstructWidget<UBorder>();
-        Vertical->SetBrushColor(FLinearColor(0.12f, 0.18f, 0.23f, 0.28f));
-        auto* VSlot = Canvas->AddChildToCanvas(Vertical);
-        VSlot->SetPosition(FVector2D(MapWidth * I / 6.0f, 0.0f));
-        VSlot->SetSize(FVector2D(1.0f, MapHeight));
-
-        auto* Horizontal = WidgetTree->ConstructWidget<UBorder>();
-        Horizontal->SetBrushColor(FLinearColor(0.12f, 0.18f, 0.23f, 0.28f));
-        auto* HSlot = Canvas->AddChildToCanvas(Horizontal);
-        HSlot->SetPosition(FVector2D(0.0f, MapHeight * I / 6.0f));
-        HSlot->SetSize(FVector2D(MapWidth, 1.0f));
-    }
+    UCanvasPanel* Canvas = MakeCanvasFrame();
 
     if (!Locations.empty())
     {
@@ -1128,32 +1288,71 @@ void UPlayerMenuWidget::BuildMapTab()
         }
         const double SpanX = FMath::Max(MaxX - MinX, 1.0);
         const double SpanY = FMath::Max(MaxY - MinY, 1.0);
+        auto ToCanvas = [&](double X, double Y)
+        {
+            return FVector2D(
+                28.0f + static_cast<float>((X - MinX) / SpanX) * (MapWidth - 80.0f),
+                24.0f + (1.0f - static_cast<float>((Y - MinY) / SpanY)) * (MapHeight - 60.0f));
+        };
+
+        FString NearestName = TEXT("BRAK");
+        double NearestDistance = TNumericLimits<double>::Max();
 
         for (const auto& Location : Locations)
         {
             if (!Mission || !Mission->WorldState.discoveries.count(Location.id))
                 continue;
 
-            const float X = 28.0f + static_cast<float>((Location.position[0] - MinX) / SpanX) * (MapWidth - 80.0f);
-            const float Y = 24.0f + (1.0f - static_cast<float>((Location.position[1] - MinY) / SpanY)) * (MapHeight - 60.0f);
-
-            auto* Marker = WidgetTree->ConstructWidget<UBorder>();
-            Marker->SetBrush(RoundedBrush(
+            AddCanvasMarker(
+                Canvas,
+                UTF8_TO_TCHAR(Location.name.c_str()),
+                ToCanvas(Location.position[0], Location.position[1]),
                 Location.safehouse ? FLinearColor(0.06f, 0.30f, 0.34f, 0.98f)
-                                   : FLinearColor(0.04f, 0.08f, 0.11f, 0.95f), 7.0f));
-            Marker->SetPadding(FMargin(8, 5, 8, 5));
-            Marker->AddChild(MakeText(
-                UTF8_TO_TCHAR(Location.name.c_str()), 9, true,
-                Location.safehouse ? Accent : TextPrimary));
+                                   : FLinearColor(0.04f, 0.08f, 0.11f, 0.95f),
+                Location.safehouse ? Accent : TextPrimary);
 
-            auto* MarkerSlot = Canvas->AddChildToCanvas(Marker);
-            MarkerSlot->SetAutoSize(true);
-            MarkerSlot->SetAlignment(FVector2D(0.5f, 0.5f));
-            MarkerSlot->SetPosition(FVector2D(X, Y));
+            if (Player)
+            {
+                const FVector Point(Location.position[0], Location.position[1], Location.position[2]);
+                const double Distance = FVector::Dist(PlayerPosition, Point);
+                if (Distance < NearestDistance)
+                {
+                    NearestDistance = Distance;
+                    NearestName = UTF8_TO_TCHAR(Location.name.c_str());
+                }
+            }
         }
+
+        const bool bInsideMap = Player &&
+            PlayerPosition.X >= MinX && PlayerPosition.X <= MaxX &&
+            PlayerPosition.Y >= MinY && PlayerPosition.Y <= MaxY;
+        if (bInsideMap)
+        {
+            AddCanvasMarker(
+                Canvas, TEXT("TY"),
+                ToCanvas(PlayerPosition.X, PlayerPosition.Y),
+                FLinearColor(Accent.R, Accent.G, Accent.B, 1.0f),
+                Background);
+        }
+
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("POZYCJA"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            bInsideMap ? TEXT("NA MAPIE ODKRYĆ") : TEXT("POZA OBSZAREM MAPY"),
+            TEXT("AKTUALNA POZYCJA"), bInsideMap))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            NearestName.ToUpper(),
+            NearestDistance < TNumericLimits<double>::Max()
+                ? FString::Printf(TEXT("NAJBLIŻEJ  •  %.0f M"), NearestDistance / 100.0)
+                : TEXT("NAJBLIŻSZE ODKRYTE MIEJSCE")))
+            ->SetPadding(FMargin(0, 0, 0, 14));
     }
 
     RightColumn->AddChildToVerticalBox(MakeText(TEXT("LEGENDA"), 9, true, Accent))
+        ->SetPadding(FMargin(0, 0, 0, 7));
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("TY"), TEXT("AKTUALNA POZYCJA"), true))
         ->SetPadding(FMargin(0, 0, 0, 7));
     RightColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("TURKUSOWY"), TEXT("BEZPIECZNY PUNKT"), true))
         ->SetPadding(FMargin(0, 0, 0, 7));
@@ -1955,6 +2154,27 @@ FReply UPlayerMenuWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, co
             return FReply::Handled();
         }
         return Super::NativeOnPreviewKeyDown(InGeometry, InKeyEvent);
+    }
+
+    if (ActiveTab == 4)
+    {
+        auto* CityGameplay = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+        auto* MapSubsystem = GetWorld()->GetSubsystem<UWroclawMapSubsystem>();
+        if (CityGameplay && CityGameplay->IsActive() && MapSubsystem)
+        {
+            if (Key == EKeys::C)
+            {
+                MapSubsystem->CycleWaypoint();
+                Refresh();
+                return FReply::Handled();
+            }
+            if (Key == EKeys::BackSpace)
+            {
+                MapSubsystem->ClearWaypoint();
+                Refresh();
+                return FReply::Handled();
+            }
+        }
     }
 
     if (Key == EKeys::Q || Key == EKeys::Gamepad_LeftShoulder)

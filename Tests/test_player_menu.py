@@ -113,6 +113,19 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_map_uses_correct_coordinate_space_for_campaign_and_city(self):
+        for token in (
+            "UWroclawMapSubsystem",
+            "MapSubsystem->SectorAt(PlayerPosition)",
+            "MapSubsystem->GetCity()",
+            "MapSubsystem->GetWaypoint()",
+            'TEXT("TY")',
+            'TEXT("SEKTORY MIASTA")',
+            'TEXT("MAPA ODKRYĆ")',
+            "NearestDistance",
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_character_preview_keeps_camera_and_lighting_controls(self):
         for token in (
             "PreviewFullBody", "PreviewUpperBody", "PreviewFace",
