@@ -11,34 +11,44 @@ Status: IN PROGRESS (draft PR).
 
 Wykonane w tej fali:
 - context chrome: numer strony 01–07, wskaźnik sesji, zegar/data i separator stopki,
-- keycapy skrótów w stopce i modalu potwierdzenia,
-- numerowane zakładki i mocniejsza hierarchia aktywnej sekcji,
+- spójne keycapy w stopce, podglądzie postaci, modalu potwierdzenia i sterowaniu mapą,
+- numerowane zakładki, mocniejsza hierarchia aktywnej sekcji i wyraźniejszy focus klawiatury/gamepada,
 - dynamiczne nagłówki i separatory trzech kolumn,
 - accent rail we wspólnych kartach statusowych,
 - numerowana nawigacja ustawień z paskiem postępu 1/4–4/4,
+- szczegóły jakości obrazu jako karty zamiast surowego tekstowego dumpu,
+- precyzyjne suwaki audio 0–100% z krokiem 5%, miernikami, zapisem po zakończeniu regulacji i poprawną obsługą D-pada,
 - toast ustawień z accent rail i reduced-motion-safe slide/fade-in,
 - zachowanie focusu na aktywnej kategorii ustawień po Refresh(),
+- rzeczywisty stan wybranego kadru i oświetlenia w podglądzie postaci,
 - obrót/zoom podglądu postaci ograniczony do środkowego panelu,
+- garderoba/fryzura/głos używają player-facing DisplayName z katalogu; usunięto PresetID i RandomSeed z profilu,
+- Dziennik/Mapa/Statystyki mają karty i keycapy zamiast surowych statusów/debugowych etykiet,
+- stany awaryjne menu nie pokazują nazw klas Unreal,
 - rozszerzone regresje Tests/test_player_menu.py.
 
 Walidacja wykonana:
 - statyczny smoke-check connectora: PASS,
-- 46 testów regresyjnych wykrytych,
-- 50 deklaracji UFUNCTION ma odpowiadające definicje,
+- automatyczny audyt 377 prostych assertIn/assertNotIn: PASS,
+- 55 testów regresyjnych wykrytych,
+- 53 deklaracje UFUNCTION mają odpowiadające definicje,
 - definicje siedmiu Build*Tab występują dokładnie po jednym razie,
-- bilans klamer PlayerMenuWidget.cpp: 242/242.
+- bilans klamer PlayerMenuWidget.cpp: 255/255,
+- bilans nawiasów PlayerMenuWidget.cpp: 3637/3637,
+- API USlider sprawdzone z dokumentacją Unreal Engine 5.8: OnValueChanged, OnMouseCaptureEnd, OnControllerCaptureEnd i SetStepSize są dostępne,
+- PR #65 jest mergeable; branch jest 0 commitów za main.
 
 Następny konkretny krok:
-1. przejrzeć pełny diff PR #65 pod kątem niezamierzonych zmian,
-2. zweryfikować możliwość uruchomienia Scripts/test.sh w środowisku z lokalnym checkoutem,
-3. wykonać UHT/UBT oraz wizualny odbiór w UE 5.8,
+1. uruchomić Scripts/test.sh w środowisku z lokalnym checkoutem,
+2. uruchomić UE 5.8 UHT/UBT,
+3. wykonać wizualny odbiór 16:9 / 16:10 / ultrawide / 4K, safe zone, mouse/keyboard/gamepad, reduced motion i blur off,
 4. po zaliczeniu odbioru oznaczyć PR jako ready i zmergować zgodnie z AGENTS.md.
 
 Luki weryfikacyjne:
 - kontener tej sesji nie ma DNS do github.com, więc lokalny checkout/test.sh nie został uruchomiony,
+- GitHub Actions nie były uruchamiane zgodnie z AGENTS.md (brak osobnego polecenia),
 - runtime UE 5.8 nie został uruchomiony dla tego PR,
-- brak odbioru 16:9 / 16:10 / ultrawide / 4K,
-- brak wizualnego QA z blur off i reduced motion.
+- brak wizualnego QA toastów, modali, suwaków audio, focusu i trzech kolumn.
 
 ## Current pass
 
