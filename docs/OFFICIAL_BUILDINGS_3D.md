@@ -41,13 +41,13 @@ python3 Scripts/gis/fetch_official_buildings_3d.py \
 Importer:
 
 1. odczytuje `GetCapabilities`;
-2. preferuje LoD2, lecz dla obszaru bez LoD2 przechodzi na LoD1;
-3. pobiera paczkę powiatu wskazaną przez `GetFeatureInfo`;
+2. dla Wrocławia pobiera bezpośrednio oficjalną paczkę LoD1 miasta na prawach powiatu, TERYT `0264`; mechanizm WMS/GetFeatureInfo pozostaje jako ogólny fallback dla innych konfiguracji;
+3. zapisuje pobraną paczkę źródłową w cache builda;
 4. zapisuje URL i SHA-256 pobranej paczki;
 5. odczytuje CityGML bez ładowania całego miasta do pamięci;
 6. wybiera budynek najbliższy odpowiadającemu mu obrysowi OSM;
 7. trianguluje powierzchnie;
-8. przelicza poziomo do EPSG:32633 i układu gry X=wschód, Y=południe, Z=góra;
+8. przelicza autorytatywne współrzędne poziome GUGiK do EPSG:32633 i układu gry X=wschód, Y=południe, Z=góra; obrys OSM nie przesuwa modelu, służy tylko do wyłączenia zastępowanej bryły;
 9. wyrównuje wysokość względną CityGML do poziomu gruntu istniejącego GIS, aby nie mieszać bezpośrednio różnych pionowych układów odniesienia;
 10. zapisuje odtwarzalne siatki w `Saved/OfficialBuildings3D/Meshes`.
 
@@ -75,7 +75,7 @@ Dla znalezionego landmarku prosta bryła OSM jest wykluczana z generacji `Saved/
 
 ## Granice jakości
 
-To nie jest deklaracja finalnego assetu artystycznego. LoD1 ma rzeczywisty obrys i wysokość, lecz uproszczony dach. LoD2 zachowuje bryłę dachu tam, gdzie zbiór ją udostępnia. Materiał w grze jest obecnie materiałem projektu, nie fototeksturą elewacji.
+To nie jest deklaracja finalnego assetu artystycznego. Krajowy model GUGiK dla Wrocławia jest LoD1: ma rzeczywisty obrys i wysokość, lecz uproszczony płaski dach. Miejski model 3D Wrocławia ma LoD2 dla ścisłego centrum i wybranych obiektów, ale nie jest w tej implementacji kopiowany ani traktowany jako paczka pobierana. Materiał w grze jest obecnie materiałem projektu, nie fototeksturą elewacji.
 
 Geoportal udostępnia również **modele siatkowe 3D mesh** w OBJ z teksturą ze zdjęć ukośnych. To lepsze źródło dla przyszłego hero-passu, lecz jest znacznie cięższe i obejmuje także otoczenie, drzewa i teren. Nie zastępuje ono obecnej integracji per-budynek bez osobnego crop/LOD/UV/QA.
 
