@@ -260,12 +260,12 @@ def prepare():
         actor=spawn(unreal.WorldInteraction,hiding['position'],'hide_'+hiding['id'])
         actor.set_editor_property('definition_id',hiding['id']);actor.set_editor_property('kind','Hide')
         model_id=hide_models.get(hiding['id'])
-        if model_id:
-            mesh=free_models[model_id]
-            if isinstance(mesh,unreal.StaticMesh):
-                apply_static_mesh(actor,mesh,[1,1,1])
-        else:
-            hide_static_visuals(actor)
+        if not model_id:
+            raise RuntimeError('Hiding spot has no model binding: '+hiding['id'])
+        mesh=free_models[model_id]
+        if not isinstance(mesh,unreal.StaticMesh):
+            raise RuntimeError('Hiding spot model is not StaticMesh: '+model_id)
+        apply_static_mesh(actor,mesh,[1,1,1])
     for camera in world['cameras']:
         actor=spawn(unreal.SurveillanceCamera,camera['position'],'camera_'+camera['id'],camera['rotation'])
         actor.set_editor_property('definition_id',camera['id'])
