@@ -1,3 +1,11 @@
+## 2026-09-18 — pipeline produkcyjny Astra / Blender / Unreal
+
+- Dodano manifestowy pipeline assetów: referencje/źródło 3D → Blender headless → LOD i kolizja → Unreal/PBR/Nanite → Automation → screenshot QA → visual review → raport.
+- Dodano wznawialny orchestrator PowerShell zapisujący bieżący etap w `Saved/Pipeline/status` oraz odrzucający kolejne bramki po błędzie.
+- Import Unreal sprawdza faktyczną liczbę LOD-ów i kolizję, ustawia Nanite oraz buduje materiał z BaseColor/Normal/ORM.
+- Dodano jawny zapis PASS/FAIL kontroli wizualnej i końcowy raport QA; publikator Git/PR odmawia działania bez `done/PASS`.
+- Build Windows i lokalny zestaw testów walidują produkcyjne manifesty; `AGENTS.md` wymaga tego pipeline'u dla nowych lub istotnie zmienianych assetów 3D.
+
 ## 2026-09-18 — darmowe postacie i animacje CC0
 
 - Dodano reprodukowalny pipeline dla Quaternius Universal Base Characters [Standard]: męska i żeńska baza, fryzury, zarost i brwi.
