@@ -37,6 +37,14 @@ Skrypt waliduje katalogi i tagi, kompiluje target edytora, generuje materiały/a
 
 Mapa domyślna `/Game/Maps/Przebudzenie_Source` otwiera menu. `N` rozpoczyna grę, `L` odczytuje checkpoint. Nie dodano drugiego rozdziału ani możliwości zakończenia całej kampanii.
 
+## Oficjalne modele budynków GUGiK
+
+Pełny build GIS pobiera oficjalne modele 3D budynków GUGiK i importuje **wszystkie bezpiecznie dopasowane budynki leżące w aktywnych sektorach gry**, a nie tylko ręczną listę landmarków. Import preferuje aktualną ogólnopolską warstwę LoD1-2024; starsza paczka miasta Wrocław, TERYT 0264, pozostaje fallbackiem offline/awaryjnym. Dopasowanie do bryły zastępowanej w OSM wykorzystuje nakładanie footprintów, a dystans centroidów jest tylko fallbackiem. Wyniki są grupowane w komórki 128 m, aby nie tworzyć osobnego ciężkiego aktora dla każdego budynku.
+
+Lista sześciu landmarków (Ratusz, bazylika św. Elżbiety, katedra, gmach główny UWr, Hala Targowa i Muzeum Narodowe) pozostaje jako zestaw do ręcznego hero-QA. Miejski model Wrocławia LoD2 jest oddzielnym źródłem referencyjnym.
+
+`Build-FullGame.ps1` włącza ten tor automatycznie. Dla samego GIS użyj `Build-Geography.ps1 -City -OfficialBuildings`. Źródło, licencja, algorytm dopasowania i ograniczenia: [oficjalne budynki 3D](docs/OFFICIAL_BUILDINGS_3D.md).
+
 ## Laboratorium Nadodrza
 
 Import GIS wymaga osobnego Pythona 3.12 lub nowszego (pyproj 3.8). Python wbudowany w UE służy wyłącznie do wypieku gotowych danych.

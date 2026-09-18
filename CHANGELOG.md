@@ -1,3 +1,12 @@
+## 2026-09-18 — oficjalne modele 3D budynków Wrocławia
+
+- Dodano pobieranie i konwersję oficjalnych modeli budynków GUGiK/Geoportal z CityGML do układu GIS gry.
+- Import rozszerzono z sześciu landmarków na wszystkie bezpiecznie dopasowane budynki w aktywnych sektorach miasta; sześć landmarków pozostaje zestawem hero-QA.
+- Preferowana jest aktualna ogólnopolska warstwa LoD1-2024; starsza paczka TERYT 0264 jest fallbackiem.
+- Dopasowanie GUGiK→OSM korzysta głównie z pokrycia footprintów, a nie wyłącznie dystansu centroidów.
+- Bryły OSM zastępowanych budynków są wykluczane przed wypiekiem, a oficjalna geometria jest grupowana w komórki 128 m i trafia do `/Game/Generated/OfficialBuildings`.
+- Pełny build włącza `OfficialBuildings`; runtime/visual QA w UE 5.8 nadal jest wymagane.
+
 ## 2026-09-18 — nowoczesna postać i ustawienia FPS
 
 - Domyślny profil głównej postaci przebudowano na współczesny wariant miejski: atletyczna sylwetka, nowocześniejsza fryzura, zarost, subtelnie dopracowana twarz oraz spójny zestaw ubrań i dodatków.

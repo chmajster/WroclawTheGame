@@ -4,19 +4,36 @@ param(
     [string]$Python='python',
     [switch]$Package,
     [switch]$City,
-    [switch]$Campaign
+    [switch]$Campaign,
+    [switch]$OfficialBuildings,
+    [string]$OfficialBuildingsArchive
 )
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
 $Root=Split-Path $PSScriptRoot -Parent
 $Project=Join-Path $Root 'WroclawTheGame.uproject'
 if($Campaign -and -not $City){throw '-Campaign requires -City because campaign anchors resolve against the combined city GIS dataset.'}
+if($OfficialBuildingsArchive){$OfficialBuildings=$true}
+if($OfficialBuildings -and -not $City){throw '-OfficialBuildings requires -City.'}
 & (Join-Path $PSScriptRoot 'Assert-UnrealVersion.ps1') -EngineRoot $EngineRoot -Project $Project -ExpectedVersion '5.8'
 $Editor=Join-Path $EngineRoot 'Engine\Binaries\Win64\UnrealEditor-Cmd.exe'
 
 if($City){
-    & $Python (Join-Path $PSScriptRoot 'gis\build_city.py') --meshes
-    if($LASTEXITCODE -ne 0){throw 'City GIS import failed'}
+    if($OfficialBuildings){
+        $CityData=Join-Path $Root 'Saved\CityData'
+        $OfficialData=Join-Path $Root 'Saved\OfficialBuildings3D'
+        & $Python (Join-Path $PSScriptRoot 'gis\build_city.py') --output $CityData
+        if($LASTEXITCODE -ne 0){throw 'City GIS preparation for official buildings failed'}
+        $OfficialArgs=@('--city-data',$CityData,'--output',$OfficialData)
+        if($OfficialBuildingsArchive){$OfficialArgs+=@('--archive',$OfficialBuildingsArchive)}
+        & $Python (Join-Path $PSScriptRoot 'gis\fetch_official_city_buildings.py') @OfficialArgs
+        if($LASTEXITCODE -ne 0){throw 'Official Wroclaw city building download/conversion failed'}
+        & $Python (Join-Path $PSScriptRoot 'gis\build_city.py') --output $CityData --meshes --official-catalog (Join-Path $OfficialData 'catalog.json')
+        if($LASTEXITCODE -ne 0){throw 'City GIS mesh build with official buildings failed'}
+    }else{
+        & $Python (Join-Path $PSScriptRoot 'gis\build_city.py') --meshes
+        if($LASTEXITCODE -ne 0){throw 'City GIS import failed'}
+    }
     & $Python (Join-Path $PSScriptRoot 'gis\import_sector.py')
     if($LASTEXITCODE -ne 0){throw 'Existing GIS import failed'}
     & $Python (Join-Path $PSScriptRoot 'gis\migrate_campaign.py') --input (Join-Path $Root 'Saved\CityData') --output (Join-Path $Root 'Saved\CampaignGIS')
@@ -55,16 +72,20 @@ if(Test-Path $Marker){Remove-Item $Marker}
 $Script=Join-Path $PSScriptRoot 'prepare_geography.py'
 $PreviousCityInput=[Environment]::GetEnvironmentVariable('WTG_CITY_INPUT')
 $PreviousCampaignInput=[Environment]::GetEnvironmentVariable('WTG_CAMPAIGN_GIS_INPUT')
+$PreviousOfficialBuildingsInput=[Environment]::GetEnvironmentVariable('WTG_OFFICIAL_BUILDINGS_INPUT')
 try{
     if($City){$env:WTG_CITY_INPUT=Join-Path $Root 'Saved\CityData'}
     else{[Environment]::SetEnvironmentVariable('WTG_CITY_INPUT',$null)}
     if($Campaign){$env:WTG_CAMPAIGN_GIS_INPUT=Join-Path $Root 'Saved\CampaignGIS'}
     else{[Environment]::SetEnvironmentVariable('WTG_CAMPAIGN_GIS_INPUT',$null)}
+    if($OfficialBuildings){$env:WTG_OFFICIAL_BUILDINGS_INPUT=Join-Path $Root 'Saved\OfficialBuildings3D'}
+    else{[Environment]::SetEnvironmentVariable('WTG_OFFICIAL_BUILDINGS_INPUT',$null)}
     & $Editor $Project "-ExecutePythonScript=$Script" -unattended -nullrhi -stdout -FullStdOutLogOutput
     if($LASTEXITCODE -ne 0 -or -not(Test-Path $Marker)){throw 'GIS editor generation failed'}
 }finally{
     [Environment]::SetEnvironmentVariable('WTG_CITY_INPUT',$PreviousCityInput)
     [Environment]::SetEnvironmentVariable('WTG_CAMPAIGN_GIS_INPUT',$PreviousCampaignInput)
+    [Environment]::SetEnvironmentVariable('WTG_OFFICIAL_BUILDINGS_INPUT',$PreviousOfficialBuildingsInput)
 }
 
 & $Editor $Project -run=WorldPartitionConvertCommandlet /Game/Maps/Nadodrze_GIS -SCCProvider=None -AllowCommandletRendering -unattended
