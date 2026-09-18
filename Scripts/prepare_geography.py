@@ -1,4 +1,4 @@
-"""Run after prepare_content.py and Scripts/gis/build_meshes.py in Unreal 5.6.
+"""Run after prepare_content.py and Scripts/gis/build_meshes.py in Unreal 5.8.
 Extends the existing GIS map when WTG_CITY_INPUT is set. Campaign migration remains separate.
 """
 import json,traceback,os
