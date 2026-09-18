@@ -86,6 +86,11 @@ if (Test-Path -LiteralPath $CreatorMarker) { Remove-Item -LiteralPath $CreatorMa
 $CreatorScript = Join-Path $PSScriptRoot 'prepare_character_creator.py'
 & $Editor $Project "-ExecutePythonScript=$CreatorScript" -unattended -nosplash -nullrhi -stdout -FullStdOutLogOutput
 if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $CreatorMarker)) { throw 'Character Creator asset validation failed; packaging stopped' }
+$FreeModelsMarker = Join-Path $ProjectRoot 'Saved\FreeModelsReady.ok'
+if (Test-Path -LiteralPath $FreeModelsMarker) { Remove-Item -LiteralPath $FreeModelsMarker }
+$FreeModelsScript = Join-Path $PSScriptRoot 'import_free_models.py'
+& $Editor $Project "-ExecutePythonScript=$FreeModelsScript" -unattended -nosplash -nullrhi -stdout -FullStdOutLogOutput
+if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $FreeModelsMarker)) { throw 'Free model import failed; packaging stopped' }
 $Marker = Join-Path $ProjectRoot 'Saved\GeneratedContent.ok'
 if (Test-Path -LiteralPath $Marker) { Remove-Item -LiteralPath $Marker }
 $Script = Join-Path $PSScriptRoot 'prepare_content.py'
