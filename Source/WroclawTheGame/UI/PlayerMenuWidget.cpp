@@ -1187,7 +1187,7 @@ void UPlayerMenuWidget::BuildGameTab()
         bCity ? TEXT("WROCŁAW") : TEXT("PRZEBUDZENIE"), 21, true, TextPrimary))
         ->SetPadding(FMargin(2, 1, 2, 2));
     ActionColumn->AddChildToVerticalBox(MakeText(
-        bCity ? TEXT("OTWARTY ŚWIAT / GIS") : TEXT("KAMPANIA FABULARNA"), 9, true, Accent))
+        bCity ? TEXT("OTWARTY ŚWIAT / WROCŁAW") : TEXT("KAMPANIA FABULARNA"), 9, true, Accent))
         ->SetPadding(FMargin(2, 0, 2, 12));
     ActionColumn->AddChildToVerticalBox(MakeText(
         bCity ? TEXT("Eksploruj dzielnice, odkrywaj aktywności i kontynuuj zapis miasta.")
@@ -1673,7 +1673,7 @@ void UPlayerMenuWidget::BuildMapTab()
 
         ActionColumn->AddChildToVerticalBox(MakeText(TEXT("WROCŁAW"), 20, true, TextPrimary))
             ->SetPadding(FMargin(2, 1, 2, 2));
-        ActionColumn->AddChildToVerticalBox(MakeText(TEXT("MAPA GIS / SEKTORY"), 9, true, Accent))
+        ActionColumn->AddChildToVerticalBox(MakeText(TEXT("MAPA MIASTA / SEKTORY"), 9, true, Accent))
             ->SetPadding(FMargin(2, 0, 2, 14));
         ActionColumn->AddChildToVerticalBox(MakeInfoRow(
             FString::Printf(TEXT("%d"), VisibleSectors), TEXT("AKTYWNE SEKTORY"), true))
@@ -1917,7 +1917,7 @@ void UPlayerMenuWidget::BuildStatsTab()
         bCity ? TEXT("MIASTO") : TEXT("SESJA"), 20, true, TextPrimary))
         ->SetPadding(FMargin(2, 1, 2, 2));
     ActionColumn->AddChildToVerticalBox(MakeText(
-        bCity ? TEXT("WROCŁAW / GIS") : TEXT("PODSUMOWANIE"), 9, true, Accent))
+        bCity ? TEXT("WROCŁAW / OTWARTY ŚWIAT") : TEXT("PODSUMOWANIE"), 9, true, Accent))
         ->SetPadding(FMargin(2, 0, 2, 14));
 
     if (!Mission)
@@ -2380,8 +2380,12 @@ void UPlayerMenuWidget::BuildSettingsTab()
         FString::Printf(TEXT("%d%%"), FMath::RoundToInt(UIVolume * 100.0f)),
         TEXT("INTERFEJS")))
         ->SetPadding(FMargin(0, 0, 0, 14));
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(
+        TEXT("WSPÓLNY MIKS"),
+        TEXT("MUZYKA")))
+        ->SetPadding(FMargin(0, 0, 0, 8));
     RightColumn->AddChildToVerticalBox(MakeText(
-        TEXT("Projekt nie ma jeszcze osobnego kanału muzyki. Menu pokazuje wyłącznie kanały faktycznie obsługiwane przez runtime."),
+        TEXT("Muzyka korzysta obecnie ze wspólnego miksu gry; osobna regulacja pojawi się jako oddzielna kontrolka."),
         10, false, Muted));
 }
 
