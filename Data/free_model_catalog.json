@@ -43,5 +43,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/street_lamp_01/street_lamp_01_1k.fbx"
+  },
+  {
+    "slug": "concrete_road_barrier_02",
+    "name": "Concrete Road Barrier 02",
+    "intended_use": "Roadblock and traffic-control prop for chase and blockade scenes.",
+    "source_page": "https://polyhaven.com/a/concrete_road_barrier_02",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "category": "Industrial & Infrastructure/Traffic & Safety/Road Barriers",
+    "dimensions_mm": [
+      1566.9698119163513,
+      442.20101833343506,
+      1111.9812715332955
+    ],
+    "files_hash": "fbcefc03483cf10e19d91653f3f1b10112be436d",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/concrete_road_barrier_02/concrete_road_barrier_02_1k.fbx"
   }
 ]

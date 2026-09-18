@@ -1,0 +1,68 @@
+{
+  "slug": "concrete_road_barrier_02",
+  "name": "Concrete Road Barrier 02",
+  "intended_use": "Roadblock and traffic-control prop for chase and blockade scenes.",
+  "source_page": "https://polyhaven.com/a/concrete_road_barrier_02",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Amal Kumar": "All"
+  },
+  "category": "Industrial & Infrastructure/Traffic & Safety/Road Barriers",
+  "tags": [
+    "road barrier",
+    "traffic barrier",
+    "safety barrier",
+    "wall",
+    "road",
+    "road block",
+    "blockade"
+  ],
+  "dimensions_mm": [
+    1566.9698119163513,
+    442.20101833343506,
+    1111.9812715332955
+  ],
+  "files_hash": "fbcefc03483cf10e19d91653f3f1b10112be436d",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/concrete_road_barrier_02/concrete_road_barrier_02_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/concrete_road_barrier_02/concrete_road_barrier_02_1k.fbx",
+      "bytes": 1972300,
+      "md5": "b71404d27a2602360deec91dfa6fbaab",
+      "sha256": "557b55baf7ba97dbbc131405f7b92a8e1c67b05b22974a691f1a98c2a136a259",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/concrete_road_barrier_02/concrete_road_barrier_02_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/concrete_road_barrier_02/textures/concrete_road_barrier_02_diff_1k.jpg",
+      "bytes": 741673,
+      "md5": "f2f6eea94258691bc344441b9e6a15fc",
+      "sha256": "9329260ebfc8632a5d47d9b344ab6f916e26604e73ebd2c495fee544df4bdefa",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/concrete_road_barrier_02/concrete_road_barrier_02_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/concrete_road_barrier_02/textures/concrete_road_barrier_02_disp_1k.png",
+      "bytes": 1467011,
+      "md5": "d14a143099c4934a51c790c4b676f534",
+      "sha256": "95627f4b90ed60a9f00996c71229ac82e0a3e96ac49a3a42b0ee98fcfebcc471",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/concrete_road_barrier_02/concrete_road_barrier_02_disp_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/concrete_road_barrier_02/textures/concrete_road_barrier_02_nor_gl_1k.exr",
+      "bytes": 2000803,
+      "md5": "a553f8b1e3e668297d2ab4bacf2917ed",
+      "sha256": "54acd3c2fc0c94aee60d829fada89a8b528096c300bf02e1d0d99c5e72dd92e4",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/concrete_road_barrier_02/concrete_road_barrier_02_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/concrete_road_barrier_02/textures/concrete_road_barrier_02_rough_1k.exr",
+      "bytes": 598329,
+      "md5": "fa7d8c447e34ed3cccde7dca2227a928",
+      "sha256": "a963b49364005258ed1f2d7890675f7db6b9bf4ffd4438f84bb05d863d5cf375",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/concrete_road_barrier_02/concrete_road_barrier_02_rough_1k.exr"
+    }
+  ]
+}
