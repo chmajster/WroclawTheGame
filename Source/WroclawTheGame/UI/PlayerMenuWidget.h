@@ -149,6 +149,7 @@ private:
     UFUNCTION() void CycleUIVolume();
     UFUNCTION() void SetSFXVolumeFromSlider(float Volume);
     UFUNCTION() void SetUIVolumeFromSlider(float Volume);
+    UFUNCTION() void CommitAudioSliderChange();
     UFUNCTION() void ToggleFPSCounter();
     UFUNCTION() void ToggleVSync();
     UFUNCTION() void ToggleDynamicResolution();
