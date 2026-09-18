@@ -1194,5 +1194,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/modern_coffee_table_01/modern_coffee_table_01_1k.fbx"
+  },
+  {
+    "slug": "bar_chair_round_01",
+    "name": "Bar Chair Round 01",
+    "intended_use": "Shop/bar-style seating.",
+    "source_page": "https://polyhaven.com/a/bar_chair_round_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Dairon Sanchez": "All"
+    },
+    "category": "Furniture/Seating/Stools & Bar Seating",
+    "dimensions_mm": [
+      483.1501990556717,
+      485.99570989608765,
+      750.5484623070515
+    ],
+    "files_hash": "3a4411b06fb8509e297c299acac13b2e6d5d71b0",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/bar_chair_round_01/bar_chair_round_01_1k.fbx"
   }
 ]

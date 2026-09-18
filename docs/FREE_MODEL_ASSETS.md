@@ -60,3 +60,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Modern Arm Chair 01 | Apartment/safehouse seating. | Vibrant Nordic | [Poly Haven](https://polyhaven.com/a/modern_arm_chair_01) | CC0 1.0 |
 | Round Wooden Table 01 | Apartment/shop table. | Ulan Cabanilla | [Poly Haven](https://polyhaven.com/a/round_wooden_table_01) | CC0 1.0 |
 | Modern Coffee Table 01 | Apartment living-room table. | Amin | [Poly Haven](https://polyhaven.com/a/modern_coffee_table_01) | CC0 1.0 |
+| Bar Chair Round 01 | Shop/bar-style seating. | Dairon Sanchez | [Poly Haven](https://polyhaven.com/a/bar_chair_round_01) | CC0 1.0 |
