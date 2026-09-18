@@ -128,6 +128,10 @@ def prepare():
             raise RuntimeError('Campaign migration Data Asset import failed')
         if not unreal.EditorAssetLibrary.save_loaded_asset(migration_definition,False):
             raise RuntimeError('Campaign migration Data Asset save failed')
+        migration_registry=actors.spawn_actor_from_class(unreal.CampaignMigrationRegistry,unreal.Vector())
+        if not migration_registry:raise RuntimeError('Campaign migration registry spawn failed')
+        migration_registry.set_editor_property('definition',migration_definition)
+        migration_registry.set_editor_property('is_spatially_loaded',False)
         campaign_environment=json.loads((campaign_dir/'environment.json').read_text(encoding='utf-8'))
         campaign_chapter=json.loads((campaign_dir/'chapter1.json').read_text(encoding='utf-8'))
         campaign_world=json.loads((campaign_dir/'openworld.json').read_text(encoding='utf-8'))
