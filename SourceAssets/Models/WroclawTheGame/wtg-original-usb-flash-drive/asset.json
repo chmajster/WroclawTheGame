@@ -1,0 +1,11 @@
+{
+  "id": "wtg-original-usb-flash-drive",
+  "name": "USB Flash Drive",
+  "provider": "WroclawTheGame",
+  "license": "CC0-1.0",
+  "source_page": "project://original-fallbacks",
+  "intended_use": "Pendrive/evidence fallback because accessible CC0 download sources require account login.",
+  "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-usb-flash-drive/wtg-original-usb-flash-drive.obj",
+  "generated": true,
+  "generator": "bootstrap-original-fallback-models.yml"
+}
