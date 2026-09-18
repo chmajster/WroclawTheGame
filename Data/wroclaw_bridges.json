@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "bridges": [
+    {
+      "id": "grunwaldzki",
+      "name": "Most Grunwaldzki",
+      "aliases": [
+        "Most Grunwaldzki"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "tumski",
+      "name": "Most Tumski",
+      "aliases": [
+        "Most Tumski"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "piaskowy",
+      "name": "Most Piaskowy",
+      "aliases": [
+        "Most Piaskowy"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "pokoju",
+      "name": "Most Pokoju",
+      "aliases": [
+        "Most Pokoju"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "uniwersyteckie",
+      "name": "Mosty Uniwersyteckie",
+      "aliases": [
+        "Mosty Uniwersyteckie",
+        "Most Uniwersytecki"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "pomorskie",
+      "name": "Mosty Pomorskie",
+      "aliases": [
+        "Most Pomorski Północny",
+        "Most Pomorski Środkowy",
+        "Most Pomorski Południowy",
+        "Mosty Pomorskie"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "mlynskie",
+      "name": "Mosty Młyńskie",
+      "aliases": [
+        "Mosty Młyńskie",
+        "Most Młyński"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "sikorskiego",
+      "name": "Most Sikorskiego",
+      "aliases": [
+        "Most Sikorskiego"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "zwierzyniecki",
+      "name": "Most Zwierzyniecki",
+      "aliases": [
+        "Most Zwierzyniecki"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "szczytnicki",
+      "name": "Most Szczytnicki",
+      "aliases": [
+        "Most Szczytnicki"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "warszawski",
+      "name": "Mosty Warszawskie",
+      "aliases": [
+        "Most Warszawski",
+        "Mosty Warszawskie"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "jagiellonskie",
+      "name": "Mosty Jagiellońskie",
+      "aliases": [
+        "Most Jagielloński",
+        "Mosty Jagiellońskie"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "osobowicki",
+      "name": "Most Osobowicki",
+      "aliases": [
+        "Most Osobowicki"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "milenijny",
+      "name": "Most Milenijny",
+      "aliases": [
+        "Most Milenijny"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "redzinski",
+      "name": "Most Rędziński",
+      "aliases": [
+        "Most Rędziński"
+      ],
+      "quality": "hero"
+    },
+    {
+      "id": "trzebnicki",
+      "name": "Most Trzebnicki",
+      "aliases": [
+        "Most Trzebnicki"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "olawski",
+      "name": "Most Oławski",
+      "aliases": [
+        "Most Oławski"
+      ],
+      "quality": "detailed"
+    },
+    {
+      "id": "ks_piotra_skargi",
+      "name": "Most Księdza Piotra Skargi",
+      "aliases": [
+        "Most Księdza Piotra Skargi",
+        "most Księdza Piotra Skargi"
+      ],
+      "quality": "detailed"
+    }
+  ]
+}
