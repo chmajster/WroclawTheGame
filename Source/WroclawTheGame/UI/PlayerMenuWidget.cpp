@@ -1042,17 +1042,23 @@ void UPlayerMenuWidget::BuildInventoryTab()
     WardrobeSlot->SetPadding(FMargin(0, 0, 6, 0));
     auto* WardrobeBox = WidgetTree->ConstructWidget<UVerticalBox>();
     Wardrobe->AddChild(WardrobeBox);
-    WardrobeBox->AddChildToVerticalBox(MakeText(TEXT("GARDEROBA"), 10, true, Accent))
+    WardrobeBox->AddChildToVerticalBox(MakeText(
+        FString::Printf(TEXT("GARDEROBA  •  %d"), ClothingCount), 10, true, Accent))
         ->SetPadding(FMargin(0, 0, 0, 9));
     auto* ClothesScroll = WidgetTree->ConstructWidget<UScrollBox>();
     WardrobeBox->AddChildToVerticalBox(ClothesScroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     if (Creator && !Creator->Committed.OwnedClothing.IsEmpty())
     {
-        for (const FName& Id : Creator->Committed.OwnedClothing)
+        TArray<FName> Clothing = Creator->Committed.OwnedClothing;
+        Clothing.Sort([](const FName& A, const FName& B)
+        {
+            return A.ToString() < B.ToString();
+        });
+        for (const FName& Id : Clothing)
             ClothesScroll->AddChild(MakeInfoRow(Id.ToString().ToUpper(), TEXT("ELEMENT UBIORU")));
     }
     else
-        ClothesScroll->AddChild(MakeText(TEXT("Brak zapisanych elementów garderoby."), 11, false, Muted));
+        ClothesScroll->AddChild(MakeInfoRow(TEXT("PUSTO"), TEXT("BRAK ELEMENTÓW GARDEROBY")));
 
     auto* Items = MakeCard(FMargin(14));
     auto* ItemsSlot = Columns->AddChildToHorizontalBox(Items);
@@ -1060,27 +1066,34 @@ void UPlayerMenuWidget::BuildInventoryTab()
     ItemsSlot->SetPadding(FMargin(6, 0, 0, 0));
     auto* ItemsBox = WidgetTree->ConstructWidget<UVerticalBox>();
     Items->AddChild(ItemsBox);
-    ItemsBox->AddChildToVerticalBox(MakeText(TEXT("PRZEDMIOTY"), 10, true, Accent))
+    ItemsBox->AddChildToVerticalBox(MakeText(
+        FString::Printf(TEXT("PRZEDMIOTY  •  %d"), ItemTypes), 10, true, Accent))
         ->SetPadding(FMargin(0, 0, 0, 9));
     auto* ItemsScroll = WidgetTree->ConstructWidget<UScrollBox>();
     ItemsBox->AddChildToVerticalBox(ItemsScroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
-    bool bAnyItem = false;
+    TArray<TPair<FString, int32>> DisplayItems;
     if (Mission)
     {
         for (const auto& Pair : Mission->State.inventory)
         {
             if (Pair.second <= 0)
                 continue;
-            bAnyItem = true;
             const auto* Item = Wroclaw::Progress::Item(Pair.first);
             const FString Name = Item ? UTF8_TO_TCHAR(Item->name.c_str()) : UTF8_TO_TCHAR(Pair.first.c_str());
-            ItemsScroll->AddChild(MakeInfoRow(
-                Name.ToUpper(), FString::Printf(TEXT("ILOŚĆ  × %d"), Pair.second), Pair.second > 1));
+            DisplayItems.Emplace(Name, Pair.second);
         }
     }
-    if (!bAnyItem)
-        ItemsScroll->AddChild(MakeText(TEXT("Brak przedmiotów w ekwipunku."), 11, false, Muted));
+    DisplayItems.Sort([](const TPair<FString, int32>& A, const TPair<FString, int32>& B)
+    {
+        return A.Key < B.Key;
+    });
+    for (const auto& Item : DisplayItems)
+        ItemsScroll->AddChild(MakeInfoRow(
+            Item.Key.ToUpper(), FString::Printf(TEXT("ILOŚĆ  × %d"), Item.Value), Item.Value > 1));
+
+    if (DisplayItems.IsEmpty())
+        ItemsScroll->AddChild(MakeInfoRow(TEXT("PUSTO"), TEXT("BRAK PRZEDMIOTÓW")));
 
     AddPlayerStatus();
 }
