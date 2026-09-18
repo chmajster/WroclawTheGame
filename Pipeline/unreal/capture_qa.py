@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import traceback
 from pathlib import Path
 
@@ -53,7 +54,10 @@ def prepare() -> None:
 
     width = int(manifest["qa"]["screenshot_width"])
     height = int(manifest["qa"]["screenshot_height"])
-    screenshot_files = [out / f"{name}.png" for name in camera_names]
+    safe_names = [re.sub(r"[^A-Za-z0-9_.-]+", "_", name).strip("._") or "camera" for name in camera_names]
+    if len(set(safe_names)) != len(safe_names):
+        raise RuntimeError("QA camera labels collide after filename sanitization")
+    screenshot_files = [out / f"{name}.png" for name in safe_names]
 
     @unreal.AutomationScheduler.add_latent_command
     def capture_all():
