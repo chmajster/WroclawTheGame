@@ -1,0 +1,146 @@
+name: Bootstrap audited CC0 model wave 3
+
+on:
+  push:
+    branches:
+      - assets/cc0-models-20260918
+    paths:
+      - .github/workflows/bootstrap-cc0-models-wave3.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-models:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch Poly Haven wave 3 and commit each model separately
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python - <<'PY'
+          import hashlib,json,os,subprocess,time,urllib.request
+          from pathlib import Path,PurePosixPath
+          from urllib.parse import urlparse
+          ROOT=Path.cwd(); API="https://api.polyhaven.com"; UA="WroclawTheGame-CC0-ModelFetcher/3.0"
+          MAX_FILE=95*1024*1024; MAX_ASSET=260*1024*1024
+          ASSETS=[
+            ("metal_office_desk","Metal Office Desk","Desk for apartment, shop terminal and safehouse interiors."),
+            ("dining_chair_02","Dining Chair 02","General apartment/shop seating."),
+            ("desk_lamp_arm_01","Desk Lamp Arm 01","Desk/workshop task lighting prop."),
+            ("Television_01","Television 01","CCTV monitor / apartment electronics proxy."),
+            ("modern_wooden_cabinet","Modern Wooden Cabinet","Apartment and safehouse storage furniture."),
+            ("painted_wooden_cabinet","Painted Wooden Cabinet","Basement/workshop storage variant."),
+            ("security_camera_01","Security Camera 01","Second CCTV variation for urban scenes."),
+            ("utility_box_02","Utility Box 02","Second urban electrical utility box variation."),
+            ("street_lamp_02","Street Lamp 02","Wall-mounted urban street lighting variation."),
+            ("rollershutter_window_02","Rollershutter Window 02","Second shop/garage shutter variation."),
+            ("Drill_01","Drill 01","Workshop power-tool prop."),
+            ("wooden_cutting_board","Wooden Cutting Board","Apartment kitchen prop."),
+            ("jug_01","Jug 01","Apartment kitchen/tableware prop."),
+            ("brass_pot_01","Brass Pot 01","Kitchen cookware prop."),
+            ("brass_pan_01","Brass Pan 01","Kitchen cookware prop."),
+            ("plastic_bottle_gallon","Plastic Bottle Gallon","Bottle/distraction and garage clutter proxy."),
+            ("wine_bottles_01","Wine Bottles 01","Bottle prop set for interiors and alley clutter."),
+            ("fire_alarm","Fire Alarm","Building safety/electrical wall prop."),
+            ("gate_latch_01","Gate Latch 01","Basement/courtyard gate hardware."),
+            ("modern_arm_chair_01","Modern Arm Chair 01","Apartment/safehouse seating."),
+            ("round_wooden_table_01","Round Wooden Table 01","Apartment/shop table."),
+            ("modern_coffee_table_01","Modern Coffee Table 01","Apartment living-room table."),
+            ("bar_chair_round_01","Bar Chair Round 01","Shop/bar-style seating."),
+            ("ladder_sectioned_01","Ladder Sectioned 01","Garage/workshop ladder."),
+            ("exterior_aircon_unit","Exterior Aircon Unit","Urban facade/detail prop."),
+            ("portable_generator","Portable Generator","Garage/workshop and emergency-power prop."),
+            ("barrel_stove","Barrel Stove","Garage/workshop heating and industrial clutter.")
+          ]
+          def req(url,b=False):
+              q=urllib.request.Request(url,headers={"User-Agent":UA}); last=None
+              for a in range(3):
+                  try:
+                      with urllib.request.urlopen(q,timeout=120) as r:
+                          if r.status!=200: raise RuntimeError(f"HTTP {r.status}")
+                          return r.read() if b else json.load(r)
+                  except Exception as e:
+                      last=e
+                      if a<2: time.sleep(2**a)
+              raise RuntimeError(f"fetch {url}: {last}")
+          def guard(url,api=False):
+              p=urlparse(url); allowed={"api.polyhaven.com"} if api else {"dl.polyhaven.org"}
+              if p.scheme!="https" or p.hostname not in allowed: raise ValueError(f"unexpected URL {url}")
+          def relsafe(s):
+              p=PurePosixPath(s)
+              if p.is_absolute() or ".." in p.parts or not p.parts: raise ValueError(f"unsafe path {s}")
+              return Path(*p.parts)
+          def put(e,dst):
+              url=e.get("url"); md5=e.get("md5"); size=int(e.get("size") or 0)
+              if not url or not md5: raise ValueError("incomplete file metadata")
+              guard(url)
+              if size and size>MAX_FILE: raise ValueError(f"file too large {size}")
+              data=req(url,True)
+              if len(data)>MAX_FILE: raise ValueError(f"download too large {len(data)}")
+              got=hashlib.md5(data).hexdigest()
+              if got.lower()!=md5.lower(): raise ValueError("MD5 mismatch")
+              dst.parent.mkdir(parents=True,exist_ok=True); dst.write_bytes(data)
+              return {"path":dst.relative_to(ROOT).as_posix(),"bytes":len(data),"md5":got,
+                      "sha256":hashlib.sha256(data).hexdigest(),"source_url":url}
+          catp=ROOT/"Data/free_model_catalog.json"; cat=json.loads(catp.read_text(encoding="utf-8")); existing={x["slug"] for x in cat}
+          failures=[]
+          for slug,name,use in ASSETS:
+              if slug in existing: continue
+              try:
+                  iu=f"{API}/info/{slug}"; fu=f"{API}/files/{slug}"; guard(iu,True); guard(fu,True)
+                  info=req(iu); files=req(fu)
+                  if int(info.get("type",-1))!=2: raise ValueError("not model")
+                  block=files.get("fbx",{}).get("1k",{}).get("fbx",{})
+                  if not block.get("url"): raise ValueError("missing 1k FBX")
+                  target=ROOT/"SourceAssets/Models/PolyHaven"/slug; dl=[]
+                  url=block["url"]; guard(url); main=Path(urlparse(url).path).name
+                  if not main.lower().endswith(".fbx"): raise ValueError("primary not FBX")
+                  dl.append(put(block,target/main))
+                  for inc,e in sorted((block.get("include") or {}).items()): dl.append(put(e,target/relsafe(inc)))
+                  if sum(x["bytes"] for x in dl)>MAX_ASSET: raise ValueError("bundle exceeds policy")
+                  rec={"slug":slug,"name":info.get("name") or name,"intended_use":use,
+                       "source_page":f"https://polyhaven.com/a/{slug}","provider":"Poly Haven","license":"CC0-1.0",
+                       "license_url":"https://polyhaven.com/license","authors":info.get("authors",{}),
+                       "category":info.get("category"),"tags":info.get("tags",[]),"dimensions_mm":info.get("dimensions"),
+                       "files_hash":info.get("files_hash"),"format":"fbx","resolution":"1k",
+                       "primary_path":(target/main).relative_to(ROOT).as_posix(),"files":dl}
+                  (target/"asset.json").write_text(json.dumps(rec,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
+                  cat.append({k:rec[k] for k in ("slug","name","intended_use","source_page","provider","license","license_url",
+                                                  "authors","category","dimensions_mm","files_hash","format","resolution","primary_path")})
+                  catp.write_text(json.dumps(cat,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
+                  docs=["# Darmowe modele 3D — audyt źródeł","",
+                        "Źródła w tym katalogu pochodzą z Poly Haven i są publikowane na licencji CC0 1.0.",
+                        "Do repozytorium trafia wariant FBX z teksturami 1K oraz lokalny manifest z MD5/SHA-256.",
+                        "Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłącznie pliki zatwierdzone w repo.","",
+                        "| Model | Zastosowanie | Autorzy | Źródło | Licencja |","|---|---|---|---|---|"]
+                  for x in cat:
+                      authors=", ".join(x.get("authors",{}).keys()) or "Poly Haven"
+                      docs.append(f"| {x['name']} | {x['intended_use']} | {authors} | [Poly Haven]({x['source_page']}) | CC0 1.0 |")
+                  (ROOT/"docs/FREE_MODEL_ASSETS.md").write_text("\n".join(docs)+"\n",encoding="utf-8")
+                  subprocess.run(["git","add",str(target.relative_to(ROOT)),"Data/free_model_catalog.json","docs/FREE_MODEL_ASSETS.md"],check=True)
+                  subprocess.run(["git","commit","-m",f"assets: add {slug} CC0 model"],check=True)
+                  subprocess.run(["git","push","origin",f"HEAD:{os.environ['GITHUB_REF_NAME']}"],check=True)
+                  existing.add(slug)
+              except Exception as e:
+                  failures.append({"slug":slug,"error":str(e)})
+                  print(f"::warning title=CC0 model skipped::{slug}: {e}")
+                  subprocess.run(["git","reset","--hard","HEAD"],check=True)
+                  subprocess.run(["git","clean","-fd","SourceAssets/Models/PolyHaven"],check=True)
+          old=[]
+          fp=ROOT/"Data/free_model_failures.json"
+          if fp.exists():
+              try: old=json.loads(fp.read_text(encoding="utf-8"))
+              except Exception: old=[]
+          merged={x.get("slug"):x for x in old if x.get("slug")}
+          for x in failures: merged[x["slug"]]=x
+          fp.write_text(json.dumps(list(merged.values()),indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
+          subprocess.run(["git","add","Data/free_model_failures.json"],check=True)
+          if subprocess.run(["git","diff","--cached","--quiet"]).returncode!=0:
+              subprocess.run(["git","commit","-m","chore: update unresolved free model sources"],check=True)
+              subprocess.run(["git","push","origin",f"HEAD:{os.environ['GITHUB_REF_NAME']}"],check=True)
+          PY
