@@ -1,3 +1,11 @@
+## 2026-09-18 — dostępność efektów interfejsu
+
+- Dodano trwałe ustawienie ograniczenia animacji UI; wyłącza wejścia stron, ruch ambientowych poświat i animację modala.
+- Dodano możliwość wyłączenia Background Blur bez usuwania półprzezroczystego tła i czytelności kart.
+- Dodano możliwość wyłączenia dźwięków hover/click niezależnie od audio rozgrywki.
+- Preferencje są zapisywane w GameUserSettings przez UWTGPerformanceSettings i obowiązują po ponownym uruchomieniu.
+- Zakładka USTAWIENIA pokazuje bieżący stan wszystkich trzech opcji w sekcji INTERFEJS.
+
 ## 2026-09-18 — finalny polish modalów
 
 - Akcje destrukcyjne Nowa gra i Wyjdź korzystają z czerwonego wariantu ostrzegawczego zamiast zwykłego turkusowego CTA.
