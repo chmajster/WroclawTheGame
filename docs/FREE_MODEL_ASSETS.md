@@ -65,3 +65,30 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Exterior Aircon Unit | Urban facade/detail prop. | Monsta3D | [Poly Haven](https://polyhaven.com/a/exterior_aircon_unit) | CC0 1.0 |
 | Portable Generator | Garage/workshop and emergency-power prop. | James Ray Cock | [Poly Haven](https://polyhaven.com/a/portable_generator) | CC0 1.0 |
 | Barrel Stove | Garage/workshop heating and industrial clutter. | MP | [Poly Haven](https://polyhaven.com/a/barrel_stove) | CC0 1.0 |
+
+
+## Rostock 3DModels — komplet sygnalizacji drogowej
+
+Źródło: [rostock/3DModels](https://github.com/rostock/3DModels), licencja CC0 1.0. Do repozytorium dodano cały zestaw 16 modeli z katalogu `Ampeln` użyteczny do budowy skrzyżowań: standardowe sygnalizatory, warianty kierunkowe, piesze, rowerowe, tramwajowe, ostrzegawcze oraz maszt.
+
+Każdy model ma osobny commit, własny wpis w `Data/free_external_model_catalog.json` i metadane źródła. Czternaście wariantów jest przechowywanych jako źródłowe GLB. Dwa największe warianty (`Ampel_Standard_Mast` i `Ampel_Standard_Ausleger`) są przechowywane jako równoważne źródłowe OBJ + MTL + wymagane tekstury, ponieważ interfejs GitHub użyty do importu nie zwracał payloadu ich dużych GLB.
+
+Modele:
+- Ampel_Abbieger_links_Mast
+- Ampel_Abbieger_links_geradeaus_Mast
+- Ampel_Abbieger_rechts_geradeaus_Mast
+- Ampel_Standard_Ausleger
+- Ampel_Standard_Mast
+- Ampel_Strassenbahn_1_Mast
+- Fahrradampel_rot_gelb_gruen_Mast
+- Fussgaenger_Fahrrad_Ampel_rot_gruen_Mast
+- Fussgaengerampel_rot_Mast
+- Fussgaengerampel_rot_gruen_Mast
+- Fussgaengerampel_rot_gruen_Signal_Mast
+- Fussgaengerampel_rot_rot_gruen_Mast
+- Schutzblinker_Fussgaenger_Fahrrad_Mast
+- Schutzblinker_Fussgaenger_Mast
+- Schutzblinker_Strassenbahn_Mast
+- Stahl_3500
+
+To domyka brak źródłowych modeli sygnalizacji; rozmieszczenie pełnych skrzyżowań, logika świateł i wizualny odbiór w Unreal pozostają osobnymi etapami produkcyjnymi.
