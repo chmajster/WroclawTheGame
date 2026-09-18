@@ -51,3 +51,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Drill 01 | Workshop power-tool prop. | Fernando Quinn | [Poly Haven](https://polyhaven.com/a/Drill_01) | CC0 1.0 |
 | Wooden Cutting Board | Apartment kitchen prop. | Kuutti Siitonen | [Poly Haven](https://polyhaven.com/a/wooden_cutting_board) | CC0 1.0 |
 | Jug 01 | Apartment kitchen/tableware prop. | Kuutti Siitonen | [Poly Haven](https://polyhaven.com/a/jug_01) | CC0 1.0 |
+| Brass Pot 01 | Kitchen cookware prop. | Rico Cilliers | [Poly Haven](https://polyhaven.com/a/brass_pot_01) | CC0 1.0 |
