@@ -488,5 +488,199 @@
     "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-intercom/wtg-original-intercom.obj",
     "generated": true,
     "generator": "bootstrap-original-fallback-models.yml"
+  },
+  {
+    "id": "rostock-traffic-stahl-3500",
+    "name": "Stahl 3500 traffic-signal mast",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Stahl_3500.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Traffic-signal support mast for authored Wroclaw intersections and signal infrastructure.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Stahl_3500/Stahl_3500.glb",
+    "source_git_blob_sha1": "378734fed329f3cbfc5b9659ebcddbccc56d9a22"
+  },
+  {
+    "id": "rostock-traffic-fussgaengerampel-rot-mast",
+    "name": "Pedestrian traffic light — red",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Fussgaengerampel_rot_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Pedestrian traffic signal variant for authored Wroclaw intersections.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Fussgaengerampel_rot_Mast/Fussgaengerampel_rot_Mast.glb",
+    "source_git_blob_sha1": "dd205f9e0e9c8ad5fe3c6604cea37cdc7f65da71"
+  },
+  {
+    "id": "rostock-traffic-fussgaengerampel-rot-gruen-mast",
+    "name": "Pedestrian traffic light — red/green",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Fussgaengerampel_rot_gruen_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Pedestrian red/green signal for authored crossings.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Fussgaengerampel_rot_gruen_Mast/Fussgaengerampel_rot_gruen_Mast.glb",
+    "source_git_blob_sha1": "c5b99d49e0c7cf4e490a9380c58d674184530e06"
+  },
+  {
+    "id": "rostock-traffic-fussgaengerampel-rot-rot-gruen-mast",
+    "name": "Pedestrian traffic light — red/red/green",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Fussgaengerampel_rot_rot_gruen_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Pedestrian multi-aspect signal variant for authored crossings.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Fussgaengerampel_rot_rot_gruen_Mast/Fussgaengerampel_rot_rot_gruen_Mast.glb",
+    "source_git_blob_sha1": "cb5ebbd19433c2930969f3fb79464cd30a9c790a"
+  },
+  {
+    "id": "rostock-traffic-fussgaengerampel-rot-gruen-signal-mast",
+    "name": "Pedestrian traffic light — red/green signal mast",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Fussgaengerampel_rot_gruen_Signal_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Pedestrian signal-mast variant for authored Wroclaw crossings.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Fussgaengerampel_rot_gruen_Signal_Mast/Fussgaengerampel_rot_gruen_Signal_Mast.glb",
+    "source_git_blob_sha1": "84527b6f88e3991b8eb81f78baaec415bf9a27a8"
+  },
+  {
+    "id": "rostock-traffic-fussgaenger-fahrrad-ampel-rot-gruen-mast",
+    "name": "Pedestrian/bicycle traffic light — red/green",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Fussgaenger_Fahrrad_Ampel_rot_gruen_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Combined pedestrian and bicycle signal for authored crossings and cycle routes.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Fussgaenger_Fahrrad_Ampel_rot_gruen_Mast/Fussgaenger_Fahrrad_Ampel_rot_gruen_Mast.glb",
+    "source_git_blob_sha1": "2c24bd5c523e993cd7cd1674a83ea6ba359f52a4"
+  },
+  {
+    "id": "rostock-traffic-schutzblinker-fussgaenger-mast",
+    "name": "Pedestrian warning flasher mast",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Schutzblinker_Fussgaenger_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Pedestrian warning-signal variant for authored intersection safety infrastructure.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Schutzblinker_Fussgaenger_Mast/Schutzblinker_Fussgaenger_Mast.glb",
+    "source_git_blob_sha1": "24d8e548365bfc5e69a4c76a116906e1bd06cda8"
+  },
+  {
+    "id": "rostock-traffic-schutzblinker-fussgaenger-fahrrad-mast",
+    "name": "Pedestrian/bicycle warning flasher mast",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Schutzblinker_Fussgaenger_Fahrrad_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Combined pedestrian/bicycle warning signal for authored intersection safety infrastructure.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Schutzblinker_Fussgaenger_Fahrrad_Mast/Schutzblinker_Fussgaenger_Fahrrad_Mast.glb",
+    "source_git_blob_sha1": "8b44218cafa41a2534ba435f52629cd869f75010"
+  },
+  {
+    "id": "rostock-traffic-schutzblinker-strassenbahn-mast",
+    "name": "Tram warning flasher mast",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Schutzblinker_Strassenbahn_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Tram warning signal for authored tram crossings and intersection infrastructure.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Schutzblinker_Strassenbahn_Mast/Schutzblinker_Strassenbahn_Mast.glb",
+    "source_git_blob_sha1": "2fe228af62b16c6a5e3f16172f399a2b65437023"
+  },
+  {
+    "id": "rostock-traffic-ampel-strassenbahn-1-mast",
+    "name": "Tram traffic light mast",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Ampel_Strassenbahn_1_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Tram traffic light model for authored Wroclaw tram intersections.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Ampel_Strassenbahn_1_Mast/Ampel_Strassenbahn_1_Mast.glb",
+    "source_git_blob_sha1": "68e7e9bf1ee3e7afb8c59e7c0ef34e1f3fe03337"
+  },
+  {
+    "id": "rostock-traffic-fahrradampel-rot-gelb-gruen-mast",
+    "name": "Bicycle traffic light — red/yellow/green",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Fahrradampel_rot_gelb_gruen_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Bicycle traffic light model for authored cycle crossings and intersections.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Fahrradampel_rot_gelb_gruen_Mast/Fahrradampel_rot_gelb_gruen_Mast.glb",
+    "source_git_blob_sha1": "9edefce80df12be1d0bec574c2d78a7fb722869b"
+  },
+  {
+    "id": "rostock-traffic-ampel-abbieger-links-mast",
+    "name": "Left-turn traffic light mast",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Ampel_Abbieger_links_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Dedicated left-turn signal model for authored Wroclaw intersections.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Ampel_Abbieger_links_Mast/Ampel_Abbieger_links_Mast.glb",
+    "source_git_blob_sha1": "c21bf0eb34e0bc138b0fb63cb7e2ed3a5dbd9dc0"
+  },
+  {
+    "id": "rostock-traffic-ampel-abbieger-links-geradeaus-mast",
+    "name": "Left/straight traffic light mast",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Ampel_Abbieger_links_geradeaus_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Combined left-turn and straight-ahead signal model for authored intersections.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Ampel_Abbieger_links_geradeaus_Mast/Ampel_Abbieger_links_geradeaus_Mast.glb",
+    "source_git_blob_sha1": "139113c8945b1405eeeb863fe16b1a8d17d7764f"
+  },
+  {
+    "id": "rostock-traffic-ampel-abbieger-rechts-geradeaus-mast",
+    "name": "Right/straight traffic light mast",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Ampel_Abbieger_rechts_geradeaus_Mast.glb",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Combined right-turn and straight-ahead signal model for authored intersections.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Ampel_Abbieger_rechts_geradeaus_Mast/Ampel_Abbieger_rechts_geradeaus_Mast.glb",
+    "source_git_blob_sha1": "6fc42ff77acf26acda999362f89a83c44d7d7b15"
+  },
+  {
+    "id": "rostock-traffic-ampel-standard-mast",
+    "name": "Standard traffic light mast",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/obj/Ampel_Standard_Mast.obj",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Standard vehicle traffic light mast for authored Wroclaw intersections.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Ampel_Standard_Mast/obj/Ampel_Standard_Mast.obj",
+    "source_git_blob_sha1": "687819fd014b05db035b9b3c2c6f23f744d07f55",
+    "companion_mtl": "SourceAssets/Models/Rostock/TrafficSignals/Ampel_Standard_Mast/obj/Ampel_Standard_Mast.mtl",
+    "texture_source_git_blob_sha1": {
+      "gelb.jpg": "b1ccdd49c3951d3f6ca7c04c98cf84f37a8b10b3",
+      "gruen.jpg": "24bcfeb2a9e20f732dd6806c5a85fc27f85830a6",
+      "rot.jpg": "2d256a45000b3607ac9280ef6206b4b1fbfd1cd5",
+      "RAL_7004_Signalgrau.jpg": "16c611b3dd616809f107c9d374d76a3a44cd7b50",
+      "RAL_9005_Tiefschwarz.jpg": "e249cd3bf41309b69cbd7b188feac9a57918a243"
+    }
+  },
+  {
+    "id": "rostock-traffic-ampel-standard-ausleger",
+    "name": "Standard overhead traffic light",
+    "provider": "Rostock 3DModels",
+    "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/obj/Ampel_Standard_Ausleger.obj",
+    "license": "CC0-1.0",
+    "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+    "intended_use": "Standard overhead vehicle traffic light for authored Wroclaw intersections.",
+    "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Ampel_Standard_Ausleger/obj/Ampel_Standard_Ausleger.obj",
+    "source_git_blob_sha1": "eed7d62a8aed089de56f0b87b95dd36198c68741",
+    "companion_mtl": "SourceAssets/Models/Rostock/TrafficSignals/Ampel_Standard_Ausleger/obj/Ampel_Standard_Ausleger.mtl",
+    "texture_source_git_blob_sha1": {
+      "gelb.jpg": "b1ccdd49c3951d3f6ca7c04c98cf84f37a8b10b3",
+      "gruen.jpg": "24bcfeb2a9e20f732dd6806c5a85fc27f85830a6",
+      "rot.jpg": "2d256a45000b3607ac9280ef6206b4b1fbfd1cd5",
+      "RAL_7004_Signalgrau.jpg": "16c611b3dd616809f107c9d374d76a3a44cd7b50",
+      "RAL_9005_Tiefschwarz.jpg": "e249cd3bf41309b69cbd7b188feac9a57918a243",
+      "Kontrastblende.jpg": "677b5e1cd4e6a492e8dbd8e8e23083449bbd3527",
+      "galvanized-metal-texture-seamless-hr.jpg": "22b8a917f975d2eca9de937d102150a7121ffc8b"
+    }
   }
 ]
