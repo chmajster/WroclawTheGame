@@ -99,7 +99,7 @@ class OfficialBuildingImporterTests(unittest.TestCase):
     def test_landmark_catalog_has_unique_real_targets(self):
         data = json.loads((ROOT / "Data" / "wroclaw_landmarks_3d.json").read_text(encoding="utf-8"))
         self.assertEqual(data["schema_version"], 1)
-        self.assertEqual(data["preferred_lod"], "LoD2")
+        self.assertEqual(data["preferred_lod"], "auto")
         ids = [item["id"] for item in data["targets"]]
         self.assertEqual(len(ids), len(set(ids)))
         self.assertGreaterEqual(len(ids), 6)
