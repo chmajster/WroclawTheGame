@@ -46,7 +46,6 @@ def prepare():
         if not mesh or not isinstance(mesh, unreal.SkeletalMesh):
             raise RuntimeError(f'Character body is not a SkeletalMesh: {model_id} -> {object_path}')
         body.set_editor_property('mesh', mesh)
-        body.set_editor_property('face_mesh', None)
         body.set_editor_property('mesh_rotation', unreal.Rotator(0, -90, 0))
     catalog.set_editor_property('bodies', bodies)
     unreal.EditorAssetLibrary.save_loaded_asset(catalog, False)
