@@ -1,0 +1,72 @@
+{
+  "slug": "plastic_broom",
+  "name": "Plastic Broom",
+  "intended_use": "Apartment/shop/workshop utility prop.",
+  "source_page": "https://polyhaven.com/a/plastic_broom",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "L": "All"
+  },
+  "category": "Tools & Equipment/Garden Tools/Brooms & Cleaning",
+  "tags": [
+    "cleaning",
+    "janitorial",
+    "red",
+    "housekeeping"
+  ],
+  "dimensions_mm": [
+    416.39260947704315,
+    566.5929764509201,
+    1197.52332335338
+  ],
+  "files_hash": "96b9f69289e9738a0bcfc8302e17575e0fd0a237",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/plastic_broom/plastic_broom_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_broom/plastic_broom_1k.fbx",
+      "bytes": 613724,
+      "md5": "acea8470af5b85ac3932599370f946b0",
+      "sha256": "5266a0283658985e53b0a3eff700980428fcd14968fe57b0066cd1b81d67703a",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/plastic_broom/plastic_broom_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_broom/textures/plastic_broom_alpha_1k.png",
+      "bytes": 49591,
+      "md5": "cfe7493485d7da22dec4ca9d4e26a848",
+      "sha256": "562ce4d0ad93f9c85e09380c9ab24f90439786a88fbd658a5dabe5b7bcf3d83d",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/plastic_broom/plastic_broom_alpha_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_broom/textures/plastic_broom_diff_1k.jpg",
+      "bytes": 265496,
+      "md5": "c8c519d746ece73d53253325e5a4a0eb",
+      "sha256": "fcffd470ca8e8dd126e072c6d5b0a604fbffc07ff38da442efcda50db29965e6",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/plastic_broom/plastic_broom_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_broom/textures/plastic_broom_metal_1k.exr",
+      "bytes": 5251,
+      "md5": "7442f8dd67dbc9f78fa915a449cf3dd5",
+      "sha256": "d4a0c663d130f565cf6f8728841ce15f018a8e589e986d95299145b449aeb314",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/plastic_broom/plastic_broom_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_broom/textures/plastic_broom_nor_gl_1k.exr",
+      "bytes": 210245,
+      "md5": "f1b7b06315f294b4ccab712069f9b5c4",
+      "sha256": "596475f3c0c69dbd83dfe1ac1c9402b5442133dd6ee02297dba9864a802040bb",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/plastic_broom/plastic_broom_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_broom/textures/plastic_broom_rough_1k.exr",
+      "bytes": 520370,
+      "md5": "0f437f4938d9ed2e09922c80d5f80b0a",
+      "sha256": "5c2712adf461d4ad8559b9f144176d17e9bf50697bcf4ec6bc3ac0111d50d2c3",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/plastic_broom/plastic_broom_rough_1k.exr"
+    }
+  ]
+}

@@ -1436,5 +1436,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/spray_paint_bottles/spray_paint_bottles_1k.fbx"
+  },
+  {
+    "slug": "plastic_broom",
+    "name": "Plastic Broom",
+    "intended_use": "Apartment/shop/workshop utility prop.",
+    "source_page": "https://polyhaven.com/a/plastic_broom",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "L": "All"
+    },
+    "category": "Tools & Equipment/Garden Tools/Brooms & Cleaning",
+    "dimensions_mm": [
+      416.39260947704315,
+      566.5929764509201,
+      1197.52332335338
+    ],
+    "files_hash": "96b9f69289e9738a0bcfc8302e17575e0fd0a237",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/plastic_broom/plastic_broom_1k.fbx"
   }
 ]
