@@ -44,6 +44,8 @@ Import GIS wymaga osobnego Pythona 3.12 lub nowszego (pyproj 3.8). Python wbudow
 ```powershell
 python -m pip install -r Scripts/gis/requirements.txt
 .\Scripts\Build-Geography.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.8' -Package
+# Pełny wariant z migracją kampanii na GIS:
+.\Scripts\Build-FullGame.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.8'
 ```
 
 Otwórz `/Game/Maps/Nadodrze_GIS` w edytorze. W pakiecie Development z powyższego skryptu użyj konsoli `open /Game/Maps/Nadodrze_GIS`. Tryb nie zapisuje postępu kampanii. Ulice i trasy prób korzystają z tej samej importowanej sieci. Generator migracji kampanii potrafi przeliczyć blockout na kotwice GIS i wypiec akcje/NPC na `Nadodrze_GIS`, ale wnętrza nadal są powiązanymi blockoutami i wymagają autorskiego osadzenia oraz odbioru w UE.
