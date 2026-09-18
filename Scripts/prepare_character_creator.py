@@ -11,6 +11,7 @@ ROOT = Path(unreal.Paths.project_dir()).resolve()
 DEST = '/Game/CharacterCreator'
 MARKER = ROOT / 'Saved/CharacterCreatorReady.ok'
 FREE_MODEL_IMPORT_MAP = ROOT / 'Saved/FreeModelImportMap.json'
+RETARGETED_ANIMATION_MAP = ROOT / 'Saved/RetargetedAnimationMap.json'
 
 
 def prepare():
@@ -30,6 +31,10 @@ def prepare():
     if not FREE_MODEL_IMPORT_MAP.is_file():
         raise RuntimeError('Free model import map missing; character bodies cannot be resolved')
     imported_models = json.loads(FREE_MODEL_IMPORT_MAP.read_text(encoding='utf-8'))
+    if not RETARGETED_ANIMATION_MAP.is_file():
+        raise RuntimeError('Retargeted animation map missing; run prepare_animation_retargeting.py first')
+    retargeted_animations = json.loads(RETARGETED_ANIMATION_MAP.read_text(encoding='utf-8'))
+
     def imported_mesh(model_id):
         metadata = imported_models.get(model_id)
         object_path = metadata.get('primary_object') if metadata else None
@@ -53,6 +58,20 @@ def prepare():
             raise RuntimeError(f'Character body is not a SkeletalMesh: {model_id}')
         body.set_editor_property('mesh', mesh)
         body.set_editor_property('mesh_rotation', unreal.Rotator(0, -90, 0))
+        variant = 'female' if body_id.startswith('Female') else 'male'
+        semantic_fields = {
+            'creator_idle': 'character.creator_idle',
+            'walk': 'character.walk',
+            'jog': 'character.jog',
+            'crouch': 'character.crouch_idle',
+        }
+        for property_name, semantic in semantic_fields.items():
+            record = retargeted_animations.get(semantic)
+            object_path = record.get('targets', {}).get(variant) if record else None
+            animation = unreal.load_asset(object_path) if object_path else None
+            if not animation or not isinstance(animation, unreal.AnimationAsset):
+                raise RuntimeError(f'Missing retargeted {semantic} for {body_id}: {object_path}')
+            body.set_editor_property(property_name, animation)
     catalog.set_editor_property('bodies', bodies)
 
     part_sources = {
