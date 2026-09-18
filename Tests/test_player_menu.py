@@ -166,6 +166,15 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_confirmation_modal_blurs_background(self):
+        for token in (
+            "ModalBlur = WidgetTree->ConstructWidget<UBackgroundBlur>()",
+            "ModalBlur->SetBlurStrength(8.0f)",
+            "ModalBlur->SetBlurRadius(12)",
+            "ModalBlur->AddChild(Center)",
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_confirmation_modal_has_countdown_progress_and_input_hint(self):
         for token in (
             "ConfirmationProgress",
