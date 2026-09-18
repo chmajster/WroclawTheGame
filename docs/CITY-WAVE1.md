@@ -92,8 +92,8 @@ Populacja rozdziela pieszych i samochody. Piesi korzystają z puli maksymalnie 2
 1. UHT/UBT, wypiek mapy przez `Build-Geography.ps1 -City`, kontrola World Partition, HLOD oraz jazda/pieszy przegląd sektorów.
 2. Sprawdzenie prześwitu i kolizji sześciu pomostów, wody, skrzyżowań oraz podłoża agentów. Pozostałe nieopracowane mosty i tunele nadal są pomijane.
 3. Przejście wszystkich czterech zadań, sekretów, zdarzeń i wnętrz; save/load na ulicy, we wnętrzu i podczas postoju samochodu. W Session Frontend uruchomić test `WTG.City.SaveMemoryRoundTrip` (dodany, lokalnie nieuruchomiony).
-4. Pomiar pamięci, FPS i pop-in przy szybkiej jeździe; ręczna poprawa landmarków, punktów interakcji i profili fasad. Obecne markery, agentów i pokoje zastąpić docelowymi assetami.
-5. Migracja kampanii i jej wnętrz do GIS pozostaje osobnym zadaniem. Dopiero po odbiorze Wave 1 — pełny content pass Wave 2.
+4. Pomiar pamięci, FPS i pop-in przy szybkiej jeździe; ręczna poprawa landmarków, punktów interakcji i profili fasad. Markery, piesi, drzwi, samochód oraz bazowe wyposażenie wnętrz korzystają z audytowanych modeli przez `Data/model_bindings.json`; pozostaje wizualny odbiór transformacji, LOD, kolizji i materiałów w Unreal.
+5. Generator migracji kampanii do GIS jest zaimplementowany, ale linked blockouty wnętrz, save/load i rozmieszczenie w rzeczywistych budynkach wymagają odbioru w UE. Dopiero po odbiorze Wave 1 — pełny content pass Wave 2.
 
 Pozostałe wymagania załącznika, m.in. predykcja streamingu według trasy misji/wyścigu, pamięć według kategorii, questy wielodzielnicowe, AlleyNetwork, stany zagrożenia, trasy ucieczki i automatyczny city tour w silniku, pozostają niewdrożone. Nie zastąpiono ich pustymi klasami.
 
