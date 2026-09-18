@@ -1,0 +1,11 @@
+{
+  "id": "rostock-traffic-fahrradampel-rot-gelb-gruen-mast",
+  "name": "Bicycle traffic light — red/yellow/green",
+  "provider": "Rostock 3DModels",
+  "source_page": "https://github.com/rostock/3DModels/blob/main/Ampeln/glb/Fahrradampel_rot_gelb_gruen_Mast.glb",
+  "license": "CC0-1.0",
+  "license_url": "https://github.com/rostock/3DModels/blob/main/LICENSE",
+  "intended_use": "Bicycle traffic light model for authored cycle crossings and intersections.",
+  "primary_path": "SourceAssets/Models/Rostock/TrafficSignals/Fahrradampel_rot_gelb_gruen_Mast/Fahrradampel_rot_gelb_gruen_Mast.glb",
+  "source_git_blob_sha1": "9edefce80df12be1d0bec574c2d78a7fb722869b"
+}
