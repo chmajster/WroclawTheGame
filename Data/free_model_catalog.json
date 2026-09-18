@@ -951,5 +951,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/Drill_01/Drill_01_1k.fbx"
+  },
+  {
+    "slug": "wooden_cutting_board",
+    "name": "Wooden Cutting Board",
+    "intended_use": "Apartment kitchen prop.",
+    "source_page": "https://polyhaven.com/a/wooden_cutting_board",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Kuutti Siitonen": "All"
+    },
+    "category": "Food & Kitchen/Utensils/Cutting Boards",
+    "dimensions_mm": [
+      449.8896151781082,
+      246.6525286436081,
+      41.25304119224893
+    ],
+    "files_hash": "bf62fd6c3b52e068d9f8f47a30ede3363c206b75",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/wooden_cutting_board/wooden_cutting_board_1k.fbx"
   }
 ]

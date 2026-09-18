@@ -49,3 +49,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Street Lamp 02 | Wall-mounted urban street lighting variation. | Josh Dean | [Poly Haven](https://polyhaven.com/a/street_lamp_02) | CC0 1.0 |
 | Rollershutter Window 02 | Second shop/garage shutter variation. | MP | [Poly Haven](https://polyhaven.com/a/rollershutter_window_02) | CC0 1.0 |
 | Drill 01 | Workshop power-tool prop. | Fernando Quinn | [Poly Haven](https://polyhaven.com/a/Drill_01) | CC0 1.0 |
+| Wooden Cutting Board | Apartment kitchen prop. | Kuutti Siitonen | [Poly Haven](https://polyhaven.com/a/wooden_cutting_board) | CC0 1.0 |
