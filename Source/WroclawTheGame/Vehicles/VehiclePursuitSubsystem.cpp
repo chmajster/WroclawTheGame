@@ -1,6 +1,7 @@
 #include "Vehicles/VehiclePursuitSubsystem.h"
 #include "Vehicles/CityTrafficVehicle.h"
 #include "Vehicles/DriveableVehicle.h"
+#include "Vehicles/VehicleAIDriverComponent.h"
 #include "World/CityPopulation.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -69,6 +70,7 @@ bool UVehiclePursuitSubsystem::StartPursuit(int32 PursuerCount)
         if (!Pursuer)
             continue;
         Pursuer->bPersistentPlayerVehicle = false;
+        Pursuer->TrafficDriver->CruiseSpeed = 1650.0f + I * 120.0f;
         if (!Pursuer->ConfigureTraffic(BestRoute->Points, StartIndex))
         {
             Pursuer->Destroy();
