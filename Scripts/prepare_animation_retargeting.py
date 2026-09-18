@@ -44,15 +44,92 @@ def recreate_asset(name, asset_class, factory):
     return asset
 
 
+def skeletal_bone_names(mesh):
+    modifier_type = getattr(unreal, "SkinWeightModifier", None)
+    if modifier_type is not None:
+        try:
+            modifier = modifier_type()
+            if modifier.set_skeletal_mesh(mesh):
+                return [str(value) for value in modifier.get_all_bone_names()]
+        except Exception:
+            pass
+    return []
+
+
+def normalized_bones(mesh):
+    return {norm(name): name for name in skeletal_bone_names(mesh)}
+
+
+def pick_bone(bones, aliases):
+    for alias in aliases:
+        value = bones.get(norm(alias))
+        if value:
+            return value
+    return None
+
+
+def ensure_humanoid_chains(controller, mesh):
+    bones = normalized_bones(mesh)
+    if not bones:
+        return False
+
+    pelvis = pick_bone(bones, ("pelvis", "hips", "hip"))
+    spine_start = pick_bone(bones, ("spine_01", "spine01", "spine", "spine1"))
+    spine_end = pick_bone(bones, ("spine_03", "spine03", "chest", "upperchest", "spine3", "neck_01", "neck"))
+    left_arm_start = pick_bone(bones, ("upperarm_l", "upper_arm_l", "leftarm", "leftupperarm", "arm_l"))
+    left_hand = pick_bone(bones, ("hand_l", "left_hand", "lefthand", "wrist_l"))
+    right_arm_start = pick_bone(bones, ("upperarm_r", "upper_arm_r", "rightarm", "rightupperarm", "arm_r"))
+    right_hand = pick_bone(bones, ("hand_r", "right_hand", "righthand", "wrist_r"))
+    left_leg_start = pick_bone(bones, ("thigh_l", "upperleg_l", "leftupleg", "leftthigh", "upper_leg_l"))
+    left_foot = pick_bone(bones, ("foot_l", "leftfoot", "left_foot", "ankle_l"))
+    right_leg_start = pick_bone(bones, ("thigh_r", "upperleg_r", "rightupleg", "rightthigh", "upper_leg_r"))
+    right_foot = pick_bone(bones, ("foot_r", "rightfoot", "right_foot", "ankle_r"))
+
+    required = {
+        "pelvis": pelvis,
+        "SpineStart": spine_start,
+        "SpineEnd": spine_end,
+        "LeftArmStart": left_arm_start,
+        "LeftHand": left_hand,
+        "RightArmStart": right_arm_start,
+        "RightHand": right_hand,
+        "LeftLegStart": left_leg_start,
+        "LeftFoot": left_foot,
+        "RightLegStart": right_leg_start,
+        "RightFoot": right_foot,
+    }
+    if any(value is None for value in required.values()):
+        return False
+
+    controller.set_retarget_root(pelvis)
+    existing = {
+        norm(str(chain.get_editor_property("chain_name"))): str(chain.get_editor_property("chain_name"))
+        for chain in controller.get_retarget_chains()
+    }
+    definitions = {
+        "Spine": (spine_start, spine_end),
+        "LeftArm": (left_arm_start, left_hand),
+        "RightArm": (right_arm_start, right_hand),
+        "LeftLeg": (left_leg_start, left_foot),
+        "RightLeg": (right_leg_start, right_foot),
+    }
+    for chain_name, (start, end) in definitions.items():
+        if norm(chain_name) not in existing:
+            controller.add_retarget_chain(chain_name, start, end, "")
+    return True
+
+
 def make_ik_rig(name, mesh, require_fbik, required_chains):
     rig = recreate_asset(name, unreal.IKRigDefinition, unreal.IKRigDefinitionFactory())
     controller = unreal.IKRigController.get_controller(rig)
     if not controller or not controller.set_skeletal_mesh(mesh):
         raise RuntimeError(f"Cannot assign skeletal mesh to {name}")
-    if not controller.apply_auto_generated_retarget_definition():
-        raise RuntimeError(f"Auto retarget-chain generation failed: {name}")
-    if require_fbik and not controller.apply_auto_fbik():
-        raise RuntimeError(f"Auto FBIK generation failed: {name}")
+    auto_definition = bool(controller.apply_auto_generated_retarget_definition())
+    if not auto_definition:
+        if not ensure_humanoid_chains(controller, mesh):
+            raise RuntimeError(
+                f"Auto retarget-chain generation failed and manual humanoid fallback could not resolve bones: {name}"
+            )
 
     chain_names = []
     for chain in controller.get_retarget_chains():
@@ -64,9 +141,22 @@ def make_ik_rig(name, mesh, require_fbik, required_chains):
     normalized = {norm(value) for value in chain_names}
     missing = [name for name in required_chains if norm(name) not in normalized]
     if missing:
-        raise RuntimeError(f"{name}: missing auto-generated retarget chains {missing}; got {chain_names}")
+        if ensure_humanoid_chains(controller, mesh):
+            chain_names = []
+            for chain in controller.get_retarget_chains():
+                try:
+                    chain_name = chain.get_editor_property("chain_name")
+                except Exception:
+                    chain_name = getattr(chain, "chain_name", "")
+                chain_names.append(str(chain_name))
+            normalized = {norm(value) for value in chain_names}
+            missing = [chain_name for chain_name in required_chains if norm(chain_name) not in normalized]
+        if missing:
+            raise RuntimeError(f"{name}: missing retarget chains {missing}; got {chain_names}")
     if not str(controller.get_retarget_root()):
         raise RuntimeError(f"{name}: retarget root is empty")
+    if require_fbik and not controller.apply_auto_fbik():
+        raise RuntimeError(f"Auto FBIK generation failed: {name}")
     if not unreal.EditorAssetLibrary.save_loaded_asset(rig, False):
         raise RuntimeError(f"Cannot save IK Rig {name}")
     return rig, controller, chain_names
