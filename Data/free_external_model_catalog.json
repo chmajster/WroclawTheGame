@@ -374,5 +374,26 @@
         "sha256": "257b4f7e4f459f74d9dddb3c9856ad7931cfbb84b356dc9b2f2fb4591ebe7125"
       }
     ]
+  },
+  {
+    "id": "oga-smartphone-redacted",
+    "name": "Smartphone",
+    "provider": "OpenGameArt",
+    "source_page": "https://opengameart.org/content/smartphone-1",
+    "license": "CC0-1.0",
+    "intended_use": "Phone pickup, abandoned phone and phone-related clue prop.",
+    "primary_path": "SourceAssets/Models/OpenGameArt/oga-smartphone-redacted/smartphone.obj",
+    "sources": [
+      {
+        "url": "https://opengameart.org/sites/default/files/samsung-sgh-i677_0.obj",
+        "bytes": 17410,
+        "sha256": "72c6ffae8b02a7672d6bc8a24cf5e94faf65c915a9082f03fb24ca2df0e74d85"
+      },
+      {
+        "url": "https://opengameart.org/sites/default/files/samsung-sgh-i677-redacted.png",
+        "bytes": 311273,
+        "sha256": "6cf0471c9fe0f505d44d620920f767098418d27f7223926e3af2e23f8db5982e"
+      }
+    ]
   }
 ]
