@@ -28,3 +28,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Korean Fire Extinguisher 01 | Building, basement and garage fire-safety prop. | UM JOORIN | [Poly Haven](https://polyhaven.com/a/korean_fire_extinguisher_01) | CC0 1.0 |
 | Metal Trash Can | Courtyard/street trash prop. | GurJas Studios | [Poly Haven](https://polyhaven.com/a/metal_trash_can) | CC0 1.0 |
 | Trashbag | Street/alley/courtyard clutter. | Benny Weimer | [Poly Haven](https://polyhaven.com/a/trashbag) | CC0 1.0 |
+| Plastic Crate 01 | Shop, garage and workshop storage prop. | PierreB3D | [Poly Haven](https://polyhaven.com/a/plastic_crate_01) | CC0 1.0 |

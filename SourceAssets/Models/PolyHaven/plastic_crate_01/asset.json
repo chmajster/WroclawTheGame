@@ -1,0 +1,69 @@
+{
+  "slug": "plastic_crate_01",
+  "name": "Plastic Crate 01",
+  "intended_use": "Shop, garage and workshop storage prop.",
+  "source_page": "https://polyhaven.com/a/plastic_crate_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "PierreB3D": "All"
+  },
+  "category": "Containers & Storage/Boxes & Crates/Plastic Crates",
+  "tags": [
+    "beverage crate",
+    "milk crate",
+    "storage",
+    "crate",
+    "box",
+    "garage",
+    "workshop",
+    "retail"
+  ],
+  "dimensions_mm": [
+    298.00063371658325,
+    408.00413489341736,
+    264.1694247722626
+  ],
+  "files_hash": "74d27ffa75c1d477708f4dd344d500b65d376a84",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/plastic_crate_01/plastic_crate_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_crate_01/plastic_crate_01_1k.fbx",
+      "bytes": 542572,
+      "md5": "ca5a4b230c6dc711a05be22ffc9ad022",
+      "sha256": "f3b10f10803317b24014a1f700d4e1c40f53e93f1d30a3af6a1b6c60ae95ee7c",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/plastic_crate_01/plastic_crate_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_crate_01/textures/plastic_crate_01_diff_1k.jpg",
+      "bytes": 518288,
+      "md5": "0250b2750da634e95ef44b6ffb11681e",
+      "sha256": "d9109a42e397e39bbd7f42976d93122dbd5ccdef8ff64bce353571e1c1b994f6",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/plastic_crate_01/plastic_crate_01_diff_1k.jpg"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_crate_01/textures/plastic_crate_01_metal_1k.exr",
+      "bytes": 5213,
+      "md5": "36374436517f44328aee8ed4291fc885",
+      "sha256": "30f93b88fc7b40fd181ec75b7f3bdd90d7ebf0aecc9f8ec68665f9d6bb39bdae",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/plastic_crate_01/plastic_crate_01_metal_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_crate_01/textures/plastic_crate_01_nor_gl_1k.exr",
+      "bytes": 1710553,
+      "md5": "08cd1b06c6a311b0092f1babea0e925c",
+      "sha256": "de3b8a41e4308cb0093dc1526b21b089699dc24d75239b0e20a51be3e9bf832c",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/plastic_crate_01/plastic_crate_01_nor_gl_1k.exr"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/plastic_crate_01/textures/plastic_crate_01_rough_1k.exr",
+      "bytes": 813509,
+      "md5": "b03c477aed1099a3be8ee8bef4044703",
+      "sha256": "1d69e05d561f02d54911c2ab76c92a02da6fd228d85c037db7a581ff098b2e31",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/plastic_crate_01/plastic_crate_01_rough_1k.exr"
+    }
+  ]
+}

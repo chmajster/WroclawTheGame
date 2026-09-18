@@ -485,5 +485,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/trashbag/trashbag_1k.fbx"
+  },
+  {
+    "slug": "plastic_crate_01",
+    "name": "Plastic Crate 01",
+    "intended_use": "Shop, garage and workshop storage prop.",
+    "source_page": "https://polyhaven.com/a/plastic_crate_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "PierreB3D": "All"
+    },
+    "category": "Containers & Storage/Boxes & Crates/Plastic Crates",
+    "dimensions_mm": [
+      298.00063371658325,
+      408.00413489341736,
+      264.1694247722626
+    ],
+    "files_hash": "74d27ffa75c1d477708f4dd344d500b65d376a84",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/plastic_crate_01/plastic_crate_01_1k.fbx"
   }
 ]
