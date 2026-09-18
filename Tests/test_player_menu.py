@@ -233,6 +233,18 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             self.assertIn(token, self.cpp)
         self.assertIn("TObjectPtr<class UBorder> ToastCard", self.header)
 
+    def test_settings_toast_has_accent_rail_and_reduced_motion_safe_entrance(self):
+        for token in (
+            "ToastRail",
+            "ToastRailSize->SetWidthOverride(3.0f)",
+            "ToastAnimationTime",
+            "ToastAnimationTime < 0.18f",
+            "FMath::Lerp(18.0f, 0.0f, Ease)",
+            "bReduceMotion ? FVector2D::ZeroVector",
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertIn("float ToastAnimationTime = 0.18f", self.header)
+
     def test_confirmation_modal_blurs_background(self):
         for token in (
             "ModalBlur = WidgetTree->ConstructWidget<UBackgroundBlur>()",
