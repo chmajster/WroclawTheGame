@@ -332,7 +332,7 @@ void UPlayerMenuWidget::BuildShell()
     ContextStatus->SetJustification(ETextJustify::Right);
     ContextBar->AddChildToHorizontalBox(ContextStatus)->SetPadding(FMargin(12, 0, 18, 0));
 
-    auto* ContextHint = MakeText(TEXT("Q/E  L1/R1  ZAKŁADKI    •    ENTER/A  WYBIERZ    •    ESC/B  WSTECZ"), 10, true, Muted);
+    auto* ContextHint = MakeText(TEXT("1–7  Q/E  L1/R1  ZAKŁADKI    •    ENTER/A  WYBIERZ    •    ESC/B  WSTECZ"), 10, true, Muted);
     ContextHint->SetJustification(ETextJustify::Right);
     ContextBar->AddChildToHorizontalBox(ContextHint);
 
@@ -2361,13 +2361,37 @@ FReply UPlayerMenuWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, co
         }
     }
 
-    if (Key == EKeys::Q || Key == EKeys::Gamepad_LeftShoulder)
+    const FKey DirectTabKeys[] = {
+        EKeys::One, EKeys::Two, EKeys::Three, EKeys::Four,
+        EKeys::Five, EKeys::Six, EKeys::Seven
+    };
+    for (int32 Index = 0; Index < UE_ARRAY_COUNT(DirectTabKeys); ++Index)
+    {
+        if (Key == DirectTabKeys[Index])
+        {
+            SelectTab(Index);
+            return FReply::Handled();
+        }
+    }
+
+    if (Key == EKeys::Home)
+    {
+        SelectTab(0);
+        return FReply::Handled();
+    }
+    if (Key == EKeys::End)
+    {
+        SelectTab(TabButtons.Num() - 1);
+        return FReply::Handled();
+    }
+
+    if (Key == EKeys::Q || Key == EKeys::Gamepad_LeftShoulder || Key == EKeys::Gamepad_DPad_Left)
     {
         SelectTab((ActiveTab + TabButtons.Num() - 1) % TabButtons.Num());
         return FReply::Handled();
     }
 
-    if (Key == EKeys::E || Key == EKeys::Gamepad_RightShoulder)
+    if (Key == EKeys::E || Key == EKeys::Gamepad_RightShoulder || Key == EKeys::Gamepad_DPad_Right)
     {
         SelectTab((ActiveTab + 1) % TabButtons.Num());
         return FReply::Handled();

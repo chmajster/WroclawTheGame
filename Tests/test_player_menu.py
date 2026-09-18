@@ -134,6 +134,19 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         self.assertIn("Mission->bInGame", load_body)
         self.assertIn("ShowConfirmation(", load_body)
 
+    def test_direct_tab_shortcuts_and_dpad_navigation(self):
+        for token in (
+            "DirectTabKeys",
+            "EKeys::One",
+            "EKeys::Seven",
+            "EKeys::Home",
+            "EKeys::End",
+            "EKeys::Gamepad_DPad_Left",
+            "EKeys::Gamepad_DPad_Right",
+            'TEXT("1–7  Q/E  L1/R1  ZAKŁADKI',
+        ):
+            self.assertIn(token, self.cpp)
+
     def test_keyboard_and_gamepad_navigation_remains_available(self):
         for token in (
             "Gamepad_LeftShoulder", "Gamepad_RightShoulder",
