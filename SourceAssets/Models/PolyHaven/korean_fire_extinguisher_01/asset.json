@@ -1,0 +1,135 @@
+{
+  "slug": "korean_fire_extinguisher_01",
+  "name": "Korean Fire Extinguisher 01",
+  "intended_use": "Building, basement and garage fire-safety prop.",
+  "source_page": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "UM JOORIN": "All"
+  },
+  "category": "Industrial & Infrastructure/Traffic & Safety/Hydrants & Fire Safety",
+  "tags": [
+    "fire",
+    "saftey",
+    "fireman",
+    "extinguisher",
+    "emergency",
+    "equipment",
+    "red",
+    "firefighting",
+    "asian",
+    "utility",
+    "infrastructure"
+  ],
+  "dimensions_mm": [
+    279.957577586174,
+    367.44324862957,
+    659.2507164176169
+  ],
+  "files_hash": "bf286ac62105374e5c583367e80ce77dcbe6881c",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/korean_fire_extinguisher_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/korean_fire_extinguisher_01_1k.fbx",
+      "bytes": 345196,
+      "md5": "4daa615ca2423d30b73c76ef471d0aa4",
+      "sha256": "45c2fcf1fc412fcc7601ec579c5abad9d2eef75f492f0107cc4e12019818c949",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/korean_fire_extinguisher_01/korean_fire_extinguisher_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_body_diff_1k.png",
+      "bytes": 4749986,
+      "md5": "60129f7d58b4b91837497fb2b0d70a37",
+      "sha256": "d311d23fd5ecd1022033b27c6f255fb72e49459954dc941cf5d1c769d126f45f",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/korean_fire_extinguisher_01/korean_fire_extinguisher_01_body_diff_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_body_metal_1k.png",
+      "bytes": 110734,
+      "md5": "ab02c204df339cd94d7e252f8a899e53",
+      "sha256": "5fb60a4b2ffbaa6554fde6e36362205184a0916cbbe6f08c89e22b06558b8809",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/korean_fire_extinguisher_01/korean_fire_extinguisher_01_body_metal_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_body_nor_gl_1k.png",
+      "bytes": 4203597,
+      "md5": "a7594879104179c0dd7cb0d0294c06b2",
+      "sha256": "6876c9e4f6ec1fb9faa687af03518c4449e3eabd96a4945b9392f172397e5352",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/korean_fire_extinguisher_01/korean_fire_extinguisher_01_body_nor_gl_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_body_rough_1k.png",
+      "bytes": 1631292,
+      "md5": "da3bc72cbd1038eaa82d030b691720d7",
+      "sha256": "f538c32270f57e9a3b6031c386c09007ffbdd8c01b30d3b6d72279a784fea8d9",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/korean_fire_extinguisher_01/korean_fire_extinguisher_01_body_rough_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_glass_diff_1k.png",
+      "bytes": 4984493,
+      "md5": "a2eaf120be5bb784d818e5ec1386ddab",
+      "sha256": "52d0e85af3af4665535aad0cba6b4fab1b5f39334ec9c2626560afc255a7605f",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/korean_fire_extinguisher_01/korean_fire_extinguisher_01_glass_diff_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_glass_metal_1k.png",
+      "bytes": 1090327,
+      "md5": "2606aad1fc22a4c99dace23e0dae8655",
+      "sha256": "d39dc99133e86e009e23e3916124c6e2eeeb2268656bc90484973628121472b9",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/korean_fire_extinguisher_01/korean_fire_extinguisher_01_glass_metal_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_glass_nor_gl_1k.png",
+      "bytes": 3041040,
+      "md5": "695a6cf9e50c4959b07e0a18f18bd894",
+      "sha256": "71bae686d771685124cdabf3182e189dc068c68693f3fe28c8a99af80cae8364",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/korean_fire_extinguisher_01/korean_fire_extinguisher_01_glass_nor_gl_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_glass_rough_1k.png",
+      "bytes": 1243557,
+      "md5": "294f55b93d54f17de30eddd47269156e",
+      "sha256": "69672f4601301355769cac898c2edfe120c6152471c3afc5a64423f50c5405dd",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/korean_fire_extinguisher_01/korean_fire_extinguisher_01_glass_rough_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_paper_diff_1k.png",
+      "bytes": 3639168,
+      "md5": "270315ab5ca0a0543b7f80e2415d922f",
+      "sha256": "f0dba585c7c8e18cfa9c23873dfc139cf3d0d72e49c04f049cfc6891ac3b4272",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/korean_fire_extinguisher_01/korean_fire_extinguisher_01_paper_diff_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_paper_metal_1k.png",
+      "bytes": 2155,
+      "md5": "3984ebd3e0aff11d149c2c40985d22f3",
+      "sha256": "fb96b44c55677e850c09ed442e2aeb07c21bf013a3912b477b4baae21d1ffeb8",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/korean_fire_extinguisher_01/korean_fire_extinguisher_01_paper_metal_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_paper_nor_gl_1k.png",
+      "bytes": 3865036,
+      "md5": "d277f215479d708614aa4c9e7dd4f6d1",
+      "sha256": "3e96380b997fbc734f6df5e8926b7494d447a660e533119ebf7a66a133931b3c",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/korean_fire_extinguisher_01/korean_fire_extinguisher_01_paper_nor_gl_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_paper_opacity_1k.png",
+      "bytes": 20159,
+      "md5": "cb9dcca68aab636a78897fce52c877d9",
+      "sha256": "fbdf7fa8f970f0df296e5516b690a8401dd05ad4d9d39650f058b8bb389b8505",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/korean_fire_extinguisher_01/korean_fire_extinguisher_01_paper_opacity_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_paper_rough_1k.png",
+      "bytes": 1275187,
+      "md5": "95ec2adc2fa1dae2fb92310dc45d90e5",
+      "sha256": "8ac89ec9029275a1c58ebbd79d1b9995d2337347ae053eca586ad64521facd45",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/korean_fire_extinguisher_01/korean_fire_extinguisher_01_paper_rough_1k.png"
+    }
+  ]
+}

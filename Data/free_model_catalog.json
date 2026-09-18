@@ -419,5 +419,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/old_tyre/old_tyre_1k.fbx"
+  },
+  {
+    "slug": "korean_fire_extinguisher_01",
+    "name": "Korean Fire Extinguisher 01",
+    "intended_use": "Building, basement and garage fire-safety prop.",
+    "source_page": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "UM JOORIN": "All"
+    },
+    "category": "Industrial & Infrastructure/Traffic & Safety/Hydrants & Fire Safety",
+    "dimensions_mm": [
+      279.957577586174,
+      367.44324862957,
+      659.2507164176169
+    ],
+    "files_hash": "bf286ac62105374e5c583367e80ce77dcbe6881c",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/korean_fire_extinguisher_01/korean_fire_extinguisher_01_1k.fbx"
   }
 ]
