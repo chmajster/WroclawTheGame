@@ -1414,5 +1414,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/rusted_wheel_rim_01/rusted_wheel_rim_01_1k.fbx"
+  },
+  {
+    "slug": "spray_paint_bottles",
+    "name": "Spray Paint Bottles",
+    "intended_use": "Garage/workshop and graffiti-related prop.",
+    "source_page": "https://polyhaven.com/a/spray_paint_bottles",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "category": "Containers & Storage/Cans, Tins & Bottles/Aerosol & Spray Cans",
+    "dimensions_mm": [
+      158.16618502140045,
+      65.64361602067947,
+      228.63975167274475
+    ],
+    "files_hash": "cd5a69aed9685418177fb5c8908e8f8290782ef4",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/spray_paint_bottles/spray_paint_bottles_1k.fbx"
   }
 ]
