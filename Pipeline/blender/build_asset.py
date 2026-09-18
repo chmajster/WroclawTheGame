@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import shutil
 import sys
 import traceback
 from pathlib import Path
@@ -206,6 +207,8 @@ def main() -> None:
     asset_id = manifest["id"]
     safe_name = "SM_" + "".join(ch if ch.isalnum() or ch == "_" else "_" for ch in asset_id)
     out = ROOT / "Saved" / "Pipeline" / "generated" / asset_id
+    if out.exists():
+        shutil.rmtree(out)
     out.mkdir(parents=True, exist_ok=True)
 
     source = resolve(manifest["source"]["model"])
@@ -232,7 +235,8 @@ def main() -> None:
     lod_objects = []
     lod_reports = []
     for index, ratio in enumerate(ratios):
-        lod_name = safe_name if index == 0 else f"{safe_name}_LOD{index}"\n        obj = decimated_copy(base, ratio, lod_name)
+        lod_name = safe_name if index == 0 else f"{safe_name}_LOD{index}"
+        obj = decimated_copy(base, ratio, lod_name)
         count = triangle_count(obj)
         lod_objects.append(obj)
         lod_reports.append({"lod": index, "ratio": ratio, "triangles": count})
