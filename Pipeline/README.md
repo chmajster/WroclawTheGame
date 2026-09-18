@@ -1,6 +1,6 @@
 # Asset Production Pipeline
 
-Ta warstwa nie zastępuje istniejących skryptów kampanii, GIS ani importu darmowych modeli. Spina je z deterministycznym procesem produkcji pojedynczych assetów:
+Ta warstwa nie zastępuje istniejących skryptów kampanii, GIS ani importu darmowych modeli. Spina je z deterministycznym procesem produkcji pojedynczych assetów. Istniejące assety pozostają zgodne z dotychczasowym importem; gdy są istotnie przebudowywane, należy przenieść je pod manifest produkcyjny zamiast utrzymywać drugi równoległy proces.
 
 reference -> source 3D -> Blender -> PBR/LOD/collision -> Unreal -> gameplay automation -> screenshot QA -> poprawka -> commit -> PR -> merge.
 
@@ -91,3 +91,5 @@ Asset jest zakończony dopiero, gdy:
 8. dopiero wtedy można utworzyć PR i go scalić.
 
 Sama kompilacja kodu lub sam import FBX nie oznacza ukończenia assetu.
+
+Kontrakt pracy autonomicznego agenta: [ASTRA_AGENT.md](ASTRA_AGENT.md).
