@@ -51,6 +51,9 @@ const FLinearColor TextPrimary(0.95f, 0.97f, 1.0f, 1.0f);
 const FLinearColor Muted(0.57f, 0.64f, 0.72f, 1.0f);
 const FLinearColor Divider(0.11f, 0.16f, 0.21f, 1.0f);
 const FLinearColor Disabled(0.028f, 0.038f, 0.050f, 0.72f);
+const FLinearColor Danger(0.88f, 0.20f, 0.18f, 1.0f);
+const FLinearColor DangerHover(0.97f, 0.29f, 0.25f, 1.0f);
+const FLinearColor DangerPressed(0.67f, 0.12f, 0.11f, 1.0f);
 
 FSlateRoundedBoxBrush RoundedBrush(const FLinearColor& Color, float Radius)
 {
@@ -1373,6 +1376,7 @@ void UPlayerMenuWidget::ShowConfirmation(
     ClearConfirmation();
     PendingConfirmation = Action;
     ConfirmationSecondsRemaining = Action == 3 ? 15.0f : 0.0f;
+    ConfirmationAnimationTime = 0.0f;
 
     ConfirmationOverlay = WidgetTree->ConstructWidget<UBorder>();
     ConfirmationOverlay->SetBrushColor(FLinearColor(0.0f, 0.0f, 0.0f, 0.78f));
@@ -1389,20 +1393,42 @@ void UPlayerMenuWidget::ShowConfirmation(
     CardSlot->SetHorizontalAlignment(HAlign_Center);
     CardSlot->SetVerticalAlignment(VAlign_Center);
 
-    auto* Card = MakeCard(FMargin(28, 26, 28, 24));
-    CardSize->AddChild(Card);
+    ConfirmationCard = MakeCard(FMargin(28, 26, 28, 24));
+    CardSize->AddChild(ConfirmationCard);
+    ConfirmationCard->SetRenderOpacity(0.0f);
+    ConfirmationCard->SetRenderTranslation(FVector2D(0.0f, 18.0f));
 
     auto* Column = WidgetTree->ConstructWidget<UVerticalBox>();
-    Card->AddChild(Column);
+    ConfirmationCard->AddChild(Column);
 
-    Column->AddChildToVerticalBox(MakeText(TEXT("POTWIERDZENIE"), 9, true, Accent))
+    const bool bDestructive = Action == 1 || Action == 2;
+    Column->AddChildToVerticalBox(MakeText(
+        bDestructive ? TEXT("OSTRZEŻENIE") : TEXT("USTAWIENIA WIDEO"),
+        9, true, bDestructive ? Danger : Accent))
         ->SetPadding(FMargin(0, 0, 0, 5));
     Column->AddChildToVerticalBox(MakeText(Title, 24, true, TextPrimary))
         ->SetPadding(FMargin(0, 0, 0, 12));
 
     auto* Description = MakeText(Body, 12, false, Muted);
     Description->SetLineHeightPercentage(1.25f);
-    Column->AddChildToVerticalBox(Description)->SetPadding(FMargin(0, 0, 0, 18));
+    Column->AddChildToVerticalBox(Description)->SetPadding(FMargin(0, 0, 0, 16));
+
+    if (bDestructive)
+    {
+        auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
+        const bool bSaveOK = Mission && Mission->bLastSaveSucceeded;
+        auto* Warning = WidgetTree->ConstructWidget<UBorder>();
+        Warning->SetBrush(RoundedBrush(
+            bSaveOK ? FLinearColor(0.035f, 0.105f, 0.105f, 0.94f)
+                    : FLinearColor(0.18f, 0.045f, 0.040f, 0.96f),
+            9.0f));
+        Warning->SetPadding(FMargin(12, 9));
+        Warning->AddChild(MakeText(
+            bSaveOK ? TEXT("OSTATNI ZAPIS: POPRAWNY")
+                    : TEXT("OSTATNI ZAPIS: BRAK POTWIERDZENIA POPRAWNEGO ZAPISU"),
+            9, true, bSaveOK ? Accent : DangerHover));
+        Column->AddChildToVerticalBox(Warning)->SetPadding(FMargin(0, 0, 0, 16));
+    }
 
     if (Action == 3)
     {
@@ -1420,15 +1446,26 @@ void UPlayerMenuWidget::ShowConfirmation(
     CancelSlot->SetPadding(FMargin(0, 0, 5, 0));
 
     auto* Confirm = MakeButton(ConfirmLabel, true);
+    if (bDestructive)
+    {
+        FButtonStyle DangerStyle = Confirm->GetStyle();
+        DangerStyle.Normal = RoundedBrush(Danger, 9.0f);
+        DangerStyle.Hovered = RoundedBrush(DangerHover, 9.0f);
+        DangerStyle.Pressed = RoundedBrush(DangerPressed, 9.0f);
+        Confirm->SetStyle(DangerStyle);
+        if (auto* ConfirmText = Cast<UTextBlock>(Confirm->GetContent()))
+            ConfirmText->SetColorAndOpacity(FSlateColor(FLinearColor::White));
+    }
     Confirm->OnClicked.AddDynamic(this, &UPlayerMenuWidget::ConfirmPendingAction);
     auto* ConfirmSlot = Buttons->AddChildToHorizontalBox(Confirm);
     ConfirmSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     ConfirmSlot->SetPadding(FMargin(5, 0, 0, 0));
 
+    UButton* DefaultFocus = bDestructive ? Cancel : Confirm;
     if (APlayerController* PlayerController = GetOwningPlayer())
-        Confirm->SetUserFocus(PlayerController);
+        DefaultFocus->SetUserFocus(PlayerController);
     else
-        Confirm->SetKeyboardFocus();
+        DefaultFocus->SetKeyboardFocus();
 }
 
 void UPlayerMenuWidget::ClearConfirmation()
@@ -1436,6 +1473,7 @@ void UPlayerMenuWidget::ClearConfirmation()
     if (ConfirmationOverlay)
         ConfirmationOverlay->RemoveFromParent();
     ConfirmationOverlay = nullptr;
+    ConfirmationCard = nullptr;
     ConfirmationCountdown = nullptr;
     PendingConfirmation = 0;
     ConfirmationSecondsRemaining = 0.0f;
@@ -1784,6 +1822,15 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
     Super::NativeTick(MyGeometry, InDeltaTime);
 
     AmbientAnimationTime += InDeltaTime;
+
+    if (ConfirmationCard && ConfirmationAnimationTime < 0.18f)
+    {
+        ConfirmationAnimationTime = FMath::Min(0.18f, ConfirmationAnimationTime + InDeltaTime);
+        const float T = FMath::Clamp(ConfirmationAnimationTime / 0.18f, 0.0f, 1.0f);
+        const float Ease = 1.0f - FMath::Pow(1.0f - T, 3.0f);
+        ConfirmationCard->SetRenderOpacity(Ease);
+        ConfirmationCard->SetRenderTranslation(FVector2D(0.0f, FMath::Lerp(18.0f, 0.0f, Ease)));
+    }
     if (AmbientGlowA)
     {
         AmbientGlowA->SetRenderTranslation(FVector2D(

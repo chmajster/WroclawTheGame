@@ -1,3 +1,11 @@
+## 2026-09-18 — finalny polish modalów
+
+- Akcje destrukcyjne Nowa gra i Wyjdź korzystają z czerwonego wariantu ostrzegawczego zamiast zwykłego turkusowego CTA.
+- Domyślny fokus dla akcji destrukcyjnych trafia na ANULUJ; ustawienia wideo nadal domyślnie wskazują ZACHOWAJ.
+- Modal pokazuje status ostatniego zapisu przed rozpoczęciem nowej gry lub wyjściem.
+- Potwierdzenia wideo są podpisane jako USTAWIENIA WIDEO, a akcje destrukcyjne jako OSTRZEŻENIE.
+- Karta modalna płynnie pojawia się w 180 ms z cubic-out i krótkim przesunięciem.
+
 ## 2026-09-18 — landing page kampanii
 
 - Zakładka GRA dostała własny hero panel zamiast korzystać z identycznego podglądu jak zakładka Postać.
