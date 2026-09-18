@@ -43,7 +43,7 @@
     "peephole": "kenney-door-door-rotate-square-a",
     "routes": "clipboard",
     "apartment_unlocked": "kenney-door-door-rotate-square-a",
-    "neighbor_help": "kenney-blocky-character-rig",
+    "neighbor_help": "quaternius-ubc-superhero-male",
     "basement_key": "oga-key-low-poly",
     "flashlight": "signal_flashlight",
     "batteries": "oga-survival-battery",
@@ -103,10 +103,10 @@
     "roadblock_note": "clipboard"
   },
   "systems": {
-    "player_fallback": "kenney-blocky-character-rig",
-    "resident_npc": "kenney-blocky-character-rig",
-    "enemy_guard": "kenney-blocky-character-rig",
-    "ambient_pedestrian": "kenney-blocky-character-rig",
+    "player_fallback": "quaternius-ubc-superhero-male",
+    "resident_npc": "quaternius-ubc-superhero-male",
+    "enemy_guard": "quaternius-ubc-superhero-male",
+    "ambient_pedestrian": "quaternius-ubc-superhero-female",
     "ambient_vehicle": "kenney-car-sedan",
     "driveable_vehicle_body": "kenney-car-sedan-sports",
     "driveable_vehicle_wheel": "kenney-car-wheel-default",
@@ -115,6 +115,7 @@
     "cctv_monitor": "Television_01",
     "hide_container": "plastic_container",
     "hide_shelf": "wooden_bookshelf_worn",
-    "city_activity_marker": "clipboard"
+    "city_activity_marker": "clipboard",
+    "player_fallback_female": "quaternius-ubc-superhero-female"
   }
 }
