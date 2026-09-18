@@ -16,7 +16,6 @@
 #include "Engine/World.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/DamageEvents.h"
-#include "UObject/ConstructorHelpers.h"
 #include "Audio/SliceAudio.h"
 ADriveableVehicle::ADriveableVehicle()
 {
@@ -30,18 +29,25 @@ ADriveableVehicle::ADriveableVehicle()
     Chassis->SetNotifyRigidBodyCollision(true);
     Chassis->SetLinearDamping(.04);
     Chassis->SetAngularDamping(2);
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
-    auto *Body = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
-    Body->SetupAttachment(Chassis);
-    Body->SetStaticMesh(Cube.Object);
-    Body->SetRelativeScale3D(FVector(4.2, 1.8, .56));
-    Body->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    auto *Cabin = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cabin"));
-    Cabin->SetupAttachment(Chassis);
-    Cabin->SetStaticMesh(Cube.Object);
-    Cabin->SetRelativeScale3D(FVector(2.1, 1.65, .6));
-    Cabin->SetRelativeLocation(FVector(-25, 0, 55));
-    Cabin->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    BodyVisual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
+    BodyVisual->SetupAttachment(Chassis);
+    BodyVisual->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    CabinVisual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cabin"));
+    CabinVisual->SetupAttachment(Chassis);
+    CabinVisual->SetVisibility(false, true);
+    CabinVisual->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    int32 WheelIndex = 0;
+    for (float X : {-145.f, 145.f})
+        for (float Y : {-78.f, 78.f})
+        {
+            auto *Wheel = CreateDefaultSubobject<UStaticMeshComponent>(*FString::Printf(TEXT("Wheel%d"), WheelIndex++));
+            Wheel->SetupAttachment(Chassis);
+            Wheel->SetRelativeLocation(FVector(X, Y, -38));
+            Wheel->SetRelativeRotation(FRotator(0, 0, 90));
+            Wheel->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+            Wheel->SetCanEverAffectNavigation(false);
+            WheelVisuals.Add(Wheel);
+        }
     Boom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Boom"));
     Boom->SetupAttachment(Chassis);
     Boom->TargetArmLength = 650;
@@ -61,6 +67,24 @@ ADriveableVehicle::ADriveableVehicle()
         Light->SetAttenuationRadius(4500);
         Light->SetVisibility(false);
         Lights.Add(Light);
+    }
+}
+void ADriveableVehicle::SetVisualMeshes(UStaticMesh *BodyMesh, UStaticMesh *WheelMesh)
+{
+    if (BodyMesh)
+    {
+        BodyVisual->SetStaticMesh(BodyMesh);
+        BodyVisual->SetRelativeScale3D(FVector(1));
+        BodyVisual->SetRelativeLocation(FVector::ZeroVector);
+        BodyVisual->SetRelativeRotation(FRotator::ZeroRotator);
+        CabinVisual->SetVisibility(false, true);
+    }
+    for (auto *Wheel : WheelVisuals)
+    {
+        if (!Wheel) continue;
+        Wheel->SetStaticMesh(WheelMesh);
+        Wheel->SetVisibility(WheelMesh != nullptr, true);
+        Wheel->SetRelativeScale3D(FVector(1));
     }
 }
 void ADriveableVehicle::BeginPlay()
