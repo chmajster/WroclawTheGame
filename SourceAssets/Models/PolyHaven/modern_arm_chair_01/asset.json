@@ -1,0 +1,97 @@
+{
+  "slug": "modern_arm_chair_01",
+  "name": "Modern Arm Chair 01",
+  "intended_use": "Apartment/safehouse seating.",
+  "source_page": "https://polyhaven.com/a/modern_arm_chair_01",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Vibrant Nordic": "All"
+  },
+  "category": "Furniture/Seating/Chairs",
+  "tags": [
+    "wood",
+    "leather",
+    "fancy",
+    "modern",
+    "chair",
+    "contemporary",
+    "wooden",
+    "lounge"
+  ],
+  "dimensions_mm": [
+    820.3444182872772,
+    986.5616858005524,
+    1022.8520567470696
+  ],
+  "files_hash": "6893f36e58dddba95bd0ae1f1ef38537c1852a0b",
+  "format": "fbx",
+  "resolution": "1k",
+  "primary_path": "SourceAssets/Models/PolyHaven/modern_arm_chair_01/modern_arm_chair_01_1k.fbx",
+  "files": [
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_arm_chair_01/modern_arm_chair_01_1k.fbx",
+      "bytes": 300028,
+      "md5": "4d0f7ecd1274b28776e013f5a7a4e2c9",
+      "sha256": "24b4296ab335601635740f83832df1b6c303a4632cd8bdbc5145a5906339db48",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/modern_arm_chair_01/modern_arm_chair_01_1k.fbx"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_arm_chair_01/textures/modern_arm_chair_01_legs_diff_1k.png",
+      "bytes": 2832680,
+      "md5": "6c89b1133fdbbe865687aa9a0f574fd8",
+      "sha256": "b11d85b689bc9e16f5aebcb0c94cb0783e7c76ef5c0b93ec576836750adc23c1",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modern_arm_chair_01/modern_arm_chair_01_legs_diff_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_arm_chair_01/textures/modern_arm_chair_01_legs_metal_1k.png",
+      "bytes": 2155,
+      "md5": "3984ebd3e0aff11d149c2c40985d22f3",
+      "sha256": "fb96b44c55677e850c09ed442e2aeb07c21bf013a3912b477b4baae21d1ffeb8",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modern_arm_chair_01/modern_arm_chair_01_legs_metal_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_arm_chair_01/textures/modern_arm_chair_01_legs_nor_gl_1k.png",
+      "bytes": 2968569,
+      "md5": "ad7dac7165d6ccf82f0e6dd5935eda94",
+      "sha256": "b337cd7c6929c22a8c4034123dd772d0c06a1d46e944e408164c2ec2bc0a1ee7",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modern_arm_chair_01/modern_arm_chair_01_legs_nor_gl_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_arm_chair_01/textures/modern_arm_chair_01_legs_rough_1k.png",
+      "bytes": 1009274,
+      "md5": "e508222c711063862c66b4626d446455",
+      "sha256": "29cf8fe198b0a531a4ebff085f3571d3757b9817bad7548b8b44bbabf6076f55",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modern_arm_chair_01/modern_arm_chair_01_legs_rough_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_arm_chair_01/textures/modern_arm_chair_01_pillow_diff_1k.png",
+      "bytes": 2077828,
+      "md5": "8b2da02e62c4aa18768347b485b93f05",
+      "sha256": "37dfdb66f60ebd36434048e0080236b8bdf2b80256ac3ed8b2804a15d5c3d949",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modern_arm_chair_01/modern_arm_chair_01_pillow_diff_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_arm_chair_01/textures/modern_arm_chair_01_pillow_metal_1k.png",
+      "bytes": 2155,
+      "md5": "3984ebd3e0aff11d149c2c40985d22f3",
+      "sha256": "fb96b44c55677e850c09ed442e2aeb07c21bf013a3912b477b4baae21d1ffeb8",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modern_arm_chair_01/modern_arm_chair_01_pillow_metal_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_arm_chair_01/textures/modern_arm_chair_01_pillow_nor_gl_1k.png",
+      "bytes": 2211406,
+      "md5": "4a45ec99d742983b68d12300e5dd4dae",
+      "sha256": "7375a10115ddc824f249f0bd4e067a9cdb765346befc6ed3aacb03e4fa1acfa6",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modern_arm_chair_01/modern_arm_chair_01_pillow_nor_gl_1k.png"
+    },
+    {
+      "path": "SourceAssets/Models/PolyHaven/modern_arm_chair_01/textures/modern_arm_chair_01_pillow_rough_1k.png",
+      "bytes": 776559,
+      "md5": "096e983517d50f1be01dc41e6358e724",
+      "sha256": "6d7b264e6bfc668ccda39780974abdb43a9e939e1d739e845cb2bce5367ebf34",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modern_arm_chair_01/modern_arm_chair_01_pillow_rough_1k.png"
+    }
+  ]
+}

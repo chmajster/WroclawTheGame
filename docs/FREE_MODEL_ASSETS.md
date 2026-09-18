@@ -57,3 +57,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Wine Bottles 01 | Bottle prop set for interiors and alley clutter. | Rico Cilliers, Jurita Burger | [Poly Haven](https://polyhaven.com/a/wine_bottles_01) | CC0 1.0 |
 | Fire Alarm | Building safety/electrical wall prop. | Slinc | [Poly Haven](https://polyhaven.com/a/fire_alarm) | CC0 1.0 |
 | Gate Latch 01 | Basement/courtyard gate hardware. | Desktoy | [Poly Haven](https://polyhaven.com/a/gate_latch_01) | CC0 1.0 |
+| Modern Arm Chair 01 | Apartment/safehouse seating. | Vibrant Nordic | [Poly Haven](https://polyhaven.com/a/modern_arm_chair_01) | CC0 1.0 |

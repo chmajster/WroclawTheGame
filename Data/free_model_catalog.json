@@ -1128,5 +1128,27 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/gate_latch_01/gate_latch_01_1k.fbx"
+  },
+  {
+    "slug": "modern_arm_chair_01",
+    "name": "Modern Arm Chair 01",
+    "intended_use": "Apartment/safehouse seating.",
+    "source_page": "https://polyhaven.com/a/modern_arm_chair_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Vibrant Nordic": "All"
+    },
+    "category": "Furniture/Seating/Chairs",
+    "dimensions_mm": [
+      820.3444182872772,
+      986.5616858005524,
+      1022.8520567470696
+    ],
+    "files_hash": "6893f36e58dddba95bd0ae1f1ef38537c1852a0b",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/modern_arm_chair_01/modern_arm_chair_01_1k.fbx"
   }
 ]
