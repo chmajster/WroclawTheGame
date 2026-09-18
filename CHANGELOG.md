@@ -5,6 +5,23 @@
 - Każdy plik źródłowy jest przypięty do konkretnego commita i weryfikowany przez Git blob SHA-1.
 - Build Windows importuje modele oraz animacje przed walidacją Character Creator i zatrzymuje packaging przy błędzie importu.
 
+## Player menu — 2026-09-18
+
+- Dodano pełnoekranowe centrum gracza inspirowane układem lobby: górne zakładki, boczne akcje, centralny podgląd postaci i panel statusu.
+- Zakładki Gra, Postać, Ekwipunek, Dziennik, Mapa i Statystyki korzystają z bieżącego stanu kampanii zamiast danych demonstracyjnych.
+- Podgląd postaci renderuje aktualny zapis wyglądu w osobnej scenie i obsługuje obrót, zoom oraz kadry całej sylwetki, górnej części i twarzy.
+- Menu przejmuje pauzę, kursor i fokus wejścia; ESC/ENTER wznawia rozgrywkę, a start nowej gry przechodzi do istniejącego wyboru postaci.
+- Stary tekstowy panel pauzy pozostaje awaryjnie dostępny, lecz jest pomijany, gdy nowe menu działa.
+
+## 0.3.1 — 2026-09-18 — realizm sceny startowej
+
+- Zastąpiono blockoutowe bryły mebli sceny otwierającej modelami CC0/PBR: łóżko, sofa, biurko, krzesło, szafka, kuchenka, zabudowa kuchenna i drobne wyposażenie.
+- Interaktywne rekwizyty korzystają z właściwych modeli zamiast sześcianów: telefon, ładowarka, kabel USB, gniazdko, rozdzielnia, bezpiecznik, książki, laptop i latarka.
+- Generator mapy zachowuje materiały i skalę importowanych modeli; fallback do BasicShapes pozostaje tylko dla elementów bez dedykowanego modelu.
+- Przebudowano światło mieszkania na cieplejsze źródła z miękkimi cieniami i osobnym światłem kuchennym.
+- Dodano `AGENTS.md`: każda zmiana ma powstawać na gałęzi, przez PR do `main`, a następnie być scalana.
+- Usunięto repozytoryjne workflowy GitHub Actions; agent nie ma ich ręcznie uruchamiać bez jawnego polecenia.
+
 ## Wave 1 — gameplay i ciągłość sektorów
 
 - Sześć pomostów blockoutu z zachowaniem współrzędnych OSM i interpolacją wysokości przyczółków; spójność grafu i geometrii oraz limit nachylenia. Połączenia car/foot dla wszystkich sześciu sektorów.

@@ -67,6 +67,8 @@ void ASliceHUD::DrawHUD()
         return;
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     auto *CityGameplay = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+    if (M->bShowMenu && PC->PlayerMenuWidget)
+        return;
     if (Cast<AGeoPreviewGameMode>(GetWorld()->GetAuthGameMode()))
         Text(TEXT("Mapa: © OpenStreetMap contributors (ODbL) | teren: Copernicus EU-DEM / USGS, via Mapzen"),
              20, Canvas->SizeY - 22, .65);

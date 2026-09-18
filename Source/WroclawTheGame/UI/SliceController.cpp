@@ -1,5 +1,6 @@
 #include "UI/SliceController.h"
 #include "UI/CharacterCreatorWidget.h"
+#include "UI/PlayerMenuWidget.h"
 #include "Character/CharacterCreatorSubsystem.h"
 #include "Engine/TextureRenderTarget2D.h"
 #include "Systems/DebugCheatManager.h"
@@ -20,9 +21,75 @@ void ASliceController::BeginPlay()
     CheatClass = UDebugCheatManager::StaticClass();
     EnableCheats();
 #endif
+    auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
+    if (Mission && Mission->bShowMenu && !Mission->bDead && !Mission->State.Finished())
+        OpenPlayerMenu();
+    else
+    {
+        SetInputMode(FInputModeGameOnly());
+        bShowMouseCursor = false;
+    }
+}
+
+void ASliceController::OpenPlayerMenu()
+{
+    auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
+    if (!Mission || Mission->bDead || Mission->State.Finished())
+        return;
+
+    if (!PlayerMenuWidget)
+    {
+        auto* Class = LoadClass<UPlayerMenuWidget>(
+            nullptr, TEXT("/Game/UI/WBP_PlayerMenu.WBP_PlayerMenu_C"));
+        PlayerMenuWidget = CreateWidget<UPlayerMenuWidget>(
+            this, Class ? Class : UPlayerMenuWidget::StaticClass());
+        if (PlayerMenuWidget)
+            PlayerMenuWidget->AddToViewport(200);
+    }
+
+    if (!PlayerMenuWidget)
+        return;
+
+    SetPause(true);
+    SetIgnoreMoveInput(true);
+    SetIgnoreLookInput(true);
+    if (auto* P = Cast<ASliceCharacter>(GetPawn()))
+    {
+        P->SetSprint(false);
+        P->SetBlock(false);
+        P->GetCharacterMovement()->StopMovementImmediately();
+    }
+
+    FInputModeGameAndUI Mode;
+    Mode.SetWidgetToFocus(PlayerMenuWidget->TakeWidget());
+    Mode.SetHideCursorDuringCapture(false);
+    SetInputMode(Mode);
+    bShowMouseCursor = true;
+    PlayerMenuWidget->Refresh();
+}
+
+void ASliceController::HidePlayerMenu()
+{
+    if (PlayerMenuWidget)
+        PlayerMenuWidget->RemoveFromParent();
+    PlayerMenuWidget = nullptr;
+}
+
+void ASliceController::ResumeGame()
+{
+    auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
+    if (!Mission || !Mission->bInGame)
+        return;
+
+    Mission->bShowMenu = false;
+    HidePlayerMenu();
+    ResetIgnoreMoveInput();
+    ResetIgnoreLookInput();
+    SetPause(false);
     SetInputMode(FInputModeGameOnly());
     bShowMouseCursor = false;
 }
+
 void ASliceController::SetupInputComponent()
 {
     Super::SetupInputComponent();
@@ -175,15 +242,17 @@ void ASliceController::Escape()
         CloseModal();
         return;
     }
+    if (M->bShowMenu)
+    {
+        if (M->bInGame)
+            ResumeGame();
+        return;
+    }
     if (!M->bInGame)
         return;
-    M->bShowMenu = !M->bShowMenu;
-    SetPause(M->bShowMenu);
-    if (auto *P = Cast<ASliceCharacter>(GetPawn()))
-    {
-        P->SetSprint(false);
-        P->SetBlock(false);
-    }
+
+    M->bShowMenu = true;
+    OpenPlayerMenu();
 }
 void ASliceController::Confirm()
 {
@@ -235,10 +304,7 @@ void ASliceController::Confirm()
         return;
     }
     if (M->bShowMenu && M->bInGame)
-    {
-        M->bShowMenu = false;
-        SetPause(false);
-    }
+        ResumeGame();
 }
 void ASliceController::Reload()
 {
@@ -251,6 +317,7 @@ void ASliceController::NewGame()
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     if (!M->bShowMenu && !M->bDead && !M->State.Finished())
         return;
+    HidePlayerMenu();
     CloseModal();
     GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->BeginCreation();
     auto* Class=LoadClass<UCharacterCreatorWidget>(nullptr,TEXT("/Game/CharacterCreator/WBP_CharacterCreator.WBP_CharacterCreator_C"));
@@ -263,8 +330,14 @@ void ASliceController::CancelCharacterCreator()
 {
     if (CharacterCreatorWidget) CharacterCreatorWidget->RemoveFromParent(); CharacterCreatorWidget=nullptr;
     GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Cancel();
+    auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
+    if (Mission && Mission->bShowMenu)
+    {
+        OpenPlayerMenu();
+        return;
+    }
     ResetIgnoreMoveInput(); ResetIgnoreLookInput(); SetInputMode(FInputModeGameOnly()); bShowMouseCursor=false;
-    SetPause(GetGameInstance()->GetSubsystem<USliceMission>()->bShowMenu);
+    SetPause(false);
 }
 bool ASliceController::StartCreatedCampaign()
 {
