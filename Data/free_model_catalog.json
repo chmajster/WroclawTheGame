@@ -1061,5 +1061,28 @@
     "format": "fbx",
     "resolution": "1k",
     "primary_path": "SourceAssets/Models/PolyHaven/plastic_bottle_gallon/plastic_bottle_gallon_1k.fbx"
+  },
+  {
+    "slug": "wine_bottles_01",
+    "name": "Wine Bottles 01",
+    "intended_use": "Bottle prop set for interiors and alley clutter.",
+    "source_page": "https://polyhaven.com/a/wine_bottles_01",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": {
+      "Rico Cilliers": "modeling",
+      "Jurita Burger": "graphic design"
+    },
+    "category": "Food & Kitchen/Drinks/Bottles & Wine",
+    "dimensions_mm": [
+      676.3246953487396,
+      80.56290075182915,
+      331.367195234634
+    ],
+    "files_hash": "9426086370c86485039d330f47b99c93d333ff38",
+    "format": "fbx",
+    "resolution": "1k",
+    "primary_path": "SourceAssets/Models/PolyHaven/wine_bottles_01/wine_bottles_01_1k.fbx"
   }
 ]

@@ -54,3 +54,4 @@ Importer Scripts/import_free_models.py nie korzysta z sieci; importuje wyłączn
 | Brass Pot 01 | Kitchen cookware prop. | Rico Cilliers | [Poly Haven](https://polyhaven.com/a/brass_pot_01) | CC0 1.0 |
 | Brass Pan 01 | Kitchen cookware prop. | Rico Cilliers | [Poly Haven](https://polyhaven.com/a/brass_pan_01) | CC0 1.0 |
 | Plastic Bottle Gallon | Bottle/distraction and garage clutter proxy. | Rahul Chaudhary | [Poly Haven](https://polyhaven.com/a/plastic_bottle_gallon) | CC0 1.0 |
+| Wine Bottles 01 | Bottle prop set for interiors and alley clutter. | Rico Cilliers, Jurita Burger | [Poly Haven](https://polyhaven.com/a/wine_bottles_01) | CC0 1.0 |
