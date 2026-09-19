@@ -19,7 +19,7 @@ class WROCLAWTHEGAME_API UVehicleAIDriverComponent : public UActorComponent
     UFUNCTION(BlueprintCallable, Category="Wroclaw|VehicleAI")
     void StopAI();
 
-    virtual bool IsActive() const override { return bActive; }
+    bool IsActive() const { return bActive; }
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Wroclaw|VehicleAI")
     float CruiseSpeed = 1200.0f;
