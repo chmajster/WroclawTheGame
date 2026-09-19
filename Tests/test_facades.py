@@ -60,4 +60,13 @@ class FacadeTests(unittest.TestCase):
   b=M.generate(self.cfg,self.feature("estate"),bindings=self.bindings)["buildings"][0]
   self.assertNotEqual(a["architecture_profile"],b["architecture_profile"]);self.assertNotEqual(a["doors"][0]["asset_id"],b["doors"][0]["asset_id"])
 
+ def test_city_build_generates_and_bakes_facade_catalog(self):
+  build=(ROOT/"Scripts/Build-Geography.ps1").read_text()
+  editor=(ROOT/"Scripts/prepare_geography.py").read_text()
+  cluster_h=(ROOT/"Source/WroclawTheGame/World/WTGFacadeInstanceCluster.h").read_text()
+  cluster_cpp=(ROOT/"Source/WroclawTheGame/World/WTGFacadeInstanceCluster.cpp").read_text()
+  self.assertIn("resolve_building_entrances.py",build);self.assertIn("generate_facades.py",build);self.assertIn("facades.json",build)
+  self.assertIn("WTGFacadeInstanceCluster",editor);self.assertIn("WROCLAW_FACADE_INSTANCES",editor);self.assertIn("official_replaced",editor)
+  self.assertIn("UHierarchicalInstancedStaticMeshComponent",cluster_h);self.assertIn("AddFacadeInstance",cluster_h);self.assertIn("AddInstance(WorldTransform, true)",cluster_cpp)
+
 if __name__=="__main__":unittest.main()
