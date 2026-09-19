@@ -6,7 +6,7 @@ MENU_CPP = ROOT / "Source" / "WroclawTheGame" / "UI" / "PlayerMenuWidget.cpp"
 MENU_H = ROOT / "Source" / "WroclawTheGame" / "UI" / "PlayerMenuWidget.h"
 PERF_H = ROOT / "Source" / "WroclawTheGame" / "UI" / "PerformanceSettings.h"
 AUDIO_CPP = ROOT / "Source" / "WroclawTheGame" / "Audio" / "SliceAudio.cpp"
-AUDIO_SETTINGS_H = ROOT / "Source" / "WroclawTheGame" / "Audio" / "AudioSettings.h"
+AUDIO_SETTINGS_H = ROOT / "Source" / "WroclawTheGame" / "Audio" / "WTGAudioSettings.h"
 ASSETS = ROOT / "Scripts" / "make_source_assets.py"
 
 
