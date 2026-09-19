@@ -39,6 +39,10 @@
 		{
 			"Name": "GeoReferencing",
 			"Enabled": true
+		},
+		{
+			"Name": "CommonUI",
+			"Enabled": true
 		}
 	]
 }

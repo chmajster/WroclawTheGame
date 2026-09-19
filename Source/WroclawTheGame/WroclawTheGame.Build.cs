@@ -4,7 +4,7 @@ public class WroclawTheGame : ModuleRules {
   PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
   PrivateIncludePaths.Add(ModuleDirectory);
   CppStandard = CppStandardVersion.Cpp20;
-  PublicDependencyModuleNames.AddRange(new string[] {"Core","CoreUObject","Engine","InputCore","EnhancedInput","AIModule","NavigationSystem","GameplayTasks","GameplayTags","Json","JsonUtilities","GeoReferencing","UMG","Slate","SlateCore"});
+  PublicDependencyModuleNames.AddRange(new string[] {"Core","CoreUObject","Engine","InputCore","EnhancedInput","AIModule","NavigationSystem","GameplayTasks","GameplayTags","Json","JsonUtilities","GeoReferencing","UMG","Slate","SlateCore","CommonUI"});
   if (Target.bBuildEditor) PrivateDependencyModuleNames.AddRange(new string[] {"MeshDescription","StaticMeshDescription","AssetRegistry"});
  }
 }
