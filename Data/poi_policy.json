@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "categories": {
+    "food": {
+      "keys": [
+        "amenity:restaurant",
+        "amenity:cafe",
+        "amenity:fast_food"
+      ]
+    },
+    "retail": {
+      "keys": [
+        "shop:*"
+      ]
+    },
+    "health": {
+      "keys": [
+        "amenity:pharmacy",
+        "amenity:clinic",
+        "amenity:hospital"
+      ]
+    },
+    "finance": {
+      "keys": [
+        "amenity:atm",
+        "amenity:bank"
+      ]
+    },
+    "fuel": {
+      "keys": [
+        "amenity:fuel"
+      ]
+    },
+    "parking": {
+      "keys": [
+        "amenity:parking"
+      ]
+    },
+    "culture": {
+      "keys": [
+        "tourism:museum",
+        "amenity:theatre",
+        "amenity:cinema"
+      ]
+    },
+    "services": {
+      "keys": [
+        "office:*",
+        "craft:*"
+      ]
+    }
+  }
+}
