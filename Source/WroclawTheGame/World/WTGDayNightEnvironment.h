@@ -53,6 +53,12 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Time")
     bool bAdvanceTime = true;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Time", meta=(ClampMin="4.0", ClampMax="20.0"))
+    float SeasonalDaylightHours = 14.0f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Time", meta=(ClampMin="0.1", ClampMax="2.0"))
+    float TwilightHours = 0.75f;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Lighting")
     float SunAzimuthDegrees = -35.0f;
 
@@ -79,6 +85,9 @@ public:
 
     UFUNCTION(BlueprintPure, Category="Time")
     float GetDaylightAlpha() const;
+
+    UFUNCTION(BlueprintCallable, Category="Time")
+    void SetSeasonalDaylightHours(float Hours);
 
     UFUNCTION(BlueprintPure, Category="Time")
     float GetNightAlpha() const { return 1.0f - GetDaylightAlpha(); }

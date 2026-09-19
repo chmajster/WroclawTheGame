@@ -79,10 +79,35 @@ void AWTGDayNightEnvironment::SetTimeOfDay(float NewTimeOfDayHours)
 
 float AWTGDayNightEnvironment::GetDaylightAlpha() const
 {
-    const float SolarRadians = (TimeOfDayHours - 6.0f) / 24.0f * 2.0f * PI;
-    const float Altitude = FMath::Sin(SolarRadians);
-    const float TwilightAdjusted = FMath::Clamp((Altitude + 0.08f) / 0.28f, 0.0f, 1.0f);
-    return FMath::InterpEaseInOut(0.0f, 1.0f, TwilightAdjusted, 2.0f);
+    const float DaylightHours = FMath::Clamp(SeasonalDaylightHours, 4.0f, 20.0f);
+    const float Sunrise = 12.0f - DaylightHours * 0.5f;
+    const float Sunset = 12.0f + DaylightHours * 0.5f;
+    const float Twilight = FMath::Max(TwilightHours, 0.1f);
+
+    if (TimeOfDayHours <= Sunrise - Twilight || TimeOfDayHours >= Sunset + Twilight)
+    {
+        return 0.0f;
+    }
+
+    if (TimeOfDayHours < Sunrise + Twilight)
+    {
+        const float Alpha = FMath::GetRangePct(Sunrise - Twilight, Sunrise + Twilight, TimeOfDayHours);
+        return FMath::InterpEaseInOut(0.0f, 1.0f, FMath::Clamp(Alpha, 0.0f, 1.0f), 2.0f);
+    }
+
+    if (TimeOfDayHours > Sunset - Twilight)
+    {
+        const float Alpha = FMath::GetRangePct(Sunset - Twilight, Sunset + Twilight, TimeOfDayHours);
+        return FMath::InterpEaseInOut(1.0f, 0.0f, FMath::Clamp(Alpha, 0.0f, 1.0f), 2.0f);
+    }
+
+    return 1.0f;
+}
+
+void AWTGDayNightEnvironment::SetSeasonalDaylightHours(float Hours)
+{
+    SeasonalDaylightHours = FMath::Clamp(Hours, 4.0f, 20.0f);
+    ApplyEnvironmentState();
 }
 
 void AWTGDayNightEnvironment::ApplyEnvironmentState()
@@ -107,6 +132,7 @@ void AWTGDayNightEnvironment::ApplyEnvironmentState()
     HeightFog->SetFogDensity(FMath::Lerp(NightFogDensity, DayFogDensity, Daylight));
 
     SetMaterialScalar(TEXT("TimeOfDay01"), TimeOfDayHours / 24.0f);
+    SetMaterialScalar(TEXT("SeasonDaylightHours"), SeasonalDaylightHours);
     SetMaterialScalar(TEXT("SunAlpha"), Daylight);
     SetMaterialScalar(TEXT("NightAlpha"), Night);
     SetMaterialScalar(TEXT("StreetLight"), FMath::SmoothStep(0.35f, 0.8f, Night));
