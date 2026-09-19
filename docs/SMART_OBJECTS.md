@@ -1,11 +1,19 @@
 # Smart Object candidates
 
-The generator maps real tagged GIS features to interaction roles and reservation semantics.
+The generator maps tagged GIS features to interaction roles and now emits a runtime-ready slot layout for every candidate.
 
-## Remaining
-1. create UE SmartObjectDefinition assets for every role;
-2. import candidates and register spatial slots;
-3. bind StateTree behaviors and animations;
-4. connect entrances to interiors and transit stops to vehicles;
-5. add queue capacity/orientation/approach points;
-6. validate reservation release on save/load, streaming and actor destruction.
+## Runtime contract
+
+Each object carries a stable ID, role, source feature, reservation mode, behavior ID, interaction/approach distance, Data Layer, accessibility tag and explicit capacity. Spatial slots have stable IDs, world positions, facing yaw and enabled state.
+
+Role policy controls slot count and radius:
+- entrances use a single exclusive interaction slot;
+- shops and transit stops expose queue-oriented multi-slot layouts;
+- amenities expose shared slots;
+- parking exposes a vehicle reservation slot.
+
+The slot geometry is deterministic, so save data and reservations can refer to `smart:<feature>/slot/<index>` without depending on transient Actor IDs.
+
+## Integration
+
+StateTree/animation implementations can bind by the semantic `behavior` field. Entrance slots can resolve to procedural interiors, transit slots to route stops, and parking slots to the parking system while keeping one stable GIS identity.
