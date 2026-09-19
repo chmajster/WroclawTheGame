@@ -28,6 +28,7 @@
 #include "Components/ScaleBox.h"
 #include "Components/SafeZone.h"
 #include "Components/ScrollBox.h"
+#include "Components/ScrollBoxSlot.h"
 #include "Components/SizeBox.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
@@ -143,7 +144,7 @@ UTextBlock* UPlayerMenuWidget::MakeText(const FString& Value, int32 Size, bool b
 UButton* UPlayerMenuWidget::MakeButton(const FString& Label, bool bAccent)
 {
     auto* Button = WidgetTree->ConstructWidget<UButton>();
-    Button->SetIsFocusable(true);
+    Button->IsFocusable = true;
     Button->OnHovered.AddDynamic(this, &UPlayerMenuWidget::PlayUIHover);
     Button->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PlayUIClick);
     Button->SetBackgroundColor(FLinearColor::White);
@@ -168,11 +169,11 @@ UButton* UPlayerMenuWidget::MakeButton(const FString& Label, bool bAccent)
     return Button;
 }
 
-UBorder* UPlayerMenuWidget::MakeCard(const FMargin& Padding)
+UBorder* UPlayerMenuWidget::MakeCard(const FMargin& CardPadding)
 {
     auto* Border = WidgetTree->ConstructWidget<UBorder>();
     Border->SetBrush(RoundedBrush(Panel, 16.0f));
-    Border->SetPadding(Padding);
+    Border->SetPadding(CardPadding);
     return Border;
 }
 
@@ -334,7 +335,7 @@ void UPlayerMenuWidget::BuildShell()
     ShellLayout->SetRenderScale(
         bReduceShellMotion ? FVector2D(1.0f, 1.0f) : FVector2D(0.985f, 0.985f));
 
-    auto* Layout = ShellLayout;
+    UVerticalBox* Layout = ShellLayout.Get();
 
     auto* Header = MakeCard(FMargin(18, 14, 18, 14));
     auto* HeaderSlot = Layout->AddChildToVerticalBox(Header);
@@ -360,9 +361,9 @@ void UPlayerMenuWidget::BuildShell()
     for (int32 Index = 0; Index < 7; ++Index)
     {
         auto* Tab = WidgetTree->ConstructWidget<UVerticalBox>();
-        auto* Slot = Top->AddChildToHorizontalBox(Tab);
-        Slot->SetPadding(FMargin(3, 1, 3, 1));
-        Slot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+        auto* TabSlot = Top->AddChildToHorizontalBox(Tab);
+        TabSlot->SetPadding(FMargin(3, 1, 3, 1));
+        TabSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
         auto* Button = MakeButton(FString::Printf(TEXT("%02d  %s"), Index + 1, Labels[Index]));
         auto* ButtonSlot = Tab->AddChildToVerticalBox(Button);
@@ -592,7 +593,7 @@ void UPlayerMenuWidget::UpdateTabStyle()
 {
     for (int32 Index = 0; Index < TabButtons.Num(); ++Index)
     {
-        auto* Button = TabButtons[Index];
+        UButton* Button = TabButtons[Index].Get();
         if (!Button)
             continue;
 
@@ -713,10 +714,10 @@ void UPlayerMenuWidget::ShowToast(const FString& Message)
     ToastContent->AddChildToHorizontalBox(ToastRailSize)->SetPadding(FMargin(0, 1, 10, 1));
     ToastContent->AddChildToHorizontalBox(MakeText(Message, 9, true, TextPrimary));
 
-    auto* Slot = RootOverlay->AddChildToOverlay(ToastCard);
-    Slot->SetHorizontalAlignment(HAlign_Right);
-    Slot->SetVerticalAlignment(VAlign_Bottom);
-    Slot->SetPadding(FMargin(24, 24, 24, 72));
+    auto* ToastSlot = RootOverlay->AddChildToOverlay(ToastCard);
+    ToastSlot->SetHorizontalAlignment(HAlign_Right);
+    ToastSlot->SetVerticalAlignment(VAlign_Bottom);
+    ToastSlot->SetPadding(FMargin(24, 24, 24, 72));
 
     ToastTimeRemaining = 1.8f;
     const auto* UISettings = UWTGPerformanceSettings::Get();
@@ -1586,8 +1587,11 @@ void UPlayerMenuWidget::BuildJournalTab()
             ++Index;
         }
 
-        Scroll->AddChild(MakeText(TEXT("ZADANIA POBOCZNE"), 10, true, Accent))
-            ->SetPadding(FMargin(2, 16, 2, 8));
+        if (auto* SideQuestHeaderSlot = Cast<UScrollBoxSlot>(
+                Scroll->AddChild(MakeText(TEXT("ZADANIA POBOCZNE"), 10, true, Accent))))
+        {
+            SideQuestHeaderSlot->SetPadding(FMargin(2, 16, 2, 8));
+        }
 
         Wroclaw::QuestFramework Framework;
         for (const auto& Quest : Wroclaw::SideQuests())
