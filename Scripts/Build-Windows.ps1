@@ -10,6 +10,105 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+
+function Test-ExclusiveFileAccess {
+    param([Parameter(Mandatory=$true)][string]$Path)
+
+    if (-not (Test-Path -LiteralPath $Path)) {
+        return $true
+    }
+
+    try {
+        $Stream = [System.IO.File]::Open(
+            $Path,
+            [System.IO.FileMode]::Open,
+            [System.IO.FileAccess]::ReadWrite,
+            [System.IO.FileShare]::None
+        )
+        $Stream.Dispose()
+        return $true
+    }
+    catch [System.IO.IOException] {
+        return $false
+    }
+}
+
+function Stop-UnrealEditorProjectDllLock {
+    param(
+        [Parameter(Mandatory=$true)][string]$EngineRoot,
+        [Parameter(Mandatory=$true)][string]$ProjectRoot
+    )
+
+    $ProjectEditorDll = Join-Path $ProjectRoot 'Binaries\Win64\UnrealEditor-WroclawTheGame.dll'
+    if (Test-ExclusiveFileAccess -Path $ProjectEditorDll) {
+        return
+    }
+
+    $EngineBin = [System.IO.Path]::GetFullPath(
+        (Join-Path $EngineRoot 'Engine\Binaries\Win64')
+    ).TrimEnd('\') + '\'
+
+    $EditorProcesses = @(
+        Get-Process -Name 'UnrealEditor','UnrealEditor-Cmd' -ErrorAction SilentlyContinue |
+            Where-Object {
+                try {
+                    $_.Path -and
+                    [System.IO.Path]::GetFullPath($_.Path).StartsWith(
+                        $EngineBin,
+                        [System.StringComparison]::OrdinalIgnoreCase
+                    )
+                }
+                catch {
+                    $false
+                }
+            }
+    )
+
+    if ($EditorProcesses.Count -eq 0) {
+        throw "Project editor DLL is locked and no Unreal Editor process from '$EngineRoot' could be identified. Close the process locking '$ProjectEditorDll' and retry."
+    }
+
+    foreach ($Process in $EditorProcesses) {
+        Write-Host "Closing Unreal Editor process $($Process.Id) before linking project DLL..."
+
+        $RequestedGracefulExit = $false
+        try {
+            if ($Process.MainWindowHandle -ne 0) {
+                $RequestedGracefulExit = $Process.CloseMainWindow()
+            }
+        }
+        catch {
+            $RequestedGracefulExit = $false
+        }
+
+        if ($RequestedGracefulExit) {
+            try {
+                $Process.WaitForExit(5000)
+            }
+            catch {
+                # Fall back to a forced stop below.
+            }
+        }
+
+        if (-not $Process.HasExited) {
+            Stop-Process -Id $Process.Id -Force -ErrorAction Stop
+            try {
+                $Process.WaitForExit(5000)
+            }
+            catch {
+                # The lock check below is the final authority.
+            }
+        }
+    }
+
+    Start-Sleep -Milliseconds 500
+    if (-not (Test-ExclusiveFileAccess -Path $ProjectEditorDll)) {
+        throw "Unreal Editor was stopped, but '$ProjectEditorDll' is still locked. Close the remaining process holding the DLL and retry."
+    }
+
+    Write-Host 'Released project editor DLL lock.'
+}
+
 function Test-NetFxSdk {
     $SdkDirectories = @(
         (Join-Path ${env:ProgramFiles(x86)} 'Windows Kits\NETFXSDK'),
@@ -78,6 +177,7 @@ if ($LASTEXITCODE -ne 0) { throw 'City gameplay validation failed' }
 if ($LASTEXITCODE -ne 0) { throw 'World profile validation failed' }
 & $UnrealPython (Join-Path $PSScriptRoot 'compile_tags.py')
 if ($LASTEXITCODE -ne 0) { throw 'Gameplay tag generation failed' }
+Stop-UnrealEditorProjectDllLock -EngineRoot $EngineRoot -ProjectRoot $ProjectRoot
 & $BuildTool WroclawTheGameEditor Win64 Development "-Project=$Project" -WaitMutex -NoHotReloadFromIDE
 if ($LASTEXITCODE -ne 0) { throw "Editor target build failed ($LASTEXITCODE)" }
 $CreatorMarker = Join-Path $ProjectRoot 'Saved\CharacterCreatorReady.ok'
