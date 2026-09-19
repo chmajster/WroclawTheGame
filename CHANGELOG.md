@@ -1,5 +1,6 @@
 ## 2026-09-19 — kolejna fala polishu nowoczesnego menu
 
+- Naprawiono blokujący UHT konflikt nazwy projektowego `AudioSettings.h` z `Engine/Classes/Sound/AudioSettings.h`; pliki przeniesiono do `WTGAudioSettings.h/.cpp` i zaktualizowano wszystkie include’y/testy.
 - Dodano badge bieżącej strony 01–07, wskaźnik aktywnej sesji oraz aktualizowany zegar i datę w stopce.
 - Stopka i modal potwierdzenia korzystają z kompaktowych keycapów zamiast surowych ciągów skrótów.
 - Zakładki otrzymały numerację i mocniejszą hierarchię aktywnego stanu, a pasek kontekstowy pokazuje tylko akcje właściwe dla bieżącej strony.
