@@ -1,11 +1,14 @@
 # City Data Layers
 
-The plan separates base geometry, buildings, street furniture, traffic, crowd, interiors, quests and debug content. Runtime/default-loading intent is explicit.
+The Data Layer plan now models runtime dependencies and activation sets, not only labels.
 
-## Remaining
-1. create DataLayer assets in UE 5.8;
-2. assign generated actors during editor bake;
-3. ensure PCG output inherits intended Data/HLOD Layers;
-4. stream interiors only while entered/needed by quests;
-5. verify quest actors survive layer changes correctly;
-6. test cook/runtime layer activation and memory impact.
+## Runtime contract
+
+Each layer declares whether it is runtime-capable, its default state and explicit dependencies. Dependency closure guarantees, for example, that activating interiors also activates buildings and base geometry.
+
+Named activation sets cover normal gameplay, interior-focused streaming, low-population mode and debug content. The planner can assign:
+- GIS features by `kind`;
+- PCG/generated content by semantic `role`;
+- simulation/runtime objects by `system`.
+
+The plan validates unknown dependencies, activation-set references and dependency cycles before export. Stable layer IDs remain the contract for editor-generated DataLayer assets and runtime activation logic.
