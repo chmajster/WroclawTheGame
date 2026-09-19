@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "seasons": [
+    {
+      "id": "winter",
+      "start_month": 12,
+      "start_day": 1,
+      "end_month": 2,
+      "end_day": 28,
+      "foliage": 0.15,
+      "daylight_hours": 8.2,
+      "crowd": 0.75,
+      "wetness_bias": 0.2,
+      "snow_allowed": true
+    },
+    {
+      "id": "spring",
+      "start_month": 3,
+      "start_day": 1,
+      "end_month": 5,
+      "end_day": 31,
+      "foliage": 0.75,
+      "daylight_hours": 14,
+      "crowd": 0.95,
+      "wetness_bias": 0.25,
+      "snow_allowed": false
+    },
+    {
+      "id": "summer",
+      "start_month": 6,
+      "start_day": 1,
+      "end_month": 8,
+      "end_day": 31,
+      "foliage": 1,
+      "daylight_hours": 16.2,
+      "crowd": 1.1,
+      "wetness_bias": 0.05,
+      "snow_allowed": false
+    },
+    {
+      "id": "autumn",
+      "start_month": 9,
+      "start_day": 1,
+      "end_month": 11,
+      "end_day": 30,
+      "foliage": 0.65,
+      "daylight_hours": 10.5,
+      "crowd": 0.9,
+      "wetness_bias": 0.3,
+      "snow_allowed": false
+    }
+  ],
+  "latitude_reference": 51.1079
+}
