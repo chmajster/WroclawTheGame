@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "cell_size_m": 128,
+  "rules": {
+    "street_lamp": {
+      "spacing_m": 32,
+      "road_kinds": [
+        "primary",
+        "secondary",
+        "tertiary",
+        "residential"
+      ],
+      "offset_m": 3.2,
+      "asset_role": "street_lamp"
+    },
+    "bollard": {
+      "spacing_m": 18,
+      "road_kinds": [
+        "living_street",
+        "service"
+      ],
+      "offset_m": 2.1,
+      "asset_role": "bollard"
+    },
+    "bench": {
+      "spacing_m": 55,
+      "feature_kinds": [
+        "green"
+      ],
+      "asset_role": "bench"
+    },
+    "waste_bin": {
+      "spacing_m": 75,
+      "feature_kinds": [
+        "green",
+        "road"
+      ],
+      "asset_role": "waste_bin"
+    },
+    "bicycle_rack": {
+      "spacing_m": 90,
+      "road_kinds": [
+        "residential",
+        "living_street",
+        "service"
+      ],
+      "offset_m": 2.8,
+      "asset_role": "bicycle_rack"
+    }
+  }
+}
