@@ -2,11 +2,11 @@
 Extends the GIS map when WTG_CITY_INPUT is set. WTG_CAMPAIGN_GIS_INPUT overlays
 the validated campaign migration and switches the map to the campaign game mode.
 """
-import json,traceback,os
+import json,traceback,os,math
 from pathlib import Path
 import unreal
 ROOT=Path(unreal.Paths.project_dir()).resolve();MARKER=ROOT/'Saved/GeographyReady.ok'
-FREE_MODEL_IMPORT_MAP=ROOT/'Saved/FreeModelImportMap.json';MODEL_BINDINGS=ROOT/'Data/model_bindings.json'
+FREE_MODEL_IMPORT_MAP=ROOT/'Saved/FreeModelImportMap.json';MODEL_BINDINGS=ROOT/'Data/model_bindings.json';FACADE_BINDINGS=ROOT/'Data/facade_asset_bindings.json'
 def prepare():
     MARKER.unlink(missing_ok=True)
     if not FREE_MODEL_IMPORT_MAP.is_file():raise RuntimeError('Free model import map missing')
@@ -35,6 +35,7 @@ def prepare():
     campaign_dir=Path(campaign_input) if campaign_input else None
     official_input=os.environ.get('WTG_OFFICIAL_BUILDINGS_INPUT')
     official_dir=Path(official_input) if official_input else None
+    official_replaced=set()
     input_dir=Path(city_input) if city_input else ROOT/'Data/processed/wroclaw'
     data=json.loads((input_dir/'sector.json').read_text(encoding='utf-8'))
     mesh_dir=input_dir/'Meshes' if city_input else ROOT/'Saved/GISMeshes'
@@ -79,6 +80,7 @@ def prepare():
         if hlod:actor.set_editor_property('hlod_layer',hlod)
     if official_dir:
         official_catalog=json.loads((official_dir/'catalog.json').read_text(encoding='utf-8'))
+        official_replaced={item.get('replaced_feature_id') for item in official_catalog.get('buildings',[]) if item.get('replaced_feature_id')}
         if official_catalog.get('schema_version')!=1:
             raise RuntimeError('Unsupported official building catalogue')
         expected_origin=[float(v) for v in data['origin_projected_m']]
@@ -120,6 +122,79 @@ def prepare():
         registry.set_editor_property('is_spatially_loaded',False)
         content=json.loads((input_dir/'content.json').read_text(encoding='utf-8'))
         cube=unreal.load_asset('/Engine/BasicShapes/Cube.Cube')
+        facade_path=input_dir/'facades.json'
+        if not facade_path.is_file():raise RuntimeError('Facade catalogue missing: '+str(facade_path))
+        facade_catalog=json.loads(facade_path.read_text(encoding='utf-8'))
+        if facade_catalog.get('schema_version')!=2:raise RuntimeError('Unsupported facade catalogue')
+        facade_bindings=json.loads(FACADE_BINDINGS.read_text(encoding='utf-8'))
+        facade_asset_scales=facade_bindings.get('asset_scales',{})
+        facade_yaw_offsets=facade_bindings.get('asset_yaw_offsets_deg',{})
+        facade_cell_cm=float(facade_bindings.get('instancing',{}).get('cell_size_m',128))*100
+        facade_models={}
+        for building in facade_catalog.get('buildings',[]):
+            if building.get('building_id') in official_replaced:continue
+            for item in building.get('openings',[])+building.get('details',[]):
+                model_id=item.get('asset_id')
+                if model_id and not str(model_id).startswith('procedural:'):
+                    facade_models.setdefault(model_id,model(model_id,unreal.StaticMesh))
+        facade_clusters={}
+        def facade_cluster(position):
+            key=(math.floor(position[0]/facade_cell_cm),math.floor(position[1]/facade_cell_cm))
+            cluster=facade_clusters.get(key)
+            if cluster:return cluster
+            cluster=actors.spawn_actor_from_class(unreal.WTGFacadeInstanceCluster,unreal.Vector())
+            if not cluster:raise RuntimeError('Cannot create facade instance cluster')
+            cluster.set_actor_label('FacadeCluster_'+str(key[0])+'_'+str(key[1]))
+            if hlod:cluster.set_editor_property('hlod_layer',hlod)
+            facade_clusters[key]=cluster
+            return cluster
+        def facade_transform(position,yaw,scale):
+            return unreal.Transform(
+                location=unreal.Vector(*position),
+                rotation=unreal.Rotator(0,float(yaw),0).quaternion(),
+                scale=unreal.Vector(*scale))
+        def add_facade_mesh(item):
+            model_id=item.get('asset_id')
+            if not model_id or str(model_id).startswith('procedural:'):return
+            mesh=facade_models.get(model_id)
+            if not mesh:raise RuntimeError('Facade model missing: '+str(model_id))
+            scale=facade_asset_scales.get(model_id,[1,1,1])
+            yaw=float(item.get('yaw_deg',0))+float(facade_yaw_offsets.get(model_id,0))
+            facade_cluster(item['world_position']).add_facade_instance(
+                mesh,facade_transform(item['world_position'],yaw,scale))
+        def add_facade_cube(position,yaw,scale):
+            facade_cluster(position).add_facade_instance(cube,facade_transform(position,yaw,scale))
+        def add_procedural_facade_detail(item):
+            kind=item.get('kind');p=item.get('world_position')
+            if not p:return
+            yaw=float(item.get('yaw_deg',0))
+            if kind=='balcony':
+                width=float(item.get('width_m',1.5));depth=float(item.get('depth_m',1));rail=float(item.get('railing_height_m',1))
+                add_facade_cube(p,yaw+90,[width,depth,.12])
+                rad=math.radians(yaw)
+                front=[p[0]+math.cos(rad)*depth*50,p[1]+math.sin(rad)*depth*50,p[2]+rail*50]
+                add_facade_cube(front,yaw+90,[width,.06,rail])
+            elif kind=='gutter':
+                d=float(item.get('diameter_m',.12));add_facade_cube(p,yaw,[float(item.get('length_m',1)),d,d])
+            elif kind=='downspout':
+                d=float(item.get('diameter_m',.1));add_facade_cube(p,yaw,[d,d,float(item.get('height_m',1))])
+            elif kind=='cornice':
+                add_facade_cube(p,yaw,[float(item.get('length_m',1)),float(item.get('depth_m',.2)),.18])
+            elif kind=='door_step':
+                add_facade_cube(p,yaw+90,[float(item.get('width_m',1.4)),float(item.get('depth_m',.5)),.12])
+            elif kind=='awning':
+                add_facade_cube(p,yaw+90,[float(item.get('width_m',2)),float(item.get('depth_m',1)),.12])
+            elif kind=='storefront_sign':
+                add_facade_cube(p,yaw+90,[float(item.get('width_m',1.5)),.08,.45])
+            elif kind=='address_plaque':
+                add_facade_cube(p,yaw+90,[.28,.04,.18])
+        for building in facade_catalog.get('buildings',[]):
+            if building.get('building_id') in official_replaced:continue
+            for item in building.get('openings',[]):add_facade_mesh(item)
+            for item in building.get('details',[]):
+                if str(item.get('asset_id','')).startswith('procedural:'):add_procedural_facade_detail(item)
+                else:add_facade_mesh(item)
+        unreal.log('WROCLAW_FACADE_INSTANCES '+str(sum(cluster.get_facade_instance_count() for cluster in facade_clusters.values())))
         def room_part(center,offset,size):
             part=actors.spawn_actor_from_class(unreal.StaticMeshActor,unreal.Vector(*[center[i]+offset[i] for i in range(3)]))
             component=part.get_component_by_class(unreal.StaticMeshComponent);component.set_static_mesh(cube)

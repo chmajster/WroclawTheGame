@@ -707,5 +707,17 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         self.assertNotIn('TEXT("WSPÓLNY MIKS")', self.cpp)
 
 
+    def test_character_preview_uses_render_target_ui_material(self):
+        creator = (ROOT / "Source" / "WroclawTheGame" / "Character" / "CharacterCreator.cpp").read_text()
+        for token in (
+            'M_CharacterPreview.M_CharacterPreview',
+            'SetTextureParameterValue(TEXT("PreviewTexture"), Studio->RenderTarget)',
+            'Image->SetBrushFromMaterial(PreviewMID)',
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertIn("RenderTarget->UpdateResourceImmediate(true)", creator)
+        self.assertIn("Capture->ShowOnlyActors.AddUnique(this)", creator)
+        self.assertNotIn("Capture->ShowOnlyActorComponents(this)", creator)
+
 if __name__ == "__main__":
     unittest.main()

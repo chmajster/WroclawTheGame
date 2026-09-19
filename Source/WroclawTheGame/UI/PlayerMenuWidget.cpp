@@ -857,10 +857,20 @@ void UPlayerMenuWidget::AddGameHero()
         PreviewSlot->SetPadding(FMargin(330, 24, 20, 22));
 
         auto* Image = WidgetTree->ConstructWidget<UImage>();
-        FSlateBrush Brush;
-        Brush.SetResourceObject(Studio->RenderTarget);
-        Brush.ImageSize = FVector2D(720, 1000);
-        Image->SetBrush(Brush);
+        if (auto* PreviewMaterial = LoadObject<UMaterialInterface>(
+                nullptr, TEXT("/Game/CharacterCreator/M_CharacterPreview.M_CharacterPreview")))
+        {
+            auto* PreviewMID = UMaterialInstanceDynamic::Create(PreviewMaterial, Image);
+            PreviewMID->SetTextureParameterValue(TEXT("PreviewTexture"), Studio->RenderTarget);
+            Image->SetBrushFromMaterial(PreviewMID);
+        }
+        else
+        {
+            FSlateBrush Brush;
+            Brush.SetResourceObject(Studio->RenderTarget);
+            Brush.ImageSize = FVector2D(720, 1000);
+            Image->SetBrush(Brush);
+        }
         Image->SetColorAndOpacity(FLinearColor(1.0f, 1.0f, 1.0f, 0.83f));
         PreviewScale->AddChild(Image);
     }
@@ -1014,10 +1024,21 @@ void UPlayerMenuWidget::AddPreview()
     ScaleSlot->SetVerticalAlignment(VAlign_Center);
 
     auto* Image = WidgetTree->ConstructWidget<UImage>();
-    FSlateBrush Brush;
-    Brush.SetResourceObject(Studio->RenderTarget);
-    Brush.ImageSize = FVector2D(720, 1000);
-    Image->SetBrush(Brush);
+    if (auto* PreviewMaterial = LoadObject<UMaterialInterface>(
+            nullptr, TEXT("/Game/CharacterCreator/M_CharacterPreview.M_CharacterPreview")))
+    {
+        auto* PreviewMID = UMaterialInstanceDynamic::Create(PreviewMaterial, Image);
+        PreviewMID->SetTextureParameterValue(TEXT("PreviewTexture"), Studio->RenderTarget);
+        Image->SetBrushFromMaterial(PreviewMID);
+    }
+    else
+    {
+        FSlateBrush Brush;
+        Brush.SetResourceObject(Studio->RenderTarget);
+        Brush.ImageSize = FVector2D(720, 1000);
+        Image->SetBrush(Brush);
+    }
+    Image->SetColorAndOpacity(FLinearColor::White);
     Scale->AddChild(Image);
 
     auto* TopBadge = WidgetTree->ConstructWidget<UBorder>();
@@ -2920,7 +2941,7 @@ void UPlayerMenuWidget::SetSFXVolumeFromSlider(float Volume)
     if (SFXVolumeButton)
         if (auto* Label = Cast<UTextBlock>(SFXVolumeButton->GetContent()))
             Label->SetText(FText::FromString(FString::Printf(
-                TEXT("EFEKTY ŚWIATA  •  %d%%"), FMath::RoundToInt(Clamped * 100.0f))));
+                TEXT("EFEKTY  •  %d%%"), FMath::RoundToInt(Clamped * 100.0f))));
 }
 
 void UPlayerMenuWidget::SetMusicVolumeFromSlider(float Volume)
