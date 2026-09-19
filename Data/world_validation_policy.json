@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "max_abs_coordinate_cm": 5000000,
+  "max_road_edge_cm": 500000,
+  "min_road_edge_cm": 0.1,
+  "unresolved_hero_is_error": true,
+  "duplicate_ids_are_error": true
+}
