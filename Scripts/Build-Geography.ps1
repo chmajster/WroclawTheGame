@@ -19,6 +19,7 @@ if($OfficialBuildings -and -not $City){throw '-OfficialBuildings requires -City.
 $Editor=Join-Path $EngineRoot 'Engine\Binaries\Win64\UnrealEditor-Cmd.exe'
 
 if($City){
+    $CityData=Join-Path $Root 'Saved\CityData'
     if($OfficialBuildings){
         $CityData=Join-Path $Root 'Saved\CityData'
         $OfficialData=Join-Path $Root 'Saved\OfficialBuildings3D'
@@ -34,6 +35,16 @@ if($City){
         & $Python (Join-Path $PSScriptRoot 'gis\build_city.py') --meshes
         if($LASTEXITCODE -ne 0){throw 'City GIS import failed'}
     }
+    $SectorInput=Join-Path $CityData 'sector.json'
+    $EntrancesOutput=Join-Path $CityData 'entrances.json'
+    $FacadesOutput=Join-Path $CityData 'facades.json'
+    $RoofDetailsOutput=Join-Path $CityData 'roof_details.json'
+    & $Python (Join-Path $PSScriptRoot 'gis\resolve_building_entrances.py') --city $SectorInput --output $EntrancesOutput
+    if($LASTEXITCODE -ne 0){throw 'Building entrance resolution failed'}
+    & $Python (Join-Path $PSScriptRoot 'gis\generate_facades.py') --city $SectorInput --entrances $EntrancesOutput --output $FacadesOutput
+    if($LASTEXITCODE -ne 0){throw 'Facade opening/detail generation failed'}
+    & $Python (Join-Path $PSScriptRoot 'gis\generate_roof_details.py') --city $SectorInput --output $RoofDetailsOutput
+    if($LASTEXITCODE -ne 0){throw 'Roof detail generation failed'}
     & $Python (Join-Path $PSScriptRoot 'gis\import_sector.py')
     if($LASTEXITCODE -ne 0){throw 'Existing GIS import failed'}
     & $Python (Join-Path $PSScriptRoot 'gis\migrate_campaign.py') --input (Join-Path $Root 'Saved\CityData') --output (Join-Path $Root 'Saved\CampaignGIS')
