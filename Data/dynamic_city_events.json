@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "events": [
+    {
+      "id": "traffic_collision",
+      "kind": "traffic_collision",
+      "weight": 1,
+      "min_heat": 0,
+      "start_hour": 0,
+      "end_hour": 24,
+      "weathers": [
+        "Clear",
+        "Cloudy",
+        "Rain",
+        "Fog",
+        "Storm"
+      ],
+      "cooldown_minutes": 45,
+      "duration_minutes": 20,
+      "effects": [
+        "slow_traffic",
+        "service_dispatch"
+      ]
+    },
+    {
+      "id": "roadworks",
+      "kind": "roadworks",
+      "weight": 0.45,
+      "min_heat": 0,
+      "start_hour": 6,
+      "end_hour": 20,
+      "weathers": [
+        "Clear",
+        "Cloudy"
+      ],
+      "cooldown_minutes": 180,
+      "duration_minutes": 90,
+      "effects": [
+        "close_edge",
+        "reroute"
+      ]
+    },
+    {
+      "id": "police_check",
+      "kind": "police_check",
+      "weight": 0.5,
+      "min_heat": 20,
+      "start_hour": 18,
+      "end_hour": 24,
+      "weathers": [
+        "Clear",
+        "Cloudy",
+        "Rain"
+      ],
+      "cooldown_minutes": 120,
+      "duration_minutes": 30,
+      "effects": [
+        "roadblock",
+        "heat_response"
+      ]
+    },
+    {
+      "id": "power_outage",
+      "kind": "power_outage",
+      "weight": 0.2,
+      "min_heat": 0,
+      "start_hour": 19,
+      "end_hour": 24,
+      "weathers": [
+        "Storm"
+      ],
+      "cooldown_minutes": 240,
+      "duration_minutes": 45,
+      "effects": [
+        "disable_lights",
+        "disable_camera"
+      ]
+    }
+  ]
+}
