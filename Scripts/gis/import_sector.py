@@ -174,7 +174,10 @@ def build(source=SOURCE, output=OUTPUT, name="nadodrze", origin=None):
                     graph_nodes[key]={'id':key,'position':geo.world(*coord),'geographic':list(coord),'boundary':key.startswith('boundary:')}
                 oneway=tags.get('oneway','yes' if tags.get('junction')=='roundabout' else 'no')
                 edges.append({'id':f'{identifier}:{a}:{b}:{j}','from':na,'to':nb,'way':identifier,
-                              'name':tags.get('name',''),'car_forward':car and oneway!='-1',
+                              'name':tags.get('name',''),'highway':highway or 'road',
+                              'maxspeed':tags.get('maxspeed'),'lanes':tags.get('lanes'),
+                              'junction':tags.get('junction'),'surface':tags.get('surface'),
+                              'car_forward':car and oneway!='-1',
                               'car_backward':car and oneway not in ('yes','1','true'),
                               'foot':foot,'layer':tags.get('layer','0'),'bridge':tags.get('bridge','no'),
                               'tunnel':tags.get('tunnel','no'),
