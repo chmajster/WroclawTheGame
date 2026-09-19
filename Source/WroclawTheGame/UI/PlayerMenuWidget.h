@@ -83,7 +83,7 @@ private:
     class UTextBlock* MakeText(const FString& Value, int32 Size = 16, bool bBold = false,
                                FLinearColor Color = FLinearColor::White);
     class UButton* MakeButton(const FString& Label, bool bAccent = false);
-    class UBorder* MakeCard(const FMargin& Padding = FMargin(18));
+    class UBorder* MakeCard(const FMargin& CardPadding = FMargin(18));
     class UBorder* MakeKeycap(const FString& Label);
     class UBorder* MakeInfoRow(const FString& Title, const FString& Subtitle, bool bHighlighted = false);
     void BuildShell();
