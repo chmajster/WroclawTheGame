@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "weathers": {
+    "Clear": {
+      "traction": 1,
+      "visibility": 1,
+      "ai_sight": 1,
+      "crowd": 1,
+      "traffic_speed": 1,
+      "street_wetness": 0
+    },
+    "Cloudy": {
+      "traction": 1,
+      "visibility": 0.95,
+      "ai_sight": 0.98,
+      "crowd": 0.95,
+      "traffic_speed": 0.98,
+      "street_wetness": 0.05
+    },
+    "Rain": {
+      "traction": 0.82,
+      "visibility": 0.75,
+      "ai_sight": 0.8,
+      "crowd": 0.55,
+      "traffic_speed": 0.78,
+      "street_wetness": 1
+    },
+    "Fog": {
+      "traction": 0.95,
+      "visibility": 0.42,
+      "ai_sight": 0.5,
+      "crowd": 0.65,
+      "traffic_speed": 0.68,
+      "street_wetness": 0.25
+    },
+    "Storm": {
+      "traction": 0.72,
+      "visibility": 0.55,
+      "ai_sight": 0.62,
+      "crowd": 0.25,
+      "traffic_speed": 0.58,
+      "street_wetness": 1
+    }
+  },
+  "transition_seconds": 30
+}
