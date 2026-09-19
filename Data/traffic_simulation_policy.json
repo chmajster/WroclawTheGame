@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "representations": {
     "physical": {
       "max_distance_m": 180,
@@ -20,5 +20,20 @@
   },
   "max_physical": 24,
   "max_mass": 800,
-  "zonegraph_lane_width_m": 3.25
+  "zonegraph_lane_width_m": 3.25,
+  "default_speed_kph": {
+    "motorway": 120,
+    "trunk": 100,
+    "primary": 70,
+    "secondary": 60,
+    "tertiary": 50,
+    "residential": 30,
+    "living_street": 20,
+    "service": 20,
+    "default": 50
+  },
+  "max_lanes_per_edge": 6,
+  "vehicle_spacing_m": 8,
+  "handoff_hysteresis_m": 35,
+  "despawn_grace_seconds": 4
 }
