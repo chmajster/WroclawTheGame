@@ -1,11 +1,11 @@
 # Repeatable city benchmark
 
-Two stable workloads are defined: walking Nadodrze→Centre and a driving loop through all Wave 1 sectors. The analyzer consumes measured runtime CSV; it never invents FPS.
+The benchmark analyzer now treats the two city routes as separate required workloads and never invents performance measurements.
 
-## Remaining
-1. implement UE automation that drives these exact routes;
-2. export CSV Profiler + Unreal Insights counters with commit/build metadata;
-3. include actor count, draw calls, streaming misses, RAM and VRAM;
-4. run Development and Shipping on target hardware;
-5. store baseline/variance and compare regressions;
-6. tune thresholds only from measured data.
+## Result contract
+
+CSV samples must identify `route_id`, commit, build configuration and hardware ID. Results are grouped per route and checked against frame/CPU/GPU/memory/VRAM/streaming/draw-call budgets. Missing required routes or metadata fail the aggregate report.
+
+An optional baseline file can contain previously measured route summaries. When supplied, the analyzer reports percentage regressions against that measured baseline using the configured tolerance. No baseline values are shipped or synthesized by this change.
+
+This gives CI/local profiling a stable regression format even though actual UE benchmark execution remains external to the source analyzer.

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "targets": {
     "min_fps": 50,
     "max_p95_frame_ms": 20,
@@ -7,8 +7,17 @@
     "max_p95_gpu_ms": 18,
     "max_ram_mb": 12000,
     "max_vram_mb": 10000,
-    "max_streaming_misses": 5
+    "max_streaming_misses": 5,
+    "max_draw_calls": 6500
   },
   "warmup_seconds": 20,
-  "sample_seconds": 120
+  "sample_seconds": 120,
+  "max_regression_pct": 10,
+  "required_metadata": [
+    "route_id",
+    "commit",
+    "build_config",
+    "hardware_id"
+  ],
+  "baseline_policy": "optional_measured_only"
 }
