@@ -1,23 +1,42 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "roles": {
     "building_entrance": {
       "tags": [
         "entrance"
       ],
-      "reservation": "exclusive"
+      "reservation": "exclusive",
+      "slot_count": 1,
+      "slot_radius_m": 0,
+      "interaction_radius_m": 1.5,
+      "approach_distance_m": 1.2,
+      "behavior": "enter_building",
+      "data_layer": "Interiors"
     },
     "shop": {
       "tags": [
         "shop"
       ],
-      "reservation": "queue"
+      "reservation": "queue",
+      "slot_count": 3,
+      "slot_radius_m": 0.8,
+      "interaction_radius_m": 2,
+      "approach_distance_m": 1.4,
+      "behavior": "shop_queue",
+      "queue_spacing_m": 0.9,
+      "data_layer": "Gameplay"
     },
     "amenity": {
       "tags": [
         "amenity"
       ],
-      "reservation": "shared"
+      "reservation": "shared",
+      "slot_count": 2,
+      "slot_radius_m": 0.7,
+      "interaction_radius_m": 2,
+      "approach_distance_m": 1.2,
+      "behavior": "use_amenity",
+      "data_layer": "Gameplay"
     },
     "transit_stop": {
       "tags": [
@@ -25,13 +44,26 @@
         "highway:bus_stop",
         "railway:tram_stop"
       ],
-      "reservation": "queue"
+      "reservation": "queue",
+      "slot_count": 4,
+      "slot_radius_m": 1.2,
+      "interaction_radius_m": 3,
+      "approach_distance_m": 1.5,
+      "behavior": "wait_for_transit",
+      "queue_spacing_m": 1,
+      "data_layer": "Traffic"
     },
     "parking": {
       "tags": [
         "amenity:parking"
       ],
-      "reservation": "vehicle"
+      "reservation": "vehicle",
+      "slot_count": 1,
+      "slot_radius_m": 0,
+      "interaction_radius_m": 4,
+      "approach_distance_m": 2.5,
+      "behavior": "park_vehicle",
+      "data_layer": "Traffic"
     }
   }
 }
