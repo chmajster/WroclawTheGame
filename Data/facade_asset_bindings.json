@@ -52,5 +52,92 @@
     "cornice": "procedural:cornice",
     "address_plaque": "procedural:address_plaque",
     "door_step": "procedural:door_step"
+  },
+  "asset_scales": {
+    "kenney-door-door-rotate-square-a": [
+      1,
+      1,
+      1
+    ],
+    "kenney-door-door-rotate-square-b": [
+      1,
+      1,
+      1
+    ],
+    "kenney-door-door-rotate-square-c": [
+      1,
+      1,
+      1
+    ],
+    "kenney-door-door-rotate-square-d": [
+      1,
+      1,
+      1
+    ],
+    "kenney-door-door-rotate-round-a": [
+      1,
+      1,
+      1
+    ],
+    "kenney-door-door-rotate-round-b": [
+      1,
+      1,
+      1
+    ],
+    "kenney-door-door-rotate-round-c": [
+      1,
+      1,
+      1
+    ],
+    "kenney-door-door-rotate-round-d": [
+      1,
+      1,
+      1
+    ],
+    "kenney-window-wall-window-square-detailed": [
+      0.625,
+      0.625,
+      0.625
+    ],
+    "kenney-window-wall-window-wide-square-detailed": [
+      0.625,
+      0.625,
+      0.625
+    ],
+    "kenney-window-wall-window-round-detailed": [
+      0.625,
+      0.625,
+      0.625
+    ],
+    "kenney-window-wall-window-wide-round-detailed": [
+      0.625,
+      0.625,
+      0.625
+    ],
+    "rollershutter_window_01": [
+      1,
+      1,
+      1
+    ],
+    "rollershutter_window_02": [
+      1,
+      1,
+      1
+    ],
+    "exterior_aircon_unit": [
+      0.75,
+      0.75,
+      0.75
+    ],
+    "wtg-original-intercom": [
+      1,
+      1,
+      1
+    ]
+  },
+  "instancing": {
+    "cell_size_m": 128,
+    "collision": "NoCollision",
+    "hlod": true
   }
 }
