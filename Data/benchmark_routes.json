@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "routes": [
     {
       "id": "walk_nadodrze_centre",
@@ -17,7 +17,10 @@
         "vram_mb",
         "streaming_misses",
         "draw_calls"
-      ]
+      ],
+      "required": true,
+      "warmup_seconds": 20,
+      "sample_seconds": 120
     },
     {
       "id": "drive_wave1_loop",
@@ -39,7 +42,10 @@
         "vram_mb",
         "streaming_misses",
         "draw_calls"
-      ]
+      ],
+      "required": true,
+      "warmup_seconds": 20,
+      "sample_seconds": 120
     }
   ]
 }
