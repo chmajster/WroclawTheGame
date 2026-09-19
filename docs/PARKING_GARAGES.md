@@ -1,12 +1,11 @@
 # Parking and garages
 
-The source extractor covers OSM parking nodes/areas and garage buildings. Gameplay policy defines ownership capacity and initial illegal-parking/tow hooks.
+Parking extraction now produces stable runtime slots instead of only OSM areas.
 
-## Remaining
-1. polygon occupancy slots and orientation;
-2. distinguish public/private/access/fee/maxstay;
-3. parked-car procedural population;
-4. player garage ownership and persistent vehicle slots;
-5. legal/illegal parking evaluation using road restrictions;
-6. tow/impound/repair loop and economy integration;
-7. UE collision/navigation QA.
+## Runtime parking model
+
+Each parking feature exposes access, fee, maxstay, legal/illegal evaluation, stable capacity and deterministic slot descriptors. Area/garage slots are oriented from the dominant source geometry; point parking produces a single slot. A seeded occupancy flag can populate parked vehicles without persisting hundreds of actors.
+
+Economy hooks reference the central price keys for hourly parking and tow release. Persistent player/owned vehicles can store parking ID + slot ID + vehicle ID while procedural occupancy remains regenerable.
+
+Restricted/private parking is never treated as legal public parking merely because geometry exists.
