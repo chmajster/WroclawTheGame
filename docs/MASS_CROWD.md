@@ -1,11 +1,15 @@
 # Mass crowd handoff
 
-This pass derives pedestrian corridors from the verified walk graph and defines physical/Mass/logical/dormant representations.
+Pedestrian corridors are generated from the verified walk graph and now carry runtime density and physicalization metadata rather than being geometry-only paths.
 
-## Remaining
-1. import corridors to ZoneGraph/SmartNav representation;
-2. create Mass Crowd fragments/processors and StateTree behavior;
-3. add crossing reservations and signal compliance;
-4. physicalize nearby pedestrians with animation/avoidance;
-5. integrate day/night/weather schedules;
-6. profile density and transition thresholds in UE 5.8.
+## Runtime contract
+
+Each corridor exposes road class, base/effective density, logical capacity, walk speed, avoidance radius and representation hysteresis. Effective density is multiplied by the current day/night and weather state, so the same stable corridor IDs can drive morning, daytime, evening, rain and storm population changes without regenerating geometry.
+
+Crossing descriptors include reservation radius and signalized state when source tags provide it.
+
+## Simulation layers
+
+The policy still defines physical, Mass, logical and dormant ranges. The added hysteresis value is intended to prevent pedestrians from oscillating between representations around a distance threshold.
+
+This output can be imported into ZoneGraph/Mass Crowd or consumed by a custom runtime scheduler while preserving deterministic GIS-backed IDs.
