@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "seasons": [
     {
       "id": "winter",
@@ -11,7 +11,16 @@
       "daylight_hours": 8.2,
       "crowd": 0.75,
       "wetness_bias": 0.2,
-      "snow_allowed": true
+      "snow_allowed": true,
+      "foliage_variant": "winter_bare",
+      "material_variant": "winter_cold",
+      "npc_clothing_profile": "winter_heavy",
+      "decoration_layer": "DL_Season_Winter",
+      "pcg_tags": [
+        "season.winter",
+        "foliage.bare"
+      ],
+      "snow_accumulation_rate": 0.35
     },
     {
       "id": "spring",
@@ -23,7 +32,16 @@
       "daylight_hours": 14,
       "crowd": 0.95,
       "wetness_bias": 0.25,
-      "snow_allowed": false
+      "snow_allowed": false,
+      "foliage_variant": "spring_fresh",
+      "material_variant": "spring_damp",
+      "npc_clothing_profile": "spring_light",
+      "decoration_layer": "DL_Season_Spring",
+      "pcg_tags": [
+        "season.spring",
+        "foliage.fresh"
+      ],
+      "snow_accumulation_rate": 0
     },
     {
       "id": "summer",
@@ -35,7 +53,16 @@
       "daylight_hours": 16.2,
       "crowd": 1.1,
       "wetness_bias": 0.05,
-      "snow_allowed": false
+      "snow_allowed": false,
+      "foliage_variant": "summer_full",
+      "material_variant": "summer_dry",
+      "npc_clothing_profile": "summer_light",
+      "decoration_layer": "DL_Season_Summer",
+      "pcg_tags": [
+        "season.summer",
+        "foliage.full"
+      ],
+      "snow_accumulation_rate": 0
     },
     {
       "id": "autumn",
@@ -47,8 +74,30 @@
       "daylight_hours": 10.5,
       "crowd": 0.9,
       "wetness_bias": 0.3,
-      "snow_allowed": false
+      "snow_allowed": false,
+      "foliage_variant": "autumn_color",
+      "material_variant": "autumn_wet",
+      "npc_clothing_profile": "autumn_mid",
+      "decoration_layer": "DL_Season_Autumn",
+      "pcg_tags": [
+        "season.autumn",
+        "foliage.autumn"
+      ],
+      "snow_accumulation_rate": 0
     }
   ],
-  "latitude_reference": 51.1079
+  "latitude_reference": 51.1079,
+  "transition_days": 14,
+  "calendar": {
+    "start_date": "2026-06-01",
+    "persist_date": true,
+    "days_per_real_hour": 0
+  },
+  "runtime_bindings": {
+    "day_night": "SeasonalDaylightHours",
+    "foliage": "foliage",
+    "crowd": "crowd_multiplier",
+    "wetness": "wetness_bias",
+    "snow": "snow_accumulation_rate"
+  }
 }
