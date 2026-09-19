@@ -34,8 +34,16 @@ AWTG_CharacterCreator::AWTG_CharacterCreator()
 }
 void AWTG_CharacterCreator::BeginPlay()
 {
-    Super::BeginPlay(); RenderTarget=NewObject<UTextureRenderTarget2D>(this); RenderTarget->InitAutoFormat(720,1000); RenderTarget->ClearColor=FLinearColor(.025f,.03f,.04f);
-    Capture->TextureTarget=RenderTarget; Capture->ShowOnlyActors.Add(this); Capture->ShowOnlyActorComponents(this);
+    Super::BeginPlay();
+    RenderTarget = NewObject<UTextureRenderTarget2D>(this);
+    RenderTarget->ClearColor = FLinearColor(.025f, .03f, .04f, 1.0f);
+    RenderTarget->RenderTargetFormat = ETextureRenderTargetFormat::RTF_RGBA8;
+    RenderTarget->InitAutoFormat(720, 1000);
+    RenderTarget->UpdateResourceImmediate(true);
+
+    Capture->TextureTarget = RenderTarget;
+    Capture->ShowOnlyActors.Reset();
+    Capture->ShowOnlyActors.AddUnique(this);
     GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->OnChanged.AddDynamic(this,&AWTG_CharacterCreator::RefreshAppearance);
     SetLighting(TEXT("Modern")); RefreshAppearance();
 }
@@ -75,6 +83,5 @@ void AWTG_CharacterCreator::Tick(float Dt)
     Super::Tick(Dt); Distance=FMath::FInterpTo(Distance,TargetDistance,Dt,7); CameraHeight=FMath::FInterpTo(CameraHeight,TargetHeight,Dt,7);
     const float Angle=FMath::DegreesToRadians(Yaw); FVector Position=FVector(FMath::Cos(Angle)*Distance,FMath::Sin(Angle)*Distance,CameraHeight*Appearance->HeightRatio);
     Capture->SetRelativeLocation(Position); Capture->SetRelativeRotation((FVector(0,0,CameraHeight*Appearance->HeightRatio)-Position).Rotation());
-    Capture->ShowOnlyActorComponents(this);
     Capture->CaptureScene();
 }
