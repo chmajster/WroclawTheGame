@@ -1,11 +1,20 @@
 # Mass/ZoneGraph traffic handoff
 
-The generator converts the verified road graph into directional lane descriptors and defines four simulation representations: physical, Mass, logical and dormant.
+The road import now preserves traffic-facing OSM metadata on every graph edge: road class, max speed, lane count, junction type and surface. The ZoneGraph planner consumes those fields instead of producing anonymous direction-only lanes.
 
-## Remaining
-1. create/import ZoneGraph lane storage in UE 5.8;
-2. implement MassEntity vehicle fragments/processors and archetypes;
-3. hand off near vehicles to existing physical ACityTrafficVehicle without teleport/pop;
-4. integrate junction reservations/turn restrictions from Point 12;
-5. persist only logical traffic state, never hundreds of actors;
-6. profile representation thresholds and tune on target hardware.
+## Runtime descriptors
+
+Each directional lane contains:
+- stable edge/way identifiers;
+- direction and world-space points;
+- road class, junction and surface;
+- parsed speed limit in km/h with road-class fallback;
+- directional lane count;
+- estimated logical vehicle capacity;
+- lane width.
+
+The global plan also exposes physical/Mass limits plus handoff hysteresis and despawn grace time. These values are intended to prevent representation thrashing when a vehicle moves near the physical/Mass boundary.
+
+## Integration
+
+Point 12 restriction pairs can now be attached directly by edge ID. The traffic state can persist logical vehicle progress using stable lane IDs while physical actors remain transient.
