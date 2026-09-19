@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "phases": [
+    {
+      "id": "night",
+      "start": 0,
+      "end": 5,
+      "street_light": 1,
+      "traffic": 0.25,
+      "crowd": 0.15,
+      "shops": 0.05
+    },
+    {
+      "id": "morning",
+      "start": 5,
+      "end": 9,
+      "street_light": 0.35,
+      "traffic": 0.9,
+      "crowd": 0.75,
+      "shops": 0.55
+    },
+    {
+      "id": "day",
+      "start": 9,
+      "end": 17,
+      "street_light": 0,
+      "traffic": 0.8,
+      "crowd": 1,
+      "shops": 1
+    },
+    {
+      "id": "evening",
+      "start": 17,
+      "end": 22,
+      "street_light": 0.7,
+      "traffic": 1,
+      "crowd": 0.9,
+      "shops": 0.8
+    },
+    {
+      "id": "late",
+      "start": 22,
+      "end": 24,
+      "street_light": 1,
+      "traffic": 0.45,
+      "crowd": 0.35,
+      "shops": 0.2
+    }
+  ],
+  "transition_minutes": 30
+}
