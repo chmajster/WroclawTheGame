@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "layers": {
+    "traffic": {
+      "base_gain": 0.8
+    },
+    "tram": {
+      "base_gain": 0.75
+    },
+    "river": {
+      "base_gain": 0.6
+    },
+    "park": {
+      "base_gain": 0.5
+    },
+    "crowd": {
+      "base_gain": 0.55
+    },
+    "industrial": {
+      "base_gain": 0.45
+    },
+    "night": {
+      "base_gain": 0.25
+    }
+  },
+  "weather_gain": {
+    "Clear": 1,
+    "Cloudy": 0.95,
+    "Rain": 0.75,
+    "Fog": 0.8,
+    "Storm": 0.65
+  }
+}
