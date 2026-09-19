@@ -1710,10 +1710,10 @@ void UPlayerMenuWidget::BuildMapTab()
         Marker->SetBrush(RoundedBrush(Color, 7.0f));
         Marker->SetPadding(FMargin(8, 5));
         Marker->AddChild(MakeText(Label, 9, true, TextColor));
-        auto* Slot = Canvas->AddChildToCanvas(Marker);
-        Slot->SetAutoSize(true);
-        Slot->SetAlignment(FVector2D(0.5f, 0.5f));
-        Slot->SetPosition(Position);
+        auto* MarkerSlot = Canvas->AddChildToCanvas(Marker);
+        MarkerSlot->SetAutoSize(true);
+        MarkerSlot->SetAlignment(FVector2D(0.5f, 0.5f));
+        MarkerSlot->SetPosition(Position);
     };
 
     if (bCity && MapSubsystem && MapSubsystem->GetCity() &&
@@ -2319,9 +2319,9 @@ void UPlayerMenuWidget::BuildSettingsTab()
 
         auto AddFPSPresetSlot = [&](UButton* Button)
         {
-            auto* Slot = FPSPresets->AddChildToHorizontalBox(Button);
-            Slot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
-            Slot->SetPadding(FMargin(2, 0, 2, 0));
+            auto* PresetSlot = FPSPresets->AddChildToHorizontalBox(Button);
+            PresetSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+            PresetSlot->SetPadding(FMargin(2, 0, 2, 0));
         };
 
         auto* FPS60Button = MakeButton(TEXT("60"), Limit == 60);
