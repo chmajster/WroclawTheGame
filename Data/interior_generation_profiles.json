@@ -1,26 +1,42 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "profiles": {
     "tenement": {
       "corridor_width_m": 1.6,
       "room_depth_m": 5.5,
-      "units_per_floor": 4
+      "units_per_floor": 4,
+      "elevator": false
     },
     "estate": {
       "corridor_width_m": 1.8,
       "room_depth_m": 4.8,
-      "units_per_floor": 6
+      "units_per_floor": 6,
+      "elevator": true
     },
     "villa": {
       "corridor_width_m": 1.4,
       "room_depth_m": 5,
-      "units_per_floor": 2
+      "units_per_floor": 2,
+      "elevator": false
     },
     "mixed": {
       "corridor_width_m": 1.6,
       "room_depth_m": 5,
-      "units_per_floor": 4
+      "units_per_floor": 4,
+      "elevator": true
     }
   },
-  "max_generated_floors": 8
+  "max_generated_floors": 8,
+  "floor_height_m": 3.1,
+  "wall_inset_m": 0.25,
+  "public_amenities": [
+    "school",
+    "university",
+    "hospital",
+    "clinic",
+    "library",
+    "townhall",
+    "community_centre"
+  ],
+  "quest_building_ids": []
 }
