@@ -1,12 +1,16 @@
 # Emergency services dispatch
 
-The planner selects a reachable service depot and routes response units over the verified car graph. Policy separates police Heat escalation from incident-driven ambulance/fire response.
+The planner selects a reachable service depot over the verified car graph and now produces a runtime response contract rather than only a route-node list.
 
-## Remaining
-1. source real/curated depots from POI/BDOT10k without inventing locations;
-2. turn route nodes into physical response vehicles near the player;
-3. integrate police Heat, pursuit/search and roadblocks;
-4. traffic yielding and intersection priority;
-5. ambulance/fire incident behaviors;
-6. logical off-screen dispatch persistence;
-7. sirens/audio/VFX and UE end-to-end QA.
+## Dispatch output
+
+- service-specific incident eligibility;
+- required unit count from police Heat or incident severity;
+- depot availability filtering;
+- true route distance rather than hop count;
+- service-specific response speed and ETA;
+- high/critical priority with a traffic-yield flag;
+- physicalization radius for logical→physical response vehicles;
+- explicit `rejected` and `unavailable` states.
+
+Police Heat escalation and ambulance/fire incident rules remain policy-driven, so balancing does not require changing route code. Off-screen dispatch can persist the stable depot ID, route nodes, unit count and incident ID while physical vehicles are spawned only near the player.

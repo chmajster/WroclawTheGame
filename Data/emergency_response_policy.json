@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "services": {
     "police": {
       "heat_thresholds": [
@@ -11,7 +11,8 @@
         1,
         2,
         4
-      ]
+      ],
+      "priority": "high"
     },
     "ambulance": {
       "incident_types": [
@@ -19,8 +20,10 @@
         "traffic_collision"
       ],
       "units": [
-        1
-      ]
+        1,
+        2
+      ],
+      "priority": "critical"
     },
     "fire": {
       "incident_types": [
@@ -29,11 +32,18 @@
       ],
       "units": [
         1,
-        2
-      ]
+        2,
+        3
+      ],
+      "priority": "critical"
     }
   },
   "max_route_distance_m": 12000,
   "physicalize_radius_m": 350,
-  "search_timeout_seconds": 90
+  "search_timeout_seconds": 90,
+  "response_speed_kph": {
+    "police": 70,
+    "ambulance": 65,
+    "fire": 55
+  }
 }
