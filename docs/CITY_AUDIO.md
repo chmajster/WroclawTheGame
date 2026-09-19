@@ -1,12 +1,15 @@
-# City audio plan
+# City audio runtime plan
 
-Sector statistics now drive initial traffic/tram/crowd layers and weather gain. The plan is semantic; it contains no unlicensed audio.
+The city audio plan is now environment-aware while remaining asset-license neutral. It contains semantic emitter roles only; actual recordings must be project-owned or properly licensed.
 
-## Remaining
-1. add licensed field recordings/sound libraries with attribution;
-2. river/park/industrial detection from source features;
-3. MetaSounds/randomized emitters and vehicle/tram pass-bys;
-4. interior/exterior portals, occlusion and reverb;
-5. day/night/weather mixing;
-6. priority/voice budget and streaming;
-7. in-game loudness/spatial/performance QA.
+## Sector mix
+
+Sector counts can enable traffic, tram, park, river, crowd and industrial layers. Density selects an acoustic profile, occlusion strength and local voice budget. Each layer has a priority and stable emitter role suitable for MetaSounds or conventional SoundCue bindings.
+
+Day/night and weather states modify the mix. Night adds a dedicated nocturnal ambience role, while rain/fog/storm alter layer gains without replacing the source catalogue.
+
+## Streaming and acoustics
+
+The plan exposes per-sector voice budgets, a global voice budget and prefetch duration. Reverb profiles distinguish dense street canyons from open-air areas, and an occlusion factor can feed runtime traces/portals.
+
+No unlicensed audio files are added by this pipeline.
