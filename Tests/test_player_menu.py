@@ -397,6 +397,14 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
 
+    def test_project_audio_settings_header_does_not_collide_with_engine_header(self):
+        self.assertEqual(AUDIO_SETTINGS_H.name, "WTGAudioSettings.h")
+        self.assertFalse(
+            (ROOT / "Source" / "WroclawTheGame" / "Audio" / "AudioSettings.h").exists()
+        )
+        self.assertIn('#include "WTGAudioSettings.generated.h"', self.audio_settings)
+        self.assertIn('#include "Audio/WTGAudioSettings.h"', self.audio)
+
     def test_audio_settings_have_precise_interactive_sliders(self):
         for token in (
             '#include "Components/Slider.h"',
