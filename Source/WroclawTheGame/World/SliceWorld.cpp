@@ -17,7 +17,7 @@
 ASliceWorld::ASliceWorld()
 {
     PrimaryActorTick.bCanEverTick = true;
-    PrimaryActorTick.TickInterval = .5;
+    PrimaryActorTick.TickInterval = .5f;
     RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
     Power = CreateDefaultSubobject<UPowerConsumerComponent>(TEXT("ApartmentPower"));
     PuzzleLight = CreateDefaultSubobject<UPointLightComponent>(TEXT("PuzzleLight"));
@@ -50,10 +50,10 @@ void ASliceWorld::BeginPlay()
     Sun->GetLightComponent()->SetIntensity(25000.f);
     auto *Sky = GetWorld()->SpawnActor<ASkyLight>();
     Sky->GetLightComponent()->SetMobility(EComponentMobility::Movable);
-    Sky->GetLightComponent()->SetIntensity(.55);
+    Sky->GetLightComponent()->SetIntensity(.55f);
     Fog = GetWorld()->SpawnActor<AExponentialHeightFog>();
-    AudioLoop(RoomAudio, TEXT("Apartment"), .22);
-    AudioLoop(StreetAudio, TEXT("Street"), .05);
+    AudioLoop(RoomAudio, TEXT("Apartment"), .22f);
+    AudioLoop(StreetAudio, TEXT("Street"), .05f);
     AudioLoop(ChaseAudio, TEXT("Chase"), 0);
 }
 void ASliceWorld::Tick(float Dt)
@@ -66,9 +66,9 @@ void ASliceWorld::Tick(float Dt)
         if (D.id == M->WorldState.district)
             Active = &D;
     const bool Room = Active && Active->ambient == "Apartment";
-    RoomAudio->SetVolumeMultiplier(Room ? .22 : 0);
-    StreetAudio->SetVolumeMultiplier(Room ? .05 : .3);
-    ChaseAudio->SetVolumeMultiplier(M->Threat() ? .38 : 0);
+    RoomAudio->SetVolumeMultiplier(Room ? .22f : 0.f);
+    StreetAudio->SetVolumeMultiplier(Room ? .05f : .3f);
+    ChaseAudio->SetVolumeMultiplier(M->Threat() ? .38f : 0.f);
     const auto *W = M->WorldState.Weather();
     if (Fog && W)
         Fog->GetComponent()->SetFogDensity(W->fog);
