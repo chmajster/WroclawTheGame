@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "tenement": {
+      "corridor_width_m": 1.6,
+      "room_depth_m": 5.5,
+      "units_per_floor": 4
+    },
+    "estate": {
+      "corridor_width_m": 1.8,
+      "room_depth_m": 4.8,
+      "units_per_floor": 6
+    },
+    "villa": {
+      "corridor_width_m": 1.4,
+      "room_depth_m": 5,
+      "units_per_floor": 2
+    },
+    "mixed": {
+      "corridor_width_m": 1.6,
+      "room_depth_m": 5,
+      "units_per_floor": 4
+    }
+  },
+  "max_generated_floors": 8
+}
