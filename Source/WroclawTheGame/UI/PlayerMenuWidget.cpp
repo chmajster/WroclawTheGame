@@ -3318,7 +3318,9 @@ FReply UPlayerMenuWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, co
 
     const bool bAudioSliderFocused =
         ActiveTab == 6 && SettingsSection == 3 &&
-        ((SFXVolumeSlider && (SFXVolumeSlider->HasAnyUserFocus() || SFXVolumeSlider->HasKeyboardFocus())) ||
+        ((MasterVolumeSlider && (MasterVolumeSlider->HasAnyUserFocus() || MasterVolumeSlider->HasKeyboardFocus())) ||
+         (SFXVolumeSlider && (SFXVolumeSlider->HasAnyUserFocus() || SFXVolumeSlider->HasKeyboardFocus())) ||
+         (MusicVolumeSlider && (MusicVolumeSlider->HasAnyUserFocus() || MusicVolumeSlider->HasKeyboardFocus())) ||
          (UIVolumeSlider && (UIVolumeSlider->HasAnyUserFocus() || UIVolumeSlider->HasKeyboardFocus())));
 
     const bool bPreviousTab =
