@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "profiles": {
     "hero": {
       "layer": "HLOD_Hero",
@@ -7,7 +7,12 @@
       "transition_m": 900,
       "nanite": true,
       "merge_materials": false,
-      "target_triangle_ratio": 0.35
+      "target_triangle_ratio": 0.35,
+      "memory_budget_mb": 48,
+      "max_materials_per_proxy": 8,
+      "preserve_uvs": true,
+      "preserve_silhouette": true,
+      "data_layer": "DL_Buildings"
     },
     "detailed": {
       "layer": "HLOD_Detailed",
@@ -15,7 +20,12 @@
       "transition_m": 700,
       "nanite": true,
       "merge_materials": true,
-      "target_triangle_ratio": 0.2
+      "target_triangle_ratio": 0.2,
+      "memory_budget_mb": 24,
+      "max_materials_per_proxy": 8,
+      "preserve_uvs": true,
+      "preserve_silhouette": false,
+      "data_layer": "DL_Buildings"
     },
     "standard": {
       "layer": "HLOD_Standard",
@@ -23,7 +33,12 @@
       "transition_m": 500,
       "nanite": false,
       "merge_materials": true,
-      "target_triangle_ratio": 0.12
+      "target_triangle_ratio": 0.12,
+      "memory_budget_mb": 12,
+      "max_materials_per_proxy": 8,
+      "preserve_uvs": true,
+      "preserve_silhouette": false,
+      "data_layer": "DL_Buildings"
     },
     "background": {
       "layer": "HLOD_Background",
@@ -31,8 +46,21 @@
       "transition_m": 350,
       "nanite": false,
       "merge_materials": true,
-      "target_triangle_ratio": 0.06
+      "target_triangle_ratio": 0.06,
+      "memory_budget_mb": 6,
+      "max_materials_per_proxy": 8,
+      "preserve_uvs": false,
+      "preserve_silhouette": false,
+      "data_layer": "DL_Buildings"
     }
   },
-  "max_materials_per_proxy": 8
+  "max_materials_per_proxy": 8,
+  "quality_priority": {
+    "hero": 100,
+    "detailed": 70,
+    "standard": 40,
+    "background": 10
+  },
+  "drive_speed_pop_in_guard_m": 120,
+  "rebuild_on_source_change": true
 }
