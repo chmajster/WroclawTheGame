@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "accepted_amenities": [
+    "parking",
+    "parking_space",
+    "motorcycle_parking"
+  ],
+  "accepted_parking": [
+    "surface",
+    "multi-storey",
+    "underground",
+    "street_side",
+    "lane"
+  ],
+  "player_garage_capacity": 6,
+  "illegal_parking_heat": 2,
+  "tow_after_game_minutes": 120
+}
