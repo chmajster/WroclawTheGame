@@ -35,6 +35,7 @@ public:
     UPROPERTY(BlueprintReadOnly) bool bSummary = false;
     UPROPERTY(BlueprintAssignable) FOnAppearanceChanged OnChanged;
     UFUNCTION(BlueprintCallable) void BeginCreation();
+    UFUNCTION(BlueprintCallable) void FinishCreation();
     UFUNCTION(BlueprintCallable) void Cancel();
     UFUNCTION(BlueprintCallable) void Change(const FCharacterAppearanceDefinition& Appearance);
     UFUNCTION(BlueprintCallable) void Undo();
