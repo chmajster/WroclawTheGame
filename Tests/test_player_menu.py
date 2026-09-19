@@ -373,7 +373,7 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             "Key == EKeys::Gamepad_DPad_Right && !bAudioSliderFocused",
         ):
             self.assertIn(token, self.cpp)
-        for member in ("SFXVolumeSlider", "UIVolumeSlider"):
+        for member in ("MasterVolumeSlider", "SFXVolumeSlider", "MusicVolumeSlider", "UIVolumeSlider"):
             self.assertIn(member, self.header)
 
     def test_keyboard_and_gamepad_navigation_remains_available(self):
@@ -409,8 +409,10 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         for token in (
             '#include "Components/Slider.h"',
             "ConstructWidget<USlider>()",
-            "SFXSlider->SetValue(SFXVolume)",
-            "UISlider->SetValue(UIVolume)",
+            "MasterVolumeSlider->SetValue(MasterVolume)",
+            "SFXVolumeSlider->SetValue(SFXVolume)",
+            "MusicVolumeSlider->SetValue(MusicVolume)",
+            "UIVolumeSlider->SetValue(UIVolume)",
             "SetStepSize(0.05f)",
             "SetSliderBarColor",
             "SetSliderHandleColor(Accent)",
@@ -428,16 +430,22 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         ):
             self.assertIn(token, self.cpp)
         for token in (
+            "MasterVolumeButton",
             "SFXVolumeButton",
+            "MusicVolumeButton",
             "UIVolumeButton",
+            "MasterVolumeMeter",
             "SFXVolumeMeter",
+            "MusicVolumeMeter",
             "UIVolumeMeter",
         ):
             self.assertIn(token, self.header)
 
     def test_audio_settings_have_visual_level_meters(self):
         for token in (
-            "SFXMeter->SetPercent(SFXVolume)",
+            "MasterVolumeMeter->SetPercent(MasterVolume)",
+            "SFXVolumeMeter->SetPercent(SFXVolume)",
+            "MusicVolumeMeter->SetPercent(MusicVolume)",
             "UIVolumeMeter->SetPercent(UIVolume)",
             "SetFillColorAndOpacity(Accent)",
             'TEXT("SUWAK: PRECYZYJNA REGULACJA  •  PRZYCISK: SKOK CO 25%")',
@@ -448,16 +456,23 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         for token in (
             'TEXT("DŹWIĘK")',
             "SettingsAudio()",
+            "CycleMasterVolume()",
             "CycleSFXVolume()",
+            "CycleMusicVolume()",
             "CycleUIVolume()",
-            'TEXT("EFEKTY ŚWIATA  •  %d%%")',
+            'TEXT("OGÓLNY POZIOM  •  %d%%")',
+            'TEXT("EFEKTY  •  %d%%")',
+            'TEXT("MUZYKA  •  %d%%")',
             'TEXT("INTERFEJS  •  %d%%")',
         ):
             self.assertIn(token, self.cpp)
-        for token in ("SFXVolume", "UIVolume", "SetSFXVolume", "SetUIVolume"):
+        for token in ("MasterVolume", "SFXVolume", "MusicVolume", "UIVolume",
+                      "SetMasterVolume", "SetSFXVolume", "SetMusicVolume", "SetUIVolume"):
             self.assertIn(token, self.audio_settings)
-        self.assertIn("Settings->SFXVolume", self.audio)
-        self.assertIn("Settings->UIVolume", self.audio)
+        self.assertIn("Settings->MasterVolume * Settings->SFXVolume", self.audio)
+        self.assertIn("Settings->MasterVolume * Settings->UIVolume", self.audio)
+        self.assertIn("Settings->MasterVolume * Settings->MusicVolume", self.audio)
+        self.assertIn("USliceAudio::PlayMusic", self.audio)
         self.assertIn("EffectiveVolume", self.audio)
 
     def test_display_quality_details_use_visual_metric_cards(self):
@@ -532,13 +547,12 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             'TEXT("OTWARTY ŚWIAT / WROCŁAW")',
             'TEXT("MAPA MIASTA / SEKTORY")',
             'TEXT("WROCŁAW / OTWARTY ŚWIAT")',
-            'TEXT("WSPÓLNY MIKS")',
             'TEXT("MUZYKA")',
         ):
             self.assertIn(token, self.cpp)
         self.assertNotIn('TEXT("OTWARTY ŚWIAT / GIS")', self.cpp)
         self.assertNotIn('TEXT("MAPA GIS / SEKTORY")', self.cpp)
-        self.assertNotIn("Projekt nie ma jeszcze osobnego kanału muzyki", self.cpp)
+        self.assertNotIn('TEXT("WSPÓLNY MIKS")', self.cpp)
         self.assertNotIn("obsługiwane przez runtime", self.cpp)
 
     def test_game_landing_is_context_aware_for_city_mode(self):
@@ -676,6 +690,23 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             self.assertIn(token, self.cpp)
 
 
+    def test_audio_mixer_has_master_sfx_music_and_ui_channels(self):
+        for token in (
+            "MasterVolume", "SFXVolume", "MusicVolume", "UIVolume",
+            "SetMasterVolume", "SetSFXVolume", "SetMusicVolume", "SetUIVolume",
+        ):
+            self.assertIn(token, self.audio_settings)
+        for token in (
+            'TEXT("OGÓLNY POZIOM  •  %d%%")',
+            'TEXT("EFEKTY  •  %d%%")',
+            'TEXT("MUZYKA  •  %d%%")',
+            'TEXT("INTERFEJS  •  %d%%")',
+            "MasterVolumeSlider", "SFXVolumeSlider", "MusicVolumeSlider", "UIVolumeSlider",
+        ):
+            self.assertIn(token, self.cpp)
+        self.assertNotIn('TEXT("WSPÓLNY MIKS")', self.cpp)
+
+
     def test_character_preview_uses_render_target_ui_material(self):
         creator = (ROOT / "Source" / "WroclawTheGame" / "Character" / "CharacterCreator.cpp").read_text()
         for token in (
@@ -687,7 +718,6 @@ class PlayerMenuRegressionTests(unittest.TestCase):
         self.assertIn("RenderTarget->UpdateResourceImmediate(true)", creator)
         self.assertIn("Capture->ShowOnlyActors.AddUnique(this)", creator)
         self.assertNotIn("Capture->ShowOnlyActorComponents(this)", creator)
-
 
 if __name__ == "__main__":
     unittest.main()
