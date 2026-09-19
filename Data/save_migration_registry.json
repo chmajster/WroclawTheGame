@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "campaign": {
     "current_version": 3,
     "current_coordinate_space": "WroclawGISV1",
@@ -10,7 +10,8 @@
         "from_space": "BlockoutV1",
         "to_space": "BlockoutV1",
         "mechanism": "legacy_history_replay",
-        "legacy_slot_only": true
+        "legacy_slot_only": true,
+        "id": "legacy_history_replay"
       },
       {
         "from_version": 3,
@@ -18,9 +19,11 @@
         "from_space": "BlockoutV1",
         "to_space": "WroclawGISV1",
         "mechanism": "CampaignMigrationDefinition",
-        "legacy_slot_only": false
+        "legacy_slot_only": false,
+        "id": "CampaignMigrationDefinition"
       }
-    ]
+    ],
+    "chain_required": true
   },
   "city": {
     "current_version": 1,
@@ -29,6 +32,41 @@
   "rules": {
     "unknown_version": "reject",
     "unknown_coordinate_space": "reject",
-    "newer_version": "reject_without_overwrite"
+    "newer_version": "reject_without_overwrite",
+    "backup_before_migration": true,
+    "backup_suffix": "_pre_migration_backup",
+    "failed_migration": "keep_original_and_backup"
+  },
+  "system_payloads": {
+    "economy": {
+      "current_version": 1,
+      "storage": "FWTGEconomySaveState",
+      "default_behavior": "struct_default"
+    },
+    "parking": {
+      "current_version": 1,
+      "storage": "SystemPayloads.parking",
+      "default_json": "{\"owned\":[],\"parked\":[]}"
+    },
+    "npc_schedule": {
+      "current_version": 1,
+      "storage": "SystemPayloads.npc_schedule",
+      "default_json": "{\"npcs\":{}}"
+    },
+    "quests": {
+      "current_version": 1,
+      "storage": "SystemPayloads.quests",
+      "default_json": "{\"active\":null,\"stage\":null,\"world_mutations\":[]}"
+    },
+    "season": {
+      "current_version": 1,
+      "storage": "SystemPayloads.season",
+      "default_json": "{\"date\":\"2026-06-01\",\"season\":\"summer\",\"transition_alpha\":0}"
+    }
+  },
+  "id_remaps": {
+    "poi": {},
+    "building": {},
+    "objective": {}
   }
 }
