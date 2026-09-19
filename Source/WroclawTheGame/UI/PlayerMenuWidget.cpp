@@ -3,7 +3,7 @@
 #include "UI/SliceController.h"
 #include "UI/PerformanceSettings.h"
 #include "Audio/SliceAudio.h"
-#include "Audio/AudioSettings.h"
+#include "Audio/WTGAudioSettings.h"
 #include "Character/CharacterCreator.h"
 #include "Character/CharacterCreatorSubsystem.h"
 #include "Character/CharacterAppearanceComponent.h"
