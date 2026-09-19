@@ -1,26 +1,40 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "layers": {
     "traffic": {
-      "base_gain": 0.8
+      "base_gain": 0.8,
+      "priority": 70,
+      "emitter_role": "city_traffic"
     },
     "tram": {
-      "base_gain": 0.75
+      "base_gain": 0.75,
+      "priority": 85,
+      "emitter_role": "city_tram"
     },
     "river": {
-      "base_gain": 0.6
+      "base_gain": 0.6,
+      "priority": 45,
+      "emitter_role": "city_river"
     },
     "park": {
-      "base_gain": 0.5
+      "base_gain": 0.5,
+      "priority": 40,
+      "emitter_role": "city_park"
     },
     "crowd": {
-      "base_gain": 0.55
+      "base_gain": 0.55,
+      "priority": 60,
+      "emitter_role": "city_crowd"
     },
     "industrial": {
-      "base_gain": 0.45
+      "base_gain": 0.45,
+      "priority": 50,
+      "emitter_role": "city_industrial"
     },
     "night": {
-      "base_gain": 0.25
+      "base_gain": 0.25,
+      "priority": 35,
+      "emitter_role": "city_night"
     }
   },
   "weather_gain": {
@@ -29,5 +43,58 @@
     "Rain": 0.75,
     "Fog": 0.8,
     "Storm": 0.65
-  }
+  },
+  "day_phase_gain": {
+    "night": 0.55,
+    "morning": 0.8,
+    "day": 1,
+    "evening": 1,
+    "late": 0.65
+  },
+  "weather_layer_gain": {
+    "Clear": {},
+    "Cloudy": {},
+    "Rain": {
+      "traffic": 1.1,
+      "crowd": 0.6,
+      "park": 0.65,
+      "river": 1.05
+    },
+    "Fog": {
+      "traffic": 0.8,
+      "crowd": 0.7,
+      "park": 0.75
+    },
+    "Storm": {
+      "traffic": 0.7,
+      "crowd": 0.35,
+      "park": 0.4,
+      "river": 1.15,
+      "industrial": 0.8
+    }
+  },
+  "reverb_by_density": {
+    "VeryHigh": "city_canyon",
+    "High": "dense_street",
+    "Medium": "urban_open",
+    "Low": "open_air",
+    "default": "urban_open"
+  },
+  "occlusion_by_density": {
+    "VeryHigh": 0.85,
+    "High": 0.7,
+    "Medium": 0.5,
+    "Low": 0.3,
+    "default": 0.5
+  },
+  "voice_budget_by_density": {
+    "VeryHigh": 32,
+    "High": 24,
+    "Medium": 16,
+    "Low": 10,
+    "default": 16
+  },
+  "global_voice_budget": 96,
+  "streaming_prefetch_seconds": 4,
+  "asset_policy": "licensed_or_project_owned_only"
 }
