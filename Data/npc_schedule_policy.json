@@ -1,8 +1,20 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "physicalize_radius_m": 180,
   "simplified_radius_m": 650,
   "logical_tick_seconds": 30,
   "teleport_offscreen_only": true,
-  "max_physical_npcs": 48
+  "max_physical_npcs": 48,
+  "travel_speed_mps": 1.35,
+  "minimum_travel_minutes": 2,
+  "handoff_hysteresis_m": 20,
+  "persist_fields": [
+    "schedule_hour",
+    "next_schedule_hour",
+    "traveling",
+    "travel_progress",
+    "from_slot",
+    "to_slot",
+    "logical_location"
+  ]
 }
