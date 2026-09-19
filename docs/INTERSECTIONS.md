@@ -1,11 +1,16 @@
 # Intersections and turn restrictions
 
-This pass preserves OSM control nodes and restriction relations as explicit runtime-preparation data.
+The intersection pipeline converts OSM control nodes and restriction relations into runtime-facing road graph descriptors.
 
-## Remaining
-1. bind restriction relations to generated road-graph edge IDs;
-2. generate lane-level turns and stop lines;
-3. implement priority/right-of-way state;
-4. add traffic signal phases and pedestrian crossings;
-5. teach VehicleAIDriver to reserve/clear junctions;
-6. validate roundabouts, no-turn/only-turn restrictions and UE behavior.
+## Runtime contract
+
+- traffic signals, stop signs, give-way nodes and crossings carry explicit priority, stop-line offset, pedestrian-conflict and reservation metadata;
+- node-via OSM turn restrictions are mapped to directed `from_edge -> to_edge` pairs using the imported road graph's OSM `way` IDs;
+- unsupported via-way restrictions and relations that cannot be mapped are preserved in `unresolved_restrictions` with a reason instead of silently disappearing;
+- `resolved_pairs` can be consumed directly by GPS, DriverAI and intersection reservation logic.
+
+The mapping respects `car_forward`/`car_backward`, so a restriction is attached to the direction in which a vehicle actually enters and leaves the junction.
+
+## Extension points
+
+Signal timing plans and authored lane-level geometry can augment these descriptors later without changing stable restriction IDs or the road graph edge contract.
