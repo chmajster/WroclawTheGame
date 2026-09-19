@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "roles": {
+    "building_entrance": {
+      "tags": [
+        "entrance"
+      ],
+      "reservation": "exclusive"
+    },
+    "shop": {
+      "tags": [
+        "shop"
+      ],
+      "reservation": "queue"
+    },
+    "amenity": {
+      "tags": [
+        "amenity"
+      ],
+      "reservation": "shared"
+    },
+    "transit_stop": {
+      "tags": [
+        "public_transport",
+        "highway:bus_stop",
+        "railway:tram_stop"
+      ],
+      "reservation": "queue"
+    },
+    "parking": {
+      "tags": [
+        "amenity:parking"
+      ],
+      "reservation": "vehicle"
+    }
+  }
+}
