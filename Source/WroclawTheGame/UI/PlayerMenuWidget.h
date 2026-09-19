@@ -39,14 +39,28 @@ private:
     UPROPERTY() TObjectPtr<class UVerticalBox> RightColumn;
     UPROPERTY() TObjectPtr<class UVerticalBox> ShellLayout;
     UPROPERTY() TObjectPtr<class UTextBlock> PageTitle;
+    UPROPERTY() TObjectPtr<class UTextBlock> PageCounter;
     UPROPERTY() TObjectPtr<class UTextBlock> ContextStatus;
     UPROPERTY() TObjectPtr<class UTextBlock> ContextHint;
+    UPROPERTY() TObjectPtr<class UTextBlock> ClockText;
+    UPROPERTY() TObjectPtr<class UBorder> SessionStateDot;
+    UPROPERTY() TObjectPtr<class UTextBlock> ActionPanelLabel;
+    UPROPERTY() TObjectPtr<class UTextBlock> CenterPanelLabel;
+    UPROPERTY() TObjectPtr<class UTextBlock> RightPanelLabel;
     UPROPERTY() TObjectPtr<class UTextBlock> PreviewViewStatus;
     UPROPERTY() TObjectPtr<class UTextBlock> PreviewLightingStatus;
     UPROPERTY() TObjectPtr<class UBorder> ToastCard;
+    UPROPERTY() TObjectPtr<class UButton> SFXVolumeButton;
+    UPROPERTY() TObjectPtr<class UButton> UIVolumeButton;
+    UPROPERTY() TObjectPtr<class UProgressBar> SFXVolumeMeter;
+    UPROPERTY() TObjectPtr<class UProgressBar> UIVolumeMeter;
+    UPROPERTY() TObjectPtr<class USlider> SFXVolumeSlider;
+    UPROPERTY() TObjectPtr<class USlider> UIVolumeSlider;
     UPROPERTY() TArray<TObjectPtr<class UButton>> TabButtons;
     UPROPERTY() TArray<TObjectPtr<class UBorder>> TabIndicators;
     UPROPERTY() TArray<TObjectPtr<class UButton>> ActionButtons;
+    UPROPERTY() TArray<TObjectPtr<class UButton>> PreviewViewButtons;
+    UPROPERTY() TArray<TObjectPtr<class UButton>> PreviewLightingButtons;
     UPROPERTY() TObjectPtr<class AWTG_CharacterCreator> Studio;
 
     int32 ActiveTab = 0;
@@ -59,6 +73,8 @@ private:
     float ShellAnimationTime = 0.28f;
     float AmbientAnimationTime = 0.0f;
     float ToastTimeRemaining = 0.0f;
+    float ToastAnimationTime = 0.18f;
+    float ClockRefreshAccumulator = 0.0f;
     bool bRotatingPreview = false;
     bool bCollectActionButtons = false;
     FString PreviewViewLabel = TEXT("CAŁA SYLWETKA");
@@ -68,6 +84,7 @@ private:
                                FLinearColor Color = FLinearColor::White);
     class UButton* MakeButton(const FString& Label, bool bAccent = false);
     class UBorder* MakeCard(const FMargin& Padding = FMargin(18));
+    class UBorder* MakeKeycap(const FString& Label);
     class UBorder* MakeInfoRow(const FString& Title, const FString& Subtitle, bool bHighlighted = false);
     void BuildShell();
     void BuildGameTab();
@@ -85,11 +102,13 @@ private:
     void UpdateTabStyle();
     void UpdateContextStatus();
     void UpdateContextHint();
+    void UpdatePanelLabels();
     void ShowToast(const FString& Message);
     void RefreshWithSettingsToast();
     void UpdateFocusPresentation();
     void FocusPrimaryAction();
     void UpdatePreviewStatus();
+    void UpdatePreviewControlStyles();
     void ShowConfirmation(int32 Action, const FString& Title, const FString& Body, const FString& ConfirmLabel);
     void ClearConfirmation();
 
@@ -130,6 +149,9 @@ private:
     UFUNCTION() void ToggleUISounds();
     UFUNCTION() void CycleSFXVolume();
     UFUNCTION() void CycleUIVolume();
+    UFUNCTION() void SetSFXVolumeFromSlider(float Volume);
+    UFUNCTION() void SetUIVolumeFromSlider(float Volume);
+    UFUNCTION() void CommitAudioSliderChange();
     UFUNCTION() void ToggleFPSCounter();
     UFUNCTION() void ToggleVSync();
     UFUNCTION() void ToggleDynamicResolution();

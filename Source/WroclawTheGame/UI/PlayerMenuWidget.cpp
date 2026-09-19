@@ -29,6 +29,7 @@
 #include "Components/SafeZone.h"
 #include "Components/ScrollBox.h"
 #include "Components/SizeBox.h"
+#include "Components/Slider.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "Components/VerticalBoxSlot.h"
@@ -42,6 +43,7 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Brushes/SlateRoundedBoxBrush.h"
 #include "Misc/ConfigCacheIni.h"
+#include "Misc/DateTime.h"
 
 namespace
 {
@@ -174,6 +176,18 @@ UBorder* UPlayerMenuWidget::MakeCard(const FMargin& Padding)
     return Border;
 }
 
+UBorder* UPlayerMenuWidget::MakeKeycap(const FString& Label)
+{
+    auto* Keycap = WidgetTree->ConstructWidget<UBorder>();
+    Keycap->SetBrush(RoundedBrush(FLinearColor(0.055f, 0.075f, 0.098f, 0.96f), 6.0f));
+    Keycap->SetPadding(FMargin(7, 3, 7, 3));
+
+    auto* LabelText = MakeText(Label, 8, true, TextPrimary);
+    LabelText->SetJustification(ETextJustify::Center);
+    Keycap->AddChild(LabelText);
+    return Keycap;
+}
+
 void UPlayerMenuWidget::NativeOnInitialized()
 {
     Super::NativeOnInitialized();
@@ -213,10 +227,21 @@ UBorder* UPlayerMenuWidget::MakeInfoRow(const FString& Title, const FString& Sub
     auto* Row = WidgetTree->ConstructWidget<UBorder>();
     Row->SetBrush(RoundedBrush(
         bHighlighted ? FLinearColor(0.025f, 0.105f, 0.135f, 0.98f) : PanelSoft, 10.0f));
-    Row->SetPadding(FMargin(12, 10, 12, 10));
+    Row->SetPadding(FMargin(10, 9, 12, 9));
+
+    auto* Content = WidgetTree->ConstructWidget<UHorizontalBox>();
+    Row->AddChild(Content);
+
+    auto* Rail = WidgetTree->ConstructWidget<UBorder>();
+    Rail->SetBrush(RoundedBrush(bHighlighted ? Accent : Divider, 2.0f));
+    auto* RailSize = WidgetTree->ConstructWidget<USizeBox>();
+    RailSize->SetWidthOverride(3.0f);
+    RailSize->AddChild(Rail);
+    Content->AddChildToHorizontalBox(RailSize)->SetPadding(FMargin(0, 1, 10, 1));
 
     auto* Column = WidgetTree->ConstructWidget<UVerticalBox>();
-    Row->AddChild(Column);
+    auto* ColumnSlot = Content->AddChildToHorizontalBox(Column);
+    ColumnSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
     Column->AddChildToVerticalBox(MakeText(Title, 13, true, TextPrimary));
     if (!Subtitle.IsEmpty())
@@ -339,7 +364,7 @@ void UPlayerMenuWidget::BuildShell()
         Slot->SetPadding(FMargin(3, 1, 3, 1));
         Slot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
-        auto* Button = MakeButton(Labels[Index]);
+        auto* Button = MakeButton(FString::Printf(TEXT("%02d  %s"), Index + 1, Labels[Index]));
         auto* ButtonSlot = Tab->AddChildToVerticalBox(Button);
         ButtonSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
@@ -366,12 +391,28 @@ void UPlayerMenuWidget::BuildShell()
     auto* ContextSlot = Layout->AddChildToVerticalBox(ContextBar);
     ContextSlot->SetPadding(FMargin(34, 13, 34, 12));
 
+    auto* PageChip = WidgetTree->ConstructWidget<UBorder>();
+    PageChip->SetBrush(RoundedBrush(FLinearColor(Accent.R, Accent.G, Accent.B, 0.10f), 7.0f));
+    PageChip->SetPadding(FMargin(9, 4, 9, 4));
+    PageCounter = MakeText(TEXT("01 / 07"), 9, true, Accent);
+    PageCounter->SetJustification(ETextJustify::Center);
+    PageChip->AddChild(PageCounter);
+    ContextBar->AddChildToHorizontalBox(PageChip)->SetPadding(FMargin(0, 0, 12, 0));
+
     PageTitle = MakeText(TEXT(""), 11, true, Accent);
     ContextBar->AddChildToHorizontalBox(PageTitle)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
+    auto* DotSize = WidgetTree->ConstructWidget<USizeBox>();
+    DotSize->SetWidthOverride(8.0f);
+    DotSize->SetHeightOverride(8.0f);
+    SessionStateDot = WidgetTree->ConstructWidget<UBorder>();
+    SessionStateDot->SetBrush(RoundedBrush(Muted, 4.0f));
+    DotSize->AddChild(SessionStateDot);
+    ContextBar->AddChildToHorizontalBox(DotSize)->SetPadding(FMargin(0, 5, 8, 0));
+
     ContextStatus = MakeText(TEXT(""), 9, true, Muted);
     ContextStatus->SetJustification(ETextJustify::Right);
-    ContextBar->AddChildToHorizontalBox(ContextStatus)->SetPadding(FMargin(12, 0, 18, 0));
+    ContextBar->AddChildToHorizontalBox(ContextStatus)->SetPadding(FMargin(0, 0, 18, 0));
 
     ContextHint = MakeText(TEXT(""), 10, true, Muted);
     ContextHint->SetJustification(ETextJustify::Right);
@@ -382,16 +423,26 @@ void UPlayerMenuWidget::BuildShell()
     BodySlot->SetPadding(FMargin(30, 0, 30, 0));
     BodySlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
-    auto* LeftCard = MakeCard(FMargin(18, 18, 18, 18));
+    auto* LeftCard = MakeCard(FMargin(14, 12, 14, 14));
     auto* LeftSize = WidgetTree->ConstructWidget<USizeBox>();
     LeftSize->SetWidthOverride(285.0f);
     LeftSize->AddChild(LeftCard);
     Body->AddChildToHorizontalBox(LeftSize)->SetPadding(FMargin(0, 0, 16, 0));
+    auto* LeftPanel = WidgetTree->ConstructWidget<UVerticalBox>();
+    LeftCard->AddChild(LeftPanel);
+    ActionPanelLabel = MakeText(TEXT("AKCJE"), 8, true, Muted);
+    LeftPanel->AddChildToVerticalBox(ActionPanelLabel)->SetPadding(FMargin(4, 0, 4, 8));
+    auto* LeftDivider = WidgetTree->ConstructWidget<UBorder>();
+    LeftDivider->SetBrushColor(FLinearColor(Divider.R, Divider.G, Divider.B, 0.72f));
+    auto* LeftDividerSize = WidgetTree->ConstructWidget<USizeBox>();
+    LeftDividerSize->SetHeightOverride(1.0f);
+    LeftDividerSize->AddChild(LeftDivider);
+    LeftPanel->AddChildToVerticalBox(LeftDividerSize)->SetPadding(FMargin(4, 0, 4, 10));
     ActionScroll = WidgetTree->ConstructWidget<UScrollBox>();
     ActionScroll->SetScrollBarVisibility(ESlateVisibility::Hidden);
     ActionScroll->SetAnimateWheelScrolling(true);
     ActionScroll->SetWheelScrollMultiplier(42.0f);
-    LeftCard->AddChild(ActionScroll);
+    LeftPanel->AddChildToVerticalBox(ActionScroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     ActionColumn = WidgetTree->ConstructWidget<UVerticalBox>();
     ActionScroll->AddChild(ActionColumn);
 
@@ -399,42 +450,84 @@ void UPlayerMenuWidget::BuildShell()
     auto* CenterSlot = Body->AddChildToHorizontalBox(CenterCard);
     CenterSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     CenterSlot->SetPadding(FMargin(0, 0, 16, 0));
+    auto* CenterPanel = WidgetTree->ConstructWidget<UVerticalBox>();
+    CenterCard->AddChild(CenterPanel);
+    CenterPanelLabel = MakeText(TEXT("ZAWARTOŚĆ"), 8, true, Accent);
+    CenterPanel->AddChildToVerticalBox(CenterPanelLabel)->SetPadding(FMargin(10, 2, 10, 8));
+    auto* CenterDivider = WidgetTree->ConstructWidget<UBorder>();
+    CenterDivider->SetBrushColor(FLinearColor(Divider.R, Divider.G, Divider.B, 0.72f));
+    auto* CenterDividerSize = WidgetTree->ConstructWidget<USizeBox>();
+    CenterDividerSize->SetHeightOverride(1.0f);
+    CenterDividerSize->AddChild(CenterDivider);
+    CenterPanel->AddChildToVerticalBox(CenterDividerSize)->SetPadding(FMargin(10, 0, 10, 8));
     CenterScroll = WidgetTree->ConstructWidget<UScrollBox>();
     CenterScroll->SetScrollBarVisibility(ESlateVisibility::Hidden);
     CenterScroll->SetAnimateWheelScrolling(true);
     CenterScroll->SetWheelScrollMultiplier(42.0f);
-    CenterCard->AddChild(CenterScroll);
+    CenterPanel->AddChildToVerticalBox(CenterScroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     CenterColumn = WidgetTree->ConstructWidget<UVerticalBox>();
     CenterScroll->AddChild(CenterColumn);
 
-    auto* RightCard = MakeCard(FMargin(20, 20, 20, 20));
+    auto* RightCard = MakeCard(FMargin(16, 14, 16, 16));
     auto* RightSize = WidgetTree->ConstructWidget<USizeBox>();
     RightSize->SetWidthOverride(320.0f);
     RightSize->AddChild(RightCard);
     Body->AddChildToHorizontalBox(RightSize);
+    auto* RightPanel = WidgetTree->ConstructWidget<UVerticalBox>();
+    RightCard->AddChild(RightPanel);
+    RightPanelLabel = MakeText(TEXT("KONTEKST"), 8, true, Muted);
+    RightPanel->AddChildToVerticalBox(RightPanelLabel)->SetPadding(FMargin(4, 0, 4, 8));
+    auto* RightDivider = WidgetTree->ConstructWidget<UBorder>();
+    RightDivider->SetBrushColor(FLinearColor(Divider.R, Divider.G, Divider.B, 0.72f));
+    auto* RightDividerSize = WidgetTree->ConstructWidget<USizeBox>();
+    RightDividerSize->SetHeightOverride(1.0f);
+    RightDividerSize->AddChild(RightDivider);
+    RightPanel->AddChildToVerticalBox(RightDividerSize)->SetPadding(FMargin(4, 0, 4, 10));
     RightScroll = WidgetTree->ConstructWidget<UScrollBox>();
     RightScroll->SetScrollBarVisibility(ESlateVisibility::Hidden);
     RightScroll->SetAnimateWheelScrolling(true);
     RightScroll->SetWheelScrollMultiplier(42.0f);
-    RightCard->AddChild(RightScroll);
+    RightPanel->AddChildToVerticalBox(RightScroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     RightColumn = WidgetTree->ConstructWidget<UVerticalBox>();
     RightScroll->AddChild(RightColumn);
 
+    auto* FooterDivider = WidgetTree->ConstructWidget<UBorder>();
+    FooterDivider->SetBrushColor(FLinearColor(Divider.R, Divider.G, Divider.B, 0.72f));
+    auto* FooterDividerSize = WidgetTree->ConstructWidget<USizeBox>();
+    FooterDividerSize->SetHeightOverride(1.0f);
+    FooterDividerSize->AddChild(FooterDivider);
+    Layout->AddChildToVerticalBox(FooterDividerSize)->SetPadding(FMargin(34, 10, 34, 0));
+
     auto* Footer = WidgetTree->ConstructWidget<UHorizontalBox>();
     auto* FooterSlot = Layout->AddChildToVerticalBox(Footer);
-    FooterSlot->SetPadding(FMargin(34, 12, 34, 20));
+    FooterSlot->SetPadding(FMargin(34, 10, 34, 20));
 
     auto* Location = MakeText(TEXT("WROCŁAW  /  DOLNY ŚLĄSK"), 10, true, Muted);
     Footer->AddChildToHorizontalBox(Location)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 
+    ClockText = MakeText(FDateTime::Now().ToString(TEXT("%d.%m.%Y  •  %H:%M")), 9, true, Muted);
+    ClockText->SetJustification(ETextJustify::Center);
+    Footer->AddChildToHorizontalBox(ClockText)->SetPadding(FMargin(16, 0, 16, 0));
+
     auto* Build = MakeText(ProjectVersionLabel(), 9, true, Muted);
     Build->SetJustification(ETextJustify::Center);
     auto* BuildSlot = Footer->AddChildToHorizontalBox(Build);
-    BuildSlot->SetPadding(FMargin(18, 0, 18, 0));
+    BuildSlot->SetPadding(FMargin(16, 0, 16, 0));
 
-    auto* FooterHint = MakeText(TEXT("MYSZ  •  KLAWIATURA  •  GAMEPAD"), 10, true, Accent);
-    FooterHint->SetJustification(ETextJustify::Right);
-    Footer->AddChildToHorizontalBox(FooterHint);
+    auto* InputLegend = WidgetTree->ConstructWidget<UHorizontalBox>();
+    auto* InputLegendSlot = Footer->AddChildToHorizontalBox(InputLegend);
+    InputLegendSlot->SetPadding(FMargin(10, 0, 0, 0));
+
+    auto AddFooterShortcut = [&](const FString& Key, const FString& Label)
+    {
+        InputLegend->AddChildToHorizontalBox(MakeKeycap(Key))->SetPadding(FMargin(0, 0, 6, 0));
+        auto* Hint = MakeText(Label, 8, true, Muted);
+        InputLegend->AddChildToHorizontalBox(Hint)->SetPadding(FMargin(0, 3, 12, 0));
+    };
+
+    AddFooterShortcut(TEXT("ESC"), TEXT("WRÓĆ"));
+    AddFooterShortcut(TEXT("1–7"), TEXT("ZAKŁADKI"));
+    AddFooterShortcut(TEXT("ENTER / A"), TEXT("WYBIERZ"));
 }
 
 void UPlayerMenuWidget::Refresh()
@@ -449,9 +542,18 @@ void UPlayerMenuWidget::Refresh()
     if (CenterScroll) CenterScroll->ScrollToStart();
     if (RightScroll) RightScroll->ScrollToStart();
     ActionButtons.Reset();
+    SFXVolumeButton = nullptr;
+    UIVolumeButton = nullptr;
+    SFXVolumeMeter = nullptr;
+    UIVolumeMeter = nullptr;
+    SFXVolumeSlider = nullptr;
+    UIVolumeSlider = nullptr;
+    PreviewViewButtons.Reset();
+    PreviewLightingButtons.Reset();
     UpdateTabStyle();
     UpdateContextStatus();
     UpdateContextHint();
+    UpdatePanelLabels();
 
     bCollectActionButtons = true;
     switch (ActiveTab)
@@ -514,6 +616,9 @@ void UPlayerMenuWidget::UpdateTabStyle()
 
 void UPlayerMenuWidget::UpdateContextStatus()
 {
+    if (PageCounter)
+        PageCounter->SetText(FText::FromString(FString::Printf(TEXT("%02d / 07"), ActiveTab + 1)));
+
     if (!ContextStatus)
         return;
 
@@ -530,6 +635,8 @@ void UPlayerMenuWidget::UpdateContextStatus()
     ContextStatus->SetText(FText::FromString(FString::Printf(
         TEXT("%s  •  %s  •  %s"), *Mode, *Session, *Save)));
     ContextStatus->SetColorAndOpacity(FSlateColor(bHasSave ? Accent : Muted));
+    if (SessionStateDot)
+        SessionStateDot->SetBrush(RoundedBrush(bInGame ? Accent : Muted, 4.0f));
 }
 
 void UPlayerMenuWidget::UpdateContextHint()
@@ -537,26 +644,50 @@ void UPlayerMenuWidget::UpdateContextHint()
     if (!ContextHint)
         return;
 
-    FString Hint = TEXT("1–7  ZAKŁADKI    •    Q/E  L1/R1  PRZEŁĄCZ    •    ENTER/A  WYBIERZ    •    ESC/B  WSTECZ");
+    FString Hint = TEXT("Q/E  •  L1/R1  ZMIEŃ ZAKŁADKĘ");
 
     if (ActiveTab == 1)
     {
-        Hint = TEXT("PPM  OBRÓT    •    KÓŁKO  ZOOM    •    Q/E  L1/R1  ZAKŁADKI    •    ESC/B  WSTECZ");
+        Hint = TEXT("PPM  OBRÓT    •    KÓŁKO  ZOOM");
     }
     else if (ActiveTab == 4)
     {
         auto* CityGameplay = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
         auto* MapSubsystem = GetWorld()->GetSubsystem<UWroclawMapSubsystem>();
         Hint = CityGameplay && CityGameplay->IsActive() && MapSubsystem
-            ? TEXT("C  NASTĘPNY CEL    •    BACKSPACE  USUŃ CEL    •    Q/E  L1/R1  ZAKŁADKI")
-            : TEXT("MAPA ODKRYĆ    •    Q/E  L1/R1  ZAKŁADKI    •    ESC/B  WSTECZ");
+            ? TEXT("C  NASTĘPNY CEL    •    BACKSPACE  USUŃ CEL")
+            : TEXT("MAPA ODKRYĆ");
     }
     else if (ActiveTab == 6)
     {
-        Hint = TEXT("ENTER/A  ZMIEŃ    •    Q/E  L1/R1  ZAKŁADKI    •    ESC/B  WSTECZ");
+        Hint = TEXT("ENTER / A  ZMIEŃ WARTOŚĆ");
     }
 
     ContextHint->SetText(FText::FromString(Hint));
+}
+
+void UPlayerMenuWidget::UpdatePanelLabels()
+{
+    static const TCHAR* LeftLabels[] = {
+        TEXT("AKCJE"), TEXT("STEROWANIE"), TEXT("FILTRY"),
+        TEXT("NAWIGACJA"), TEXT("NAWIGACJA"), TEXT("NAWIGACJA"), TEXT("KATEGORIE")
+    };
+    static const TCHAR* CenterLabels[] = {
+        TEXT("SESJA"), TEXT("PODGLĄD"), TEXT("EKWIPUNEK"),
+        TEXT("POSTĘP"), TEXT("MAPA"), TEXT("METRYKI"), TEXT("OPCJE")
+    };
+    static const TCHAR* RightLabels[] = {
+        TEXT("STATUS"), TEXT("PROFIL"), TEXT("PODSUMOWANIE"),
+        TEXT("SZCZEGÓŁY"), TEXT("CEL"), TEXT("PODSUMOWANIE"), TEXT("BIEŻĄCE WARTOŚCI")
+    };
+
+    const int32 Index = FMath::Clamp(ActiveTab, 0, 6);
+    if (ActionPanelLabel)
+        ActionPanelLabel->SetText(FText::FromString(LeftLabels[Index]));
+    if (CenterPanelLabel)
+        CenterPanelLabel->SetText(FText::FromString(CenterLabels[Index]));
+    if (RightPanelLabel)
+        RightPanelLabel->SetText(FText::FromString(RightLabels[Index]));
 }
 
 void UPlayerMenuWidget::ShowToast(const FString& Message)
@@ -569,8 +700,18 @@ void UPlayerMenuWidget::ShowToast(const FString& Message)
 
     ToastCard = WidgetTree->ConstructWidget<UBorder>();
     ToastCard->SetBrush(RoundedBrush(FLinearColor(0.020f, 0.075f, 0.095f, 0.98f), 10.0f));
-    ToastCard->SetPadding(FMargin(14, 10, 14, 10));
-    ToastCard->AddChild(MakeText(Message, 9, true, TextPrimary));
+    ToastCard->SetPadding(FMargin(10, 9, 14, 9));
+
+    auto* ToastContent = WidgetTree->ConstructWidget<UHorizontalBox>();
+    ToastCard->AddChild(ToastContent);
+
+    auto* ToastRail = WidgetTree->ConstructWidget<UBorder>();
+    ToastRail->SetBrush(RoundedBrush(Accent, 2.0f));
+    auto* ToastRailSize = WidgetTree->ConstructWidget<USizeBox>();
+    ToastRailSize->SetWidthOverride(3.0f);
+    ToastRailSize->AddChild(ToastRail);
+    ToastContent->AddChildToHorizontalBox(ToastRailSize)->SetPadding(FMargin(0, 1, 10, 1));
+    ToastContent->AddChildToHorizontalBox(MakeText(Message, 9, true, TextPrimary));
 
     auto* Slot = RootOverlay->AddChildToOverlay(ToastCard);
     Slot->SetHorizontalAlignment(HAlign_Right);
@@ -578,7 +719,12 @@ void UPlayerMenuWidget::ShowToast(const FString& Message)
     Slot->SetPadding(FMargin(24, 24, 24, 72));
 
     ToastTimeRemaining = 1.8f;
-    ToastCard->SetRenderOpacity(1.0f);
+    const auto* UISettings = UWTGPerformanceSettings::Get();
+    const bool bReduceMotion = UISettings && UISettings->bReduceUIMotion;
+    ToastAnimationTime = bReduceMotion ? 0.18f : 0.0f;
+    ToastCard->SetRenderOpacity(bReduceMotion ? 1.0f : 0.0f);
+    ToastCard->SetRenderTranslation(
+        bReduceMotion ? FVector2D::ZeroVector : FVector2D(18.0f, 0.0f));
 }
 
 void UPlayerMenuWidget::RefreshWithSettingsToast()
@@ -589,26 +735,55 @@ void UPlayerMenuWidget::RefreshWithSettingsToast()
 
 void UPlayerMenuWidget::UpdateFocusPresentation()
 {
-    auto UpdateButton = [](UButton* Button)
+    auto HasFocus = [](UButton* Button)
+    {
+        return Button && (Button->HasAnyUserFocus() || Button->HasKeyboardFocus());
+    };
+    const FLinearColor FocusTint(0.72f, 1.0f, 1.0f, 1.0f);
+
+    for (int32 Index = 0; Index < TabButtons.Num(); ++Index)
+    {
+        UButton* Button = TabButtons[Index];
+        if (!Button)
+            continue;
+        const bool bFocused = HasFocus(Button);
+        const bool bActive = Index == ActiveTab;
+        const float Scale = bFocused ? 1.022f : (bActive ? 1.008f : 1.0f);
+        Button->SetRenderScale(FVector2D(Scale, Scale));
+        Button->SetRenderOpacity((bFocused || bActive) ? 1.0f : 0.92f);
+        Button->SetBackgroundColor(bFocused ? FocusTint : FLinearColor::White);
+    }
+
+    for (UButton* Button : ActionButtons)
     {
         if (!Button)
-            return;
-        const bool bFocused = Button->HasAnyUserFocus() || Button->HasKeyboardFocus();
-        const float Scale = bFocused ? 1.015f : 1.0f;
+            continue;
+        const bool bFocused = HasFocus(Button);
+        const float Scale = bFocused ? 1.022f : 1.0f;
         Button->SetRenderScale(FVector2D(Scale, Scale));
-        Button->SetRenderOpacity(bFocused ? 1.0f : 0.97f);
-    };
-
-    for (UButton* Button : TabButtons)
-        UpdateButton(Button);
-    for (UButton* Button : ActionButtons)
-        UpdateButton(Button);
+        Button->SetRenderOpacity(bFocused ? 1.0f : 0.94f);
+        Button->SetBackgroundColor(bFocused ? FocusTint : FLinearColor::White);
+    }
 }
 
 void UPlayerMenuWidget::FocusPrimaryAction()
 {
     if (PendingConfirmation != 0)
         return;
+
+    if (ActiveTab == 6 && ActionButtons.IsValidIndex(SettingsSection))
+    {
+        UButton* ActiveSettingsSection = ActionButtons[SettingsSection];
+        if (ActiveSettingsSection && ActiveSettingsSection->GetIsEnabled() &&
+            ActiveSettingsSection->GetVisibility() == ESlateVisibility::Visible)
+        {
+            if (APlayerController* PlayerController = GetOwningPlayer())
+                ActiveSettingsSection->SetUserFocus(PlayerController);
+            else
+                ActiveSettingsSection->SetKeyboardFocus();
+            return;
+        }
+    }
 
     for (UButton* Button : ActionButtons)
     {
@@ -796,9 +971,21 @@ void UPlayerMenuWidget::AddPreview()
 {
     if (!Studio || !Studio->RenderTarget)
     {
-        auto* Fallback = MakeText(TEXT("Podgląd postaci jest chwilowo niedostępny."), 18, true, Muted);
-        Fallback->SetJustification(ETextJustify::Center);
-        CenterColumn->AddChildToVerticalBox(Fallback)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+        auto* FallbackCard = MakeCard(FMargin(24, 22, 24, 22));
+        auto* FallbackSlot = CenterColumn->AddChildToVerticalBox(FallbackCard);
+        FallbackSlot->SetPadding(FMargin(18));
+        FallbackSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+        auto* FallbackBox = WidgetTree->ConstructWidget<UVerticalBox>();
+        FallbackCard->AddChild(FallbackBox);
+        auto* FallbackTitle = MakeText(TEXT("PODGLĄD NIEDOSTĘPNY"), 18, true, TextPrimary);
+        FallbackTitle->SetJustification(ETextJustify::Center);
+        FallbackBox->AddChildToVerticalBox(FallbackTitle)->SetPadding(FMargin(0, 0, 0, 7));
+        auto* FallbackText = MakeText(
+            TEXT("Postać nie może zostać teraz wyświetlona. Pozostałe informacje profilu są nadal dostępne."),
+            11, false, Muted);
+        FallbackText->SetJustification(ETextJustify::Center);
+        FallbackBox->AddChildToVerticalBox(FallbackText);
         return;
     }
 
@@ -864,9 +1051,19 @@ void UPlayerMenuWidget::AddPreview()
     auto* Caption = MakeText(TEXT("AKTYWNA POSTAĆ"), 13, true, TextPrimary);
     Caption->SetJustification(ETextJustify::Center);
     CaptionBox->AddChildToVerticalBox(Caption);
-    auto* CaptionSub = MakeText(TEXT("PPM — OBRÓT   •   KÓŁKO — ZOOM"), 9, true, Muted);
-    CaptionSub->SetJustification(ETextJustify::Center);
-    CaptionBox->AddChildToVerticalBox(CaptionSub)->SetPadding(FMargin(0, 3, 0, 0));
+
+    auto* PreviewHints = WidgetTree->ConstructWidget<UHorizontalBox>();
+    PreviewHints->AddChildToHorizontalBox(MakeKeycap(TEXT("PPM")))
+        ->SetPadding(FMargin(0, 0, 6, 0));
+    PreviewHints->AddChildToHorizontalBox(MakeText(TEXT("OBRÓT"), 8, true, Muted))
+        ->SetPadding(FMargin(0, 3, 12, 0));
+    PreviewHints->AddChildToHorizontalBox(MakeKeycap(TEXT("KÓŁKO")))
+        ->SetPadding(FMargin(0, 0, 6, 0));
+    PreviewHints->AddChildToHorizontalBox(MakeText(TEXT("ZOOM"), 8, true, Muted))
+        ->SetPadding(FMargin(0, 3, 0, 0));
+    auto* PreviewHintsSlot = CaptionBox->AddChildToVerticalBox(PreviewHints);
+    PreviewHintsSlot->SetHorizontalAlignment(HAlign_Center);
+    PreviewHintsSlot->SetPadding(FMargin(0, 5, 0, 0));
 }
 
 void UPlayerMenuWidget::AddTextPage(const FString& Heading, const FString& Body)
@@ -1012,7 +1209,7 @@ void UPlayerMenuWidget::BuildGameTab()
         bCity ? TEXT("WROCŁAW") : TEXT("PRZEBUDZENIE"), 21, true, TextPrimary))
         ->SetPadding(FMargin(2, 1, 2, 2));
     ActionColumn->AddChildToVerticalBox(MakeText(
-        bCity ? TEXT("OTWARTY ŚWIAT / GIS") : TEXT("KAMPANIA FABULARNA"), 9, true, Accent))
+        bCity ? TEXT("OTWARTY ŚWIAT / WROCŁAW") : TEXT("KAMPANIA FABULARNA"), 9, true, Accent))
         ->SetPadding(FMargin(2, 0, 2, 12));
     ActionColumn->AddChildToVerticalBox(MakeText(
         bCity ? TEXT("Eksploruj dzielnice, odkrywaj aktywności i kontynuuj zapis miasta.")
@@ -1072,32 +1269,38 @@ void UPlayerMenuWidget::BuildCharacterTab()
     ActionColumn->AddChildToVerticalBox(MakeText(TEXT("KADR"), 9, true, Muted))
         ->SetPadding(FMargin(2, 0, 2, 7));
 
-    auto* Full = MakeButton(TEXT("CAŁA SYLWETKA"), true);
+    auto* Full = MakeButton(TEXT("CAŁA SYLWETKA"), PreviewViewLabel == TEXT("CAŁA SYLWETKA"));
     Full->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewFullBody);
     ActionColumn->AddChildToVerticalBox(Full)->SetPadding(FMargin(0, 0, 0, 7));
+    PreviewViewButtons.Add(Full);
 
-    auto* Upper = MakeButton(TEXT("GÓRNA CZĘŚĆ"));
+    auto* Upper = MakeButton(TEXT("GÓRNA CZĘŚĆ"), PreviewViewLabel == TEXT("GÓRNA CZĘŚĆ"));
     Upper->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewUpperBody);
     ActionColumn->AddChildToVerticalBox(Upper)->SetPadding(FMargin(0, 0, 0, 7));
+    PreviewViewButtons.Add(Upper);
 
-    auto* Face = MakeButton(TEXT("TWARZ"));
+    auto* Face = MakeButton(TEXT("TWARZ"), PreviewViewLabel == TEXT("TWARZ"));
     Face->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewFace);
     ActionColumn->AddChildToVerticalBox(Face)->SetPadding(FMargin(0, 0, 0, 14));
+    PreviewViewButtons.Add(Face);
 
     ActionColumn->AddChildToVerticalBox(MakeText(TEXT("ŚWIATŁO"), 9, true, Muted))
         ->SetPadding(FMargin(2, 0, 2, 7));
 
-    auto* Modern = MakeButton(TEXT("STUDIO"), true);
+    auto* Modern = MakeButton(TEXT("STUDIO"), PreviewLightingLabel == TEXT("STUDIO"));
     Modern->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewLightingModern);
     ActionColumn->AddChildToVerticalBox(Modern)->SetPadding(FMargin(0, 0, 0, 7));
+    PreviewLightingButtons.Add(Modern);
 
-    auto* Day = MakeButton(TEXT("DZIEŃ"));
+    auto* Day = MakeButton(TEXT("DZIEŃ"), PreviewLightingLabel == TEXT("DZIEŃ"));
     Day->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewLightingDaylight);
     ActionColumn->AddChildToVerticalBox(Day)->SetPadding(FMargin(0, 0, 0, 7));
+    PreviewLightingButtons.Add(Day);
 
-    auto* Night = MakeButton(TEXT("NOC"));
+    auto* Night = MakeButton(TEXT("NOC"), PreviewLightingLabel == TEXT("NOC"));
     Night->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewLightingNight);
     ActionColumn->AddChildToVerticalBox(Night)->SetPadding(FMargin(0, 0, 0, 14));
+    PreviewLightingButtons.Add(Night);
 
     auto* Reset = MakeButton(TEXT("RESET PODGLĄDU"));
     Reset->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PreviewReset);
@@ -1113,6 +1316,31 @@ void UPlayerMenuWidget::BuildCharacterTab()
     const FString Sex = A.Sex == EAppearanceSex::Female ? TEXT("KOBIETA") : TEXT("MĘŻCZYZNA");
     const FString Name = A.Name.IsEmpty() ? TEXT("GRACZ") : A.Name.ToUpper();
 
+    FString BodyBuild = A.BodyBuild.ToString().ToUpper();
+    if (A.BodyBuild == TEXT("Slim")) BodyBuild = TEXT("SMUKŁA");
+    else if (A.BodyBuild == TEXT("Average")) BodyBuild = TEXT("STANDARDOWA");
+    else if (A.BodyBuild == TEXT("Athletic")) BodyBuild = TEXT("ATLETYCZNA");
+    else if (A.BodyBuild == TEXT("Heavy")) BodyBuild = TEXT("MASYWNA");
+
+    FString HairLabel = A.HairStyle.ToString().ToUpper();
+    FString VoiceLabel = A.VoiceProfileID.ToString().ToUpper();
+    if (Creator->Catalog)
+    {
+        if (const FAppearancePartDefinition* Hair =
+            Creator->Catalog->Part(Creator->Catalog->HairStyleDefinitions, A.HairStyle))
+        {
+            if (!Hair->DisplayName.IsEmpty())
+                HairLabel = Hair->DisplayName.ToString().ToUpper();
+        }
+
+        if (const FVoiceProfileDefinition* Voice = Creator->Catalog->VoiceProfiles.FindByPredicate(
+            [&](const FVoiceProfileDefinition& Candidate) { return Candidate.ID == A.VoiceProfileID; }))
+        {
+            if (!Voice->DisplayName.IsEmpty())
+                VoiceLabel = Voice->DisplayName.ToString().ToUpper();
+        }
+    }
+
     RightColumn->AddChildToVerticalBox(MakeText(TEXT("PROFIL POSTACI"), 9, true, Accent))
         ->SetPadding(FMargin(0, 0, 0, 4));
     RightColumn->AddChildToVerticalBox(MakeText(Name, 23, true, TextPrimary))
@@ -1127,16 +1355,13 @@ void UPlayerMenuWidget::BuildCharacterTab()
         FString::Printf(TEXT("%.0f"), A.VisualAge), TEXT("WIEK WIZUALNY")))
         ->SetPadding(FMargin(0, 0, 0, 6));
     RightColumn->AddChildToVerticalBox(MakeInfoRow(
-        A.BodyBuild.ToString().ToUpper(), TEXT("SYLWETKA")))
+        BodyBuild, TEXT("SYLWETKA")))
         ->SetPadding(FMargin(0, 0, 0, 6));
     RightColumn->AddChildToVerticalBox(MakeInfoRow(
-        A.VoiceProfileID.ToString().ToUpper(), TEXT("PROFIL GŁOSU")))
+        HairLabel, TEXT("FRYZURA")))
         ->SetPadding(FMargin(0, 0, 0, 6));
     RightColumn->AddChildToVerticalBox(MakeInfoRow(
-        A.PresetID.ToString().ToUpper(), TEXT("PRESET")))
-        ->SetPadding(FMargin(0, 0, 0, 6));
-    RightColumn->AddChildToVerticalBox(MakeInfoRow(
-        FString::Printf(TEXT("%d"), A.RandomSeed), TEXT("SEED WYGLĄDU")));
+        VoiceLabel, TEXT("PROFIL GŁOSU")));
 }
 
 void UPlayerMenuWidget::BuildInventoryTab()
@@ -1192,13 +1417,23 @@ void UPlayerMenuWidget::BuildInventoryTab()
     WardrobeBox->AddChildToVerticalBox(ClothesScroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     if (Creator && !Creator->Committed.OwnedClothing.IsEmpty())
     {
-        TArray<FName> Clothing = Creator->Committed.OwnedClothing;
-        Clothing.Sort([](const FName& A, const FName& B)
+        TArray<TPair<FString, FName>> Clothing;
+        Clothing.Reserve(Creator->Committed.OwnedClothing.Num());
+        for (const FName& Id : Creator->Committed.OwnedClothing)
         {
-            return A.ToString() < B.ToString();
+            const FAppearancePartDefinition* Definition =
+                Creator->Catalog ? Creator->Catalog->Part(Creator->Catalog->ClothingDefinitions, Id) : nullptr;
+            const FString DisplayName = Definition && !Definition->DisplayName.IsEmpty()
+                ? Definition->DisplayName.ToString()
+                : Id.ToString();
+            Clothing.Emplace(DisplayName, Id);
+        }
+        Clothing.Sort([](const TPair<FString, FName>& A, const TPair<FString, FName>& B)
+        {
+            return A.Key < B.Key;
         });
-        for (const FName& Id : Clothing)
-            ClothesScroll->AddChild(MakeInfoRow(Id.ToString().ToUpper(), TEXT("ELEMENT UBIORU")));
+        for (const auto& Entry : Clothing)
+            ClothesScroll->AddChild(MakeInfoRow(Entry.Key.ToUpper(), TEXT("ELEMENT UBIORU")));
     }
     else
         ClothesScroll->AddChild(MakeInfoRow(TEXT("PUSTO"), TEXT("BRAK ELEMENTÓW GARDEROBY")));
@@ -1375,12 +1610,17 @@ void UPlayerMenuWidget::BuildJournalTab()
     {
         RightColumn->AddChildToVerticalBox(MakeText(TEXT("STATUS"), 9, true, Accent))
             ->SetPadding(FMargin(0, 0, 0, 7));
-        RightColumn->AddChildToVerticalBox(MakeText(
-            FString::Printf(TEXT("Czas sesji: %.0f min\nZagrożenie: %d / 5\nZapis: %s"),
-                Mission->State.elapsed / 60.0,
-                Mission->WorldState.HeatLevel(),
-                Mission->bLastSaveSucceeded ? TEXT("OK") : TEXT("BŁĄD")),
-            11, false, Muted));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%.0f MIN"), Mission->State.elapsed / 60.0),
+            TEXT("CZAS SESJI"), true))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            FString::Printf(TEXT("%d / 5"), Mission->WorldState.HeatLevel()),
+            TEXT("POZIOM ZAGROŻENIA")))
+            ->SetPadding(FMargin(0, 0, 0, 7));
+        RightColumn->AddChildToVerticalBox(MakeInfoRow(
+            Mission->bLastSaveSucceeded ? TEXT("OK") : TEXT("BŁĄD"),
+            TEXT("OSTATNI ZAPIS"), Mission->bLastSaveSucceeded));
     }
 }
 
@@ -1492,7 +1732,7 @@ void UPlayerMenuWidget::BuildMapTab()
 
         ActionColumn->AddChildToVerticalBox(MakeText(TEXT("WROCŁAW"), 20, true, TextPrimary))
             ->SetPadding(FMargin(2, 1, 2, 2));
-        ActionColumn->AddChildToVerticalBox(MakeText(TEXT("MAPA GIS / SEKTORY"), 9, true, Accent))
+        ActionColumn->AddChildToVerticalBox(MakeText(TEXT("MAPA MIASTA / SEKTORY"), 9, true, Accent))
             ->SetPadding(FMargin(2, 0, 2, 14));
         ActionColumn->AddChildToVerticalBox(MakeInfoRow(
             FString::Printf(TEXT("%d"), VisibleSectors), TEXT("AKTYWNE SEKTORY"), true))
@@ -1602,8 +1842,16 @@ void UPlayerMenuWidget::BuildMapTab()
 
         RightColumn->AddChildToVerticalBox(MakeText(TEXT("STEROWANIE"), 9, true, Accent))
             ->SetPadding(FMargin(0, 14, 0, 7));
-        RightColumn->AddChildToVerticalBox(MakeText(
-            TEXT("C — następny sektor\nBACKSPACE — usuń cel"), 10, false, Muted));
+        auto* MapShortcuts = WidgetTree->ConstructWidget<UHorizontalBox>();
+        MapShortcuts->AddChildToHorizontalBox(MakeKeycap(TEXT("C")))
+            ->SetPadding(FMargin(0, 0, 6, 0));
+        MapShortcuts->AddChildToHorizontalBox(MakeText(TEXT("NASTĘPNY CEL"), 8, true, Muted))
+            ->SetPadding(FMargin(0, 3, 12, 0));
+        MapShortcuts->AddChildToHorizontalBox(MakeKeycap(TEXT("BACKSPACE")))
+            ->SetPadding(FMargin(0, 0, 6, 0));
+        MapShortcuts->AddChildToHorizontalBox(MakeText(TEXT("USUŃ CEL"), 8, true, Muted))
+            ->SetPadding(FMargin(0, 3, 0, 0));
+        RightColumn->AddChildToVerticalBox(MapShortcuts);
         return;
     }
 
@@ -1623,7 +1871,7 @@ void UPlayerMenuWidget::BuildMapTab()
         ->SetPadding(FMargin(0, 0, 0, 7));
     ActionColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("WYŁĄCZONA"), TEXT("SZYBKA PODRÓŻ")))
         ->SetPadding(FMargin(0, 0, 0, 7));
-    ActionColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("GPS"), TEXT("NAWIGACJA W ROZWOJU")));
+    ActionColumn->AddChildToVerticalBox(MakeInfoRow(TEXT("RĘCZNA"), TEXT("NAWIGACJA")));
 
     CenterColumn->AddChildToVerticalBox(MakeText(TEXT("MAPA ODKRYĆ"), 26, true, TextPrimary))
         ->SetPadding(FMargin(8, 7, 8, 8));
@@ -1736,7 +1984,7 @@ void UPlayerMenuWidget::BuildStatsTab()
         bCity ? TEXT("MIASTO") : TEXT("SESJA"), 20, true, TextPrimary))
         ->SetPadding(FMargin(2, 1, 2, 2));
     ActionColumn->AddChildToVerticalBox(MakeText(
-        bCity ? TEXT("WROCŁAW / GIS") : TEXT("PODSUMOWANIE"), 9, true, Accent))
+        bCity ? TEXT("WROCŁAW / OTWARTY ŚWIAT") : TEXT("PODSUMOWANIE"), 9, true, Accent))
         ->SetPadding(FMargin(2, 0, 2, 14));
 
     if (!Mission)
@@ -1788,7 +2036,7 @@ void UPlayerMenuWidget::BuildStatsTab()
             ->SetPadding(FMargin(0, 0, 0, 7));
         Metrics->AddChildToVerticalBox(MakeInfoRow(
             FString::Printf(TEXT("%d / 5"), Mission->WorldState.HeatLevel()),
-            TEXT("AKTUALNY HEAT")));
+            TEXT("POZIOM ZAGROŻENIA")));
 
         RightColumn->AddChildToVerticalBox(MakeText(TEXT("NAJBLIŻSZY CEL"), 9, true, Accent))
             ->SetPadding(FMargin(0, 0, 0, 8));
@@ -1900,22 +2148,31 @@ void UPlayerMenuWidget::BuildSettingsTab()
 
     ActionColumn->AddChildToVerticalBox(MakeText(TEXT("USTAWIENIA"), 20, true, TextPrimary))
         ->SetPadding(FMargin(2, 1, 2, 2));
-    ActionColumn->AddChildToVerticalBox(MakeText(TEXT("KATEGORIE"), 9, true, Accent))
-        ->SetPadding(FMargin(2, 0, 2, 14));
+    ActionColumn->AddChildToVerticalBox(MakeText(
+        FString::Printf(TEXT("KATEGORIE  •  %d / 4"), SettingsSection + 1), 9, true, Accent))
+        ->SetPadding(FMargin(2, 0, 2, 7));
 
-    auto* DisplaySection = MakeButton(TEXT("OBRAZ"), SettingsSection == 0);
+    auto* SettingsNavProgress = WidgetTree->ConstructWidget<UProgressBar>();
+    SettingsNavProgress->SetPercent(FMath::Clamp((SettingsSection + 1) / 4.0f, 0.0f, 1.0f));
+    SettingsNavProgress->SetFillColorAndOpacity(Accent);
+    auto* SettingsNavProgressSize = WidgetTree->ConstructWidget<USizeBox>();
+    SettingsNavProgressSize->SetHeightOverride(3.0f);
+    SettingsNavProgressSize->AddChild(SettingsNavProgress);
+    ActionColumn->AddChildToVerticalBox(SettingsNavProgressSize)->SetPadding(FMargin(2, 0, 2, 13));
+
+    auto* DisplaySection = MakeButton(TEXT("01  OBRAZ"), SettingsSection == 0);
     DisplaySection->OnClicked.AddDynamic(this, &UPlayerMenuWidget::SettingsDisplay);
     ActionColumn->AddChildToVerticalBox(DisplaySection)->SetPadding(FMargin(0, 0, 0, 7));
 
-    auto* PerformanceSection = MakeButton(TEXT("WYDAJNOŚĆ"), SettingsSection == 1);
+    auto* PerformanceSection = MakeButton(TEXT("02  WYDAJNOŚĆ"), SettingsSection == 1);
     PerformanceSection->OnClicked.AddDynamic(this, &UPlayerMenuWidget::SettingsPerformance);
     ActionColumn->AddChildToVerticalBox(PerformanceSection)->SetPadding(FMargin(0, 0, 0, 7));
 
-    auto* InterfaceSection = MakeButton(TEXT("INTERFEJS"), SettingsSection == 2);
+    auto* InterfaceSection = MakeButton(TEXT("03  INTERFEJS"), SettingsSection == 2);
     InterfaceSection->OnClicked.AddDynamic(this, &UPlayerMenuWidget::SettingsInterface);
     ActionColumn->AddChildToVerticalBox(InterfaceSection)->SetPadding(FMargin(0, 0, 0, 7));
 
-    auto* AudioSection = MakeButton(TEXT("DŹWIĘK"), SettingsSection == 3);
+    auto* AudioSection = MakeButton(TEXT("04  DŹWIĘK"), SettingsSection == 3);
     AudioSection->OnClicked.AddDynamic(this, &UPlayerMenuWidget::SettingsAudio);
     ActionColumn->AddChildToVerticalBox(AudioSection)->SetPadding(FMargin(0, 0, 0, 18));
 
@@ -1934,7 +2191,9 @@ void UPlayerMenuWidget::BuildSettingsTab()
     if (!UserSettings)
     {
         PageTitle->SetText(FText::FromString(TEXT("USTAWIENIA  /  NIEDOSTĘPNE")));
-        AddTextPage(TEXT("USTAWIENIA"), TEXT("Nie udało się pobrać UGameUserSettings."));
+        AddTextPage(
+            TEXT("USTAWIENIA"),
+            TEXT("Nie udało się wczytać ustawień obrazu. Bieżące ustawienia gry nie zostały zmienione."));
         return;
     }
 
@@ -1997,23 +2256,26 @@ void UPlayerMenuWidget::BuildSettingsTab()
         RightColumn->AddChildToVerticalBox(MakeInfoRow(
             QualityLabel(Quality), TEXT("PRESET JAKOŚCI")))->SetPadding(FMargin(0, 0, 0, 14));
 
-        const FString QualityDetails = FString::Printf(
-            TEXT("Widoczność        %d / 4\nCienie             %d / 4\nTekstury            %d / 4\nAntyaliasing        %d / 4\n")
-            TEXT("Efekty             %d / 4\nPost-processing     %d / 4\nRoślinność          %d / 4\nGlobal illumination %d / 4\n")
-            TEXT("Odbicia            %d / 4\nShading             %d / 4"),
-            UserSettings->GetViewDistanceQuality(),
-            UserSettings->GetShadowQuality(),
-            UserSettings->GetTextureQuality(),
-            UserSettings->GetAntiAliasingQuality(),
-            UserSettings->GetVisualEffectQuality(),
-            UserSettings->GetPostProcessingQuality(),
-            UserSettings->GetFoliageQuality(),
-            UserSettings->GetGlobalIlluminationQuality(),
-            UserSettings->GetReflectionQuality(),
-            UserSettings->GetShadingQuality());
-        auto* Details = MakeText(QualityDetails, 10, false, Muted);
-        Details->SetLineHeightPercentage(1.28f);
-        RightColumn->AddChildToVerticalBox(Details);
+        RightColumn->AddChildToVerticalBox(MakeText(TEXT("SZCZEGÓŁY JAKOŚCI"), 9, true, Accent))
+            ->SetPadding(FMargin(0, 0, 0, 8));
+
+        auto AddQualityRow = [&](const FString& Label, int32 Value, float Bottom = 6.0f)
+        {
+            RightColumn->AddChildToVerticalBox(MakeInfoRow(
+                FString::Printf(TEXT("%d / 4"), Value), Label))
+                ->SetPadding(FMargin(0, 0, 0, Bottom));
+        };
+
+        AddQualityRow(TEXT("WIDOCZNOŚĆ"), UserSettings->GetViewDistanceQuality());
+        AddQualityRow(TEXT("CIENIE"), UserSettings->GetShadowQuality());
+        AddQualityRow(TEXT("TEKSTURY"), UserSettings->GetTextureQuality());
+        AddQualityRow(TEXT("ANTYALIASING"), UserSettings->GetAntiAliasingQuality());
+        AddQualityRow(TEXT("EFEKTY"), UserSettings->GetVisualEffectQuality());
+        AddQualityRow(TEXT("POST-PROCESSING"), UserSettings->GetPostProcessingQuality());
+        AddQualityRow(TEXT("ROŚLINNOŚĆ"), UserSettings->GetFoliageQuality());
+        AddQualityRow(TEXT("GLOBALNE OŚWIETLENIE"), UserSettings->GetGlobalIlluminationQuality());
+        AddQualityRow(TEXT("ODBICIA"), UserSettings->GetReflectionQuality());
+        AddQualityRow(TEXT("CIENIOWANIE"), UserSettings->GetShadingQuality(), 0.0f);
         return;
     }
 
@@ -2155,26 +2417,57 @@ void UPlayerMenuWidget::BuildSettingsTab()
         TEXT("GŁOŚNOŚĆ EFEKTÓW ŚWIATA I INTERFEJSU"), 9, true, Accent))
         ->SetPadding(FMargin(18, 0, 18, 18));
 
-    auto* SFXButton = MakeButton(FString::Printf(
+    SFXVolumeButton = MakeButton(FString::Printf(
         TEXT("EFEKTY ŚWIATA  •  %d%%"), FMath::RoundToInt(SFXVolume * 100.0f)), true);
+    auto* SFXButton = SFXVolumeButton.Get();
     SFXButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleSFXVolume);
     AddCenterButton(SFXButton, 5.0f);
-    auto* SFXMeter = WidgetTree->ConstructWidget<UProgressBar>();
+
+    SFXVolumeMeter = WidgetTree->ConstructWidget<UProgressBar>();
+    auto* SFXMeter = SFXVolumeMeter.Get();
     SFXMeter->SetPercent(SFXVolume);
     SFXMeter->SetFillColorAndOpacity(Accent);
-    CenterColumn->AddChildToVerticalBox(SFXMeter)->SetPadding(FMargin(18, 0, 18, 13));
+    CenterColumn->AddChildToVerticalBox(SFXMeter)->SetPadding(FMargin(18, 0, 18, 5));
 
-    auto* UIVolumeButton = MakeButton(FString::Printf(
+    SFXVolumeSlider = WidgetTree->ConstructWidget<USlider>();
+    auto* SFXSlider = SFXVolumeSlider.Get();
+    SFXSlider->SetMinValue(0.0f);
+    SFXSlider->SetMaxValue(1.0f);
+    SFXSlider->SetValue(SFXVolume);
+    SFXSlider->SetStepSize(0.05f);
+    SFXSlider->SetSliderBarColor(FLinearColor(0.08f, 0.13f, 0.17f, 1.0f));
+    SFXSlider->SetSliderHandleColor(Accent);
+    SFXSlider->OnValueChanged.AddDynamic(this, &UPlayerMenuWidget::SetSFXVolumeFromSlider);
+    SFXSlider->OnMouseCaptureEnd.AddDynamic(this, &UPlayerMenuWidget::CommitAudioSliderChange);
+    SFXSlider->OnControllerCaptureEnd.AddDynamic(this, &UPlayerMenuWidget::CommitAudioSliderChange);
+    CenterColumn->AddChildToVerticalBox(SFXSlider)->SetPadding(FMargin(18, 0, 18, 13));
+
+    UIVolumeButton = MakeButton(FString::Printf(
         TEXT("INTERFEJS  •  %d%%"), FMath::RoundToInt(UIVolume * 100.0f)));
-    UIVolumeButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleUIVolume);
-    AddCenterButton(UIVolumeButton, 5.0f);
-    auto* UIVolumeMeter = WidgetTree->ConstructWidget<UProgressBar>();
+    auto* UILevelButton = UIVolumeButton.Get();
+    UILevelButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::CycleUIVolume);
+    AddCenterButton(UILevelButton, 5.0f);
+
+    UIVolumeMeter = WidgetTree->ConstructWidget<UProgressBar>();
     UIVolumeMeter->SetPercent(UIVolume);
     UIVolumeMeter->SetFillColorAndOpacity(Accent);
-    CenterColumn->AddChildToVerticalBox(UIVolumeMeter)->SetPadding(FMargin(18, 0, 18, 10));
+    CenterColumn->AddChildToVerticalBox(UIVolumeMeter)->SetPadding(FMargin(18, 0, 18, 5));
+
+    UIVolumeSlider = WidgetTree->ConstructWidget<USlider>();
+    auto* UISlider = UIVolumeSlider.Get();
+    UISlider->SetMinValue(0.0f);
+    UISlider->SetMaxValue(1.0f);
+    UISlider->SetValue(UIVolume);
+    UISlider->SetStepSize(0.05f);
+    UISlider->SetSliderBarColor(FLinearColor(0.08f, 0.13f, 0.17f, 1.0f));
+    UISlider->SetSliderHandleColor(Accent);
+    UISlider->OnValueChanged.AddDynamic(this, &UPlayerMenuWidget::SetUIVolumeFromSlider);
+    UISlider->OnMouseCaptureEnd.AddDynamic(this, &UPlayerMenuWidget::CommitAudioSliderChange);
+    UISlider->OnControllerCaptureEnd.AddDynamic(this, &UPlayerMenuWidget::CommitAudioSliderChange);
+    CenterColumn->AddChildToVerticalBox(UISlider)->SetPadding(FMargin(18, 0, 18, 10));
 
     CenterColumn->AddChildToVerticalBox(MakeText(
-        TEXT("WYBIERZ KONTROLKĘ, ABY ZMIENIĆ POZIOM CO 25%"), 9, true, Muted))
+        TEXT("SUWAK: PRECYZYJNA REGULACJA  •  PRZYCISK: SKOK CO 25%"), 9, true, Muted))
         ->SetPadding(FMargin(18, 0, 18, 8));
 
     RightColumn->AddChildToVerticalBox(MakeText(TEXT("POZIOMY GŁOŚNOŚCI"), 9, true, Accent))
@@ -2187,8 +2480,12 @@ void UPlayerMenuWidget::BuildSettingsTab()
         FString::Printf(TEXT("%d%%"), FMath::RoundToInt(UIVolume * 100.0f)),
         TEXT("INTERFEJS")))
         ->SetPadding(FMargin(0, 0, 0, 14));
+    RightColumn->AddChildToVerticalBox(MakeInfoRow(
+        TEXT("WSPÓLNY MIKS"),
+        TEXT("MUZYKA")))
+        ->SetPadding(FMargin(0, 0, 0, 8));
     RightColumn->AddChildToVerticalBox(MakeText(
-        TEXT("Projekt nie ma jeszcze osobnego kanału muzyki. Menu pokazuje wyłącznie kanały faktycznie obsługiwane przez runtime."),
+        TEXT("Muzyka korzysta obecnie ze wspólnego miksu gry; osobna regulacja pojawi się jako oddzielna kontrolka."),
         10, false, Muted));
 }
 
@@ -2397,10 +2694,18 @@ void UPlayerMenuWidget::ShowConfirmation(
     ConfirmSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
     ConfirmSlot->SetPadding(FMargin(5, 0, 0, 0));
 
-    auto* ShortcutHint = MakeText(
-        TEXT("ENTER / A  POTWIERDŹ    •    ESC / B  ANULUJ"), 9, true, Muted);
-    ShortcutHint->SetJustification(ETextJustify::Center);
-    Column->AddChildToVerticalBox(ShortcutHint)->SetPadding(FMargin(0, 12, 0, 0));
+    auto* ModalShortcuts = WidgetTree->ConstructWidget<UHorizontalBox>();
+    ModalShortcuts->AddChildToHorizontalBox(MakeKeycap(TEXT("ENTER / A")))
+        ->SetPadding(FMargin(0, 0, 6, 0));
+    ModalShortcuts->AddChildToHorizontalBox(MakeText(TEXT("WYBIERZ"), 8, true, Muted))
+        ->SetPadding(FMargin(0, 3, 14, 0));
+    ModalShortcuts->AddChildToHorizontalBox(MakeKeycap(TEXT("ESC / B")))
+        ->SetPadding(FMargin(0, 0, 6, 0));
+    ModalShortcuts->AddChildToHorizontalBox(MakeText(TEXT("ANULUJ"), 8, true, Muted))
+        ->SetPadding(FMargin(0, 3, 0, 0));
+    auto* ModalShortcutsSlot = Column->AddChildToVerticalBox(ModalShortcuts);
+    ModalShortcutsSlot->SetHorizontalAlignment(HAlign_Center);
+    ModalShortcutsSlot->SetPadding(FMargin(0, 12, 0, 0));
 
     UButton* DefaultFocus = bDestructive ? Cancel : Confirm;
     if (APlayerController* PlayerController = GetOwningPlayer())
@@ -2531,6 +2836,39 @@ void UPlayerMenuWidget::ToggleUISounds()
 {
     if (auto* Settings = UWTGPerformanceSettings::Get())
         Settings->SetUISounds(!Settings->bUISounds);
+    RefreshWithSettingsToast();
+}
+
+void UPlayerMenuWidget::SetSFXVolumeFromSlider(float Volume)
+{
+    if (auto* Settings = UWTGAudioSettings::Get())
+        Settings->SFXVolume = FMath::Clamp(Volume, 0.0f, 1.0f);
+
+    if (SFXVolumeMeter)
+        SFXVolumeMeter->SetPercent(Volume);
+    if (SFXVolumeButton)
+        if (auto* Label = Cast<UTextBlock>(SFXVolumeButton->GetContent()))
+            Label->SetText(FText::FromString(FString::Printf(
+                TEXT("EFEKTY ŚWIATA  •  %d%%"), FMath::RoundToInt(Volume * 100.0f))));
+}
+
+void UPlayerMenuWidget::SetUIVolumeFromSlider(float Volume)
+{
+    if (auto* Settings = UWTGAudioSettings::Get())
+        Settings->UIVolume = FMath::Clamp(Volume, 0.0f, 1.0f);
+
+    if (UIVolumeMeter)
+        UIVolumeMeter->SetPercent(Volume);
+    if (UIVolumeButton)
+        if (auto* Label = Cast<UTextBlock>(UIVolumeButton->GetContent()))
+            Label->SetText(FText::FromString(FString::Printf(
+                TEXT("INTERFEJS  •  %d%%"), FMath::RoundToInt(Volume * 100.0f))));
+}
+
+void UPlayerMenuWidget::CommitAudioSliderChange()
+{
+    if (auto* Settings = UWTGAudioSettings::Get())
+        Settings->SaveConfig();
     RefreshWithSettingsToast();
 }
 
@@ -2735,6 +3073,7 @@ void UPlayerMenuWidget::PreviewFullBody()
     if (Studio) Studio->SetView(TEXT("FullBody"));
     PreviewViewLabel = TEXT("CAŁA SYLWETKA");
     UpdatePreviewStatus();
+    UpdatePreviewControlStyles();
 }
 
 void UPlayerMenuWidget::PreviewUpperBody()
@@ -2742,6 +3081,7 @@ void UPlayerMenuWidget::PreviewUpperBody()
     if (Studio) Studio->SetView(TEXT("UpperBody"));
     PreviewViewLabel = TEXT("GÓRNA CZĘŚĆ");
     UpdatePreviewStatus();
+    UpdatePreviewControlStyles();
 }
 
 void UPlayerMenuWidget::PreviewFace()
@@ -2749,6 +3089,7 @@ void UPlayerMenuWidget::PreviewFace()
     if (Studio) Studio->SetView(TEXT("Face"));
     PreviewViewLabel = TEXT("TWARZ");
     UpdatePreviewStatus();
+    UpdatePreviewControlStyles();
 }
 
 void UPlayerMenuWidget::PreviewRotateLeft()
@@ -2766,6 +3107,7 @@ void UPlayerMenuWidget::PreviewLightingModern()
     if (Studio) Studio->SetLighting(TEXT("Modern"));
     PreviewLightingLabel = TEXT("STUDIO");
     UpdatePreviewStatus();
+    UpdatePreviewControlStyles();
 }
 
 void UPlayerMenuWidget::PreviewLightingDaylight()
@@ -2773,6 +3115,7 @@ void UPlayerMenuWidget::PreviewLightingDaylight()
     if (Studio) Studio->SetLighting(TEXT("Daylight"));
     PreviewLightingLabel = TEXT("DZIEŃ");
     UpdatePreviewStatus();
+    UpdatePreviewControlStyles();
 }
 
 void UPlayerMenuWidget::PreviewLightingNight()
@@ -2780,6 +3123,7 @@ void UPlayerMenuWidget::PreviewLightingNight()
     if (Studio) Studio->SetLighting(TEXT("Night"));
     PreviewLightingLabel = TEXT("NOC");
     UpdatePreviewStatus();
+    UpdatePreviewControlStyles();
 }
 
 void UPlayerMenuWidget::PreviewReset()
@@ -2788,6 +3132,7 @@ void UPlayerMenuWidget::PreviewReset()
     PreviewViewLabel = TEXT("CAŁA SYLWETKA");
     PreviewLightingLabel = TEXT("STUDIO");
     UpdatePreviewStatus();
+    UpdatePreviewControlStyles();
 }
 
 void UPlayerMenuWidget::UpdatePreviewStatus()
@@ -2798,6 +3143,32 @@ void UPlayerMenuWidget::UpdatePreviewStatus()
     if (PreviewLightingStatus)
         PreviewLightingStatus->SetText(FText::FromString(
             FString::Printf(TEXT("ŚWIATŁO  •  %s"), *PreviewLightingLabel)));
+}
+
+void UPlayerMenuWidget::UpdatePreviewControlStyles()
+{
+    auto ApplySelectedStyle = [&](UButton* Button, bool bSelected)
+    {
+        if (!Button)
+            return;
+
+        FButtonStyle Style = Button->GetStyle();
+        Style.Normal = RoundedBrush(bSelected ? Accent : PanelSoft, 9.0f);
+        Style.Hovered = RoundedBrush(bSelected ? AccentHover : PanelHover, 9.0f);
+        Style.Pressed = RoundedBrush(bSelected ? AccentPressed : Panel, 9.0f);
+        Button->SetStyle(Style);
+
+        if (auto* Text = Cast<UTextBlock>(Button->GetContent()))
+            Text->SetColorAndOpacity(FSlateColor(bSelected ? Background : TextPrimary));
+    };
+
+    const FString ViewLabels[] = {TEXT("CAŁA SYLWETKA"), TEXT("GÓRNA CZĘŚĆ"), TEXT("TWARZ")};
+    for (int32 Index = 0; Index < PreviewViewButtons.Num() && Index < UE_ARRAY_COUNT(ViewLabels); ++Index)
+        ApplySelectedStyle(PreviewViewButtons[Index], PreviewViewLabel == ViewLabels[Index]);
+
+    const FString LightingLabels[] = {TEXT("STUDIO"), TEXT("DZIEŃ"), TEXT("NOC")};
+    for (int32 Index = 0; Index < PreviewLightingButtons.Num() && Index < UE_ARRAY_COUNT(LightingLabels); ++Index)
+        ApplySelectedStyle(PreviewLightingButtons[Index], PreviewLightingLabel == LightingLabels[Index]);
 }
 
 FReply UPlayerMenuWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
@@ -2859,13 +3230,24 @@ FReply UPlayerMenuWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, co
         return FReply::Handled();
     }
 
-    if (Key == EKeys::Q || Key == EKeys::Gamepad_LeftShoulder || Key == EKeys::Gamepad_DPad_Left)
+    const bool bAudioSliderFocused =
+        ActiveTab == 6 && SettingsSection == 3 &&
+        ((SFXVolumeSlider && (SFXVolumeSlider->HasAnyUserFocus() || SFXVolumeSlider->HasKeyboardFocus())) ||
+         (UIVolumeSlider && (UIVolumeSlider->HasAnyUserFocus() || UIVolumeSlider->HasKeyboardFocus())));
+
+    const bool bPreviousTab =
+        Key == EKeys::Q || Key == EKeys::Gamepad_LeftShoulder ||
+        (Key == EKeys::Gamepad_DPad_Left && !bAudioSliderFocused);
+    if (bPreviousTab)
     {
         SelectTab((ActiveTab + TabButtons.Num() - 1) % TabButtons.Num());
         return FReply::Handled();
     }
 
-    if (Key == EKeys::E || Key == EKeys::Gamepad_RightShoulder || Key == EKeys::Gamepad_DPad_Right)
+    const bool bNextTab =
+        Key == EKeys::E || Key == EKeys::Gamepad_RightShoulder ||
+        (Key == EKeys::Gamepad_DPad_Right && !bAudioSliderFocused);
+    if (bNextTab)
     {
         SelectTab((ActiveTab + 1) % TabButtons.Num());
         return FReply::Handled();
@@ -2902,6 +3284,13 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
     const bool bReduceMotion = UISettings && UISettings->bReduceUIMotion;
 
     UpdateFocusPresentation();
+
+    ClockRefreshAccumulator += InDeltaTime;
+    if (ClockText && ClockRefreshAccumulator >= 1.0f)
+    {
+        ClockRefreshAccumulator = 0.0f;
+        ClockText->SetText(FText::FromString(FDateTime::Now().ToString(TEXT("%d.%m.%Y  •  %H:%M"))));
+    }
 
     if (!bReduceMotion)
         AmbientAnimationTime += InDeltaTime;
@@ -2957,6 +3346,16 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
     if (ToastCard && ToastTimeRemaining > 0.0f)
     {
         ToastTimeRemaining = FMath::Max(0.0f, ToastTimeRemaining - InDeltaTime);
+
+        if (!bReduceMotion && ToastAnimationTime < 0.18f)
+        {
+            ToastAnimationTime = FMath::Min(0.18f, ToastAnimationTime + InDeltaTime);
+            const float T = FMath::Clamp(ToastAnimationTime / 0.18f, 0.0f, 1.0f);
+            const float Ease = 1.0f - FMath::Pow(1.0f - T, 3.0f);
+            ToastCard->SetRenderOpacity(Ease);
+            ToastCard->SetRenderTranslation(FVector2D(FMath::Lerp(18.0f, 0.0f, Ease), 0.0f));
+        }
+
         if (!bReduceMotion && ToastTimeRemaining < 0.30f)
             ToastCard->SetRenderOpacity(FMath::Clamp(ToastTimeRemaining / 0.30f, 0.0f, 1.0f));
         if (ToastTimeRemaining <= 0.0f)
@@ -2988,7 +3387,10 @@ void UPlayerMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
 
 FReply UPlayerMenuWidget::NativeOnMouseButtonDown(const FGeometry& Geometry, const FPointerEvent& Event)
 {
-    if ((ActiveTab == 0 || ActiveTab == 1) && Studio && Event.GetEffectingButton() == EKeys::RightMouseButton)
+    const bool bPreviewPanelHovered = CenterScroll &&
+        CenterScroll->GetCachedGeometry().IsUnderLocation(Event.GetScreenSpacePosition());
+    if ((ActiveTab == 0 || ActiveTab == 1) && Studio && bPreviewPanelHovered &&
+        Event.GetEffectingButton() == EKeys::RightMouseButton)
     {
         bRotatingPreview = true;
         return FReply::Handled().CaptureMouse(TakeWidget());
@@ -3018,7 +3420,9 @@ FReply UPlayerMenuWidget::NativeOnMouseMove(const FGeometry& Geometry, const FPo
 
 FReply UPlayerMenuWidget::NativeOnMouseWheel(const FGeometry& Geometry, const FPointerEvent& Event)
 {
-    if ((ActiveTab == 0 || ActiveTab == 1) && Studio)
+    const bool bPreviewPanelHovered = CenterScroll &&
+        CenterScroll->GetCachedGeometry().IsUnderLocation(Event.GetScreenSpacePosition());
+    if ((ActiveTab == 0 || ActiveTab == 1) && Studio && bPreviewPanelHovered)
     {
         Studio->Zoom(-Event.GetWheelDelta() * 18.0f);
         return FReply::Handled();
