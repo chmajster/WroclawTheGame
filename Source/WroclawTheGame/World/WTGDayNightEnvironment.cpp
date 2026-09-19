@@ -20,19 +20,19 @@ AWTGDayNightEnvironment::AWTGDayNightEnvironment()
     SunLight = CreateDefaultSubobject<UDirectionalLightComponent>(TEXT("SunLight"));
     SunLight->SetupAttachment(SceneRoot);
     SunLight->SetMobility(EComponentMobility::Movable);
-    SunLight->bAtmosphereSunLight = true;
-    SunLight->AtmosphereSunLightIndex = 0;
+    SunLight->SetAtmosphereSunLight(true);
+    SunLight->SetAtmosphereSunLightIndex(0);
 
     MoonLight = CreateDefaultSubobject<UDirectionalLightComponent>(TEXT("MoonLight"));
     MoonLight->SetupAttachment(SceneRoot);
     MoonLight->SetMobility(EComponentMobility::Movable);
-    MoonLight->bAtmosphereSunLight = true;
-    MoonLight->AtmosphereSunLightIndex = 1;
+    MoonLight->SetAtmosphereSunLight(true);
+    MoonLight->SetAtmosphereSunLightIndex(1);
 
     SkyLight = CreateDefaultSubobject<USkyLightComponent>(TEXT("SkyLight"));
     SkyLight->SetupAttachment(SceneRoot);
     SkyLight->SetMobility(EComponentMobility::Movable);
-    SkyLight->bRealTimeCapture = true;
+    SkyLight->SetRealTimeCapture(true);
 
     SkyAtmosphere = CreateDefaultSubobject<USkyAtmosphereComponent>(TEXT("SkyAtmosphere"));
     SkyAtmosphere->SetupAttachment(SceneRoot);
