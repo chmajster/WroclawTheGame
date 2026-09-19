@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "physicalize_radius_m": 180,
+  "simplified_radius_m": 650,
+  "logical_tick_seconds": 30,
+  "teleport_offscreen_only": true,
+  "max_physical_npcs": 48
+}
