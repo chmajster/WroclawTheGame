@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "categories": {
     "food": {
       "keys": [
@@ -49,5 +49,9 @@
         "craft:*"
       ]
     }
-  }
+  },
+  "dedupe_radius_m": 20,
+  "preserve_raw_opening_hours": true,
+  "unknown_accessibility": "unknown",
+  "phone_search": true
 }
