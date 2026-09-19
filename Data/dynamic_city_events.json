@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "events": [
     {
       "id": "traffic_collision",
@@ -20,6 +20,13 @@
       "effects": [
         "slow_traffic",
         "service_dispatch"
+      ],
+      "location_source": "road_edge",
+      "physicalize_radius_m": 300,
+      "actor_role": "city_event_traffic_collision",
+      "services": [
+        "police",
+        "ambulance"
       ]
     },
     {
@@ -38,7 +45,10 @@
       "effects": [
         "close_edge",
         "reroute"
-      ]
+      ],
+      "location_source": "road_edge",
+      "physicalize_radius_m": 300,
+      "actor_role": "city_event_roadworks"
     },
     {
       "id": "police_check",
@@ -57,7 +67,14 @@
       "effects": [
         "roadblock",
         "heat_response"
-      ]
+      ],
+      "location_source": "road_edge",
+      "physicalize_radius_m": 300,
+      "actor_role": "city_event_police_check",
+      "services": [
+        "police"
+      ],
+      "heat_delta": 5
     },
     {
       "id": "power_outage",
@@ -74,7 +91,18 @@
       "effects": [
         "disable_lights",
         "disable_camera"
-      ]
+      ],
+      "location_source": "sector",
+      "physicalize_radius_m": 500,
+      "actor_role": "city_event_power_outage"
     }
-  ]
+  ],
+  "persistence": {
+    "fields": [
+      "active",
+      "last_triggered"
+    ],
+    "cleanup_expired": true,
+    "cleanup_on_cell_unload": true
+  }
 }
