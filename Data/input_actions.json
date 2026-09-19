@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "contexts": [
+    {
+      "id": "gameplay",
+      "priority": 0,
+      "actions": [
+        {
+          "id": "move",
+          "type": "axis2d",
+          "keyboard": [
+            "WASD"
+          ],
+          "gamepad": [
+            "LeftStick"
+          ],
+          "rebindable": true
+        },
+        {
+          "id": "look",
+          "type": "axis2d",
+          "keyboard": [
+            "MouseXY"
+          ],
+          "gamepad": [
+            "RightStick"
+          ],
+          "rebindable": true
+        },
+        {
+          "id": "interact",
+          "type": "button",
+          "keyboard": [
+            "E"
+          ],
+          "gamepad": [
+            "FaceButtonBottom"
+          ],
+          "rebindable": true
+        },
+        {
+          "id": "sprint",
+          "type": "button",
+          "keyboard": [
+            "LeftShift"
+          ],
+          "gamepad": [
+            "LeftStickClick"
+          ],
+          "rebindable": true
+        },
+        {
+          "id": "phone",
+          "type": "button",
+          "keyboard": [
+            "Tab"
+          ],
+          "gamepad": [
+            "DPadUp"
+          ],
+          "rebindable": true
+        },
+        {
+          "id": "pause",
+          "type": "button",
+          "keyboard": [
+            "Escape"
+          ],
+          "gamepad": [
+            "SpecialRight"
+          ],
+          "rebindable": false
+        }
+      ]
+    },
+    {
+      "id": "vehicle",
+      "priority": 10,
+      "actions": [
+        {
+          "id": "throttle",
+          "type": "axis1d",
+          "keyboard": [
+            "W",
+            "S"
+          ],
+          "gamepad": [
+            "RightTrigger",
+            "LeftTrigger"
+          ],
+          "rebindable": true
+        },
+        {
+          "id": "steer",
+          "type": "axis1d",
+          "keyboard": [
+            "A",
+            "D"
+          ],
+          "gamepad": [
+            "LeftStickX"
+          ],
+          "rebindable": true
+        },
+        {
+          "id": "brake",
+          "type": "button",
+          "keyboard": [
+            "Space"
+          ],
+          "gamepad": [
+            "FaceButtonLeft"
+          ],
+          "rebindable": true
+        },
+        {
+          "id": "exit_vehicle",
+          "type": "button",
+          "keyboard": [
+            "E"
+          ],
+          "gamepad": [
+            "FaceButtonBottom"
+          ],
+          "rebindable": true
+        }
+      ]
+    },
+    {
+      "id": "ui",
+      "priority": 100,
+      "actions": [
+        {
+          "id": "ui_accept",
+          "type": "button",
+          "keyboard": [
+            "Enter"
+          ],
+          "gamepad": [
+            "FaceButtonBottom"
+          ],
+          "rebindable": false
+        },
+        {
+          "id": "ui_back",
+          "type": "button",
+          "keyboard": [
+            "Escape"
+          ],
+          "gamepad": [
+            "FaceButtonRight"
+          ],
+          "rebindable": false
+        }
+      ]
+    }
+  ]
+}
