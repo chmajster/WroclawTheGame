@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "quests": [
+    {
+      "id": "cross_city_investigation",
+      "title": "Ślad przez miasto",
+      "stages": [
+        {
+          "id": "lead_nadodrze",
+          "district": "district.nadodrze",
+          "kind": "investigate"
+        },
+        {
+          "id": "verify_centre",
+          "district": "district.centre",
+          "kind": "investigate"
+        },
+        {
+          "id": "meet_huby",
+          "district": "district.huby",
+          "kind": "meet"
+        },
+        {
+          "id": "final_borek",
+          "district": "district.borek",
+          "kind": "infiltrate"
+        }
+      ],
+      "save_checkpoint_each_stage": true
+    }
+  ]
+}
