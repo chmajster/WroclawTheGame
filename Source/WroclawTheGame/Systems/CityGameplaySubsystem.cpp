@@ -100,7 +100,7 @@ void UCityGameplaySubsystem::Apply(ACityActivity *Actor, APawn *Player, float Dt
         return;
     }
     Mission->Notify(UTF8_TO_TCHAR(Action->body.c_str()));
-    USliceAudio::Play(this, Action->kind == "event" ? TEXT("Horn") : TEXT("Switch"), Actor->GetActorLocation(), .4);
+    USliceAudio::Play(this, Action->kind == "event" ? TEXT("Horn") : TEXT("Switch"), Actor->GetActorLocation(), .4f);
 }
 void UCityGameplaySubsystem::Interact(ACityActivity *Actor, ASliceCharacter *Player)
 {

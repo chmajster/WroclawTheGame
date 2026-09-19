@@ -27,7 +27,7 @@ ADriveableVehicle::ADriveableVehicle()
     Chassis->SetCollisionProfileName(TEXT("PhysicsActor"));
     Chassis->SetSimulatePhysics(true);
     Chassis->SetNotifyRigidBodyCollision(true);
-    Chassis->SetLinearDamping(.04);
+    Chassis->SetLinearDamping(.04f);
     Chassis->SetAngularDamping(2);
     BodyVisual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
     BodyVisual->SetupAttachment(Chassis);
@@ -246,7 +246,7 @@ void ADriveableVehicle::Tick(float Dt)
         if (PC->IsInputKeyDown(EKeys::Multiply) && GetWorld()->GetTimeSeconds() - LastHorn > 1)
         {
             LastHorn = GetWorld()->GetTimeSeconds();
-            USliceAudio::Play(this, TEXT("Horn"), GetActorLocation(), .8);
+            USliceAudio::Play(this, TEXT("Horn"), GetActorLocation(), .8f);
         }
         Throttle = float(PC->IsInputKeyDown(EKeys::W)) - float(PC->IsInputKeyDown(EKeys::S));
         Steering = float(PC->IsInputKeyDown(EKeys::D)) - float(PC->IsInputKeyDown(EKeys::A));
