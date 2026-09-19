@@ -16,6 +16,12 @@
 #include "Components/EditableTextBox.h"
 #include "Components/ScrollBox.h"
 #include "Components/Image.h"
+#include "Components/Overlay.h"
+#include "Components/OverlaySlot.h"
+#include "Components/SizeBox.h"
+#include "Components/ScaleBox.h"
+#include "Components/SafeZone.h"
+#include "Brushes/SlateRoundedBoxBrush.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
 #include "Engine/TextureRenderTarget2D.h"
@@ -23,21 +29,76 @@
 #include "Sound/SoundBase.h"
 #include "Materials/MaterialInstanceDynamic.h"
 
-namespace {
-UTextBlock* Label(UWidgetTree* Tree,const FString& Text,int32 Size=16)
+namespace
 {
-    auto* T=Tree->ConstructWidget<UTextBlock>(); T->SetText(FText::FromString(Text)); auto Font=T->GetFont(); Font.Size=Size; T->SetFont(Font); T->SetAutoWrapText(true); return T;
+const FLinearColor Background(0.005f, 0.009f, 0.016f, 0.98f);
+const FLinearColor Panel(0.020f, 0.030f, 0.044f, 0.97f);
+const FLinearColor PanelSoft(0.034f, 0.049f, 0.069f, 0.95f);
+const FLinearColor PanelHover(0.055f, 0.078f, 0.105f, 1.0f);
+const FLinearColor Accent(0.18f, 0.79f, 0.96f, 1.0f);
+const FLinearColor AccentHover(0.32f, 0.86f, 1.0f, 1.0f);
+const FLinearColor AccentPressed(0.10f, 0.61f, 0.78f, 1.0f);
+const FLinearColor TextPrimary(0.95f, 0.97f, 1.0f, 1.0f);
+const FLinearColor Muted(0.57f, 0.64f, 0.72f, 1.0f);
+const FLinearColor Divider(0.11f, 0.16f, 0.21f, 1.0f);
+
+FSlateRoundedBoxBrush RoundedBrush(const FLinearColor& Color, float Radius)
+{
+    return FSlateRoundedBoxBrush(Color, Radius, FVector2f(64.0f, 64.0f));
 }
+
+UTextBlock* Label(UWidgetTree* Tree, const FString& Text, int32 Size = 16,
+                  bool bBold = false, FLinearColor Color = TextPrimary)
+{
+    auto* T = Tree->ConstructWidget<UTextBlock>();
+    T->SetText(FText::FromString(Text));
+    auto Font = T->GetFont();
+    Font.Size = Size;
+    if (bBold)
+        Font.TypefaceFontName = TEXT("Bold");
+    T->SetFont(Font);
+    T->SetColorAndOpacity(FSlateColor(Color));
+    T->SetAutoWrapText(true);
+    return T;
+}
+
+void StyleButton(UButton* Button, bool bAccent = false)
+{
+    FButtonStyle Style = Button->GetStyle();
+    Style.Normal = RoundedBrush(bAccent ? Accent : PanelSoft, 9.0f);
+    Style.Hovered = RoundedBrush(bAccent ? AccentHover : PanelHover, 9.0f);
+    Style.Pressed = RoundedBrush(bAccent ? AccentPressed : Panel, 9.0f);
+    Style.NormalPadding = FMargin(13.0f, 9.0f);
+    Style.PressedPadding = FMargin(13.0f, 10.0f, 13.0f, 8.0f);
+    Button->SetStyle(Style);
+    Button->SetBackgroundColor(FLinearColor::White);
+}
+
+UBorder* Card(UWidgetTree* Tree, const FMargin& Padding = FMargin(16),
+              FLinearColor Color = Panel, float Radius = 14.0f)
+{
+    auto* Border = Tree->ConstructWidget<UBorder>();
+    Border->SetBrush(RoundedBrush(Color, Radius));
+    Border->SetPadding(Padding);
+    return Border;
+}
+
 const TCHAR* Categories[]={TEXT("POSTAĆ"),TEXT("TWARZ"),TEXT("OCZY"),TEXT("NOS"),TEXT("USTA"),TEXT("SZCZĘKA"),TEXT("USZY"),TEXT("SKÓRA"),TEXT("WŁOSY"),TEXT("ZAROST"),TEXT("CIAŁO"),TEXT("UBRANIA"),TEXT("GŁOS")};
 const TCHAR* Slots[]={TEXT("Kurtka"),TEXT("Koszulka"),TEXT("Spodnie"),TEXT("Buty"),TEXT("Czapka"),TEXT("Akcesoria"),TEXT("Plecak")};
 }
 void UAppearanceControl::Button(const FString& Name)
 {
-    auto* B=WidgetTree->ConstructWidget<UButton>(); WidgetTree->RootWidget=B; B->AddChild(Label(WidgetTree,Name)); B->SetBackgroundColor(FLinearColor(.1f,.15f,.2f)); B->OnClicked.AddDynamic(this,&UAppearanceControl::Click);
+    auto* B=WidgetTree->ConstructWidget<UButton>();
+    WidgetTree->RootWidget=B;
+    StyleButton(B, Name.Contains(TEXT("ROZPOCZNIJ")) || Name.Contains(TEXT("PODSUMOWANIE")));
+    auto* Text=Label(WidgetTree,Name,12,true,TextPrimary);
+    Text->SetJustification(ETextJustify::Center);
+    B->AddChild(Text);
+    B->OnClicked.AddDynamic(this,&UAppearanceControl::Click);
 }
 void UAppearanceControl::Number(const FString& Name,float V,float Min,float Max,float Step)
 {
-    auto* Box=WidgetTree->ConstructWidget<UVerticalBox>(); WidgetTree->RootWidget=Box; Box->AddChildToVerticalBox(Label(WidgetTree,Name));
+    auto* Box=WidgetTree->ConstructWidget<UVerticalBox>(); WidgetTree->RootWidget=Box; Box->AddChildToVerticalBox(Label(WidgetTree,Name,10,true,Muted))->SetPadding(FMargin(0,0,0,5));
     auto* S=WidgetTree->ConstructWidget<USpinBox>(); S->SetMinValue(Min); S->SetMaxValue(Max); S->SetMinSliderValue(Min); S->SetMaxSliderValue(Max); S->SetDelta(Step); S->SetValue(V); Box->AddChildToVerticalBox(S); S->OnValueChanged.AddDynamic(this,&UAppearanceControl::Changed);
 }
 void UAppearanceControl::Choice(const FString& Name,const TArray<FName>& Options,FName Value)
@@ -62,34 +123,185 @@ UAppearanceControl* UCharacterCreatorWidget::Row(UVerticalBox* Box,FName ID)
 }
 void UCharacterCreatorWidget::NativeOnInitialized()
 {
-    Super::NativeOnInitialized(); Creator=GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>();
+    Super::NativeOnInitialized();
+    Creator=GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>();
     SetIsFocusable(true);
-    FActorSpawnParameters Params; Params.SpawnCollisionHandlingOverride=ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-    auto* BP=LoadClass<AWTG_CharacterCreator>(nullptr,TEXT("/Game/CharacterCreator/BP_WTG_CharacterCreator.BP_WTG_CharacterCreator_C"));
-    Studio=GetWorld()->SpawnActor<AWTG_CharacterCreator>(BP?BP:AWTG_CharacterCreator::StaticClass(),FVector(0,0,-50000),FRotator::ZeroRotator,Params);
-    auto* Background=WidgetTree->ConstructWidget<UBorder>(); Background->SetBrushColor(FLinearColor(.018f,.023f,.032f)); Background->SetPadding(FMargin(24)); WidgetTree->RootWidget=Background;
-    auto* Layout=WidgetTree->ConstructWidget<UHorizontalBox>(); Background->AddChild(Layout);
-    auto* Left=WidgetTree->ConstructWidget<UVerticalBox>(); auto* LS=Layout->AddChildToHorizontalBox(Left); LS->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
-    Heading=Label(WidgetTree,TEXT("KREATOR POSTACI"),24); Left->AddChildToVerticalBox(Heading);
-    auto* Scroll=WidgetTree->ConstructWidget<UScrollBox>(); Left->AddChildToVerticalBox(Scroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
-    Controls=WidgetTree->ConstructWidget<UVerticalBox>(); Scroll->AddChild(Controls);
-    auto* Center=WidgetTree->ConstructWidget<UVerticalBox>(); auto* CS=Layout->AddChildToHorizontalBox(Center); FSlateChildSize Fill(ESlateSizeRule::Fill); Fill.Value=1.8f; CS->SetSize(Fill); CS->SetPadding(FMargin(18,0));
-    auto* Image=WidgetTree->ConstructWidget<UImage>(); FSlateBrush Brush; Brush.SetResourceObject(Studio->RenderTarget); Brush.ImageSize=FVector2D(720,1000); Image->SetBrush(Brush); Center->AddChildToVerticalBox(Image)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
-    if (auto* Material=LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/CharacterCreator/M_CharacterPreview.M_CharacterPreview")))
+
+    FActorSpawnParameters Params;
+    Params.SpawnCollisionHandlingOverride=ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+    auto* BP=LoadClass<AWTG_CharacterCreator>(
+        nullptr,TEXT("/Game/CharacterCreator/BP_WTG_CharacterCreator.BP_WTG_CharacterCreator_C"));
+    Studio=GetWorld()->SpawnActor<AWTG_CharacterCreator>(
+        BP?BP:AWTG_CharacterCreator::StaticClass(),FVector(0,0,-50000),FRotator::ZeroRotator,Params);
+
+    auto* Root=WidgetTree->ConstructWidget<UOverlay>();
+    WidgetTree->RootWidget=Root;
+
+    auto* Backdrop=WidgetTree->ConstructWidget<UBorder>();
+    Backdrop->SetBrushColor(Background);
+    auto* BackdropSlot=Root->AddChildToOverlay(Backdrop);
+    BackdropSlot->SetHorizontalAlignment(HAlign_Fill);
+    BackdropSlot->SetVerticalAlignment(VAlign_Fill);
+
+    auto* TopAccent=WidgetTree->ConstructWidget<UBorder>();
+    TopAccent->SetBrushColor(FLinearColor(Accent.R,Accent.G,Accent.B,0.72f));
+    auto* TopAccentSize=WidgetTree->ConstructWidget<USizeBox>();
+    TopAccentSize->SetHeightOverride(3.0f);
+    TopAccentSize->AddChild(TopAccent);
+    auto* TopAccentSlot=Root->AddChildToOverlay(TopAccentSize);
+    TopAccentSlot->SetHorizontalAlignment(HAlign_Fill);
+    TopAccentSlot->SetVerticalAlignment(VAlign_Top);
+
+    auto* Safe=WidgetTree->ConstructWidget<USafeZone>();
+    auto* SafeSlot=Root->AddChildToOverlay(Safe);
+    SafeSlot->SetHorizontalAlignment(HAlign_Fill);
+    SafeSlot->SetVerticalAlignment(VAlign_Fill);
+
+    auto* Shell=WidgetTree->ConstructWidget<UVerticalBox>();
+    Safe->AddChild(Shell);
+
+    auto* HeaderCard=Card(WidgetTree,FMargin(20,15),Panel);
+    Shell->AddChildToVerticalBox(HeaderCard)->SetPadding(FMargin(18,16,18,10));
+    auto* HeaderRow=WidgetTree->ConstructWidget<UHorizontalBox>();
+    HeaderCard->AddChild(HeaderRow);
+
+    auto* HeaderText=WidgetTree->ConstructWidget<UVerticalBox>();
+    auto* HeaderTextSlot=HeaderRow->AddChildToHorizontalBox(HeaderText);
+    HeaderTextSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    HeaderText->AddChildToVerticalBox(Label(WidgetTree,TEXT("KREATOR POSTACI"),24,true,TextPrimary));
+    HeaderText->AddChildToVerticalBox(Label(
+        WidgetTree,TEXT("WYGLĄD  /  PROFIL  /  UBRANIA  /  GŁOS"),9,true,Accent))
+        ->SetPadding(FMargin(0,3,0,0));
+
+    auto* LiveBadge=WidgetTree->ConstructWidget<UBorder>();
+    LiveBadge->SetBrush(RoundedBrush(FLinearColor(0.025f,0.105f,0.135f,0.98f),8.0f));
+    LiveBadge->SetPadding(FMargin(12,7));
+    LiveBadge->AddChild(Label(WidgetTree,TEXT("PODGLĄD NA ŻYWO"),9,true,Accent));
+    HeaderRow->AddChildToHorizontalBox(LiveBadge)->SetPadding(FMargin(12,2,0,2));
+
+    auto* Body=WidgetTree->ConstructWidget<UHorizontalBox>();
+    auto* BodySlot=Shell->AddChildToVerticalBox(Body);
+    BodySlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    BodySlot->SetPadding(FMargin(18,0,18,10));
+
+    auto* LeftSize=WidgetTree->ConstructWidget<USizeBox>();
+    LeftSize->SetWidthOverride(360.0f);
+    Body->AddChildToHorizontalBox(LeftSize);
+
+    auto* LeftCard=Card(WidgetTree,FMargin(16,15),Panel);
+    LeftSize->AddChild(LeftCard);
+    auto* Left=WidgetTree->ConstructWidget<UVerticalBox>();
+    LeftCard->AddChild(Left);
+    Left->AddChildToVerticalBox(Label(WidgetTree,TEXT("PERSONALIZACJA"),9,true,Accent))
+        ->SetPadding(FMargin(0,0,0,4));
+    Heading=Label(WidgetTree,TEXT("KREATOR POSTACI"),20,true,TextPrimary);
+    Left->AddChildToVerticalBox(Heading)->SetPadding(FMargin(0,0,0,12));
+    auto* Scroll=WidgetTree->ConstructWidget<UScrollBox>();
+    Left->AddChildToVerticalBox(Scroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    Controls=WidgetTree->ConstructWidget<UVerticalBox>();
+    Scroll->AddChild(Controls);
+
+    auto* CenterCard=Card(WidgetTree,FMargin(14,14,14,12),Panel);
+    auto* CenterSlot=Body->AddChildToHorizontalBox(CenterCard);
+    FSlateChildSize CenterFill(ESlateSizeRule::Fill);
+    CenterFill.Value=1.8f;
+    CenterSlot->SetSize(CenterFill);
+    CenterSlot->SetPadding(FMargin(12,0));
+
+    auto* Center=WidgetTree->ConstructWidget<UVerticalBox>();
+    CenterCard->AddChild(Center);
+    auto* PreviewHead=WidgetTree->ConstructWidget<UHorizontalBox>();
+    Center->AddChildToVerticalBox(PreviewHead)->SetPadding(FMargin(2,0,2,10));
+    PreviewHead->AddChildToHorizontalBox(Label(WidgetTree,TEXT("PODGLĄD"),9,true,Accent))
+        ->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    auto* PreviewMode=Label(WidgetTree,TEXT("KADR  •  CAŁA SYLWETKA"),8,true,Muted);
+    PreviewMode->SetJustification(ETextJustify::Right);
+    PreviewHead->AddChildToHorizontalBox(PreviewMode);
+
+    auto* PreviewStage=WidgetTree->ConstructWidget<UBorder>();
+    PreviewStage->SetBrush(RoundedBrush(FLinearColor(0.008f,0.014f,0.024f,1.0f),12.0f));
+    PreviewStage->SetPadding(FMargin(8));
+    auto* StageSlot=Center->AddChildToVerticalBox(PreviewStage);
+    StageSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+
+    auto* PreviewScale=WidgetTree->ConstructWidget<UScaleBox>();
+    PreviewScale->SetStretch(EStretch::ScaleToFit);
+    PreviewScale->SetStretchDirection(EStretchDirection::Both);
+    PreviewStage->AddChild(PreviewScale);
+
+    auto* Image=WidgetTree->ConstructWidget<UImage>();
+    if (Studio && Studio->RenderTarget)
     {
-        auto* MID=UMaterialInstanceDynamic::Create(Material,this); MID->SetTextureParameterValue(TEXT("PreviewTexture"),Studio->RenderTarget); Image->SetBrushFromMaterial(MID);
+        if (auto* Material=LoadObject<UMaterialInterface>(
+                nullptr,TEXT("/Game/CharacterCreator/M_CharacterPreview.M_CharacterPreview")))
+        {
+            auto* MID=UMaterialInstanceDynamic::Create(Material,Image);
+            MID->SetTextureParameterValue(TEXT("PreviewTexture"),Studio->RenderTarget);
+            Image->SetBrushFromMaterial(MID);
+        }
+        else
+        {
+            FSlateBrush Brush;
+            Brush.SetResourceObject(Studio->RenderTarget);
+            Brush.ImageSize=FVector2D(720,1000);
+            Image->SetBrush(Brush);
+        }
     }
-    Center->AddChildToVerticalBox(Label(WidgetTree,TEXT("Przeciągnij prawym przyciskiem, aby obrócić • kółko: zoom\nPodgląd zastępczy — finalna jakość zależy od podłączonych assetów."),12));
-    auto* CommandScroll=WidgetTree->ConstructWidget<UScrollBox>(); Layout->AddChildToHorizontalBox(CommandScroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
-    Commands=WidgetTree->ConstructWidget<UVerticalBox>(); CommandScroll->AddChild(Commands);
-    Status=Label(WidgetTree,TEXT(""),12); Left->AddChildToVerticalBox(Status); Refresh();
+    Image->SetColorAndOpacity(FLinearColor::White);
+    PreviewScale->AddChild(Image);
+
+    auto* HintCard=WidgetTree->ConstructWidget<UBorder>();
+    HintCard->SetBrush(RoundedBrush(PanelSoft,9.0f));
+    HintCard->SetPadding(FMargin(12,8));
+    Center->AddChildToVerticalBox(HintCard)->SetPadding(FMargin(0,10,0,0));
+    auto* Hint=Label(WidgetTree,
+        TEXT("PPM  OBRÓT    •    KÓŁKO  ZOOM    •    WIDOK I ŚWIATŁO PO PRAWEJ"),
+        9,true,Muted);
+    Hint->SetJustification(ETextJustify::Center);
+    HintCard->AddChild(Hint);
+
+    auto* RightSize=WidgetTree->ConstructWidget<USizeBox>();
+    RightSize->SetWidthOverride(340.0f);
+    Body->AddChildToHorizontalBox(RightSize);
+    auto* RightCard=Card(WidgetTree,FMargin(14,15),Panel);
+    RightSize->AddChild(RightCard);
+    auto* Right=WidgetTree->ConstructWidget<UVerticalBox>();
+    RightCard->AddChild(Right);
+    Right->AddChildToVerticalBox(Label(WidgetTree,TEXT("AKCJE"),9,true,Accent))
+        ->SetPadding(FMargin(0,0,0,4));
+    Right->AddChildToVerticalBox(Label(WidgetTree,TEXT("STEROWANIE I ZATWIERDZENIE"),15,true,TextPrimary))
+        ->SetPadding(FMargin(0,0,0,12));
+    auto* CommandScroll=WidgetTree->ConstructWidget<UScrollBox>();
+    Right->AddChildToVerticalBox(CommandScroll)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    Commands=WidgetTree->ConstructWidget<UVerticalBox>();
+    CommandScroll->AddChild(Commands);
+
+    auto* FooterCard=Card(WidgetTree,FMargin(16,10),PanelSoft,10.0f);
+    Shell->AddChildToVerticalBox(FooterCard)->SetPadding(FMargin(18,0,18,16));
+    Status=Label(WidgetTree,TEXT(""),10,true,Muted);
+    FooterCard->AddChild(Status);
+
+    Refresh();
 }
+
 void UCharacterCreatorWidget::NativeDestruct()
 { if (Studio) Studio->Destroy(); Studio=nullptr; Super::NativeDestruct(); }
 void UCharacterCreatorWidget::Refresh()
 {
     Controls->ClearChildren(); Commands->ClearChildren(); const auto& A=Creator->Draft; const auto* C=Creator->Catalog.Get();
-    auto Add=[&](UVerticalBox* Box,UAppearanceControl* R){Box->AddChildToVerticalBox(R)->SetPadding(FMargin(0,5));};
+    auto Add=[&](UVerticalBox* Box,UAppearanceControl* R)
+    {
+        if (Box==Controls)
+        {
+            auto* RowCard=Card(WidgetTree,FMargin(10,8),PanelSoft,9.0f);
+            RowCard->AddChild(R);
+            Box->AddChildToVerticalBox(RowCard)->SetPadding(FMargin(0,0,0,7));
+        }
+        else
+        {
+            Box->AddChildToVerticalBox(R)->SetPadding(FMargin(0,0,0,7));
+        }
+    };
     auto Button=[&](const TCHAR* ID,const FString& Text){auto* R=Row(Commands,ID); R->Button(Text); Add(Commands,R);};
     auto Choice=[&](FName ID,const FString& Text,const TArray<FName>& Values,FName Value){auto* R=Row(Controls,ID); R->Choice(Text,Values,Value); Add(Controls,R);};
     auto Num=[&](FName ID,const FString& Text,float V,float Min,float Max,float Step=1.f){auto* R=Row(Controls,ID); R->Number(Text,V,Min,Max,Step); Add(Controls,R);};
@@ -97,7 +309,7 @@ void UCharacterCreatorWidget::Refresh()
     Heading->SetText(FText::FromString(Creator->bSummary?TEXT("TWOJA POSTAĆ"):TEXT("KREATOR POSTACI")));
     if (Creator->bSummary)
     {
-        Controls->AddChildToVerticalBox(Label(WidgetTree,FString::Printf(TEXT("%s\n%.0f cm • wiek wizualny %.0f\n%s\nSeed: %d\n"),*A.Name,A.Height,A.VisualAge,*A.BodyBuild.ToString(),A.RandomSeed),22));
+        Controls->AddChildToVerticalBox(Label(WidgetTree,FString::Printf(TEXT("%s\n%.0f cm • wiek wizualny %.0f\n%s\nSeed: %d"),*A.Name,A.Height,A.VisualAge,*A.BodyBuild.ToString(),A.RandomSeed),18,true,TextPrimary))->SetPadding(FMargin(4,4,4,10));
         for (const auto& P:A.Clothing) Controls->AddChildToVerticalBox(Label(WidgetTree,P.Value.ToString()));
         Button(TEXT("Edit"),TEXT("EDYTUJ")); Button(TEXT("Start"),TEXT("ROZPOCZNIJ KAMPANIĘ"));
     }
