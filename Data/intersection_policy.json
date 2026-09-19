@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "signals": [
     "traffic_signals"
   ],
@@ -10,5 +10,31 @@
   "crossings": [
     "crossing"
   ],
-  "unsupported_restrictions_are_blocking": true
+  "unsupported_restrictions_are_blocking": true,
+  "controls": {
+    "traffic_signals": {
+      "priority": "signal",
+      "stop_line_offset_m": 4,
+      "pedestrian_conflict": true,
+      "requires_reservation": true
+    },
+    "stop": {
+      "priority": "stop",
+      "stop_line_offset_m": 3,
+      "pedestrian_conflict": false,
+      "requires_reservation": true
+    },
+    "give_way": {
+      "priority": "yield",
+      "stop_line_offset_m": 2.5,
+      "pedestrian_conflict": false,
+      "requires_reservation": true
+    },
+    "crossing": {
+      "priority": "pedestrian",
+      "stop_line_offset_m": 4,
+      "pedestrian_conflict": true,
+      "requires_reservation": true
+    }
+  }
 }
