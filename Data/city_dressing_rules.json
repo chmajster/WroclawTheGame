@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "cell_size_m": 128,
   "rules": {
     "street_lamp": {
@@ -11,7 +11,18 @@
         "residential"
       ],
       "offset_m": 3.2,
-      "asset_role": "street_lamp"
+      "asset_role": "street_lamp",
+      "variants": [
+        "street_lamp_modern",
+        "street_lamp_classic"
+      ],
+      "scale_range": [
+        0.98,
+        1.03
+      ],
+      "collision_profile": "WorldStatic",
+      "nav_behavior": "obstacle",
+      "data_layer": "StreetFurniture"
     },
     "bollard": {
       "spacing_m": 18,
@@ -20,14 +31,36 @@
         "service"
       ],
       "offset_m": 2.1,
-      "asset_role": "bollard"
+      "asset_role": "bollard",
+      "variants": [
+        "bollard_metal",
+        "bollard_concrete"
+      ],
+      "scale_range": [
+        0.95,
+        1.05
+      ],
+      "collision_profile": "WorldStatic",
+      "nav_behavior": "obstacle",
+      "data_layer": "StreetFurniture"
     },
     "bench": {
       "spacing_m": 55,
       "feature_kinds": [
         "green"
       ],
-      "asset_role": "bench"
+      "asset_role": "bench",
+      "variants": [
+        "bench_wood",
+        "bench_metal"
+      ],
+      "scale_range": [
+        0.96,
+        1.04
+      ],
+      "collision_profile": "WorldStatic",
+      "nav_behavior": "obstacle",
+      "data_layer": "StreetFurniture"
     },
     "waste_bin": {
       "spacing_m": 75,
@@ -35,7 +68,18 @@
         "green",
         "road"
       ],
-      "asset_role": "waste_bin"
+      "asset_role": "waste_bin",
+      "variants": [
+        "waste_bin_city",
+        "waste_bin_park"
+      ],
+      "scale_range": [
+        0.95,
+        1.05
+      ],
+      "collision_profile": "WorldStatic",
+      "nav_behavior": "obstacle",
+      "data_layer": "StreetFurniture"
     },
     "bicycle_rack": {
       "spacing_m": 90,
@@ -45,7 +89,18 @@
         "service"
       ],
       "offset_m": 2.8,
-      "asset_role": "bicycle_rack"
+      "asset_role": "bicycle_rack",
+      "variants": [
+        "bicycle_rack_u",
+        "bicycle_rack_wave"
+      ],
+      "scale_range": [
+        0.97,
+        1.03
+      ],
+      "collision_profile": "WorldStatic",
+      "nav_behavior": "obstacle",
+      "data_layer": "StreetFurniture"
     }
   }
 }
