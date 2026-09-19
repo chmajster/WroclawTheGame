@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "representations": {
+    "physical": {
+      "max_distance_m": 180,
+      "update_hz": 60
+    },
+    "mass": {
+      "max_distance_m": 900,
+      "update_hz": 10
+    },
+    "logical": {
+      "max_distance_m": 3000,
+      "update_hz": 1
+    },
+    "dormant": {
+      "max_distance_m": null,
+      "update_hz": 0
+    }
+  },
+  "max_physical": 24,
+  "max_mass": 800,
+  "zonegraph_lane_width_m": 3.25
+}
