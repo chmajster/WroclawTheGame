@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "layers": [
     {
       "id": "DL_BaseGeometry",
@@ -11,7 +11,9 @@
         "rail",
         "water",
         "green"
-      ]
+      ],
+      "depends_on": [],
+      "runtime_state": "Activated"
     },
     {
       "id": "DL_Buildings",
@@ -20,7 +22,11 @@
       "kinds": [
         "building",
         "official_building"
-      ]
+      ],
+      "depends_on": [
+        "DL_BaseGeometry"
+      ],
+      "runtime_state": "Activated"
     },
     {
       "id": "DL_StreetFurniture",
@@ -32,7 +38,11 @@
         "bench",
         "waste_bin",
         "bicycle_rack"
-      ]
+      ],
+      "depends_on": [
+        "DL_BaseGeometry"
+      ],
+      "runtime_state": "Activated"
     },
     {
       "id": "DL_Traffic",
@@ -40,7 +50,11 @@
       "loaded_by_default": true,
       "systems": [
         "traffic"
-      ]
+      ],
+      "depends_on": [
+        "DL_BaseGeometry"
+      ],
+      "runtime_state": "Activated"
     },
     {
       "id": "DL_Crowd",
@@ -48,7 +62,11 @@
       "loaded_by_default": true,
       "systems": [
         "crowd"
-      ]
+      ],
+      "depends_on": [
+        "DL_BaseGeometry"
+      ],
+      "runtime_state": "Activated"
     },
     {
       "id": "DL_Interiors",
@@ -56,7 +74,11 @@
       "loaded_by_default": false,
       "systems": [
         "interior"
-      ]
+      ],
+      "depends_on": [
+        "DL_Buildings"
+      ],
+      "runtime_state": "Unloaded"
     },
     {
       "id": "DL_Quests",
@@ -64,7 +86,11 @@
       "loaded_by_default": true,
       "systems": [
         "quest"
-      ]
+      ],
+      "depends_on": [
+        "DL_BaseGeometry"
+      ],
+      "runtime_state": "Activated"
     },
     {
       "id": "DL_Debug",
@@ -72,7 +98,38 @@
       "loaded_by_default": false,
       "systems": [
         "debug"
-      ]
+      ],
+      "depends_on": [],
+      "runtime_state": "Unloaded"
     }
+  ],
+  "activation_sets": {
+    "gameplay_default": [
+      "DL_BaseGeometry",
+      "DL_Buildings",
+      "DL_StreetFurniture",
+      "DL_Traffic",
+      "DL_Crowd",
+      "DL_Quests"
+    ],
+    "interior_active": [
+      "DL_BaseGeometry",
+      "DL_Buildings",
+      "DL_Interiors",
+      "DL_Quests"
+    ],
+    "low_population": [
+      "DL_BaseGeometry",
+      "DL_Buildings",
+      "DL_StreetFurniture",
+      "DL_Quests"
+    ],
+    "debug": [
+      "DL_Debug"
+    ]
+  },
+  "pcg_role_inheritance": true,
+  "quest_required_layers": [
+    "DL_Quests"
   ]
 }
