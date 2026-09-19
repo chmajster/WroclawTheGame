@@ -1,4 +1,5 @@
 #include "Mission/SliceMission.h"
+#include "Save/SaveMigrationPolicy.h"
 #include "Character/CharacterCreatorSubsystem.h"
 #include "Systems/PhoneSystem.h"
 #include "Engine/LocalPlayer.h"
@@ -104,7 +105,11 @@ bool USliceMission::LoadState(bool bApply)
     auto *S =
         Cast<USliceSave>(
             UGameplayStatics::LoadGameFromSlot(Legacy ? TEXT("Przebudzenie_v2") : SaveSlotName, 0));
-    if (!S || (S->Version != Wroclaw::Progress::Version && !(Legacy && S->Version == 2)) ||
+    if (!S ||
+        !Wroclaw::SaveMigration::CanAttemptCampaignSave(
+            S->Version, Wroclaw::Progress::Version,
+            S->CoordinateSpace.IsEmpty() ? TEXT("BlockoutV1") : S->CoordinateSpace,
+            Legacy, CurrentCoordinateSpace(GetWorld())) ||
         S->History.Num() > static_cast<int32>(Wroclaw::Catalog().size()) ||
         !ValidCampaignWorldPosition(S->Anchor))
         return false;

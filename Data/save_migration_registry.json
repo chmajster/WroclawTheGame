@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "campaign": {
+    "current_version": 3,
+    "current_coordinate_space": "WroclawGISV1",
+    "supported": [
+      {
+        "from_version": 2,
+        "to_version": 3,
+        "from_space": "BlockoutV1",
+        "to_space": "BlockoutV1",
+        "mechanism": "legacy_history_replay",
+        "legacy_slot_only": true
+      },
+      {
+        "from_version": 3,
+        "to_version": 3,
+        "from_space": "BlockoutV1",
+        "to_space": "WroclawGISV1",
+        "mechanism": "CampaignMigrationDefinition",
+        "legacy_slot_only": false
+      }
+    ]
+  },
+  "city": {
+    "current_version": 1,
+    "supported": []
+  },
+  "rules": {
+    "unknown_version": "reject",
+    "unknown_coordinate_space": "reject",
+    "newer_version": "reject_without_overwrite"
+  }
+}
