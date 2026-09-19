@@ -2,6 +2,7 @@
 #include "Save/SaveMigrationPolicy.h"
 #include "Character/CharacterCreatorSubsystem.h"
 #include "Systems/PhoneSystem.h"
+#include "Systems/WTGEconomySubsystem.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/PlayerController.h"
 #include "AI/SliceEnemy.h"
@@ -72,6 +73,8 @@ void USliceMission::NewGame()
     NPCs.Empty();
     WorldState = Wroclaw::WorldState();
     WorldState.seed = static_cast<uint32>(FMath::RandRange(1, MAX_int32));
+    if (auto* Economy = GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>())
+        Economy->ResetEconomy();
     bDebugSession = false;
     State = Wroclaw::Progress(FMath::RandRange(0, static_cast<int32>(Wroclaw::LightVariants().size()) - 1));
     if (const auto *Awake = Wroclaw::Progress::Find("awake"))
@@ -102,22 +105,34 @@ bool USliceMission::HasSave() const
 bool USliceMission::LoadState(bool bApply)
 {
     const bool Legacy = !UGameplayStatics::DoesSaveGameExist(SaveSlotName, 0);
-    auto *S =
-        Cast<USliceSave>(
-            UGameplayStatics::LoadGameFromSlot(Legacy ? TEXT("Przebudzenie_v2") : SaveSlotName, 0));
-    if (!S ||
-        !Wroclaw::SaveMigration::CanAttemptCampaignSave(
-            S->Version, Wroclaw::Progress::Version,
-            S->CoordinateSpace.IsEmpty() ? TEXT("BlockoutV1") : S->CoordinateSpace,
-            Legacy, CurrentCoordinateSpace(GetWorld())) ||
+    const FString SourceSlot = Legacy ? TEXT("Przebudzenie_v2") : FString(SaveSlotName);
+    auto *S = Cast<USliceSave>(UGameplayStatics::LoadGameFromSlot(SourceSlot, 0));
+    if (!S)
+        return false;
+
+    FString SaveSpace = S->CoordinateSpace.IsEmpty() ? TEXT("BlockoutV1") : S->CoordinateSpace;
+    const FString ActiveSpace = CurrentCoordinateSpace(GetWorld());
+    const auto MigrationPlan = Wroclaw::SaveMigration::BuildCampaignMigrationPlan(
+        S->Version, Wroclaw::Progress::Version, SaveSpace, Legacy, ActiveSpace);
+
+    if (!MigrationPlan.bSupported ||
         S->History.Num() > static_cast<int32>(Wroclaw::Catalog().size()) ||
         !ValidCampaignWorldPosition(S->Anchor))
         return false;
 
+    if (bApply && MigrationPlan.bRequiresBackup)
+    {
+        const FString BackupSlot = SourceSlot + TEXT("_pre_migration_backup");
+        if (!UGameplayStatics::DoesSaveGameExist(BackupSlot, 0) &&
+            !UGameplayStatics::SaveGameToSlot(S, BackupSlot, 0))
+            return false;
+    }
+
+    if (!Wroclaw::SaveMigration::EnsureCurrentSystemPayloads(*S))
+        return false;
+
     FVector LoadedAnchor = S->Anchor;
     TMap<FString, FWTGNPCSnapshot> LoadedNPCs = S->NPCs;
-    FString SaveSpace = S->CoordinateSpace.IsEmpty() ? TEXT("BlockoutV1") : S->CoordinateSpace;
-    const FString ActiveSpace = CurrentCoordinateSpace(GetWorld());
     if (SaveSpace != ActiveSpace)
     {
         const auto *Migration = ActiveCampaignMigration(GetWorld());
@@ -225,6 +240,8 @@ bool USliceMission::LoadState(bool bApply)
         Anchor = LoadedAnchor;
         NPCs = MoveTemp(LoadedNPCs);
         Settings = S->Settings;
+        if (auto* Economy = GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>())
+            Economy->ImportSaveState(S->EconomyState);
         GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Restore(S->CharacterCustomization);
     }
     return true;
@@ -261,6 +278,14 @@ bool USliceMission::SaveCheckpoint()
     auto *S = Cast<USliceSave>(UGameplayStatics::CreateSaveGameObject(USliceSave::StaticClass()));
     S->CoordinateSpace = CurrentCoordinateSpace(GetWorld());
     S->CharacterCustomization = GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Committed;
+    if (auto* Economy = GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>())
+        S->EconomyState = Economy->ExportSaveState();
+    if (!Wroclaw::SaveMigration::EnsureCurrentSystemPayloads(*S))
+    {
+        bLastSaveSucceeded = false;
+        Notify(TEXT("Nie udało się przygotować wersjonowanego stanu zapisu."));
+        return false;
+    }
     if (!State.history.empty())
         for (TActorIterator<ASliceEnemy> It(GetWorld()); It; ++It)
         {
