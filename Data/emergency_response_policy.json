@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "services": {
+    "police": {
+      "heat_thresholds": [
+        20,
+        45,
+        70
+      ],
+      "units": [
+        1,
+        2,
+        4
+      ]
+    },
+    "ambulance": {
+      "incident_types": [
+        "injury",
+        "traffic_collision"
+      ],
+      "units": [
+        1
+      ]
+    },
+    "fire": {
+      "incident_types": [
+        "fire",
+        "explosion"
+      ],
+      "units": [
+        1,
+        2
+      ]
+    }
+  },
+  "max_route_distance_m": 12000,
+  "physicalize_radius_m": 350,
+  "search_timeout_seconds": 90
+}
