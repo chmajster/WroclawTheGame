@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "currency": "PLN",
+  "starting_balance": 250,
+  "prices": {
+    "fuel_per_litre": 6.5,
+    "basic_repair": 180,
+    "major_repair": 900,
+    "parking_hour": 6,
+    "parking_ticket": 120,
+    "tow_release": 350,
+    "medkit": 35
+  },
+  "rewards": {
+    "minor_quest": 150,
+    "major_quest": 600,
+    "race": 300,
+    "investigation": 450
+  },
+  "limits": {
+    "min_balance": -2000,
+    "max_transaction_abs": 100000
+  }
+}
