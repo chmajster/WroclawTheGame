@@ -161,22 +161,9 @@ bool EnsureCurrentSystemPayloads(USliceSave& Save)
 
 FString RemapStableId(const FString& Category, const FString& Id)
 {
-    // Keep remap tables explicit and empty until a real ID rename happens.
-    // This avoids silently inventing mappings during GIS regeneration.
-    static const TMap<FString, TMap<FString, FString>> Remaps = {
-        {TEXT("poi"), {}},
-        {TEXT("building"), {}},
-        {TEXT("objective"), {}},
-    };
-
-    if (const TMap<FString, FString>* CategoryMap = Remaps.Find(Category))
-    {
-        if (const FString* NewId = CategoryMap->Find(Id))
-        {
-            return *NewId;
-        }
-    }
-
+    // The versioned registry owns explicit remap tables. Until a concrete
+    // rename is registered, preserving the stable ID is the only safe action.
+    (void)Category;
     return Id;
 }
 }
