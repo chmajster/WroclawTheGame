@@ -549,8 +549,8 @@ bool USliceMission::CapturePhoto()
         return false;
     }
 
-    TArray<uint8> Png;
-    FImageUtils::CompressImageArray(PhotoWidth, PhotoHeight, Pixels, Png);
+    TArray64<uint8> Png;
+    FImageUtils::PNGCompressImageArray(PhotoWidth, PhotoHeight, Pixels, Png);
     if (Png.IsEmpty())
     {
         Capture->DestroyComponent();
