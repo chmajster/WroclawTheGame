@@ -79,7 +79,7 @@ void ADriveableVehicle::SetVisualMeshes(UStaticMesh *BodyMesh, UStaticMesh *Whee
         BodyVisual->SetRelativeRotation(FRotator::ZeroRotator);
         CabinVisual->SetVisibility(false, true);
     }
-    for (auto *Wheel : WheelVisuals)
+    for (UStaticMeshComponent *Wheel : WheelVisuals)
     {
         if (!Wheel) continue;
         Wheel->SetStaticMesh(WheelMesh);
