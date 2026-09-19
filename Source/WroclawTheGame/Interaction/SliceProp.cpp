@@ -9,17 +9,37 @@
 #include "Mission/SliceMission.h"
 #include "UI/SliceController.h"
 #include "Audio/SliceAudio.h"
+
+namespace
+{
+UBoxComponent* EnsureInteractionBounds(ASliceProp* Prop)
+{
+    if (auto* Existing = Prop->FindComponentByClass<UBoxComponent>())
+        return Existing;
+
+    auto* Bounds = NewObject<UBoxComponent>(Prop, TEXT("InteractionBounds"));
+    Prop->AddInstanceComponent(Bounds);
+    Bounds->SetCollisionProfileName(TEXT("Interactable"));
+    Bounds->SetCanEverAffectNavigation(false);
+    Bounds->SetupAttachment(Prop->GetRootComponent());
+    Bounds->SetAbsolute(false, false, true);
+    Bounds->RegisterComponent();
+    Bounds->SetRelativeLocation(FVector::ZeroVector);
+    Bounds->SetRelativeRotation(FRotator::ZeroRotator);
+    Bounds->SetWorldScale3D(FVector::OneVector);
+    return Bounds;
+}
+}
 ASliceProp::ASliceProp()
 {
     Door = CreateDefaultSubobject<UDoorComponent>(TEXT("Door"));
     Puzzle = CreateDefaultSubobject<UBasePuzzleComponent>(TEXT("Puzzle"));
     PrimaryActorTick.bCanEverTick = true;
     PrimaryActorTick.TickInterval = 0.1f;
-    Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("InteractionBounds"));
-    RootComponent = Collider;
-    Collider->SetCollisionProfileName(TEXT("Interactable"));
+    // Keep the authored-map component graph compatible with the pre-Collider class:
+    // Mesh remains the native root. InteractionBounds is added only after loading.
     Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-    Mesh->SetupAttachment(Collider);
+    RootComponent = Mesh;
     Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     Mesh->SetCanEverAffectNavigation(false);
 }
@@ -34,9 +54,10 @@ void ASliceProp::Configure(const FString &Id, const FVector &Size)
     ActionId = Id;
     Puzzle->DefinitionId = FName(*Id);
     ClosedPosition = GetActorLocation();
-    Collider->SetBoxExtent(FVector(FMath::Max(8.f, Size.X*.5f),
-                                   FMath::Max(8.f, Size.Y*.5f),
-                                   FMath::Max(8.f, Size.Z*.5f)));
+    auto* InteractionBounds = EnsureInteractionBounds(this);
+    InteractionBounds->SetBoxExtent(FVector(FMath::Max(8.f, Size.X*.5f),
+                                             FMath::Max(8.f, Size.Y*.5f),
+                                             FMath::Max(8.f, Size.Z*.5f)));
     Tick(0);
 }
 FText ASliceProp::Prompt(ASliceCharacter *Player) const
