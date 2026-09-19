@@ -1,12 +1,14 @@
 # NPC schedules
 
-Existing NPC schedules can now be evaluated as logical off-screen state independently from physical actors. Physicalization is a proximity decision; schedule position remains the source of truth.
+NPC schedules now model off-screen movement instead of instant logical relocation. Schedule state remains independent from physical actors.
 
-## Remaining
-1. convert GIS-migrated schedule locations to routable anchors/Smart Objects;
-2. simulate travel time instead of instantaneous logical relocation;
-3. StateTree tasks for home/work/shop/recreation;
-4. physical↔logical handoff without visible teleport;
-5. save schedule progress and interruptions;
-6. weather/weekday/quest overrides;
-7. UE crowd/NPC integration and long-session soak testing.
+## Runtime state
+
+- active and next slot resolve across the 24-hour wrap;
+- travel time is estimated from logical distance and policy walk speed;
+- position is interpolated during the travel window;
+- state records from/to slot IDs and travel progress for save/load;
+- player distance selects physical, simplified or logical representation;
+- NPC-specific schedule overrides can be conditioned on weather, weekday or quest context.
+
+The stable logical state is the source of truth. Physical actors can be destroyed/recreated without losing schedule progress, and no visible teleport is required when an NPC crosses the physicalization boundary.
