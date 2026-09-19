@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "accepted_amenities": [
     "parking",
     "parking_space",
@@ -14,5 +14,23 @@
   ],
   "player_garage_capacity": 6,
   "illegal_parking_heat": 2,
-  "tow_after_game_minutes": 120
+  "tow_after_game_minutes": 120,
+  "slot_width_m": 2.6,
+  "slot_length_m": 5.2,
+  "default_area_capacity": 12,
+  "default_garage_capacity": 40,
+  "max_generated_slots_per_parking": 120,
+  "default_occupancy_ratio": 0.55,
+  "economy": {
+    "hourly_price_key": "parking_hour",
+    "tow_release_price_key": "tow_release",
+    "ticket_price_key": "parking_ticket"
+  },
+  "persist_fields": [
+    "parking_id",
+    "slot_id",
+    "vehicle_id",
+    "occupied",
+    "owner"
+  ]
 }
