@@ -5,12 +5,12 @@ FLinearColor UCityCoverageSubsystem::Color(ECityCoverageStatus Status)
 {
     switch (Status)
     {
-    case ECityCoverageStatus::GISOnly: return FLinearColor(.22, .55, .83);
-    case ECityCoverageStatus::Blockout: return FLinearColor(.90, .54, .20);
-    case ECityCoverageStatus::Playable: return FLinearColor(.89, .78, .28);
-    case ECityCoverageStatus::Detailed: return FLinearColor(.32, .68, .40);
-    case ECityCoverageStatus::Final: return FLinearColor(.68, .46, .87);
-    default: return FLinearColor(.45, .45, .45);
+    case ECityCoverageStatus::GISOnly: return FLinearColor(.22f, .55f, .83f);
+    case ECityCoverageStatus::Blockout: return FLinearColor(.90f, .54f, .20f);
+    case ECityCoverageStatus::Playable: return FLinearColor(.89f, .78f, .28f);
+    case ECityCoverageStatus::Detailed: return FLinearColor(.32f, .68f, .40f);
+    case ECityCoverageStatus::Final: return FLinearColor(.68f, .46f, .87f);
+    default: return FLinearColor(.45f, .45f, .45f);
     }
 }
 FString UCityCoverageSubsystem::Label(ECityCoverageStatus Status)
