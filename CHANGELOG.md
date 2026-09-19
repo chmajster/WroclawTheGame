@@ -1,3 +1,9 @@
+## 2026-09-19 — naprawa konfliktu UHT AudioSettings
+
+- Zmieniono nazwę projektowych plików `AudioSettings.h/.cpp` na `WTGAudioSettings.h/.cpp`, aby usunąć kolizję z `Engine/Classes/Sound/AudioSettings.h`.
+- Zaktualizowano `WTGAudioSettings.generated.h`, include’y w warstwie audio i menu oraz ścieżkę testu.
+- Dodano regresję zabraniającą ponownego utworzenia projektowego `AudioSettings.h`.
+
 ## 2026-09-19 — kolejna fala polishu nowoczesnego menu
 
 - Dodano badge bieżącej strony 01–07, wskaźnik aktywnej sesji oraz aktualizowany zegar i datę w stopce.
