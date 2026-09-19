@@ -25,12 +25,13 @@ Wykonane w tej fali:
 - garderoba/fryzura/głos używają player-facing DisplayName z katalogu; usunięto PresetID i RandomSeed z profilu,
 - Dziennik/Mapa/Statystyki mają karty i keycapy zamiast surowych statusów/debugowych etykiet,
 - stany awaryjne menu nie pokazują nazw klas Unreal,
+- naprawiono UHT blocker: lokalny `AudioSettings.h` kolidował z nagłówkiem silnika; obowiązuje `WTGAudioSettings.h/.cpp`,
 - rozszerzone regresje Tests/test_player_menu.py.
 
 Walidacja wykonana:
 - statyczny smoke-check connectora: PASS,
-- automatyczny audyt 377 prostych assertIn/assertNotIn: PASS,
-- 55 testów regresyjnych wykrytych,
+- automatyczny audyt 379 prostych assertIn/assertNotIn: PASS,
+- 56 testów regresyjnych wykrytych,
 - 53 deklaracje UFUNCTION mają odpowiadające definicje,
 - definicje siedmiu Build*Tab występują dokładnie po jednym razie,
 - bilans klamer PlayerMenuWidget.cpp: 255/255,
