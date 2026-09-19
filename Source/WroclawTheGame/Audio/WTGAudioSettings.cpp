@@ -1,4 +1,4 @@
-#include "Audio/AudioSettings.h"
+#include "Audio/WTGAudioSettings.h"
 
 UWTGAudioSettings* UWTGAudioSettings::Get()
 {

@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
-#include "AudioSettings.generated.h"
+#include "WTGAudioSettings.generated.h"
 
 UCLASS(Config=GameUserSettings)
 class WROCLAWTHEGAME_API UWTGAudioSettings : public UObject

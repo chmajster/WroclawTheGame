@@ -6,7 +6,7 @@ MENU_CPP = ROOT / "Source" / "WroclawTheGame" / "UI" / "PlayerMenuWidget.cpp"
 MENU_H = ROOT / "Source" / "WroclawTheGame" / "UI" / "PlayerMenuWidget.h"
 PERF_H = ROOT / "Source" / "WroclawTheGame" / "UI" / "PerformanceSettings.h"
 AUDIO_CPP = ROOT / "Source" / "WroclawTheGame" / "Audio" / "SliceAudio.cpp"
-AUDIO_SETTINGS_H = ROOT / "Source" / "WroclawTheGame" / "Audio" / "AudioSettings.h"
+AUDIO_SETTINGS_H = ROOT / "Source" / "WroclawTheGame" / "Audio" / "WTGAudioSettings.h"
 ASSETS = ROOT / "Scripts" / "make_source_assets.py"
 
 
@@ -396,6 +396,14 @@ class PlayerMenuRegressionTests(unittest.TestCase):
             'TEXT("∞")',
         ):
             self.assertIn(token, self.cpp)
+
+    def test_project_audio_settings_header_does_not_collide_with_engine_header(self):
+        self.assertEqual(AUDIO_SETTINGS_H.name, "WTGAudioSettings.h")
+        self.assertFalse(
+            (ROOT / "Source" / "WroclawTheGame" / "Audio" / "AudioSettings.h").exists()
+        )
+        self.assertIn('#include "WTGAudioSettings.generated.h"', self.audio_settings)
+        self.assertIn('#include "Audio/WTGAudioSettings.h"', self.audio)
 
     def test_audio_settings_have_precise_interactive_sliders(self):
         for token in (

@@ -1,5 +1,5 @@
 #include "Audio/SliceAudio.h"
-#include "Audio/AudioSettings.h"
+#include "Audio/WTGAudioSettings.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundBase.h"
 #include "Mission/SliceMission.h"
