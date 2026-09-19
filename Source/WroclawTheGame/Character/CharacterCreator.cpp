@@ -48,7 +48,13 @@ void AWTG_CharacterCreator::BeginPlay()
     SetLighting(TEXT("Modern")); RefreshAppearance();
 }
 void AWTG_CharacterCreator::RefreshAppearance()
-{ Appearance->ApplyAppearance(GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Draft); }
+{
+    auto* Creator = GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>();
+    if (!Creator)
+        return;
+    Appearance->ApplyAppearance(
+        Creator->bEditing ? Creator->Draft : Creator->Committed.PlayerAppearanceData);
+}
 void AWTG_CharacterCreator::SetView(FName View)
 { TargetDistance=View==TEXT("Face")?65:(View==TEXT("UpperBody")?160:290); TargetHeight=View==TEXT("Face")?165:(View==TEXT("UpperBody")?133:92); }
 void AWTG_CharacterCreator::SetLighting(FName P)
