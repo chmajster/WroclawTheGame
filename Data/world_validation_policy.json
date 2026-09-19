@@ -1,8 +1,21 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "max_abs_coordinate_cm": 5000000,
   "max_road_edge_cm": 500000,
   "min_road_edge_cm": 0.1,
   "unresolved_hero_is_error": true,
-  "duplicate_ids_are_error": true
+  "duplicate_ids_are_error": true,
+  "max_parking_slots_per_location": 120,
+  "max_smart_object_slots": 16,
+  "min_traffic_speed_kph": 5,
+  "max_hlod_memory_mb_per_building": 64,
+  "max_floating_offset_cm": 75,
+  "required_save_systems": [
+    "economy",
+    "parking",
+    "npc_schedule",
+    "quests",
+    "season"
+  ],
+  "fail_on_upstream_status_fail": true
 }
