@@ -1,12 +1,15 @@
 # Runtime GPS routing core
 
-The offline/runtime-ready core performs Dijkstra routing on the same verified road graph used by the city. It supports car/foot directionality and an explicit blocked-turn set.
+The navigation core now routes on the verified city road graph with the same stable edge IDs used by intersections and traffic.
 
-## Remaining
-1. convert OSM restriction relations into blocked/only turn edge pairs;
-2. nearest-road snapping for arbitrary player/waypoint positions;
-3. turn geometry classification (left/right/roundabout/U-turn) rather than road-name changes only;
-4. ETA using speed profiles/traffic;
-5. runtime C++ service and phone-map route polyline;
-6. reroute after deviation and save waypoint state;
-7. validate routes through bridges/tunnels/intersections in UE.
+## Navigation features
+
+- car/foot directionality;
+- arbitrary world-position snapping to the nearest routable graph node;
+- Point 12 `resolved_pairs` imported as prohibited turns;
+- ETA from edge length, OSM/fallback speed limits and a runtime traffic multiplier;
+- geometry-based left/right/continue/U-turn classification;
+- roundabout recognition from edge junction metadata;
+- reroute from the player's current world position.
+
+Route results retain both edge lists and directed steps, making them suitable for phone-map polylines and later C++ consumption. The core remains deterministic and does not require Unreal actors to exist.
