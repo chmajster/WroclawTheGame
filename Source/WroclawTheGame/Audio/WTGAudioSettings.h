@@ -11,7 +11,13 @@ class WROCLAWTHEGAME_API UWTGAudioSettings : public UObject
 
 public:
     UPROPERTY(Config, BlueprintReadOnly, Category="Audio", meta=(ClampMin="0.0", ClampMax="1.0"))
+    float MasterVolume = 1.0f;
+
+    UPROPERTY(Config, BlueprintReadOnly, Category="Audio", meta=(ClampMin="0.0", ClampMax="1.0"))
     float SFXVolume = 1.0f;
+
+    UPROPERTY(Config, BlueprintReadOnly, Category="Audio", meta=(ClampMin="0.0", ClampMax="1.0"))
+    float MusicVolume = 1.0f;
 
     UPROPERTY(Config, BlueprintReadOnly, Category="Audio", meta=(ClampMin="0.0", ClampMax="1.0"))
     float UIVolume = 1.0f;
@@ -19,7 +25,13 @@ public:
     static UWTGAudioSettings* Get();
 
     UFUNCTION(BlueprintCallable, Category="Audio")
+    void SetMasterVolume(float Volume);
+
+    UFUNCTION(BlueprintCallable, Category="Audio")
     void SetSFXVolume(float Volume);
+
+    UFUNCTION(BlueprintCallable, Category="Audio")
+    void SetMusicVolume(float Volume);
 
     UFUNCTION(BlueprintCallable, Category="Audio")
     void SetUIVolume(float Volume);
