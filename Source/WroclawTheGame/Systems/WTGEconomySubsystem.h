@@ -9,10 +9,10 @@ struct WROCLAWTHEGAME_API FWTGEconomyTransaction
 {
     GENERATED_BODY()
 
-    UPROPERTY(BlueprintReadOnly) FString TransactionId;
-    UPROPERTY(BlueprintReadOnly) int64 AmountCents = 0;
-    UPROPERTY(BlueprintReadOnly) int64 BalanceAfterCents = 0;
-    UPROPERTY(BlueprintReadOnly) FString Reason;
+    UPROPERTY(SaveGame, BlueprintReadOnly) FString TransactionId;
+    UPROPERTY(SaveGame, BlueprintReadOnly) int64 AmountCents = 0;
+    UPROPERTY(SaveGame, BlueprintReadOnly) int64 BalanceAfterCents = 0;
+    UPROPERTY(SaveGame, BlueprintReadOnly) FString Reason;
 };
 
 USTRUCT(BlueprintType)
@@ -20,8 +20,8 @@ struct WROCLAWTHEGAME_API FWTGEconomySaveState
 {
     GENERATED_BODY()
 
-    UPROPERTY(BlueprintReadWrite) int64 BalanceCents = 25000;
-    UPROPERTY(BlueprintReadWrite) TArray<FWTGEconomyTransaction> Ledger;
+    UPROPERTY(SaveGame, BlueprintReadWrite) int64 BalanceCents = 25000;
+    UPROPERTY(SaveGame, BlueprintReadWrite) TArray<FWTGEconomyTransaction> Ledger;
 };
 
 UCLASS()
