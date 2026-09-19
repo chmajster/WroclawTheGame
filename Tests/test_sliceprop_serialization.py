@@ -17,6 +17,12 @@ class SlicePropSerializationContract(unittest.TestCase):
         self.assertEqual(names[:4], legacy)
         self.assertIn("Collider", names)
         self.assertGreater(names.index("Collider"), names.index("Puzzle"))
+        collider_decl = re.search(
+            r"UPROPERTY\(([^\n]*)\)\s+TObjectPtr<[^>]+>\s+Collider\s*;",
+            text,
+        )
+        self.assertIsNotNone(collider_decl)
+        self.assertIn("SkipSerialization", collider_decl.group(1))
 
 
 if __name__ == "__main__":
