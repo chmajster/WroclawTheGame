@@ -232,7 +232,7 @@ void ASliceController::Peek()
     Suspend(false);
     PeekCamera = GetWorld()->SpawnActor<ACameraActor>(FVector(1260, 400, 535), FRotator(-10, 0, 0));
     if (PeekCamera)
-        SetViewTargetWithBlend(PeekCamera, 0.2);
+        SetViewTargetWithBlend(PeekCamera, 0.2f);
 }
 void ASliceController::Escape()
 {
