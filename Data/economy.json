@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "currency": "PLN",
   "starting_balance": 250,
   "prices": {
@@ -20,5 +20,23 @@
   "limits": {
     "min_balance": -2000,
     "max_transaction_abs": 100000
+  },
+  "ledger": {
+    "max_entries": 1000,
+    "idempotency_required": true
+  },
+  "integrations": {
+    "fuel": {
+      "price_key": "fuel_per_litre"
+    },
+    "repair": {
+      "basic": "basic_repair",
+      "major": "major_repair"
+    },
+    "parking": {
+      "hourly": "parking_hour",
+      "ticket": "parking_ticket",
+      "tow": "tow_release"
+    }
   }
 }
