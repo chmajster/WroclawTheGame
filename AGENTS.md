@@ -55,3 +55,11 @@
 - Windows/Unreal Engine import, LOD/collision/Nanite editor validation, Automation tests, screenshot capture, PIE/runtime checks, and in-engine visual review are not mandatory completion gates in the agent environment.
 - Do not leave an otherwise completed asset PR open only because UE5/Windows QA is unavailable.
 - Record any relevant source-level limitations in the PR, but do not list unavailable Windows/UE5 validation as remaining implementation work.
+
+## Multi-item user requests
+
+- When the user gives a numbered or otherwise separable implementation list, treat each item as a separate change stream: one item = one dedicated branch = one pull request, unless the user explicitly requests a different grouping.
+- Execute items in the user's stated order. Do not silently combine unrelated numbered items into one PR.
+- Every such PR description must contain: what was completed, what could not be verified in the current environment, what remains to be done, and the next concrete step required to resume the PR without reconstructing context from chat history.
+- Keep incomplete items as draft PRs when runtime/editor/QA acceptance gates are still outstanding. Do not mark those gates complete without evidence.
+- Before ending a multi-item pass, verify that every requested item has a PR and that its continuation notes are present.
