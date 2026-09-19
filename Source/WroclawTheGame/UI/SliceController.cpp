@@ -358,7 +358,7 @@ bool ASliceController::StartCreatedCampaign()
         if (!Saved) { M->State=OldState; M->WorldState=OldWorld; M->NPCs=OldNPCs; M->Anchor=OldAnchor; M->bInGame=WasInGame; M->bShowMenu=WasMenu; M->bDead=WasDead; M->bDebugSession=WasDebug; }
     }
     if (!Saved) { Creator->Restore(Previous); return false; }
-    Creator->bEditing=false; Creator->bSummary=false;
+    Creator->FinishCreation();
     CharacterCreatorWidget->RemoveFromParent(); CharacterCreatorWidget=nullptr;
     SetInputMode(FInputModeGameOnly()); bShowMouseCursor=false; Reload(); return true;
 }
