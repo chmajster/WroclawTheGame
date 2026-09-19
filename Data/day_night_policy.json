@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "phases": [
     {
       "id": "night",
@@ -8,7 +8,13 @@
       "street_light": 1,
       "traffic": 0.25,
       "crowd": 0.15,
-      "shops": 0.05
+      "shops": 0.05,
+      "sun_lux": 0,
+      "moon_lux": 0.25,
+      "sky_light": 0.08,
+      "fog_density": 0.009,
+      "exposure": -1,
+      "window_emissive": 1
     },
     {
       "id": "morning",
@@ -17,7 +23,13 @@
       "street_light": 0.35,
       "traffic": 0.9,
       "crowd": 0.75,
-      "shops": 0.55
+      "shops": 0.55,
+      "sun_lux": 25000,
+      "moon_lux": 0.05,
+      "sky_light": 0.55,
+      "fog_density": 0.0045,
+      "exposure": -0.2,
+      "window_emissive": 0.35
     },
     {
       "id": "day",
@@ -26,7 +38,13 @@
       "street_light": 0,
       "traffic": 0.8,
       "crowd": 1,
-      "shops": 1
+      "shops": 1,
+      "sun_lux": 110000,
+      "moon_lux": 0,
+      "sky_light": 1.1,
+      "fog_density": 0.0025,
+      "exposure": 0,
+      "window_emissive": 0.05
     },
     {
       "id": "evening",
@@ -35,7 +53,13 @@
       "street_light": 0.7,
       "traffic": 1,
       "crowd": 0.9,
-      "shops": 0.8
+      "shops": 0.8,
+      "sun_lux": 20000,
+      "moon_lux": 0.08,
+      "sky_light": 0.45,
+      "fog_density": 0.005,
+      "exposure": -0.25,
+      "window_emissive": 0.75
     },
     {
       "id": "late",
@@ -44,8 +68,22 @@
       "street_light": 1,
       "traffic": 0.45,
       "crowd": 0.35,
-      "shops": 0.2
+      "shops": 0.2,
+      "sun_lux": 0,
+      "moon_lux": 0.22,
+      "sky_light": 0.1,
+      "fog_density": 0.008,
+      "exposure": -0.8,
+      "window_emissive": 1
     }
   ],
-  "transition_minutes": 30
+  "transition_minutes": 30,
+  "runtime_actor": "AWTGDayNightEnvironment",
+  "material_parameters": [
+    "TimeOfDay01",
+    "SunAlpha",
+    "NightAlpha",
+    "StreetLight",
+    "WindowEmissive"
+  ]
 }
