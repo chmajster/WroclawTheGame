@@ -1,20 +1,30 @@
-# Automated world validation
+# Automated aggregate world validation
 
-This validator aggregates cheap deterministic checks before Unreal is launched:
+The validator is now the source-level structural gate for the expanded city. It produces one deterministic PASS/FAIL report and a non-zero exit code for errors.
+
+## Checks
+
+Core world:
 - duplicate/non-finite/outlier GIS features;
-- road edge IDs, endpoints and lengths;
-- orphan building entrances;
-- duplicate quality decisions;
-- quest stages referencing unknown districts;
-- streaming plans referencing unknown sectors;
-- unresolved hero landmarks.
+- road node/edge integrity and edge-length bounds;
+- orphan entrances and quality decisions;
+- unknown quest districts and unroutable compiled quest legs;
+- unknown streaming sectors and unresolved hero landmarks.
 
-It writes one PASS/FAIL report and returns a failing exit code for structural errors.
+Simulation/content systems:
+- parking IDs, slot IDs, capacities and finite slot positions;
+- Smart Object IDs, source-feature references, slot capacities and positions;
+- crowd corridor edge references/capacities;
+- traffic lane edge references, speed limits and capacities;
+- Data Layer upstream status, assignments and activation-set references;
+- HLOD building/Data Layer references, memory budget and hero silhouette protection;
+- terrain/floating-object probe offsets;
+- critical emergency-service route probes;
+- benchmark report status;
+- save migration registry coverage for economy, parking, NPC schedule, quests and season plus backup policy.
 
-## Remaining
-1. ingest parking, Smart Object, crowd/traffic, HLOD and Data Layer outputs;
-2. floor/terrain intersection and floating-object checks;
-3. route every critical quest objective and service response;
-4. validate collision/nav/World Partition/Data Layers in UE commandlet;
-5. ingest screenshot/Automation/performance reports;
-6. attach this validator to the local full-build gate without manually dispatching CI.
+## Local gate
+
+`Tests/test_world_validation.py` exercises the validator as part of the repository's existing `python3 -m unittest discover` step in `Scripts/test.sh`. This makes structural regressions part of the normal local source test gate without requiring Windows/UE editor execution.
+
+Optional runtime-derived inputs (terrain probes, service probes, benchmark report) strengthen the same report when available; absence of those optional files does not cause invented measurements or fake failures.
