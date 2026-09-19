@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "max_physical": 64,
+  "max_mass": 1500,
+  "representations": {
+    "physical": {
+      "max_distance_m": 120
+    },
+    "mass": {
+      "max_distance_m": 700
+    },
+    "logical": {
+      "max_distance_m": 2200
+    },
+    "dormant": {
+      "max_distance_m": null
+    }
+  },
+  "density_by_ring": {
+    "1": 1,
+    "2": 0.7,
+    "3": 0.45
+  },
+  "crossing_radius_m": 35
+}
