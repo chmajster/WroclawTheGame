@@ -10,4 +10,5 @@ class WROCLAWTHEGAME_API USliceAudio : public UBlueprintFunctionLibrary
     static void Play(const UObject *Context, const FString &Name, const FVector &Location,
                      float Volume = 0.7f);
     static void PlayUI(const UObject *Context, const FString &Name, float Volume = 0.35f);
+    static void PlayMusic(const UObject *Context, const FString &Name, float Volume = 1.0f);
 };
