@@ -47,9 +47,9 @@ void ASliceHUD::DrawFPSCounter()
 }
 void ASliceHUD::Panel(const FString &Title, const FString &Body)
 {
-    DrawRect(FLinearColor(.015, .025, .035, .96), 0, 0, Canvas->SizeX, Canvas->SizeY);
+    DrawRect(FLinearColor(.015f, .025f, .035f, .96f), 0, 0, Canvas->SizeX, Canvas->SizeY);
     const float X = Canvas->SizeX * .06f, Y = Canvas->SizeY * .09f, MaxWidth = Canvas->SizeX - X * 2;
-    Text(Title, X, Y, 1.5, FLinearColor(.9, .72, .38));
+    Text(Title, X, Y, 1.5f, FLinearColor(.9f, .72f, .38f));
     TArray<FString> Lines, Paragraphs;
     Body.ParseIntoArrayLines(Paragraphs, false);
     for (const auto &Para : Paragraphs)
@@ -78,7 +78,7 @@ void ASliceHUD::Panel(const FString &Title, const FString &Body)
     for (int I = PC->Scroll; I < Lines.Num() && I < PC->Scroll + Visible; ++I)
         Text(Lines[I], X, Y + 65 + (I - PC->Scroll) * 27);
     if (Lines.Num() > Visible)
-        Text(TEXT("↑ / ↓ — przewijaj"), X, Canvas->SizeY - 55, .8);
+        Text(TEXT("↑ / ↓ — przewijaj"), X, Canvas->SizeY - 55, .8f);
 }
 void ASliceHUD::DrawHUD()
 {
@@ -96,7 +96,7 @@ void ASliceHUD::DrawHUD()
         return;
     if (Cast<AGeoPreviewGameMode>(GetWorld()->GetAuthGameMode()))
         Text(TEXT("Mapa: © OpenStreetMap contributors (ODbL) | teren: Copernicus EU-DEM / USGS, via Mapzen"),
-             20, Canvas->SizeY - 22, .65);
+             20, Canvas->SizeY - 22, .65f);
 #if !UE_BUILD_SHIPPING
     if (GetWorld()->GetSubsystem<UCityCoverageSubsystem>()->bShowOverlay)
     {
@@ -117,14 +117,14 @@ void ASliceHUD::DrawHUD()
                 Panel(TEXT("PAUZA"), CityGameplay->IsActive() ? TEXT("ESC — wznów | N — nowy zapis miasta | L — wczytaj miasto | Q — wyjście") : TEXT("ESC — wznów | N — nowa kampania | L — checkpoint | Q — wyjście"));
             else
             {
-                Text(Vehicle->Status(), 30, Canvas->SizeY - 120, .9);
+                Text(Vehicle->Status(), 30, Canvas->SizeY - 120, .9f);
                 Text(CityGameplay->IsActive() ? CityGameplay->NearbyObjective() : TEXT("NADODRZE — TEST POJAZDU"), 30, 30, 1.0);
                 if (auto *Race = Vehicle->FindComponentByClass<URaceSession>())
-                    Text(Race->StatusText(), 30, 85, .9);
+                    Text(Race->StatusText(), 30, 85, .9f);
             }
         }
         if (FPlatformTime::Seconds()<M->NotificationUntil)
-            Text(M->Notification.Left(135),30,Canvas->SizeY-160,.8,FLinearColor(1,.82,.4));
+            Text(M->Notification.Left(135),30,Canvas->SizeY-160,.8f,FLinearColor(1.f,.82f,.4f));
         return;
     }
     if (M->bDead)
@@ -179,7 +179,7 @@ void ASliceHUD::DrawHUD()
             for (int I = 0; I < 4; ++I)
             {
                 const float X = Canvas->SizeX * .25f + I * 100;
-                DrawRect(I == Lit ? FLinearColor(1, .75, .15) : FLinearColor(.12, .15, .18), X,
+                DrawRect(I == Lit ? FLinearColor(1.f, .75f, .15f) : FLinearColor(.12f, .15f, .18f), X,
                          Canvas->SizeY * .65, 65, 55);
                 Text(FString::FromInt(I + 1), X + 25, Canvas->SizeY * .65 + 17);
             }
@@ -206,42 +206,42 @@ void ASliceHUD::DrawHUD()
         Panel(TEXT("WSKAZÓWKA"), PC->Message + TEXT("\n\nENTER / ESC — zamknij"));
     else
     {
-        DrawRect(FLinearColor(0, 0, 0, .7), 20, 20, Canvas->SizeX - 40, 75);
+        DrawRect(FLinearColor(0.f, 0.f, 0.f, .7f), 20, 20, Canvas->SizeX - 40, 75);
         Text(CityGameplay->IsActive() ? CityGameplay->NearbyObjective() : M->ObjectiveText(), 36, 35);
         const float Y = Canvas->SizeY - 95;
-        DrawRect(FLinearColor(.08, .08, .08), 30, Y, 220, 16);
-        DrawRect(FLinearColor(.7, .15, .15), 30, Y, 220 * P->HealthState->Value / 100, 16);
-        DrawRect(FLinearColor(.08, .08, .08), 30, Y + 28, 220, 12);
-        DrawRect(FLinearColor(.1, .65, .55), 30, Y + 28, 220 * P->StaminaState->Value / 100, 12);
+        DrawRect(FLinearColor(.08f, .08f, .08f), 30, Y, 220, 16);
+        DrawRect(FLinearColor(.7f, .15f, .15f), 30, Y, 220 * P->HealthState->Value / 100, 16);
+        DrawRect(FLinearColor(.08f, .08f, .08f), 30, Y + 28, 220, 12);
+        DrawRect(FLinearColor(.1f, .65f, .55f), 30, Y + 28, 220 * P->StaminaState->Value / 100, 12);
         if (P->Hiding.IsValid())
             Text(TEXT("UKRYCIE — E, aby wyjść"), 35, Canvas->SizeY - 200);
         DrawRect(FLinearColor::White, Canvas->SizeX / 2.f - 2, Canvas->SizeY / 2.f - 2, 4, 4);
         if (auto *Target = Cast<IInteractable>(P->Focus))
             Text(TEXT("[E] ") + Target->Prompt(P).ToString(), Canvas->SizeX * .25, Canvas->SizeY * .72);
-        Text(FString::Printf(TEXT("HEAT %d / 5"), M->WorldState.HeatLevel()), 35, Canvas->SizeY - 220, .8);
+        Text(FString::Printf(TEXT("HEAT %d / 5"), M->WorldState.HeatLevel()), 35, Canvas->SizeY - 220, .8f);
         Text(TEXT("J śledztwo | H podpowiedź | T telefon | I ekwipunek"), 300, Canvas->SizeY - 40, .75);
     }
     if (PC->bKeypad && !M->bDead)
     {
-        DrawRect(FLinearColor(.1, .1, .1), 30, Canvas->SizeY - 75, 220, 16);
-        DrawRect(FLinearColor(.7, .15, .15), 30, Canvas->SizeY - 75, 220 * P->HealthState->Value / 100, 16);
+        DrawRect(FLinearColor(.1f, .1f, .1f), 30, Canvas->SizeY - 75, 220, 16);
+        DrawRect(FLinearColor(.7f, .15f, .15f), 30, Canvas->SizeY - 75, 220 * P->HealthState->Value / 100, 16);
     }
     if (auto *GM = Cast<ASliceGameMode>(GetWorld()->GetAuthGameMode()))
-        Text(GM->ThreatText(), Canvas->SizeX - 360, Canvas->SizeY - 100, .85, FLinearColor(1, .4, .2));
+        Text(GM->ThreatText(), Canvas->SizeX - 360, Canvas->SizeY - 100, .85f, FLinearColor(1.f, .4f, .2f));
     if (!M->bLastSaveSucceeded)
-        Text(TEXT("BŁĄD ZAPISU — bieżący postęp niezapisany"), 35, Canvas->SizeY - 170, .85,
+        Text(TEXT("BŁĄD ZAPISU — bieżący postęp niezapisany"), 35, Canvas->SizeY - 170, .85f,
              FLinearColor::Red);
     if (FPlatformTime::Seconds() < M->NotificationUntil)
-        Text(M->Notification.Left(135), 35, Canvas->SizeY - 140, .8, FLinearColor(1, .82, .4));
+        Text(M->Notification.Left(135), 35, Canvas->SizeY - 140, .8f, FLinearColor(1.f, .82f, .4f));
 }
 
 void ASliceHUD::DrawCityCoverage()
 {
     const auto *Coverage = GetWorld()->GetSubsystem<UCityCoverageSubsystem>();
     const auto *City = GetWorld()->GetSubsystem<UWroclawMapSubsystem>()->GetCity();
-    DrawRect(FLinearColor(.015, .025, .035, .96), 0, 0, Canvas->SizeX, Canvas->SizeY);
-    Text(TEXT("CITY COVERAGE — granice produkcyjne"), 25, 20, 1.2);
-    Text(Coverage->ReportText(), 25, 55, .9);
+    DrawRect(FLinearColor(.015f, .025f, .035f, .96f), 0, 0, Canvas->SizeX, Canvas->SizeY);
+    Text(TEXT("CITY COVERAGE — granice produkcyjne"), 25, 20, 1.2f);
+    Text(Coverage->ReportText(), 25, 55, .9f);
     if (!City || City->Sectors.IsEmpty()) return;
     FVector2D Min(TNumericLimits<double>::Max(), TNumericLimits<double>::Max());
     FVector2D Max(-TNumericLimits<double>::Max(), -TNumericLimits<double>::Max());
@@ -267,8 +267,8 @@ void ASliceHUD::DrawCityCoverage()
             Centre += A;
         }
         Centre /= Sector.Boundary.Num();
-        Text(Sector.DisplayName, Centre.X - 65, Centre.Y - 17, .7, Color);
-        Text(Coverage->Label(Sector.Status), Centre.X - 65, Centre.Y + 3, .7, Color);
+        Text(Sector.DisplayName, Centre.X - 65, Centre.Y - 17, .7f, Color);
+        Text(Coverage->Label(Sector.Status), Centre.X - 65, Centre.Y + 3, .7f, Color);
     }
     if (const APawn *Pawn = PlayerOwner->GetPawn())
     {
@@ -277,5 +277,5 @@ void ASliceHUD::DrawCityCoverage()
         DrawRect(FLinearColor::White, Point.X - 3, Point.Y - 3, 6, 6);
     }
     Text(TEXT("Szary Missing | niebieski GIS | pomarańczowy Blockout | żółty Playable | zielony Detailed | fioletowy Final"),
-         25, Canvas->SizeY - 45, .65);
+         25, Canvas->SizeY - 45, .65f);
 }
