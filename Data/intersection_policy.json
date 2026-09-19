@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "signals": [
+    "traffic_signals"
+  ],
+  "priority": [
+    "stop",
+    "give_way"
+  ],
+  "crossings": [
+    "crossing"
+  ],
+  "unsupported_restrictions_are_blocking": true
+}
