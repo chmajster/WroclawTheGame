@@ -33,6 +33,18 @@ normalizację i losowanie. `UCharacterAppearanceComponent` renderuje ten sam zes
 danych w podglądzie i na graczu. Komponent może być dodany również do NPC lub aktora
 używanego w cinematicu; przekaż mu bieżące dane, zamiast korzystać z osobnego modelu.
 
+## Widoczność postaci po kreatorze
+
+Podgląd i właściwa postać mają dwa jawne stany danych: `Draft` podczas aktywnej
+edycji oraz `Committed.PlayerAppearanceData` poza kreatorem. Studio podglądu używa
+`Draft` tylko gdy `bEditing=true`; po zatwierdzeniu, anulowaniu, otwarciu Player
+Menu i po reloadzie mapy źródłem wyglądu jest `Committed`.
+
+Ponowne otwarcie kreatora zaczyna od aktualnie zatwierdzonej postaci, a nie od
+fallbacku. Udany start kampanii wykonuje `FinishCreation()` dopiero po poprawnym
+zapisie. Jeżeli zapis się nie powiedzie, poprzedni `Committed` jest przywracany,
+a edytowany wygląd pozostaje w kreatorze do dalszej korekty.
+
 ## Zapis i garderoba
 
 `FCharacterCustomizationSaveData` ma wersję niezależną od wersji kampanii oraz zawiera
