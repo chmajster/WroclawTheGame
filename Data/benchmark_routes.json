@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "routes": [
+    {
+      "id": "walk_nadodrze_centre",
+      "mode": "walk",
+      "sectors": [
+        "sector.nadodrze",
+        "sector.centre"
+      ],
+      "metrics": [
+        "fps",
+        "frame_ms",
+        "cpu_ms",
+        "gpu_ms",
+        "ram_mb",
+        "vram_mb",
+        "streaming_misses",
+        "draw_calls"
+      ]
+    },
+    {
+      "id": "drive_wave1_loop",
+      "mode": "drive",
+      "sectors": [
+        "sector.nadodrze",
+        "sector.centre",
+        "sector.huby",
+        "sector.gaj",
+        "sector.krzyki",
+        "sector.borek"
+      ],
+      "metrics": [
+        "fps",
+        "frame_ms",
+        "cpu_ms",
+        "gpu_ms",
+        "ram_mb",
+        "vram_mb",
+        "streaming_misses",
+        "draw_calls"
+      ]
+    }
+  ]
+}
