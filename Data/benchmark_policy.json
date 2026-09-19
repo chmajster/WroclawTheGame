@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "targets": {
+    "min_fps": 50,
+    "max_p95_frame_ms": 20,
+    "max_p95_cpu_ms": 18,
+    "max_p95_gpu_ms": 18,
+    "max_ram_mb": 12000,
+    "max_vram_mb": 10000,
+    "max_streaming_misses": 5
+  },
+  "warmup_seconds": 20,
+  "sample_seconds": 120
+}
