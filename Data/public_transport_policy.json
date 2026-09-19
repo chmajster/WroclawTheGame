@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "route_types": [
+    "tram",
+    "bus"
+  ],
+  "stop_roles": [
+    "stop",
+    "platform"
+  ],
+  "logical_update_seconds": 15,
+  "physicalize_radius_m": 220,
+  "max_physical_vehicles": 8
+}
