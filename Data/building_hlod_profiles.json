@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "hero": {
+      "layer": "HLOD_Hero",
+      "cluster_m": 96,
+      "transition_m": 900,
+      "nanite": true,
+      "merge_materials": false,
+      "target_triangle_ratio": 0.35
+    },
+    "detailed": {
+      "layer": "HLOD_Detailed",
+      "cluster_m": 128,
+      "transition_m": 700,
+      "nanite": true,
+      "merge_materials": true,
+      "target_triangle_ratio": 0.2
+    },
+    "standard": {
+      "layer": "HLOD_Standard",
+      "cluster_m": 160,
+      "transition_m": 500,
+      "nanite": false,
+      "merge_materials": true,
+      "target_triangle_ratio": 0.12
+    },
+    "background": {
+      "layer": "HLOD_Background",
+      "cluster_m": 192,
+      "transition_m": 350,
+      "nanite": false,
+      "merge_materials": true,
+      "target_triangle_ratio": 0.06
+    }
+  },
+  "max_materials_per_proxy": 8
+}
