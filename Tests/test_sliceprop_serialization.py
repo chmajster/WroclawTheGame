@@ -18,7 +18,7 @@ class SlicePropSerializationContract(unittest.TestCase):
         self.assertIn("Collider", names)
         self.assertGreater(names.index("Collider"), names.index("Puzzle"))
         collider_decl = re.search(
-            r"UPROPERTY\\(([^\\n]*)\\)\\s+TObjectPtr<[^>]+>\\s+Collider\\s*;",
+            r"UPROPERTY\(([^\n]*)\)\s+TObjectPtr<[^>]+>\s+Collider\s*;",
             text,
         )
         self.assertIsNotNone(collider_decl)
