@@ -19,7 +19,8 @@ void USliceAudio::Play(const UObject *Context, const FString &Name, const FVecto
     if (Sound)
     {
         const auto* Settings = UWTGAudioSettings::Get();
-        const float EffectiveVolume = Volume * (Settings ? Settings->SFXVolume : 1.0f);
+        const float EffectiveVolume = Volume *
+            (Settings ? Settings->MasterVolume * Settings->SFXVolume : 1.0f);
         if (EffectiveVolume > KINDA_SMALL_NUMBER)
             UGameplayStatics::PlaySoundAtLocation(Context, Sound, Location, EffectiveVolume);
     }
@@ -40,7 +41,30 @@ void USliceAudio::PlayUI(const UObject *Context, const FString &Name, float Volu
     if (Sound)
     {
         const auto* Settings = UWTGAudioSettings::Get();
-        const float EffectiveVolume = Volume * (Settings ? Settings->UIVolume : 1.0f);
+        const float EffectiveVolume = Volume *
+            (Settings ? Settings->MasterVolume * Settings->UIVolume : 1.0f);
+        if (EffectiveVolume > KINDA_SMALL_NUMBER)
+            UGameplayStatics::PlaySound2D(Context, Sound, EffectiveVolume, 1.0f, 0.0f, nullptr, nullptr, true);
+    }
+}
+
+void USliceAudio::PlayMusic(const UObject *Context, const FString &Name, float Volume)
+{
+    auto *Instance = UGameplayStatics::GetGameInstance(Context);
+    if (!Instance)
+        return;
+    auto *M = Instance->GetSubsystem<USliceMission>();
+    auto &Sound = M->Sounds.FindOrAdd(Name);
+    if (!Sound)
+    {
+        const FString Path = FString::Printf(TEXT("/Game/Generated/Audio/%s.%s"), *Name, *Name);
+        Sound = LoadObject<USoundBase>(nullptr, *Path);
+    }
+    if (Sound)
+    {
+        const auto* Settings = UWTGAudioSettings::Get();
+        const float EffectiveVolume = Volume *
+            (Settings ? Settings->MasterVolume * Settings->MusicVolume : 1.0f);
         if (EffectiveVolume > KINDA_SMALL_NUMBER)
             UGameplayStatics::PlaySound2D(Context, Sound, EffectiveVolume, 1.0f, 0.0f, nullptr, nullptr, true);
     }
