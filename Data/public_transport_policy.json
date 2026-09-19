@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "route_types": [
     "tram",
     "bus"
@@ -10,5 +10,12 @@
   ],
   "logical_update_seconds": 15,
   "physicalize_radius_m": 220,
-  "max_physical_vehicles": 8
+  "max_physical_vehicles": 8,
+  "default_headway_minutes": {
+    "tram": 10,
+    "bus": 15
+  },
+  "boarding_radius_m": 4,
+  "route_continuity_required": true,
+  "schedule_source": "gameplay_policy_not_authoritative_timetable"
 }
