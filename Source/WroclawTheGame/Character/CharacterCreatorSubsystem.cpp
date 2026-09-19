@@ -120,8 +120,35 @@ void UCharacterCreatorSubsystem::Initialize(FSubsystemCollectionBase& Collection
     Committed.PlayerAppearanceData=UCharacterCreatorValidator::Normalize(*Catalog,Catalog->FallbackDefinition);
     Draft=Committed.PlayerAppearanceData;
 }
-void UCharacterCreatorSubsystem::BeginCreation() { bEditing=true; bSummary=false; Draft=Catalog->FallbackDefinition; History.Empty(); Cursor=0; OnChanged.Broadcast(); }
-void UCharacterCreatorSubsystem::Cancel() { bEditing=false; bSummary=false; Draft=Committed.PlayerAppearanceData; History.Empty(); Cursor=0; OnChanged.Broadcast(); }
+void UCharacterCreatorSubsystem::BeginCreation()
+{
+    bEditing=true;
+    bSummary=false;
+    // Reopen the creator from the appearance that is actually committed/saved.
+    // On a fresh profile Committed already contains the normalized fallback.
+    Draft=UCharacterCreatorValidator::Normalize(*Catalog,Committed.PlayerAppearanceData);
+    History.Empty();
+    Cursor=0;
+    OnChanged.Broadcast();
+}
+void UCharacterCreatorSubsystem::FinishCreation()
+{
+    bEditing=false;
+    bSummary=false;
+    Draft=UCharacterCreatorValidator::Normalize(*Catalog,Committed.PlayerAppearanceData);
+    History.Empty();
+    Cursor=0;
+    OnChanged.Broadcast();
+}
+void UCharacterCreatorSubsystem::Cancel()
+{
+    bEditing=false;
+    bSummary=false;
+    Draft=Committed.PlayerAppearanceData;
+    History.Empty();
+    Cursor=0;
+    OnChanged.Broadcast();
+}
 void UCharacterCreatorSubsystem::Change(const FCharacterAppearanceDefinition& A)
 {
     auto Next=UCharacterCreatorValidator::Normalize(*Catalog,A);
