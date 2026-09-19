@@ -144,7 +144,8 @@ UTextBlock* UPlayerMenuWidget::MakeText(const FString& Value, int32 Size, bool b
 UButton* UPlayerMenuWidget::MakeButton(const FString& Label, bool bAccent)
 {
     auto* Button = WidgetTree->ConstructWidget<UButton>();
-    Button->IsFocusable = true;
+    // UButton is focusable by default. UE 5.8 exposes IsFocusable as getter-only,
+    // so avoid deprecated direct property writes here.
     Button->OnHovered.AddDynamic(this, &UPlayerMenuWidget::PlayUIHover);
     Button->OnClicked.AddDynamic(this, &UPlayerMenuWidget::PlayUIClick);
     Button->SetBackgroundColor(FLinearColor::White);
