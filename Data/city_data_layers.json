@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "layers": [
+    {
+      "id": "DL_BaseGeometry",
+      "runtime": true,
+      "loaded_by_default": true,
+      "kinds": [
+        "terrain",
+        "road",
+        "rail",
+        "water",
+        "green"
+      ]
+    },
+    {
+      "id": "DL_Buildings",
+      "runtime": true,
+      "loaded_by_default": true,
+      "kinds": [
+        "building",
+        "official_building"
+      ]
+    },
+    {
+      "id": "DL_StreetFurniture",
+      "runtime": true,
+      "loaded_by_default": true,
+      "roles": [
+        "street_lamp",
+        "bollard",
+        "bench",
+        "waste_bin",
+        "bicycle_rack"
+      ]
+    },
+    {
+      "id": "DL_Traffic",
+      "runtime": true,
+      "loaded_by_default": true,
+      "systems": [
+        "traffic"
+      ]
+    },
+    {
+      "id": "DL_Crowd",
+      "runtime": true,
+      "loaded_by_default": true,
+      "systems": [
+        "crowd"
+      ]
+    },
+    {
+      "id": "DL_Interiors",
+      "runtime": true,
+      "loaded_by_default": false,
+      "systems": [
+        "interior"
+      ]
+    },
+    {
+      "id": "DL_Quests",
+      "runtime": true,
+      "loaded_by_default": true,
+      "systems": [
+        "quest"
+      ]
+    },
+    {
+      "id": "DL_Debug",
+      "runtime": false,
+      "loaded_by_default": false,
+      "systems": [
+        "debug"
+      ]
+    }
+  ]
+}
