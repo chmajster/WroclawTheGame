@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "coordinate_space": "BlockoutV1",
+  "legacy": false,
+  "expected_steps": ["CampaignMigrationDefinition"]
+}

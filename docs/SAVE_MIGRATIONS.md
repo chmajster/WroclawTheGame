@@ -1,15 +1,25 @@
 # Save migration registry
 
-Campaign save compatibility is now routed through one explicit policy instead of an inline version exception. Unknown/newer versions and unknown coordinate spaces are rejected without being overwritten.
+Save compatibility is now a composable migration system rather than one inline version exception.
 
-Currently supported paths remain exactly the ones already implemented by the project:
-- legacy version 2 history replay into the current campaign state;
-- version 3 BlockoutV1 coordinates transformed to WroclawGISV1 through CampaignMigrationDefinition.
+## Campaign migration chain
 
-## Remaining
-1. make migrations a composable version-by-version chain instead of one compatibility predicate;
-2. migrate newly added economy, parking, NPC schedule, quest and season state;
-3. add stable-ID remap tables for removed/renamed POIs, buildings and objectives;
-4. keep a backup before first migration and never overwrite a failed/newer save;
-5. add golden binary save fixtures for every supported historic version;
-6. test migration in packaged UE 5.8 and across GIS regeneration.
+The current registered graph supports:
+- legacy v2 / BlockoutV1 → v3 / BlockoutV1 through `legacy_history_replay`;
+- v3 / BlockoutV1 → v3 / WroclawGISV1 through `CampaignMigrationDefinition`.
+
+`BuildCampaignMigrationPlan` searches the registered graph and rejects newer, unknown or disconnected states. A migration-required load creates a `*_pre_migration_backup` slot before mutating in-memory state. A failed migration leaves the original save untouched.
+
+## New system state
+
+`USliceSave` now persists `FWTGEconomySaveState`. Parking, NPC schedules, quest runtime state and season/calendar state use versioned generic system payloads. Older saves receive explicit schema-v1 defaults; payloads newer than the runtime understands are rejected.
+
+Economy transactions/ledger members are marked `SaveGame` and the mission imports/exports the economy subsystem during load/checkpoint.
+
+## Stable IDs
+
+The registry contains explicit remap tables for POIs, buildings and objectives. They are intentionally empty until a real rename occurs. Unknown IDs are never guessed; identity is preserved unless an explicit mapping is registered.
+
+## Verification
+
+`Scripts/save/validate_save_migrations.py` validates registry structure, computes migration plans, defaults system payloads and applies ID remaps. Golden JSON fixtures cover legacy-v2 and v3-Blockout migration paths without requiring UE binary serialization.
