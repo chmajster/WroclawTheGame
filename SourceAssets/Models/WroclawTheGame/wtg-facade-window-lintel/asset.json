@@ -1,0 +1,11 @@
+{
+  "id": "wtg-facade-window-lintel",
+  "name": "Facade Window Lintel",
+  "provider": "WroclawTheGame",
+  "license": "CC0-1.0",
+  "source_page": "project://original-fallbacks",
+  "intended_use": "Scalable modular window lintel for procedural facades.",
+  "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-facade-window-lintel/wtg-facade-window-lintel.obj",
+  "generated": true,
+  "generator": "hand-authored deterministic OBJ"
+}
