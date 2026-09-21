@@ -52,7 +52,7 @@ Window/storefront descriptors expose the global `WindowEmissive` material parame
 2. `Saved/CityData/facades.json`;
 3. `Saved/CityData/roof_details.json`.
 
-`prepare_geography.py` reads `facades.json` and places existing mesh-backed details plus simple procedural detail geometry through `AWTGFacadeInstanceCluster`.
+`prepare_geography.py` reads `facades.json` and places all ten micro-architecture roles through audited mesh assets in `Data/facade_asset_bindings.json`. Sills and lintels are instantiated explicitly for each opening; balconies, gutters, downspouts, awnings, storefront signs, cornices, address plaques and door steps use scalable modular meshes through `AWTGFacadeInstanceCluster`.
 
 The cluster actor uses `UHierarchicalInstancedStaticMeshComponent` and groups instances by 128 m world cells and mesh. This avoids one-Actor-per-window/door overhead and remains compatible with World Partition/HLOD. Buildings replaced by official GUGiK 3D models are excluded from procedural facade placement.
 
