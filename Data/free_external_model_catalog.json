@@ -794,5 +794,82 @@
     "license": "CC0-1.0",
     "intended_use": "Residential facade/window module for the opening apartment and authored urban buildings.",
     "primary_path": "SourceAssets/Models/Kenney/BuildingKit/wall-window-wide-round-detailed/wall-window-wide-round-detailed.glb"
+  },
+  {
+    "id": "wtg-original-sign-board",
+    "name": "Generic Sign Board",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Physical backing and pole for campaign/GIS TextRender signs.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-sign-board/wtg-original-sign-board.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
+  },
+  {
+    "id": "wtg-original-photo-card",
+    "name": "Photo Card",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Photo/evidence prop for printed photographs.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-photo-card/wtg-original-photo-card.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
+  },
+  {
+    "id": "wtg-original-receipt-slip",
+    "name": "Receipt Slip",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Receipt/till slip prop for shop clues.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-receipt-slip/wtg-original-receipt-slip.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
+  },
+  {
+    "id": "wtg-original-calendar-page",
+    "name": "Calendar Page",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Calendar and shift-schedule paper prop.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-calendar-page/wtg-original-calendar-page.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
+  },
+  {
+    "id": "wtg-original-wall-plaque",
+    "name": "Wall Plaque",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Wall-mounted sign, symbol and instruction plaque.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-wall-plaque/wtg-original-wall-plaque.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
+  },
+  {
+    "id": "wtg-original-map-board",
+    "name": "Map Board",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Plans, evacuation maps, circuit diagrams and blockade maps.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-map-board/wtg-original-map-board.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
+  },
+  {
+    "id": "wtg-original-note-paper",
+    "name": "Note Paper",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Loose handwritten note/message prop.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-note-paper/wtg-original-note-paper.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
   }
 ]
