@@ -3,6 +3,7 @@
 #include "Vehicles/DriveableVehicle.h"
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/BoxComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/World.h"
 #include "UObject/ConstructorHelpers.h"
@@ -11,16 +12,26 @@ ACityRoadBlock::ACityRoadBlock()
 {
     Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
     SetRootComponent(Root);
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
+    static ConstructorHelpers::FObjectFinder<UStaticMesh> BarrierMesh(TEXT("/Game/FreeModels/PolyHaven/concrete_road_barrier_02/concrete_road_barrier_02_1k.concrete_road_barrier_02_1k"));
     for (int32 I = 0; I < 3; ++I)
     {
+        const FVector Position(0, (I - 1) * 145.0f, 45.0f);
+        const FName CollisionName(*FString::Printf(TEXT("BarrierCollision%d"), I));
+        auto *Collision = CreateDefaultSubobject<UBoxComponent>(CollisionName);
+        Collision->SetupAttachment(Root);
+        Collision->SetRelativeLocation(Position);
+        Collision->SetBoxExtent(FVector(60.0f, 62.5f, 45.0f));
+        Collision->SetCollisionProfileName(TEXT("BlockAll"));
+        Collision->SetMobility(EComponentMobility::Movable);
+        BarrierColliders.Add(Collision);
+
         const FName Name(*FString::Printf(TEXT("Barrier%d"), I));
         auto *Barrier = CreateDefaultSubobject<UStaticMeshComponent>(Name);
         Barrier->SetupAttachment(Root);
-        Barrier->SetStaticMesh(Cube.Object);
-        Barrier->SetRelativeLocation(FVector(0, (I - 1) * 145.0f, 45.0f));
-        Barrier->SetRelativeScale3D(FVector(1.2f, 1.25f, 0.9f));
-        Barrier->SetCollisionProfileName(TEXT("BlockAll"));
+        Barrier->SetStaticMesh(BarrierMesh.Object);
+        Barrier->SetRelativeLocation(Position);
+        Barrier->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        Barrier->SetCanEverAffectNavigation(false);
         Barrier->SetMobility(EComponentMobility::Movable);
         Barriers.Add(Barrier);
     }
