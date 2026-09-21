@@ -6,7 +6,7 @@ import json,traceback,os,math
 from pathlib import Path
 import unreal
 ROOT=Path(unreal.Paths.project_dir()).resolve();MARKER=ROOT/'Saved/GeographyReady.ok'
-FREE_MODEL_IMPORT_MAP=ROOT/'Saved/FreeModelImportMap.json';MODEL_BINDINGS=ROOT/'Data/model_bindings.json';FACADE_BINDINGS=ROOT/'Data/facade_asset_bindings.json'
+FREE_MODEL_IMPORT_MAP=ROOT/'Saved/FreeModelImportMap.json';MODEL_BINDINGS=ROOT/'Data/model_bindings.json';FACADE_BINDINGS=ROOT/'Data/facade_asset_bindings.json';ROOF_BINDINGS=ROOT/'Data/roof_asset_bindings.json'
 def prepare():
     MARKER.unlink(missing_ok=True)
     if not FREE_MODEL_IMPORT_MAP.is_file():raise RuntimeError('Free model import map missing')
@@ -132,7 +132,12 @@ def prepare():
         if not facade_path.is_file():raise RuntimeError('Facade catalogue missing: '+str(facade_path))
         facade_catalog=json.loads(facade_path.read_text(encoding='utf-8'))
         if facade_catalog.get('schema_version')!=2:raise RuntimeError('Unsupported facade catalogue')
+        roof_path=input_dir/'roof_details.json'
+        if not roof_path.is_file():raise RuntimeError('Roof detail catalogue missing: '+str(roof_path))
+        roof_catalog=json.loads(roof_path.read_text(encoding='utf-8'))
+        if roof_catalog.get('schema_version')!=2:raise RuntimeError('Unsupported roof detail catalogue')
         facade_bindings=json.loads(FACADE_BINDINGS.read_text(encoding='utf-8'))
+        roof_bindings=json.loads(ROOF_BINDINGS.read_text(encoding='utf-8'))
         facade_asset_scales=facade_bindings.get('asset_scales',{})
         facade_yaw_offsets=facade_bindings.get('asset_yaw_offsets_deg',{})
         facade_cell_cm=float(facade_bindings.get('instancing',{}).get('cell_size_m',128))*100
@@ -144,6 +149,10 @@ def prepare():
                     model_id=item.get(field)
                     if model_id and not str(model_id).startswith('procedural:'):
                         facade_models.setdefault(model_id,model(model_id,unreal.StaticMesh))
+        roof_models={}
+        roof_ids=set(roof_bindings.get('shapes',{}).values())|set(roof_bindings.get('details',{}).values())
+        for model_id in sorted(roof_ids):
+            roof_models[model_id]=model(model_id,unreal.StaticMesh)
         facade_clusters={}
         def facade_cluster(position):
             key=(math.floor(position[0]/facade_cell_cm),math.floor(position[1]/facade_cell_cm))
@@ -246,7 +255,37 @@ def prepare():
             for item in building.get('details',[]):
                 if str(item.get('asset_id','')).startswith('procedural:'):add_procedural_facade_detail(item)
                 else:add_facade_mesh(item)
+        def roof_scale(roof):
+            shape=roof.get('shape','flat')
+            width=max(.5,float(roof.get('width_m',1)))
+            depth=max(.5,float(roof.get('depth_m',1)))
+            height=max(.1,float(roof.get('height_m',.5)))
+            base_height={'flat':.1,'gabled':.5,'hipped':.5,'pyramidal':.5,'mansard':.5,'dome':.5,'onion':.78}.get(shape,.5)
+            z=2.0 if shape=='flat' else height/base_height
+            return [width,depth,z]
+        roof_instances=0
+        for building in roof_catalog.get('buildings',[]):
+            if building.get('building_id') in official_replaced:continue
+            roof=building.get('roof',{})
+            model_id=roof.get('asset_id')
+            mesh=roof_models.get(model_id)
+            if not mesh:raise RuntimeError('Roof model missing: '+str(model_id))
+            yaw=float(roof.get('ridge_yaw_deg',0))+float(roof_bindings.get('yaw_offsets_deg',{}).get(model_id,0))
+            position=roof.get('position')
+            if not position:raise RuntimeError('Roof position missing: '+building.get('building_id','?'))
+            facade_cluster(position).add_facade_instance(mesh,facade_transform(position,yaw,roof_scale(roof)));roof_instances+=1
+            details=building.get('details',{})
+            for key in ('chimney_instances','dormer_instances'):
+                for item in details.get(key,[]):
+                    detail_id=item.get('asset_id')
+                    detail_mesh=roof_models.get(detail_id)
+                    if not detail_mesh:raise RuntimeError('Roof detail model missing: '+str(detail_id))
+                    detail_position=item.get('position')
+                    scale=item.get('scale',[1,1,1])
+                    detail_yaw=float(item.get('yaw_deg',0))+float(roof_bindings.get('yaw_offsets_deg',{}).get(detail_id,0))
+                    facade_cluster(detail_position).add_facade_instance(detail_mesh,facade_transform(detail_position,detail_yaw,scale));roof_instances+=1
         unreal.log('WROCLAW_FACADE_INSTANCES '+str(sum(cluster.get_facade_instance_count() for cluster in facade_clusters.values())))
+        unreal.log('WROCLAW_ROOF_INSTANCES '+str(roof_instances))
         def room_part(center,offset,size):
             part=actors.spawn_actor_from_class(unreal.StaticMeshActor,unreal.Vector(*[center[i]+offset[i] for i in range(3)]))
             component=part.get_component_by_class(unreal.StaticMeshComponent);component.set_static_mesh(cube)
