@@ -76,6 +76,8 @@ def main() -> None:
     characters = read_json("Data/free_character_catalog.json")
     opening = read_json("Data/opening_scene_models.json")
     authored_props = read_json("Data/prop_model_bindings.json")
+    facade_bindings = read_json("Data/facade_asset_bindings.json")
+    roof_bindings = read_json("Data/roof_asset_bindings.json")
 
     catalogs: dict[str, dict] = {}
     for collection, id_key in ((poly, "slug"), (external, "id"), (characters, "id")):
@@ -117,12 +119,31 @@ def main() -> None:
             f"extra={sorted(systems-REQUIRED_SYSTEMS)}"
         )
 
+    facade_refs = set()
+    for values in facade_bindings["groups"].values():
+        facade_refs.update(values)
+    facade_refs.update(facade_bindings["procedural"].values())
+    if any(str(value).startswith("procedural:") for value in facade_refs):
+        errors.append("facade bindings still contain procedural proxy IDs")
+
+    roof_refs = set(roof_bindings["shapes"].values()) | set(roof_bindings["details"].values())
+    required_roof_shapes = {"flat", "gabled", "hipped", "pyramidal", "mansard", "dome", "onion"}
+    if set(roof_bindings["shapes"]) != required_roof_shapes:
+        errors.append(
+            f"roof shape bindings differ: missing={sorted(required_roof_shapes-set(roof_bindings['shapes']))} "
+            f"extra={sorted(set(roof_bindings['shapes'])-required_roof_shapes)}"
+        )
+    if set(roof_bindings["details"]) != {"chimney", "dormer"}:
+        errors.append("roof detail bindings must contain chimney and dormer")
+
     referenced = (
         set(bindings["items"].values())
         | set(bindings["actions"].values())
         | set(bindings["systems"].values())
         | {item["model"] for item in opening}
         | {item["model"] for item in authored_props}
+        | facade_refs
+        | roof_refs
     )
     unknown = sorted(referenced - set(catalogs))
     if unknown:
@@ -170,9 +191,22 @@ def main() -> None:
         "city_activity_marker",
         "city_interior_sofa",
         "city_interior_table",
+        "environment_sign_backing",
+        "hide_park",
     ):
         if token not in prepare_geography:
             errors.append(f"GIS generator does not consume system model binding: {token}")
+
+    if "WROCLAW_ROOF_INSTANCES" not in prepare_geography or "roof_details.json" not in prepare_geography:
+        errors.append("GIS generator does not bake mesh-backed roof catalogue")
+    if "add_opening_trim" not in prepare_geography:
+        errors.append("GIS generator does not bake sill/lintel opening meshes")
+    roadblock = (ROOT / "Source/WroclawTheGame/World/RoadBlockSystem.cpp").read_text(encoding="utf-8")
+    throwable = (ROOT / "Source/WroclawTheGame/Interaction/NoiseThrowable.cpp").read_text(encoding="utf-8")
+    if "ConstructorHelpers::FObjectFinder" in roadblock and "/Game/FreeModels" in roadblock:
+        errors.append("roadblock loads generated FreeModels in constructor instead of BeginPlay")
+    if "ConstructorHelpers::FObjectFinder" in throwable and "/Game/FreeModels" in throwable:
+        errors.append("throwable loads generated FreeModels in constructor instead of BeginPlay")
 
     fail(errors)
     print(
