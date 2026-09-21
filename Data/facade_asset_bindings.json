@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "asset_policy": "existing_repo_assets_or_procedural_descriptor",
+  "asset_policy": "audited_repo_assets_with_scalable_modular_facade_meshes",
   "groups": {
     "door_square": [
       "kenney-door-door-rotate-square-a",
@@ -42,16 +42,16 @@
     ]
   },
   "procedural": {
-    "balcony": "procedural:balcony_slab_railing",
-    "sill": "procedural:window_sill",
-    "lintel": "procedural:window_lintel",
-    "gutter": "procedural:gutter",
-    "downspout": "procedural:downspout",
-    "awning": "procedural:awning",
-    "sign": "procedural:storefront_sign",
-    "cornice": "procedural:cornice",
-    "address_plaque": "procedural:address_plaque",
-    "door_step": "procedural:door_step"
+    "balcony": "wtg-facade-balcony",
+    "sill": "wtg-facade-window-sill",
+    "lintel": "wtg-facade-window-lintel",
+    "gutter": "wtg-facade-gutter",
+    "downspout": "wtg-facade-downspout",
+    "awning": "wtg-facade-awning",
+    "sign": "wtg-original-sign-board",
+    "cornice": "wtg-facade-cornice",
+    "address_plaque": "wtg-original-wall-plaque",
+    "door_step": "wtg-facade-door-step"
   },
   "asset_scales": {
     "kenney-door-door-rotate-square-a": [
@@ -133,6 +133,56 @@
       1,
       1,
       1
+    ],
+    "wtg-facade-balcony": [
+      1,
+      1,
+      1
+    ],
+    "wtg-facade-window-sill": [
+      1,
+      1,
+      1
+    ],
+    "wtg-facade-window-lintel": [
+      1,
+      1,
+      1
+    ],
+    "wtg-facade-gutter": [
+      1,
+      1,
+      1
+    ],
+    "wtg-facade-downspout": [
+      1,
+      1,
+      1
+    ],
+    "wtg-facade-awning": [
+      1,
+      1,
+      1
+    ],
+    "wtg-original-sign-board": [
+      1,
+      1,
+      1
+    ],
+    "wtg-facade-cornice": [
+      1,
+      1,
+      1
+    ],
+    "wtg-original-wall-plaque": [
+      1,
+      1,
+      1
+    ],
+    "wtg-facade-door-step": [
+      1,
+      1,
+      1
     ]
   },
   "instancing": {
@@ -156,6 +206,16 @@
     "kenney-door-door-rotate-round-c": 0,
     "kenney-door-door-rotate-round-d": 0,
     "exterior_aircon_unit": 0,
-    "wtg-original-intercom": 0
+    "wtg-original-intercom": 0,
+    "wtg-facade-balcony": 0,
+    "wtg-facade-window-sill": 0,
+    "wtg-facade-window-lintel": 0,
+    "wtg-facade-gutter": 0,
+    "wtg-facade-downspout": 0,
+    "wtg-facade-awning": 0,
+    "wtg-original-sign-board": 0,
+    "wtg-facade-cornice": 0,
+    "wtg-original-wall-plaque": 0,
+    "wtg-facade-door-step": 0
   }
 }
