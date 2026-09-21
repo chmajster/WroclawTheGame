@@ -1,0 +1,11 @@
+{
+  "id": "wtg-roof-onion",
+  "name": "Roof Onion",
+  "provider": "WroclawTheGame",
+  "license": "CC0-1.0",
+  "source_page": "project://original-fallbacks",
+  "intended_use": "Scalable low-poly onion roof module.",
+  "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-roof-onion/wtg-roof-onion.obj",
+  "generated": true,
+  "generator": "hand-authored deterministic OBJ"
+}
