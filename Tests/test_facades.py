@@ -34,7 +34,7 @@ class FacadeTests(unittest.TestCase):
   b=M.generate(self.cfg,self.feature(),bindings=self.bindings)["buildings"][0]
   windows=[x for x in b["openings"] if x["kind"]=="window"];self.assertGreater(len(windows),0)
   self.assertTrue(all(x["asset_id"].startswith("kenney-window-") for x in windows));self.assertTrue(all(x["night_emissive_parameter"]=="WindowEmissive" for x in windows))
-  self.assertTrue(all(x["sill_asset_id"]=="procedural:window_sill" for x in windows))
+  self.assertTrue(all(x["sill_asset_id"]=="wtg-facade-window-sill" for x in windows));self.assertTrue(all(x["lintel_asset_id"]=="wtg-facade-window-lintel" for x in windows))
 
  def test_commercial_ground_floor_gets_storefront_signs_and_optional_awnings(self):
   city=self.feature("mixed","3",{"building":"commercial","shop":"convenience"})
@@ -47,13 +47,16 @@ class FacadeTests(unittest.TestCase):
   self.assertEqual(a,b);details=a["buildings"][0]["details"];ids=[x["id"] for x in details];self.assertEqual(len(ids),len(set(ids)))
   self.assertIn("balcony",{x["kind"] for x in details});self.assertIn("gutter",{x["kind"] for x in details});self.assertIn("downspout",{x["kind"] for x in details})
 
- def test_all_bound_nonprocedural_asset_ids_exist_in_repo_catalogs(self):
+ def test_all_bound_facade_asset_ids_exist_in_repo_catalogs(self):
   ids=set()
   for file in ("free_external_model_catalog.json","free_model_catalog.json"):
    for item in json.loads((ROOT/"Data"/file).read_text()):ids.add(item.get("id") or item.get("slug"))
   referenced=set()
   for values in self.bindings["groups"].values():referenced.update(values)
+  referenced.update(self.bindings["procedural"].values())
+  self.assertFalse(any(str(value).startswith("procedural:") for value in referenced))
   self.assertEqual(sorted(referenced-ids),[])
+  self.assertEqual(set(self.bindings["procedural"]),{"balcony","sill","lintel","gutter","downspout","awning","sign","cornice","address_plaque","door_step"})
 
  def test_profiles_differ(self):
   a=M.generate(self.cfg,self.feature("tenement"),bindings=self.bindings)["buildings"][0]
