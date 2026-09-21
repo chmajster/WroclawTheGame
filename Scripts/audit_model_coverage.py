@@ -22,6 +22,8 @@ RUNTIME_VISUAL_SOURCES = (
     "Source/WroclawTheGame/AI/SliceEnemy.cpp",
     "Source/WroclawTheGame/Vehicles/DriveableVehicle.cpp",
     "Source/WroclawTheGame/Character/SliceCharacter.cpp",
+    "Source/WroclawTheGame/World/RoadBlockSystem.cpp",
+    "Source/WroclawTheGame/Interaction/NoiseThrowable.cpp",
 )
 
 REQUIRED_SYSTEMS = {
@@ -37,9 +39,13 @@ REQUIRED_SYSTEMS = {
     "surveillance_camera",
     "cctv_monitor",
     "hide_container",
+    "hide_park",
     "hide_shelf",
     "city_activity_marker",
     "street_lamp",
+    "environment_sign_backing",
+    "roadblock_barrier",
+    "noise_throwable",
     "city_interior_sofa",
     "city_interior_table",
     "city_interior_chair",
@@ -137,13 +143,17 @@ def main() -> None:
 
     for source in RUNTIME_VISUAL_SOURCES:
         text = (ROOT / source).read_text(encoding="utf-8")
-        if "/Engine/BasicShapes/Cube" in text:
-            errors.append(f"visible cube proxy remains in runtime source: {source}")
+        if "/Engine/BasicShapes/Cube" in text or "/Engine/BasicShapes/Sphere" in text:
+            errors.append(f"visible engine primitive proxy remains in runtime source: {source}")
 
     prepare_content = (ROOT / "Scripts/prepare_content.py").read_text(encoding="utf-8")
     prepare_geography = (ROOT / "Scripts/prepare_geography.py").read_text(encoding="utf-8")
     if "model_bindings['actions']" not in prepare_content:
         errors.append("campaign generator does not consume complete action model bindings")
+    if "model_bindings['actions']" not in prepare_geography:
+        errors.append("GIS campaign migration does not consume complete action model bindings")
+    if any(value == "clipboard" for value in bindings["actions"].values()):
+        errors.append("physical action model bindings still use generic clipboard proxy")
     for token in (
         "ambient_pedestrian",
         "ambient_vehicle",
