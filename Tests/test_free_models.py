@@ -75,6 +75,9 @@ class FreeModelCoverage(unittest.TestCase):
             "environment_sign_backing",
             "roadblock_barrier",
             "noise_throwable",
+            "environment_sign_backing",
+            "roadblock_barrier",
+            "noise_throwable",
             "city_interior_sofa",
             "city_interior_table",
             "city_interior_chair",
@@ -99,10 +102,13 @@ class FreeModelCoverage(unittest.TestCase):
             "Source/WroclawTheGame/Character/SliceCharacter.cpp",
             "Source/WroclawTheGame/World/RoadBlockSystem.cpp",
             "Source/WroclawTheGame/Interaction/NoiseThrowable.cpp",
+            "Source/WroclawTheGame/World/RoadBlockSystem.cpp",
+            "Source/WroclawTheGame/Interaction/NoiseThrowable.cpp",
         ]
         for source in sources:
             text = (ROOT / source).read_text(encoding="utf-8")
             self.assertNotIn("/Engine/BasicShapes/Cube", text, source)
+            self.assertNotIn("/Engine/BasicShapes/Sphere", text, source)
             self.assertNotIn("/Engine/BasicShapes/Sphere", text, source)
 
     def test_humanoid_bindings_use_rigged_character_catalog(self):
