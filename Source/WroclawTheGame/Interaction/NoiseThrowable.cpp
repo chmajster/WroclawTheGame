@@ -3,7 +3,6 @@
 #include "Engine/World.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
-#include "UObject/ConstructorHelpers.h"
 #include "Engine/StaticMesh.h"
 #include "Perception/AISense_Hearing.h"
 #include "Audio/SliceAudio.h"
@@ -19,14 +18,18 @@ ANoiseThrowable::ANoiseThrowable()
 
     Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ThrownObject"));
     Mesh->SetupAttachment(Collision);
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> CanMesh(TEXT("/Game/FreeModels/PolyHaven/can_rusted/can_rusted_1k.can_rusted_1k"));
-    Mesh->SetStaticMesh(CanMesh.Object);
     Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     Mesh->SetCanEverAffectNavigation(false);
 }
 void ANoiseThrowable::BeginPlay()
 {
     Super::BeginPlay();
+    UStaticMesh *CanMesh = LoadObject<UStaticMesh>(
+        nullptr, TEXT("/Game/FreeModels/PolyHaven/can_rusted/can_rusted_1k.can_rusted_1k"));
+    if (CanMesh)
+        Mesh->SetStaticMesh(CanMesh);
+    else
+        UE_LOG(LogTemp, Error, TEXT("NoiseThrowable: imported CC0 can mesh is unavailable"));
     Collision->OnComponentHit.AddDynamic(this, &ANoiseThrowable::Hit);
     SetLifeSpan(12);
 }
