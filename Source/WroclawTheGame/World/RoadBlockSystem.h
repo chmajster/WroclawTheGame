@@ -13,6 +13,7 @@ class WROCLAWTHEGAME_API ACityRoadBlock : public AActor
   private:
     UPROPERTY() TObjectPtr<class USceneComponent> Root;
     UPROPERTY() TArray<TObjectPtr<class UStaticMeshComponent>> Barriers;
+    UPROPERTY() TArray<TObjectPtr<class UBoxComponent>> BarrierColliders;
 };
 
 UCLASS()
