@@ -140,9 +140,10 @@ def prepare():
         for building in facade_catalog.get('buildings',[]):
             if building.get('building_id') in official_replaced:continue
             for item in building.get('openings',[])+building.get('details',[]):
-                model_id=item.get('asset_id')
-                if model_id and not str(model_id).startswith('procedural:'):
-                    facade_models.setdefault(model_id,model(model_id,unreal.StaticMesh))
+                for field in ('asset_id','sill_asset_id','lintel_asset_id'):
+                    model_id=item.get(field)
+                    if model_id and not str(model_id).startswith('procedural:'):
+                        facade_models.setdefault(model_id,model(model_id,unreal.StaticMesh))
         facade_clusters={}
         def facade_cluster(position):
             key=(math.floor(position[0]/facade_cell_cm),math.floor(position[1]/facade_cell_cm))
@@ -159,15 +160,58 @@ def prepare():
                 location=unreal.Vector(*position),
                 rotation=unreal.Rotator(0,float(yaw),0).quaternion(),
                 scale=unreal.Vector(*scale))
-        def add_facade_mesh(item):
-            model_id=item.get('asset_id')
+        def modular_facade_scale(model_id,item):
+            base=list(facade_asset_scales.get(model_id,[1,1,1]))
+            if model_id in ('wtg-facade-window-sill','wtg-facade-window-lintel'):
+                base[0]*=max(.1,float(item.get('width_m',1.0)))
+            elif model_id=='wtg-facade-balcony':
+                base[0]*=max(.1,float(item.get('width_m',1.0)))
+                base[1]*=max(.1,float(item.get('depth_m',1.0)))
+                base[2]*=max(.1,float(item.get('railing_height_m',1.0)))
+            elif model_id=='wtg-facade-gutter':
+                base[0]*=max(.1,float(item.get('length_m',1.0)))
+                diameter=max(.04,float(item.get('diameter_m',.12)))
+                base[1]*=diameter/.12;base[2]*=diameter/.12
+            elif model_id=='wtg-facade-downspout':
+                diameter=max(.04,float(item.get('diameter_m',.1)))
+                base[0]*=diameter/.12;base[1]*=diameter/.12
+                base[2]*=max(.1,float(item.get('height_m',1.0)))
+            elif model_id=='wtg-facade-awning':
+                base[0]*=max(.1,float(item.get('width_m',1.0)))
+                base[1]*=max(.1,float(item.get('depth_m',1.0)))
+            elif model_id=='wtg-facade-cornice':
+                base[0]*=max(.1,float(item.get('length_m',1.0)))
+                base[1]*=max(.1,float(item.get('depth_m',.3))/.3)
+            elif model_id=='wtg-facade-door-step':
+                base[0]*=max(.1,float(item.get('width_m',1.0)))
+                base[1]*=max(.1,float(item.get('depth_m',.6))/.6)
+            elif model_id=='wtg-original-sign-board':
+                base[0]*=max(.25,float(item.get('width_m',1.2))/1.2)
+                base[2]*=.32
+            elif model_id=='wtg-original-wall-plaque':
+                base[0]*=.8;base[2]*=.72
+            return base
+        def add_facade_mesh(item,model_id=None,position=None):
+            model_id=model_id or item.get('asset_id')
             if not model_id or str(model_id).startswith('procedural:'):return
             mesh=facade_models.get(model_id)
             if not mesh:raise RuntimeError('Facade model missing: '+str(model_id))
-            scale=facade_asset_scales.get(model_id,[1,1,1])
+            scale=modular_facade_scale(model_id,item)
             yaw=float(item.get('yaw_deg',0))+float(facade_yaw_offsets.get(model_id,0))
-            facade_cluster(item['world_position']).add_facade_instance(
-                mesh,facade_transform(item['world_position'],yaw,scale))
+            target_position=position or item['world_position']
+            facade_cluster(target_position).add_facade_instance(
+                mesh,facade_transform(target_position,yaw,scale))
+        def add_opening_trim(item):
+            height=float(item.get('height_m',1.0))
+            center=list(item['world_position'])
+            sill_id=item.get('sill_asset_id')
+            if sill_id:
+                sill=list(center);sill[2]-=height*50
+                add_facade_mesh(item,sill_id,sill)
+            lintel_id=item.get('lintel_asset_id')
+            if lintel_id:
+                lintel=list(center);lintel[2]+=height*50
+                add_facade_mesh(item,lintel_id,lintel)
         def add_facade_cube(position,yaw,scale):
             facade_cluster(position).add_facade_instance(cube,facade_transform(position,yaw,scale))
         def add_procedural_facade_detail(item):
@@ -196,7 +240,9 @@ def prepare():
                 add_facade_cube(p,yaw+90,[.28,.04,.18])
         for building in facade_catalog.get('buildings',[]):
             if building.get('building_id') in official_replaced:continue
-            for item in building.get('openings',[]):add_facade_mesh(item)
+            for item in building.get('openings',[]):
+                add_facade_mesh(item)
+                add_opening_trim(item)
             for item in building.get('details',[]):
                 if str(item.get('asset_id','')).startswith('procedural:'):add_procedural_facade_detail(item)
                 else:add_facade_mesh(item)
