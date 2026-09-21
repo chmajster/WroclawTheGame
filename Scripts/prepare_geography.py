@@ -17,6 +17,12 @@ def prepare():
         asset=unreal.load_asset(object_path) if object_path else None
         if not asset or not isinstance(asset,expected):raise RuntimeError('Wrong or missing model '+model_id+' -> '+str(object_path))
         return asset
+    def model_any(model_id):
+        metadata=imported_models.get(model_id);object_path=metadata.get('primary_object') if metadata else None
+        asset=unreal.load_asset(object_path) if object_path else None
+        if not asset or not isinstance(asset,(unreal.StaticMesh,unreal.SkeletalMesh)):
+            raise RuntimeError('Wrong or missing mesh model '+model_id+' -> '+str(object_path))
+        return asset
     systems=model_bindings['systems']
     city_door_mesh=model(systems['city_interior_door'],unreal.StaticMesh)
     city_activity_mesh=model(systems['city_activity_marker'],unreal.StaticMesh)
@@ -285,17 +291,11 @@ def prepare():
         campaign_opening=json.loads((campaign_dir/'opening_scene_models.json').read_text(encoding='utf-8'))
         bindings=json.loads((ROOT/'Data/prop_model_bindings.json').read_text(encoding='utf-8'))
         binding_by_action={item['action']:item for item in bindings}
-        imported=json.loads((ROOT/'Saved/FreeModelImportMap.json').read_text(encoding='utf-8'))
         required={item['model'] for item in campaign_opening}
         required.update(item['model'] for item in bindings)
-        free_models={}
-        for model_id in sorted(required):
-            metadata=imported.get(model_id)
-            object_path=metadata.get('primary_object') if metadata else None
-            mesh=unreal.load_asset(object_path) if object_path else None
-            if not mesh or not isinstance(mesh,unreal.StaticMesh):
-                raise RuntimeError('Campaign free model unavailable: '+model_id)
-            free_models[model_id]=mesh
+        required.update(model_bindings['actions'].values())
+        required.update(model_bindings['systems'].values())
+        free_models={model_id:model_any(model_id) for model_id in sorted(required)}
 
         def campaign_spawn(cls,position,label,rotation=None):
             actor=actors.spawn_actor_from_class(
@@ -308,10 +308,44 @@ def prepare():
             component=actor.get_component_by_class(unreal.StaticMeshComponent)
             if not component:raise RuntimeError('Missing campaign StaticMeshComponent')
             component.set_static_mesh(mesh)
-            actor.set_actor_scale3d(unreal.Vector(*scale))
+            if actor.get_root_component()==component:actor.set_actor_scale3d(unreal.Vector(*scale))
+            else:component.set_relative_scale3d(unreal.Vector(*scale))
             component.set_editor_property('cast_shadow',True)
             return component
+        def hide_static_visuals(actor):
+            for component in actor.get_components_by_class(unreal.StaticMeshComponent):
+                component.set_visibility(False,True);component.set_editor_property('cast_shadow',False)
+        def apply_skeletal(actor,mesh,scale=(1,1,1),rotation=None):
+            component=actor.get_component_by_class(unreal.SkeletalMeshComponent)
+            if not component:raise RuntimeError('Missing campaign SkeletalMeshComponent')
+            component.set_skeletal_mesh_asset(mesh);component.set_collision_profile_name('NoCollision')
+            component.set_visibility(True,True);component.set_editor_property('cast_shadow',True)
+            component.set_relative_scale3d(unreal.Vector(*scale))
+            capsule=actor.get_component_by_class(unreal.CapsuleComponent)
+            if capsule:component.set_relative_location(unreal.Vector(0,0,-capsule.get_unscaled_capsule_half_height()))
+            component.set_relative_rotation(unreal.Rotator(*(rotation or [0,-90,0])))
+            hide_static_visuals(actor)
+            return component
+        def spawn_skeletal_visual(mesh,position,label,rotation=None,scale=(1,1,1)):
+            visual=campaign_spawn(unreal.SkeletalMeshActor,position,label,rotation or [0,0,0])
+            component=visual.get_component_by_class(unreal.SkeletalMeshComponent)
+            if not component:raise RuntimeError('Missing campaign skeletal visual component')
+            component.set_skeletal_mesh_asset(mesh);component.set_collision_profile_name('NoCollision')
+            component.set_editor_property('cast_shadow',True);visual.set_actor_scale3d(unreal.Vector(*scale))
+            return visual
 
+        sign_backing_mesh=free_models[systems['environment_sign_backing']]
+        street_lamp_mesh=free_models[systems['street_lamp']]
+        street_lamp_ids={'environment_253','environment_255','environment_257','environment_259','environment_261','environment_263','environment_265'}
+        guard_mesh=free_models[systems['enemy_guard']]
+        resident_mesh=free_models[systems['resident_npc']]
+        camera_mesh=free_models[systems['surveillance_camera']]
+        monitor_mesh=free_models[systems['cctv_monitor']]
+        hide_models={
+            'container':systems['hide_container'],
+            'park_hiding':systems['hide_park'],
+            'garage_hiding':systems['hide_shelf'],
+        }
         for record in campaign_environment:
             kind=record['type'];rotation=record.get('rotation',[0,0,0])
             if kind=='box':
@@ -330,7 +364,15 @@ def prepare():
                 component.set_editor_property('source_radius',record.get('source_radius',4.0))
                 component.set_editor_property('soft_source_radius',record.get('soft_source_radius',12.0))
                 component.set_editor_property('light_color',unreal.Color(*[int(v*255) for v in record['color']],255))
+                if record['id'] in street_lamp_ids:
+                    position=[record['position'][0],record['position'][1],record['position'][2]-360]
+                    lamp=campaign_spawn(unreal.StaticMeshActor,position,'environment_lamp_'+record['id'],rotation)
+                    apply_mesh(lamp,street_lamp_mesh,[1,1,1]).set_collision_profile_name('NoCollision')
             elif kind=='sign':
+                scale_x=max(.8,min(2.2,len(record['text'])/16.0))
+                position=[record['position'][0],record['position'][1],record['position'][2]-110]
+                backing=campaign_spawn(unreal.StaticMeshActor,position,'environment_signback_'+record['id'],rotation)
+                apply_mesh(backing,sign_backing_mesh,[scale_x,1,1]).set_collision_profile_name('NoCollision')
                 actor=campaign_spawn(unreal.TextRenderActor,record['position'],record['id'],rotation)
                 component=actor.get_component_by_class(unreal.TextRenderComponent)
                 component.set_text(record['text']);component.set_world_size(record['size'])
@@ -345,30 +387,42 @@ def prepare():
         for action in campaign_chapter['actions']:
             if action['kind'] in ('virtual','zone') or action['position'][:2]==[0,0]:
                 continue
-            binding=binding_by_action.get(action['id']);position=list(action['position']);rotation=[0,0,0]
-            if binding:
-                offset=binding.get('offset',[0,0,0])
-                position=[position[i]+offset[i] for i in range(3)]
-                rotation=binding.get('rotation',[0,0,0])
+            authored=binding_by_action.get(action['id'],{})
+            model_id=authored.get('model') or model_bindings['actions'].get(action['id'])
+            if not model_id:raise RuntimeError('Migrated physical action has no model binding: '+action['id'])
+            position=list(action['position']);rotation=authored.get('rotation',[0,0,0])
+            offset=authored.get('offset',[0,0,0]);position=[position[i]+offset[i] for i in range(3)]
+            scale=authored.get('scale',[1,1,1])
             actor=campaign_spawn(unreal.SliceProp,position,'action_'+action['id'],rotation)
             actor.set_editor_property('action_id',action['id'])
-            if binding:apply_mesh(actor,free_models[binding['model']],binding.get('scale',[1,1,1]))
-            else:actor.set_actor_scale3d(unreal.Vector(*[v/100 for v in action['size']]))
+            mesh=free_models[model_id]
+            if isinstance(mesh,unreal.StaticMesh):apply_mesh(actor,mesh,scale)
+            else:
+                hide_static_visuals(actor)
+                spawn_skeletal_visual(mesh,position,'action_visual_'+action['id'],rotation,scale)
 
         for guard in campaign_world['guards']:
             actor=campaign_spawn(unreal.SliceEnemy,guard['position'],'guard_'+guard['id'])
             actor.set_editor_property('guard_id',guard['id'])
+            if isinstance(guard_mesh,unreal.SkeletalMesh):apply_skeletal(actor,guard_mesh)
         for hiding in campaign_world['hides']:
             actor=campaign_spawn(unreal.WorldInteraction,hiding['position'],'hide_'+hiding['id'])
             actor.set_editor_property('definition_id',hiding['id']);actor.set_editor_property('kind','Hide')
+            model_id=hide_models.get(hiding['id'])
+            if not model_id:raise RuntimeError('Migrated hiding spot has no model binding: '+hiding['id'])
+            mesh=free_models[model_id]
+            if isinstance(mesh,unreal.StaticMesh):apply_mesh(actor,mesh,[1,1,1])
         for camera in campaign_world['cameras']:
             actor=campaign_spawn(unreal.SurveillanceCamera,camera['position'],'camera_'+camera['id'],camera['rotation'])
             actor.set_editor_property('definition_id',camera['id'])
+            if isinstance(camera_mesh,unreal.StaticMesh):apply_mesh(actor,camera_mesh,[1,1,1])
             monitor=campaign_spawn(unreal.WorldInteraction,[camera['position'][0]-180,camera['position'][1],camera['position'][2]-240],'monitor_'+camera['id'])
             monitor.set_editor_property('definition_id',camera['id']);monitor.set_editor_property('kind','CCTV')
+            if isinstance(monitor_mesh,unreal.StaticMesh):apply_mesh(monitor,monitor_mesh,[.55,.55,.55])
         for npc in campaign_world['npc']:
             actor=campaign_spawn(unreal.ResidentNPC,npc['position'],'npc_'+npc['id'])
             actor.set_editor_property('definition_id',npc['id'])
+            if isinstance(resident_mesh,unreal.SkeletalMesh):apply_skeletal(actor,resident_mesh)
 
         definition=unreal.load_asset('/Game/Generated/ChapterDefinition')
         if not definition:raise RuntimeError('Campaign ChapterDefinition missing after content preparation')
