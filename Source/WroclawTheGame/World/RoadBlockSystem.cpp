@@ -6,13 +6,11 @@
 #include "Components/BoxComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/World.h"
-#include "UObject/ConstructorHelpers.h"
 
 ACityRoadBlock::ACityRoadBlock()
 {
     Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
     SetRootComponent(Root);
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> BarrierMesh(TEXT("/Game/FreeModels/PolyHaven/concrete_road_barrier_02/concrete_road_barrier_02_1k.concrete_road_barrier_02_1k"));
     for (int32 I = 0; I < 3; ++I)
     {
         const FVector Position(0, (I - 1) * 145.0f, 45.0f);
@@ -28,13 +26,27 @@ ACityRoadBlock::ACityRoadBlock()
         const FName Name(*FString::Printf(TEXT("Barrier%d"), I));
         auto *Barrier = CreateDefaultSubobject<UStaticMeshComponent>(Name);
         Barrier->SetupAttachment(Root);
-        Barrier->SetStaticMesh(BarrierMesh.Object);
         Barrier->SetRelativeLocation(Position);
         Barrier->SetCollisionEnabled(ECollisionEnabled::NoCollision);
         Barrier->SetCanEverAffectNavigation(false);
         Barrier->SetMobility(EComponentMobility::Movable);
         Barriers.Add(Barrier);
     }
+}
+void ACityRoadBlock::BeginPlay()
+{
+    Super::BeginPlay();
+    UStaticMesh *BarrierMesh = LoadObject<UStaticMesh>(
+        nullptr,
+        TEXT("/Game/FreeModels/PolyHaven/concrete_road_barrier_02/concrete_road_barrier_02_1k.concrete_road_barrier_02_1k"));
+    if (!BarrierMesh)
+    {
+        UE_LOG(LogTemp, Error, TEXT("RoadBlock: imported CC0 barrier mesh is unavailable"));
+        return;
+    }
+    for (UStaticMeshComponent *Barrier : Barriers)
+        if (Barrier)
+            Barrier->SetStaticMesh(BarrierMesh);
 }
 
 void URoadBlockSubsystem::ClearRoadBlock()
