@@ -13,10 +13,10 @@ class RoofTests(unittest.TestCase):
   self.assertEqual(r["roof"]["shape"],"mansard");self.assertEqual(r["roof"]["shape_source"],"osm");self.assertEqual(r["roof"]["height_m"],4)
  def test_fallback_is_deterministic(self):
   city={"features":[{"id":"b","kind":"building","architecture_profile":"villa","height_m":10,"rings":[[[0,0,0],[1200,0,0],[1200,800,0],[0,800,0],[0,0,0]]],"tags":{}}]}
-  a=M.generate(self.cfg,city);b=M.generate(self.cfg,city);self.assertEqual(a,b)
+  a=M.generate(self.cfg,city,self.bindings);b=M.generate(self.cfg,city,self.bindings);self.assertEqual(a,b)
  def test_estate_can_use_flat_roof(self):
   city={"features":[{"id":"e","kind":"building","architecture_profile":"estate","height_m":20,"rings":[[[0,0,0],[2000,0,0],[2000,1000,0],[0,1000,0],[0,0,0]]],"tags":{}}]}
-  self.assertEqual(M.generate(self.cfg,city)["buildings"][0]["roof"]["shape"],"flat")
+  self.assertEqual(M.generate(self.cfg,city,self.bindings)["buildings"][0]["roof"]["shape"],"flat")
 
  def test_every_supported_shape_has_catalogued_mesh(self):
   external={item["id"] for item in json.loads((ROOT/"Data"/"free_external_model_catalog.json").read_text())}
