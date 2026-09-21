@@ -1,0 +1,11 @@
+{
+  "id": "wtg-roof-mansard",
+  "name": "Roof Mansard",
+  "provider": "WroclawTheGame",
+  "license": "CC0-1.0",
+  "source_page": "project://original-fallbacks",
+  "intended_use": "Scalable mansard roof module.",
+  "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-roof-mansard/wtg-roof-mansard.obj",
+  "generated": true,
+  "generator": "hand-authored deterministic OBJ"
+}
