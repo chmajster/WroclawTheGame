@@ -7,11 +7,9 @@ Priority:
 2. otherwise choose a deterministic profile fallback;
 3. label every fallback as `procedural_fallback`.
 
-It emits roof shape/height/ridge orientation plus bounded chimney and dormer counts. These are descriptors for a later Unreal/Blender geometry pass, not final geometry.
+It emits roof shape/height/ridge orientation, a concrete roof asset ID and bounded chimney/dormer instances. `prepare_geography.py` consumes these records and bakes scalable roof, chimney and dormer meshes through the existing HISM facade clusters. Official GUGiK buildings remain excluded from this procedural overlay.
 
 ## Remaining
-- implement mesh generation for supported roof shapes;
-- place chimneys/dormers only inside valid roof surfaces;
-- add collision/LOD rules;
-- compare hero buildings against real references and override procedural data;
+- run Unreal visual/LOD/performance QA for the generated roof modules;
+- compare hero buildings against real references and override procedural data where the official model or authored reference is better.
 - wire output into city bake only after UE validation.
