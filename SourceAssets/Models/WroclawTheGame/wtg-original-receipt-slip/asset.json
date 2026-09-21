@@ -1,0 +1,11 @@
+{
+  "id": "wtg-original-receipt-slip",
+  "name": "Receipt Slip",
+  "provider": "WroclawTheGame",
+  "license": "CC0-1.0",
+  "source_page": "project://original-fallbacks",
+  "intended_use": "Receipt/till slip prop for shop clues.",
+  "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-receipt-slip/wtg-original-receipt-slip.obj",
+  "generated": true,
+  "generator": "hand-authored deterministic OBJ"
+}
