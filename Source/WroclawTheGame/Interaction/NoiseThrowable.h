@@ -8,6 +8,7 @@ class WROCLAWTHEGAME_API ANoiseThrowable : public AActor
     GENERATED_BODY()
   public:
     ANoiseThrowable();
+    UPROPERTY(VisibleAnywhere) TObjectPtr<class USphereComponent> Collision;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UStaticMeshComponent> Mesh;
     virtual void BeginPlay() override;
 
