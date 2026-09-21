@@ -10,6 +10,7 @@ class WROCLAWTHEGAME_API ACityRoadBlock : public AActor
     GENERATED_BODY()
   public:
     ACityRoadBlock();
+    virtual void BeginPlay() override;
   private:
     UPROPERTY() TObjectPtr<class USceneComponent> Root;
     UPROPERTY() TArray<TObjectPtr<class UStaticMeshComponent>> Barriers;
