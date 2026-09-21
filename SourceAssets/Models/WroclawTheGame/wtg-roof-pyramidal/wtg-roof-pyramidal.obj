@@ -1,0 +1,12 @@
+# WroclawTheGame modular roof CC0 mesh
+o WTG_Roof_Pyramidal
+v -50 -50 0
+v 50 -50 0
+v 50 50 0
+v -50 50 0
+v 0 0 50
+f 1 2 5
+f 2 3 5
+f 3 4 5
+f 4 1 5
+f 1 4 3 2
