@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "shapes": {
+    "flat": "wtg-roof-flat",
+    "gabled": "wtg-roof-gabled",
+    "hipped": "wtg-roof-hipped",
+    "pyramidal": "wtg-roof-pyramidal",
+    "mansard": "wtg-roof-mansard",
+    "dome": "wtg-roof-dome",
+    "onion": "wtg-roof-onion"
+  },
+  "details": {
+    "chimney": "wtg-roof-chimney",
+    "dormer": "wtg-roof-dormer"
+  },
+  "yaw_offsets_deg": {
+    "wtg-roof-flat": 0,
+    "wtg-roof-gabled": 0,
+    "wtg-roof-hipped": 0,
+    "wtg-roof-pyramidal": 0,
+    "wtg-roof-mansard": 0,
+    "wtg-roof-dome": 0,
+    "wtg-roof-onion": 0,
+    "wtg-roof-chimney": 0,
+    "wtg-roof-dormer": 0
+  },
+  "collision": "NoCollision",
+  "hlod": true
+}
