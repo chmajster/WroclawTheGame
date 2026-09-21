@@ -115,7 +115,7 @@
     "cctv_monitor": "Television_01",
     "hide_container": "plastic_container",
     "hide_shelf": "wooden_bookshelf_worn",
-    "city_activity_marker": "clipboard",
+    "city_activity_marker": "wtg-city-activity-marker",
     "player_fallback_female": "quaternius-ubc-superhero-female",
     "street_lamp": "street_lamp_01",
     "city_interior_sofa": "sofa_03",
