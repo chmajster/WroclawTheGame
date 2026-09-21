@@ -46,6 +46,9 @@ REQUIRED_SYSTEMS = {
     "environment_sign_backing",
     "roadblock_barrier",
     "noise_throwable",
+    "environment_sign_backing",
+    "roadblock_barrier",
+    "noise_throwable",
     "city_interior_sofa",
     "city_interior_table",
     "city_interior_chair",
@@ -150,6 +153,10 @@ def main() -> None:
     prepare_geography = (ROOT / "Scripts/prepare_geography.py").read_text(encoding="utf-8")
     if "model_bindings['actions']" not in prepare_content:
         errors.append("campaign generator does not consume complete action model bindings")
+    if "model_bindings['actions']" not in prepare_geography:
+        errors.append("GIS campaign migration does not consume complete action model bindings")
+    if any(value == "clipboard" for value in bindings["actions"].values()):
+        errors.append("physical action model bindings still use generic clipboard proxy")
     if "model_bindings['actions']" not in prepare_geography:
         errors.append("GIS campaign migration does not consume complete action model bindings")
     if any(value == "clipboard" for value in bindings["actions"].values()):
