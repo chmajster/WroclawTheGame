@@ -69,8 +69,12 @@ class FreeModelCoverage(unittest.TestCase):
             "surveillance_camera",
             "cctv_monitor",
             "hide_container",
+            "hide_park",
             "hide_shelf",
             "street_lamp",
+            "environment_sign_backing",
+            "roadblock_barrier",
+            "noise_throwable",
             "city_interior_sofa",
             "city_interior_table",
             "city_interior_chair",
@@ -93,10 +97,13 @@ class FreeModelCoverage(unittest.TestCase):
             "Source/WroclawTheGame/AI/SliceEnemy.cpp",
             "Source/WroclawTheGame/Vehicles/DriveableVehicle.cpp",
             "Source/WroclawTheGame/Character/SliceCharacter.cpp",
+            "Source/WroclawTheGame/World/RoadBlockSystem.cpp",
+            "Source/WroclawTheGame/Interaction/NoiseThrowable.cpp",
         ]
         for source in sources:
             text = (ROOT / source).read_text(encoding="utf-8")
             self.assertNotIn("/Engine/BasicShapes/Cube", text, source)
+            self.assertNotIn("/Engine/BasicShapes/Sphere", text, source)
 
     def test_humanoid_bindings_use_rigged_character_catalog(self):
         character_ids = {x["id"] for x in self.characters if x.get("category") == "body"}
@@ -109,6 +116,34 @@ class FreeModelCoverage(unittest.TestCase):
         for script in ("Scripts/prepare_content.py", "Scripts/prepare_geography.py", "Scripts/prepare_character_creator.py"):
             source = (ROOT / script).read_text(encoding="utf-8")
             ast.parse(source, filename=script)
+
+
+    def test_physical_actions_do_not_use_generic_clipboard_proxy(self):
+        self.assertNotIn("clipboard", set(self.bindings["actions"].values()))
+
+    def test_all_world_hides_have_models(self):
+        world = json.loads((ROOT / "Data/openworld.json").read_text(encoding="utf-8"))
+        mapping = {
+            "container": self.bindings["systems"]["hide_container"],
+            "park_hiding": self.bindings["systems"]["hide_park"],
+            "garage_hiding": self.bindings["systems"]["hide_shelf"],
+        }
+        self.assertEqual({item["id"] for item in world["hides"]}, set(mapping))
+        self.assertTrue(all(mapping.values()))
+
+    def test_environment_signs_have_physical_backing(self):
+        environment = json.loads((ROOT / "Data/environment.json").read_text(encoding="utf-8"))
+        self.assertGreater(sum(1 for item in environment if item["type"] == "sign"), 0)
+        self.assertEqual(self.bindings["systems"]["environment_sign_backing"], "wtg-original-sign-board")
+
+    def test_runtime_proxy_bindings_are_real_models(self):
+        self.assertEqual(self.bindings["systems"]["roadblock_barrier"], "concrete_road_barrier_02")
+        self.assertEqual(self.bindings["systems"]["noise_throwable"], "can_rusted")
+
+    def test_gis_campaign_migration_uses_complete_model_bindings(self):
+        text = (ROOT / "Scripts/prepare_geography.py").read_text(encoding="utf-8")
+        self.assertIn("model_bindings['actions']", text)
+        self.assertNotIn("else:actor.set_actor_scale3d", text)
 
 
 if __name__ == "__main__":
