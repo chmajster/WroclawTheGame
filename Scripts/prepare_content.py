@@ -197,6 +197,7 @@ def prepare():
     required_models.update(model_bindings['systems'].values())
     free_models=load_free_models(required_models)
     street_lamp_mesh=free_models[model_bindings['systems']['street_lamp']]
+    sign_backing_mesh=free_models[model_bindings['systems']['environment_sign_backing']]
     street_lamp_ids={'environment_253','environment_255','environment_257','environment_259','environment_261','environment_263','environment_265'}
     for record in environment_records:
         if record['id'] not in street_lamp_ids:continue
@@ -205,6 +206,15 @@ def prepare():
         component=apply_static_mesh(lamp,street_lamp_mesh,[1,1,1])
         component.set_collision_profile_name('NoCollision')
         lamp.set_editor_property('hlod_layer',hlod)
+
+    for record in environment_records:
+        if record['type']!='sign':continue
+        scale_x=max(.8,min(2.2,len(record['text'])/16.0))
+        position=[record['position'][0],record['position'][1],record['position'][2]-110]
+        backing=spawn(unreal.StaticMeshActor,position,'environment_signback_'+record['id'],record['rotation'])
+        component=apply_static_mesh(backing,sign_backing_mesh,[scale_x,1,1])
+        component.set_collision_profile_name('NoCollision')
+        backing.set_editor_property('hlod_layer',hlod)
 
     for record in opening_records:
         actor=spawn(unreal.StaticMeshActor,record['position'],record['id'],record.get('rotation',[0,0,0]))
@@ -238,6 +248,7 @@ def prepare():
     monitor_mesh=free_models[model_bindings['systems']['cctv_monitor']]
     hide_models={
         'container':model_bindings['systems']['hide_container'],
+        'park_hiding':model_bindings['systems']['hide_park'],
         'garage_hiding':model_bindings['systems']['hide_shelf'],
     }
     for guard in world['guards']:
@@ -249,12 +260,12 @@ def prepare():
         actor=spawn(unreal.WorldInteraction,hiding['position'],'hide_'+hiding['id'])
         actor.set_editor_property('definition_id',hiding['id']);actor.set_editor_property('kind','Hide')
         model_id=hide_models.get(hiding['id'])
-        if model_id:
-            mesh=free_models[model_id]
-            if isinstance(mesh,unreal.StaticMesh):
-                apply_static_mesh(actor,mesh,[1,1,1])
-        else:
-            hide_static_visuals(actor)
+        if not model_id:
+            raise RuntimeError('Hiding spot has no model binding: '+hiding['id'])
+        mesh=free_models[model_id]
+        if not isinstance(mesh,unreal.StaticMesh):
+            raise RuntimeError('Hiding spot model is not StaticMesh: '+model_id)
+        apply_static_mesh(actor,mesh,[1,1,1])
     for camera in world['cameras']:
         actor=spawn(unreal.SurveillanceCamera,camera['position'],'camera_'+camera['id'],camera['rotation'])
         actor.set_editor_property('definition_id',camera['id'])
