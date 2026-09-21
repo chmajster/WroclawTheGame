@@ -871,5 +871,93 @@
     "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-original-note-paper/wtg-original-note-paper.obj",
     "generated": true,
     "generator": "hand-authored deterministic OBJ"
+  },
+  {
+    "id": "wtg-facade-window-sill",
+    "name": "Facade Window Sill",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Scalable modular window sill for procedural facades.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-facade-window-sill/wtg-facade-window-sill.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
+  },
+  {
+    "id": "wtg-facade-window-lintel",
+    "name": "Facade Window Lintel",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Scalable modular window lintel for procedural facades.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-facade-window-lintel/wtg-facade-window-lintel.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
+  },
+  {
+    "id": "wtg-facade-balcony",
+    "name": "Facade Balcony",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Scalable balcony slab and railing module.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-facade-balcony/wtg-facade-balcony.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
+  },
+  {
+    "id": "wtg-facade-gutter",
+    "name": "Facade Gutter",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Scalable horizontal gutter module.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-facade-gutter/wtg-facade-gutter.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
+  },
+  {
+    "id": "wtg-facade-downspout",
+    "name": "Facade Downspout",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Scalable vertical downspout module.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-facade-downspout/wtg-facade-downspout.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
+  },
+  {
+    "id": "wtg-facade-awning",
+    "name": "Facade Awning",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Scalable storefront awning module.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-facade-awning/wtg-facade-awning.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
+  },
+  {
+    "id": "wtg-facade-cornice",
+    "name": "Facade Cornice",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Scalable building cornice module.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-facade-cornice/wtg-facade-cornice.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
+  },
+  {
+    "id": "wtg-facade-door-step",
+    "name": "Facade Door Step",
+    "provider": "WroclawTheGame",
+    "license": "CC0-1.0",
+    "source_page": "project://original-fallbacks",
+    "intended_use": "Scalable entrance step module.",
+    "primary_path": "SourceAssets/Models/WroclawTheGame/wtg-facade-door-step/wtg-facade-door-step.obj",
+    "generated": true,
+    "generator": "hand-authored deterministic OBJ"
   }
 ]
