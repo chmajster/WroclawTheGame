@@ -56,10 +56,14 @@ a zapis blokowany do świadomego rozpoczęcia nowej gry.
 w faktycznym świecie UE na osobnych slotach testowych. Testy nie zastępują
 ręcznej rozgrywki i nie nadpisują slotu gracza.
 
-Potwierdzone: build UHT/UBT, cztery testy WTG.District, sześć testów GIS,
+Potwierdzone: build UHT/UBT, cztery testy WTG.District, osiem testów GIS,
 pipeline ram/balustrad, przygotowanie mapy/animacji/audio, render HUD i
 SaveSmoke pieszo/w aucie/complete/reward once/future version preserved.
-Pełny SessionSmoke i odczyt w nowym procesie są obecnie weryfikowane.
+Pełny SessionSmoke PASS: 151,88 s, 459,48 m rzeczywistej jazdy, rozpoczęcie,
+restart, wejście/wyjście, dostawa, utrata wanted, reakcja policji i zapis.
+Replay w nowym procesie PASS: ukończona misja, 430 zł i pojedyncza transakcja.
+Pomiar dotyczy automatycznego sterowania przez tę samą fizykę, bez teleportacji
+przejazdu; nie jest ręcznym testem odczuć sterowania.
 
 Oprawa jest rozwijanym prototypem: uproszczone bryły elewacji i modele CC0,
 bez kompletnej garderoby, autorskiego voice acting i szczegółowych modeli

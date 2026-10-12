@@ -1,12 +1,13 @@
 """Update gameplay placement from generated source without rebaking geometry."""
 import json
 import math
+import os
 import sys
 from pathlib import Path
 import unreal
 root=Path(unreal.Paths.project_dir())
 sys.path.insert(0,str(root/'Scripts'))
-from district_facades import opening_pose
+from district_facades import opening_pose,wall_material
 marker=root/'Saved/DistrictPlacementReady.ok'
 marker.unlink(missing_ok=True)
 try:
@@ -22,10 +23,39 @@ try:
     levels=unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
     levels.load_level('/Game/Maps/Nadodrze_Playable')
     actors=unreal.get_editor_subsystem(unreal.EditorActorSubsystem).get_all_level_actors()
+    if os.environ.get('WTG_REBAKE_DISTRICT_BUILDINGS')=='1':
+        editor_actors=unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
+        for a in actors:
+            if a.get_actor_label().startswith('District_building_'):
+                a.get_component_by_class(unreal.StaticMeshComponent).set_static_mesh(None)
+                editor_actors.destroy_actor(a)
+        files=json.loads((root/'Saved/PlayableDistrict/Meshes/meshes.json').read_text(encoding='utf-8'))
+        baked=0
+        for filename in files:
+            if not filename.startswith('building_'):continue
+            record=json.loads((root/'Saved/PlayableDistrict/Meshes'/filename).read_text(encoding='utf-8'))
+            name=Path(filename).stem
+            mesh=unreal.GeoMeshLibrary.bake_mesh('/Game/Generated/GIS/PlayableDistrict/'+name,[unreal.Vector(*p) for p in record['vertices']],record['triangles'])
+            material=unreal.load_asset('/Game/SurfaceQuality/Instances/MI_'+record['material'])
+            mesh.set_material(0,material)
+            if not unreal.EditorAssetLibrary.save_loaded_asset(mesh,False):raise RuntimeError('Building save failed: '+name)
+            a=editor_actors.spawn_actor_from_class(unreal.StaticMeshActor,unreal.Vector(*record['origin']),unreal.Rotator())
+            a.set_actor_label('District_'+name)
+            component=a.get_component_by_class(unreal.StaticMeshComponent)
+            component.set_static_mesh(mesh);component.set_collision_profile_name('BlockAll');baked+=1
+        unreal.log('WTG_DISTRICT_BUILDINGS_REBAKED count='+str(baked))
+        actors=editor_actors.get_all_level_actors()
     registry=[a for a in actors if isinstance(a,unreal.WTGDistrictRegistry)]
     if len(registry)!=1:
         raise RuntimeError('Expected one district registry')
     r=registry[0]
+    wall_cache={}
+    for a in actors:
+        label=a.get_actor_label()
+        if label.startswith('District_building_'):
+            surface=label.rsplit('_',1)[1]
+            if surface not in wall_cache:wall_cache[surface]=wall_material(unreal,surface)
+            a.get_component_by_class(unreal.StaticMeshComponent).set_material(0,wall_cache[surface])
     r.set_editor_property('vehicle_yaw',plan['vehicle_yaw'])
     r.set_editor_property('vehicle_spawn',unreal.Vector(*plan['anchors']['vehicle']))
     r.set_editor_property('delivery_route',[unreal.Vector(*p) for p in plan['delivery_route']])

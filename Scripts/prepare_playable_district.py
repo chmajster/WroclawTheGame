@@ -102,7 +102,11 @@ def prepare():
         if not mesh:
             raise RuntimeError('Mesh generation failed: '+name)
         surface=record.get('material') or {'water':'Water','terrain':'Soil','rail':'Metal','green':'Soil'}.get(record['kind'],'Concrete')
-        material=unreal.load_asset('/Game/SurfaceQuality/Instances/MI_'+surface) or unreal.load_asset('/Game/Generated/M_'+surface)
+        if record['kind']=='building':
+            from district_facades import wall_material
+            material=wall_material(unreal,surface)
+        else:
+            material=unreal.load_asset('/Game/SurfaceQuality/Instances/MI_'+surface) or unreal.load_asset('/Game/Generated/M_'+surface)
         if material:
             mesh.set_material(0,material)
         if not unreal.EditorAssetLibrary.save_loaded_asset(mesh,False):

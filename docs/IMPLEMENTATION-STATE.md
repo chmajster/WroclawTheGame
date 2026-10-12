@@ -1,36 +1,31 @@
 # Full game expansion — implementation state
 
-## Current continuation point ? stream 7 / PR #138
+## Current continuation point - stream 7 / PR #138
 
-Streams 1?6 are merged. Stream 7 remains in progress on
-`feat/07-playable-session-validation`; do not mark the full session complete.
+Streams 1-6 are merged. Stream 7 remains in progress on
+`feat/07-playable-session-validation`.
 
-Completed: launch/test helpers, native session/replay harness; camera socket
-fix, walking/wall/floor/jump, giver/failure/restart/prompt/entry/exit/reentry.
-Car source anchor moved onto a legal lane; directed virtual graph anchor
-preserves one-way restrictions. Eight GIS tests and latest UHT/UBT PASS.
-Sedan primary imports now select bodies; proportions/parked height corrected.
-AI now follows the nearest point plus lookahead along the lane, uses a planned
-sensor orientation, and resolves mutual traffic stops with rear-clearance
-checked reversing by the yielding actor. Ambient spawns check occupied space.
-The latter fixes SaveSmoke failures caused by NPCs spawning inside the parked
-player car: all save checks PASS at 14:52:46 UTC (foot/vehicle/complete/reward
-once/future preserved). Facade opening pivots and principal axes refitted;
-12000 instances refreshed and saved; no source geometry replacement.
+Full physical SessionSmoke PASS 15:02:38 UTC: 151.88 seconds, 459.48 m,
+walking/wall/floor/jump/camera, giver/failure/restart/prompt/entry/exit,
+real delivery, wanted lost, one reward saved, police dispatch and saved
+progress restored. Replay PASS 15:04:11 UTC in a new process: completed
+mission, 430 PLN, one transaction. All SaveSmoke checks and four native
+rules PASS; eight GIS tests PASS. The earlier traffic-overlap load failure
+was fixed by occupied-space checks at NPC spawn. Car body and proportions,
+physical steering, nearest-lane lookahead, checked yielding/passing fixed.
 
-Full physical SessionSmoke PASS at 15:02:38 UTC: 151.88 seconds, 459.48 m
-actually travelled, physical exit, wanted lost, delivery reward saved once,
-police dispatch and saved progress restored. Replay is running in a new process.
+Latest build PASS. Restored 12000 facade instances; checks run once after
+game physics registers (editor commandlet query scene was unavailable).
+Refitted imported pivots, rebaked 127 building meshes from current source,
+added private double-sided wall material instances for complete presentation.
+Geo startup preserves actor yaw for the third-person camera and gives a
+district-specific Polish greeting.
 
-Next: inspect DistrictSessionReplay.log, compile the pending facade support
-change, then rerun prepare_district_placement.py and final renderer. Editor
-commandlet has no wall query scene; the prior editor-time support filter
-removed ALL openings (placed=0). The pending change moves support checks to
-a one-shot game timer after physics registration; rebuilding restores all
-source openings, runtime support removes/snaps only unsupported panels.
-Inspect native WTG_FACADE_SUPPORT logs plus player/car/street/river screenshots;
-do NOT leave the generated map without its facade instances. Then finalize
-rules/docs/PR, merge and visible launch. No CI.
+Next: final Test-PlayableDistrict.ps1 is running (exec session2774), including
+rules/save/full session/replay after the visual and startup changes. Inspect
+DistrictFinalTests.log and individual smoke logs. Final native renderer
+PID472 captures player/car/street/river and frame measurements; inspect images,
+record results, finalize docs/PR, merge and launch visible game. No CI.
 
 Historical notes below are prior batches, not current acceptance status.
 Presentation remains a CC0/procedural prototype without full wardrobe/hero

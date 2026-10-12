@@ -78,7 +78,7 @@ void AWTGFacadeInstanceCluster::BeginPlay()
 void AWTGFacadeInstanceCluster::ValidateWallSupport()
 {
     int32 Kept=0,Removed=0;
-    for(auto* Component:FacadeComponents){
+    for(UHierarchicalInstancedStaticMeshComponent* Component:FacadeComponents){
         if(!Component || !Component->GetStaticMesh())continue;
         const auto Bounds=Component->GetStaticMesh()->GetBounds();
         Component->bAutoRebuildTreeOnInstanceChanges=false;
