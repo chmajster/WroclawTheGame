@@ -51,6 +51,7 @@ void UMenuFlowSubsystem::Deinitialize()
     if(Camera)Camera->Destroy();Camera=nullptr;PC.Reset();Super::Deinitialize();
 }
 UWorld* UMenuFlowSubsystem::MenuWorld() const { return PC.IsValid()?PC->GetWorld():nullptr; }
+TSharedPtr<SMenuShell> UMenuFlowSubsystem::SlateMenu() const { return Widget?Widget->SlateMenu():nullptr; }
 void UMenuFlowSubsystem::Attach(ASliceController* C)
 {
     if(Widget)Widget->RemoveFromParent();Widget=nullptr;Camera=nullptr;PC=C;
@@ -144,6 +145,7 @@ bool UMenuFlowSubsystem::StartNew()
 bool UMenuFlowSubsystem::Load(const FString& Slot)
 {
     if(!MenuWorld())return false;
+    bool SaveValid=false;DescribeSave(Slot,SaveValid);if(!SaveValid){Notice=TEXT("Zapis niedostępny lub niezgodny.");return false;}
     if(Transition([this,Slot]{if(!Load(Slot) && Widget)Widget->Refresh();}))return true;
     if(Slot==TEXT("campaign") || Slot==TEXT("city")){
         auto* M=GetGameInstance()->GetSubsystem<USliceMission>();
@@ -185,7 +187,7 @@ void UMenuFlowSubsystem::PrepareLoadingScreen(const FString& Map)
 }
 void UMenuFlowSubsystem::HideForCreator(){if(Widget)Widget->RemoveFromParent();Widget=nullptr;}
 void UMenuFlowSubsystem::RestoreAfterCreator(){if(IsFrontEnd())ShowMain();else ShowPause();}
-void UMenuFlowSubsystem::CreatedSession(){bHasSession=true;Resume();}
+void UMenuFlowSubsystem::CreatedSession(){bHasSession=true;ExecutingTransition=true;Resume();ExecutingTransition=false;}
 TArray<FString> UMenuFlowSubsystem::SaveSlots() const
 {
     if(MenuWorld() && !MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()){

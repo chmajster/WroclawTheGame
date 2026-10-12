@@ -37,6 +37,7 @@ public:
     class UWorld* MenuWorld() const;
     float TransitionOpacity=1;
     bool IsTransitioning() const { return bool(DeferredOperation); }
+    TSharedPtr<class SMenuShell> SlateMenu() const;
     void ApplicationActivationChanged(bool Active);
 private:
     UPROPERTY() TObjectPtr<class UFrontEndMenuWidget> Widget;

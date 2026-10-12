@@ -13,6 +13,8 @@ public:
     virtual FReply OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E) override;
     virtual FReply OnPreviewMouseButtonDown(const FGeometry& G,const FPointerEvent& E) override;
     void SelectPage(int32 Page);
+    void PreviewVideoMode(FIntPoint Resolution,int32 WindowMode);
+    bool IsVideoConfirmationPending() const { return VideoPending; }
 private:
     TWeakObjectPtr<UMenuFlowSubsystem> Flow;
     TSharedPtr<class SOverlay> Layers;

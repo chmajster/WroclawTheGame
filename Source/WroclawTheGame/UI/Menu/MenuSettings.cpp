@@ -62,7 +62,8 @@ void SMenuShell::BuildSettings()
         Form->AddSlot().AutoHeight()[Choice(TEXT("Limit FPS"),{TEXT("Bez limitu"),TEXT("30"),TEXT("60"),TEXT("90"),TEXT("120"),TEXT("144"),TEXT("165"),TEXT("240")},FMath::Max(0,Limit),[Limits](int32 I){UWTGPerformanceSettings::Get()->SetFPSLimit(Limits[I]);})];
         const TArray<FString> Quality={TEXT("Niska"),TEXT("Średnia"),TEXT("Wysoka"),TEXT("Ultra")};
         auto Apply=[S]{S->ApplyNonResolutionSettings();S->SaveSettings();};
-        Form->AddSlot().AutoHeight()[Choice(TEXT("Preset jakości"),Quality,S->GetOverallScalabilityLevel(),[this,S,Apply](int32 I){S->SetOverallScalabilityLevel(I);Apply();Refresh();})];
+        auto Presets=Quality;Presets.Add(TEXT("Własne ustawienia"));
+        Form->AddSlot().AutoHeight()[Choice(TEXT("Preset jakości"),Presets,S->GetOverallScalabilityLevel()<0?4:S->GetOverallScalabilityLevel(),[this,S,Apply](int32 I){if(I<4){S->SetOverallScalabilityLevel(I);Apply();Refresh();}})];
         Form->AddSlot().AutoHeight()[Choice(TEXT("Tekstury"),Quality,S->GetTextureQuality(),[S,Apply](int32 I){S->SetTextureQuality(I);Apply();})];
         Form->AddSlot().AutoHeight()[Choice(TEXT("Cienie"),Quality,S->GetShadowQuality(),[S,Apply](int32 I){S->SetShadowQuality(I);Apply();})];
         Form->AddSlot().AutoHeight()[Choice(TEXT("Antyaliasing"),Quality,S->GetAntiAliasingQuality(),[S,Apply](int32 I){S->SetAntiAliasingQuality(I);Apply();})];
@@ -92,14 +93,14 @@ void SMenuShell::BuildControls()
     Form->AddSlot().AutoHeight()[ValueToggle(TEXT("Odwróć oś Y"),TAttribute<bool>::CreateLambda([I]{return I->Profile.bInvertMouseY;}),[I](bool V){I->Profile.bInvertMouseY=V;I->SaveProfile();})];
     Form->AddSlot().AutoHeight()[ValueSlider(TEXT("Czułość kontrolera (0,1–5)"),TAttribute<float>::CreateLambda([I]{return (I->Profile.GamepadSensitivity-.1f)/4.9f;}),[I](float V){I->SetGamepadSensitivity(.1f+4.9f*V);})];
     Form->AddSlot().AutoHeight()[ValueSlider(TEXT("Martwa strefa kontrolera (0–0,5)"),TAttribute<float>::CreateLambda([I]{return I->Profile.GamepadDeadzone*2;}),[I](float V){I->SetGamepadDeadzone(V*.5f);})];
-    Form->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Pad: lewy drążek — ruch / skręt; prawy — kamera; RT/LT — gaz / hamowanie. ESC / START: pauza. F5/F9: zapis/odczyt (zarezerwowane)."),18,WTGMenu::Muted)];
+    Form->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Pad: lewy drążek — ruch / skręt; prawy — kamera; RT/LT — gaz / hamowanie. Stałe: ESC / START — pauza; F5/F9 — zapis/odczyt; ENTER, N, L, Q — skróty ekranów kampanii."),18,WTGMenu::Muted)];
     Form->AddSlot().AutoHeight()[Action(TEXT("Przywróć domyślne sterowanie"),[this,I]{Confirm(TEXT("Przywrócić sterowanie?"),TEXT("Własne przypisania i czułość zostaną zastąpione."),[this,I]{I->ResetToDefaults();Refresh();});})];
-    if(!CapturingBinding.IsNone())Form->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Naciśnij nowy klawisz / przycisk. ESC: anuluj."),24,WTGMenu::Accent,true)];
+    if(!CapturingBinding.IsNone())Form->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Naciśnij nowy klawisz / przycisk. ESC / START: anuluj."),24,WTGMenu::Accent,true)];
     for(const auto& B:I->Bindings()){
         Form->AddSlot().AutoHeight().Padding(0,10,0,0)[WTGMenu::Text(B.Label,20,WTGMenu::Muted)];
         auto Row=SNew(SHorizontalBox);
-        Row->AddSlot().FillWidth(1)[Action(I->Key(B.Id).GetDisplayName().ToString(),[this,Id=B.Id]{CapturingBinding=Id;CapturingGamepad=false;Refresh();})];
-        if(B.Gamepad.IsValid())Row->AddSlot().FillWidth(1).Padding(8,0)[Action(I->Key(B.Id,true).GetDisplayName().ToString(),[this,Id=B.Id]{CapturingBinding=Id;CapturingGamepad=true;Refresh();})];
+        Row->AddSlot().FillWidth(1)[Action(I->DisplayKey(I->Key(B.Id)),[this,Id=B.Id]{CapturingBinding=Id;CapturingGamepad=false;Refresh();})];
+        if(B.Gamepad.IsValid())Row->AddSlot().FillWidth(1).Padding(8,0)[Action(I->DisplayKey(I->Key(B.Id,true)),[this,Id=B.Id]{CapturingBinding=Id;CapturingGamepad=true;Refresh();})];
         Form->AddSlot().AutoHeight()[Row];
     }
 }
@@ -114,6 +115,7 @@ void SMenuShell::RevertVideoChange()
 {
     if(!VideoPending)return;auto* S=GEngine->GetGameUserSettings();S->RevertVideoMode();S->ApplyResolutionSettings(false);VideoPending=false;
 }
+void SMenuShell::PreviewVideoMode(FIntPoint Resolution,int32 Mode){PendingResolution=Resolution;PendingWindowMode=Mode;BeginVideoChange();}
 void SMenuShell::Tick(const FGeometry& G,double T,float Dt)
 {
     SCompoundWidget::Tick(G,T,Dt);

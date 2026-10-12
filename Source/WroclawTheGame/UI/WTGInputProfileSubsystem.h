@@ -44,6 +44,7 @@ public:
     UFUNCTION(BlueprintCallable, Category="Input") void SetUIScale(float Value);
     static const TArray<FWTGInputBinding>& Bindings();
     FKey Key(FName ActionId,bool Gamepad=false) const;
+    static FString DisplayKey(FKey Key);
     void SaveProfile();
     void ApplyToPlayer();
 private:

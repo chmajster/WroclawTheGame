@@ -98,11 +98,12 @@ void SMenuShell::Refresh()
 }
 void SMenuShell::BuildMain()
 {
-    const auto SavedFiles=Flow->SaveSlots();bool Valid=false;if(!SavedFiles.IsEmpty())Flow->DescribeSave(SavedFiles[0],Valid);
-    Navigation->AddSlot().AutoHeight()[Action(TEXT("Kontynuuj"),[this,SavedFiles]{
-        auto Load=[this,SavedFiles]{if(!Flow->Load(SavedFiles[0]))Refresh();};
+    const auto SavedFiles=Flow->SaveSlots();FString Latest;
+    for(const auto& Slot:SavedFiles){bool Valid=false;Flow->DescribeSave(Slot,Valid);if(Valid){Latest=Slot;break;}}
+    Navigation->AddSlot().AutoHeight()[Action(TEXT("Kontynuuj"),[this,Latest]{
+        auto Load=[this,Latest]{if(!Flow->Load(Latest))Refresh();};
         if(Flow->bHasSession)Confirm(TEXT("Wczytać ostatni zapis?"),TEXT("Niezapisany postęp bieżącej sesji zostanie utracony."),Load);else Load();
-    },Valid,TEXT("Ostatni poprawny zapis dzielnicy"))];
+    },!Latest.IsEmpty(),TEXT("Ostatni poprawny zapis dzielnicy"))];
     Navigation->AddSlot().AutoHeight()[Action(TEXT("Nowa gra"),[this]{Confirm(TEXT("Rozpocząć nową grę?"),TEXT("Bieżący zapis Nadodrza zostanie zastąpiony. Postać zachowa wybrany wygląd."),[this]{if(!Flow->StartNew())Refresh();});})];
     Navigation->AddSlot().AutoHeight()[Action(TEXT("Wczytaj grę"),[this]{SelectPage(1);})];
     Navigation->AddSlot().AutoHeight()[Action(TEXT("Ustawienia"),[this]{SelectPage(2);})];
@@ -196,7 +197,7 @@ FReply SMenuShell::OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E)
     const FKey K=E.GetKey();
     if(Flow.IsValid() && Flow->IsTransitioning())return FReply::Handled();
     if(!CapturingBinding.IsNone()){
-        if(K==EKeys::Escape || K==EKeys::Gamepad_FaceButton_Right){CapturingBinding=NAME_None;Refresh();return FReply::Handled();}
+        if(K==EKeys::Escape || K==EKeys::Gamepad_Special_Right || (!CapturingGamepad && K==EKeys::Gamepad_FaceButton_Right)){CapturingBinding=NAME_None;Refresh();return FReply::Handled();}
         auto* Input=Flow->GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>();
         const bool OK=CapturingGamepad?Input->RebindGamepad(CapturingBinding,K):Input->RebindKeyboard(CapturingBinding,K);
         if(OK){CapturingBinding=NAME_None;Flow->Notice=TEXT("Przypisanie zapisane.");Refresh();}

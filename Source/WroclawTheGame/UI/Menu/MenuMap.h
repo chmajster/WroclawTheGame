@@ -7,6 +7,8 @@ class UMenuFlowSubsystem;
 class SMenuMap : public SCompoundWidget
 {
 public:
+    float ViewZoom() const { return Zoom; }
+    FVector2D ViewCenter() const { return Center; }
     SLATE_BEGIN_ARGS(SMenuMap) {} SLATE_ARGUMENT(UMenuFlowSubsystem*,Flow) SLATE_END_ARGS()
     void Construct(const FArguments& A);
     virtual bool SupportsKeyboardFocus() const override { return true; }
