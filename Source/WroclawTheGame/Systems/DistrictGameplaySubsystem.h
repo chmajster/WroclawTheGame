@@ -19,6 +19,7 @@ public:
     bool IsSearching() const;
     void RecoverPlayer();
     Wroclaw::WantedState Wanted;
+    uint32 RecoverySerial=0;
 private:
     UPROPERTY() TObjectPtr<class AWTGDistrictRegistry> Registry;
     float Accumulator=0;

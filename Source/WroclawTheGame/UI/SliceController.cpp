@@ -16,6 +16,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraActor.h"
 #include "Audio/SliceAudio.h"
+#include "Mission/DistrictDeliverySubsystem.h"
+#include "Systems/DistrictGameplaySubsystem.h"
 void ASliceController::BeginPlay()
 {
     Super::BeginPlay();
@@ -102,6 +104,7 @@ void ASliceController::SetupInputComponent()
         B.bConsumeInput = false;
     };
     Bind(EKeys::Escape, &ASliceController::Escape);
+    Bind(EKeys::R, &ASliceController::RetryDistrict);
     Bind(EKeys::Enter, &ASliceController::Confirm);
     Bind(EKeys::N, &ASliceController::NewGame);
     Bind(EKeys::L, &ASliceController::LoadGame);
@@ -375,6 +378,13 @@ void ASliceController::LoadGame()
         return;
     }
     if (M->ContinueGame()) Reload();
+}
+void ASliceController::RetryDistrict()
+{
+    if (CharacterCreatorWidget || bKeypad || !GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()) return;
+    auto* Delivery=GetWorld()->GetSubsystem<UDistrictDeliverySubsystem>();
+    if (!Delivery->Restart() && GetGameInstance()->GetSubsystem<USliceMission>()->bDead)
+    {GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->RecoverPlayer();ResumeGame();}
 }
 void ASliceController::Quit()
 {

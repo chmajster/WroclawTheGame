@@ -129,7 +129,7 @@ def prepare():
     registry=spawn(unreal.WTGDistrictRegistry,(0,0,0),'Registry')
     for field,key in (('meeting_point','meeting'),('delivery_point','delivery'),('vehicle_spawn','vehicle')):
         registry.set_editor_property(field,unreal.Vector(*plan['anchors'][key]))
-    start=list(plan['anchors']['meeting']);start[2]+=94
+    start=list(plan['anchors'].get('player',plan['anchors']['meeting']));start[2]+=104
     registry.set_editor_property('player_start',unreal.Vector(*start))
     registry.set_editor_property('vehicle_yaw',plan['vehicle_yaw'])
     registry.set_editor_property('bounds_min',unreal.Vector(*plan['bounds_min']))
