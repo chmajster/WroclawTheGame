@@ -1,19 +1,19 @@
 # Start location production — 2026-10-12
 
-Primary live log: current start-location PR, stream 5/10.
+Primary live log: current start-location PR, stream 6/10.
 See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 5/10. Eight buildings integrated, 2272 source-based instances in 29 HISM clusters, 29 nearby PBR surface cells and 50 rail strips. Reviewed CC0 grass acquired. Material usage and first-view warmup fixed; thin ground excluded from Lumen mesh SDF to remove black over-occlusion. Decorative cars avoid gameplay vehicle paths.
+Stream 6/10. Initial and recovery view aligned to meeting, walkable floor required and recovery velocity cleared; original XY retained. Authored trunk-only UCX tree produced, three FBX LODs imported and map placement updated.
 
-Validation and limitations: Native module build, base bake, isolated placement and three rendered camera captures PASS. Every image actually inspected. 14 source tests and all 28 manifests PASS. Heights/windows estimated, roofs simplified, no accessible interiors. Actual walking/FPS follows in stream 8.
+Validation and limitations: Native C++ build PASS; all 13 native assets PASS including one trunk hull and 74 building wall hulls. Real game with NullRHI passed district save/recovery/vehicle smoke in isolated slot. Rendered walking/camera/FPS follows in stream 8.
 
 ## Do zrobienia
 Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
 
 ## Następny krok
-Create stream 6 branch from main, align initial/recovery camera toward meeting point and add authored tree trunk collision; import and verify updated tree.
+Create stream 7 branch from main; persist near-view LOD thresholds, full Nanite fallback and native instancing/triangle/texture budget report.
 
 ## Stan
 Stream complete; overall implementation in progress. No CI manually run.

@@ -80,6 +80,8 @@ void AGeoPreviewGameMode::Tick(float Dt)
     if (!GetWorld()->LineTraceSingleByChannel(Hit, Start + FVector(0, 0, 100), Start - FVector(0, 0, 400),
                                               ECC_Visibility, Params))
         return;
+    if (Hit.ImpactNormal.Z < P->GetCharacterMovement()->GetWalkableFloorZ())
+        return;
     P->SetActorEnableCollision(true);
     if (!P->TeleportTo(Hit.ImpactPoint + FVector(0, 0, P->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()+4), P->GetActorRotation(), false, false))
     {
@@ -87,5 +89,12 @@ void AGeoPreviewGameMode::Tick(float Dt)
         return;
     }
     P->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+    for (TActorIterator<AWTGDistrictRegistry> It(GetWorld()); It; ++It)
+    {
+        const FRotator View = It->StartViewRotation();
+        P->SetActorRotation(FRotator(0, View.Yaw, 0));
+        if (auto* PC = P->GetController()) PC->SetControlRotation(View);
+        break;
+    }
     bReady = true;
 }

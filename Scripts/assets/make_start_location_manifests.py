@@ -16,7 +16,7 @@ def main():
                         license=data['license'],reference_directory=None),
             mesh=dict(max_triangles=120000 if building else 18000,combine=True,generate_uv_if_missing=False),
             lod=dict(ratios=[1,.55,.22]),
-            collision=dict(mode='authored' if building else ('simple' if asset['asset'] in ['curb','bike-rack','parked-car'] else 'none'),max_hulls=32 if building else 1),
+            collision=dict(mode='authored' if asset['collision_shapes'] else ('simple' if asset['asset'] in ['curb','bike-rack','parked-car'] else 'none'),max_hulls=32 if building else 1),
             textures={},materials=[dict(slot=i,asset='/Game/Wroclaw/StartLocation/Materials/MI_'+name) for i,name in enumerate(asset['materials'])],
             unreal=dict(destination='/Game/Wroclaw/StartLocation/'+asset['area'],nanite=building,qa_map='/Game/Maps/Nadodrze_Playable'),
             qa=dict(automation_filter='WTG.District',cameras=['Start_Player','Start_Street'],screenshot_width=1280,screenshot_height=720))

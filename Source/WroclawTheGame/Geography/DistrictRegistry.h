@@ -20,6 +20,11 @@ class WROCLAWTHEGAME_API AWTGDistrictRegistry : public AActor
     GENERATED_BODY()
 public:
     AWTGDistrictRegistry();
+    FRotator StartViewRotation() const
+    {
+        const FVector Direction = MeetingPoint - PlayerStart;
+        return FRotator(-12.f, Direction.IsNearlyZero() ? 0.f : Direction.Rotation().Yaw, 0.f);
+    }
     UPROPERTY(EditAnywhere) FString DistrictId = TEXT("nadodrze_odra");
     UPROPERTY(EditAnywhere) FString Title = TEXT("Nadodrze — przesyłka znad Odry");
     UPROPERTY(EditAnywhere) FVector MeetingPoint;
