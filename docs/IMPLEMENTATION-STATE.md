@@ -5,18 +5,18 @@ See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 4/10. 13 original source meshes and manifests produced; all 39 FBX LOD exports PASS, 257206 total LOD0 triangles, 73 wall UCX hulls plus three prop hulls. Shared PBR materials actually imported (14 interfaces). Native import revealed disappearing small-material slots after decimation; pipeline now maps LOD slots by names and binds real interfaces before copying, avoiding default-material section collapse.
+Stream 4/10. 13 original full meshes, 39 actual FBX LOD exports, 257206 aggregate LOD0 triangles, eight buildings with 74 separate wall hulls. 59 native uassets imported and saved. Shared 14 PBR/material interfaces. Fixed LOD name mapping and binding order after a concrete import failure.
 
-Validation and limitations: 28 manifests and pipeline/acquisition unit tests PASS. Actual native import is progressing; fresh completion marker still required. Height/windows remain estimated; static fronts have no accessible interiors.
+Validation and limitations: Actual native import batch PASS 13; fresh native asset verifier PASS 13: metric bounds, source/native slot names and interfaces, three UV-bearing LODs, valid multi-material sections and required hull counts. 28 manifests, 10 source tests and Python AST PASS. Building heights/layout estimated, roofs simplified, no accessible interiors.
 
 ## Do zrobienia
-Finish native import for all 13 and validate complete reports, bounds and LOD sections. Do not count earlier failed import as successful.
+Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
 
 ## Następny krok
-Wait for active StartImport.log process, verify WTG_BATCH_IMPORT_PASS 13 and fresh 13 import reports; inspect material section mappings and update this PR before merge.
+Merge stream 4; branch feat/start-location-environment from main. Exclude eight replacement building IDs from background GIS bake and generic windows, build source-driven street plan, place full models and repeated props, apply road/sidewalk PBR and coherent daylight; actual rendered inspection follows.
 
 ## Stan
-In progress, stream 4/10. No CI manually run.
+Stream complete; overall implementation in progress. No CI manually run.
 
 # Earlier city asset production — completed first batch
 

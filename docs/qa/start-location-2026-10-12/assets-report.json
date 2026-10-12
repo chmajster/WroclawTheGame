@@ -1,0 +1,516 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_45",
+      "lods": 3,
+      "slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "lod_section_slots": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          3,
+          5
+        ]
+      ],
+      "hulls": 10,
+      "bounds_cm": [
+        2687.260009765625,
+        2766.42919921875,
+        2325.0004647510214
+      ]
+    },
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_47",
+      "lods": 3,
+      "slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "lod_section_slots": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          3,
+          4,
+          5,
+          6
+        ]
+      ],
+      "hulls": 7,
+      "bounds_cm": [
+        1937.90283203125,
+        1952.8167724609375,
+        2325.0001542971877
+      ]
+    },
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_43",
+      "lods": 3,
+      "slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "lod_section_slots": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          3,
+          5,
+          6
+        ]
+      ],
+      "hulls": 14,
+      "bounds_cm": [
+        2189.564453125,
+        2495.64453125,
+        2185.0004425811057
+      ]
+    },
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_courtyard_east",
+      "lods": 3,
+      "slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "lod_section_slots": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          3,
+          5
+        ]
+      ],
+      "hulls": 11,
+      "bounds_cm": [
+        2121.482666015625,
+        2233.0902099609375,
+        1905.0001770939562
+      ]
+    },
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_courtyard_west",
+      "lods": 3,
+      "slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "lod_section_slots": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          3,
+          5
+        ]
+      ],
+      "hulls": 5,
+      "bounds_cm": [
+        887.4071044921875,
+        711.3847351074219,
+        1584.9999310618769
+      ]
+    },
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_nobla_3",
+      "lods": 3,
+      "slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "lod_section_slots": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          3,
+          5
+        ]
+      ],
+      "hulls": 10,
+      "bounds_cm": [
+        1765.8885498046875,
+        1879.457275390625,
+        1985.0002703404607
+      ]
+    },
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_paulinska_2a",
+      "lods": 3,
+      "slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "lod_section_slots": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          3,
+          4,
+          5,
+          6
+        ]
+      ],
+      "hulls": 9,
+      "bounds_cm": [
+        1871.8299560546875,
+        1662.0143432617188,
+        2085.0001305388287
+      ]
+    },
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_32",
+      "lods": 3,
+      "slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "lod_section_slots": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          3,
+          5
+        ]
+      ],
+      "hulls": 8,
+      "bounds_cm": [
+        2018.20166015625,
+        3681.6322021484375,
+        2185.0005393493047
+      ]
+    },
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Roads/SM_wtg_start_curb",
+      "lods": 3,
+      "slots": [
+        "Stone"
+      ],
+      "lod_section_slots": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "hulls": 1,
+      "bounds_cm": [
+        100.0,
+        16.000003814697266,
+        24.20000206630482
+      ]
+    },
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Roads/SM_wtg_start_drain",
+      "lods": 3,
+      "slots": [
+        "Metal"
+      ],
+      "lod_section_slots": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "hulls": 0,
+      "bounds_cm": [
+        45.0,
+        35.0,
+        6.200005521400044
+      ]
+    },
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Props/SM_wtg_start_bike_rack",
+      "lods": 3,
+      "slots": [
+        "Metal"
+      ],
+      "lod_section_slots": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "hulls": 1,
+      "bounds_cm": [
+        99.0,
+        13.0,
+        101.99074660341796
+      ]
+    },
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Vegetation/SM_wtg_start_young_tree",
+      "lods": 3,
+      "slots": [
+        "Metal",
+        "Wood",
+        "Leaf"
+      ],
+      "lod_section_slots": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "hulls": 0,
+      "bounds_cm": [
+        355.8016662597656,
+        342.81678771972656,
+        557.2438334860838
+      ]
+    },
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Props/SM_wtg_start_parked_car",
+      "lods": 3,
+      "slots": [
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Rubber",
+        "Paint",
+        "Light"
+      ],
+      "lod_section_slots": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      ],
+      "hulls": 1,
+      "bounds_cm": [
+        431.9999694824219,
+        206.20000457763672,
+        143.00003138793727
+      ]
+    }
+  ]
+}
