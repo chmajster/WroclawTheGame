@@ -86,9 +86,9 @@ void SMenuShell::Refresh()
 }
 void SMenuShell::BuildMain()
 {
-    const auto Slots=Flow->SaveSlots();bool Valid=false;if(!Slots.IsEmpty())Flow->DescribeSave(Slots[0],Valid);
-    Navigation->AddSlot().AutoHeight()[Action(TEXT("Kontynuuj"),[this,Slots]{
-        auto Load=[this,Slots]{if(!Flow->Load(Slots[0]))Refresh();};
+    const auto SavedFiles=Flow->SaveSlots();bool Valid=false;if(!SavedFiles.IsEmpty())Flow->DescribeSave(SavedFiles[0],Valid);
+    Navigation->AddSlot().AutoHeight()[Action(TEXT("Kontynuuj"),[this,SavedFiles]{
+        auto Load=[this,SavedFiles]{if(!Flow->Load(SavedFiles[0]))Refresh();};
         if(Flow->bHasSession)Confirm(TEXT("Wczytać ostatni zapis?"),TEXT("Niezapisany postęp bieżącej sesji zostanie utracony."),Load);else Load();
     },Valid,TEXT("Ostatni poprawny zapis dzielnicy"))];
     Navigation->AddSlot().AutoHeight()[Action(TEXT("Nowa gra"),[this]{Confirm(TEXT("Rozpocząć nową grę?"),TEXT("Bieżący zapis Nadodrza zostanie zastąpiony. Postać zachowa wybrany wygląd."),[this]{if(!Flow->StartNew())Refresh();});})];
@@ -119,8 +119,8 @@ void SMenuShell::BuildGame()
 void SMenuShell::BuildSaves()
 {
     Content->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Zapisane historie"),38,WTGMenu::Paper,true)];
-    auto Slots=Flow->SaveSlots();if(Slots.IsEmpty())Content->AddSlot().AutoHeight().Padding(0,30)[WTGMenu::Text(TEXT("Nie masz jeszcze zapisanej gry."),22,WTGMenu::Muted)];
-    for(const auto& Slot:Slots){bool Valid=false;const FString Description=Flow->DescribeSave(Slot,Valid);
+    auto SavedFiles=Flow->SaveSlots();if(SavedFiles.IsEmpty())Content->AddSlot().AutoHeight().Padding(0,30)[WTGMenu::Text(TEXT("Nie masz jeszcze zapisanej gry."),22,WTGMenu::Muted)];
+    for(const auto& Slot:SavedFiles){bool Valid=false;const FString Description=Flow->DescribeSave(Slot,Valid);
         Content->AddSlot().AutoHeight().Padding(0,14)[WTGMenu::Card(SNew(SVerticalBox)
             +SVerticalBox::Slot().AutoHeight()[WTGMenu::Text(Description,20,Valid?WTGMenu::Paper:WTGMenu::Muted)]
             +SVerticalBox::Slot().AutoHeight().Padding(0,16,0,0)[Action(TEXT("Wczytaj"),[this,Slot]{Confirm(TEXT("Wczytać zapis?"),TEXT("Niezapisany postęp bieżącej sesji zostanie utracony."),[this,Slot]{if(!Flow->Load(Slot))Refresh();});},Valid)])];
@@ -187,7 +187,7 @@ FReply SMenuShell::OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E)
         auto* Input=Flow->GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>();
         const bool OK=CapturingGamepad?Input->RebindGamepad(CapturingBinding,K):Input->RebindKeyboard(CapturingBinding,K);
         if(OK){CapturingBinding=NAME_None;Flow->Notice=TEXT("Przypisanie zapisane.");Refresh();}
-        else Flow->Notice=TEXT("Ten klawisz jest zarezerwowany lub zaj\u0119ty w tym kontek\u015bcie.");
+        else {Flow->Notice=TEXT("Ten klawisz jest zarezerwowany lub zaj\u0119ty w tym kontek\u015bcie.");Refresh();}
         return FReply::Handled();
     }
     if(K==EKeys::Escape || K==EKeys::Gamepad_FaceButton_Right){
@@ -199,4 +199,11 @@ FReply SMenuShell::OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E)
         const int Delta=Step?Step:(E.IsShiftDown()?-1:1);
         Focused=(Focused+Delta+FocusOrder.Num())%FocusOrder.Num();FSlateApplication::Get().SetKeyboardFocus(FocusOrder[Focused],EFocusCause::Navigation);return FReply::Handled();}
     return FReply::Unhandled();
+}
+FReply SMenuShell::OnPreviewMouseButtonDown(const FGeometry&,const FPointerEvent& E)
+{
+    if(CapturingBinding.IsNone() || CapturingGamepad)return FReply::Unhandled();
+    const bool OK=Flow->GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->RebindKeyboard(CapturingBinding,E.GetEffectingButton());
+    if(OK){CapturingBinding=NAME_None;Flow->Notice=TEXT("Przypisanie zapisane.");}
+    else Flow->Notice=TEXT("Przycisk myszy jest już zajęty w tym kontekście.");Refresh();return FReply::Handled();
 }

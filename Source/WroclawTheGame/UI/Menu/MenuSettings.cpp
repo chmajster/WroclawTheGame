@@ -17,7 +17,7 @@ TSharedRef<SWidget> SMenuShell::Choice(const FString& Label,const TArray<FString
 {
     auto Options=MakeShared<TArray<TSharedPtr<FString>>>();for(const auto& V:Values)Options->Add(MakeShared<FString>(V));
     auto Current=MakeShared<FString>(Values[FMath::Clamp(Selected,0,Values.Num()-1)]);
-    auto Combo=SNew(SComboBox<TSharedPtr<FString>>).OptionsSource(Options.Get()).InitiallySelectedItem((*Options)[FMath::Clamp(Selected,0,Values.Num()-1)])
+    auto Combo=SNew(SComboBox<TSharedPtr<FString>>).OptionsSource(&Options.Get()).InitiallySelectedItem((*Options)[FMath::Clamp(Selected,0,Values.Num()-1)])
         .OnGenerateWidget_Lambda([Options](TSharedPtr<FString> Item){return WTGMenu::Text(*Item,20);})
         .OnSelectionChanged_Lambda([Options,Current,Changed](TSharedPtr<FString> Item,ESelectInfo::Type){if(Item){*Current=*Item;Changed(Options->IndexOfByKey(Item));}})
         [SNew(STextBlock).Text_Lambda([Current]{return FText::FromString(*Current);}).Font(WTGMenu::Font(20)).ColorAndOpacity(WTGMenu::Paper)];
@@ -44,9 +44,9 @@ TSharedRef<SWidget> SMenuShell::ValueToggle(const FString& Label,TAttribute<bool
 void SMenuShell::BuildSettings()
 {
     Content->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Ustawienia"),38,WTGMenu::Paper,true)];
-    auto Categories=SNew(SHorizontalBox);const TCHAR* Names[]={TEXT("OBRAZ"),TEXT("DŹWIĘK"),TEXT("INTERFEJS")};
-    for(int32 I=0;I<3;++I)Categories->AddSlot().FillWidth(1).Padding(0,18,6,20)[Action(Names[I],[this,I]{SettingsCategory=I;Refresh();})];
-    Content->AddSlot().AutoHeight()[Categories];auto Form=SNew(SVerticalBox);
+    auto SettingsCategoryRow=SNew(SHorizontalBox);const TCHAR* Names[]={TEXT("OBRAZ"),TEXT("DŹWIĘK"),TEXT("INTERFEJS")};
+    for(int32 I=0;I<3;++I)SettingsCategoryRow->AddSlot().FillWidth(1).Padding(0,18,6,20)[Action(Names[I],[this,I]{SettingsCategory=I;Refresh();})];
+    Content->AddSlot().AutoHeight()[SettingsCategoryRow];auto Form=SNew(SVerticalBox);
     Content->AddSlot().AutoHeight()[WTGMenu::Card(Form)];
     if(SettingsCategory==0){
         auto* S=GEngine->GetGameUserSettings();

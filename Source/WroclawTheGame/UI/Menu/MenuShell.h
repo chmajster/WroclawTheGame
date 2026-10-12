@@ -10,6 +10,7 @@ public:
     void Refresh();
     virtual bool SupportsKeyboardFocus() const override { return true; }
     virtual FReply OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E) override;
+    virtual FReply OnPreviewMouseButtonDown(const FGeometry& G,const FPointerEvent& E) override;
     void SelectPage(int32 Page);
 private:
     TWeakObjectPtr<UMenuFlowSubsystem> Flow;
