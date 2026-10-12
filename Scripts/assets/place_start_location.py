@@ -67,7 +67,7 @@ def prepare():
         if clusters[key].add_facade_instance(mesh,transform)<0:raise RuntimeError('Cannot instance '+role)
     for key,cluster in clusters.items():
         for component in cluster.get_components_by_class(unreal.HierarchicalInstancedStaticMeshComponent):
-            configure_instances(component)
+            configure_instances(component,policy['quality'])
             component.set_collision_profile_name('BlockAll' if key[2] in ['curb','bike-rack','parked-car','seating','bin','lamp','young-tree'] else 'NoCollision')
             if key[2]=='paint':component.set_material(0,unreal.load_asset(DEST+'/Materials/MI_Frame'))
     # Surface replacements use source mesh classification, not arbitrary actor positions.

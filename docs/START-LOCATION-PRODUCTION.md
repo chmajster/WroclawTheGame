@@ -121,3 +121,18 @@ Natywna kontrola 13 zasobów potwierdziła jeden hull drzewa, 74 hulle ścian
 budynków oraz dotychczasowe kolizje krawężników, stojaków i aut dekoracyjnych.
 Build C++ zakończył się powodzeniem. Kontrola rozgrywki i kamery na obrazach
 następuje w strumieniu 8; nie zastępujemy jej kontrolą samej siatki.
+
+## 7. Jakość blisko gracza i budżet
+
+Polityka w `Data/start_location.json` jest wykonywana przez importer i
+`prepare_start_location_quality.py`. Budynki zachowują Nanite i pełny fallback;
+progi konwencjonalnych LOD wynoszą 1/0,22/0,06. Drzewa utrzymują drobne gałęzie
+blisko gracza (1/0,01/0,003), pozostałe rekwizyty mają 1/0,16/0,04.
+Instancje wygaszają się między 180 a 260 m. 21 współdzielonych map PBR ma
+włączony streaming i limit 2k; trawa pozostaje w źródłowym 1k.
+
+Rzeczywista kontrola UE: 2272 instancje, 29 HISM, 466628 trójkątów LOD0
+nowego otoczenia razem z instancjami (limit 1600000), 2259 prostych kształtów
+kolizji. Kontrola zapisanych progów LOD zakończyła się PASS. Nie jest to
+pomiar VRAM ani FPS całej dzielnicy; istniejący świat, postacie i stare detale
+mają odrębny koszt. Mapa nadal korzysta z komórek GIS, bez World Partition.

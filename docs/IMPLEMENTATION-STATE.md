@@ -1,19 +1,19 @@
 # Start location production — 2026-10-12
 
-Primary live log: current start-location PR, stream 6/10.
+Primary live log: current start-location PR, stream 7/10.
 See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 6/10. Initial and recovery view aligned to meeting, walkable floor required and recovery velocity cleared; original XY retained. Authored trunk-only UCX tree produced, three FBX LODs imported and map placement updated.
+Stream 7/10. Native quality applied and verified: 2272 instances / 29 HISM / 466628 aggregate new-scene LOD0 triangles below 1.6M cap. Full Nanite building fallback; near tree LOD retains branches, separate prop/building thresholds, cull180-260m, 21 streaming textures capped2k.
 
-Validation and limitations: Native C++ build PASS; all 13 native assets PASS including one trunk hull and 74 building wall hulls. Real game with NullRHI passed district save/recovery/vehicle smoke in isolated slot. Rendered walking/camera/FPS follows in stream 8.
+Validation and limitations: Native quality PASS, persisted LOD thresholds compared with policy; 10 source tests PASS. Source budget counts actual Native triangles and colliders, not FPS or VRAM. Placement input regenerated after source policy hash change.
 
 ## Do zrobienia
 Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
 
 ## Następny krok
-Create stream 7 branch from main; persist near-view LOD thresholds, full Nanite fallback and native instancing/triangle/texture budget report.
+Create stream 8 branch; implement non-pausing actual-game smoke with steady frame measurement, walking/camera/collision probes, run district regressions and inspect final screenshots.
 
 ## Stan
 Stream complete; overall implementation in progress. No CI manually run.
