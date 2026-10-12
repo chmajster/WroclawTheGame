@@ -7,6 +7,7 @@ import re
 import traceback
 import time
 import hashlib
+from datetime import datetime, timezone
 from pathlib import Path
 
 import unreal
@@ -70,6 +71,9 @@ def prepare() -> None:
         raise RuntimeError("QA camera labels collide after filename sanitization")
     screenshot_files = [out / f"{name}.png" for name in safe_names]
     for filename in screenshot_files: filename.unlink(missing_ok=True)
+    map_file=ROOT/"Content"/(manifest["unreal"]["qa_map"].removeprefix("/Game/")+".umap")
+    native_files=[map_file]+sorted((ROOT/"Content/Wroclaw/TenementKit").rglob("*.uasset"))
+    native_hashes={str(path.relative_to(ROOT)).replace('\\','/'):hashlib.sha256(path.read_bytes()).hexdigest() for path in native_files if path.is_file()}
 
     @unreal.AutomationScheduler.add_latent_command
     def capture_all():
@@ -88,6 +92,7 @@ def prepare() -> None:
                 raise RuntimeError("Fresh screenshot files missing")
             report={"asset_id":asset_id,"map":manifest["unreal"]["qa_map"],"status":"PASS",
                 "visual_review":"NOT_REVIEWED","screenshots":[str(path.relative_to(ROOT)) for path in screenshot_files],
+                "captured_utc":datetime.now(timezone.utc).isoformat(),"native_files_sha256":native_hashes,
                 "sha256":{path.name:hashlib.sha256(path.read_bytes()).hexdigest() for path in screenshot_files}}
             report_path.write_text(json.dumps(report,indent=2),encoding="utf-8")
             marker.write_text("PASS\n",encoding="utf-8")

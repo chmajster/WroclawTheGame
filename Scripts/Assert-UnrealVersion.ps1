@@ -30,4 +30,4 @@ if ($DetectedVersion -ne $ExpectedVersion) {
     throw "EngineRoot points to Unreal Engine $DetectedVersion; project requires $ExpectedVersion."
 }
 
-Write-Host "Verified Unreal Engine $ExpectedVersion: $EngineRoot"
+Write-Host "Verified Unreal Engine ${ExpectedVersion}: $EngineRoot"

@@ -19,7 +19,7 @@ New-Item -ItemType Directory -Path (Join-Path $Root 'Saved/Logs') -Force | Out-N
 $Report=Join-Path $Output 'production.json'
 $Marker=Join-Path $Output 'production.ok'
 Remove-Item -LiteralPath $Marker -ErrorAction SilentlyContinue
-$State=@{status='IN_PROGRESS';run_id=$RunId;stages=@();native='NOT_RUN';visual_review='NOT_REVIEWED';next='source audit'}
+$State=@{status='IN_PROGRESS';run_id=$RunId;stages=@();native='NOT_RUN';gameplay='NOT_REQUESTED';visual_review='NOT_REVIEWED';next='source audit'}
 $OldPythonPath=$env:PYTHONPATH
 $OldManifest=$env:WTG_ASSET_MANIFEST
 $OldManifests=$env:WTG_ASSET_MANIFESTS
@@ -33,6 +33,7 @@ function Run-Python([string[]]$Arguments) {
     if($LASTEXITCODE -ne 0){throw "Python failed: $($Arguments -join ' ')"}
 }
 function Run-Editor([string]$Script,[string]$Name,[string]$Completion,[switch]$Render) {
+    $State.next="$Script ($Name)"; Save-State
     $Completion=Join-Path $Root $Completion
     Remove-Item -LiteralPath $Completion -ErrorAction SilentlyContinue
     $NativeArgs=@($Project,'/Engine/Maps/Entry',"-ExecutePythonScript=$Root/$Script",'-unattended','-nosplash',"-abslog=$Root/Saved/Logs/$Name.log")
@@ -41,7 +42,7 @@ function Run-Editor([string]$Script,[string]$Name,[string]$Completion,[switch]$R
     & $Editor @NativeArgs *> "$Root/Saved/Logs/$Name-stdout.log"
     $Code=$LASTEXITCODE
     $Log=Get-Content -LiteralPath "$Root/Saved/Logs/$Name.log" -Raw
-    if($Code -ne 0 -or !(Test-Path -LiteralPath $Completion)){throw "Native stage failed: $Name; inspect its log"}
+    if($Code -ne 0 -or !(Test-Path -LiteralPath $Completion)){throw "Native stage failed: $Name (exit $Code, marker $Completion); inspect its log"}
     if((Get-Item -LiteralPath $Completion).LastWriteTimeUtc -lt $Started){throw "Stale native marker: $Name"}
     if($Log -match 'LogPython: Error:|LogEditorPythonExecuter: Error:|Fatal error:|Failed to compile Material'){throw "Native stage errors: $Name"}
 }
@@ -118,8 +119,10 @@ try {
     }
     Complete-Stage 'five fresh rendered views' 'optional gameplay checks/visual review'
     if($GameplayChecks){
+        $State.gameplay='IN_PROGRESS';$State.next='Scripts/Test-PlayableDistrict.ps1 (see DistrictSessionSmoke/Replay logs)';Save-State
         & "$Root/Scripts/Test-PlayableDistrict.ps1" -EngineRoot $EngineRoot
         if(!$?){throw 'District gameplay regression checks failed'}
+        $State.gameplay='PASS'
         Complete-Stage 'district rules/save/session/replay' 'visual review'
     }
     $State.native='PASS';$State.status='EXECUTION_PASS';$State.next='Inspect five PNG views; native success does not establish visual acceptance or whole-city performance'

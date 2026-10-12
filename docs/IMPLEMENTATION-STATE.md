@@ -1,6 +1,6 @@
 # City asset production — active pass 2026-10-12
 
-Primary live log: PR #150 (stream 5/6); #146-149 merged. Source decisions,
+Primary live log: PR #151 (stream 6/6 complete); #146-150 merged. Source decisions,
 license and evidence: docs/CITY-ASSET-PRODUCTION.md and CITY-ASSET-CREDITS.md.
 Existing gameplay/menu work below is complete.
 
@@ -16,23 +16,37 @@ accounted for in placement; front-facing handles/guards verified in captures.
 Acquisition: real CC0 Sandstone Cracks 2k by Rob Tuytel downloaded and locked
 with provider MD5 and independent SHA256; offline reuse PASS. Existing 66-model
 library reused instead of duplicate props. All five new meshes actually imported.
-Native WTG.Assets.TenementKit PASS for original three; extension to five in
-stream 6. Four placement tests and ten acquisition/pipeline tests PASS.
+Native WTG.Assets.TenementKit PASS for all five, including full stone fallback,
+three LODs, material slots and open railing rear. 16 focused tests PASS;
+27 broader city tests PASS with correct PYTHONPATH. 15 manifests PASS.
 
-Do zrobienia: stream 6 one-command production and complete batch validation.
-Stream 5 native quality complete; profiles visible in close perspective capture.
-Hero landmarks and wider
-city remain future production, explicitly listed in Data/city_asset_needs.json.
-The generated district has not been converted to World Partition.
+Do zrobienia: nothing within the implemented first batch. Hero landmarks and
+wider city remain future production, explicitly listed in Data/city_asset_needs.json.
+The generated district has not been converted to World Partition; no real
+large-world HLOD/FPS acceptance claim. Existing facade/window/ground art and
+lighting contrast/temporal noise remain prototype-level limitations.
 
-Następny krok: merge complete PR #150, branch from main for stream 6;
-create Scripts/Invoke-CityAssetProduction.ps1 and extend native test to five.
+Następny krok: merge complete PR #151. Next production batch starts
+market_and_town_hall from Data/city_asset_needs.json: inspect existing GIS/catalog
+and legal references, author actual Town Hall geometry, create
+Pipeline/assets/rynek/ratusz.asset.json, then import and source-driven placement.
+Do not use an empty or generic box as a completed landmark.
+
+Integrated run 20261012-201713 EXECUTION_PASS: five exports/imports, quality,
+placement, native Automation and five fresh rendered views. District rules/save,
+full delivery (147.35 s / 459.49 m) and separate-process resume (5.01 s) PASS.
+Explicit inspection of five PNGs PASS_WITH_LIMITATIONS, archived with SHA256
+and native kit/map fingerprints in docs/qa/city-assets-2026-10-12/review.json.
+See that directory README for evidence/logs; reproduce with
+Scripts/Invoke-CityAssetProduction.ps1 -Python Saved/GISPython/Scripts/python.exe
+-GameplayChecks. Parser defect in Assert-UnrealVersion fixed; delayed native
+shutdown uses real settling time rather than just fast NullRHI frame count.
 Budget PASS: 6,549,600 instanced LOD0 triangles, six unique textures, 26,077,960
 source bytes and 83,886,084 bytes conservative RGBA mip upper bound.
 Source quality policy applied on every future import/placement. Screenshots are freshly generated
 with hashes; capture success alone is not visual acceptance.
 
-Stan: in progress. Generic GIS facade enrichment, no surveyed reconstruction
+Stan: first batch complete. Generic GIS facade enrichment, no surveyed reconstruction
 or AAA claim. Existing missions/vehicles/building openings retained. No CI run.
 
 # Menu rebuild - stages 1-7 complete
