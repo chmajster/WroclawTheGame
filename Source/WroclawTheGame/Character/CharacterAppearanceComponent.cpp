@@ -20,6 +20,7 @@
 #include "Animation/AnimInstance.h"
 #include "Animation/AnimSingleNodeInstance.h"
 #include "Animation/BlendSpace1D.h"
+#include "HAL/PlatformTime.h"
 
 UCharacterAppearanceComponent::UCharacterAppearanceComponent()
 { PrimaryComponentTick.bCanEverTick=true; PrimaryComponentTick.bTickEvenWhenPaused=true; }
@@ -218,7 +219,9 @@ void UCharacterAppearanceComponent::Render()
 }
 void UCharacterAppearanceComponent::TickComponent(float Dt,ELevelTick T,FActorComponentTickFunction* F)
 {
-    Super::TickComponent(Dt,T,F); if (!VisualRoot) return; Time+=Dt;
+    Super::TickComponent(Dt,T,F); if (!VisualRoot) return;
+    if(bPreview){const double Now=FPlatformTime::Seconds();Dt=PreviewRealTime>0?FMath::Clamp(float(Now-PreviewRealTime),0.f,.05f):0.f;PreviewRealTime=Now;}
+    Time+=Dt;
     const auto* Character=Cast<ASliceCharacter>(GetOwner());
     const bool Crouched=bPreview?PreviewMovement==TEXT("Crouch"):(Character && Character->bIsCrouched);
     if (Character) VisualRoot->SetRelativeLocation(FVector(0,0,-Character->GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight()));
@@ -251,6 +254,7 @@ void UCharacterAppearanceComponent::TickComponent(float Dt,ELevelTick T,FActorCo
             if (Cast<UBlendSpace1D>(Anim)) Instance->SetBlendSpacePosition(FVector(Speed,0,0));
             else Instance->SetPlayRate(Speed>10 && !Falling?FMath::Clamp(Speed/(Crouched?140.f:180.f),.7f,1.6f):1.f);
         }
+        if(bPreview && GetWorld()->IsPaused()) {BodyMesh->TickAnimation(Dt,false);BodyMesh->RefreshBoneTransforms();}
     }
 }
 TArray<FName> UWardrobeComponent::OwnedClothing() const

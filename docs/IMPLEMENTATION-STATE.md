@@ -1,20 +1,20 @@
 # Kreator postaci — bieżący stan
 
 ## Wykonane
-1/3: audyt
+2/3: UI i studio
 
-Przeanalizowano C++/UMG, katalog, renderowanie, zapis, seed, animacje, ubiór i przepływ nowej gry. Zarchiwizowano rzeczywiste obrazy i audyt natywnych zasobów.
+Trzy panele16/56/28,13 kategorii z ikonami i animacją, kontekstowe edytory, palety, działające podsumowanie i istniejący zapis/menu. Usunięto przyczynę białego targetu: izolacja kanałów widoku/światła i atmosfery, fizyczna ekspozycja. Skalowanie i kadrowanie zależne od panelu, płynny obrót/zoom i animacja kości przy pauzie.
 
-Sprawdzenia i ograniczenia: Baseline game smoke exit0, szkic zgodny z modelem; cały target i UI białe. Dwie siatki bez morphów; 11 ubrań bez modeli. Blender/UE dostępne. Raport nie deklaruje istniejących możliwości, których siatki nie mają.
+Sprawdzenia i ograniczenia: UE native build PASS. Rzeczywisty CreatorSmoke1280x720 i1920x1080 exit0, szkic zgodny, model widoczny, idle działa; obrazy obejrzane. Obraz1080 archiwizowany. Baza i garderoba przed strumieniem3 mają dotychczasowe ograniczenia; nie deklarujemy gotowej personalizacji.
 
 ## Do zrobienia
-W audycie: nic. Całe zadanie: strumienie2 UI/studio i3 realna personalizacja.
+W strumieniu2 nic. Całe zadanie: strumień3 siatki/morphy/ubiór/materiały i kontrola zapisu/gry.
 
 ## Następny krok
-Po scaleniu audytu utworzyć gałąź z main dla strumienia2. Zacząć od CharacterCreator.cpp: izolacja atmosfery/światła i fizyczna ekspozycja; następnie CharacterCreatorWidget.
+Po scaleniu utworzyć gałąź z main dla strumienia3. Pozyskać przypięte CC0 MakeHuman base/targets; Blender generator dopasowany do istniejącego riggu, import i funkcjonalna personalizacja.
 
 ## Stan
-Audyt zakończony; dalsza przebudowa w toku. Nie uruchamiano ani nie oczekiwano na CI.
+UI i studio zakończone; całe zadanie nadal w toku. Nie uruchamiano ani nie oczekiwano na CI.
 
 Pełny raport: docs/CHARACTER-CREATOR-REBUILD.md.
 

@@ -18,6 +18,10 @@ public:
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UPointLightComponent> FillLight;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UPointLightComponent> RimLight;
     UPROPERTY(BlueprintReadOnly) TObjectPtr<class UTextureRenderTarget2D> RenderTarget;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<class UStaticMeshComponent> StudioFloor;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<class UStaticMeshComponent> StudioWall;
+    void ResizePreview(FIntPoint Size);
+    void SetAngle(float Degrees);
     UFUNCTION(BlueprintCallable) void SetView(FName View);
     UFUNCTION(BlueprintCallable) void SetLighting(FName Profile);
     UFUNCTION(BlueprintCallable) void Rotate(float Degrees);
@@ -25,5 +29,9 @@ public:
     UFUNCTION(BlueprintCallable) void ResetPresentation();
     UFUNCTION() void RefreshAppearance();
 private:
-    float Distance=290, TargetDistance=290, TargetHeight=92, CameraHeight=92, Yaw=0;
+    float Distance=290, TargetDistance=290, TargetHeight=92, CameraHeight=92, Yaw=0, TargetYaw=0;
+    double LastRealTime=0;
+    FName CurrentView=TEXT("FullBody");
+    float ZoomFactor=1;
+    void UpdateFraming();
 };

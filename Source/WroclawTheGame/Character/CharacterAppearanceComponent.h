@@ -36,6 +36,7 @@ private:
     TArray<FSoftObjectPath> LoadedPaths;
     int32 RequestSerial=0;
     float Time=0;
+    double PreviewRealTime=0;
     void Render();
     void BuildPlaceholder();
     void Primitive(FName ID,FVector Location,FVector Scale,FLinearColor Color,bool Visible=true);

@@ -49,7 +49,7 @@ static FAutoConsoleCommandWithWorld GCreatorSmoke(
                 TArray<FColor> Pixels; UI->Studio->RenderTarget->GameThread_GetRenderTargetResource()->ReadPixels(Pixels);
                 int32 Lit=0,Opaque=0; for (const auto& P:Pixels) { if (P.R>5 || P.G>5 || P.B>5) ++Lit; if (P.A>0) ++Opaque; }
                 UE_LOG(LogTemp,Display,TEXT("WTG_CREATOR_SMOKE_PIXELS lit=%d alpha=%d total=%d"),Lit,Opaque,Pixels.Num());
-                TArray64<uint8> Png; FImageUtils::PNGCompressImageArray(720,1000,Pixels,Png); FFileHelper::SaveArrayToFile(Png,*(FPaths::ProjectSavedDir()/TEXT("Tests/CharacterCreatorCapture.png")));
+                TArray64<uint8> Png; FImageUtils::PNGCompressImageArray(UI->Studio->RenderTarget->SizeX,UI->Studio->RenderTarget->SizeY,Pixels,Png); FFileHelper::SaveArrayToFile(Png,*(FPaths::ProjectSavedDir()/TEXT("Tests/CharacterCreatorCapture.png")));
                 FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Tests/CharacterCreatorPreview.png"),true,false);
                 Captured=true;
             }
