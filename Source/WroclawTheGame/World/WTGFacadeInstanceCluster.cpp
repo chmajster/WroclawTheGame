@@ -19,7 +19,7 @@ UHierarchicalInstancedStaticMeshComponent* AWTGFacadeInstanceCluster::FindOrCrea
         return nullptr;
     }
 
-    for (UHierarchicalInstancedStaticMeshComponent* Component : InstanceComponents)
+    for (UHierarchicalInstancedStaticMeshComponent* Component : FacadeComponents)
     {
         if (Component && Component->GetStaticMesh() == Mesh)
         {
@@ -48,7 +48,7 @@ UHierarchicalInstancedStaticMeshComponent* AWTGFacadeInstanceCluster::FindOrCrea
     Component->SetCastShadow(true);
     AddInstanceComponent(Component);
     Component->RegisterComponent();
-    InstanceComponents.Add(Component);
+    FacadeComponents.Add(Component);
 
     return Component;
 }
@@ -67,7 +67,7 @@ int32 AWTGFacadeInstanceCluster::GetFacadeInstanceCount() const
 {
     int32 Count = 0;
 
-    for (const UHierarchicalInstancedStaticMeshComponent* Component : InstanceComponents)
+    for (const UHierarchicalInstancedStaticMeshComponent* Component : FacadeComponents)
     {
         if (Component)
         {

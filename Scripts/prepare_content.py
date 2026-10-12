@@ -59,7 +59,7 @@ def apply_static_mesh(actor, mesh, scale):
         raise RuntimeError(f'StaticMeshComponent missing on {actor.get_actor_label()}')
     component.set_static_mesh(mesh)
     component.set_editor_property('cast_shadow', True)
-    if actor.get_root_component() == component:
+    if actor.get_editor_property('root_component') == component:
         actor.set_actor_scale3d(unreal.Vector(*scale))
     else:
         component.set_relative_scale3d(unreal.Vector(*scale))
@@ -83,8 +83,8 @@ def apply_skeletal_mesh(actor, mesh, scale=(1, 1, 1), rotation=None):
     component.set_relative_scale3d(unreal.Vector(*scale))
     capsule = actor.get_component_by_class(unreal.CapsuleComponent)
     if capsule:
-        component.set_relative_location(unreal.Vector(0,0,-capsule.get_unscaled_capsule_half_height()))
-    component.set_relative_rotation(unreal.Rotator(*(rotation or [0,-90,0])))
+        component.set_relative_location(unreal.Vector(0,0,-capsule.get_unscaled_capsule_half_height()),False,False)
+    component.set_relative_rotation(unreal.Rotator(*(rotation or [0,-90,0])),False,False)
     hide_static_visuals(actor)
     return component
 
@@ -207,9 +207,15 @@ def prepare():
         lamp.set_editor_property('hlod_layer',hlod)
 
     for record in opening_records:
-        actor=spawn(unreal.StaticMeshActor,record['position'],record['id'],record.get('rotation',[0,0,0]))
-        apply_static_mesh(actor,free_models[record['model']],record.get('scale',[1,1,1]))
-        actor.set_editor_property('hlod_layer',hlod)
+        mesh=free_models[record['model']]
+        rotation=record.get('rotation',[0,0,0])
+        scale=record.get('scale',[1,1,1])
+        if isinstance(mesh,unreal.StaticMesh):
+            actor=spawn(unreal.StaticMeshActor,record['position'],record['id'],rotation)
+            apply_static_mesh(actor,mesh,scale)
+            actor.set_editor_property('hlod_layer',hlod)
+        else:
+            spawn_skeletal_visual(spawn,mesh,record['position'],record['id'],rotation,scale)
 
     content=json.loads(CHAPTER_INPUT.read_text(encoding='utf-8'))
     for action in content['actions']:
