@@ -255,6 +255,48 @@
           "sha256": "7cf8af03e47100094b9c8f1aab151c4b4b007f0b077adb3c264be919c584aa24"
         }
       }
+    },
+    {
+      "id": "ph-grass-ground",
+      "slug": "grass_ground",
+      "type": "pbr_texture_set",
+      "name": "Grass Ground",
+      "provider": "Poly Haven",
+      "authors": {
+        "Charlotte Baglioni": "All"
+      },
+      "source_url": "https://polyhaven.com/a/grass_ground",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "license_verified_on": "2026-10-12",
+      "dimensions_mm": [
+        2509.999990463257,
+        2509.999990463257
+      ],
+      "resolution": 1024,
+      "files": {
+        "base_color": {
+          "path": "SourceAssets/Textures/PolyHaven/grass_ground/grass_ground_BC.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/grass_ground/grass_ground_diff_1k.png",
+          "bytes": 5696034,
+          "md5": "8501412ae79eea2cf8ab31e68caa5cf4",
+          "sha256": "fbab95206455b849677a07372ea2050956afbb559d9da6db946e3e6c02aae6a1"
+        },
+        "normal": {
+          "path": "SourceAssets/Textures/PolyHaven/grass_ground/grass_ground_N.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/grass_ground/grass_ground_nor_dx_1k.png",
+          "bytes": 6072086,
+          "md5": "2e56d783a8fadf277ed330d7d8f893cd",
+          "sha256": "23b614d2a37c193accf0ed8dbe62da8293a4a5834702fa080f02110f67b32828"
+        },
+        "orm": {
+          "path": "SourceAssets/Textures/PolyHaven/grass_ground/grass_ground_ORM.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/grass_ground/grass_ground_arm_1k.png",
+          "bytes": 4284843,
+          "md5": "a081f1a80097fbb3f29e0b2ad3dcff75",
+          "sha256": "ec5d434f3d5a0a471f74cb4050e45b0e83ffb4035d6125631f68690c6232c0ca"
+        }
+      }
     }
   ]
 }

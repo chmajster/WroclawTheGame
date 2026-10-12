@@ -77,8 +77,7 @@ def prepare():
         elif kind=='rail':material_name='Cobble'
         elif kind=='road':material_name='Asphalt' if surface=='Asphalt' else ('Cobble' if surface=='Stone' else 'Pavement')
         elif kind=='green':
-            mesh=unreal.load_asset('/Game/Generated/GIS/PlayableDistrict/'+Path(name).stem)
-            if mesh:mesh.set_material(0,unreal.load_asset('/Game/SurfaceQuality/Instances/MI_Grass'));unreal.EditorAssetLibrary.save_loaded_asset(mesh,False)
+            material_name='Grass'
         if material_name:
             mesh=unreal.load_asset('/Game/Generated/GIS/PlayableDistrict/'+Path(name).stem)
             if not mesh:continue

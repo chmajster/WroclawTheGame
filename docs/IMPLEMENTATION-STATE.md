@@ -5,15 +5,15 @@ See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 5/10. Source regeneration excludes the eight full-model building IDs from GIS background and generic openings. Added source-node extraction, deterministic curb/drain/park furniture/vegetation/parking/crossing plan and actual placement script. Updated source daylight to 13.5 and retained mission/player anchors.
+Stream 5/10. Actual native base bake PASS (439 mesh cells, 75158 GIS triangles), original gameplay actors and source anchors retained. All eight detailed buildings placed; 2272 source-driven instances in 28 HISM groups plus 50 steel rail strips. 250 source-classified surface cells updated to CC0 PBR including newly verified Grass Ground 1k by Charlotte Baglioni. OSM crossings/furniture retained; no invented signals.
 
-Validation and limitations: Native integration and rendered review still pending. OSM controls respected; supplemental lighting/vegetation/parking explicitly estimated. No invented traffic signals.
+Validation and limitations: 17 source tests PASS. Fresh isolated native placement PASS. Combined editor script encountered Niagara access violation during repeated world reload; used isolated editor process successfully and will make final orchestrator isolate steps. Rendered inspection is in progress, not yet accepted.
 
 ## Do zrobienia
-Complete source plan, rebuild native base district/presentation, replace old CityKit placement, run place_start_location.py and inspect fresh game renders; fix visible integration errors.
+Inspect fresh actual game player/street images, fix integration/lighting/layout flaws and complete this stream.
 
 ## Następny krok
-Run Scripts/prepare_playable_district.py, Scripts/prepare_district_presentation.py, Scripts/assets/place_city_details.py and Scripts/assets/place_start_location.py in full Editor with absolute paths; require fresh markers before rendered QA.
+Wait for StartFirstRender.log completion and fresh Saved/Tests/DistrictPlayer.png and DistrictStreet.png; inspect images, correct visible issues in source/model/placement, then update PR.
 
 ## Stan
 In progress, stream 5/10. No CI manually run.

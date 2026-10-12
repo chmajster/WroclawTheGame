@@ -17,7 +17,7 @@ def prepare():
     registry=json.loads((ROOT/'Data/city_asset_acquisition.json').read_text(encoding='utf-8'))
     by_slug={a['slug']:a for a in registry['assets']}
     surfaces={'Plaster':'painted_plaster_wall','Stone':'sandstone_cracks','Roof':'roof_tiles_14',
-              'Asphalt':'asphalt_03','Pavement':'concrete_pavement_03','Cobble':'cobblestone_floor_08'}
+              'Asphalt':'asphalt_03','Pavement':'concrete_pavement_03','Cobble':'cobblestone_floor_08','Grass':'grass_ground'}
     masters={}
     for name,slug in surfaces.items():
         textures={role:import_texture(ROOT/f['path'],DEST+'/Textures',role) for role,f in by_slug[slug]['files'].items()}
@@ -34,7 +34,7 @@ def prepare():
         orm=texture_sample(edit,material,textures['orm'],-600,300,'ORM')
         edit.connect_material_property(normal,'RGB',unreal.MaterialProperty.MP_NORMAL)
         for pin,prop in [('R',unreal.MaterialProperty.MP_AMBIENT_OCCLUSION),('G',unreal.MaterialProperty.MP_ROUGHNESS),('B',unreal.MaterialProperty.MP_METALLIC)]:edit.connect_material_property(orm,pin,prop)
-        if name in ['Asphalt','Pavement','Cobble']:
+        if name in ['Asphalt','Pavement','Cobble','Grass']:
             # GIS ground has arbitrary/degenerate UVs; use centimetre world XY.
             world=edit.create_material_expression(material,unreal.MaterialExpressionWorldPosition,-1100,0)
             divide=edit.create_material_expression(material,unreal.MaterialExpressionDivide,-900,0);divide.set_editor_property('const_b',float(by_slug[slug]['dimensions_mm'][0])/10)
