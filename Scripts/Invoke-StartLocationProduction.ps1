@@ -27,9 +27,9 @@ function Invoke-Step([string]$Name,[scriptblock]$Action){
 }
 function Invoke-Editor([string]$Name,[string]$Script,[string]$Marker,[switch]$Render){
  $started=[DateTime]::UtcNow;$log=Join-Path $out "$Name.log"
- $args=@($project,'/Engine/Maps/Entry','-unattended','-nosplash',"-ExecutePythonScript=$(Join-Path $taskRoot $Script)","-abslog=$log")
- if(!$Render){$args+='-nullrhi'}
- & $editor @args *> (Join-Path $out "$Name-stdout.log")
+ $editorArgs=@($project,'/Engine/Maps/Entry','-unattended','-nosplash',"-ExecutePythonScript=$(Join-Path $taskRoot $Script)","-abslog=$log")
+ if(!$Render){$editorArgs+='-nullrhi'}
+ & $editor @editorArgs *> (Join-Path $out "$Name-stdout.log")
  $nativeExit=$LASTEXITCODE;$path=Join-Path $taskRoot $Marker
  if($nativeExit -ne 0 -or !(Test-Path -LiteralPath $path) -or (Get-Item -LiteralPath $path).LastWriteTimeUtc -lt $started){throw "$Name failed or lacks fresh marker; inspect $log"}
  if(Select-String -LiteralPath $log -Pattern 'LogPython: Error|Fatal error:|Usage flag .*missing'){throw "$Name logged an error; inspect $log"}
@@ -42,14 +42,18 @@ try {
  }
  $acquire=@('Scripts/assets/acquire_city_assets.py');if($DownloadReviewed){$acquire+='--download'}
  Invoke-Step 'reviewed-source-checksums' {& $PythonExe @acquire}
- Invoke-Step 'manifest-validation' {& $PythonExe Pipeline/qa/validate_manifest.py --all}
- Invoke-Step 'asset-catalog' {& $PythonExe Scripts/assets/write_start_location_catalog.py}
+ if($Mode -eq 'Validate'){
+  Invoke-Step 'manifest-validation' {& $PythonExe Pipeline/qa/validate_manifest.py --all}
+ }else{
+  Invoke-Step 'manifest-schema' {& $PythonExe Pipeline/qa/validate_manifest.py --all --schema-only}
+ }
  if($Mode -ne 'Validate'){
   Invoke-Step 'source-gis' {& $PythonExe Scripts/gis/build_playable_district.py}
   Invoke-Step 'start-audit' {& $PythonExe Scripts/assets/audit_start_location.py}
   Invoke-Step 'source-footprints' {& $PythonExe Scripts/assets/build_start_location_inputs.py}
   Invoke-Step 'original-blender-models' {& $BlenderExe --background --python-exit-code 1 --python Scripts/assets/build_start_location_models.py *> (Join-Path $out 'models.log')}
   Invoke-Step 'production-manifests' {& $PythonExe Scripts/assets/make_start_location_manifests.py}
+  Invoke-Step 'manifest-validation' {& $PythonExe Pipeline/qa/validate_manifest.py --all}
   foreach($manifest in Get-ChildItem -LiteralPath Pipeline/assets/start_location -Filter '*.asset.json'){
    $path=$manifest.FullName
    Invoke-Step ("fbx-"+$manifest.BaseName) {& $BlenderExe --background --python-exit-code 1 --python Pipeline/blender/build_asset.py -- --manifest $path *> (Join-Path $out ($manifest.BaseName+'.log'))}
@@ -59,8 +63,10 @@ try {
  }
  if($Mode -eq 'Full'){
   if(!(Test-Path -LiteralPath $editor)){throw 'Unreal executable missing; provide EngineRoot.'}
-  if(!(Test-Path -LiteralPath Saved/FreeModelImportMap.json)){throw 'Existing free-model import map missing; run Scripts/import_free_models.py with Unreal first.'}
   Invoke-Step 'native-module' {& (Join-Path $EngineRoot 'Engine/Build/BatchFiles/Build.bat') WroclawTheGameEditor Win64 Development "-Project=$project" -WaitMutex -NoHotReloadFromIDE *> (Join-Path $out 'module.log')}
+  if(!(Test-Path -LiteralPath Saved/FreeModelImportMap.json)){
+   Invoke-Step 'existing-library-import' {Invoke-Editor 'library' 'Scripts/import_free_models.py' 'Saved/FreeModelsReady.ok'}
+  }
   Invoke-Step 'shared-materials' {Invoke-Editor 'materials' 'Scripts/assets/prepare_start_location_materials.py' 'Saved/StartLocation/materials.ok'}
   $env:WTG_ASSET_MANIFESTS=ConvertTo-Json -Compress -InputObject @((Get-ChildItem -LiteralPath Pipeline/assets/start_location -Filter '*.asset.json').FullName)
   Invoke-Step 'native-model-import' {Invoke-Editor 'import' 'Pipeline/unreal/import_batch.py' 'Saved/Pipeline/import/batch.ok'}
@@ -77,6 +83,7 @@ try {
    Invoke-Step 'actual-start-gameplay' {& powershell -NoProfile -ExecutionPolicy Bypass -File Scripts/Test-StartLocation.ps1 -EngineRoot $EngineRoot}
   }
  }
+ Invoke-Step 'asset-catalog' {& $PythonExe Scripts/assets/write_start_location_catalog.py}
  Save-State 'PASS';Write-Output "PASS selected mode: $Mode"
 }catch{if($steps.Count){$steps[$steps.Count-1].status='FAIL'};Save-State 'FAIL';throw}finally{
  $env:WTG_ASSET_MANIFESTS=$previousBatch;$env:WTG_ASSET_MANIFEST=$previousManifest;Pop-Location

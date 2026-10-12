@@ -1,0 +1,20 @@
+{
+  "mode": "Validate",
+  "status": "PASS",
+  "updated_utc": "2026-10-12T22:43:21.6581074Z",
+  "steps": [
+    {
+      "name": "reviewed-source-checksums",
+      "status": "PASS"
+    },
+    {
+      "name": "manifest-validation",
+      "status": "PASS"
+    },
+    {
+      "name": "asset-catalog",
+      "status": "PASS"
+    }
+  ],
+  "note": "PASS certifies only the selected mode and recorded executed stages; captures require separate visual inspection."
+}

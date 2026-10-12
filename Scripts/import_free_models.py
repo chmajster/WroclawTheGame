@@ -9,6 +9,7 @@ from pathlib import Path
 import json
 import re
 import traceback
+import sys
 import unreal
 
 ROOT = Path(unreal.Paths.project_dir()).resolve()
@@ -122,3 +123,7 @@ except Exception:
     MARKER.unlink(missing_ok=True)
     IMPORT_MAP.unlink(missing_ok=True)
     raise
+finally:
+    sys.path.insert(0,str(ROOT/'Pipeline/unreal'))
+    from import_asset import quit_after_editor_startup
+    quit_after_editor_startup()

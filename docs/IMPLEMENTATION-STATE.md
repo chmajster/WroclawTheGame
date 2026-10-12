@@ -5,18 +5,18 @@ See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 9/10. Installed executable production entry with Validate/Source/Full modes, fresh native marker checks, one process per editor stage, actual selected-mode status, source/manifest/provenance catalog and correct QA camera labels.
+Stream 9/10. Organized original/native assets byBuildings/Roads/Props/Vegetation/Materials, generated source/license/path catalog13models7CC0sets3reused types; repaired all13 manifest QA camera labels. Executable Validate/Source/Full entry isolates every editor step, rejects stale evidence and reports only executed selected-mode success. Existing library shutdown uses proven startup-settle helper.
 
-Validation and limitations: Source catalog paths and pinned CC0 metadata PASS. Native steps already performed in streams4-8; final entry Validate-mode execution and parser checks pending. Full mode not re-run against open user editor.
+Validation and limitations: Actual Validate-mode PASS:21checksummed files,28manifests,catalog paths. PowerShell parser and changedPython AST PASS. Native production steps already executed separately in4-8; entire Full entry not re-run against open user editor. No claim that selected-mode validation performed native import.
 
 ## Do zrobienia
-Execute Validate mode, inspect report, verify parser/AST/manifests and document dependencies/commands.
+Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
 
 ## Następny krok
-Run Scripts/Invoke-StartLocationProduction.ps1 -Mode Validate; require three executed stages PASS, then finalize paths/dependencies documentation.
+Create stream10 branch from main; verify ten PR streams/evidence consistency, write final results and declared limitations, mark scopecomplete and merge final PR.
 
 ## Stan
-In progress, stream9/10. No CI manually run.
+Stream complete; overall implementation in progress. No CI manually run.
 
 # Earlier city asset production — completed first batch
 
