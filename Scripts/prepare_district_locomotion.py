@@ -37,7 +37,7 @@ def prepare():
         for field,key in [('creator_idle','idle'),('walk','walk'),('jog','jog'),('crouch','crouch'),('jump_loop','jump')]: body.set_editor_property(field,clips[key])
         body.set_editor_property('locomotion',space)
         body.set_editor_property('animation_class',None)
-        body.set_editor_property('placeholder',False)
+        body.set_editor_property('placeholder',True)
         for asset in [space,mesh.get_editor_property('skeleton')]+[a.get_editor_property('skeleton') for a in clips.values()]:
             if not unreal.EditorAssetLibrary.save_loaded_asset(asset,False): raise RuntimeError('Cannot save '+asset.get_name())
         prepared.append(identifier)
