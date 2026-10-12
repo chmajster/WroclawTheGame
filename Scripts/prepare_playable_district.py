@@ -131,6 +131,8 @@ def prepare():
     facade_count=0
     mesh_cache={}
     for building in sorted(facades,key=proximity):
+        if building['building_id'] in plan.get('start_location_replacement_ids',[]):
+            continue
         if proximity(building)>23000:
             continue
         for item in building.get('openings',[]):
@@ -191,7 +193,7 @@ def prepare():
     population.set_editor_property('max_traffic_vehicles',plan['budgets']['traffic'])
     registry.set_editor_property('population',population)
     env=spawn(unreal.WTGDayNightEnvironment,(0,0,0),'Sky')
-    env.set_editor_property('time_of_day_hours',16.2)
+    env.set_editor_property('time_of_day_hours',13.5)
     env.set_editor_property('day_length_minutes',45)
     # Name signs and a recognizable river-island information point, in Polish.
     names=set()
@@ -238,4 +240,6 @@ except Exception:
     MARKER.unlink(missing_ok=True)
     raise
 finally:
-    unreal.SystemLibrary.quit_editor()
+    sys.path.insert(0,str(ROOT/'Pipeline/unreal'))
+    from import_asset import quit_after_editor_startup
+    quit_after_editor_startup()

@@ -21,6 +21,8 @@ def build(facades,district,policy):
         counts[role]+=1
     candidates=[]
     for building in facades["buildings"]:
+        if building['building_id'] in district.get('start_location_replacement_ids',[]):
+            continue
         for source in building["details"]+building["openings"]:
             if source["kind"] in {"balcony","cornice","door"} and distance(source["world_position"])<=policy["route_radius_cm"]:
                 candidates.append((distance(source["world_position"]),source["id"],building,source))

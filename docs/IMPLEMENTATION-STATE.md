@@ -1,22 +1,22 @@
 # Start location production — 2026-10-12
 
-Primary live log: current start-location PR, stream 4/10.
+Primary live log: current start-location PR, stream 5/10.
 See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 4/10. 13 original full meshes, 39 actual FBX LOD exports, 257206 aggregate LOD0 triangles, eight buildings with 74 separate wall hulls. 59 native uassets imported and saved. Shared 14 PBR/material interfaces. Fixed LOD name mapping and binding order after a concrete import failure.
+Stream 5/10. Source regeneration excludes the eight full-model building IDs from GIS background and generic openings. Added source-node extraction, deterministic curb/drain/park furniture/vegetation/parking/crossing plan and actual placement script. Updated source daylight to 13.5 and retained mission/player anchors.
 
-Validation and limitations: Actual native import batch PASS 13; fresh native asset verifier PASS 13: metric bounds, source/native slot names and interfaces, three UV-bearing LODs, valid multi-material sections and required hull counts. 28 manifests, 10 source tests and Python AST PASS. Building heights/layout estimated, roofs simplified, no accessible interiors.
+Validation and limitations: Native integration and rendered review still pending. OSM controls respected; supplemental lighting/vegetation/parking explicitly estimated. No invented traffic signals.
 
 ## Do zrobienia
-Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
+Complete source plan, rebuild native base district/presentation, replace old CityKit placement, run place_start_location.py and inspect fresh game renders; fix visible integration errors.
 
 ## Następny krok
-Merge stream 4; branch feat/start-location-environment from main. Exclude eight replacement building IDs from background GIS bake and generic windows, build source-driven street plan, place full models and repeated props, apply road/sidewalk PBR and coherent daylight; actual rendered inspection follows.
+Run Scripts/prepare_playable_district.py, Scripts/prepare_district_presentation.py, Scripts/assets/place_city_details.py and Scripts/assets/place_start_location.py in full Editor with absolute paths; require fresh markers before rendered QA.
 
 ## Stan
-Stream complete; overall implementation in progress. No CI manually run.
+In progress, stream 5/10. No CI manually run.
 
 # Earlier city asset production — completed first batch
 
