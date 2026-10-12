@@ -2,6 +2,13 @@
 
 ## Bieżący punkt kontynuacji
 
+Punkt 6 zakończony: cztery testy native, build i pełny roundtrip PASS.
+Render HUD 13:32:08 UTC: 1100 klatek, mean20,00ms/p9528,07ms przy
+przygotowywaniu Lumen. Polskie zdrowie/pieniądze/cel/kierunek i podpowiedzi
+widoczne. Punkt 7: nowa gałąź z main, DistrictSessionSmoke i Launch-District.
+Sprawdzić rzeczywistą jazdę/misję, ściany/kamerę/restart, cross-process load,
+zdiagnozować niespodziewane wanted1 podczas renderu (ReportCrime dodać log).
+
 Punkt 6: build PASS, cztery native testy WTG.District PASS. Faktyczny World
 WTG.DistrictSaveSmoke PASS (13:29:51 UTC): pieszo, auto, re-exit, complete/
 reward once, future version preserved. Osobny slot testowy usunięty.
