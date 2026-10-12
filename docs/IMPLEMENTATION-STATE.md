@@ -1,22 +1,22 @@
 # Start location production — 2026-10-12
 
-Primary live log: current start-location PR, stream 3/10.
+Primary live log: current start-location PR, stream 4/10.
 See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 3/10. Downloaded and verified five complete CC0 PBR sets at 2k (15 maps, 269900872 bytes) with provider MD5 and SHA256 locks. Existing prop library reused. Exact authors and licenses retained; original source-footprint Blender assets next.
+Stream 4/10. Authored eight full OSM-footprint buildings with real recessed window openings, frames, sill/cornice mouldings, gutters, pipes, service fronts and forged balcony geometry. Authored curb, drain, U bike rack, young supported tree and rounded parked saloon. Blender 5.2.2 actually produced editable blend and GLB files; 13 production manifests and shared PBR material import script added.
 
-Validation and limitations: Actual download PASS 18 maps total, 3 reused. Native material integration belongs to subsequent streams.
+Validation and limitations: Source generation PASS, 28 manifests PASS. Native import and exported LOD validation are still in progress. Building heights/windows are documented architectural estimates; no interior access.
 
 ## Do zrobienia
-Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
+Run three-LOD FBX pipeline for all 13 meshes, import shared materials and every native mesh, verify actual reports and scale/collision.
 
 ## Następny krok
-Merge stream 3; branch feat/start-location-models from main. Generate eight full buildings and five street props, manifest them and run Blender export/native import.
+Run Pipeline/blender/build_asset.py for Pipeline/assets/start_location/*.asset.json, then prepare_start_location_materials.py and Pipeline/unreal/import_batch.py with absolute paths in full Editor Entry NullRHI. Verify fresh markers and native logs.
 
 ## Stan
-Stream complete; overall implementation in progress. No CI manually run.
+In progress, stream 4/10. No CI manually run.
 
 # Earlier city asset production — completed first batch
 
