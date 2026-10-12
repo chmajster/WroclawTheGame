@@ -16,6 +16,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
+#include "Engine/OverlapResult.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "Misc/FileHelper.h"
@@ -117,7 +118,12 @@ bool UDistrictSaveSubsystem::Apply(const UDistrictSaveGame* D)
     if(GetWorld()->OverlapBlockingTestByChannel(Safe,FQuat::Identity,ECC_Pawn,FCollisionShape::MakeCapsule(Player->GetCapsuleComponent()->GetScaledCapsuleRadius(),Player->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()),Params))return false;
     FHitResult CarFloor;
     if(!GetWorld()->LineTraceSingleByChannel(CarFloor,D->CarPosition+FVector(0,0,150),D->CarPosition-FVector(0,0,450),ECC_Visibility,Params) || CarFloor.ImpactNormal.Z<.7)return false;
-    if(GetWorld()->OverlapBlockingTestByChannel(D->CarPosition,FQuat(FRotator(0,D->CarYaw,0)),ECC_WorldStatic,FCollisionShape::MakeBox(Car->Chassis->GetScaledBoxExtent()*.9f),Params))return false;
+    if(GetWorld()->OverlapBlockingTestByChannel(D->CarPosition,FQuat(FRotator(0,D->CarYaw,0)),ECC_WorldStatic,FCollisionShape::MakeBox(Car->Chassis->GetScaledBoxExtent()*.9f),Params)){
+        TArray<FOverlapResult> Hits;
+        GetWorld()->OverlapMultiByChannel(Hits,D->CarPosition,FQuat(FRotator(0,D->CarYaw,0)),ECC_WorldStatic,FCollisionShape::MakeBox(Car->Chassis->GetScaledBoxExtent()*.9f),Params);
+        for(const auto& Hit:Hits)UE_LOG(LogTemp,Warning,TEXT("WTG_DISTRICT_LOAD_BLOCKER actor=%s component=%s type=%d blocking=%d"),*GetNameSafe(Hit.GetActor()),*GetNameSafe(Hit.GetComponent()),Hit.GetComponent()?int(Hit.GetComponent()->GetCollisionObjectType()):-1,Hit.bBlockingHit);
+        UE_LOG(LogTemp,Warning,TEXT("WTG_DISTRICT_LOAD_BLOCKED car=%s yaw=%.1f"),*D->CarPosition.ToString(),D->CarYaw);return false;
+    }
     Car->SetAIControl(false);Car->Chassis->SetSimulatePhysics(false);Car->SetActorLocationAndRotation(D->CarPosition,FRotator(0,D->CarYaw,0),false,nullptr,ETeleportType::TeleportPhysics);
     Car->Health=D->CarHealth;Car->Speed=0;Car->bEngine=false;
     Player->SetActorLocationAndRotation(Safe,FRotator(0,D->PlayerYaw,0),false,nullptr,ETeleportType::TeleportPhysics);

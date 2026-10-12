@@ -2,30 +2,32 @@
 
 ## Current continuation point ? stream 7 / PR #138
 
-Streams 1?6 are merged. Stream 7 is in progress on
-`feat/07-playable-session-validation`; do not mark the entire session complete.
+Streams 1?6 are merged. Stream 7 remains in progress on
+`feat/07-playable-session-validation`; do not mark the full session complete.
 
 Completed: launch/test helpers, native session/replay harness; camera socket
-fix (wall test PASS), real walking/collision/jump, giver/failure/restart,
-vehicle prompt/entry/safe exit/reentry PASS. Source vehicle anchor moved out
-of the blocked courtyard onto a legal lane. Directed virtual road anchor
-preserves one-way restrictions. Eight GIS tests and UHT/UBT PASS.
-Corrected sedan imports from wheel-only primary meshes to body meshes;
-normalized body/wheel dimensions and parked ride height. Physical steering
-uses wheelbase/speed/inertia, AI uses lookahead and proper junction approach.
+fix, walking/wall/floor/jump, giver/failure/restart/prompt/entry/exit/reentry.
+Car source anchor moved onto a legal lane; directed virtual graph anchor
+preserves one-way restrictions. Eight GIS tests and latest UHT/UBT PASS.
+Sedan primary imports now select bodies; proportions/parked height corrected.
+AI now follows the nearest point plus lookahead along the lane, uses a planned
+sensor orientation, and resolves mutual traffic stops with rear-clearance
+checked reversing by the yielding actor. Ambient spawns check occupied space.
+The latter fixes SaveSmoke failures caused by NPCs spawning inside the parked
+player car: all save checks PASS at 14:52:46 UTC (foot/vehicle/complete/reward
+once/future preserved). Facade opening pivots and principal axes refitted;
+12000 instances refreshed and saved; no source geometry replacement.
 
-The last physical run stopped at road node12 near a building: the obstacle
-sweep looked toward the route but its box retained current chassis yaw.
-Fixed the sweep orientation to the planned direction; collisions remain active.
-Next: finish `Saved/Logs/DistrictSessionBuild.log`, rerun
-`WTG.DistrictSessionSmoke`, fix concrete failures, then replay with
-`-WTGDistrictSessionResume`. Run final native rules/save checks and renderer
-(car/player/street/river screenshots), record actual results, complete/merge
-PR #138 and launch the visible game. No CI workflows were run.
+Next: inspect ongoing `Saved/Logs/DistrictSessionSmoke.log` after the yielding
+fix (last earlier run stopped by CityTrafficVehicle_1 at node38). Require real
+physical delivery/reward/save/police PASS, then start the second process with
+`-WTGDistrictSessionResume`. Inspect final render (PID21684, native
+DistrictPlayer/Car/Street/River.png), rerun native rules if needed, record
+actual results, complete/merge PR #138 and launch the visible game. No CI.
 
-Historical notes below are previous implementation batches, not current
-acceptance status. Presentation remains a CC0/procedural prototype, without
-full wardrobe/hero art or a full-city simulation.
+Historical notes below are prior batches, not current acceptance status.
+Presentation remains a CC0/procedural prototype without full wardrobe/hero
+art or a full-city simulation.
 
 ## Sesja otwartego świata — zlecenie 12.10.2026
 

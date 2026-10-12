@@ -2,6 +2,7 @@
 #include "Vehicles/VehicleDefinition.h"
 #include "Vehicles/VehicleAIDriverComponent.h"
 #include "Components/BoxComponent.h"
+#include "Engine/World.h"
 
 ACityTrafficVehicle::ACityTrafficVehicle()
 {
@@ -17,8 +18,13 @@ bool ACityTrafficVehicle::ConfigureTraffic(const TArray<FVector> &Route, int32 S
     StartIndex = FMath::Clamp(StartIndex, 0, Route.Num() - 2);
     const FVector Start = Route[StartIndex] + FVector(0, 0, 85);
     const FVector Next = Route[StartIndex + 1] + FVector(0, 0, 85);
+    const FRotator Heading(0,(Next-Start).Rotation().Yaw,0);
+    FCollisionQueryParams Params(SCENE_QUERY_STAT(TrafficSpawnClearance),false,this);
+    if(GetWorld()->OverlapBlockingTestByChannel(Start,Heading.Quaternion(),ECC_Pawn,
+        FCollisionShape::MakeBox(Chassis->GetScaledBoxExtent()+FVector(30,30,0)),Params))
+        return false;
     SetActorLocation(Start, false, nullptr, ETeleportType::TeleportPhysics);
-    SetActorRotation((Next - Start).Rotation());
+    SetActorRotation(Heading);
     SetActorHiddenInGame(false);
     SetActorEnableCollision(true);
     SetActorTickEnabled(true);

@@ -369,7 +369,7 @@ void ADriveableVehicle::Collision(UPrimitiveComponent *Hit, AActor *Other,
                                   const FHitResult &Result)
 {
     const double Now = GetWorld()->GetTimeSeconds();
-    if (Now - LastImpact < .3 || Impulse.Size() / Chassis->GetMass() < 250)
+    if (!Chassis->IsSimulatingPhysics() || Now - LastImpact < .3 || Impulse.Size() / Chassis->GetMass() < 250)
         return;
     LastImpact = Now;
     const float Severity = Impulse.Size() / Chassis->GetMass() - 250.0f;

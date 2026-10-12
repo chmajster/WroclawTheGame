@@ -7,11 +7,13 @@ import importlib.util
 import json
 import math
 import os
+import sys
 import traceback
 from pathlib import Path
 import unreal
 
 ROOT=Path(unreal.Paths.project_dir()).resolve()
+sys.path.insert(0,str(ROOT/'Scripts'))
 INPUT=ROOT/'Saved/PlayableDistrict'
 MARKER=ROOT/'Saved/PlayableDistrictReady.ok'
 
@@ -138,24 +140,9 @@ def prepare():
             mesh=mesh_cache[identifier]
             if not isinstance(mesh,unreal.StaticMesh):
                 continue
-            p=list(item['world_position'])
-            yaw=float(item.get('yaw_deg',0))
+            from district_facades import opening_pose
             bounds=mesh.get_bounds()
-            # Kenney windows are in the Y/Z plane (normal X), not X/Z.
-            # Fit the authored opening, centre the imported pivot, and place
-            # its face outside the solid source footprint (no cut-out CSG).
-            local_width=bounds.box_extent.y*2 if identifier.startswith('kenney-') else bounds.box_extent.x*2
-            scale=[1,item.get('width_m',1)*100/max(local_width,1),item.get('height_m',2)*100/max(bounds.box_extent.z*2,1)]
-            if not identifier.startswith('kenney-'):
-                scale[0],scale[1]=scale[1],1
-                yaw+=90
-            p[2]-=bounds.origin.z*scale[2]
-            outward=float(item.get('yaw_deg',0));distance=55
-            p[0]+=math.cos(math.radians(outward))*distance
-            p[1]+=math.sin(math.radians(outward))*distance
-            # Offset the non-centred door pivot in its rotated local Y.
-            p[0]+=math.sin(math.radians(yaw))*bounds.origin.y*scale[1]
-            p[1]-=math.cos(math.radians(yaw))*bounds.origin.y*scale[1]
+            p,yaw,scale=opening_pose(item,[bounds.origin.x,bounds.origin.y,bounds.origin.z],[bounds.box_extent.x,bounds.box_extent.y,bounds.box_extent.z])
             transform=unreal.Transform(location=unreal.Vector(*p),rotation=unreal.Rotator(pitch=0,yaw=yaw,roll=0),scale=unreal.Vector(*scale))
             cluster(p).add_facade_instance(mesh,transform)
             facade_count+=1

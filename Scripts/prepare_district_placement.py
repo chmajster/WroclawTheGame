@@ -1,8 +1,12 @@
 """Update gameplay placement from generated source without rebaking geometry."""
 import json
+import math
+import sys
 from pathlib import Path
 import unreal
 root=Path(unreal.Paths.project_dir())
+sys.path.insert(0,str(root/'Scripts'))
+from district_facades import opening_pose
 marker=root/'Saved/DistrictPlacementReady.ok'
 marker.unlink(missing_ok=True)
 try:
@@ -43,6 +47,37 @@ try:
     r.set_editor_property('population_routes',routes)
     r.get_editor_property('population').set_editor_property('routes',routes)
     r.get_editor_property('population').set_editor_property('traffic_body_mesh',unreal.load_asset(imports[bindings['ambient_vehicle']]['primary_object']))
+    # Refit opening pivots without rebaking source geometry or pipeline assets.
+    for a in actors:
+        if a.get_actor_label().startswith('District_Facades_'):
+            unreal.get_editor_subsystem(unreal.EditorActorSubsystem).destroy_actor(a)
+    window_path=json.loads((root/'Saved/Pipeline/import/nadodrze-window-frame.json').read_text(encoding='utf-8'))['mesh']
+    window=unreal.load_asset(window_path);clusters={};cache={};count=0
+    facades=json.loads((root/'Saved/PlayableDistrict/facades.json').read_text(encoding='utf-8'))['buildings']
+    route=plan['delivery_route']+[plan['anchors']['meeting']]
+    def proximity(b):
+        points=b.get('openings',[])
+        return min((math.dist(points[0]['world_position'][:2],q[:2]) for q in route),default=math.inf) if points else math.inf
+    editor_actors=unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
+    for building in sorted(facades,key=proximity):
+        if proximity(building)>23000:continue
+        for item in building.get('openings',[]):
+            if count>=plan['budgets']['facade_instances']:break
+            identifier=item.get('asset_id')
+            if not identifier or identifier.startswith('procedural:'):continue
+            if identifier not in cache:
+                cache[identifier]=window if identifier.startswith('kenney-window-') else unreal.load_asset(imports[identifier]['primary_object'])
+                unreal.log('WTG_FACADE_BOUNDS '+identifier+' '+str(cache[identifier].get_bounds()))
+            mesh=cache[identifier];bounds=mesh.get_bounds()
+            if not isinstance(mesh,unreal.StaticMesh):continue
+            p,yaw,scale=opening_pose(item,[bounds.origin.x,bounds.origin.y,bounds.origin.z],[bounds.box_extent.x,bounds.box_extent.y,bounds.box_extent.z])
+            key=(math.floor(p[0]/12800),math.floor(p[1]/12800))
+            if key not in clusters:
+                a=editor_actors.spawn_actor_from_class(unreal.WTGFacadeInstanceCluster,unreal.Vector(key[0]*12800,key[1]*12800,0),unreal.Rotator())
+                a.set_actor_label('District_Facades_%s_%s'%key);clusters[key]=a
+            clusters[key].add_facade_instance(mesh,unreal.Transform(location=unreal.Vector(*p),rotation=unreal.Rotator(pitch=0,yaw=yaw,roll=0),scale=unreal.Vector(*scale)))
+            count+=1
+    unreal.log('WTG_FACADE_REFIT count='+str(count))
     if not levels.save_current_level():
         raise RuntimeError('Map save failed')
     marker.write_text(str(plan['vehicle_yaw']),encoding='utf-8')

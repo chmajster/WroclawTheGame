@@ -39,4 +39,5 @@ class WROCLAWTHEGAME_API UVehicleAIDriverComponent : public UActorComponent
     bool bPursuit = false;
     FVector PursuitGoal=FVector::ZeroVector;
     FVector EntryPoint=FVector::ZeroVector;
+    float ObstacleWait=0, YieldReverse=0;
 };

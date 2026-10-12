@@ -36,6 +36,7 @@ bool UVehicleAIDriverComponent::ConfigureRoute(const TArray<FVector> &Points, in
     if (FVector::Dist2D(Vehicle->GetActorLocation(), Route[TargetIndex]) < WaypointRadius)
         TargetIndex = (TargetIndex + 1) % Route.Num();
     bActive = true;
+    ObstacleWait=YieldReverse=0;
     SetComponentTickEnabled(true);
     Vehicle->SetAIControl(true, 0.0f, 0.0f, true);
     return true;
@@ -88,8 +89,14 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
 
     // Follow a point ahead along the polyline. Waiting until the intersection
     // centre to turn leaves a physical car facing the opposite pavement.
-    float Ahead=FMath::Clamp(350.f+FMath::Abs(Vehicle->Speed)*.9f,350.f,1000.f)-ToTarget.Size2D();
-    FVector Aim=Route[TargetIndex];int32 LookIndex=TargetIndex;
+    const FVector Previous=TargetIndex>0?Route[TargetIndex-1]:EntryPoint;
+    FVector FlatPosition=Position,FlatPrevious=Previous,FlatTarget=Route[TargetIndex];
+    FlatPosition.Z=FlatPrevious.Z=FlatTarget.Z=0;
+    const FVector Nearest=FMath::ClosestPointOnSegment(FlatPosition,FlatPrevious,FlatTarget);
+    float Ahead=FMath::Clamp(250.f+FMath::Abs(Vehicle->Speed)*.65f,250.f,650.f);
+    const float Remaining=FVector::Dist2D(Nearest,FlatTarget);
+    FVector Aim=Nearest+(FlatTarget-Nearest).GetSafeNormal2D()*FMath::Min(Ahead,Remaining);
+    Ahead-=Remaining;int32 LookIndex=TargetIndex;
     for(int32 Step=0;Ahead>0 && Step<Route.Num()-1;++Step)
     {
         const int32 NextIndex=LookIndex+1<Route.Num()?LookIndex+1:(bLoopRoute?0:-1);
@@ -145,6 +152,7 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
     FHitResult Hit;
     const FVector Start = Vehicle->GetActorLocation() + FVector(0, 0, 45);
     const FVector End = Start + SteeringDirection * ObstacleLookAhead;
+    ADriveableVehicle* BlockingCar=nullptr;
     if (GetWorld()->SweepSingleByChannel(
             Hit, Start, End, SteeringDirection.Rotation().Quaternion(), ECC_Pawn,
             FCollisionShape::MakeBox(FVector(170, 70, 55)), Params))
@@ -155,9 +163,23 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
         {
             bBrake = true;
             Throttle = 0.0f;
+            BlockingCar=Cast<ADriveableVehicle>(Hit.GetActor());
         }
         else
             Throttle *= FMath::Clamp((Distance - 350.0f) / FMath::Max(ObstacleLookAhead - 350.0f, 1.0f), 0.15f, 1.0f);
+    }
+    // Resolve mutual stops without deleting visible traffic or disabling collisions.
+    // The later actor yields by backing into a checked clear space, then retries.
+    if(BlockingCar && FMath::Abs(ForwardSpeed)<30)ObstacleWait+=Dt;else ObstacleWait=0;
+    if(ObstacleWait>2 && Vehicle->GetUniqueID()>BlockingCar->GetUniqueID()){
+        YieldReverse=1.5f;ObstacleWait=0;
+    }
+    if(YieldReverse>0){
+        YieldReverse-=Dt;FHitResult Rear;
+        const FVector BackEnd=Start-Vehicle->GetActorForwardVector()*450;
+        const bool Blocked=GetWorld()->SweepSingleByChannel(Rear,Start,BackEnd,Vehicle->GetActorQuat(),ECC_Pawn,FCollisionShape::MakeBox(FVector(170,70,45)),Params);
+        Throttle=Blocked?0.f:-.3f;bBrake=Blocked || ForwardSpeed< -220;
+        Vehicle->SetAIControl(true,Throttle,0,bBrake);return;
     }
 
 #if !UE_BUILD_SHIPPING
