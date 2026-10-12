@@ -37,6 +37,7 @@ bool UVehicleAIDriverComponent::ConfigureRoute(const TArray<FVector> &Points, in
         TargetIndex = (TargetIndex + 1) % Route.Num();
     bActive = true;
     ObstacleWait=YieldReverse=0;
+    PassSeconds=0;
     SetComponentTickEnabled(true);
     Vehicle->SetAIControl(true, 0.0f, 0.0f, true);
     return true;
@@ -106,6 +107,11 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
         Ahead-=Length;Aim=Route[NextIndex];LookIndex=NextIndex;
     }
     ToTarget=Aim-Position;
+    if(PassSeconds>0){
+        PassSeconds-=Dt;
+        if(FVector::Dist2D(Position,PassGoal)<200)PassSeconds=0;
+        else ToTarget=PassGoal-Position;
+    }
 
     if (bPursuit && FVector::Dist2D(Vehicle->GetActorLocation(),PursuitGoal)<2000)
     {
@@ -171,6 +177,17 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
     // Resolve mutual stops without deleting visible traffic or disabling collisions.
     // The later actor yields by backing into a checked clear space, then retries.
     if(BlockingCar && FMath::Abs(ForwardSpeed)<30)ObstacleWait+=Dt;else ObstacleWait=0;
+    if(ObstacleWait>1.5f && PassSeconds<=0){
+        const FVector Side(-SteeringDirection.Y,SteeringDirection.X,0);
+        for(float Sign:{1.f,-1.f}){
+            const FVector Candidate=Position+SteeringDirection*450+Side*(Sign*600);
+            FHitResult SideHit,Floor;
+            const FVector Direction=(Candidate-Position).GetSafeNormal2D();
+            const bool Clear=!GetWorld()->SweepSingleByChannel(SideHit,Start,Candidate+FVector(0,0,45),Direction.Rotation().Quaternion(),ECC_Pawn,FCollisionShape::MakeBox(FVector(170,85,45)),Params);
+            const bool Ground=GetWorld()->LineTraceSingleByChannel(Floor,Candidate+FVector(0,0,200),Candidate-FVector(0,0,300),ECC_Visibility,Params) && Floor.ImpactNormal.Z>.7 && FMath::Abs(Floor.ImpactPoint.Z-(Position.Z-65))<140;
+            if(Clear && Ground){PassGoal=Candidate;PassSeconds=4;ObstacleWait=0;break;}
+        }
+    }
     if(ObstacleWait>2 && Vehicle->GetUniqueID()>BlockingCar->GetUniqueID()){
         YieldReverse=1.5f;ObstacleWait=0;
     }

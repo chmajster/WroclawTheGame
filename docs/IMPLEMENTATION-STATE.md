@@ -18,12 +18,19 @@ player car: all save checks PASS at 14:52:46 UTC (foot/vehicle/complete/reward
 once/future preserved). Facade opening pivots and principal axes refitted;
 12000 instances refreshed and saved; no source geometry replacement.
 
-Next: inspect ongoing `Saved/Logs/DistrictSessionSmoke.log` after the yielding
-fix (last earlier run stopped by CityTrafficVehicle_1 at node38). Require real
-physical delivery/reward/save/police PASS, then start the second process with
-`-WTGDistrictSessionResume`. Inspect final render (PID21684, native
-DistrictPlayer/Car/Street/River.png), rerun native rules if needed, record
-actual results, complete/merge PR #138 and launch the visible game. No CI.
+Full physical SessionSmoke PASS at 15:02:38 UTC: 151.88 seconds, 459.48 m
+actually travelled, physical exit, wanted lost, delivery reward saved once,
+police dispatch and saved progress restored. Replay is running in a new process.
+
+Next: inspect DistrictSessionReplay.log, compile the pending facade support
+change, then rerun prepare_district_placement.py and final renderer. Editor
+commandlet has no wall query scene; the prior editor-time support filter
+removed ALL openings (placed=0). The pending change moves support checks to
+a one-shot game timer after physics registration; rebuilding restores all
+source openings, runtime support removes/snaps only unsupported panels.
+Inspect native WTG_FACADE_SUPPORT logs plus player/car/street/river screenshots;
+do NOT leave the generated map without its facade instances. Then finalize
+rules/docs/PR, merge and visible launch. No CI.
 
 Historical notes below are prior batches, not current acceptance status.
 Presentation remains a CC0/procedural prototype without full wardrobe/hero

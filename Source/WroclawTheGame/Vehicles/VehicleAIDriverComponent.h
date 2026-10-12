@@ -40,4 +40,6 @@ class WROCLAWTHEGAME_API UVehicleAIDriverComponent : public UActorComponent
     FVector PursuitGoal=FVector::ZeroVector;
     FVector EntryPoint=FVector::ZeroVector;
     float ObstacleWait=0, YieldReverse=0;
+    FVector PassGoal=FVector::ZeroVector;
+    float PassSeconds=0;
 };

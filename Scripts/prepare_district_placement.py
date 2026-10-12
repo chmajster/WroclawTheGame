@@ -77,7 +77,8 @@ try:
                 a.set_actor_label('District_Facades_%s_%s'%key);clusters[key]=a
             clusters[key].add_facade_instance(mesh,unreal.Transform(location=unreal.Vector(*p),rotation=unreal.Rotator(pitch=0,yaw=yaw,roll=0),scale=unreal.Vector(*scale)))
             count+=1
-    unreal.log('WTG_FACADE_REFIT count='+str(count))
+    placed=sum(a.get_facade_instance_count() for a in clusters.values())
+    unreal.log('WTG_FACADE_REFIT attempted='+str(count)+' placed='+str(placed))
     if not levels.save_current_level():
         raise RuntimeError('Map save failed')
     marker.write_text(str(plan['vehicle_yaw']),encoding='utf-8')
