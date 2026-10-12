@@ -218,7 +218,7 @@ FReply SMenuShell::OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E)
         else {Flow->Notice=TEXT("Ten klawisz jest zarezerwowany lub zaj\u0119ty w tym kontek\u015bcie.");Refresh(true);}
         return FReply::Handled();
     }
-    if(K==EKeys::Escape || K==EKeys::Gamepad_FaceButton_Right){
+    if(K==EKeys::Escape || K==EKeys::Gamepad_FaceButton_Right || K==EKeys::Gamepad_Special_Right){
         if(VideoPending){RevertVideoChange();Refresh();}else if(Pending)Refresh();else if(Flow.IsValid() && !Flow->IsFrontEnd())Flow->Resume();else if(Page!=0)SelectPage(0);return FReply::Handled();}
     if(MapView && MapView->HasKeyboardFocus() && K!=EKeys::Tab)return FReply::Unhandled();
     const int Step=(K==EKeys::Up || K==EKeys::Gamepad_DPad_Up)?-1:(K==EKeys::Down || K==EKeys::Gamepad_DPad_Down)?1:0;

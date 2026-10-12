@@ -52,6 +52,8 @@ private:
     TArray<TWeakObjectPtr<class ACharacter>> HiddenCharacters;
     double CameraSeconds=0,AudioElapsed=0;
     float AppliedFrameCap=-1,TransitionSeconds=0;
+    int32 PreviousVirtualAccept=-1;
+    void SetRawSlateAccept(bool Enabled);
     TFunction<void()> DeferredOperation;
     bool ExecutingTransition=false;
     FDelegateHandle ActivationHandle,LoadHandle;

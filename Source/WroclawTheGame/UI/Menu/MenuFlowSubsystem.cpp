@@ -16,6 +16,7 @@
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "HAL/FileManager.h"
+#include "HAL/IConsoleManager.h"
 #include "Misc/Paths.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
@@ -48,6 +49,7 @@ void UMenuFlowSubsystem::Deinitialize()
     FCoreUObjectDelegates::PreLoadMap.Remove(LoadHandle);
     if(FSlateApplication::IsInitialized())FSlateApplication::Get().OnApplicationActivationStateChanged().Remove(ActivationHandle);
     DeferredOperation=nullptr;
+    SetRawSlateAccept(false);
     if(Camera)Camera->Destroy();Camera=nullptr;PC.Reset();Super::Deinitialize();
 }
 UWorld* UMenuFlowSubsystem::MenuWorld() const { return PC.IsValid()?PC->GetWorld():nullptr; }
@@ -97,6 +99,7 @@ bool UMenuFlowSubsystem::Tick(float Dt)
 void UMenuFlowSubsystem::Open(EWTGMenuScreen Target)
 {
     if(!PC.IsValid())return;Screen=Target;
+    SetRawSlateAccept(true);
     GetGameInstance()->GetSubsystem<USliceMission>()->bShowMenu=true;
     PC->SetPause(true);PC->ResetIgnoreMoveInput();PC->ResetIgnoreLookInput();
     PC->SetIgnoreMoveInput(true);PC->SetIgnoreLookInput(true);
@@ -125,7 +128,7 @@ void UMenuFlowSubsystem::Resume()
 {
     if(!PC.IsValid() || !bHasSession)return;
     if(Transition([this]{Resume();}))return;
-    Screen=EWTGMenuScreen::Playing;Notice.Empty();GetGameInstance()->GetSubsystem<USliceMission>()->bShowMenu=false;
+    Screen=EWTGMenuScreen::Playing;Notice.Empty();SetRawSlateAccept(false);GetGameInstance()->GetSubsystem<USliceMission>()->bShowMenu=false;
     if(Widget)Widget->RemoveFromParent();Widget=nullptr;
     for(auto& Character:HiddenCharacters)if(Character.IsValid())Character->SetActorHiddenInGame(false);HiddenCharacters.Reset();
     if(APawn* P=PC->GetPawn())P->SetActorHiddenInGame(false);
@@ -186,7 +189,16 @@ void UMenuFlowSubsystem::PrepareLoadingScreen(const FString& Map)
     Loading.WidgetLoadingScreen=WTGMenu::LoadingScreen();GetMoviePlayer()->SetupLoadingScreen(Loading);
     UE_LOG(LogTemp,Display,TEXT("WTG_MENU_LOADING %s"),*Map);
 }
-void UMenuFlowSubsystem::HideForCreator(){if(Widget)Widget->RemoveFromParent();Widget=nullptr;}
+void UMenuFlowSubsystem::HideForCreator(){SetRawSlateAccept(false);if(Widget)Widget->RemoveFromParent();Widget=nullptr;}
+void UMenuFlowSubsystem::SetRawSlateAccept(bool Enabled)
+{
+    // CommonUI's virtual cursor consumes A as a mouse click. Our focused Slate
+    // controls consume the actual accept key; preserve the other screens' mode.
+    if(auto* Setting=IConsoleManager::Get().FindConsoleVariable(TEXT("CommonUI.ShouldVirtualAcceptSimulateMouseButton"))){
+        if(Enabled){if(PreviousVirtualAccept<0)PreviousVirtualAccept=Setting->GetInt();Setting->Set(0,ECVF_SetByCode);}
+        else if(PreviousVirtualAccept>=0){Setting->Set(PreviousVirtualAccept,ECVF_SetByCode);PreviousVirtualAccept=-1;}
+    }
+}
 void UMenuFlowSubsystem::RestoreAfterCreator(){if(IsFrontEnd())ShowMain();else ShowPause();}
 void UMenuFlowSubsystem::CreatedSession(){bHasSession=true;ExecutingTransition=true;Resume();ExecutingTransition=false;}
 TArray<FString> UMenuFlowSubsystem::SaveSlots() const

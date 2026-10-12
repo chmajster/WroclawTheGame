@@ -51,11 +51,15 @@ bool Click(UMenuFlowSubsystem* Menu,const FString& Label,bool Mouse=false,FKey A
     FPointerEvent Down(0,P,P,TSet<FKey>{EKeys::LeftMouseButton},EKeys::LeftMouseButton,0,FModifierKeysState());
     FPointerEvent Up(0,P,P,TSet<FKey>{},EKeys::LeftMouseButton,0,FModifierKeysState());
     FWidgetPath Path;FSlateApplication::Get().GeneratePathToWidgetUnchecked(B.ToSharedRef(),Path);
+    if(!Path.IsValid())return false;
+    // Keyboard paths have no per-widget pointer data; use the pointer constructor.
+    TArray<FWidgetAndPointer> Widgets;for(int32 I=0;I<Path.Widgets.Num();++I)Widgets.Emplace(Path.Widgets[I],TOptional<FVirtualPointerPosition>());
+    FWidgetPath PointerPath(Widgets);
     // Route a synthetic pointer path independently of the physical OS cursor.
     FPointerEvent Move(0,P,P,TSet<FKey>{},FKey(),0,FModifierKeysState());
-    FSlateApplication::Get().RoutePointerMoveEvent(Path,Move,true);
-    FSlateApplication::Get().RoutePointerDownEvent(Path,Down);
-    FSlateApplication::Get().RoutePointerUpEvent(Path,Up);return true;
+    FSlateApplication::Get().RoutePointerMoveEvent(PointerPath,Move,true);
+    FSlateApplication::Get().RoutePointerDownEvent(PointerPath,Down);
+    FSlateApplication::Get().RoutePointerUpEvent(PointerPath,Up);return true;
 }
 void Shot(const TCHAR* Name){FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Tests")/Name,true,false);}
 }
