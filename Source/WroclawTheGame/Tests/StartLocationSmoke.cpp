@@ -100,6 +100,7 @@ static FAutoConsoleCommandWithWorld GStartLocationSmoke(TEXT("WTG.StartLocationS
             double Total=0;for(float Value:Frames)Total+=Value;Frames.Sort();
             const double Mean=Frames.IsEmpty()?0:Total/Frames.Num();
             auto Report=MakeShared<FJsonObject>();Report->SetStringField(TEXT("status"),OK?TEXT("PASS"):TEXT("FAIL"));
+            Report->SetStringField(TEXT("captured_utc"),FDateTime::UtcNow().ToIso8601());
             Report->SetNumberField(TEXT("frames"),Frames.Num());Report->SetNumberField(TEXT("mean_ms"),Mean);
             Report->SetNumberField(TEXT("mean_fps"),Mean>0?1000/Mean:0);
             Report->SetNumberField(TEXT("p95_ms"),Frames.IsEmpty()?0:Frames[FMath::Min(Frames.Num()-1,int32(Frames.Num()*.95f))]);
