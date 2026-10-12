@@ -83,6 +83,20 @@ zleceniodawców. Wysokości mostów z OSM/DEM nie są pomiarem ich prześwitu.
 
 ## Referencje i źródła
 
+Oprawa używa istniejących materiałów PBR CC0 i proceduralnych z projekcją
+triplanarną w centymetrach. Dzielnica ma stabilniejszy zakres ekspozycji EV4–14,
+Lumen/VSM oraz HISM okien. Niskopoligonowe komórki nie wymagają Nanite.
+Autorskie okna i balustrady przechodzą manifest → Blender → FBX → UE, z kontrolą
+centymetrów i trzema LOD-ami. Dźwięki miasta, kroków i silników są oryginalną
+syntezą PCM; silnik reaguje na prędkość, audio respektuje ustawienia głośności.
+`Scripts/prepare_district_presentation.py` odtwarza detale i dźwięk po bake mapy.
+`WTG.DistrictViewSmoke` wykonuje dwa zrzuty z renderera UE i pomiar odstępów
+klatek po rozgrzaniu; to test automatyczny, nie pomiar GPU ani ręczne QA.
+
+Forma postaci CC0 i proste bryły GIS nadal są prototypowe. Materiały i skala
+poprawiają prezentację, ale nie oznaczają fotorealistycznych modeli kamienic
+ani jakości produkcji AAA.
+
 - Umiejscowienie i geometria: wersjonowane `Data/source/wroclaw` (OSM ODbL,
   źródła terenu i ich metadane), a nie arbitralna makieta udająca rzeczywisty GIS.
 - [Wyspa Słodowa — Zarząd Zieleni Miejskiej](https://zzm.wroc.pl/obiektyzzmcp/wyspa-slodowa/)
