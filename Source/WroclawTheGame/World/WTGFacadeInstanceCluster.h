@@ -27,7 +27,7 @@ public:
 
 private:
     UPROPERTY()
-    TArray<TObjectPtr<UHierarchicalInstancedStaticMeshComponent>> InstanceComponents;
+    TArray<TObjectPtr<UHierarchicalInstancedStaticMeshComponent>> FacadeComponents;
 
     UHierarchicalInstancedStaticMeshComponent* FindOrCreateComponent(UStaticMesh* Mesh);
 };
