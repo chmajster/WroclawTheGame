@@ -1,10 +1,11 @@
-# Menu rebuild - stage3/7 in progress
+# Menu rebuild - stage3/7 complete
 
 Stages1-2 merged (#139,#140). Stage3 adds MenuFlowSubsystem, FrontEndMenuWidget,
 MenuShell: actual 3D background, seven main actions, file-based saves, modal
 confirmations and UIOnly input. Autosave/autoload suppressed in frontend.
-Next: build, fix concrete API errors, test main/new/load and capture renderer.
-Then finish stage3 PR and proceed to stage4 pause/map/data.
+Build PASS; MenuViewSmoke real renderer PASS, paused=1, MenuMain.png inspected.
+Corrected non-focusable UMG wrapper and manual-load/autoload collision; build PASS.
+Next: stage4 pause/map/data. Full native action/focus regression remains stage7.
 Remaining stages4-7: pause, settings/input, transitions/loading, QA.
 
 Prior open-world implementation history follows.

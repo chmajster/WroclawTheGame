@@ -23,6 +23,7 @@
 void ASliceController::BeginPlay()
 {
     Super::BeginPlay();
+    bShouldPerformFullTickWhenPaused=true;
     auto* Flow=GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>();
     Flow->Attach(this);
     UWTGPerformanceSettings::Get()->Apply();

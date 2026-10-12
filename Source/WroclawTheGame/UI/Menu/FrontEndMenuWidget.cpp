@@ -2,6 +2,7 @@
 #include "UI/Menu/MenuShell.h"
 #include "UI/Menu/MenuFlowSubsystem.h"
 #include "Engine/GameInstance.h"
+UFrontEndMenuWidget::UFrontEndMenuWidget(const FObjectInitializer& I):Super(I){SetIsFocusable(true);}
 TSharedRef<SWidget> UFrontEndMenuWidget::RebuildWidget()
 {
     return SAssignNew(Shell,SMenuShell).Flow(GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>());

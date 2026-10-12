@@ -48,7 +48,7 @@ bool UMenuFlowSubsystem::Tick(float Dt)
     if(!PC.IsValid())return true;
     if(Screen==EWTGMenuScreen::Boot){
         auto* P=Cast<ASliceCharacter>(PC->GetPawn());
-        if(P && P->GetCharacterMovement()->MovementMode==MOVE_Walking && MenuWorld()->GetTimeSeconds()>1)ShowMain();
+        if(P && P->GetCharacterMovement()->MovementMode==MOVE_Walking && MenuWorld()->GetRealTimeSeconds()>1)ShowMain();
     }
     return true;
 }
@@ -85,7 +85,7 @@ bool UMenuFlowSubsystem::StartNew()
     if(!MenuWorld())return false;
     auto* D=MenuWorld()->GetSubsystem<UDistrictSaveSubsystem>();
     bool OK=MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()?D->NewRun():false;
-    if(OK){bHasSession=true;Resume();}else Notice=TEXT("Nie można rozpocząć gry. Sprawdź gotowość świata i możliwość zapisu.");return OK;
+    if(OK){bHasSession=true;Resume();}else {PC->SetPause(true);Notice=TEXT("Nie można rozpocząć gry. Sprawdź gotowość świata i możliwość zapisu.");}return OK;
 }
 bool UMenuFlowSubsystem::Load(const FString& Slot)
 {

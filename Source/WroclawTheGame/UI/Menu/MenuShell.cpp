@@ -25,7 +25,11 @@ TSharedRef<SWidget> SMenuShell::Action(const FString& Label,TFunction<void()> Cl
 }
 void SMenuShell::FocusFirst()
 {
-    Focused=0;if(!FocusOrder.IsEmpty())FSlateApplication::Get().SetKeyboardFocus(FocusOrder[0],EFocusCause::SetDirectly);
+    Focused=0;
+    RegisterActiveTimer(0,FWidgetActiveTimerDelegate::CreateLambda([this](double,float){
+        if(!FocusOrder.IsEmpty())FSlateApplication::Get().SetKeyboardFocus(FocusOrder[0],EFocusCause::SetDirectly);
+        return EActiveTimerReturnType::Stop;
+    }));
 }
 void SMenuShell::SelectPage(int32 Index){Page=Index;Refresh();}
 void SMenuShell::Refresh()
@@ -84,7 +88,7 @@ void SMenuShell::BuildMain()
                 [Card(SNew(SVerticalBox)
                     +SVerticalBox::Slot().AutoHeight()[Text(TEXT("01  /  NADODRZE"),18,Accent,true)]
                     +SVerticalBox::Slot().AutoHeight().Padding(0,20)[Text(TEXT("Miasto ma\nswoje historie."),48,Paper,true)]
-                    +SVerticalBox::Slot().AutoHeight()[Text(TEXT("Kilka ulic, jedna przesyłka i droga nad Odrę.\nTwoja pierwsza historia zaczyna się przy pracowni Mai."),22,Paper)]]];
+                    +SVerticalBox::Slot().AutoHeight()[Text(TEXT("Kilka ulic, jedna przesyłka i droga nad Odrę.\nTwoja pierwsza historia zaczyna się przy pracowni Mai."),22,Paper)])]];
     }
 }
 void SMenuShell::BuildGame()
@@ -104,7 +108,7 @@ void SMenuShell::BuildSaves()
     for(const auto& Slot:Slots){bool Valid=false;const FString Description=Flow->DescribeSave(Slot,Valid);
         Content->AddSlot().AutoHeight().Padding(0,14)[Card(SNew(SVerticalBox)
             +SVerticalBox::Slot().AutoHeight()[Text(Description,20,Valid?Paper:Muted)]
-            +SVerticalBox::Slot().AutoHeight().Padding(0,16,0,0)[Action(TEXT("Wczytaj"),[this,Slot]{Confirm(TEXT("Wczytać zapis?"),TEXT("Niezapisany postęp bieżącej sesji zostanie utracony."),[this,Slot]{if(!Flow->Load(Slot))Refresh();});},Valid)]];
+            +SVerticalBox::Slot().AutoHeight().Padding(0,16,0,0)[Action(TEXT("Wczytaj"),[this,Slot]{Confirm(TEXT("Wczytać zapis?"),TEXT("Niezapisany postęp bieżącej sesji zostanie utracony."),[this,Slot]{if(!Flow->Load(Slot))Refresh();});},Valid)])];
     }
 }
 void SMenuShell::BuildSettings()
@@ -137,7 +141,7 @@ void SMenuShell::DrawDialog()
                 +SVerticalBox::Slot().AutoHeight()[Text(DialogTitle,32,Paper,true)]
                 +SVerticalBox::Slot().AutoHeight().Padding(0,20,0,30)[Text(DialogBody,22,Muted)]
                 +SVerticalBox::Slot().AutoHeight()[Action(TEXT("Anuluj"),[this]{Refresh();})]
-                +SVerticalBox::Slot().AutoHeight()[Action(TEXT("Potwierdź"),[this]{auto A=MoveTemp(Pending);if(A)A();})]]];
+                +SVerticalBox::Slot().AutoHeight()[Action(TEXT("Potwierdź"),[this]{auto A=MoveTemp(Pending);if(A)A();})])]]];
     FocusFirst();
 }
 FReply SMenuShell::OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E)
@@ -146,8 +150,9 @@ FReply SMenuShell::OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E)
     if(K==EKeys::Escape || K==EKeys::Gamepad_FaceButton_Right){
         if(Pending)Refresh();else if(Page!=0)SelectPage(0);else if(Flow.IsValid() && !Flow->IsFrontEnd())Flow->Resume();return FReply::Handled();}
     const int Step=(K==EKeys::Up || K==EKeys::Gamepad_DPad_Up)?-1:(K==EKeys::Down || K==EKeys::Gamepad_DPad_Down)?1:0;
-    if(Step && !FocusOrder.IsEmpty()){
+    if((Step || K==EKeys::Tab) && !FocusOrder.IsEmpty()){
         for(int32 I=0;I<FocusOrder.Num();++I)if(FocusOrder[I]->HasKeyboardFocus())Focused=I;
-        Focused=(Focused+Step+FocusOrder.Num())%FocusOrder.Num();FSlateApplication::Get().SetKeyboardFocus(FocusOrder[Focused],EFocusCause::Navigation);return FReply::Handled();}
+        const int Delta=Step?Step:(E.IsShiftDown()?-1:1);
+        Focused=(Focused+Delta+FocusOrder.Num())%FocusOrder.Num();FSlateApplication::Get().SetKeyboardFocus(FocusOrder[Focused],EFocusCause::Navigation);return FReply::Handled();}
     return FReply::Unhandled();
 }

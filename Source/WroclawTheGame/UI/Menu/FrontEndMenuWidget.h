@@ -7,6 +7,7 @@ class WROCLAWTHEGAME_API UFrontEndMenuWidget : public UUserWidget
 {
     GENERATED_BODY()
 public:
+    UFrontEndMenuWidget(const FObjectInitializer& Initializer);
     void Refresh();
     virtual void ReleaseSlateResources(bool ReleaseChildren) override;
 protected:
