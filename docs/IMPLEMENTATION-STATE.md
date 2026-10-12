@@ -45,7 +45,8 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
   prototypów kreatora (nie mają pełnego kompletu morfów twarzy).
 - Punkt 4 ukończony: build, trzy testy native i pięć testów danych PASS.
   DeliverySmoke.log: giver=1 receiver=1 reward=18000, walking/BlendSpace.
-- Następny krok: punkt 5 z main, SurfaceQualityDirector, detale i audio miasta.
+- Punkt 5 rozpoczęty: `feat/05-district-presentation`, oprawa i audio miasta.
+- Następny krok: SurfaceQualityDirector, przygotowanie detali i ciągłego audio.
   Zapis nagrody i pełna sesja należą do punktów 6–7.
 - Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,
   os error 2). Nie deklarować wizualnego QA bez rzeczywistego dowodu.
