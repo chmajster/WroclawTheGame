@@ -7,6 +7,7 @@
 #include "Engine/GameViewportClient.h"
 #include "EngineUtils.h"
 #include "Geography/DistrictRegistry.h"
+#include "Vehicles/DriveableVehicle.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/Pawn.h"
 #include "Kismet/GameplayStatics.h"
@@ -17,7 +18,7 @@ static FAutoConsoleCommandWithWorld GDistrictViewSmoke(TEXT("WTG.DistrictViewSmo
  FConsoleCommandWithWorldDelegate::CreateLambda([](UWorld* World){
     if (!World || !World->IsGameWorld())return;
     FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda(
-      [Weak=TWeakObjectPtr<UWorld>(World),Elapsed=0.f,Stage=0,PlayerShot=false,Camera=TWeakObjectPtr<ACameraActor>(),Frames=TArray<float>()](float Dt) mutable {
+      [Weak=TWeakObjectPtr<UWorld>(World),Elapsed=0.f,Stage=0,PlayerShot=false,CarShot=false,Camera=TWeakObjectPtr<ACameraActor>(),Frames=TArray<float>()](float Dt) mutable {
         UWorld* W=Weak.Get();if(!W)return false;
         Elapsed+=Dt;
         auto* PC=UGameplayStatics::GetPlayerController(W,0);if(!PC)return true;
@@ -28,12 +29,21 @@ static FAutoConsoleCommandWithWorld GDistrictViewSmoke(TEXT("WTG.DistrictViewSmo
         if(!PlayerShot && Elapsed>5){FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Tests/DistrictPlayer.png"),true,false);PlayerShot=true;}
         if(Stage==0 && Elapsed>8){
             Camera=W->SpawnActor<ACameraActor>();Camera->GetCameraComponent()->SetFieldOfView(70);
-            const FVector P=R->PlayerStart+FVector(-650,-500,320);
-            Camera->SetActorLocationAndRotation(P,(R->MeetingPoint+FVector(0,0,100)-P).Rotation());
+            if(auto* Car=R->DeliveryVehicle.Get()){
+                const FVector P=Car->GetActorLocation()+Car->GetActorRightVector()*650-Car->GetActorForwardVector()*400+FVector(0,0,220);
+                Camera->SetActorLocationAndRotation(P,(Car->GetActorLocation()+FVector(0,0,40)-P).Rotation());
+            }
             PC->SetViewTarget(Camera.Get());Stage=1;
         }
+        if(!CarShot && Elapsed>15 && Camera.IsValid()){
+            FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Tests/DistrictCar.png"),true,false);CarShot=true;
+        }
+        if(Stage==1 && Elapsed>18){
+            const FVector P=R->PlayerStart+FVector(-650,-500,320);
+            Camera->SetActorLocationAndRotation(P,(R->MeetingPoint+FVector(0,0,100)-P).Rotation());Stage=5;
+        }
         if(Elapsed>52 && Elapsed<74)Frames.Add(Dt*1000);
-        if(Stage==1 && Elapsed>60){
+        if(Stage==5 && Elapsed>60){
             FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Tests/DistrictStreet.png"),true,false);Stage=2;
         }
         if(Stage==2 && Elapsed>63){

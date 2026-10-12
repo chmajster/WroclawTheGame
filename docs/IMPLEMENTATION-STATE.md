@@ -1,77 +1,31 @@
 # Full game expansion — implementation state
 
-## Bieżący punkt kontynuacji
+## Current continuation point ? stream 7 / PR #138
 
-Punkt7 nadal w trakcie. Samochód zaparkowany przeciwnie do legalnego wyjazdu
-przekierowany w generatorze yaw=-91,6608; mały prepare_district_placement
-PASS, siedem GIS PASS. Naprawiono reverse steering sign/histerezę i dodano
-lookahead po polyline oraz wykrywanie minięcia zakrętu. Sensor patrzy w planowany
-kierunek jazdy. Wcześniejsze runtime: enter/exit/reenter PASS, ale auto stało
-przed StaticMeshActor_38 przy node1; nowy run po lookahead w toku.
-Vehicle_prompt FAIL jest diagnozowany (WTG_SESSION_FOCUS log); nie oznaczać
-sesji jako ukończonej. Następny krok: DistrictSessionSmoke.log z obecnego
-procesu, fizyczna dostawa PASS → replay → final render → merge/visible launch.
+Streams 1?6 are merged. Stream 7 is in progress on
+`feat/07-playable-session-validation`; do not mark the entire session complete.
 
-Punkt7: znaleziono i naprawiono rzeczywisty błąd kamery postaci oraz auta:
-SetupAttachment(Boom) mocował ją w początku; dodano SpringArm SocketName
-w konstruktorze i BeginPlay dla istniejących BP. Runtime PASS: walking/wall,
-floor, jump, camera258,64→150,75cm, Maja, lost-car failure/restart. Test podejścia
-do auta poprawiony do rzeczywistego Interaction.Range+150 (kapsuła nie może
-wejść w środek nadwozia). Następny krok: nowy DistrictSessionSmoke.log,
-fizyczna jazda/dostawa/replay; wyniku całej sesji jeszcze brak.
+Completed: launch/test helpers, native session/replay harness; camera socket
+fix (wall test PASS), real walking/collision/jump, giver/failure/restart,
+vehicle prompt/entry/safe exit/reentry PASS. Source vehicle anchor moved out
+of the blocked courtyard onto a legal lane. Directed virtual road anchor
+preserves one-way restrictions. Eight GIS tests and UHT/UBT PASS.
+Corrected sedan imports from wheel-only primary meshes to body meshes;
+normalized body/wheel dimensions and parked ride height. Physical steering
+uses wheelbase/speed/inertia, AI uses lookahead and proper junction approach.
 
-Punkt 7 w trakcie na feat/07-playable-session-validation: Launch-District.ps1.
-Następna zmiana: Tests/DistrictSessionSmoke.cpp: ruch i ściana/kamera,
-Maja, fail/restart, samochód z prawdziwą fizyką po DeliveryRoute, Olek,
-idempotentna nagroda i zapis; drugi proces odczytuje slot testowy.
-ReportCrime log pozwoli ustalić źródło wanted w renderze. Bez CI.
+The last physical run stopped at road node12 near a building: the obstacle
+sweep looked toward the route but its box retained current chassis yaw.
+Fixed the sweep orientation to the planned direction; collisions remain active.
+Next: finish `Saved/Logs/DistrictSessionBuild.log`, rerun
+`WTG.DistrictSessionSmoke`, fix concrete failures, then replay with
+`-WTGDistrictSessionResume`. Run final native rules/save checks and renderer
+(car/player/street/river screenshots), record actual results, complete/merge
+PR #138 and launch the visible game. No CI workflows were run.
 
-Partia punktu7 kompiluje się: DistrictSessionSmoke, rzeczywisty CharacterMovement
-i samochód sterowany fizycznie przez testowego AI; zwykły input kierowcy nie
-nadpisuje AIControl. Dodatkowy log przestępstw, automatyczny render odłącza
-input (uniknięcie przypadkowego sterowania podczas testów). Usunięto konflikt
-nazwy Muted przy unity build HUD/menu. Skrypt build usuwa stare markery przed
-każdym generatorem UE. Następny krok: DistrictSessionSmoke.log; naprawić każdy
-FAIL/stall, następnie drugi proces z -WTGDistrictSessionResume.
-
-Punkt 6 zakończony: cztery testy native, build i pełny roundtrip PASS.
-Render HUD 13:32:08 UTC: 1100 klatek, mean20,00ms/p9528,07ms przy
-przygotowywaniu Lumen. Polskie zdrowie/pieniądze/cel/kierunek i podpowiedzi
-widoczne. Punkt 7: nowa gałąź z main, DistrictSessionSmoke i Launch-District.
-Sprawdzić rzeczywistą jazdę/misję, ściany/kamerę/restart, cross-process load,
-zdiagnozować niespodziewane wanted1 podczas renderu (ReportCrime dodać log).
-
-Punkt 6: build PASS, cztery native testy WTG.District PASS. Faktyczny World
-WTG.DistrictSaveSmoke PASS (13:29:51 UTC): pieszo, auto, re-exit, complete/
-reward once, future version preserved. Osobny slot testowy usunięty.
-Następny krok: dokończyć render HUD (DistrictHUDRender.log, DistrictStreet.png),
-scalić punkt 6. Następnie punkt 7: test prawdziwej jazdy po DeliveryRoute,
-wejść/wyjść, kamery/kolizji, restartu i ukończenia dostawy przez Interact,
-odczyt zachowanego slotu w nowym procesie oraz końcowe uruchomienie widoczne.
-
-Punkt 6 w trakcie na feat/06-district-hud-save. Następna konkretna zmiana:
-Save/DistrictSaveSubsystem i DistrictSaveGame; niezależny slot, walidacja danych,
-autoload/auto/manual save, rollback nagrody przy błędzie zapisu. Następnie
-SliceHUD, SliceController i PlayerMenuWidget oraz trwałe ustawienia myszy.
-Punkt 7 (pełna sesja) nadal niewykonany.
-
-Partia C++ punktu 6: DistrictSaveGame/Subsystem z walidacją schema/pozycji/
-ledger/ukończenia, osobnym slotem i Windows atomic replace; rollback nagrody,
-autoload i autosave30s. Polski HUD i kierunek celu, F5/F9/menu oraz czułość/
-invert myszy zapisane w ini i wspólne dla auta/postaci. Domyślna mapa Nadodrze.
-Następny krok: DistrictSaveBuild.log, poprawić błędy UHT/UBT; native
-WTG.District.SaveValidation oraz test Save/Load w rzeczywistym World. Nie
-deklarować zapisu jako sprawdzonego przed kontrolą roundtrip.
-
-Punkt 5 zakończony: pełne modele ciała wybrane zamiast Eyebrows, poprawione
-jednostki importu, winding, yaw i słońce. Bake, locomotion, presentation,
-trzy testy native i sześć GIS PASS. Rzeczywisty render 12.10.2026 13:15 UTC:
-1234 klatki, średnia 17,83 ms, p95 18,87 ms (limit 60 FPS, przygotowanie Lumen
-w tle; nie jest to benchmark GPU). Saved/Tests/DistrictStreet.png potwierdza
-widoczne pełne sylwetki, podłoże i okna. Modele/elewacje pozostają uproszczone.
-Następny krok: z main utworzyć gałąź punktu 6, DistrictSaveSubsystem,
-minimalny polski HUD, menu zapisu oraz trwałe ustawienia myszy. Punkty 6–7
-pozostają w zakresie; zapis nagrody musi być atomowy wobec stanu ekonomii.
+Historical notes below are previous implementation batches, not current
+acceptance status. Presentation remains a CC0/procedural prototype, without
+full wardrobe/hero art or a full-city simulation.
 
 ## Sesja otwartego świata — zlecenie 12.10.2026
 

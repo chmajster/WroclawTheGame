@@ -94,9 +94,15 @@ void ADriveableVehicle::SetVisualMeshes(UStaticMesh *BodyMesh, UStaticMesh *Whee
     if (BodyMesh)
     {
         BodyVisual->SetStaticMesh(BodyMesh);
-        BodyVisual->SetRelativeScale3D(FVector(1));
-        BodyVisual->SetRelativeLocation(FVector::ZeroVector);
-        BodyVisual->SetRelativeRotation(FRotator::ZeroRotator);
+        const auto Bounds=BodyMesh->GetBounds();
+        const bool LongY=Bounds.BoxExtent.Y>Bounds.BoxExtent.X;
+        const FVector Scale((LongY?180.f:420.f)/FMath::Max(1.f,float(Bounds.BoxExtent.X*2)),(LongY?420.f:180.f)/FMath::Max(1.f,float(Bounds.BoxExtent.Y*2)),125.f/FMath::Max(1.f,float(Bounds.BoxExtent.Z*2)));
+        const FRotator Rotation(0,LongY?-90.f:0.f,0);
+        const FVector Centre=Rotation.RotateVector(Bounds.Origin*Scale);
+        BodyVisual->SetRelativeScale3D(Scale);
+        BodyVisual->SetRelativeLocation(FVector(-Centre.X,-Centre.Y,-38.f-(Bounds.Origin.Z-Bounds.BoxExtent.Z)*Scale.Z));
+        BodyVisual->SetRelativeRotation(Rotation);
+        BodyVisual->SetVisibility(true);
         CabinVisual->SetVisibility(false, true);
     }
     for (UStaticMeshComponent *Wheel : WheelVisuals)
@@ -104,13 +110,14 @@ void ADriveableVehicle::SetVisualMeshes(UStaticMesh *BodyMesh, UStaticMesh *Whee
         if (!Wheel) continue;
         Wheel->SetStaticMesh(WheelMesh);
         Wheel->SetVisibility(WheelMesh != nullptr, true);
-        Wheel->SetRelativeScale3D(FVector(1));
+        if(WheelMesh){const auto Extent=WheelMesh->GetBounds().BoxExtent;Wheel->SetRelativeScale3D(FVector(32.f/FMath::Max(1.f,float(FMath::Max3(Extent.X,Extent.Y,Extent.Z)))));}
     }
 }
 void ADriveableVehicle::BeginPlay()
 {
     Super::BeginPlay();
     Camera->AttachToComponent(Boom,FAttachmentTransformRules::KeepRelativeTransform,USpringArmComponent::SocketName);
+    if(BodyVisual->GetStaticMesh())SetVisualMeshes(BodyVisual->GetStaticMesh(),WheelVisuals.IsEmpty()?nullptr:WheelVisuals[0]->GetStaticMesh());
     if (bPersistentPlayerVehicle)
         StreamingProbe = GetWorld()->SpawnActor<ACityStreamingProbe>();
     if (!Definition)
@@ -252,6 +259,7 @@ void ADriveableVehicle::Tick(float Dt)
                                                   GroundParams))
             return;
         Chassis->SetSimulatePhysics(true);
+        if(!Driver && !bAIControlled)SetActorLocation(FVector(GetActorLocation().X,GetActorLocation().Y,Floor.ImpactPoint.Z+65),false,nullptr,ETeleportType::TeleportPhysics);
         bWaitingForGround = false;
     }
     if (!Driver && !bAIControlled) { Chassis->SetSimulatePhysics(false); Speed=0; return; }
@@ -335,9 +343,11 @@ void ADriveableVehicle::Tick(float Dt)
             Chassis->AddForce(Forward * Throttle * Definition->Acceleration * Mass);
         Chassis->AddForce(-Right * FVector::DotProduct(Velocity, Right) * Definition->Grip * Mass *
                           (Brake ? .35f : 1.f));
-        const float Yaw = Steering * FMath::Clamp(Speed / 350.f, -1.f, 1.f) * .65f;
+        const float SteeringAngle=Steering*FMath::DegreesToRadians(32.f)/(1.f+FMath::Square(Speed/1800.f));
+        const float Yaw=Speed/290.f*FMath::Tan(SteeringAngle);
         FVector Angular = Chassis->GetPhysicsAngularVelocityInRadians();
-        Chassis->AddTorqueInRadians(FVector(0, 0, (Yaw - Angular.Z) * Mass * 28000));
+        const float Acceleration=FMath::Clamp((Yaw-Angular.Z)*8.f,-4.f,4.f)+Angular.Z*Chassis->GetAngularDamping();
+        Chassis->AddTorqueInRadians(FVector(0,0,Acceleration*Chassis->GetInertiaTensor().Z));
     }
     Gear = FMath::Abs(Speed) < 20 ? 0 : (Speed < 0 ? -1 : FMath::Clamp(1 + int(Speed / 500), 1, 5));
     WheelRoll=FMath::Fmod(WheelRoll+FMath::RadiansToDegrees(Speed*Dt/32.f),360.f);

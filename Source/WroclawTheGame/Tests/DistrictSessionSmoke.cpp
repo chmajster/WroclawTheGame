@@ -93,7 +93,7 @@ static FAutoConsoleCommandWithWorld GDistrictSessionSmoke(TEXT("WTG.DistrictSess
             Walk(Car->GetActorLocation()+Car->GetActorRightVector()*190);
             if(S->Elapsed>S->NextDiagnostic){S->NextDiagnostic=S->Elapsed+5;UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_WALK player=%s car=%s"),*S->Player->GetActorLocation().ToString(),*Car->GetActorLocation().ToString());}
             if(FVector::Dist2D(S->Player->GetActorLocation(),Car->GetActorLocation())<340)
-            {auto* Focus=S->Player->Interaction->Find(S->Player->Camera->GetComponentLocation(),S->Player->Camera->GetForwardVector());UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_FOCUS actor=%s forward=%s to_car=%s hidden=%d collision=%d"),*GetNameSafe(Focus),*S->Player->Camera->GetForwardVector().ToString(),*(Car->GetActorLocation()-S->Player->GetActorLocation()).ToString(),Car->IsHidden(),int(Car->Chassis->GetCollisionEnabled()));Check(Focus==Car,TEXT("vehicle_prompt"));Check(S->Player->Interaction->Interact(Car),TEXT("vehicle_interaction_range"));Check(Car->Driver==S->Player.Get(),TEXT("enter"));Advance(6);}
+            {auto* P=S->Player.Get();auto* Focus=P->Interaction->Find(P->Camera->GetComponentLocation(),P->Camera->GetForwardVector());FHitResult LOS;FCollisionQueryParams Params(SCENE_QUERY_STAT(SessionDoor),false,P);W->LineTraceSingleByChannel(LOS,P->GetActorLocation(),Car->GetActorLocation(),ECC_Visibility,Params);UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_FOCUS actor=%s forward=%s to_car=%s hidden=%d collision=%d object=%d blocker=%s hit=%s"),*GetNameSafe(Focus),*P->Camera->GetForwardVector().ToString(),*(Car->GetActorLocation()-P->GetActorLocation()).ToString(),Car->IsHidden(),int(Car->Chassis->GetCollisionEnabled()),int(Car->Chassis->GetCollisionObjectType()),LOS.GetActor()?*LOS.GetActor()->GetActorNameOrLabel():TEXT("none"),*LOS.ImpactPoint.ToString());Check(Focus==Car,TEXT("vehicle_prompt"));Check(P->Interaction->Interact(Car),TEXT("vehicle_interaction_range"));Check(Car->Driver==P,TEXT("enter"));Advance(6);}
         }
         if(S->Stage==6 && S->Elapsed-S->StepAt>.8)
         {
@@ -103,6 +103,7 @@ static FAutoConsoleCommandWithWorld GDistrictSessionSmoke(TEXT("WTG.DistrictSess
         }
         if(S->Stage==7)
         {
+            if(S->Elapsed-S->StepAt<.1f)UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_CAR inertia=%s angular=%s yaw=%.1f"),*Car->Chassis->GetInertiaTensor().ToString(),*Car->Chassis->GetPhysicsAngularVelocityInRadians().ToString(),Car->GetActorRotation().Yaw);
             S->DriveDistance+=FVector::Dist2D(Car->GetActorLocation(),S->LastCar);S->LastCar=Car->GetActorLocation();
             if(S->Elapsed>S->NextDiagnostic){S->NextDiagnostic=S->Elapsed+10;UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_DRIVE position=%s speed=%.1f health=%.1f target_m=%.1f wanted=%d %s"),*Car->GetActorLocation().ToString(),Car->Speed,Car->Health,FVector::Dist2D(Car->GetActorLocation(),R->DeliveryPoint)/100,G->WantedLevel(),*S->AI->Diagnostic);}
             if(FVector::Dist2D(Car->GetActorLocation(),R->DeliveryPoint)<700){S->AI->StopAI();Car->SetAIControl(true,0,0,true);Advance(8);}

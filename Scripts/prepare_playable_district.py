@@ -29,6 +29,11 @@ def prepare():
     facade_bindings=read(ROOT/'Data/facade_asset_bindings.json')
     def model(identifier):
         item=imported.get(identifier)
+        if item and identifier in ('kenney-car-sedan','kenney-car-sedan-sports'):
+            meshes=[unreal.load_asset(p) for p in item['objects']]
+            body=next((m for m in meshes if isinstance(m,unreal.StaticMesh) and m.get_name().lower()=='body'),None)
+            if body:
+                item['primary_object']=body.get_path_name()
         mesh=unreal.load_asset(item['primary_object']) if item else None
         if not isinstance(mesh,(unreal.StaticMesh,unreal.SkeletalMesh)):
             raise RuntimeError('Required model missing: '+identifier)

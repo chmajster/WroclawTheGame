@@ -43,6 +43,22 @@ def route_between(graph, start, goal):
     raise ValueError('Authored locations are not connected by legal source roads')
 
 
+def attach_car_anchor(graph, nodes, edges, position, elevation):
+    eligible=[e for e in edges if e['bridge']=='no' and e['tunnel']=='no' and e['layer']=='0'
+              and (e['car_forward'] or e['car_backward'])]
+    point=Point(position[:2])
+    edge=min(eligible,key=lambda e:LineString((nodes[e['from']][:2],nodes[e['to']][:2])).distance(point))
+    a,b=edge['from'],edge['to'];line=LineString((nodes[a][:2],nodes[b][:2]))
+    q=line.interpolate(line.project(point));key='district.car.anchor'
+    nodes[key]=[q.x,q.y,elevation(q.x,q.y)];graph[key]=[]
+    before,after=Point(nodes[a][:2]).distance(q),Point(nodes[b][:2]).distance(q)
+    if edge['car_forward']:
+        graph.setdefault(a,[]).append((key,before));graph[key].append((b,after))
+    if edge['car_backward']:
+        graph.setdefault(b,[]).append((key,after));graph[key].append((a,before))
+    return key
+
+
 def build_district(output):
     config = read(CONFIG)
     if config['schema_version'] != 1:
@@ -105,7 +121,8 @@ def build_district(output):
                 degree.setdefault(b,set()).add(a)
     def nearest(p):
         return min(graph,key=lambda k:math.dist(nodes[k][:2],p[:2]))
-    car_node,target_node = nearest(anchors['vehicle']),nearest(anchors['delivery'])
+    target_node=nearest(anchors['delivery'])
+    car_node=attach_car_anchor(graph,nodes,data['road_graph']['edges'],anchors['vehicle'],elevation)
     outbound = route_between(graph,car_node,target_node)
     inbound = route_between(graph,target_node,car_node)
     loop = outbound+inbound[1:]

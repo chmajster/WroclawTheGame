@@ -130,7 +130,9 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
         for (const FVector& Junction:Registry->Intersections)
         {
             const float Distance=FVector::Dist2D(Vehicle->GetActorLocation(),Junction);
-            if (Distance<500 || Distance>1600 || FVector::DotProduct((Junction-Vehicle->GetActorLocation()).GetSafeNormal2D(),Vehicle->GetActorForwardVector())<.3) continue;
+            const FVector ToJunction=Junction-Vehicle->GetActorLocation();
+            const float Along=FVector::DotProduct(ToJunction,SteeringDirection);
+            if (Distance<500 || Along<0 || Along>1000 || (ToJunction-SteeringDirection*Along).Size2D()>300) continue;
             for (TActorIterator<ADriveableVehicle> Other(GetWorld());Other;++Other)
             {
                 if (*Other==Vehicle || Other->IsHidden() || !Other->IsAIControlled()) continue;
@@ -144,7 +146,7 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
     const FVector Start = Vehicle->GetActorLocation() + FVector(0, 0, 45);
     const FVector End = Start + SteeringDirection * ObstacleLookAhead;
     if (GetWorld()->SweepSingleByChannel(
-            Hit, Start, End, Vehicle->GetActorQuat(), ECC_Pawn,
+            Hit, Start, End, SteeringDirection.Rotation().Quaternion(), ECC_Pawn,
             FCollisionShape::MakeBox(FVector(170, 70, 55)), Params))
     {
         const float Distance = FVector::Dist2D(Start, Hit.ImpactPoint);
