@@ -7,7 +7,7 @@ import unreal
 
 ROOT=Path(unreal.Paths.project_dir()).resolve()
 sys.path.insert(0,str(ROOT/"Pipeline/unreal"))
-from import_asset import quit_after_editor_startup, import_texture
+from import_asset import quit_after_editor_startup, import_texture, create_material
 from city_quality import configure_mesh, configure_instances
 
 marker=ROOT/"Saved/CityDetails/quality.ok"; marker.parent.mkdir(parents=True,exist_ok=True); marker.unlink(missing_ok=True)
@@ -18,8 +18,11 @@ try:
         manifest=json.loads(path.read_text(encoding="utf-8"))
         mesh=unreal.load_asset(manifest["unreal"]["destination"]+"/SM_"+manifest["id"].replace("-","_"))
         if not isinstance(mesh,unreal.StaticMesh): raise RuntimeError("Missing mesh "+manifest["id"])
+        textures={}
         for kind,source in manifest["textures"].items():
-            if source: import_texture(ROOT/source,manifest["unreal"]["destination"]+"/Textures",kind)
+            if source: textures[kind]=import_texture(ROOT/source,manifest["unreal"]["destination"]+"/Textures",kind)
+        material=create_material(manifest["id"],manifest["unreal"]["destination"],textures)
+        if material: mesh.set_material(0,material)
         configure_mesh(mesh,manifest)
         n=editor.get_nanite_settings(mesh)
         reports.append({"id":manifest["id"],"nanite":n.enabled,"fallback_percent":n.fallback_percent_triangles,

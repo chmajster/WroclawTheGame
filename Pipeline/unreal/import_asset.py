@@ -95,7 +95,7 @@ def texture_sample(edit, material, texture, x, y, parameter_name):
     node.set_editor_property("texture", texture)
     node.set_editor_property("parameter_name", parameter_name)
     if parameter_name=="Normal": node.set_editor_property("sampler_type",unreal.MaterialSamplerType.SAMPLERTYPE_NORMAL)
-    elif parameter_name=="ORM": node.set_editor_property("sampler_type",unreal.MaterialSamplerType.SAMPLERTYPE_LINEAR_COLOR)
+    elif parameter_name=="ORM": node.set_editor_property("sampler_type",unreal.MaterialSamplerType.SAMPLERTYPE_MASKS)
     return node
 
 

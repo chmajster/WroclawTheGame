@@ -79,6 +79,24 @@ success. Screenshot tasks have timeout and fresh-file/hash checks, with an
 explicit NOT_REVIEWED state. No claim of a reconstructed historic facade or
 an interactive interior follows from these details.
 
+## Graphics policy (stream 5)
+
+Data/city_asset_quality.json defines full conventional Nanite fallback for small
+stone profiles, three LOD thresholds (1/.22/.06) and HISM culling at 180–240 m.
+Pipeline/unreal/city_quality.py applies it on import and placement, as does
+configure_city_asset_quality.py for existing native products. PBR textures keep
+mips/streaming, max 2k, DirectX normals, sRGB base color and linear packed ORM
+with Masks compression/sampler. HISM/Nanite material usage is explicitly saved.
+Three existing door instances receive HISM usage overrides; shared masters stay
+unchanged. Existing renderer Lumen/lighting/weather systems are reused.
+
+Native settings saved/verified on all five assets and 28 components. Budget PASS:
+6,549,600 instanced LOD0 triangles; six unique source maps (26,077,960 bytes).
+Conservative uncompressed full-mip RGBA upper bound 83,886,084 bytes; this is
+not measured resident VRAM. Two limit/accounting tests PASS. This district is
+not World Partition and these checks do not establish whole-city FPS or HLOD
+streaming. Those require a separate source-driven large-world production stream.
+
 ## Acquisition evidence (stream 2)
 
 Acquired Sandstone Cracks by Rob Tuytel under verified Poly Haven CC0-1.0:

@@ -57,8 +57,9 @@ try:
     environment=actors.spawn_actor_from_class(unreal.WTGDayNightEnvironment,unreal.Vector())
     environment.set_actor_label("AssetQA_Environment")
     environment.set_editor_property("advance_time",False); environment.set_time_of_day(12.)
-    camera(actors,"Kit_Front",(350,1400,220),(350,0,190),1100)
-    camera(actors,"Kit_Oblique",(1050,1000,530),(350,0,180),1200)
+    camera(actors,"Kit_Front",(350,1400,300),(350,0,190))
+    camera(actors,"Kit_Oblique",(1050,1000,530),(350,0,180))
+    camera(actors,"Kit_Cornice_Close",(720,400,130),(720,0,202))
     if not levels.save_current_level(): raise RuntimeError("Studio save failed")
     if not levels.load_level(policy["map"]): raise RuntimeError("District missing")
     for actor in actors.get_all_level_actors():
