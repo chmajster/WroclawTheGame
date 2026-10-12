@@ -4,7 +4,7 @@
 #include "CharacterAppearanceDefinition.generated.h"
 
 UENUM(BlueprintType)
-enum class EAppearanceCategory : uint8 { Character, Face, Eyes, Nose, Mouth, Jaw, Ears, Skin, Hair, Beard, Body, Clothing, Voice };
+enum class EAppearanceCategory : uint8 { Character, Face, Eyes, Nose, Mouth, Jaw, Ears, Skin, Hair, Beard, Body, Clothing, Voice, Accessories, Summary };
 UENUM(BlueprintType)
 enum class EAppearanceSex : uint8 { Male, Female };
 UENUM(BlueprintType)

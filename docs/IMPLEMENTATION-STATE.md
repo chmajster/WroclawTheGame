@@ -1,20 +1,20 @@
 # Kreator postaci — bieżący stan
 
 ## Wykonane
-1/3: audyt
+2/3: UI i studio
 
-Przeanalizowano C++/UMG, katalog, renderowanie, zapis, seed, animacje, ubiór i przepływ nowej gry. Zarchiwizowano rzeczywiste obrazy i audyt natywnych zasobów.
+Wdrożono trzy panele Slate ze wspólną typografią menu,13 kategorii, wektorowe ikony, kontekstowe suwaki/palety/opcje i podsumowanie. Studio izoluje atmosferę/światła, stosuje fizyczną ekspozycję, ma podłogę i skalowany target. Obrót/zoom wyłącznie w centrum.
 
-Sprawdzenia i ograniczenia: Baseline game smoke exit0, szkic zgodny z modelem; cały target i UI białe. Dwie siatki bez morphów; 11 ubrań bez modeli. Blender/UE dostępne. Raport nie deklaruje istniejących możliwości, których siatki nie mają.
+Sprawdzenia i ograniczenia: Prace w toku. Native capture przed zmianą potwierdził źródłowy biały target; poprawka wymaga jeszcze obrazu po zmianie. Brakujące morphy/ubiór należą do strumienia3.
 
 ## Do zrobienia
-W audycie: nic. Całe zadanie: strumienie2 UI/studio i3 realna personalizacja.
+Skompilować i sprawdzić rzeczywisty render, poprawić kadrowanie/responsywność i animację zaznaczenia.
 
 ## Następny krok
-Po scaleniu audytu utworzyć gałąź z main dla strumienia2. Zacząć od CharacterCreator.cpp: izolacja atmosfery/światła i fizyczna ekspozycja; następnie CharacterCreatorWidget.
+Kompilacja WroclawTheGameEditor; uruchomienie WTG.CreatorSmoke i obejrzenie nowych obrazów.
 
 ## Stan
-Audyt zakończony; dalsza przebudowa w toku. Nie uruchamiano ani nie oczekiwano na CI.
+W toku. Nie uruchamiano ani nie oczekiwano na CI.
 
 Pełny raport: docs/CHARACTER-CREATOR-REBUILD.md.
 
