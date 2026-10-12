@@ -1,22 +1,22 @@
 # Start location production — 2026-10-12
 
-Primary live log: current start-location PR, stream 9/10.
+Primary live log: current start-location PR, stream 10/10.
 See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 9/10. Organized original/native assets byBuildings/Roads/Props/Vegetation/Materials, generated source/license/path catalog13models7CC0sets3reused types; repaired all13 manifest QA camera labels. Executable Validate/Source/Full entry isolates every editor step, rejects stale evidence and reports only executed selected-mode success. Existing library shutdown uses proven startup-settle helper.
+Stream 10/10. Completed all10 streams for existing100m start. Final report documents13models72UEassets7CC0sets3reused prop types,2272instances,source-backed placement,actual collision/walking/full460m mission QA and observed59.65FPS at60cap. Editor startup matches game map. Nine prior PRs merged; final delivery ready to merge.
 
-Validation and limitations: Actual Validate-mode PASS:21checksummed files,28manifests,catalog paths. PowerShell parser and changedPython AST PASS. Native production steps already executed separately in4-8; entire Full entry not re-run against open user editor. No claim that selected-mode validation performed native import.
+Validation and limitations: Final source/native/screenshot hash audit PASS,171C++ files match compiled copy after CRLF normalization. All ten dedicated PRs targetmain and contain required live sections. Native asset72count/catalog/defaultmap and actual QA report consistency PASS. No CI manually run or awaited. Original raw hashes preserved; documented roofs/heights/background/default-character/one-hardware/locked-main-DLL limitations remain.
 
 ## Do zrobienia
-Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
+Nothing remains in the implemented start-location scope.
 
 ## Następny krok
-Create stream10 branch from main; verify ten PR streams/evidence consistency, write final results and declared limitations, mark scopecomplete and merge final PR.
+No required implementation continuation. Merge this completed delivery PR into main; optional future work is more precise roofs/background facade/character art, as separate requests.
 
 ## Stan
-Stream complete; overall implementation in progress. No CI manually run.
+Complete, streams1-10 implemented and verified; final PR ready to merge. No CI manually run.
 
 # Earlier city asset production — completed first batch
 
