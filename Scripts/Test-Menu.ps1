@@ -32,7 +32,7 @@ Run-MenuProbe 'MenuUIQA' 'WTG.MenuUISmoke' 'WTG_MENU_UI_DONE result=PASS' @() $t
 if($Layouts){
     foreach($Size in @(@{Name='1080';X=1920;Y=1080},@{Name='1440';X=2560;Y=1440},@{Name='4K';X=3840;Y=2160},@{Name='Ultrawide';X=3440;Y=1440})){
         Run-MenuProbe "MenuLayout$($Size.Name)" 'WTG.MenuViewSmoke' 'WTG_MENU_VIEW_DONE result=PASS' @('-ForceRes',"-ResX=$($Size.X)","-ResY=$($Size.Y)") $true
-        foreach($Page in @('Main','Pause','Loading')){Copy-Item -LiteralPath "$Root/Saved/Tests/Menu$Page.png" -Destination "$Root/Saved/Tests/Menu${Page}_$($Size.Name).png"}
+        foreach($Page in @('Main','Pause','Settings','Controls','Loading')){Copy-Item -LiteralPath "$Root/Saved/Tests/Menu$Page.png" -Destination "$Root/Saved/Tests/Menu${Page}_$($Size.Name).png"}
     }
 }
 Write-Output 'PASS: menu probes. Rendered images: Saved/Tests. No CI invoked.'

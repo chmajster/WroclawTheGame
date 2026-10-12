@@ -38,7 +38,7 @@ private:
     void BeginVideoChange();
     void RevertVideoChange();
     TSharedRef<SWidget> Choice(const FString& Label,const TArray<FString>& Values,int32 Selected,TFunction<void(int32)> Changed);
-    TSharedRef<SWidget> ValueSlider(const FString& Label,TAttribute<float> Value,TFunction<void(float)> Changed);
+    TSharedRef<SWidget> ValueSlider(const FString& Label,TAttribute<float> Value,TFunction<void(float)> Changed,TAttribute<FString> Readout=TAttribute<FString>());
     TSharedRef<SWidget> ValueToggle(const FString& Label,TAttribute<bool> Value,TFunction<void(bool)> Changed);
     FString DialogTitle,DialogBody;
     TFunction<void()> Pending;

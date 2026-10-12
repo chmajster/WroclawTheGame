@@ -51,9 +51,11 @@ bool Click(UMenuFlowSubsystem* Menu,const FString& Label,bool Mouse=false,FKey A
     FPointerEvent Down(0,P,P,TSet<FKey>{EKeys::LeftMouseButton},EKeys::LeftMouseButton,0,FModifierKeysState());
     FPointerEvent Up(0,P,P,TSet<FKey>{},EKeys::LeftMouseButton,0,FModifierKeysState());
     FWidgetPath Path;FSlateApplication::Get().GeneratePathToWidgetUnchecked(B.ToSharedRef(),Path);
+    // Model a pointer over this control independently of the physical OS cursor.
+    B->SetHover(TAttribute<bool>(true));
     B->OnMouseEnter(G,Down);
     FSlateApplication::Get().ProcessReply(Path,B->OnMouseButtonDown(G,Down),&Path,&Down);
-    FSlateApplication::Get().ProcessReply(Path,B->OnMouseButtonUp(G,Up),&Path,&Up);B->OnMouseLeave(Up);return true;
+    FSlateApplication::Get().ProcessReply(Path,B->OnMouseButtonUp(G,Up),&Path,&Up);B->SetHover(TAttribute<bool>());B->OnMouseLeave(Up);return true;
 }
 void Shot(const TCHAR* Name){FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Tests")/Name,true,false);}
 }
@@ -97,7 +99,7 @@ static FAutoConsoleCommandWithWorld GMenuUISmoke(TEXT("WTG.MenuUISmoke"),TEXT("M
         case 14:{const TCHAR* Labels[]={TEXT("GRA"),TEXT("POSTAĆ"),TEXT("STATYSTYKI"),TEXT("USTAWIENIA"),TEXT("STEROWANIE"),TEXT("MAPA")};const int32 Pages[]={0,11,12,2,3,10};
             for(int32 Pass=0;Pass<3;++Pass)for(int32 I=0;I<6;++I){Click(Labels[I]);Check(Menu->SlateMenu()->ActivePage()==Pages[I],TEXT("tab_content"));}Click(TEXT("USTAWIENIA"));break;}
         case 15:WTGMenuQA::Shot(TEXT("MenuQA_Settings.png"));Menu->SlateMenu()->PreviewVideoMode(FIntPoint(1280,720),2);break;
-        case 16:Check(S->GetScreenResolution()==FIntPoint(1280,720) && Menu->SlateMenu()->IsVideoConfirmationPending(),TEXT("video_preview"));WTGMenuQA::Key(EKeys::Escape);break;
+        case 16:Check(S->GetScreenResolution()==FIntPoint(1280,720) && Menu->SlateMenu()->IsVideoConfirmationPending(),TEXT("video_preview"));UE_LOG(LogTemp,Display,TEXT("WTG_MENU_UI_VIDEO focus=%s descendants=%d"),FSlateApplication::Get().GetKeyboardFocusedWidget()?*FSlateApplication::Get().GetKeyboardFocusedWidget()->GetTypeAsString():TEXT("none"),Menu->SlateMenu()->HasFocusedDescendants());WTGMenuQA::Key(EKeys::Escape);break;
         case 17:Check(S->GetScreenResolution()==OriginalSize && !Menu->SlateMenu()->IsVideoConfirmationPending(),TEXT("video_cancel_reverts"));Menu->SlateMenu()->PreviewVideoMode(FIntPoint(1280,720),2);break;
         case 18:if(Age<16)return true;Check(S->GetScreenResolution()==OriginalSize && !Menu->SlateMenu()->IsVideoConfirmationPending() && !WTGMenuQA::Button(Menu,TEXT("Potwierdź")),TEXT("video_timeout_reverts"));Menu->SlateMenu()->PreviewVideoMode(FIntPoint(1280,720),2);break;
         case 19:Click(TEXT("Potwierdź"));Check(S->GetLastConfirmedScreenResolution()==FIntPoint(1280,720),TEXT("video_confirm_saved"));Click(TEXT("STEROWANIE"));break;
@@ -105,7 +107,7 @@ static FAutoConsoleCommandWithWorld GMenuUISmoke(TEXT("WTG.MenuUISmoke"),TEXT("M
         case 21:WTGMenuQA::Key(EKeys::E);Check(World->GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->Key("Jump")==EKeys::SpaceBar,TEXT("ui_rebind_conflict"));WTGMenuQA::Key(EKeys::O);Check(World->GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->Key("Jump")==EKeys::O,TEXT("ui_rebind_saved"));break;
         case 22:Click(TEXT("O"));WTGMenuQA::Key(EKeys::Escape);Check(World->GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->Key("Jump")==EKeys::O,TEXT("capture_cancel"));
             {auto Before=FSlateApplication::Get().GetKeyboardFocusedWidget();WTGMenuQA::Key(EKeys::Gamepad_DPad_Down);Check(Before!=FSlateApplication::Get().GetKeyboardFocusedWidget(),TEXT("pad_focus"));}break;
-        case 23:Click(TEXT("MAPA"),false,EKeys::Gamepad_FaceButton_Bottom);WTGMenuQA::Key(EKeys::Escape);break;
+        case 23:Click(TEXT("MAPA"),false,EKeys::Gamepad_FaceButton_Bottom);Check(Menu->SlateMenu()->ActivePage()==10,TEXT("pad_accept"));WTGMenuQA::Key(EKeys::Escape);break;
         case 24:Check(Menu->Screen==EWTGMenuScreen::Playing && !World->IsPaused() && GEngine->GetMaxFPS()>30,TEXT("resume_restores_frame_budget"));Menu->ApplicationActivationChanged(false);Check(Menu->Screen==EWTGMenuScreen::Pause && World->IsPaused(),TEXT("focus_loss_pause"));Click(TEXT("GRA"));break;
         case 25:Click(TEXT("Menu główne"));break;
         case 26:Click(TEXT("Potwierdź"));break;

@@ -50,6 +50,7 @@ TSharedRef<SWidget> SMenuShell::Action(const FString& Label,TFunction<void()> Cl
 void SMenuShell::FocusFirst(int32 Preferred)
 {
     Focused=Preferred;
+    if(!FocusOrder.IsEmpty() && FSlateApplication::Get().SetKeyboardFocus(FocusOrder[FMath::Clamp(Preferred,0,FocusOrder.Num()-1)],EFocusCause::SetDirectly))return;
     RegisterActiveTimer(0,FWidgetActiveTimerDelegate::CreateLambda([this,Preferred](double,float){
         if(!FocusOrder.IsEmpty()){Focused=FMath::Clamp(Preferred,0,FocusOrder.Num()-1);FSlateApplication::Get().SetKeyboardFocus(FocusOrder[Focused],EFocusCause::SetDirectly);}
         return EActiveTimerReturnType::Stop;

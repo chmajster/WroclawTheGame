@@ -54,7 +54,7 @@ UWorld* UMenuFlowSubsystem::MenuWorld() const { return PC.IsValid()?PC->GetWorld
 TSharedPtr<SMenuShell> UMenuFlowSubsystem::SlateMenu() const { return Widget?Widget->SlateMenu():nullptr; }
 void UMenuFlowSubsystem::Attach(ASliceController* C)
 {
-    if(Widget)Widget->RemoveFromParent();Widget=nullptr;Camera=nullptr;PC=C;
+    if(Widget)Widget->RemoveFromParent();Widget=nullptr;Camera=nullptr;HiddenCharacters.Reset();PC=C;
     if(IsFrontEnd()){
         Screen=EWTGMenuScreen::Boot;
         C->SetIgnoreMoveInput(true);C->SetIgnoreLookInput(true);C->SetInputMode(FInputModeUIOnly());
@@ -117,7 +117,7 @@ void UMenuFlowSubsystem::ShowMain()
     auto& PP=Camera->GetCameraComponent()->PostProcessSettings;
     PP.bOverride_VignetteIntensity=true;PP.VignetteIntensity=.4f;
     PP.bOverride_ColorSaturation=true;PP.ColorSaturation=FVector4(.85,.85,.85,1);
-    if(auto* Player=Cast<ASliceCharacter>(PC->GetPawn()))Player->SetActorHiddenInGame(true);
+    for(TActorIterator<ACharacter> It(MenuWorld());It;++It)if(!It->IsHidden()){It->SetActorHiddenInGame(true);HiddenCharacters.Add(*It);}
     PC->SetViewTarget(Camera);Open(EWTGMenuScreen::Main);
 }
 void UMenuFlowSubsystem::ShowPause(){Open(EWTGMenuScreen::Pause);}
@@ -127,6 +127,7 @@ void UMenuFlowSubsystem::Resume()
     if(Transition([this]{Resume();}))return;
     Screen=EWTGMenuScreen::Playing;Notice.Empty();GetGameInstance()->GetSubsystem<USliceMission>()->bShowMenu=false;
     if(Widget)Widget->RemoveFromParent();Widget=nullptr;
+    for(auto& Character:HiddenCharacters)if(Character.IsValid())Character->SetActorHiddenInGame(false);HiddenCharacters.Reset();
     if(APawn* P=PC->GetPawn())P->SetActorHiddenInGame(false);
     ResetTracking();PC->SetViewTarget(PC->GetPawn());PC->ResetIgnoreMoveInput();PC->ResetIgnoreLookInput();
     PC->SetPause(false);PC->SetInputMode(FInputModeGameOnly());PC->bShowMouseCursor=false;
