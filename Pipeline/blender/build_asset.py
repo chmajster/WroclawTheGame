@@ -232,6 +232,10 @@ def main() -> None:
         raise RuntimeError(f"LOD0 triangle budget exceeded: {lod0_triangles} > {max_triangles}")
 
     ratios = [float(value) for value in manifest["lod"]["ratios"]]
+    # Free the render name before copying LOD0. Otherwise Blender silently adds
+    # .001, and UCX_<render-name> no longer matches the exported render object.
+    base.name = safe_name + "_Source"
+    base.data.name = base.name
     lod_objects = []
     lod_reports = []
     for index, ratio in enumerate(ratios):

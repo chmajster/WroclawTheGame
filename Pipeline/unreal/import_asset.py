@@ -30,6 +30,9 @@ def import_task(filename: Path, destination: str, static_mesh: bool = False):
     task.set_editor_property("replace_existing", True)
     task.set_editor_property("save", True)
     if static_mesh:
+        # The pipeline supplies FbxImportUI and UCX meshes. UE 5.8's default
+        # Interchange importer ignores these legacy options; select their factory.
+        task.set_editor_property("factory", unreal.FbxFactory())
         options = unreal.FbxImportUI()
         options.set_editor_property("import_mesh", True)
         options.set_editor_property("import_as_skeletal", False)
@@ -172,12 +175,16 @@ def prepare() -> None:
     if actual_lod_count != expected_lod_count:
         raise RuntimeError(f"Unexpected Unreal LOD count: {actual_lod_count} != {expected_lod_count}")
 
-    collision_count = mesh_subsystem.get_simple_collision_count(base_mesh)
+    # UE reports spheres/boxes/capsules separately from convex UCX hulls.
+    def collision_shapes():
+        return (mesh_subsystem.get_simple_collision_count(base_mesh)
+                + mesh_subsystem.get_convex_collision_count(base_mesh))
+    collision_count = collision_shapes()
     if manifest["collision"]["mode"] == "simple" and collision_count <= 0:
         hull_count = int(manifest["collision"].get("max_hulls", 1))
         if not mesh_subsystem.set_convex_decomposition_collisions(base_mesh, hull_count, 32, 100000):
             raise RuntimeError("Unreal failed to generate simple collision")
-        collision_count = mesh_subsystem.get_simple_collision_count(base_mesh)
+        collision_count = collision_shapes()
     if manifest["collision"]["mode"] == "simple" and collision_count <= 0:
         raise RuntimeError("Simple collision is required but none exists")
 

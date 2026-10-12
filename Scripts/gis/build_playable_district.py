@@ -80,7 +80,9 @@ def build_district(output):
                 offset = road['width_m']*50+90 if walking else min(140,road['width_m']*25)
                 for side in (1,-1):
                     p = Point(q.x-dy/length*offset*side,q.y+dx/length*offset*side)
-                    if obstacles.covers(p) or not (config['bbox'][0] <= geo.geographic([p.x,p.y,0])[0] <= config['bbox'][2]):
+                    lon,lat,_=geo.geographic([p.x,p.y,0])
+                    if obstacles.covers(p) or not (config['bbox'][0] <= lon <= config['bbox'][2]
+                                                  and config['bbox'][1] <= lat <= config['bbox'][3]):
                         continue
                     candidates.append((p.distance(Point(authored[:2])),
                                        [round(p.x,2),round(p.y,2),round(elevation(p.x,p.y)+(22 if walking else 100),2)],
@@ -131,7 +133,7 @@ def build_district(output):
             continue
         offset=road['width_m']*50+90
         shifted=line.offset_curve(offset)
-        if shifted.geom_type!='LineString' or shifted.intersects(buildings.buffer(45)):
+        if shifted.geom_type!='LineString' or shifted.intersects(obstacles):
             continue
         points=[[round(x,2),round(y,2),round(elevation(x,y)+20,2)] for x,y in shifted.coords]
         pedestrian_routes.append({'id':'walk.'+road['id'],'vehicle':False,'points':points+list(reversed(points[:-1]))})
