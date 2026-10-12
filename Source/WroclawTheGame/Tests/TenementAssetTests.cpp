@@ -10,11 +10,13 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FTenementAssetTest,"WTG.Assets.TenementKit",
 
 bool FTenementAssetTest::RunTest(const FString&)
 {
-    struct FExpected { const TCHAR* Name; FVector Size; bool Nanite; int32 Hulls; };
+    struct FExpected { const TCHAR* Name; FVector Size; bool Nanite; int32 Hulls; int32 Slots; };
     const FExpected Assets[] = {
-        {TEXT("ornate_balcony_railing"),FVector(250,110,110.685),false,3},
-        {TEXT("stone_entrance_surround"),FVector(280,48,389),true,0},
-        {TEXT("dentil_cornice"),FVector(300,49,44),true,0}
+        {TEXT("ornate_balcony_railing"),FVector(250,110,110.685),false,3,1},
+        {TEXT("stone_entrance_surround"),FVector(280,48,389),true,0,1},
+        {TEXT("dentil_cornice"),FVector(300,49,44),true,0,1},
+        {TEXT("balcony_slab"),FVector(270,120,60),true,1,1},
+        {TEXT("paneled_entrance_door"),FVector(179.4,21.868,230),false,0,3}
     };
     for(const FExpected& Expected:Assets)
     {
@@ -37,9 +39,19 @@ bool FTenementAssetTest::RunTest(const FString&)
             }
         }
         TestEqual(TEXT("Manifest Nanite policy retained"),Mesh->NaniteSettings.bEnabled,Expected.Nanite);
-        TestEqual(TEXT("One material slot"),Mesh->GetStaticMaterials().Num(),1);
-        auto* Material=Mesh->GetMaterial(0);
-        TestTrue(TEXT("Authored PBR material bound"),Material && Material->GetPathName().StartsWith(TEXT("/Game/Wroclaw/TenementKit/M_")));
+        if(Expected.Nanite)
+        {
+            TestEqual(TEXT("Preserve full stone fallback"),Mesh->NaniteSettings.FallbackPercentTriangles,1.f);
+            if(const auto* Source=Mesh->GetMeshDescription(0))
+                TestEqual(TEXT("Small ornament retained in fallback"),Mesh->GetNumTriangles(0),Source->Triangles().Num());
+        }
+        TestEqual(TEXT("Authored material slots"),Mesh->GetStaticMaterials().Num(),Expected.Slots);
+        for(int32 Slot=0;Slot<Expected.Slots;++Slot)
+        {
+            auto* Material=Mesh->GetMaterial(Slot);
+            const FString Prefix=Expected.Slots==3 ? TEXT("/Game/SurfaceQuality/Instances/MI_") : TEXT("/Game/Wroclaw/TenementKit/M_");
+            TestTrue(TEXT("Authored PBR material bound"),Material && Material->GetPathName().StartsWith(Prefix));
+        }
         auto* Body=Mesh->GetBodySetup();
         if(!TestNotNull(TEXT("Body setup exists"),Body)) continue;
         TestEqual(TEXT("Expected authored collision hull count"),Body->AggGeom.ConvexElems.Num(),Expected.Hulls);
@@ -48,7 +60,11 @@ bool FTenementAssetTest::RunTest(const FString&)
         {
             FBox Bounds(ForceInit);
             for(const FVector& Vertex:Hull.VertexData) Bounds+=Vertex;
-            TestFalse(TEXT("Balcony central space remains open"),Bounds.IsInsideOrOn(FVector(0,0,50)));
+            if(Expected.Hulls==3)
+            {
+                TestFalse(TEXT("Balcony central space remains open"),Bounds.IsInsideOrOn(FVector(0,0,50)));
+                TestFalse(TEXT("Back towards doorway remains open"),Bounds.IsInsideOrOn(FVector(0,50,50)));
+            }
         }
     }
     return !HasAnyErrors();

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "views": [
+    {
+      "id": "citykit-studio",
+      "unreal": {"qa_map": "/Game/Maps/TenementKit_QA"},
+      "qa": {"cameras": ["Kit_Front", "Kit_Oblique", "Kit_Cornice_Close"], "screenshot_width": 1280, "screenshot_height": 960}
+    },
+    {
+      "id": "citykit-district-context",
+      "unreal": {"qa_map": "/Game/Maps/Nadodrze_Playable"},
+      "qa": {"cameras": ["CityKit_Street", "CityKit_Balcony"], "screenshot_width": 1280, "screenshot_height": 960}
+    }
+  ],
+  "note": "Native capture success requires a separate human/model visual review; these views are QA scenes, not production model manifests."
+}

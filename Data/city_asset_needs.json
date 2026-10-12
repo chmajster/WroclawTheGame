@@ -4,6 +4,8 @@
     {"role": "balcony_ironwork", "manifest": "Pipeline/assets/tenements/ornate-balcony-railing.asset.json", "status": "authored"},
     {"role": "entrance_stone_trim", "manifest": "Pipeline/assets/tenements/stone-entrance-surround.asset.json", "status": "authored"},
     {"role": "cornice", "manifest": "Pipeline/assets/tenements/dentil-cornice.asset.json", "status": "authored"},
+    {"role": "supported_balcony_floor", "manifest": "Pipeline/assets/tenements/balcony-slab.asset.json", "status": "authored"},
+    {"role": "paneled_door", "manifest": "Pipeline/assets/tenements/paneled-entrance-door.asset.json", "status": "authored"},
     {"role": "street_lighting", "existing_slug": "street_lamp_02", "status": "reuse"},
     {"role": "street_seating", "existing_slug": "modular_street_seating", "status": "reuse"},
     {"role": "refuse_bin", "existing_slug": "metal_trash_can", "status": "reuse"},
