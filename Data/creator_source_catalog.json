@@ -1,0 +1,396 @@
+{
+  "provider": "MakeHuman Community",
+  "revision": "a8bc2d54ff0ac92e78ff71431b1023eda42bf482",
+  "assets": [
+    {
+      "path": "SourceAssets/Characters/MakeHuman/LICENSE.ASSETS.md",
+      "upstream_path": "LICENSE.ASSETS.md",
+      "git_blob_sha1": "f3ede1fc3318f8d794e2cb51924186c62f02f71a",
+      "bytes": 6962,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.ASSETS.md",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/LICENSE.md",
+      "upstream_path": "LICENSE.md",
+      "git_blob_sha1": "5d1a49d31ebdaa46b06c52eae2c005c678a63ffa",
+      "bytes": 3598,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "License notice",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/3dobjs/base.obj",
+      "upstream_path": "makehuman/data/3dobjs/base.obj",
+      "git_blob_sha1": "d26635e9326e3cca30778fd7b9c00062b03cce09",
+      "bytes": 1749303,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/3dobjs/base.obj",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/eyes/high-poly/high-poly.mhclo",
+      "upstream_path": "makehuman/data/eyes/high-poly/high-poly.mhclo",
+      "git_blob_sha1": "22bc5f77f398c59088804f7f4c9bb0e39d38661d",
+      "bytes": 72490,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/eyes/high-poly/high-poly.mhclo",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/eyes/high-poly/high-poly.obj",
+      "upstream_path": "makehuman/data/eyes/high-poly/high-poly.obj",
+      "git_blob_sha1": "01562a9caf4dca9ebb1fd5c24db083c17e724330",
+      "bytes": 100882,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/eyes/high-poly/high-poly.obj",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/cheek/l-cheek-bones-incr.target",
+      "upstream_path": "makehuman/data/targets/cheek/l-cheek-bones-incr.target",
+      "git_blob_sha1": "b239a7d2b2e186ac39628d30fa085e407e44894e",
+      "bytes": 1519,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/cheek/l-cheek-bones-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/cheek/l-cheek-volume-incr.target",
+      "upstream_path": "makehuman/data/targets/cheek/l-cheek-volume-incr.target",
+      "git_blob_sha1": "829d1aa7ad776a878e8de244ac09f1e38598e5f7",
+      "bytes": 4754,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/cheek/l-cheek-volume-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/cheek/r-cheek-bones-incr.target",
+      "upstream_path": "makehuman/data/targets/cheek/r-cheek-bones-incr.target",
+      "git_blob_sha1": "6bfa79028e0a5cae65deb782c733e75c65ae020a",
+      "bytes": 1514,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/cheek/r-cheek-bones-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/cheek/r-cheek-volume-incr.target",
+      "upstream_path": "makehuman/data/targets/cheek/r-cheek-volume-incr.target",
+      "git_blob_sha1": "5fc4fda0ce4de86c630251050c17ff9e1da9d428",
+      "bytes": 4690,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/cheek/r-cheek-volume-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/chin/chin-height-incr.target",
+      "upstream_path": "makehuman/data/targets/chin/chin-height-incr.target",
+      "git_blob_sha1": "16600f6a37c7bad1ba4c666d257e90091ad7286b",
+      "bytes": 9131,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/chin/chin-height-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/chin/chin-prominent-incr.target",
+      "upstream_path": "makehuman/data/targets/chin/chin-prominent-incr.target",
+      "git_blob_sha1": "06038d8062647d7845c9b14599c969d180062211",
+      "bytes": 2338,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/chin/chin-prominent-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/chin/chin-width-incr.target",
+      "upstream_path": "makehuman/data/targets/chin/chin-width-incr.target",
+      "git_blob_sha1": "ce13cc1c443cf705c5ef50ac6360a73801315fd7",
+      "bytes": 3706,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/chin/chin-width-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/ears/l-ear-scale-incr.target",
+      "upstream_path": "makehuman/data/targets/ears/l-ear-scale-incr.target",
+      "git_blob_sha1": "6f945f8353c0ff7433d67db92a7a6bee8156c566",
+      "bytes": 11526,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/ears/l-ear-scale-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/ears/l-ear-wing-incr.target",
+      "upstream_path": "makehuman/data/targets/ears/l-ear-wing-incr.target",
+      "git_blob_sha1": "ef7f645871ebbae3011568e4be639c211c3fc2ef",
+      "bytes": 6488,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/ears/l-ear-wing-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/ears/r-ear-scale-incr.target",
+      "upstream_path": "makehuman/data/targets/ears/r-ear-scale-incr.target",
+      "git_blob_sha1": "d795b17ef87c79e8fb4c0396405bfe17c49fc534",
+      "bytes": 10827,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/ears/r-ear-scale-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/ears/r-ear-wing-incr.target",
+      "upstream_path": "makehuman/data/targets/ears/r-ear-wing-incr.target",
+      "git_blob_sha1": "47ffbdc792b2d5ffb31c9ccdb24205c872e53c36",
+      "bytes": 6481,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/ears/r-ear-wing-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/eyebrows/eyebrows-trans-up.target",
+      "upstream_path": "makehuman/data/targets/eyebrows/eyebrows-trans-up.target",
+      "git_blob_sha1": "0301a19e92fefc665c266ab03ba6fbfa0187ddd3",
+      "bytes": 7877,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/eyebrows/eyebrows-trans-up.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/eyes/l-eye-corner2-up.target",
+      "upstream_path": "makehuman/data/targets/eyes/l-eye-corner2-up.target",
+      "git_blob_sha1": "6b18c6da0b5a3240b2072629b589988587d107ee",
+      "bytes": 3884,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/eyes/l-eye-corner2-up.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/eyes/l-eye-scale-incr.target",
+      "upstream_path": "makehuman/data/targets/eyes/l-eye-scale-incr.target",
+      "git_blob_sha1": "d5c265bd69f4fc16a53fdac6b17e0ed88ba5822f",
+      "bytes": 13397,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/eyes/l-eye-scale-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/eyes/l-eye-trans-out.target",
+      "upstream_path": "makehuman/data/targets/eyes/l-eye-trans-out.target",
+      "git_blob_sha1": "a29b10fb143b38ad67e423beaa92dad2c554c696",
+      "bytes": 12444,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/eyes/l-eye-trans-out.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/eyes/r-eye-corner2-up.target",
+      "upstream_path": "makehuman/data/targets/eyes/r-eye-corner2-up.target",
+      "git_blob_sha1": "eafcafdcfce97d770ce10de29c879951620aa506",
+      "bytes": 3523,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/eyes/r-eye-corner2-up.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/eyes/r-eye-scale-incr.target",
+      "upstream_path": "makehuman/data/targets/eyes/r-eye-scale-incr.target",
+      "git_blob_sha1": "69d59969c72a2de6e5aa961f5c19ed974a811ae0",
+      "bytes": 12192,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/eyes/r-eye-scale-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/eyes/r-eye-trans-out.target",
+      "upstream_path": "makehuman/data/targets/eyes/r-eye-trans-out.target",
+      "git_blob_sha1": "d472830cb66fa981a5e3effb3c5058615f0bced3",
+      "bytes": 12783,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/eyes/r-eye-trans-out.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/forehead/forehead-scale-vert-incr.target",
+      "upstream_path": "makehuman/data/targets/forehead/forehead-scale-vert-incr.target",
+      "git_blob_sha1": "356167ebfb1f723f4dd01176f9974aad59588786",
+      "bytes": 5565,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/forehead/forehead-scale-vert-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/forehead/forehead-temple-incr.target",
+      "upstream_path": "makehuman/data/targets/forehead/forehead-temple-incr.target",
+      "git_blob_sha1": "31f3e0d77040e21f8e7284a0be25fb93845f3779",
+      "bytes": 5697,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/forehead/forehead-temple-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/head/head-scale-horiz-incr.target",
+      "upstream_path": "makehuman/data/targets/head/head-scale-horiz-incr.target",
+      "git_blob_sha1": "9a32e90f7bd4d0a90092052d89137a365e272a67",
+      "bytes": 83156,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/head/head-scale-horiz-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/head/head-scale-vert-incr.target",
+      "upstream_path": "makehuman/data/targets/head/head-scale-vert-incr.target",
+      "git_blob_sha1": "4477d8ce567dd06f256270582134fbcbc6134e04",
+      "bytes": 78317,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/head/head-scale-vert-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/head/head-square.target",
+      "upstream_path": "makehuman/data/targets/head/head-square.target",
+      "git_blob_sha1": "8d156ed42db13219844e01bf4ab3185d9205befa",
+      "bytes": 12618,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/head/head-square.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/macrodetails/caucasian-female-young.target",
+      "upstream_path": "makehuman/data/targets/macrodetails/caucasian-female-young.target",
+      "git_blob_sha1": "9d1f0cbeedc9a6a51abe33f1ebb5fa7c5a7edbf1",
+      "bytes": 420559,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/macrodetails/caucasian-female-young.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/macrodetails/caucasian-male-young.target",
+      "upstream_path": "makehuman/data/targets/macrodetails/caucasian-male-young.target",
+      "git_blob_sha1": "c3b82f92c5ced85599199cd184b0faf3b3fc6881",
+      "bytes": 396479,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/macrodetails/caucasian-male-young.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/mouth/mouth-cupidsbow-incr.target",
+      "upstream_path": "makehuman/data/targets/mouth/mouth-cupidsbow-incr.target",
+      "git_blob_sha1": "55dfb70f2d69effa8e1f7efc9d18b23f504c0022",
+      "bytes": 2045,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/mouth/mouth-cupidsbow-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/mouth/mouth-lowerlip-volume-incr.target",
+      "upstream_path": "makehuman/data/targets/mouth/mouth-lowerlip-volume-incr.target",
+      "git_blob_sha1": "b3a27855023b20b8eee8b885d81033083d75feaa",
+      "bytes": 3585,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/mouth/mouth-lowerlip-volume-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/mouth/mouth-scale-horiz-incr.target",
+      "upstream_path": "makehuman/data/targets/mouth/mouth-scale-horiz-incr.target",
+      "git_blob_sha1": "d066e8ef5312242765c9ca3dd8cbbb04119da278",
+      "bytes": 15657,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/mouth/mouth-scale-horiz-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/mouth/mouth-upperlip-volume-incr.target",
+      "upstream_path": "makehuman/data/targets/mouth/mouth-upperlip-volume-incr.target",
+      "git_blob_sha1": "57261c7dab665aca7169d5bb7acddf0c002f6786",
+      "bytes": 3600,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/mouth/mouth-upperlip-volume-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/nose/nose-hump-incr.target",
+      "upstream_path": "makehuman/data/targets/nose/nose-hump-incr.target",
+      "git_blob_sha1": "771e672af9cde15ee4065cff688ed9e6a41ba3fd",
+      "bytes": 6836,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/nose/nose-hump-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/nose/nose-point-width-incr.target",
+      "upstream_path": "makehuman/data/targets/nose/nose-point-width-incr.target",
+      "git_blob_sha1": "2f5e8f665ddcd504d0f7728b05dc0b69adb36ca7",
+      "bytes": 1483,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/nose/nose-point-width-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/nose/nose-scale-depth-incr.target",
+      "upstream_path": "makehuman/data/targets/nose/nose-scale-depth-incr.target",
+      "git_blob_sha1": "3041ea16b94843a994fd43e40949ca4b6a928c96",
+      "bytes": 5762,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/nose/nose-scale-depth-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/nose/nose-scale-horiz-incr.target",
+      "upstream_path": "makehuman/data/targets/nose/nose-scale-horiz-incr.target",
+      "git_blob_sha1": "abc36f4e9813600c89414fd64edcab332332c753",
+      "bytes": 7568,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/nose/nose-scale-horiz-incr.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    },
+    {
+      "path": "SourceAssets/Characters/MakeHuman/makehuman/data/targets/nose/nose-trans-up.target",
+      "upstream_path": "makehuman/data/targets/nose/nose-trans-up.target",
+      "git_blob_sha1": "d98d2f2e59599c673d0b285136745aa78c0b3dc0",
+      "bytes": 8106,
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/nose/nose-trans-up.target",
+      "author": "MakeHuman Team / Data Collection AB / Joel Palmius / Jonas Hauquier",
+      "license": "CC0-1.0",
+      "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md"
+    }
+  ]
+}

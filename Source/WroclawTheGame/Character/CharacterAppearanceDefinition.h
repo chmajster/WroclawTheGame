@@ -81,6 +81,9 @@ struct FAppearancePartDefinition
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FText DisplayName;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TArray<FName> ClothingCompatibilityTags;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TSoftObjectPtr<class USkeletalMesh> Mesh;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) TSoftObjectPtr<class USkeletalMesh> FemaleMesh;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) TSoftObjectPtr<class UTexture2D> Thumbnail;
+    const TSoftObjectPtr<class USkeletalMesh>& MeshForSex(EAppearanceSex Sex) const { return Sex==EAppearanceSex::Female && !FemaleMesh.IsNull()?FemaleMesh:Mesh; }
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TSoftObjectPtr<class UStaticMesh> StaticMesh;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TSoftObjectPtr<class UMaterialInterface> Material;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FName Socket = TEXT("head");

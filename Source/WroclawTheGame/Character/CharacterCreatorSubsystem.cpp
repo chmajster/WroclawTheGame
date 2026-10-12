@@ -101,11 +101,11 @@ TArray<FString> UCharacterCreatorValidator::ValidateCatalog(UCharacterAppearance
         auto* Mesh=B.Mesh.LoadSynchronous(); auto* Face=B.FaceMesh.IsNull()?Mesh:B.FaceMesh.LoadSynchronous();
         if (!Mesh || !Face) { Errors.Add(TEXT("Missing body/face: ")+B.ID.ToString()); continue; }
         if (Mesh->GetLODNum()<2 || Face->GetLODNum()<2) Errors.Add(TEXT("Missing body LOD: ")+B.ID.ToString());
-        if (!B.AnimationClass.LoadSynchronous()) Errors.Add(TEXT("Missing animation class: ")+B.ID.ToString());
+        if (!B.AnimationClass.LoadSynchronous() && !B.CreatorIdle.LoadSynchronous()) Errors.Add(TEXT("Missing animation driver: ")+B.ID.ToString());
         if (!B.SkinMaterial.LoadSynchronous()) Errors.Add(TEXT("Missing skin material: ")+B.ID.ToString());
         for (const auto& M:C->Morphs) if (!Face->FindMorphTarget(M.MorphTargetName)) Errors.Add(TEXT("Missing morph ")+M.MorphTargetName.ToString()+TEXT(" on ")+B.ID.ToString());
         for (const auto& P:C->ClothingDefinitions) if (P.ClothingCompatibilityTags.IsEmpty() || P.ClothingCompatibilityTags.Contains(B.CompatibilityTag))
-            if (auto* Clothing=P.Mesh.LoadSynchronous()) if (Clothing->GetSkeleton()!=Mesh->GetSkeleton()) Errors.Add(TEXT("Clothing skeleton mismatch: ")+P.ID.ToString());
+            if (auto* Clothing=P.MeshForSex(B.Sex).LoadSynchronous()) if (Clothing->GetSkeleton()!=Mesh->GetSkeleton()) Errors.Add(TEXT("Clothing skeleton mismatch: ")+P.ID.ToString());
     }
     return Errors;
 }
@@ -120,17 +120,20 @@ void UCharacterCreatorSubsystem::Initialize(FSubsystemCollectionBase& Collection
     Committed.PlayerAppearanceData=UCharacterCreatorValidator::Normalize(*Catalog,Catalog->FallbackDefinition);
     Draft=Committed.PlayerAppearanceData;
 }
-void UCharacterCreatorSubsystem::BeginCreation() { bEditing=true; bSummary=false; Draft=Catalog->FallbackDefinition; History.Empty(); Cursor=0; OnChanged.Broadcast(); }
-void UCharacterCreatorSubsystem::Cancel() { bEditing=false; bSummary=false; Draft=Committed.PlayerAppearanceData; History.Empty(); Cursor=0; OnChanged.Broadcast(); }
+void UCharacterCreatorSubsystem::BeginCreation() { Interacting=false;bEditing=true; bSummary=false; Draft=UCharacterCreatorValidator::Normalize(*Catalog,Catalog->FallbackDefinition); History.Empty(); Cursor=0; OnChanged.Broadcast(); }
+void UCharacterCreatorSubsystem::Cancel() { Interacting=false;bEditing=false; bSummary=false; Draft=Committed.PlayerAppearanceData; History.Empty(); Cursor=0; OnChanged.Broadcast(); }
 void UCharacterCreatorSubsystem::Change(const FCharacterAppearanceDefinition& A)
 {
     auto Next=UCharacterCreatorValidator::Normalize(*Catalog,A);
     if (FCharacterAppearanceDefinition::StaticStruct()->CompareScriptStruct(&Draft,&Next,0)) return;
+    if(Interacting){Draft=Next;OnChanged.Broadcast();return;}
     History.SetNum(Cursor); FAppearanceChange Entry; Entry.Before=Draft; Entry.After=Next; History.Add(Entry);
     if (History.Num()>50) History.RemoveAt(0); Cursor=History.Num(); Draft=Next; OnChanged.Broadcast();
 }
-void UCharacterCreatorSubsystem::Undo() { if (CanUndo()) { Draft=History[--Cursor].Before; OnChanged.Broadcast(); } }
-void UCharacterCreatorSubsystem::Redo() { if (CanRedo()) { Draft=History[Cursor++].After; OnChanged.Broadcast(); } }
+void UCharacterCreatorSubsystem::BeginInteraction(){if(!Interacting){InteractionStart=Draft;Interacting=true;}}
+void UCharacterCreatorSubsystem::EndInteraction(){if(Interacting){auto Next=Draft;Draft=InteractionStart;Interacting=false;Change(Next);}}
+void UCharacterCreatorSubsystem::Undo() { EndInteraction();if (CanUndo()) { Draft=History[--Cursor].Before; OnChanged.Broadcast(); } }
+void UCharacterCreatorSubsystem::Redo() { EndInteraction();if (CanRedo()) { Draft=History[Cursor++].After; OnChanged.Broadcast(); } }
 void UCharacterCreatorSubsystem::ResetAll() { Change(Catalog->FallbackDefinition); }
 void UCharacterCreatorSubsystem::SelectPreset(int32 I) { if (Catalog->Presets.IsValidIndex(I)) Change(Catalog->Presets[I]); }
 void UCharacterCreatorSubsystem::ResetCategory(EAppearanceCategory C)
@@ -145,6 +148,8 @@ void UCharacterCreatorSubsystem::ResetCategory(EAppearanceCategory C)
     case EAppearanceCategory::Beard: A.BeardStyle=D.BeardStyle; A.BeardColor=D.BeardColor; break;
     case EAppearanceCategory::Clothing: A.Clothing=D.Clothing; A.ClothingVariants=D.ClothingVariants; break;
     case EAppearanceCategory::Voice: A.VoiceProfileID=D.VoiceProfileID; break;
+    case EAppearanceCategory::Accessories:
+        for(auto Slot:{EClothingSlot::Head,EClothingSlot::Accessory,EClothingSlot::Back}){A.Clothing.Remove(Slot);A.ClothingVariants.Remove(Slot);if(const auto* ID=D.Clothing.Find(Slot))A.Clothing.Add(Slot,*ID);if(const auto* V=D.ClothingVariants.Find(Slot))A.ClothingVariants.Add(Slot,*V);}break;
     case EAppearanceCategory::Face: A.FacePreset=D.FacePreset; break;
     case EAppearanceCategory::Eyes: A.EyeColor=D.EyeColor; A.EyeShape=D.EyeShape; break;
     default: break;
