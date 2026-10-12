@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/GameplayComponents.h"
 #include "Character/SliceCharacter.h"
 #include "Vehicles/DriveableVehicle.h"
@@ -30,6 +31,9 @@ struct FDistrictSessionProbe
     float Elapsed=0,StepAt=0,DriveDistance=0,NextDiagnostic=0;
     int Stage=0;bool OK=true;
     int EscapeIndex=INDEX_NONE;bool Returning=false;
+    FVector CoverGoal=FVector::ZeroVector,CoverEntry=FVector::ZeroVector;
+    bool CoverSelected=false,ReturningFromCover=false;
+    float NextCoverSearch=0;
     FVector Origin=FVector::ZeroVector,LastCar=FVector::ZeroVector,CameraBack=FVector::ZeroVector;
     float CameraDistance=0;
     TWeakObjectPtr<AActor> Wall,CameraWall;
@@ -115,6 +119,36 @@ static FAutoConsoleCommandWithWorld GDistrictSessionSmoke(TEXT("WTG.DistrictSess
         if(S->Stage==9)
         {
             if(G->WantedLevel()>0){
+                if(!S->CoverSelected && S->Elapsed>S->NextCoverSearch){
+                    S->NextCoverSearch=S->Elapsed+2;
+                    auto* P=S->Player.Get();const FVector Position=P->GetActorLocation();
+                    FCollisionQueryParams Params(SCENE_QUERY_STAT(SessionCover),false,P);
+                    for(float Radius:{600.f,1000.f,1600.f,2200.f}){
+                        for(int32 I=0;I<24 && !S->CoverSelected;++I){
+                            const float Angle=I*2*PI/24;
+                            FVector Goal=Position+FVector(FMath::Cos(Angle)*Radius,FMath::Sin(Angle)*Radius,0);
+                            FHitResult Floor,Path;
+                            if(!W->LineTraceSingleByChannel(Floor,Goal+FVector(0,0,250),Goal-FVector(0,0,400),ECC_Visibility,Params) || Floor.ImpactNormal.Z<.7 || Cast<ADriveableVehicle>(Floor.GetActor()))continue;
+                            Goal=Floor.ImpactPoint+FVector(0,0,P->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()+4);
+                            if(W->OverlapBlockingTestByChannel(Goal,FQuat::Identity,ECC_Pawn,FCollisionShape::MakeCapsule(34,P->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()),Params))continue;
+                            if(W->SweepSingleByChannel(Path,Position,Goal,FQuat::Identity,ECC_Pawn,FCollisionShape::MakeSphere(36),Params))continue;
+                            bool Seen=false;int Police=0;
+                            for(TActorIterator<ADriveableVehicle> Cop(W);Cop;++Cop){
+                                if(!Cop->bSiren || Cop->IsHidden() || Cop->IsActorBeingDestroyed())continue;
+                                ++Police;FHitResult Sight;FCollisionQueryParams SightParams=Params;SightParams.AddIgnoredActor(*Cop);
+                                const bool Blocked=W->LineTraceSingleByChannel(Sight,Cop->GetActorLocation()+FVector(0,0,80),Goal+FVector(0,0,80),ECC_Visibility,SightParams);
+                                Seen|=!Blocked;
+                            }
+                            if(Police>0 && !Seen){S->CoverGoal=Goal;S->CoverEntry=Position;S->CoverSelected=true;UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_COVER selected=%s entry=%s"),*Goal.ToString(),*Position.ToString());}
+                        }
+                        if(S->CoverSelected)break;
+                    }
+                }
+                if(S->CoverSelected){
+                    Walk(S->CoverGoal);
+                    if(S->Elapsed>S->NextDiagnostic){S->NextDiagnostic=S->Elapsed+5;auto* Pursuit=W->GetSubsystem<UVehiclePursuitSubsystem>();UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_COVER heat=%.1f remaining_m=%.1f pursuit=%d count=%d"),G->Wanted.Heat,FVector::Dist2D(S->Player->GetActorLocation(),S->CoverGoal)/100,int(Pursuit->GetState()),Pursuit->ActivePursuerCount());}
+                    return true;
+                }
                 if(S->EscapeIndex==INDEX_NONE){
                     float Best=MAX_flt;
                     for(int32 I=0;I<R->DeliveryRoute.Num();++I){const float Distance=FVector::DistSquared2D(S->Player->GetActorLocation(),R->DeliveryRoute[I]);if(Distance<Best){Best=Distance;S->EscapeIndex=I;}}
@@ -122,6 +156,12 @@ static FAutoConsoleCommandWithWorld GDistrictSessionSmoke(TEXT("WTG.DistrictSess
                 S->Player->SetSprint(true);Walk(R->DeliveryRoute[S->EscapeIndex]);
                 if(FVector::Dist2D(S->Player->GetActorLocation(),R->DeliveryRoute[S->EscapeIndex])<150 && S->EscapeIndex>0)--S->EscapeIndex;
                 if(S->Elapsed>S->NextDiagnostic){S->NextDiagnostic=S->Elapsed+5;auto* Pursuit=W->GetSubsystem<UVehiclePursuitSubsystem>();UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_EVADE heat=%.1f node=%d position=%s pursuit=%d count=%d"),G->Wanted.Heat,S->EscapeIndex,*S->Player->GetActorLocation().ToString(),int(Pursuit->GetState()),Pursuit->ActivePursuerCount());}
+                return true;
+            }
+            if(S->CoverSelected){
+                if(!S->ReturningFromCover){Check(true,TEXT("police_evaded"));S->ReturningFromCover=true;}
+                Walk(S->CoverEntry);
+                if(FVector::Dist2D(S->Player->GetActorLocation(),S->CoverEntry)<150){S->CoverSelected=false;S->Returning=true;}
                 return true;
             }
             if(S->EscapeIndex!=INDEX_NONE){
