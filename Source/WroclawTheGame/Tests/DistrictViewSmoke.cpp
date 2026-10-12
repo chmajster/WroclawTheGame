@@ -8,6 +8,7 @@
 #include "EngineUtils.h"
 #include "Geography/DistrictRegistry.h"
 #include "GameFramework/PlayerController.h"
+#include "GameFramework/Pawn.h"
 #include "Kismet/GameplayStatics.h"
 #include "Misc/Paths.h"
 
@@ -20,6 +21,7 @@ static FAutoConsoleCommandWithWorld GDistrictViewSmoke(TEXT("WTG.DistrictViewSmo
         UWorld* W=Weak.Get();if(!W)return false;
         Elapsed+=Dt;
         auto* PC=UGameplayStatics::GetPlayerController(W,0);if(!PC)return true;
+        PC->DisableInput(PC);if(APawn* Pawn=PC->GetPawn())Pawn->DisableInput(PC);
         AWTGDistrictRegistry* R=nullptr;
         for(TActorIterator<AWTGDistrictRegistry> It(W);It;++It){R=*It;break;}
         if(!R)return true;

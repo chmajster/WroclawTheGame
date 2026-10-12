@@ -28,6 +28,7 @@ void UDistrictGameplaySubsystem::ReportCrime(float Severity,const FString& Reaso
 {
     if (!Registry) return;
     Wanted.Report(Severity);
+    UE_LOG(LogTemp,Display,TEXT("WTG_DISTRICT_CRIME severity=%.1f heat=%.1f reason=%s"),Severity,Wanted.Heat,*Reason);
     GetWorld()->GetGameInstance()->GetSubsystem<USliceMission>()->Notify(Reason);
 }
 void UDistrictGameplaySubsystem::RecoverPlayer()

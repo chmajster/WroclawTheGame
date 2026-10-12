@@ -8,6 +8,14 @@ Maja, fail/restart, samochód z prawdziwą fizyką po DeliveryRoute, Olek,
 idempotentna nagroda i zapis; drugi proces odczytuje slot testowy.
 ReportCrime log pozwoli ustalić źródło wanted w renderze. Bez CI.
 
+Partia punktu7 kompiluje się: DistrictSessionSmoke, rzeczywisty CharacterMovement
+i samochód sterowany fizycznie przez testowego AI; zwykły input kierowcy nie
+nadpisuje AIControl. Dodatkowy log przestępstw, automatyczny render odłącza
+input (uniknięcie przypadkowego sterowania podczas testów). Usunięto konflikt
+nazwy Muted przy unity build HUD/menu. Skrypt build usuwa stare markery przed
+każdym generatorem UE. Następny krok: DistrictSessionSmoke.log; naprawić każdy
+FAIL/stall, następnie drugi proces z -WTGDistrictSessionResume.
+
 Punkt 6 zakończony: cztery testy native, build i pełny roundtrip PASS.
 Render HUD 13:32:08 UTC: 1100 klatek, mean20,00ms/p9528,07ms przy
 przygotowywaniu Lumen. Polskie zdrowie/pieniądze/cel/kierunek i podpowiedzi

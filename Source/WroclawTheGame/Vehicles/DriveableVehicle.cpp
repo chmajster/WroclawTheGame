@@ -272,7 +272,7 @@ void ADriveableVehicle::Tick(float Dt)
     float Steering = bAIControlled ? AISteering : 0.0f;
     bool Brake = bAIControlled && bAIBrake;
     auto *PC = Cast<ASliceController>(GetController());
-    if (Driver && PC && !PC->GameplayBlocked() && !PC->IsPaused())
+    if (Driver && PC && !bAIControlled && !PC->GameplayBlocked() && !PC->IsPaused())
     {
         if (PC->WasInputKeyJustPressed(EKeys::E) && GetWorld()->GetTimeSeconds() - EnteredAt > .4)
         {
