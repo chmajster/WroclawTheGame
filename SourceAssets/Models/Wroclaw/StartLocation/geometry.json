@@ -285,7 +285,7 @@
         0.16296398639678955,
         -0.0027398462407290936
       ],
-      "collision_shapes": 0,
+      "collision_shapes": 1,
       "materials": [
         "Metal",
         "Wood",

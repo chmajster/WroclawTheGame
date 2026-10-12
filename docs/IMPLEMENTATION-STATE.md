@@ -5,18 +5,18 @@ See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 6/10. Source changes align initial and recovery cameras to the meeting point, reject steep floor hits and clear recovery velocity. Tree generator now authors a narrow trunk collider and can rebuild one selected asset.
+Stream 6/10. Initial and recovery view aligned to meeting, walkable floor required and recovery velocity cleared; original XY retained. Authored trunk-only UCX tree produced, three FBX LODs imported and map placement updated.
 
-Validation and limitations: Native rebuild, tree pipeline import and asset validation pending. Scope retains original source XY and uses existing camera spring-arm collision.
+Validation and limitations: Native C++ build PASS; all 13 native assets PASS including one trunk hull and 74 building wall hulls. Real game with NullRHI passed district save/recovery/vehicle smoke in isolated slot. Rendered walking/camera/FPS follows in stream 8.
 
 ## Do zrobienia
-Run Blender tree generation, FBX/LOD export, native import/asset verification and C++ build.
+Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
 
 ## Następny krok
-Run build_start_location_models.py --asset young-tree, regenerate manifests and import tree through repository pipeline.
+Create stream 7 branch from main; persist near-view LOD thresholds, full Nanite fallback and native instancing/triangle/texture budget report.
 
 ## Stan
-In progress, stream 6/10. No CI manually run.
+Stream complete; overall implementation in progress. No CI manually run.
 
 # Earlier city asset production — completed first batch
 

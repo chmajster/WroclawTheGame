@@ -23,7 +23,7 @@
     ]
   },
   "collision": {
-    "mode": "none",
+    "mode": "authored",
     "max_hulls": 1
   },
   "textures": {},

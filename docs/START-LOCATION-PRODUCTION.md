@@ -107,3 +107,17 @@ wyłączenie SDF cienkiego gruntu usuwa czarny pas ulicy. Materiały mają zapis
 flagi Nanite i HISM. To kontrola architektury w edytorze; rozgrywka i FPS
 są odrębnym strumieniem 8. Dachy pozostają uproszczone, a architektura opiera
 się na referencjach i oszacowaniach, bez deklarowania dokładności pomiarowej.
+
+## 6. Start, kamera i kolizje
+
+Gracz pozostaje na oryginalnym chodniku. Spawn i odzyskiwanie po utknięciu
+sprawdzają nachylenie trafionej podłogi, ustawiają kapsułę ponad nią i kierują
+kamerę na punkt spotkania; powrót zeruje także prędkość. Istniejący spring arm
+z próbą kolizji kamery pozostaje aktywny. Teleport sprawdza blokujące obiekty.
+
+Blender wygenerował osobny, wąski UCX pnia młodego drzewa; liście nie blokują
+ruchu. Trzy nowe FBX drzewa rzeczywiście zaimportowano i umieszczono w mapie.
+Natywna kontrola 13 zasobów potwierdziła jeden hull drzewa, 74 hulle ścian
+budynków oraz dotychczasowe kolizje krawężników, stojaków i aut dekoracyjnych.
+Build C++ zakończył się powodzeniem. Kontrola rozgrywki i kamery na obrazach
+następuje w strumieniu 8; nie zastępujemy jej kontrolą samej siatki.
