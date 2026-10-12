@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "pull_requests": [
+    {
+      "number": 152,
+      "head": "feat/start-location-audit",
+      "target": "main",
+      "merged": true,
+      "live_sections_present": true
+    },
+    {
+      "number": 153,
+      "head": "feat/start-location-references",
+      "target": "main",
+      "merged": true,
+      "live_sections_present": true
+    },
+    {
+      "number": 154,
+      "head": "feat/start-location-acquisition",
+      "target": "main",
+      "merged": true,
+      "live_sections_present": true
+    },
+    {
+      "number": 155,
+      "head": "feat/start-location-models",
+      "target": "main",
+      "merged": true,
+      "live_sections_present": true
+    },
+    {
+      "number": 156,
+      "head": "feat/start-location-environment",
+      "target": "main",
+      "merged": true,
+      "live_sections_present": true
+    },
+    {
+      "number": 157,
+      "head": "feat/start-location-collision",
+      "target": "main",
+      "merged": true,
+      "live_sections_present": true
+    },
+    {
+      "number": 158,
+      "head": "feat/start-location-quality",
+      "target": "main",
+      "merged": true,
+      "live_sections_present": true
+    },
+    {
+      "number": 159,
+      "head": "test/start-location-gameplay",
+      "target": "main",
+      "merged": true,
+      "live_sections_present": true
+    },
+    {
+      "number": 160,
+      "head": "chore/start-location-production",
+      "target": "main",
+      "merged": true,
+      "live_sections_present": true
+    },
+    {
+      "number": 161,
+      "head": "docs/start-location-delivery",
+      "target": "main",
+      "merged": false,
+      "live_sections_present": true
+    }
+  ],
+  "source_native_screenshot_hashes": "PASS",
+  "models": 13,
+  "native_assets": 72,
+  "cc0_sets": 7,
+  "reused_prop_types": 3,
+  "instances": 2272,
+  "default_map": "Nadodrze_Playable",
+  "note": "Final PR ready to merge; no CI queried or run."
+}

@@ -5,18 +5,18 @@ See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 10/10. Delivered improved existing100m start:13original/native models,6newCC0sets plus reusedSandstone,2272instances29HISM,sourceGISplacement,realcollision-safe start,LOD/streaming and actualgame/fullmission QA. Final report includes assets/authors/URLs/limits/evidence. Editor startup now matches actual game map without changing active editor or game spawn.
+Stream 10/10. Completed all10 streams for existing100m start. Final report documents13models72UEassets7CC0sets3reused prop types,2272instances,source-backed placement,actual collision/walking/full460m mission QA and observed59.65FPS at60cap. Editor startup matches game map. Nine prior PRs merged; final delivery ready to merge.
 
-Validation and limitations: Final evidence/PR merge audit and source consistency check pending. Actual native QA completed in8; final editor-startup-only config change checked statically against generated map and unchanged GameDefaultMap.
+Validation and limitations: Final source/native/screenshot hash audit PASS,171C++ files match compiled copy after CRLF normalization. All ten dedicated PRs targetmain and contain required live sections. Native asset72count/catalog/defaultmap and actual QA report consistency PASS. No CI manually run or awaited. Original raw hashes preserved; documented roofs/heights/background/default-character/one-hardware/locked-main-DLL limitations remain.
 
 ## Do zrobienia
-Verify nine prior PRs merged with live sections, report/source/hash consistency and final default map, then finalize/merge tenth PR.
+Nothing remains in the implemented start-location scope.
 
 ## Następny krok
-Run final source/evidence/PR audit, resolve any mismatch, update final PR and IMPLEMENTATION-STATE to complete, merge into main.
+No required implementation continuation. Merge this completed delivery PR into main; optional future work is more precise roofs/background facade/character art, as separate requests.
 
 ## Stan
-In progress, stream10/10. No CI manually run.
+Complete, streams1-10 implemented and verified; final PR ready to merge. No CI manually run.
 
 # Earlier city asset production — completed first batch
 

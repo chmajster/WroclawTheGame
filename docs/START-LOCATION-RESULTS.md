@@ -80,6 +80,8 @@ następnego uruchomienia; nie zmienia mapy gry ani wyników tych testów.
 
 Dowody: `docs/qa/start-location-2026-10-12/` — obrazy przed/po, raporty
 importu/jakości/gry, sumy źródeł i zasobów oraz wyniki testów projektu.
+Sumy C++ z chwili testu pozostają w archiwum; dodatkowy plik z normalizacją
+CRLF do LF potwierdza zgodność po zmianie zakończeń linii podczas checkout Git.
 Ogólne błędy startowych testów silnika zostały oddzielone od pozytywnych
 wyników projektu; szczegółowe surowe logi pozostają w Saved.
 
@@ -111,7 +113,7 @@ Każdy numer ma osobną gałąź i PR do main:
 7. Jakość i optymalizacja — [#158](https://github.com/chmajster/WroclawTheGame/pull/158).
 8. Testy gry — [#159](https://github.com/chmajster/WroclawTheGame/pull/159).
 9. Organizacja i pipeline — [#160](https://github.com/chmajster/WroclawTheGame/pull/160).
-10. Odbiór i raport — końcowy PR bieżącej gałęzi.
+10. Odbiór i raport — [#161](https://github.com/chmajster/WroclawTheGame/pull/161).
 
 Wykonane: powyższy zakres wdrożony i sprawdzony. Do zrobienia: nic w zakresie
 tej przebudowy. Następny krok: brak wymaganej kontynuacji; kolejne zmiany mogą
