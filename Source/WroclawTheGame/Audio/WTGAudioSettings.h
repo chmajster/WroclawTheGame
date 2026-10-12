@@ -21,6 +21,8 @@ public:
 
     UPROPERTY(Config, BlueprintReadOnly, Category="Audio", meta=(ClampMin="0.0", ClampMax="1.0"))
     float UIVolume = 1.0f;
+    UPROPERTY(Config, BlueprintReadOnly, Category="Audio") float AmbientVolume=1.0f;
+    void SetAmbientVolume(float Volume);
 
     static UWTGAudioSettings* Get();
 

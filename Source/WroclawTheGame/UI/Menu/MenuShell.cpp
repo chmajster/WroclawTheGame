@@ -1,6 +1,7 @@
 #include "UI/Menu/MenuShell.h"
 #include "UI/Menu/MenuStyle.h"
 #include "UI/Menu/MenuMap.h"
+#include "UI/WTGInputProfileSubsystem.h"
 #include "Character/SliceCharacter.h"
 #include "Character/CharacterCreatorSubsystem.h"
 #include "Components/GameplayComponents.h"
@@ -125,17 +126,6 @@ void SMenuShell::BuildSaves()
             +SVerticalBox::Slot().AutoHeight().Padding(0,16,0,0)[Action(TEXT("Wczytaj"),[this,Slot]{Confirm(TEXT("Wczytać zapis?"),TEXT("Niezapisany postęp bieżącej sesji zostanie utracony."),[this,Slot]{if(!Flow->Load(Slot))Refresh();});},Valid)])];
     }
 }
-void SMenuShell::BuildSettings()
-{
-    Content->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Ustawienia obrazu"),38,WTGMenu::Paper,true)];
-    for(int32 Q=0;Q<4;++Q){const TCHAR* Labels[]={TEXT("Niska"),TEXT("Średnia"),TEXT("Wysoka"),TEXT("Ultra")};
-        Content->AddSlot().AutoHeight().Padding(0,10)[Action(Labels[Q],[Q]{auto* S=GEngine->GetGameUserSettings();S->SetOverallScalabilityLevel(Q);S->ApplyNonResolutionSettings();S->SaveSettings();})];}
-}
-void SMenuShell::BuildControls()
-{
-    Content->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Sterowanie"),38,WTGMenu::Paper,true)];
-    Content->AddSlot().AutoHeight().Padding(0,30)[WTGMenu::Card(WTGMenu::Text(TEXT("WASD — ruch / jazda\nMysz — kamera\nE — interakcja / wejście / wyjście\nShift — sprint\nCtrl — kucanie\nSpacja — skok / hamulec ręczny\nF5 / F9 — zapis / odczyt\nEsc — pauza"),24))];
-}
 void SMenuShell::BuildAbout()
 {
     Content->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Wrocław The Game"),38,WTGMenu::Paper,true)];
@@ -185,15 +175,23 @@ void SMenuShell::DrawDialog()
             [WTGMenu::Card(SNew(SVerticalBox)
                 +SVerticalBox::Slot().AutoHeight()[WTGMenu::Text(DialogTitle,32,WTGMenu::Paper,true)]
                 +SVerticalBox::Slot().AutoHeight().Padding(0,20,0,30)[WTGMenu::Text(DialogBody,22,WTGMenu::Muted)]
-                +SVerticalBox::Slot().AutoHeight()[Action(TEXT("Anuluj"),[this]{Refresh();})]
+                +SVerticalBox::Slot().AutoHeight()[Action(TEXT("Anuluj"),[this]{RevertVideoChange();Refresh();})]
                 +SVerticalBox::Slot().AutoHeight()[Action(TEXT("Potwierdź"),[this]{auto A=MoveTemp(Pending);if(A)A();})])]]];
     FocusFirst();
 }
 FReply SMenuShell::OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E)
 {
     const FKey K=E.GetKey();
+    if(!CapturingBinding.IsNone()){
+        if(K==EKeys::Escape || K==EKeys::Gamepad_FaceButton_Right){CapturingBinding=NAME_None;Refresh();return FReply::Handled();}
+        auto* Input=Flow->GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>();
+        const bool OK=CapturingGamepad?Input->RebindGamepad(CapturingBinding,K):Input->RebindKeyboard(CapturingBinding,K);
+        if(OK){CapturingBinding=NAME_None;Flow->Notice=TEXT("Przypisanie zapisane.");Refresh();}
+        else Flow->Notice=TEXT("Ten klawisz jest zarezerwowany lub zaj\u0119ty w tym kontek\u015bcie.");
+        return FReply::Handled();
+    }
     if(K==EKeys::Escape || K==EKeys::Gamepad_FaceButton_Right){
-        if(Pending)Refresh();else if(Flow.IsValid() && !Flow->IsFrontEnd())Flow->Resume();else if(Page!=0)SelectPage(0);return FReply::Handled();}
+        if(VideoPending){RevertVideoChange();Refresh();}else if(Pending)Refresh();else if(Flow.IsValid() && !Flow->IsFrontEnd())Flow->Resume();else if(Page!=0)SelectPage(0);return FReply::Handled();}
     if(MapView && MapView->HasKeyboardFocus() && K!=EKeys::Tab)return FReply::Unhandled();
     const int Step=(K==EKeys::Up || K==EKeys::Gamepad_DPad_Up)?-1:(K==EKeys::Down || K==EKeys::Gamepad_DPad_Down)?1:0;
     if((Step || K==EKeys::Tab) && !FocusOrder.IsEmpty()){

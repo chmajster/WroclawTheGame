@@ -203,7 +203,7 @@ void ASurfaceQualityDirector::Tick(float DeltaSeconds)
     if (DistrictOutdoor)
     {
         const auto* Audio=UWTGAudioSettings::Get();
-        Ambience->SetVolumeMultiplier(.18f*Audio->MasterVolume*Audio->SFXVolume);
+        Ambience->SetVolumeMultiplier(.18f*Audio->MasterVolume*Audio->AmbientVolume);
     }
     if (!FollowWeather)
         return;

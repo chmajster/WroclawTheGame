@@ -283,32 +283,39 @@ void ADriveableVehicle::Tick(float Dt)
     auto *PC = Cast<ASliceController>(GetController());
     if (Driver && PC && !bAIControlled && !PC->GameplayBlocked() && !PC->IsPaused())
     {
-        if (PC->WasInputKeyJustPressed(EKeys::E) && GetWorld()->GetTimeSeconds() - EnteredAt > .4)
+        auto* InputProfile=GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>();
+        auto Down=[&](FName Id){return PC->IsInputKeyDown(InputProfile->Key(Id)) || PC->IsInputKeyDown(InputProfile->Key(Id,true));};
+        auto Pressed=[&](FName Id){return PC->WasInputKeyJustPressed(InputProfile->Key(Id)) || PC->WasInputKeyJustPressed(InputProfile->Key(Id,true));};
+        if (Pressed("CarExit") && GetWorld()->GetTimeSeconds() - EnteredAt > .4)
         {
             if (Exit())
                 return;
         }
-        if (PC->WasInputKeyJustPressed(EKeys::NumPadZero))
+        if (Pressed("CarEngine"))
             bEngine = !bEngine && Health > 0;
-        if (PC->WasInputKeyJustPressed(EKeys::Add))
+        if (Pressed("CarLights"))
         {
             bLights = !bLights;
             for (USpotLightComponent *Light : Lights)
                 Light->SetVisibility(bLights);
         }
-        if (PC->IsInputKeyDown(EKeys::Multiply) && GetWorld()->GetTimeSeconds() - LastHorn > 1)
+        if (Down("CarHorn") && GetWorld()->GetTimeSeconds() - LastHorn > 1)
         {
             LastHorn = GetWorld()->GetTimeSeconds();
             USliceAudio::Play(this, TEXT("Horn"), GetActorLocation(), .8f);
         }
-        Throttle = float(PC->IsInputKeyDown(EKeys::W)) - float(PC->IsInputKeyDown(EKeys::S));
-        Steering = float(PC->IsInputKeyDown(EKeys::D)) - float(PC->IsInputKeyDown(EKeys::A));
-        Brake = PC->IsInputKeyDown(EKeys::SpaceBar);
+        Throttle = float(Down("CarForward")) - float(Down("CarBackward")) + PC->GetInputAnalogKeyState(EKeys::Gamepad_RightTriggerAxis)-PC->GetInputAnalogKeyState(EKeys::Gamepad_LeftTriggerAxis);
+        Steering = float(Down("CarRight")) - float(Down("CarLeft")) + PC->GetInputAnalogKeyState(EKeys::Gamepad_LeftX);
+        Brake = Down("CarHandbrake");
         float X, Y;
         PC->GetInputMouseDelta(X, Y);
         const auto& Profile=GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->Profile;
         PC->AddYawInput(X*Profile.MouseSensitivity);
         PC->AddPitchInput(Y*Profile.MouseSensitivity*(Profile.bInvertMouseY?1.f:-1.f));
+        auto Stick=[&](FKey Key){const float V=PC->GetInputAnalogKeyState(Key);return FMath::Abs(V)<Profile.GamepadDeadzone?0.f:V;};
+        PC->AddYawInput(Stick(EKeys::Gamepad_RightX)*Dt*120*Profile.GamepadSensitivity);
+        PC->AddPitchInput(Stick(EKeys::Gamepad_RightY)*Dt*120*Profile.GamepadSensitivity*(Profile.bInvertMouseY?1.f:-1.f));
+        Steering=FMath::Clamp(Steering,-1.f,1.f);Throttle=FMath::Clamp(Throttle,-1.f,1.f);
     }
     int Grounded = 0;
     const float Mass = Chassis->GetMass();

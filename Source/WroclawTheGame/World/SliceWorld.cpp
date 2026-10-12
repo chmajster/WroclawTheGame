@@ -1,4 +1,5 @@
 #include "World/SliceWorld.h"
+#include "Audio/WTGAudioSettings.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
 #include "Components/PointLightComponent.h"
@@ -66,9 +67,10 @@ void ASliceWorld::Tick(float Dt)
         if (D.id == M->WorldState.district)
             Active = &D;
     const bool Room = Active && Active->ambient == "Apartment";
-    RoomAudio->SetVolumeMultiplier(Room ? .22f : 0.f);
-    StreetAudio->SetVolumeMultiplier(Room ? .05f : .3f);
-    ChaseAudio->SetVolumeMultiplier(M->Threat() ? .38f : 0.f);
+    const auto* Audio=UWTGAudioSettings::Get();
+    RoomAudio->SetVolumeMultiplier((Room ? .22f : 0.f)*Audio->MasterVolume*Audio->AmbientVolume);
+    StreetAudio->SetVolumeMultiplier((Room ? .05f : .3f)*Audio->MasterVolume*Audio->AmbientVolume);
+    ChaseAudio->SetVolumeMultiplier((M->Threat() ? .38f : 0.f)*Audio->MasterVolume*Audio->MusicVolume);
     const auto *W = M->WorldState.Weather();
     if (Fog && W)
         Fog->GetComponent()->SetFogDensity(W->fog);

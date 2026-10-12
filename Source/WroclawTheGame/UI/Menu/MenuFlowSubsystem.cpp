@@ -21,6 +21,9 @@
 #include "Misc/Parse.h"
 #include "Vehicles/DriveableVehicle.h"
 #include "Systems/CityGameplaySubsystem.h"
+#include "World/SurfaceQualityDirector.h"
+#include "Audio/WTGAudioSettings.h"
+#include "Components/AudioComponent.h"
 
 void UMenuFlowSubsystem::Initialize(FSubsystemCollectionBase& C)
 {
@@ -48,6 +51,13 @@ void UMenuFlowSubsystem::Attach(ASliceController* C)
 bool UMenuFlowSubsystem::Tick(float Dt)
 {
     if(!PC.IsValid())return true;
+    const auto* Audio=UWTGAudioSettings::Get();
+    if(IsMenuOpen()){
+        for(TActorIterator<ASurfaceQualityDirector> It(MenuWorld());It;++It)
+            if(It->Ambience)It->Ambience->SetVolumeMultiplier(.18f*Audio->MasterVolume*Audio->AmbientVolume);
+        for(TActorIterator<ADriveableVehicle> It(MenuWorld());It;++It)
+            if(It->EngineAudio)It->EngineAudio->SetVolumeMultiplier((It->bSiren?.45f:.25f)*Audio->MasterVolume*Audio->SFXVolume);
+    }
     if(Screen==EWTGMenuScreen::Boot){
         auto* P=Cast<ASliceCharacter>(PC->GetPawn());
         if(P && P->GetCharacterMovement()->MovementMode==MOVE_Walking && MenuWorld()->GetRealTimeSeconds()>1)ShowMain();
