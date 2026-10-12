@@ -59,7 +59,7 @@ def apply_static_mesh(actor, mesh, scale):
         raise RuntimeError(f'StaticMeshComponent missing on {actor.get_actor_label()}')
     component.set_static_mesh(mesh)
     component.set_editor_property('cast_shadow', True)
-    if actor.get_root_component() == component:
+    if actor.get_editor_property('root_component') == component:
         actor.set_actor_scale3d(unreal.Vector(*scale))
     else:
         component.set_relative_scale3d(unreal.Vector(*scale))
