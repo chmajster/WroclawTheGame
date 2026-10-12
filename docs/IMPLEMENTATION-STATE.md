@@ -1,19 +1,19 @@
 # Start location production — 2026-10-12
 
-Primary live log: current start-location PR, stream 2/10.
+Primary live log: current start-location PR, stream 3/10.
 See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 2/10. Municipal street reconstruction and Pomorska 47 photographs inspected. Reference policy records surface distinctions, estimated heights, facade characteristics and fixed player anchor. Eight exact OSM footprints extracted into compact versioned production inputs.
+Stream 3/10. Downloaded and verified five complete CC0 PBR sets at 2k (15 maps, 269900872 bytes) with provider MD5 and SHA256 locks. Existing prop library reused. Exact authors and licenses retained; original source-footprint Blender assets next.
 
-Validation and limitations: Input generation PASS for eight buildings, Blender CLI 5.2.2 LTS confirmed. Heights and detailed window placement are estimates, not survey data. Reference photographs not redistributed or used as textures.
+Validation and limitations: Actual download PASS 18 maps total, 3 reused. Native material integration belongs to subsequent streams.
 
 ## Do zrobienia
 Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
 
 ## Następny krok
-Merge stream 2; branch feat/start-location-acquisition from main. Acquire reviewed CC0 plaster, asphalt and pavement PBR through Data/city_asset_acquisition.json and reuse existing prop catalog.
+Merge stream 3; branch feat/start-location-models from main. Generate eight full buildings and five street props, manifest them and run Blender export/native import.
 
 ## Stan
 Stream complete; overall implementation in progress. No CI manually run.
