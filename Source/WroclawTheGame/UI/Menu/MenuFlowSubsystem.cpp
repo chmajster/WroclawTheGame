@@ -216,6 +216,7 @@ FString UMenuFlowSubsystem::DescribeSave(const FString& Slot,bool& Valid) const
 {
     Valid=false;if(!SaveSlots().Contains(Slot))return TEXT("Niedostępny zapis");
     if(Slot==TEXT("campaign") || Slot==TEXT("city")){Valid=true;return Slot==TEXT("city")?TEXT("Miasto GIS — ostatni zapis"):TEXT("Przebudzenie — ostatni checkpoint");}
+    if(!UDistrictSaveSubsystem::HasReadableHeader(Slot))return TEXT("Niepoprawny format zapisu — zachowano plik");
     auto* Data=Cast<UDistrictSaveGame>(UGameplayStatics::LoadGameFromSlot(Slot,0));
     auto* R=MenuWorld()?MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->GetRegistry():nullptr;
     if(!Data || !R || !Data->Validate(R->BoundsMin,R->BoundsMax,R->DistrictId))return TEXT("Zapis uszkodzony lub niezgodny — zachowano plik");

@@ -15,6 +15,7 @@ public:
     bool LoadSaved();
     bool NewRun();
     bool HasSave() const;
+    static bool HasReadableHeader(const FString& SlotName);
     bool IsWriteBlocked() const {return bWriteBlocked;}
     FString Status=TEXT("Brak zapisu");
     FString Slot=TEXT("WroclawDistrict_v1");

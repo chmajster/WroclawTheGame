@@ -12,15 +12,22 @@ focus-loss pause, menu cap30 restored to gameplay cap, throttled audio refresh,
 MoviePlayer loading with original river/bridge illustration and indeterminate bar.
 Build PASS and actual MenuViewSmoke PASS main/pause/loading, no Error/Fatal.
 All three renders inspected. MoviePlayer startup hook logged actual map load.
-Next: merge PR144, stage7 from main: native interaction, safer save selection,
+PR144 merged. Stage7 from main: native interaction, safer save selection,
 map label layout, readable key labels, video revert and multi-resolution renders.
 Stage7 PR145: safer latest valid save, map label collision handling and wider
 initial fit; compact localized input glyphs; shared global shortcuts/conflicts;
 creator starts district without reload and restores Playing before map changes.
 MenuUISmoke exercises actual Slate key routing/pointer handlers and engine state
 using only Saved/MenuQA/UI.ini and explicitly named MenuQA save slots.
-Next: inspect MenuBuild.log, native UI probe then fix first failing check;
-finally multi-resolution captures and District regression, merge and visible start.
+Resize with blur exposed a D3D12 copy-bounds crash; blur drain/geometry guard
+fix is built. Engine resize also automatically updated LastConfirmed mode;
+menu now holds an independent transaction snapshot and restores metadata/config.
+CommonUI virtual accept-mouse is suspended only in raw Slate menus and restored
+for gameplay/creator. Final build PASS. Full test suite running:
+Saved/Logs/MenuFullQA.stdout (settings/replay/UI/1080/1440/4K/ultrawide).
+Next: inspect first failed assertion if any; then District regression, inspect
+rendered pages, record exact results in MENU-REBUILD.md, complete/merge PR145
+and launch visible game. No CI; test INIs/slots remain isolated from player data.
 
 Prior open-world implementation history follows.
 

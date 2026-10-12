@@ -56,6 +56,30 @@ bool UDistrictSaveGame::Validate(const FVector& Min,const FVector& Max,const FSt
     return Balance==Economy.BalanceCents && Completed==(DeliveryStage==4);
 }
 bool UDistrictSaveSubsystem::HasSave() const {return UGameplayStatics::DoesSaveGameExist(Slot,0);}
+bool UDistrictSaveSubsystem::HasReadableHeader(const FString& SlotName)
+{
+    if(FPaths::GetCleanFilename(SlotName)!=SlotName)return false;
+    const FString Path=FPaths::ProjectSavedDir()/TEXT("SaveGames")/(SlotName+TEXT(".sav"));
+    const int64 Size=IFileManager::Get().FileSize(*Path);
+    if(Size<128 || Size>16*1024*1024)return false;
+    TArray<uint8> Bytes;if(!FFileHelper::LoadFileToArray(Bytes,*Path))return false;
+    int32 Offset=0;
+    auto Int=[&](int32& V){if(Offset+4>Bytes.Num())return false;FMemory::Memcpy(&V,Bytes.GetData()+Offset,4);Offset+=4;return true;};
+    auto SkipString=[&](int32 MaxChars){int32 N;if(!Int(N) || N< -MaxChars || N>MaxChars)return false;
+        const int32 Count=N<0?-N*2:N;if(Offset+Count>Bytes.Num())return false;
+        if(Count && (Bytes[Offset+Count-1]!=0 || (N<0 && Bytes[Offset+Count-2]!=0)))return false;Offset+=Count;return true;};
+    int32 Tag=0,Version=0;if(!Int(Tag) || Tag!=0x53415647 || !Int(Version) || Version<2 || Version>3)return false;
+    // GVAS v2/v3: package version, engine version/branch, optimized GUID versions.
+    Offset+=(Version==3?8:4)+10;if(!SkipString(1024))return false;
+    int32 Format=0,Count=0;if(!Int(Format) || Format!=3 || !Int(Count) || Count<0 || Count>4096 || Offset+Count*20>Bytes.Num())return false;
+    Offset+=Count*20;int32 Chars=0;if(!Int(Chars) || Chars< -512 || Chars>512 || Chars==0)return false;
+    const FString Expected=TEXT("/Script/WroclawTheGame.DistrictSaveGame");
+    if(FMath::Abs(Chars)!=Expected.Len()+1)return false;
+    const int32 Width=Chars<0?2:1;if(Offset+FMath::Abs(Chars)*Width>=Bytes.Num())return false;
+    for(int32 I=0;I<=Expected.Len();++I){const uint16 Character=Bytes[Offset+I*Width]+(Width==2?uint16(Bytes[Offset+I*Width+1])<<8:0);
+        if(Character!=(I==Expected.Len()?0:uint16(Expected[I])))return false;}
+    return true;
+}
 void UDistrictSaveSubsystem::Report(const FString& Message)
 {
     Status=Message;GetWorld()->GetGameInstance()->GetSubsystem<USliceMission>()->Notify(Message);
@@ -147,6 +171,7 @@ bool UDistrictSaveSubsystem::LoadSaved()
 {
     auto* R=GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->GetRegistry();
     if(!R || !HasSave()){Report(TEXT("Brak zapisu tej dzielnicy"));return false;}
+    if(!HasReadableHeader(Slot)){bWriteBlocked=true;Report(TEXT("Niepoprawny format zapisu. Zachowano plik."));return false;}
     auto* Data=Cast<UDistrictSaveGame>(UGameplayStatics::LoadGameFromSlot(Slot,0));
     if(!Data || !Data->Validate(R->BoundsMin,R->BoundsMax,R->DistrictId))
     {bWriteBlocked=true;Report(TEXT("Zapis jest uszkodzony lub nowszy. Zachowano plik; nowa gra utworzy nowy zapis."));return false;}
