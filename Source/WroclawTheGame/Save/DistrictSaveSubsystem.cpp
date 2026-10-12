@@ -20,10 +20,18 @@
 #include "Misc/Parse.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
+#include "World/CityPopulation.h"
 #include "HAL/FileManager.h"
 #if PLATFORM_WINDOWS
 #include "Windows/WindowsHWrapper.h"
 #endif
+
+static ADriveableVehicle* RestoreDistrictCar(AWTGDistrictRegistry* R)
+{
+    if(IsValid(R->DeliveryVehicle))return R->DeliveryVehicle;
+    auto* Car=R->GetWorld()->SpawnActor<ADriveableVehicle>(R->VehicleSpawn,FRotator(0,R->VehicleYaw,0));
+    R->DeliveryVehicle=Car;if(Car && R->Population)Car->SetVisualMeshes(R->Population->TrafficBodyMesh,R->Population->TrafficWheelMesh);return Car;
+}
 
 bool UDistrictSaveGame::Validate(const FVector& Min,const FVector& Max,const FString& Id) const
 {
@@ -99,7 +107,9 @@ bool UDistrictSaveSubsystem::Apply(const UDistrictSaveGame* D)
     if(auto* Current=PC?Cast<ADriveableVehicle>(PC->GetPawn()):nullptr)
     { Current->Speed=0;Current->Chassis->SetPhysicsLinearVelocity(FVector::ZeroVector);Current->Chassis->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
       if(!Current->Exit())return false;Player=Cast<ASliceCharacter>(PC->GetPawn()); }
-    if(!Player || !IsValid(Car))return false;
+    if(!Player)return false;
+    if(!IsValid(Car))Car=RestoreDistrictCar(R);
+    if(!Car)return false;
     FCollisionQueryParams Params(SCENE_QUERY_STAT(DistrictLoadFloor),false);Params.AddIgnoredActor(Player);Params.AddIgnoredActor(Car);
     FHitResult Floor;
     if(!GetWorld()->LineTraceSingleByChannel(Floor,D->PlayerPosition+FVector(0,0,150),D->PlayerPosition-FVector(0,0,450),ECC_Visibility,Params) || Floor.ImpactNormal.Z<.7)return false;
@@ -134,7 +144,7 @@ bool UDistrictSaveSubsystem::NewRun()
 {
     auto* G=GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>();auto* R=G->GetRegistry();if(!R)return false;
     auto* Old=Capture();const bool Blocked=bWriteBlocked;
-    G->RecoverPlayer();auto* Car=R->DeliveryVehicle.Get();if(!IsValid(Car))return false;
+    G->RecoverPlayer();auto* Car=RestoreDistrictCar(R);if(!Car)return false;
     Car->Chassis->SetSimulatePhysics(false);Car->SetActorLocationAndRotation(R->VehicleSpawn,FRotator(0,R->VehicleYaw,0),false,nullptr,ETeleportType::TeleportPhysics);
     Car->Health=100;Car->Speed=0;Car->bEngine=false;G->Wanted={};
     GetWorld()->GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>()->ResetEconomy();

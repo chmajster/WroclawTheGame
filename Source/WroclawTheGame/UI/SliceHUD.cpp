@@ -88,12 +88,12 @@ void ASliceHUD::Panel(const FString &Title, const FString &Body)
 }
 void ASliceHUD::DrawDistrictHUD()
 {
-    auto* PC=Cast<ASliceController>(PlayerOwner);auto* Pawn=PC->GetPawn();if(!Pawn)return;
+    auto* PC=Cast<ASliceController>(PlayerOwner);APawn* Pawn=PC->GetPawn();if(!Pawn)return;
     auto* Car=Cast<ADriveableVehicle>(Pawn);auto* Player=Car?Car->Driver.Get():Cast<ASliceCharacter>(Pawn);
     if(!Player)return;
     auto* G=GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>();auto* D=GetWorld()->GetSubsystem<UDistrictDeliverySubsystem>();
     const float S=FMath::Clamp(Canvas->SizeX/1600.f,.65f,1.25f), X=28*S;
-    const FLinearColor Ink(.012,.018,.023,.82),Gold(1,.79,.36),Muted(.75,.81,.83);
+    const FLinearColor Ink(.012f,.018f,.023f,.82f),Gold(1,.79f,.36f),Muted(.75f,.81f,.83f);
     DrawRect(Ink,X,24*S,630*S,94*S);
     Text(FString::Printf(TEXT("ZDROWIE %.0f  ·  %.2f zł"),Player->HealthState->Value,GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>()->GetBalancePLN()),X+14*S,36*S,.9*S);
     Text(D->Objective(),X+14*S,66*S,.75*S,Gold);

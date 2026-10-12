@@ -2,6 +2,14 @@
 
 ## Bieżący punkt kontynuacji
 
+Punkt 6: build PASS, cztery native testy WTG.District PASS. Faktyczny World
+WTG.DistrictSaveSmoke PASS (13:29:51 UTC): pieszo, auto, re-exit, complete/
+reward once, future version preserved. Osobny slot testowy usunięty.
+Następny krok: dokończyć render HUD (DistrictHUDRender.log, DistrictStreet.png),
+scalić punkt 6. Następnie punkt 7: test prawdziwej jazdy po DeliveryRoute,
+wejść/wyjść, kamery/kolizji, restartu i ukończenia dostawy przez Interact,
+odczyt zachowanego slotu w nowym procesie oraz końcowe uruchomienie widoczne.
+
 Punkt 6 w trakcie na feat/06-district-hud-save. Następna konkretna zmiana:
 Save/DistrictSaveSubsystem i DistrictSaveGame; niezależny slot, walidacja danych,
 autoload/auto/manual save, rollback nagrody przy błędzie zapisu. Następnie
