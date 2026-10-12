@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "nadodrze_odra",
+  "title": "Nadodrze — przesyłka znad Odry",
+  "map": "/Game/Maps/Nadodrze_Playable",
+  "source_dataset": "wave1",
+  "bbox": [17.0275, 51.1158, 17.0405, 51.1215],
+  "origin_projected_m": [641702, 5665787, 115.0],
+  "budgets": {"mesh_triangles": 250000, "pedestrians": 16, "traffic": 4, "facade_instances": 12000},
+  "streets": ["Drobnera", "Dubois", "Pomorska", "Cybulskiego", "Świętego Wincentego"],
+  "landmarks": ["Wyspa Słodowa", "Wyspa Bielarska", "Most Uniwersytecki", "Most Pomorski"],
+  "mission": {"id": "odra_delivery", "title": "Przesyłka znad Odry", "reward_cents": 18000, "time_limit_seconds": 420},
+  "anchors": {
+    "meeting": [17.03135, 51.12025],
+    "vehicle": [17.03165, 51.12000],
+    "delivery": [17.03310, 51.11805]
+  }
+}

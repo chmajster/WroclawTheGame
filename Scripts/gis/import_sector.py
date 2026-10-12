@@ -97,12 +97,18 @@ def parts(geometry, kind):
             yield from parts(child, kind)
 
 
-def build(source=SOURCE, output=OUTPUT, name="nadodrze", origin=None):
+def build(source=SOURCE, output=OUTPUT, name="nadodrze", origin=None, bbox_override=None):
     if not name or not all(c.isalnum() or c in "_-" for c in name):
         raise ValueError("Invalid source dataset name")
     osm = source/f"osm/{name}.osm.gz"; terrain = source/f"terrain/{name}.csv"
     sources = [metadata(osm), metadata(terrain)]
-    bbox = sources[0]['BoundingBox']; clip = box(*bbox)
+    source_bbox = sources[0]['BoundingBox']
+    bbox = list(bbox_override) if bbox_override is not None else source_bbox
+    if (len(bbox) != 4 or not all(isinstance(v, (int, float)) and math.isfinite(v) for v in bbox)
+            or not source_bbox[0] <= bbox[0] < bbox[2] <= source_bbox[2]
+            or not source_bbox[1] <= bbox[1] < bbox[3] <= source_bbox[3]):
+        raise ValueError('Requested bounds must be a nonempty subset of the source dataset')
+    clip = box(*bbox)
     geo = Geography(bbox, terrain, origin)
     xml = gzip.decompress(source_bytes(osm))
     if hashlib.sha256(xml).hexdigest()!=sources[0]['UncompressedSHA256']:
@@ -185,6 +191,8 @@ def build(source=SOURCE, output=OUTPUT, name="nadodrze", origin=None):
                 if tags.get('bridge','no')!='no' or tags.get('tunnel','no')!='no':unsupported.append(identifier)
     # Preserve real entrance/address nodes for building-link and gameplay pipelines.
     for node_id, coord in nodes.items():
+        if not (bbox[0] <= coord[0] <= bbox[2] and bbox[1] <= coord[1] <= bbox[3]):
+            continue
         tags = node_tags.get(node_id, {})
         if not (tags.get('entrance') or tags.get('addr:housenumber') or tags.get('addr:street')):
             continue

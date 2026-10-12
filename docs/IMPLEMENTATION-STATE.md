@@ -6,16 +6,23 @@ Ten zakres rozwija istniejącą grę w pierwszą kompletną sesję pieszo/samoch
 na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
 
 - Punkt 1: rozpoznanie wykonane, UE 5.8.2 i działający start kampanii potwierdzone.
-- Punkty 2–7: w zakresie, jeszcze niewykonane. Każdy otrzymuje osobną gałąź i PR.
+- Punkt 2: PR #133, `feat/02-playable-wroclaw-district`. Źródło i generator
+  istnieją; 439 komórek, 75 364 trójkąty, legalna trasa 477,9 m, 16 tras pieszych.
+  UHT/UBT i pięć testów geometrii przeszły. Balustrada ma pipeline OBJ → Blender
+  (LOD 108/54/26) → FBX → UE; liczenie UCX poprawiono na osobne convex collision.
+  Pełny bake PASS (439 komórek, 12 000 fasad, 244 balustrady, 740 aktorów).
+  Proces generatora zakończył się kodem 0. Mapa uruchomiona w oknie `-game`.
+- Punkty 3–7: w zakresie, jeszcze niewykonane. Osobne gałęzie i PR-y w kolejności.
 - Decyzja: wykorzystać istniejące GIS, postać, pojazd, populację, ekonomię i menu;
   nie zmieniać silnika ani wdrażać zastępczego frameworka gry.
-- Następny krok: punkt 2, gałąź z aktualnego `main`; dodać źródłowy manifest
-  fragmentu Nadodrze/Odra i generator `Scripts/gis/build_playable_district.py`,
-  następnie `Scripts/prepare_playable_district.py`. Źródło: `wave1.osm.gz` z
-  istniejących części oraz teren Wave 1; produkty w `Saved/PlayableDistrict`.
+- Następny krok: scalić ukończony punkt 2, utworzyć gałąź punktu 3 z `main`.
+  Spiąć runtime locomotion w `CharacterAppearanceComponent`, bezpieczne wyjście
+  z `DriveableVehicle`, pościg/wykroczenia i kontrolę skrzyżowań. Punktów 4–7
+  nie oznaczać jako gotowych na podstawie samej mapy.
+  Nie oznaczać misji/pościgu/zapisu jako gotowych na podstawie samej mapy.
 - Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,
   os error 2). Nie deklarować wizualnego QA bez rzeczywistego dowodu.
-- Stan: w trakcie, zakończono rozpoznanie; dalsze sekcje poniżej to historyczny
+- Stan: w trakcie całego zakresu, punkty 1–2 wykonane; dalsze sekcje poniżej to historyczny
   zapis wcześniejszych zakresów i nie stanowią odbioru nowego zadania.
 
 Updated: 2026-09-18

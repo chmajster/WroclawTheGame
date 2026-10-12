@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "nadodrze-river-railing",
+  "display_name": "Autorska balustrada bulwaru nad Odrą",
+  "area": "nadodrze",
+  "type": "static_mesh",
+  "quality": "standard",
+  "dimensions": {"height_m": 1.1},
+  "source": {"model": "SourceAssets/Models/Wroclaw/river_railing.obj", "license": "Project-owned original geometry", "reference_directory": null},
+  "mesh": {"max_triangles": 5000, "combine": true, "generate_uv_if_missing": true},
+  "lod": {"ratios": [1, 0.5, 0.25]},
+  "collision": {"mode": "simple", "max_hulls": 12},
+  "textures": {"base_color": null, "normal": null, "orm": null},
+  "unreal": {"destination": "/Game/Wroclaw/Nadodrze", "nanite": false, "qa_map": "/Game/Maps/Nadodrze_Playable"},
+  "qa": {"automation_filter": "WTG.SurfaceQuality", "cameras": [], "screenshot_width": 1920, "screenshot_height": 1080}
+}

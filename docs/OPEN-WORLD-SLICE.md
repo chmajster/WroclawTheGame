@@ -51,6 +51,36 @@ doręczenie → jedna nagroda → zapis → odczyt zachowujący postęp i pieni�
 Wyjście z auta nie gubi misji. Utrata auta/śmierć pozwala ponowić zadanie. Żaden
 błąd zapisu nie może po cichu nadpisać uszkodzonego lub nowszego formatu.
 
+## Odtwarzanie fragmentu dzielnicy
+
+Python 3.13+ z `Scripts/gis/requirements.txt`, Blender oraz UE 5.8. Uruchomić
+z katalogu repozytorium (ścieżki narzędzi dopasować do instalacji):
+
+```powershell
+./Scripts/Build-PlayableDistrict.ps1 -EngineRoot 'D:/SteamLibrary/UnrealEngine/UE_5.8' `
+  -Blender 'C:/Program Files/Blender Foundation/Blender 5.2/blender.exe' `
+  -Python './Saved/GISPython/Scripts/python.exe' -Launch
+```
+
+Wcześniej należy przygotować istniejący katalog modeli przez
+`Scripts/import_free_models.py` w UE i materiały projektu przez standardowy
+`Scripts/Build-Windows.ps1 -PrepareOnly`. Generator nie pobiera nowych assetów.
+`Saved/PlayableDistrict/source-report.json`, `engine-bake-report.json` oraz
+`Saved/Pipeline/import/nadodrze-river-railing.json` zapisują faktyczne wyniki.
+Mapę można uruchomić bez przebudowy:
+
+```powershell
+& 'D:/SteamLibrary/UnrealEngine/UE_5.8/Engine/Binaries/Win64/UnrealEditor.exe' `
+  'D:/Github/WroclawTheGame/WroclawTheGame.uproject' `
+  /Game/Maps/Nadodrze_Playable -game -windowed -ResX=1600 -ResY=900
+```
+
+Produkty generatora w `Content/Generated`, `Content/Maps`, importowane CC0 modele
+i przetworzona balustrada są lokalnymi produktami źródeł. Wersjonowany jest GIS,
+manifest, model autorski i generator. Punkty misji są autorsko umieszczone i
+przyciągnięte do wolnego chodnika/jezdni; nie przedstawiają rzeczywistych adresów
+zleceniodawców. Wysokości mostów z OSM/DEM nie są pomiarem ich prześwitu.
+
 ## Referencje i źródła
 
 - Umiejscowienie i geometria: wersjonowane `Data/source/wroclaw` (OSM ODbL,
