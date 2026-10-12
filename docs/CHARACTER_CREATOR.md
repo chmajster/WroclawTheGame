@@ -12,6 +12,18 @@ reset kategorii, reset całości, undo/redo (50 kroków), ubrania i kolory, prof
 trzy widoki kamery, obrót prawym przyciskiem myszy, zoom, oświetlenie i animacje podglądu.
 Panel przycisków i ustawień jest przewijany. Pole seeda przyjmuje int32.
 
+## Spójność interfejsu z menu
+
+Runtime kreatora używa teraz tego samego języka wizualnego co `UPlayerMenuWidget`:
+ciemne karty, zaokrąglone panele, cyan accent, spójne stany przycisków oraz układ
+`PERSONALIZACJA / PODGLĄD / AKCJE`. Centralny RenderTarget nadal korzysta z
+`M_CharacterPreview`, więc podgląd kreatora i późniejszy podgląd w menu używają
+tej samej ścieżki renderowania.
+
+Zmiana UI nie zmienia danych wyglądu ani logiki presetów/undo/redo. Odbiór końcowy
+wymaga uruchomienia UE 5.8 i sprawdzenia czy kontrolki nie wychodzą poza viewport
+przy 1280×720, 1920×1080 i ultrawide.
+
 ## Assety i odpowiedzialności
 
 `/Game/CharacterCreator/`:
