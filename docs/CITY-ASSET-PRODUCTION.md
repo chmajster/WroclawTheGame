@@ -56,3 +56,13 @@ The production manifests select three FBX LODs in Pipeline/blender/build_asset.p
 Generated reports/previews live in Saved/Pipeline; editable sources and GLB
 exports are versioned in SourceAssets/Models/Wroclaw/TenementKit.
 These source checks do not establish successful Unreal import or runtime QA.
+
+## Acquisition evidence (stream 2)
+
+Acquired Sandstone Cracks by Rob Tuytel under verified Poly Haven CC0-1.0:
+three 2048² maps, 24,148,414 bytes total, 2 m physical tile. Provider MD5 and
+independent SHA-256 checks passed, followed by a fully offline run reusing all
+three files. Five infrastructure/prop roles reuse the existing library of 66
+Poly Haven models; the audit checks actual source files. Exact credits and API
+terms: docs/CITY-ASSET-CREDITS.md. Priority hero gaps remain explicit in
+Data/city_asset_needs.json. No Geoportal candidate was downloaded or relabeled.
