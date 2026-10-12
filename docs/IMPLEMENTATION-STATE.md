@@ -73,6 +73,10 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
   Lumen cached preexposure EV6 obejmuje wymagane EV4–14 bez clipping warning.
 - Następny krok: po locomotion uruchomić render, sprawdzić bone_height_cm
   i pełną sylwetkę; zakończyć PR #136, przejść do HUD/zapisu (punkt 6).
+- Bone-height161.8 cm był poprawny, ale import primary_object wskazywał
+  Eyebrows z FullBody.gltf. Importer i creator wybierają teraz największą
+  siatkę ciała z walidacją importowanych bounds140–220 cm. Populacja używa
+  poprawionego ciała po prepare_district_locomotion. Ponowić i obejrzeć render.
   Zapis nagrody i pełna sesja należą do punktów 6–7.
 - Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,
   os error 2). Nie deklarować wizualnego QA bez rzeczywistego dowodu.

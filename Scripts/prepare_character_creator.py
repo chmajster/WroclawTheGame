@@ -34,6 +34,15 @@ def prepare():
         metadata = imported_models.get(model_id)
         object_path = metadata.get('primary_object') if metadata else None
         mesh = unreal.load_asset(object_path) if object_path else None
+        if model_id in {'quaternius-ubc-superhero-male','quaternius-ubc-superhero-female'}:
+            candidates=[unreal.load_asset(p) for p in metadata.get('objects',[])]
+            candidates=[m for m in candidates if isinstance(m,unreal.SkeletalMesh)]
+            if not candidates:raise RuntimeError('Full body has no skeletal meshes: '+model_id)
+            mesh=max(candidates,key=lambda m:m.get_imported_bounds().box_extent.z)
+            height=mesh.get_imported_bounds().box_extent.z*2
+            if not 140<=height<=220:raise RuntimeError('Full-body mesh height invalid: '+str(height))
+            metadata['primary_object']=mesh.get_path_name()
+            unreal.log('WTG_FULL_BODY_SELECTED '+model_id+' '+mesh.get_name()+' height_cm='+str(height))
         if not mesh or not isinstance(mesh, (unreal.SkeletalMesh, unreal.StaticMesh)):
             raise RuntimeError(f'Character source is not a mesh: {model_id} -> {object_path}')
         return mesh
@@ -64,6 +73,7 @@ def prepare():
         # morph creator rigs. Keep that existing catalog capability flag honest.
         body.set_editor_property('placeholder', True)
     catalog.set_editor_property('bodies', bodies)
+    FREE_MODEL_IMPORT_MAP.write_text(json.dumps(imported_models,indent=2,ensure_ascii=False),encoding='utf-8')
 
     part_sources = {
         'hair_style_definitions': {
