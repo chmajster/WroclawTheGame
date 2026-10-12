@@ -1,0 +1,16 @@
+{
+  "schema_version": 1, "id": "wtg-tenement-paneled-entrance-door",
+  "display_name": "Autorskie dwuskrzydłowe drzwi płycinowe",
+  "area": "tenements", "type": "static_mesh", "quality": "standard",
+  "source": {"model": "SourceAssets/Models/Wroclaw/TenementKit/paneled-entrance-door.blend", "license": "Project-owned original geometry; existing repository surface materials retain their licenses", "reference_directory": null},
+  "mesh": {"max_triangles": 10000, "combine": true, "generate_uv_if_missing": false},
+  "lod": {"ratios": [1, 0.6, 0.3]}, "collision": {"mode": "none", "max_hulls": 1},
+  "textures": {"base_color": null, "normal": null, "orm": null},
+  "materials": [
+    {"slot": 0, "asset": "/Game/SurfaceQuality/Instances/MI_Wood"},
+    {"slot": 1, "asset": "/Game/SurfaceQuality/Instances/MI_Metal"},
+    {"slot": 2, "asset": "/Game/SurfaceQuality/Instances/MI_Glass"}
+  ],
+  "unreal": {"destination": "/Game/Wroclaw/TenementKit", "nanite": false, "qa_map": "/Game/Maps/TenementKit_QA"},
+  "qa": {"automation_filter": "WTG.Assets.TenementKit", "cameras": ["Kit_Front", "Kit_Oblique"], "screenshot_width": 1280, "screenshot_height": 960}
+}

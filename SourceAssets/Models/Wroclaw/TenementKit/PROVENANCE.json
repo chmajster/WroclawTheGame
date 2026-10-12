@@ -9,6 +9,7 @@
   "reference_policy": "Architecture viewing only. No photographs downloaded, embedded or redistributed.",
   "fidelity": "Generic architectural enrichment, not measured reconstruction of a specific building.",
   "axis_convention": "Blender metres; X along facade, +Y outward, Z up; pipeline centers XY and puts base at Z=0.",
-  "collision_policy": "Railing has three authored UCX guard panels with an open back and central space; stone trim is decorative without collision. Building/slab collision remains authoritative.",
-  "textures": "Original deterministic 1024x1024 base color, DirectX tangent normals and packed AO/roughness/metallic. Opaque painted iron and limestone."
+  "collision_policy": "Railing has three authored UCX guard panels with an open back and central space; balcony slab has one convex collision. Portal/cornice/door trim is decorative without collision. Existing building openings and interactions remain authoritative.",
+  "textures": "Original deterministic 1024x1024 iron PBR maps; stone uses acquired Poly Haven CC0 Sandstone Cracks by Rob Tuytel, recorded in Data/city_asset_acquisition.json. Original stone source maps retained as fallback.",
+  "door_materials": "Original colored source materials; native door binds existing versioned project MI_Wood, MI_Metal and MI_Glass. Decorative static door, not a new usable interior."
 }

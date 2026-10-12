@@ -282,11 +282,13 @@ def prepare(manifest_value=None) -> None:
 
 
 def quit_after_editor_startup():
+    unreal.EditorPythonScripting.set_keep_python_script_alive(True)
     ticks=[0]
     def settle(delta):
         ticks[0]+=1
         if ticks[0]>=30:
             unreal.unregister_slate_post_tick_callback(handle)
+            unreal.EditorPythonScripting.set_keep_python_script_alive(False)
             unreal.SystemLibrary.quit_editor()
     handle=unreal.register_slate_post_tick_callback(settle)
 

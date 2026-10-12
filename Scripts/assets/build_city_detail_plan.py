@@ -29,17 +29,28 @@ def build(facades,district,policy):
         if source["kind"]=="balcony" and counts["railing"]<policy["limits"]["balconies"]:
             # The GIS point is slab center at its upper surface; render pivots are base-center.
             width=source["width_m"]*100; depth=source["depth_m"]*100
-            add(building,source,"railing",p,yaw-90,[width/250,depth/110,source["railing_height_m"]*100/110.6847])
+            # Legacy FBX converts Blender +Y to native -Y (handedness).
+            add(building,source,"railing",p,yaw+90,[width/250,depth/110,source["railing_height_m"]*100/110.6847])
             slab_scale=[(width+12)/270,(depth+10)/120,1.]
             slab_p=p.copy(); slab_p[2]-=policy["slab_top_cm"]
-            add(building,source,"slab",slab_p,yaw-90,slab_scale)
+            add(building,source,"slab",slab_p,yaw+90,slab_scale)
         elif source["kind"]=="door" and counts["entrance"]<policy["limits"]["entrances"]:
+            height=source["height_m"]*100/policy["entrance_spring_cm"]
+            width=source["width_m"]*100/policy["entrance_clear_width_cm"]
+            base=p[2]-source["height_m"]*50
+            # Do not bury the arch crown/entablature inside a balcony above it.
+            if any(detail["kind"]=="balcony" and
+                math.hypot(detail["world_position"][0]-p[0],detail["world_position"][1]-p[1])<(source["width_m"]+detail["width_m"])*50 and
+                base+389*height>detail["world_position"][2]-policy["slab_top_cm"]-5
+                for detail in building["details"]): continue
             # Rectangular door fits below the arch spring, with clear width.
             q=p.copy(); q[2]-=source["height_m"]*50
             radians=math.radians(yaw)
             q[0]+=math.cos(radians)*17; q[1]+=math.sin(radians)*17
-            add(building,source,"entrance",q,yaw-90,[source["width_m"]*100/policy["entrance_clear_width_cm"],.6,
+            add(building,source,"entrance",q,yaw+90,[source["width_m"]*100/policy["entrance_clear_width_cm"],.6,
                 source["height_m"]*100/policy["entrance_spring_cm"]])
+            q=q.copy(); q[0]+=math.cos(radians)*8; q[1]+=math.sin(radians)*8
+            add(building,source,"door_leaf",q,yaw+90,[width,1.,height])
         elif source["kind"]=="cornice":
             length=source["length_m"]*100-2*policy["corner_clearance_cm"]
             if length<100: continue
@@ -49,7 +60,7 @@ def build(facades,district,policy):
             for index in range(segments):
                 offset=(index+.5)*length/segments-length/2
                 q=[p[0]+math.cos(radians)*offset,p[1]+math.sin(radians)*offset,p[2]-22]
-                add(building,source,"cornice",q,yaw,[length/segments/300,source["depth_m"]*100/49,1.],":"+str(index))
+                add(building,source,"cornice",q,yaw+180,[length/segments/300,source["depth_m"]*100/49,1.],":"+str(index))
     if not items: raise ValueError("No valid source placements within route radius")
     return {"schema_version":1,"map":policy["map"],"fidelity":policy["fidelity"],"items":items,
             "counts":dict(counts),"building_count":len({item["building_id"] for item in items})}

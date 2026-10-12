@@ -10,9 +10,10 @@
     "railing": "/Game/Wroclaw/TenementKit/SM_wtg_tenement_ornate_balcony_railing",
     "slab": "/Game/Wroclaw/TenementKit/SM_wtg_tenement_balcony_slab",
     "entrance": "/Game/Wroclaw/TenementKit/SM_wtg_tenement_stone_entrance_surround",
-    "cornice": "/Game/Wroclaw/TenementKit/SM_wtg_tenement_dentil_cornice"
+    "cornice": "/Game/Wroclaw/TenementKit/SM_wtg_tenement_dentil_cornice",
+    "door_leaf": "/Game/Wroclaw/TenementKit/SM_wtg_tenement_paneled_entrance_door"
   },
-  "source_sizes_cm": {"railing": [250, 110, 110.6847], "slab": [270, 120, 60], "entrance": [280, 48, 389], "cornice": [300, 49, 44]},
+  "source_sizes_cm": {"railing": [250, 110, 110.6847], "slab": [270, 120, 60], "entrance": [280, 48, 389], "cornice": [300, 49, 44], "door_leaf": [180, 20, 230]},
   "slab_top_cm": 60,
   "entrance_clear_width_cm": 180,
   "entrance_spring_cm": 230,

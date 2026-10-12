@@ -57,6 +57,28 @@ Generated reports/previews live in Saved/Pipeline; editable sources and GLB
 exports are versioned in SourceAssets/Models/Wroclaw/TenementKit.
 These source checks do not establish successful Unreal import or runtime QA.
 
+## District integration (stream 4)
+
+Five authored sources now include a supported balcony floor (2256/1352/676
+triangles) and panelled double door (4412/2646/1322, three material slots).
+The door reuses versioned project Wood/Metal/Glass materials and is decorative;
+existing entrances/interactions remain authoritative. Native placement saved
+904 instances on 44 GIS building descriptors in 28 HISM clusters, preserving
+other district actors. Generated map remains a derivative, not the source of truth.
+
+Data/city_detail_policy.json limits the batch; build_city_detail_plan.py derives
+transforms and SHA256 source locks. place_city_details.py checks source locks
+and replaces only CityKit_ actors. Portals too tall for a balcony above are
+excluded, cornices use repeated modules instead of stretched dentil spacing.
+Legacy FBX changes Blender +Y to native -Y; placement rotates authored fronts
+towards facade normals. prepare_city_asset_qa.py recreates studio/street cameras.
+
+Four transform/overlap tests PASS. Native captured views found handedness,
+exposure and fallback-detail issues; fixes are tracked separately from capture
+success. Screenshot tasks have timeout and fresh-file/hash checks, with an
+explicit NOT_REVIEWED state. No claim of a reconstructed historic facade or
+an interactive interior follows from these details.
+
 ## Acquisition evidence (stream 2)
 
 Acquired Sandstone Cracks by Rob Tuytel under verified Poly Haven CC0-1.0:

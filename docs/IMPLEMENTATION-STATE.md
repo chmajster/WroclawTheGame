@@ -1,32 +1,36 @@
 # City asset production — active pass 2026-10-12
 
-Primary live log: PR #148 (stream 3/6); #146-147 merged. Scope and provenance policy:
-docs/CITY-ASSET-PRODUCTION.md. Existing gameplay/menu work below is complete.
+Primary live log: PR #149 (stream 4/6); #146-148 merged. Source decisions,
+license and evidence: docs/CITY-ASSET-PRODUCTION.md and CITY-ASSET-CREDITS.md.
+Existing gameplay/menu work below is complete.
 
-Wykonane: original bpy railing, entrance surround and cornice, deterministic
-iron/stone PBR maps, editable .blend/.glb sources and three production manifests.
-Source previews reviewed; scale, openings and ornament geometry are visible.
-Manifest validation PASS (13 manifests). Blender pipeline exported three LODs
-per asset; native import/placement has not yet been performed.
+Wykonane: five original Blender meshes with UVs, three FBX LODs, editable
+.blend/.glb, native UE assets and manifests. Railing has three open UCX guards,
+balcony slab one hull, portal/cornice/static decorative door no collision.
+Door binds versioned project Wood/Metal/Glass materials. Actual native import
+and saved placement: 904 instances / 44 buildings / 28 HISM clusters;
+120 railings + 120 slabs + 600 cornices + 32 portals + 32 doors.
+Portal candidates intersecting upper balconies are rejected. FBX handedness
+accounted for in placement; front-facing handles/guards verified in captures.
 
-Acquisition: three real CC0 Sandstone Cracks 2k maps by Rob Tuytel downloaded,
-MD5/SHA-256 locked, verified offline. Demand audit resolves nine roles and
-reuses five models from the existing 66-model Poly Haven library.
+Acquisition: real CC0 Sandstone Cracks 2k by Rob Tuytel downloaded and locked
+with provider MD5 and independent SHA256; offline reuse PASS. Existing 66-model
+library reused instead of duplicate props. All five new meshes actually imported.
+Native WTG.Assets.TenementKit PASS for original three; extension to five in
+stream 6. Four placement tests and ten acquisition/pipeline tests PASS.
 
-Do zrobienia: ordered streams 3 pipeline/import, 4 GIS placement,
-5 graphics/budgets, 6 executable end-to-end validation; major real landmarks
-and the wider city remain long-term production work, not completed models.
+Do zrobienia: stream 5 materials/Nanite fallback/culling/budgets, stream 6
+one-command production and complete batch validation. Hero landmarks and wider
+city remain future production, explicitly listed in Data/city_asset_needs.json.
+The generated district has not been converted to World Partition.
 
-Następny krok: stream 3 complete; merge and create stream 4 from main for GIS
-placement and QA studio. Two repeated imports PASS; native asset test PASS
-in Saved/Logs/TenementNativeTest-final.log, final build 7.01 s. Stable cm scale,
-one PBR slot, 3 LOD and 3 UCX verified. Legacy FBX unit reimport is bypassed
-by isolated fresh products moved to the stable manifest package path. Appearance
-and district placement remain unverified; do not claim them yet.
+Następny krok: PR #149 source placement and capture review complete; merge,
+branch from main for stream 5 and configure CityKit material usage, Nanite
+fallback retention and HISM distance bounds. Screenshots are freshly generated
+with hashes; capture success alone is not visual acceptance.
 
-Stan: in progress. Generic facade enrichment, no claim of surveyed architecture
-or AAA quality. Decoration has no collision; existing building/slab collision
-is retained. No GitHub Actions were invoked.
+Stan: in progress. Generic GIS facade enrichment, no surveyed reconstruction
+or AAA claim. Existing missions/vehicles/building openings retained. No CI run.
 
 # Menu rebuild - stages 1-7 complete
 
