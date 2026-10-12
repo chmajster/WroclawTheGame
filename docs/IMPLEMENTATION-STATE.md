@@ -1,8 +1,8 @@
 # Menu rebuild - current task
 
-Stage1/7 complete: repository architecture audited in docs/MENU-REBUILD.md.
-Next: stage2 branch from main, shared Slate controls/style and viewport wrapper.
-Remaining: stages2-7, each its own PR; runtime/visual acceptance in stage7.
+Stage1 merged (#139). Stage2 in progress: MenuStyle shared Slate components added.
+Next: compile MenuStyle, validate lifetime of static style brushes, commit/merge.
+Remaining after stage2: frontend, pause, settings/input, transitions/loading, QA.
 Prior open-world implementation history follows.
 
 # Full game expansion — implementation state
