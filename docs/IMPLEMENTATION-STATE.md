@@ -13,6 +13,11 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
   Pełny bake PASS (439 komórek, 12 000 fasad, 244 balustrady, 740 aktorów).
   Proces generatora zakończył się kodem 0. Mapa uruchomiona w oknie `-game`.
 - Punkt 3: wykonany, PR #134. Punkty 4–7 pozostają w zakresie.
+- Punkt 3 scalony do main; punkt 4 na `feat/04-odra-delivery-mission`.
+  DeliveryState / DistrictDeliverySubsystem / DistrictDeliveryPoint zawierają
+  etapy, czas, utratę auta/śmierć, restart R i canonical ledger reward 180 zł.
+  HUD pokazuje cel, czas i znacznik; auto-exit nie gubi dostawy. Wprowadzono
+  osobną kotwicę startu gracza, aby nie kolidował ze zleceniodawczynią.
 - Decyzja: wykorzystać istniejące GIS, postać, pojazd, populację, ekonomię i menu;
   nie zmieniać silnika ani wdrażać zastępczego frameworka gry.
 - Punkt 2 scalony do `main` przez PR #133. Punkt 3 rozpoczęty na
@@ -38,9 +43,10 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
   floor=walking, locomotion=BlendSpace, cameraCollision=1, registry=nadodrze_odra.
   Skrypt postaci jest powtarzalny i zachowuje oznaczenie CC0 modeli jako
   prototypów kreatora (nie mają pełnego kompletu morfów twarzy).
-- Następny krok: scalić PR #134; punkt 4 na nowej gałęzi z main: misja
-  dostawy w osobnym subsystemie ze zleceniodawcą i odbiorcą, etapami,
-  restartem oraz idempotentną transakcją UWTGEconomySubsystem.
+- Następny krok: sprawdzić `Saved/Logs/DeliveryBuild.log` oraz źródłowy build
+  dzielnicy; wykonać `WTG.District.DeliveryRules`, przebudować mapę i animacje
+  po nowej kotwicy gracza. Potwierdzić startup, zaktualizować PR punktu 4 i
+  scalić ukończony zakres. Następnie punkt 5: oprawa/atmosfera. Zapis w punkcie 6.
 - Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,
   os error 2). Nie deklarować wizualnego QA bez rzeczywistego dowodu.
 - Stan: w trakcie całego zakresu, punkty 1–3 wykonane; dalsze sekcje poniżej to historyczny

@@ -52,6 +52,7 @@ class WROCLAWTHEGAME_API ASliceController : public APlayerController
     void HidePlayerMenu();
     void Suspend(bool bPause);
     void Reload();
+    void RetryDistrict();
     void Digit0();
     void Digit1();
     void Digit2();

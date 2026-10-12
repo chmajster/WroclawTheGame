@@ -20,6 +20,7 @@
 #include "Core/SliceGameMode.h"
 #include "Character/CharacterCreatorSubsystem.h"
 #include "Systems/DistrictGameplaySubsystem.h"
+#include "Mission/DistrictDeliverySubsystem.h"
 void ASliceHUD::Text(const FString &Value, float X, float Y, float Scale, const FLinearColor &Color)
 {
     DrawText(Value, Color, X, Y, GEngine->GetMediumFont(), Scale, false);
@@ -94,8 +95,21 @@ void ASliceHUD::DrawHUD()
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     auto *CityGameplay = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
     auto* District=GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>();
+    auto* Delivery=GetWorld()->GetSubsystem<UDistrictDeliverySubsystem>();
     if (District->IsActive() && !M->bShowMenu)
+    {
         Text(FString::Printf(TEXT("POSZUKIWANIE %d / 3%s"),District->WantedLevel(),District->IsSearching()?TEXT(" — szukanie"):TEXT("")),Canvas->SizeX-330,55,.85f,FLinearColor(1,.8f,.3f));
+        if (Delivery->State.Active()) Text(FString::Printf(TEXT("Dostawa · %d:%02d"),int(Delivery->State.Remaining)/60,int(Delivery->State.Remaining)%60),30,115,.85f);
+        if (PC->GetPawn() && Delivery->State.Stage!=Wroclaw::DeliveryStage::Complete)
+        {
+            FVector2D Screen;
+            if (PC->ProjectWorldLocationToScreen(Delivery->Target()+FVector(0,0,180),Screen) && Screen.X>15 && Screen.X<Canvas->SizeX-160 && Screen.Y>140 && Screen.Y<Canvas->SizeY-100)
+            {
+                DrawRect(FLinearColor(1,.7f,.2f),Screen.X-6,Screen.Y-6,12,12);
+                Text(FString::Printf(TEXT("CEL · %.0f m"),FVector::Dist2D(PC->GetPawn()->GetActorLocation(),Delivery->Target())/100),Screen.X+12,Screen.Y,.7f,FLinearColor(1,.8f,.4f));
+            }
+        }
+    }
     if (M->bShowMenu && PC->PlayerMenuWidget)
         return;
     if (Cast<AGeoPreviewGameMode>(GetWorld()->GetAuthGameMode()))
@@ -122,7 +136,7 @@ void ASliceHUD::DrawHUD()
             else
             {
                 Text(Vehicle->Status(), 30, Canvas->SizeY - 120, .9f);
-                Text(CityGameplay->IsActive() ? CityGameplay->NearbyObjective() : TEXT("NADODRZE — TEST POJAZDU"), 30, 30, 1.0);
+                Text(District->IsActive()?Delivery->Objective():(CityGameplay->IsActive() ? CityGameplay->NearbyObjective() : TEXT("NADODRZE — TEST POJAZDU")), 30, 30, 1.0);
                 if (auto *Race = Vehicle->FindComponentByClass<URaceSession>())
                     Text(Race->StatusText(), 30, 85, .9f);
             }
@@ -211,7 +225,7 @@ void ASliceHUD::DrawHUD()
     else
     {
         DrawRect(FLinearColor(0.f, 0.f, 0.f, .7f), 20, 20, Canvas->SizeX - 40, 75);
-        Text(CityGameplay->IsActive() ? CityGameplay->NearbyObjective() : M->ObjectiveText(), 36, 35);
+        Text(District->IsActive()?Delivery->Objective():(CityGameplay->IsActive() ? CityGameplay->NearbyObjective() : M->ObjectiveText()), 36, 35);
         const float Y = Canvas->SizeY - 95;
         DrawRect(FLinearColor(.08f, .08f, .08f), 30, Y, 220, 16);
         DrawRect(FLinearColor(.7f, .15f, .15f), 30, Y, 220 * P->HealthState->Value / 100, 16);

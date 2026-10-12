@@ -33,6 +33,7 @@ void UDistrictGameplaySubsystem::ReportCrime(float Severity,const FString& Reaso
 void UDistrictGameplaySubsystem::RecoverPlayer()
 {
     if (!Registry) return;
+    ++RecoverySerial;
     auto* Pawn=UGameplayStatics::GetPlayerPawn(this,0);
     if (auto* Car=Cast<ADriveableVehicle>(Pawn))
     {
