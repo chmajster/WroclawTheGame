@@ -121,7 +121,7 @@ static FAutoConsoleCommandWithWorld GDistrictSessionSmoke(TEXT("WTG.DistrictSess
                 }
                 S->Player->SetSprint(true);Walk(R->DeliveryRoute[S->EscapeIndex]);
                 if(FVector::Dist2D(S->Player->GetActorLocation(),R->DeliveryRoute[S->EscapeIndex])<150 && S->EscapeIndex>0)--S->EscapeIndex;
-                if(S->Elapsed>S->NextDiagnostic){S->NextDiagnostic=S->Elapsed+5;UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_EVADE heat=%.1f node=%d position=%s"),G->Wanted.Heat,S->EscapeIndex,*S->Player->GetActorLocation().ToString());}
+                if(S->Elapsed>S->NextDiagnostic){S->NextDiagnostic=S->Elapsed+5;auto* Pursuit=W->GetSubsystem<UVehiclePursuitSubsystem>();UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_EVADE heat=%.1f node=%d position=%s pursuit=%d count=%d"),G->Wanted.Heat,S->EscapeIndex,*S->Player->GetActorLocation().ToString(),int(Pursuit->GetState()),Pursuit->ActivePursuerCount());}
                 return true;
             }
             if(S->EscapeIndex!=INDEX_NONE){

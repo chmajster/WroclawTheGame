@@ -7,6 +7,7 @@
 #include "Character/CharacterCreatorSubsystem.h"
 #include "Character/CharacterAppearanceComponent.h"
 #include "Vehicles/DriveableVehicle.h"
+#include "Vehicles/VehiclePursuitSubsystem.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/GameplayComponents.h"
@@ -131,7 +132,9 @@ bool UDistrictSaveSubsystem::Apply(const UDistrictSaveGame* D)
     auto* GI=GetWorld()->GetGameInstance();GI->GetSubsystem<UWTGEconomySubsystem>()->ImportSaveState(D->Economy);
     auto* Creator=GI->GetSubsystem<UCharacterCreatorSubsystem>();Creator->Restore(D->Appearance);Player->Appearance->ApplyAppearance(Creator->Committed.PlayerAppearanceData);
     auto* Delivery=GetWorld()->GetSubsystem<UDistrictDeliverySubsystem>();Delivery->State.Stage=Wroclaw::DeliveryStage(D->DeliveryStage);Delivery->State.Remaining=D->Remaining;Delivery->State.Attempts=D->Attempts;
-    Delivery->FailureReason=D->FailureReason;Delivery->SynchronizeRecovery();G->Wanted.Heat=D->WantedHeat;G->Wanted.QuietSeconds=0;
+    Delivery->FailureReason=D->FailureReason;Delivery->SynchronizeRecovery();
+    GetWorld()->GetSubsystem<UVehiclePursuitSubsystem>()->StopPursuit();
+    G->Wanted.Heat=D->WantedHeat;G->Wanted.QuietSeconds=0;
     GI->GetSubsystem<USliceMission>()->bDead=false;PC->ResumeGame();PC->SetControlRotation(FRotator(0,D->PlayerYaw,0));
     if(D->bInVehicle)Car->Interact(Player);
     return !D->bInVehicle || Car->Driver==Player;

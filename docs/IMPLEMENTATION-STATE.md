@@ -21,16 +21,17 @@ added private double-sided wall material instances for complete presentation.
 Geo startup preserves actor yaw for the third-person camera and gives a
 district-specific Polish greeting.
 
-Next: inspect current DistrictSessionSmoke.log after the test scenario fix.
-Latest game rules/save/render passed; car physically travelled 460.15 m and
-exited at delivery, but the probe stood under police observation until its
-330 s timeout. That was a test behavior error: wanted correctly stayed active.
-The probe now sprints back along legal route nodes to break contact, then
-returns along those nodes and delivers. Test deadline450 s; actual mission
-still420 s. Require police_evaded/delivery/reward/save PASS, then replay in a
-new process. Final renderer PASS: 1310 frames mean16.78ms/p9516.67ms (cap60).
-Player/back/car/street/river screenshots inspected, car camera now outside
-walls. No CI. After final PASS update docs/PR, visible launch and merge.
+Next: final full helper is running (session437 expected; use process/log
+state rather than this session number). Inspect DistrictFinalTests.log and
+rules/save/session/replay logs. The longer evasion exposed a real dispatch
+bug: district immediately respawned patrols after Lost (12 s), interrupting
+the 18 s quiet period. Fixed: Lost does not auto-dispatch; a new crime resets
+the state and permits a fresh response. Loading a save resets the transient
+pursuit so an old chase cannot leak into restored wanted. Latest build PASS.
+Require police_evaded, delivery/reward/save and new police_dispatch PASS plus
+new-process replay. Then record measurements/results, visible launch,
+complete/merge PR #138. Final graphics already inspected: player/back/car/
+street/river; 1310 frames mean16.78ms/p9516.67ms with cap60. No CI.
 
 Historical notes below are prior batches, not current acceptance status.
 Presentation remains a CC0/procedural prototype without full wardrobe/hero
