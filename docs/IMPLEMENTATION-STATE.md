@@ -1,22 +1,22 @@
 # Start location production — 2026-10-12
 
-Primary live log: current start-location PR, stream 6/10.
+Primary live log: current start-location PR, stream 7/10.
 See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 6/10. Initial and recovery view aligned to meeting, walkable floor required and recovery velocity cleared; original XY retained. Authored trunk-only UCX tree produced, three FBX LODs imported and map placement updated.
+Stream 7/10. Source policy now sets separate building/prop/vegetation LOD thresholds, full Nanite fallback and 180-260 m instance culling. Production importer applies it automatically; native quality stage checks actual scene triangles/instancing and shared streaming textures.
 
-Validation and limitations: Native C++ build PASS; all 13 native assets PASS including one trunk hull and 74 building wall hulls. Real game with NullRHI passed district save/recovery/vehicle smoke in isolated slot. Rendered walking/camera/FPS follows in stream 8.
+Validation and limitations: Native quality application and measured engineering budget pending; these limits are not an FPS claim.
 
 ## Do zrobienia
-Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
+Apply native quality stage, verify saved thresholds and budget, update evidence and complete stream.
 
 ## Następny krok
-Create stream 7 branch from main; persist near-view LOD thresholds, full Nanite fallback and native instancing/triangle/texture budget report.
+Run Scripts/assets/prepare_start_location_quality.py in isolated Unreal editor and inspect fresh quality-report.json.
 
 ## Stan
-Stream complete; overall implementation in progress. No CI manually run.
+In progress, stream 7/10. No CI manually run.
 
 # Earlier city asset production — completed first batch
 
