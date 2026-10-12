@@ -8,12 +8,15 @@
 #include "Rendering/DrawElements.h"
 #include "Styling/CoreStyle.h"
 #include "Engine/World.h"
+#include "Systems/WroclawMapSubsystem.h"
 
 void SMenuMap::Construct(const FArguments& A)
 {
     Flow=A._Flow;SetClipping(EWidgetClipping::ClipToBounds);
     if(Flow.IsValid() && Flow->MenuWorld())if(auto* R=Flow->MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->GetRegistry()){
-        Center=FVector2D((R->BoundsMin+R->BoundsMax)*.5);Width=FMath::Max(1.,R->BoundsMax.X-R->BoundsMin.X)*1.08;
+        const FVector Start=Flow->Controller() && Flow->Controller()->GetPawn()?Flow->Controller()->GetPawn()->GetActorLocation():R->PlayerStart;
+        Center=FVector2D((Start+R->DeliveryPoint)*.5);
+        Width=FMath::Max(60000.,FMath::Max(FMath::Abs(Start.Y-R->DeliveryPoint.Y)*3.5,FMath::Abs(Start.X-R->DeliveryPoint.X)*1.5));
     }
 }
 FVector2D SMenuMap::Project(const FVector& P,const FVector2D& Size) const
@@ -29,17 +32,23 @@ int32 SMenuMap::OnPaint(const FPaintArgs& Args,const FGeometry& G,const FSlateRe
         Line({FVector2D(X,0),FVector2D(X,Size.Y)},FLinearColor(.08,.1,.12,1),1);
         Line({FVector2D(0,Y),FVector2D(Size.X,Y)},FLinearColor(.08,.1,.12,1),1);}
     if(!Flow.IsValid() || !Flow->MenuWorld())return Layer+1;
-    auto* R=Flow->MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->GetRegistry();if(!R)return Layer+1;
-    for(const auto& Street:R->Streets){TArray<FVector2D> Points;for(const auto& P:Street.Points)Points.Add(Project(P,Size));
+    auto* R=Flow->MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->GetRegistry();
+    if(R)for(const auto& Street:R->Streets){TArray<FVector2D> Points;for(const auto& P:Street.Points)Points.Add(Project(P,Size));
         if(Points.Num()>1){Line(Points,Street.bWalkway?FLinearColor(.18,.21,.23,1):FLinearColor(.46,.48,.46,1),Street.bWalkway?2.f:7.f);}}
     auto Mark=[&](const FVector& World,const FString& Name,FLinearColor Color){
         const FVector2D P=Project(World,Size);
         FSlateDrawElement::MakeBox(Out,Layer+3,G.ToPaintGeometry(FVector2D(12),FSlateLayoutTransform(P-FVector2D(6))),FCoreStyle::Get().GetBrush("WhiteBrush"),ESlateDrawEffect::None,Color);
-        FSlateDrawElement::MakeText(Out,Layer+3,G.ToPaintGeometry(FVector2D(240,25),FSlateLayoutTransform(P+FVector2D(12,-10))),Name,WTGMenu::Font(16,true),ESlateDrawEffect::None,Color);
+        const FVector2D Offset=Name==TEXT("TY")?FVector2D(-40,-28):Name==TEXT("SAMOCHÓD")?FVector2D(12,18):FVector2D(12,-10);
+        FSlateDrawElement::MakeText(Out,Layer+3,G.ToPaintGeometry(FVector2D(240,25),FSlateLayoutTransform(P+Offset)),Name,WTGMenu::Font(16,true),ESlateDrawEffect::None,Color);
     };
-    Mark(R->MeetingPoint,TEXT("MAJA / PRACOWNIA"),WTGMenu::Accent);
-    Mark(R->DeliveryPoint,TEXT("OLEK / BULWAR"),WTGMenu::Accent);
-    if(R->DeliveryVehicle)Mark(R->DeliveryVehicle->GetActorLocation(),TEXT("SAMOCHÓD"),FLinearColor(.42,.63,.70,1));
+    if(R){Mark(R->MeetingPoint,TEXT("MAJA / PRACOWNIA"),WTGMenu::Accent);
+        Mark(R->DeliveryPoint,TEXT("OLEK / BULWAR"),WTGMenu::Accent);
+        if(R->DeliveryVehicle)Mark(R->DeliveryVehicle->GetActorLocation(),TEXT("SAMOCHÓD"),FLinearColor(.42,.63,.70,1));
+    }else if(auto* City=Flow->MenuWorld()->GetSubsystem<UWroclawMapSubsystem>()->GetCity()){
+        for(const auto& Sector:City->Sectors){TArray<FVector2D> Points;FVector Sum=FVector::ZeroVector;
+            for(const auto& Point:Sector.Boundary){const FVector P(Point.X,Point.Y,0);Sum+=P;Points.Add(Project(P,Size));}
+            if(Points.Num()>2){Points.Add(Points[0]);Line(Points,WTGMenu::Muted,2);Mark(Sum/Sector.Boundary.Num(),Sector.DisplayName,WTGMenu::Accent);}}
+    }
     if(Flow->Controller() && Flow->Controller()->GetPawn())Mark(Flow->Controller()->GetPawn()->GetActorLocation(),TEXT("TY"),WTGMenu::Paper);
     if(Flow->MapWaypoint.IsSet())Mark(Flow->MapWaypoint.GetValue(),TEXT("TWÓJ ZNACZNIK"),FLinearColor(.67,.46,.68,1));
     FSlateDrawElement::MakeText(Out,Layer+4,G.ToPaintGeometry(FVector2D(140,28),FSlateLayoutTransform(FVector2D(24,20))),TEXT("N ↑"),WTGMenu::Font(20,true),ESlateDrawEffect::None,WTGMenu::Paper);

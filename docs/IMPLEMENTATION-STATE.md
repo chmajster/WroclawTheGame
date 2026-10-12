@@ -1,9 +1,11 @@
-# Menu rebuild - stage4/7 in progress
+# Menu rebuild - stage4/7 complete
 
 Stages1-3 merged (#139-141). Stage4 adds six pause tabs, painted street map
 with actual player/mission/car markers, pan/zoom/waypoint, real character
 and persistent time/walk/drive statistics. Creator and legacy saves retained.
-Next: native build/API, native pause/map render; fix reported issues, merge.
+Native build PASS; MenuViewSmoke main/pause actual renderer PASS paused=1.
+MenuPause.png inspected: all mission/car/player markers visible after fitting.
+Focus error eliminated. Next: stage5 settings/input from main.
 Remaining stages5-7: settings/input, transitions/loading, full QA.
 
 Prior open-world implementation history follows.
