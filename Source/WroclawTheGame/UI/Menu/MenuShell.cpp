@@ -1,5 +1,16 @@
 #include "UI/Menu/MenuShell.h"
 #include "UI/Menu/MenuStyle.h"
+#include "UI/Menu/MenuMap.h"
+#include "Character/SliceCharacter.h"
+#include "Character/CharacterCreatorSubsystem.h"
+#include "Components/GameplayComponents.h"
+#include "Vehicles/DriveableVehicle.h"
+#include "Systems/DistrictGameplaySubsystem.h"
+#include "Systems/WTGEconomySubsystem.h"
+#include "Mission/DistrictDeliverySubsystem.h"
+#include "Mission/SliceMission.h"
+#include "Engine/GameInstance.h"
+#include "Engine/World.h"
 #include "UI/Menu/MenuFlowSubsystem.h"
 #include "UI/SliceController.h"
 #include "Audio/SliceAudio.h"
@@ -16,7 +27,7 @@
 #include "Kismet/GameplayStatics.h"
 using namespace WTGMenu;
 
-void SMenuShell::Construct(const FArguments& Args){Flow=Args._Flow;Refresh();}
+void SMenuShell::Construct(const FArguments& Args){Flow=Args._Flow;Page=Flow.IsValid() && !Flow->IsFrontEnd()?10:0;Refresh();}
 TSharedRef<SWidget> SMenuShell::Action(const FString& Label,TFunction<void()> Click,bool Enabled,const FString& Hint)
 {
     auto B=SNew(SWTGMenuButton).Label(Label).Hint(Hint).OnClicked_Lambda([this,Click]{
@@ -34,12 +45,13 @@ void SMenuShell::FocusFirst()
 void SMenuShell::SelectPage(int32 Index){Page=Index;Refresh();}
 void SMenuShell::Refresh()
 {
-    FocusOrder.Reset();Pending=nullptr;DialogTitle.Empty();
+    FocusOrder.Reset();MapView.Reset();Pending=nullptr;DialogTitle.Empty();
     if(!Flow.IsValid())return;
     if(Flow->Screen==EWTGMenuScreen::Boot){
         ChildSlot[Card(SNew(SVerticalBox)+SVerticalBox::Slot().VAlign(VAlign_Center)
             [Text(TEXT("WROCŁAW THE GAME\n\nPrzygotowywanie świata…"),42,Paper,true)],FMargin(100))];return;
     }
+    TSharedPtr<SHorizontalBox> Body,Tabs;
     ChildSlot[SAssignNew(Layers,SOverlay)
         +SOverlay::Slot()[SNew(SBorder).BorderImage(FCoreStyle::Get().GetBrush("WhiteBrush"))
             .BorderBackgroundColor(FLinearColor(0,0,0,Flow->IsFrontEnd()?.28f:.76f))]
@@ -48,24 +60,26 @@ void SMenuShell::Refresh()
                 [SNew(SBox).WidthOverride(1920).HeightOverride(1080)
                     [SNew(SVerticalBox)
                         +SVerticalBox::Slot().AutoHeight().Padding(100,60,100,12)
-                            [Text(Flow->IsFrontEnd()?TEXT("W R O C Ł A W"):TEXT("WROCŁAW THE GAME"),Flow->IsFrontEnd()?62:32,Paper,true)]
-                        +SVerticalBox::Slot().AutoHeight().Padding(100,0,100,45)
+                            [Text(Flow->IsFrontEnd()?TEXT("W R O C \u0141 A W"):TEXT("WROC\u0141AW THE GAME"),Flow->IsFrontEnd()?62:32,Paper,true)]
+                        +SVerticalBox::Slot().AutoHeight().Padding(100,0,100,30)
                             [Text(Flow->IsFrontEnd()?TEXT("T H E  G A M E  /  NADODRZE"):TEXT("PAUZA  /  NADODRZE"),18,Accent,true)]
-                        +SVerticalBox::Slot().FillHeight(1).Padding(100,0,100,36)
-                            [SNew(SHorizontalBox)
-                                +SHorizontalBox::Slot().AutoWidth()[SNew(SBox).WidthOverride(430)
-                                    [Card(SAssignNew(Navigation,SVerticalBox),FMargin(16,24))]]
-                                +SHorizontalBox::Slot().FillWidth(1).Padding(40,0,0,0)
-                                    [SNew(SScrollBox)+SScrollBox::Slot()[SAssignNew(Content,SVerticalBox)]]]
+                        +SVerticalBox::Slot().AutoHeight().Padding(100,0,100,22)[SAssignNew(Tabs,SHorizontalBox)]
+                        +SVerticalBox::Slot().FillHeight(1).Padding(100,0,100,36)[SAssignNew(Body,SHorizontalBox)]
                         +SVerticalBox::Slot().AutoHeight().Padding(100,0,100,50)
-                            [Text(TEXT("↑ ↓  NAWIGACJA     ENTER / A  WYBIERZ     ESC / B  WSTECZ"),16,Paper)]
+                            [Text(TEXT("TAB  /  \u2191 \u2193  NAWIGACJA     ENTER / A  WYBIERZ     ESC / B  WSTECZ"),16,Paper)]
                     ]]]];
+    if(Flow->IsFrontEnd())Body->AddSlot().AutoWidth()[SNew(SBox).WidthOverride(430)[Card(SAssignNew(Navigation,SVerticalBox),FMargin(16,24))]];
+    Body->AddSlot().FillWidth(1).Padding(Flow->IsFrontEnd()?FMargin(40,0,0,0):FMargin(0))
+        [SNew(SScrollBox)+SScrollBox::Slot()[SAssignNew(Content,SVerticalBox)]];
     if(Flow->IsFrontEnd())BuildMain();else{
-        Navigation->AddSlot().AutoHeight()[Action(TEXT("GRA"),[this]{SelectPage(0);})];
-        Navigation->AddSlot().AutoHeight()[Action(TEXT("USTAWIENIA"),[this]{SelectPage(2);})];
-        Navigation->AddSlot().AutoHeight()[Action(TEXT("STEROWANIE"),[this]{SelectPage(3);})];
+        const TCHAR* Labels[]={TEXT("MAPA"),TEXT("GRA"),TEXT("POSTA\u0106"),TEXT("STATYSTYKI"),TEXT("USTAWIENIA"),TEXT("STEROWANIE")};
+        const int32 Pages[]={10,0,11,12,2,3};
+        for(int32 I=0;I<6;++I){const int32 Target=Pages[I];
+            auto Button=SNew(SWTGMenuButton).Label(Labels[I]).Selected(Page==Target)
+                .OnClicked_Lambda([this,Target]{SelectPage(Target);return FReply::Handled();});
+            FocusOrder.Add(Button->FocusTarget());Tabs->AddSlot().FillWidth(1).Padding(0,0,5,0)[Button];}
     }
-    switch(Page){case 0:if(!Flow->IsFrontEnd())BuildGame();break;case 1:BuildSaves();break;case 2:BuildSettings();break;case 3:BuildControls();break;case 4:BuildAbout();break;}
+    switch(Page){case 0:if(!Flow->IsFrontEnd())BuildGame();break;case 1:BuildSaves();break;case 2:BuildSettings();break;case 3:BuildControls();break;case 4:BuildAbout();break;case 10:BuildMap();break;case 11:BuildCharacter();break;case 12:BuildStats();break;}
     Content->AddSlot().AutoHeight().Padding(0,22)[Text(Flow->Notice,18,Accent)];
     FocusFirst();
 }
@@ -127,6 +141,35 @@ void SMenuShell::BuildAbout()
     Content->AddSlot().AutoHeight()[Text(TEXT("Wrocław The Game"),38,Paper,true)];
     Content->AddSlot().AutoHeight().Padding(0,28)[Card(Text(TEXT("Autorska gra akcji osadzona we Wrocławiu.\nProjekt: chmajster / WroclawTheGame.\n\nŚwiat: © OpenStreetMap contributors (ODbL), Copernicus EU-DEM / USGS przez Mapzen.\nModele i tekstury: lokalny katalog CC0; autorzy i licencje w dokumentacji zasobów projektu.\n\nInterfejs jest oryginalny. Nie używa grafik, logotypów ani plików Grand Theft Auto.\n\nWersja rozwojowa — Nadodrze / Odra."),24))];
 }
+void SMenuShell::BuildMap()
+{
+    Content->AddSlot().AutoHeight()[Text(TEXT("Nadodrze / Odra"),32,Paper,true)];
+    auto Map=SNew(SMenuMap).Flow(Flow.Get());MapView=Map;FocusOrder.Add(Map);
+    Content->AddSlot().AutoHeight().Padding(0,18)[SNew(SBox).HeightOverride(520)[Map]];
+    Content->AddSlot().AutoHeight()[Text(TEXT("Przeciągnij mapę. Kółko / + −: zoom. Kliknij: znacznik. Strzałki / D-pad: przesuwanie. TAB: następna kontrolka."),18,Muted)];
+    Content->AddSlot().AutoHeight().Padding(0,8)[Action(TEXT("Usuń własny znacznik"),[this]{Flow->MapWaypoint.Reset();Refresh();},Flow->MapWaypoint.IsSet())];
+}
+void SMenuShell::BuildCharacter()
+{
+    auto* W=Flow->MenuWorld();auto* P=Cast<ASliceCharacter>(Flow->Controller()->GetPawn());
+    if(auto* V=Cast<ADriveableVehicle>(Flow->Controller()->GetPawn()))P=V->Driver;
+    const auto& Appearance=W->GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Committed.PlayerAppearanceData;
+    Content->AddSlot().AutoHeight()[Text(Appearance.Name,42,Paper,true)];
+    if(P)Content->AddSlot().AutoHeight().Padding(0,24)[Card(Text(FString::Printf(TEXT("Zdrowie   %.0f / %.0f\nWytrzymałość   %.0f / %.0f\nWzrost   %.0f cm\nLokalizacja   %s\nPortfel   %.2f zł"),
+        P->HealthState->Value,P->HealthState->Maximum,P->StaminaState->Value,P->StaminaState->Maximum,Appearance.Height,
+        W->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()?TEXT("Nadodrze / Odra"):TEXT("Bieżąca mapa"),W->GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>()->BalanceCents/100.0),26))];
+    Content->AddSlot().AutoHeight().Padding(0,10)[Text(W->GetGameInstance()->GetSubsystem<USliceMission>()->InventoryText(),20,Muted)];
+    Content->AddSlot().AutoHeight()[Action(TEXT("Nowa postać i rozgrywka"),[this]{Confirm(TEXT("Utworzyć nową postać?"),TEXT("Po zatwierdzeniu kreatora rozpoczniesz nową grę. Zapis zostanie zastąpiony."),[this]{Flow->Controller()->NewGame();});})];
+}
+void SMenuShell::BuildStats()
+{
+    auto* W=Flow->MenuWorld();auto* D=W->GetSubsystem<UDistrictDeliverySubsystem>();
+    Content->AddSlot().AutoHeight()[Text(TEXT("Twoja historia w liczbach"),38,Paper,true)];
+    Content->AddSlot().AutoHeight().Padding(0,28)[Card(Text(FString::Printf(TEXT("Czas gry   %02d:%02d:%02d\nDystans pieszo   %.2f km\nDystans samochodem   %.2f km\nPróby dostawy   %u\nDostawa ukończona   %s\nTransakcje w portfelu   %d"),
+        int(Flow->PlayedSeconds)/3600,int(Flow->PlayedSeconds)/60%60,int(Flow->PlayedSeconds)%60,Flow->WalkedCm/100000,Flow->DrivenCm/100000,
+        D->State.Attempts,D->State.Stage==Wroclaw::DeliveryStage::Complete?TEXT("Tak"):TEXT("Nie"),W->GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>()->Ledger.Num()),26))];
+    Content->AddSlot().AutoHeight().Padding(0,14)[Text(TEXT("Czas i dystans są mierzone od rozpoczęcia tej rozgrywki i przechowywane w jej zapisie. Starsze zapisy zaczynają te liczniki od zera."),18,Muted)];
+}
 void SMenuShell::Confirm(const FString& Title,const FString& Body,TFunction<void()> A)
 {
     DialogTitle=Title;DialogBody=Body;Pending=MoveTemp(A);DrawDialog();
@@ -149,6 +192,7 @@ FReply SMenuShell::OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E)
     const FKey K=E.GetKey();
     if(K==EKeys::Escape || K==EKeys::Gamepad_FaceButton_Right){
         if(Pending)Refresh();else if(Page!=0)SelectPage(0);else if(Flow.IsValid() && !Flow->IsFrontEnd())Flow->Resume();return FReply::Handled();}
+    if(MapView && MapView->HasKeyboardFocus() && K!=EKeys::Tab)return FReply::Unhandled();
     const int Step=(K==EKeys::Up || K==EKeys::Gamepad_DPad_Up)?-1:(K==EKeys::Down || K==EKeys::Gamepad_DPad_Down)?1:0;
     if((Step || K==EKeys::Tab) && !FocusOrder.IsEmpty()){
         for(int32 I=0;I<FocusOrder.Num();++I)if(FocusOrder[I]->HasKeyboardFocus())Focused=I;

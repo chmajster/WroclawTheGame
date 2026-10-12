@@ -303,6 +303,7 @@ void ASliceController::NewGame()
     if (!M->bShowMenu && !M->bDead && !M->State.Finished())
         return;
     HidePlayerMenu();
+    GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>()->HideForCreator();
     CloseModal();
     GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->BeginCreation();
     auto* Class=LoadClass<UCharacterCreatorWidget>(nullptr,TEXT("/Game/CharacterCreator/WBP_CharacterCreator.WBP_CharacterCreator_C"));
@@ -318,7 +319,7 @@ void ASliceController::CancelCharacterCreator()
     auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
     if (Mission && Mission->bShowMenu)
     {
-        OpenPlayerMenu();
+        GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>()->RestoreAfterCreator();
         return;
     }
     ResetIgnoreMoveInput(); ResetIgnoreLookInput(); SetInputMode(FInputModeGameOnly()); bShowMouseCursor=false;
@@ -343,6 +344,7 @@ bool ASliceController::StartCreatedCampaign()
     if (!Saved) { Creator->Restore(Previous); return false; }
     Creator->bEditing=false; Creator->bSummary=false;
     CharacterCreatorWidget->RemoveFromParent(); CharacterCreatorWidget=nullptr;
+    GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>()->CreatedSession();
     SetInputMode(FInputModeGameOnly()); bShowMouseCursor=false; Reload(); return true;
 }
 void ASliceController::LoadGame()

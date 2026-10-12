@@ -26,5 +26,8 @@ public:
     UPROPERTY(SaveGame) FString FailureReason;
     UPROPERTY(SaveGame) float WantedHeat=0;
     UPROPERTY(SaveGame) FCharacterCustomizationSaveData Appearance;
+    UPROPERTY(SaveGame) double PlayedSeconds=0;
+    UPROPERTY(SaveGame) double WalkedCm=0;
+    UPROPERTY(SaveGame) double DrivenCm=0;
     bool Validate(const FVector& BoundsMin,const FVector& BoundsMax,const FString& ExpectedId) const;
 };

@@ -19,6 +19,8 @@
 #include "Misc/Paths.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
+#include "Vehicles/DriveableVehicle.h"
+#include "Systems/CityGameplaySubsystem.h"
 
 void UMenuFlowSubsystem::Initialize(FSubsystemCollectionBase& C)
 {
@@ -50,6 +52,13 @@ bool UMenuFlowSubsystem::Tick(float Dt)
         auto* P=Cast<ASliceCharacter>(PC->GetPawn());
         if(P && P->GetCharacterMovement()->MovementMode==MOVE_Walking && MenuWorld()->GetRealTimeSeconds()>1)ShowMain();
     }
+    if(Screen==EWTGMenuScreen::Playing && !MenuWorld()->IsPaused() && bHasSession){
+        PlayedSeconds+=Dt;auto* P=PC->GetPawn();
+        if(P){const FVector Position=P->GetActorLocation();
+            if(LastTrackedPawn.Get()==P){const double Distance=FVector::Dist2D(Position,LastPosition);
+                if(Distance<1000){if(Cast<ADriveableVehicle>(P))DrivenCm+=Distance;else WalkedCm+=Distance;}}
+            LastTrackedPawn=P;LastPosition=Position;}
+    }
     return true;
 }
 void UMenuFlowSubsystem::Open(EWTGMenuScreen Target)
@@ -77,12 +86,14 @@ void UMenuFlowSubsystem::Resume()
     if(!PC.IsValid() || !bHasSession)return;
     Screen=EWTGMenuScreen::Playing;GetGameInstance()->GetSubsystem<USliceMission>()->bShowMenu=false;
     if(Widget)Widget->RemoveFromParent();Widget=nullptr;
-    PC->SetViewTarget(PC->GetPawn());PC->ResetIgnoreMoveInput();PC->ResetIgnoreLookInput();
+    if(auto* P=PC->GetPawn())P->SetActorHiddenInGame(false);
+    ResetTracking();PC->SetViewTarget(PC->GetPawn());PC->ResetIgnoreMoveInput();PC->ResetIgnoreLookInput();
     PC->SetPause(false);PC->SetInputMode(FInputModeGameOnly());PC->bShowMouseCursor=false;
 }
 bool UMenuFlowSubsystem::StartNew()
 {
     if(!MenuWorld())return false;
+    if(!MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()){PC->NewGame();return true;}
     auto* D=MenuWorld()->GetSubsystem<UDistrictSaveSubsystem>();
     bool OK=MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()?D->NewRun():false;
     if(OK){bHasSession=true;Resume();}else {PC->SetPause(true);Notice=TEXT("Nie można rozpocząć gry. Sprawdź gotowość świata i możliwość zapisu.");}return OK;
@@ -90,6 +101,12 @@ bool UMenuFlowSubsystem::StartNew()
 bool UMenuFlowSubsystem::Load(const FString& Slot)
 {
     if(!MenuWorld())return false;
+    if(Slot==TEXT("campaign") || Slot==TEXT("city")){
+        auto* M=GetGameInstance()->GetSubsystem<USliceMission>();
+        const bool OK=Slot==TEXT("city")?MenuWorld()->GetSubsystem<UCityGameplaySubsystem>()->LoadSaved():M->ContinueGame();
+        if(OK){bHasSession=true;Resume();UGameplayStatics::OpenLevel(PC.Get(),Slot==TEXT("city")?TEXT("Nadodrze_GIS"):TEXT("Przebudzenie_Source"));}
+        else Notice=TEXT("Nie można wczytać tego postępu.");return OK;
+    }
     bool Valid=false;DescribeSave(Slot,Valid);if(!Valid){Notice=TEXT("Ten zapis jest niedostępny lub niezgodny.");return false;}
     auto* D=MenuWorld()->GetSubsystem<UDistrictSaveSubsystem>();const FString Previous=D->Slot;D->Slot=Slot;
     const bool OK=D->LoadSaved();D->Slot=Previous;
@@ -98,11 +115,23 @@ bool UMenuFlowSubsystem::Load(const FString& Slot)
 bool UMenuFlowSubsystem::Save()
 {
     if(!MenuWorld() || !bHasSession)return false;
-    auto* D=MenuWorld()->GetSubsystem<UDistrictSaveSubsystem>();const bool OK=D->Save();Notice=D->Status;return OK;
+    if(MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()){
+        auto* D=MenuWorld()->GetSubsystem<UDistrictSaveSubsystem>();const bool OK=D->Save();Notice=D->Status;return OK;
+    }
+    auto* City=MenuWorld()->GetSubsystem<UCityGameplaySubsystem>();
+    const bool OK=City->IsActive()?City->Save():GetGameInstance()->GetSubsystem<USliceMission>()->SaveCheckpoint();
+    Notice=OK?TEXT("Postęp zapisany"):TEXT("Nie można zapisać postępu.");return OK;
 }
 void UMenuFlowSubsystem::Quit(){if(PC.IsValid())UKismetSystemLibrary::QuitGame(PC.Get(),PC.Get(),EQuitPreference::Quit,false);}
+void UMenuFlowSubsystem::HideForCreator(){if(Widget)Widget->RemoveFromParent();Widget=nullptr;}
+void UMenuFlowSubsystem::RestoreAfterCreator(){if(IsFrontEnd())ShowMain();else ShowPause();}
+void UMenuFlowSubsystem::CreatedSession(){bHasSession=true;Resume();}
 TArray<FString> UMenuFlowSubsystem::SaveSlots() const
 {
+    if(MenuWorld() && !MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()){
+        if(MenuWorld()->GetSubsystem<UCityGameplaySubsystem>()->IsActive())return MenuWorld()->GetSubsystem<UCityGameplaySubsystem>()->HasSave()?TArray<FString>{TEXT("city")}:TArray<FString>{};
+        return GetGameInstance()->GetSubsystem<USliceMission>()->HasSave()?TArray<FString>{TEXT("campaign")}:TArray<FString>{};
+    }
     TArray<FString> Files;IFileManager::Get().FindFiles(Files,*(FPaths::ProjectSavedDir()/TEXT("SaveGames/WroclawDistrict*.sav")),true,false);
     Files.RemoveAll([](const FString& F){return F.Contains(TEXT("Smoke"));});
     Files.Sort([](const FString& A,const FString& B){const FString P=FPaths::ProjectSavedDir()/TEXT("SaveGames");return IFileManager::Get().GetTimeStamp(*(P/A))>IFileManager::Get().GetTimeStamp(*(P/B));});
@@ -111,6 +140,7 @@ TArray<FString> UMenuFlowSubsystem::SaveSlots() const
 FString UMenuFlowSubsystem::DescribeSave(const FString& Slot,bool& Valid) const
 {
     Valid=false;if(!SaveSlots().Contains(Slot))return TEXT("Niedostępny zapis");
+    if(Slot==TEXT("campaign") || Slot==TEXT("city")){Valid=true;return Slot==TEXT("city")?TEXT("Miasto GIS — ostatni zapis"):TEXT("Przebudzenie — ostatni checkpoint");}
     auto* Data=Cast<UDistrictSaveGame>(UGameplayStatics::LoadGameFromSlot(Slot,0));
     auto* R=MenuWorld()?MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->GetRegistry():nullptr;
     if(!Data || !R || !Data->Validate(R->BoundsMin,R->BoundsMax,R->DistrictId))return TEXT("Zapis uszkodzony lub niezgodny — zachowano plik");

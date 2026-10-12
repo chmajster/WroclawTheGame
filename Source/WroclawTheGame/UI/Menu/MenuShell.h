@@ -28,5 +28,9 @@ private:
     void BuildSettings();
     void BuildControls();
     void BuildAbout();
+    void BuildMap();
+    void BuildCharacter();
+    void BuildStats();
+    TSharedPtr<SWidget> MapView;
     void FocusFirst();
 };

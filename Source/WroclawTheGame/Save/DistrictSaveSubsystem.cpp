@@ -44,6 +44,7 @@ bool UDistrictSaveGame::Validate(const FVector& Min,const FVector& Max,const FSt
        DeliveryStage>5 || !FMath::IsFinite(Remaining) || Remaining<0 || Remaining>420 || (DeliveryStage>=1 && DeliveryStage<=3 && Remaining<=0) || Attempts>1000000 ||
        !FMath::IsFinite(WantedHeat) || WantedHeat<0 || WantedHeat>90 || Economy.Ledger.Num()>1024 || FailureReason.Len()>512 ||
        Appearance.CharacterAppearanceVersion!=1 || !FMath::IsFinite(Appearance.PlayerAppearanceData.Height) || Appearance.PlayerAppearanceData.Height<140 || Appearance.PlayerAppearanceData.Height>220) return false;
+    if(!FMath::IsFinite(PlayedSeconds) || !FMath::IsFinite(WalkedCm) || !FMath::IsFinite(DrivenCm) || PlayedSeconds<0 || WalkedCm<0 || DrivenCm<0 || PlayedSeconds>1e12 || WalkedCm>1e15 || DrivenCm>1e15)return false;
     int64 Balance=25000;TSet<FString> IDs;bool Completed=false;
     for(const auto& T:Economy.Ledger)
     {
@@ -73,6 +74,7 @@ UDistrictSaveGame* UDistrictSaveSubsystem::Capture() const
     auto* Delivery=GetWorld()->GetSubsystem<UDistrictDeliverySubsystem>();D->DeliveryStage=uint8(Delivery->State.Stage);
     D->Remaining=Delivery->State.Remaining;D->Attempts=Delivery->State.Attempts;D->FailureReason=Delivery->FailureReason;
     D->WantedHeat=G->Wanted.Heat;D->Appearance=GetWorld()->GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Committed;
+    auto* Stats=GetWorld()->GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>();D->PlayedSeconds=Stats->PlayedSeconds;D->WalkedCm=Stats->WalkedCm;D->DrivenCm=Stats->DrivenCm;
     return D->Validate(R->BoundsMin,R->BoundsMax,R->DistrictId)?D:nullptr;
 }
 bool UDistrictSaveSubsystem::Save(bool Notify)
@@ -137,6 +139,7 @@ bool UDistrictSaveSubsystem::Apply(const UDistrictSaveGame* D)
     GetWorld()->GetSubsystem<UVehiclePursuitSubsystem>()->StopPursuit();
     G->Wanted.Heat=D->WantedHeat;G->Wanted.QuietSeconds=0;
     GI->GetSubsystem<USliceMission>()->bDead=false;PC->ResumeGame();PC->SetControlRotation(FRotator(0,D->PlayerYaw,0));
+    auto* Stats=GetWorld()->GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>();Stats->PlayedSeconds=D->PlayedSeconds;Stats->WalkedCm=D->WalkedCm;Stats->DrivenCm=D->DrivenCm;Stats->ResetTracking();
     if(D->bInVehicle)Car->Interact(Player);
     return !D->bInVehicle || Car->Driver==Player;
 }
@@ -159,6 +162,7 @@ bool UDistrictSaveSubsystem::NewRun()
     Car->Health=100;Car->Speed=0;Car->bEngine=false;G->Wanted={};
     GetWorld()->GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>()->ResetEconomy();
     auto* Delivery=GetWorld()->GetSubsystem<UDistrictDeliverySubsystem>();Delivery->State={};Delivery->FailureReason.Empty();Delivery->SynchronizeRecovery();
+    auto* Stats=GetWorld()->GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>();Stats->PlayedSeconds=Stats->WalkedCm=Stats->DrivenCm=0;Stats->ResetTracking();
     bWriteBlocked=false;const bool OK=Save();if(OK)bTriedAutoLoad=true;if(!OK){if(Old)Apply(Old);bWriteBlocked=Blocked;}return OK;
 }
 void UDistrictSaveSubsystem::Tick(float Dt)
