@@ -127,3 +127,46 @@ UE 5.8 nadal wypisuje 17 ogólnych `LogAutomationTest: Condition failed` ze swoi
 testów startowych przed kolejką WTG.District, również na pustej mapie. Skrypt
 jawnie raportuje te wpisy, odrzuca inne błędy startowe oraz wszystkie błędy
 podczas wskazanych testów projektu i sond działającej gry. Nie poprawiano silnika.
+
+## Końcowe wyniki — 12 października 2026
+
+- Kompilacja `WroclawTheGameEditor Win64 Development`: PASS, 119,18 s.
+- `Test-Menu.ps1 -Layouts`: PASS. Ustawienia grafiki/audio/wejścia odtworzone
+  w osobnym procesie. 33 etapy UI zakończone w 41,96 s: start, nowa gra,
+  anulowanie, pauza/input lock, mapa, 18 przełączeń zakładek, zapis/odczyt
+  statystyk, trzy ścieżki potwierdzania video, konflikt/remap/cancel, focus i A
+  kontrolera, utrata focusu, powrót do main, pominięcie uszkodzonego save, quit.
+  Sprawdzono też ukrycie i przywrócenie obu postaci misji. Log UI bez Error/Fatal;
+  aplikacja rzeczywiście zamknęła się po potwierdzeniu wyjścia.
+- 20 natywnych PNG (main/pauza/ustawienia/sterowanie/loading) ma prawidłowe
+  wymiary czterech viewportów. Przegląd obrazów potwierdził czytelną typografię,
+  brak kolizji etykiet mapy, przewijanie formularzy i pełne tło na ultrawide.
+- `Test-PlayableDistrict.ps1`: PASS. Cztery testy reguł/geometrii/save oraz
+  zapis pieszo/w aucie, rzeczywista fizyczna sesja i replay w nowym procesie.
+  Sesja: 147,29 s, 459,60 m jazdy; chodzenie, ściana/podłoga, skok/kamera,
+  failure/restart misji, wejście/wyjście z auta, dostawa, zgubienie pościgu,
+  wygaszenie wanted i jednorazowa nagroda. Replay PASS po 5,02 s.
+  Logi działającej gry bez Error/Fatal. Cztery testy projektu nie mają błędów;
+  opisane wyżej 17 wpisów startup UE pozostaje ograniczeniem instalacji silnika.
+- PowerShell parser i `git diff --check`: PASS. Nie uruchamiano CI.
+- Końcowy start widocznej gry przez `Scripts/Launch-District.ps1`: PASS.
+  Świeży log potwierdza ładowanie Nadodrza, gotowość postaci i menu główne
+  o 18:36:40 UTC. Okno pozostawiono otwarte do gry.
+
+| Viewport | Klatki próbki | Średnia ms | p95 ms |
+|---|---:|---:|---:|
+| 1920×1080 | 600 | 33,34 | 33,33 |
+| 2560×1440 | 600 | 33,33 | 33,33 |
+| 3840×2160 | 600 | 33,33 | 33,33 |
+| 3440×1440 | 599 | 33,39 | 33,36 |
+
+Pomiar dotyczy menu na tej maszynie przy limicie 30 FPS, po rozgrzaniu sceny;
+nie jest porównawczym benchmarkiem całej gry. Powrót do limitu rozgrywki jest
+osobno sprawdzony. Wejście testowano automatycznie przez natywne Slate, bez
+ręcznego testu fizycznego kontrolera. Nie deklarujemy poprawy artu miasta:
+filmowe tło nadal wykorzystuje istniejące modele prototypowej dzielnicy.
+
+Dowody lokalne: `Saved/Logs/MenuFullQA.stdout`, `MenuUIQA.log`,
+`MenuSettingsQA{,Replay}.log`, `MenuLayout{1080,1440,4K,Ultrawide}.log`,
+`MenuGameplayRegression.stdout`, `District{RulesTest,SaveSmoke,SessionSmoke,SessionReplay}.log`.
+Obrazy: `Saved/Tests/Menu{Main,Pause,Settings,Controls,Loading}_{1080,1440,4K,Ultrawide}.png`.
