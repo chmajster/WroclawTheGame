@@ -19,16 +19,21 @@
 const FString UDistrictDeliverySubsystem::RewardId=TEXT("odra.delivery.completed.v1");
 void UDistrictDeliverySubsystem::CreatePoints()
 {
-    auto* Catalog=GetWorld()->GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Catalog;
+    auto* Catalog=GetWorld()->GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Catalog.Get();
     auto Spawn=[&](bool IsReceiver,const FVector& Position,FName BodyId)
     {
-        auto* Point=GetWorld()->SpawnActor<ADistrictDeliveryPoint>(Position+FVector(0,0,95),FRotator(0,Registry->VehicleYaw,0));
+        FHitResult Floor;
+        FCollisionQueryParams Params(SCENE_QUERY_STAT(DeliveryPointFloor),false);
+        const bool Found=GetWorld()->LineTraceSingleByChannel(Floor,Position+FVector(0,0,250),Position-FVector(0,0,400),ECC_Visibility,Params);
+        if (!Found) return static_cast<ADistrictDeliveryPoint*>(nullptr);
+        auto* Point=GetWorld()->SpawnActor<ADistrictDeliveryPoint>(Floor.ImpactPoint+FVector(0,0,97),FRotator(0,Registry->VehicleYaw,0));
         const auto* Body=Catalog->Body(BodyId);
         if (Point && Body) Point->Initialize(IsReceiver,Body->Mesh.LoadSynchronous(),Body->CreatorIdle.LoadSynchronous());
         return Point;
     };
     Giver=Spawn(false,Registry->MeetingPoint,TEXT("Female.Standard"));
     Receiver=Spawn(true,Registry->DeliveryPoint,TEXT("Male.Standard"));
+    UE_LOG(LogTemp,Display,TEXT("WTG_DELIVERY_POINTS_READY giver=%d receiver=%d reward=%lld"),IsValid(Giver),IsValid(Receiver),Registry->DeliveryRewardCents);
 }
 void UDistrictDeliverySubsystem::Tick(float Dt)
 {
@@ -65,6 +70,7 @@ void UDistrictDeliverySubsystem::Interact(bool IsReceiver,ASliceCharacter* Playe
     if (State.Stage==Wroclaw::DeliveryStage::Complete) {M->Notify(TEXT("Olek: Nagłośnienie znów działa. Dzięki za pomoc!"));return;}
     if (!IsReceiver)
     {
+        if (FVector::Dist2D(Player->GetActorLocation(),Registry->MeetingPoint)>240) {M->Notify(TEXT("Podejdź do Mai przy pracowni."));return;}
         if (State.Stage==Wroclaw::DeliveryStage::Failed) {Restart();return;}
         if (State.Start(Registry->DeliveryTimeLimit))
         {
