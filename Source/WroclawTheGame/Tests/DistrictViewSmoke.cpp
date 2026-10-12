@@ -34,8 +34,8 @@ static FAutoConsoleCommandWithWorld GDistrictViewSmoke(TEXT("WTG.DistrictViewSmo
             FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Tests/DistrictStreet.png"),true,false);Stage=2;
         }
         if(Stage==2 && Elapsed>63){
-            const FVector P=R->DeliveryPoint+FVector(-2200,-1300,900);
-            Camera->SetActorLocationAndRotation(P,(R->DeliveryPoint+FVector(1200,1600,0)-P).Rotation());Stage=3;
+            const FVector P=R->DeliveryPoint+FVector(12000,19000,5500);
+            Camera->SetActorLocationAndRotation(P,(R->DeliveryPoint+FVector(0,23000,0)-P).Rotation());Stage=3;
         }
         if(Stage==3 && Elapsed>74){
             FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Tests/DistrictRiver.png"),true,false);Stage=4;

@@ -1,0 +1,4 @@
+newmtl Frame
+Kd 0.2 0.23 0.24
+newmtl Glazing
+Kd 0.08 0.15 0.2

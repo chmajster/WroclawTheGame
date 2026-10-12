@@ -50,7 +50,7 @@ def prepare():
         height={'street_lamp_01':420,'metal_trash_can':85,'modular_street_seating':50}[name]
         scale=min(height/max(bounds.box_extent.z*2,1),item['radius']/max(bounds.box_extent.x,bounds.box_extent.y,1))
         position.z-=bounds.origin.z*scale-bounds.box_extent.z*scale
-        actor=actors.spawn_actor_from_class(unreal.StaticMeshActor,position,unreal.Rotator(0,yaw,0))
+        actor=actors.spawn_actor_from_class(unreal.StaticMeshActor,position,unreal.Rotator(pitch=0,yaw=yaw,roll=0))
         actor.set_actor_label(f'District_Detail_Prop_{index}')
         component=actor.get_component_by_class(unreal.StaticMeshComponent)
         component.set_static_mesh(mesh);component.set_collision_profile_name('BlockAll')

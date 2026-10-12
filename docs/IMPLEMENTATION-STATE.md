@@ -58,6 +58,11 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
   Kenney windows mają normalną X (Y/Z plane), usunięto błędne +90 yaw,
   dopasowano wymiary/pivot i wysunięto poza pełną geometrię ścian.
   Następne: ponowny bake po zakończeniu build, locomotion/presentation, render.
+- Potwierdzony UE Python Rotator positional (0,90,0) = pitch90/yaw0.
+  Generatory używają jawnych pól; naprawiono też mesh_rotation postaci.
+  Autorska rama okienna w Pipeline/assets/nadodrze/window-frame.asset.json:
+  OBJ/MTL → Blender LOD 96/48/24 → UE trzy LOD, NoCollision (source walls blokują).
+  Okna mają osobne szkło PBR i ramę, instancing i skale z source openings.
   Zapis nagrody i pełna sesja należą do punktów 6–7.
 - Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,
   os error 2). Nie deklarować wizualnego QA bez rzeczywistego dowodu.

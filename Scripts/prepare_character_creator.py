@@ -59,7 +59,7 @@ def prepare():
                 raise RuntimeError('Character LOD generation incomplete: '+model_id)
             unreal.EditorAssetLibrary.save_loaded_asset(mesh,False)
         body.set_editor_property('mesh', mesh)
-        body.set_editor_property('mesh_rotation', unreal.Rotator(0, -90, 0))
+        body.set_editor_property('mesh_rotation', unreal.Rotator(pitch=0, yaw=-90, roll=0))
         # These audited CC0 bodies are gameplay prototypes, not full facial-
         # morph creator rigs. Keep that existing catalog capability flag honest.
         body.set_editor_property('placeholder', True)
