@@ -85,6 +85,10 @@ void UDistrictGameplaySubsystem::Tick(float Dt)
             if (Player->GetCharacterMovement()->MovementMode==MOVE_Walking && Player->Appearance->BodyMesh && Player->Appearance->BodyMesh->GetSingleNodeInstance() && Cast<UBlendSpace1D>(Player->Appearance->BodyMesh->GetSingleNodeInstance()->GetCurrentAsset()))
             {
                 bLoggedReady=true;
+                float MinZ=MAX_flt,MaxZ=-MAX_flt;
+                auto* Body=Player->Appearance->BodyMesh.Get();
+                for(int32 I=0;I<Body->GetNumBones();++I){const float Z=Body->GetBoneLocation(Body->GetBoneName(I)).Z;MinZ=FMath::Min(MinZ,Z);MaxZ=FMath::Max(MaxZ,Z);}
+                UE_LOG(LogTemp,Display,TEXT("WTG_DISTRICT_POSE_HEIGHT bone_height_cm=%.2f mesh_rotation=%s"),MaxZ-MinZ,*Body->GetRelativeRotation().ToString());
                 UE_LOG(LogTemp,Display,TEXT("WTG_DISTRICT_GAMEPLAY_READY: floor=walking locomotion=BlendSpace cameraCollision=%d registry=%s"),Player->Boom->bDoCollisionTest,*Registry->DistrictId);
             }
     auto* Pursuit=GetWorld()->GetSubsystem<UVehiclePursuitSubsystem>();

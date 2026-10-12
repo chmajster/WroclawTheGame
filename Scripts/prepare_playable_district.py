@@ -22,6 +22,7 @@ def read(path):
 
 def prepare():
     MARKER.unlink(missing_ok=True)
+    unreal.log('WTG_PYTHON_ROTATOR_POSITIONAL '+str(unreal.Rotator(0,90,0)))
     plan=read(INPUT/'district.json')
     imported=read(ROOT/'Saved/FreeModelImportMap.json')
     bindings=read(ROOT/'Data/model_bindings.json')['systems']
@@ -42,6 +43,21 @@ def prepare():
     railing=unreal.load_asset(pipeline_report['mesh'])
     if not isinstance(railing,unreal.StaticMesh):
         raise RuntimeError('Processed railing was not imported')
+    os.environ['WTG_ASSET_MANIFEST']=str(ROOT/'Pipeline/assets/nadodrze/window-frame.asset.json')
+    pipeline.prepare()
+    window=unreal.load_asset(read(ROOT/'Saved/Pipeline/import/nadodrze-window-frame.json')['mesh'])
+    tools=unreal.AssetToolsHelpers.get_asset_tools()
+    glazing=unreal.load_asset('/Game/Wroclaw/Nadodrze/MI_DistrictWindowGlazing') or tools.create_asset(
+        'MI_DistrictWindowGlazing','/Game/Wroclaw/Nadodrze',unreal.MaterialInstanceConstant,unreal.MaterialInstanceConstantFactoryNew())
+    unreal.MaterialEditingLibrary.set_material_instance_parent(glazing,unreal.load_asset('/Game/SurfaceQuality/Instances/MI_Glass'))
+    unreal.MaterialEditingLibrary.set_material_instance_scalar_parameter_value(glazing,'Opacity',.94)
+    unreal.MaterialEditingLibrary.set_material_instance_vector_parameter_value(glazing,'Tint',unreal.LinearColor(.12,.18,.22,1))
+    unreal.MaterialEditingLibrary.update_material_instance(glazing)
+    unreal.EditorAssetLibrary.save_loaded_asset(glazing,False)
+    for index,slot in enumerate(window.get_editor_property('static_materials')):
+        glass='Glazing' in str(slot.get_editor_property('material_slot_name'))
+        window.set_material(index,glazing if glass else unreal.load_asset('/Game/SurfaceQuality/Instances/MI_PaintedMetal'))
+    unreal.EditorAssetLibrary.save_loaded_asset(window,False)
     levels=unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
     actors=unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
     path=plan['map']
@@ -56,7 +72,7 @@ def prepare():
     world=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
     world.get_world_settings().set_editor_property('default_game_mode',unreal.GeoPreviewGameMode)
     def spawn(cls,position,label,rotation=(0,0,0)):
-        actor=actors.spawn_actor_from_class(cls,unreal.Vector(*position),unreal.Rotator(*rotation))
+        actor=actors.spawn_actor_from_class(cls,unreal.Vector(*position),unreal.Rotator(pitch=rotation[0],yaw=rotation[1],roll=rotation[2]))
         if not actor:
             raise RuntimeError('Cannot spawn '+label)
         actor.set_actor_label('District_'+label)
@@ -113,17 +129,29 @@ def prepare():
             if not identifier or str(identifier).startswith('procedural:'):
                 continue
             if identifier not in mesh_cache:
-                mesh_cache[identifier]=model(identifier)
+                mesh_cache[identifier]=window if identifier.startswith('kenney-window-') else model(identifier)
             mesh=mesh_cache[identifier]
             if not isinstance(mesh,unreal.StaticMesh):
                 continue
             p=list(item['world_position'])
             yaw=float(item.get('yaw_deg',0))
-            p[0]+=math.cos(math.radians(yaw))*18
-            p[1]+=math.sin(math.radians(yaw))*18
-            scale=facade_bindings.get('asset_scales',{}).get(identifier,[1,1,1])
-            yaw+=float(facade_bindings.get('asset_yaw_offsets_deg',{}).get(identifier,0))
-            transform=unreal.Transform(location=unreal.Vector(*p),rotation=unreal.Rotator(0,yaw,0),scale=unreal.Vector(*scale))
+            bounds=mesh.get_bounds()
+            # Kenney windows are in the Y/Z plane (normal X), not X/Z.
+            # Fit the authored opening, centre the imported pivot, and place
+            # its face outside the solid source footprint (no cut-out CSG).
+            local_width=bounds.box_extent.y*2 if identifier.startswith('kenney-') else bounds.box_extent.x*2
+            scale=[1,item.get('width_m',1)*100/max(local_width,1),item.get('height_m',2)*100/max(bounds.box_extent.z*2,1)]
+            if not identifier.startswith('kenney-'):
+                scale[0],scale[1]=scale[1],1
+                yaw+=90
+            p[2]-=bounds.origin.z*scale[2]
+            outward=float(item.get('yaw_deg',0));distance=55
+            p[0]+=math.cos(math.radians(outward))*distance
+            p[1]+=math.sin(math.radians(outward))*distance
+            # Offset the non-centred door pivot in its rotated local Y.
+            p[0]+=math.sin(math.radians(yaw))*bounds.origin.y*scale[1]
+            p[1]-=math.cos(math.radians(yaw))*bounds.origin.y*scale[1]
+            transform=unreal.Transform(location=unreal.Vector(*p),rotation=unreal.Rotator(pitch=0,yaw=yaw,roll=0),scale=unreal.Vector(*scale))
             cluster(p).add_facade_instance(mesh,transform)
             facade_count+=1
     registry=spawn(unreal.WTGDistrictRegistry,(0,0,0),'Registry')
@@ -200,7 +228,8 @@ def prepare():
     if not levels.save_current_level():
         raise RuntimeError('Cannot save district map')
     report={'status':'Baked','mesh_cells':mesh_count,'facade_instances':facade_count,'bridge_rails':rails,
-            'map':path,'actors':len(actors.get_all_level_actors())}
+            'map':path,'actors':len(actors.get_all_level_actors()),
+            'facade_bounds_cm':{key:str(mesh.get_bounds()) for key,mesh in mesh_cache.items()}}
     (INPUT/'engine-bake-report.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     MARKER.write_text(json.dumps(report),encoding='utf-8')
     unreal.log('WTG_PLAYABLE_DISTRICT_READY '+json.dumps(report))

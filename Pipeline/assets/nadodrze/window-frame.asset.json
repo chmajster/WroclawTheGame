@@ -1,0 +1,10 @@
+{
+  "schema_version":1,"id":"nadodrze-window-frame","display_name":"Autorska rama okienna kamienicy",
+  "area":"nadodrze","type":"static_mesh","quality":"standard","dimensions":{"height_m":1.5},
+  "source":{"model":"SourceAssets/Models/Wroclaw/window_frame.obj","license":"Project-owned original geometry","reference_directory":null},
+  "mesh":{"max_triangles":500,"combine":true,"generate_uv_if_missing":true},
+  "lod":{"ratios":[1,0.5,0.25]},"collision":{"mode":"none","max_hulls":12},
+  "textures":{"base_color":null,"normal":null,"orm":null},
+  "unreal":{"destination":"/Game/Wroclaw/Nadodrze","nanite":false,"qa_map":"/Game/Maps/Nadodrze_Playable"},
+  "qa":{"automation_filter":"WTG.SurfaceQuality","cameras":[],"screenshot_width":1600,"screenshot_height":900}
+}

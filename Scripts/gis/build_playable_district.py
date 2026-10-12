@@ -197,6 +197,19 @@ def build_district(output):
           'streets':[{'name':f['name'],'points':f['points'],'walkway':f['tags'].get('highway') in ('footway','path','pedestrian')}
                      for f in data['features'] if f['kind']=='road' and f['name']],
           'mission':config['mission'],'budgets':config['budgets']}
+    dressing=[]
+    for route in pedestrian_routes:
+        points=route['points'];middle=len(points)//4
+        p=points[middle];q=points[max(0,middle-1)]
+        dx,dy=p[0]-q[0],p[1]-q[1];length=math.hypot(dx,dy)
+        if length<1:continue
+        yaw=math.degrees(math.atan2(dy,dx))
+        for name,offset,radius in (('street_lamp_01',110,35),('metal_trash_can',160,55),('modular_street_seating',220,150)):
+            x,y=p[0]-dy/length*offset,p[1]+dx/length*offset
+            candidate=Point(x,y).buffer(radius)
+            if not obstacles.intersects(candidate) and not candidate.intersects(LineString([a[:2] for a in points]).buffer(45)):
+                dressing.append({'model':name,'position':[x,y,elevation(x,y)+20],'yaw':yaw,'radius':radius})
+    plan['dressing']=dressing
     (output/'district.json').write_text(json.dumps(plan,ensure_ascii=False,indent=2),encoding='utf-8')
     triangles=sum(len(read(meshes/n)['triangles'])//3 for n in filenames)
     if triangles>config['budgets']['mesh_triangles']:

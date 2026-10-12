@@ -5,6 +5,7 @@ import json, math
 from pathlib import Path
 from shapely.geometry import Polygon, box
 from shapely.ops import triangulate
+from shapely.geometry.polygon import orient
 from import_sector import build, parts, OUTPUT, ROOT
 
 def generate(destination, data=None, geo=None, exclude_feature_ids=None):
@@ -27,6 +28,12 @@ def generate(destination, data=None, geo=None, exclude_feature_ids=None):
         material=feature.get('material')
         if kind in ('building','green','water'):
             rings=feature['rings']; polygon=Polygon([p[:2] for p in rings[0]],[[p[:2] for p in r] for r in rings[1:]])
+            # Source OSM rings may have either winding. Walls need one
+            # outward mathematical normal before UE converts front winding.
+            ordered=orient(polygon,sign=1)
+            heights={(p[0],p[1]):p[2] for r in rings for p in r}
+            rings=[[[x,y,heights.get((x,y),rings[0][0][2])] for x,y in r.coords]
+                   for r in [ordered.exterior,*ordered.interiors]]
             base=max(p[2] for p in rings[0]);height=feature['height_m']*100 if kind=='building' else 4
             for tri in triangulate(polygon):
                 if polygon.covers(tri):triangle(kind,[[x,y,base+height] for x,y in list(tri.exterior.coords)[:3]])

@@ -24,7 +24,9 @@ AGeoPreviewGameMode::AGeoPreviewGameMode()
 void AGeoPreviewGameMode::BeginPlay()
 {
     Super::BeginPlay();
-    GetWorld()->SpawnActor<ASurfaceQualityDirector>();
+    bool HasSurfaces=false;
+    for(TActorIterator<ASurfaceQualityDirector> It(GetWorld());It;++It){HasSurfaces=true;break;}
+    if(!HasSurfaces)GetWorld()->SpawnActor<ASurfaceQualityDirector>();
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     M->State = Wroclaw::Progress{};
     M->bDebugSession = true;

@@ -114,7 +114,9 @@ void AWTGDayNightEnvironment::ApplyEnvironmentState()
 {
     const float Daylight = GetDaylightAlpha();
     const float Night = 1.0f - Daylight;
-    const float SunPitch = (TimeOfDayHours / 24.0f) * 360.0f - 90.0f;
+    // UE directional lights emit along their forward vector. Daylight must
+    // point downward (noon -90 degrees), rather than illuminate from below.
+    const float SunPitch = 90.0f - (TimeOfDayHours / 24.0f) * 360.0f;
     const float MoonPitch = FMath::Fmod(SunPitch + 180.0f, 360.0f);
 
     SunLight->SetWorldRotation(FRotator(SunPitch, SunAzimuthDegrees, 0.0f));

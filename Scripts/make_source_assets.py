@@ -15,10 +15,10 @@ MATERIALS = {
     'Enemy': ((91, 36, 34), .9, 0), 'SignBlue': ((24, 65, 151), .45, .2),
     'SignRed': ((185, 28, 24), .5, .1),
 }
-LOOPS = {'Apartment', 'Street', 'Chase'}
+LOOPS = {'Apartment', 'Street', 'Chase', 'EngineIdle', 'Siren'}
 SOUNDS = {'Footstep': .24, 'Door': .85, 'Drawer': .6, 'Pickup': .26, 'Switch': .12,
           'Horn': .75, 'Hit': .2, 'Alarm': .8, 'UIHover': .055, 'UIClick': .09,
-          'Apartment': 8, 'Street': 12, 'Chase': 4}
+          'Apartment': 8, 'Street': 12, 'Chase': 4, 'EngineStart': 1.2, 'EngineIdle': 4, 'Siren': 4}
 
 
 def make_texture(path, name, color):
@@ -72,6 +72,13 @@ def make_sound(path, name, duration):
             sample = .22 * math.sin(2 * math.pi * 440 * t) + .16 * math.sin(2 * math.pi * 550 * t)
         elif name == 'Alarm':
             sample = .3 * math.sin(2 * math.pi * (780 if int(t * 8) % 2 else 520) * t)
+        elif name in {'EngineIdle','EngineStart'}:
+            frequency=48 if name=='EngineIdle' else 25+25*min(t/.8,1)
+            phase=2*math.pi*frequency*t
+            sample=.20*math.sin(phase)+.10*math.sin(phase*2)+.05*math.sin(phase*4)+low*.16
+        elif name == 'Siren':
+            phase=2*math.pi*(650*t-180/(2*math.pi)*math.cos(2*math.pi*t))
+            sample=.25*math.sin(phase)+.06*math.sin(2*phase)
         elif name == 'Apartment':
             sample = .08 * math.sin(2 * math.pi * 50 * t) + .15 * low
         elif name == 'Street':

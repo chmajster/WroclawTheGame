@@ -15,11 +15,17 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Mission/SliceMission.h"
 #include "TimerManager.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundBase.h"
+#include "Audio/WTGAudioSettings.h"
 
 ASurfaceQualityDirector::ASurfaceQualityDirector()
 {
     PrimaryActorTick.bCanEverTick = true;
     PrimaryActorTick.TickInterval = .5f;
+    Ambience=CreateDefaultSubobject<UAudioComponent>(TEXT("CityAmbience"));
+    SetRootComponent(Ambience);
+    Ambience->bAutoActivate=false;
 }
 
 void ASurfaceQualityDirector::BeginPlay()
@@ -56,9 +62,9 @@ void ASurfaceQualityDirector::BeginPlay()
     P.bOverride_AutoExposureMethod = true;
     P.AutoExposureMethod = EAutoExposureMethod::AEM_Histogram;
     P.bOverride_AutoExposureMinBrightness = true;
-    P.AutoExposureMinBrightness = 0;
+    P.AutoExposureMinBrightness = DistrictOutdoor ? 4 : 0;
     P.bOverride_AutoExposureMaxBrightness = true;
-    P.AutoExposureMaxBrightness = 16;
+    P.AutoExposureMaxBrightness = DistrictOutdoor ? 14 : 16;
     P.bOverride_AutoExposureBias = true;
     P.AutoExposureBias = 0;
     P.bOverride_AutoExposureSpeedUp = true;
@@ -71,6 +77,11 @@ void ASurfaceQualityDirector::BeginPlay()
     P.BloomIntensity = .15f;
     P.bOverride_ColorSaturation = true;
     P.ColorSaturation = FVector4(.96f, .96f, .96f, 1);
+    if (DistrictOutdoor)
+    {
+        Ambience->SetSound(LoadObject<USoundBase>(nullptr,TEXT("/Game/Generated/Audio/Street.Street")));
+        Ambience->Play();
+    }
     for (TActorIterator<ADirectionalLight> It(GetWorld()); It; ++It)
     {
         auto *Light = Cast<UDirectionalLightComponent>(It->GetLightComponent());
@@ -189,6 +200,11 @@ void ASurfaceQualityDirector::SetSurfaceWetness(float Value)
 void ASurfaceQualityDirector::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+    if (DistrictOutdoor)
+    {
+        const auto* Audio=UWTGAudioSettings::Get();
+        Ambience->SetVolumeMultiplier(.18f*Audio->MasterVolume*Audio->SFXVolume);
+    }
     if (!FollowWeather)
         return;
     const auto *Profile = GetGameInstance()->GetSubsystem<USliceMission>()->WorldState.Weather();

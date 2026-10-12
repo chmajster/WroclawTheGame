@@ -77,6 +77,11 @@ def import_one(tools, item):
             preferred = object_path
     if not readable:
         raise RuntimeError(f"Imported assets unreadable: {item['id']}")
+    if item['id'] in {'quaternius-ubc-superhero-male','quaternius-ubc-superhero-female'}:
+        bodies=[unreal.load_asset(p) for p in readable]
+        bodies=[m for m in bodies if isinstance(m,unreal.SkeletalMesh)]
+        if not bodies:raise RuntimeError('Full body missing: '+item['id'])
+        preferred=max(bodies,key=lambda m:m.get_imported_bounds().box_extent.z).get_path_name()
     return {
         "provider": item["provider"],
         "source": item["primary_path"],

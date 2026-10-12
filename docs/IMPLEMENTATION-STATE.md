@@ -1,5 +1,17 @@
 # Full game expansion — implementation state
 
+## Bieżący punkt kontynuacji
+
+Punkt 5 zakończony: pełne modele ciała wybrane zamiast Eyebrows, poprawione
+jednostki importu, winding, yaw i słońce. Bake, locomotion, presentation,
+trzy testy native i sześć GIS PASS. Rzeczywisty render 12.10.2026 13:15 UTC:
+1234 klatki, średnia 17,83 ms, p95 18,87 ms (limit 60 FPS, przygotowanie Lumen
+w tle; nie jest to benchmark GPU). Saved/Tests/DistrictStreet.png potwierdza
+widoczne pełne sylwetki, podłoże i okna. Modele/elewacje pozostają uproszczone.
+Następny krok: z main utworzyć gałąź punktu 6, DistrictSaveSubsystem,
+minimalny polski HUD, menu zapisu oraz trwałe ustawienia myszy. Punkty 6–7
+pozostają w zakresie; zapis nagrody musi być atomowy wobec stanu ekonomii.
+
 ## Sesja otwartego świata — zlecenie 12.10.2026
 
 Ten zakres rozwija istniejącą grę w pierwszą kompletną sesję pieszo/samochodem
@@ -45,7 +57,38 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
   prototypów kreatora (nie mają pełnego kompletu morfów twarzy).
 - Punkt 4 ukończony: build, trzy testy native i pięć testów danych PASS.
   DeliverySmoke.log: giver=1 receiver=1 reward=18000, walking/BlendSpace.
-- Następny krok: punkt 5 z main, SurfaceQualityDirector, detale i audio miasta.
+- Punkt 5 rozpoczęty: `feat/05-district-presentation`, oprawa i audio miasta.
+- Punkt 5: PBR director z ekspozycją outdoor EV 4–14, ciągłe audio miasta,
+  przestrzenne silniki zależne od prędkości i syreny. Naprawiony kierunek słońca.
+  Generator detali sprawdza source buildings/water i trasy piesze; 44 props,
+  pięć oryginalnie syntezowanych/importowanych dźwięków, sześć testów GIS PASS.
+- Następny krok: końcowy build oprawy, WTG.DistrictViewSmoke i ogląd zrzutów
+  Saved/Tests/DistrictStreet.png oraz DistrictRiver.png; finalizacja PR #136.
+- Render wykazał niewidoczne podłoże: GIS CCW nie odpowiada clockwise UE
+  MeshDescription (Engine normal = Cross(C-A, B-A)). BakeMesh odwraca teraz
+  indeksy, test sprawdza normalną w górę. Źródłowe ściany normalizują ring winding.
+  Kenney windows mają normalną X (Y/Z plane), usunięto błędne +90 yaw,
+  dopasowano wymiary/pivot i wysunięto poza pełną geometrię ścian.
+  Następne: ponowny bake po zakończeniu build, locomotion/presentation, render.
+- Potwierdzony UE Python Rotator positional (0,90,0) = pitch90/yaw0.
+  Generatory używają jawnych pól; naprawiono też mesh_rotation postaci.
+  Autorska rama okienna w Pipeline/assets/nadodrze/window-frame.asset.json:
+  OBJ/MTL → Blender LOD 96/48/24 → UE trzy LOD, NoCollision (source walls blokują).
+  Okna mają osobne szkło PBR i ramę, instancing i skale z source openings.
+- Naprawiono jednostki FBX: convert_scene_unit=True (wcześniej 1:100).
+  Wysokość ramy UE 150 cm, balustrady 110 cm; importer i presentation sprawdzają
+  wysokości deklarowane w manifestach. Końcowy bake po konwersji PASS.
+- Ogląd renderu: powierzchnie i okna poprawne, ale klipy zgodnej hierarchii
+  mają różne translacje/proporcje; pełna postać zapadała się do niskiej pozy.
+  LinkCompatibleRig zachowuje teraz translacje skeleton body i animuje rotacje
+  dla in-place clips; zapisuje oba skeletons. Dodano runtime bone-height log.
+  Lumen cached preexposure EV6 obejmuje wymagane EV4–14 bez clipping warning.
+- Następny krok: po locomotion uruchomić render, sprawdzić bone_height_cm
+  i pełną sylwetkę; zakończyć PR #136, przejść do HUD/zapisu (punkt 6).
+- Bone-height161.8 cm był poprawny, ale import primary_object wskazywał
+  Eyebrows z FullBody.gltf. Importer i creator wybierają teraz największą
+  siatkę ciała z walidacją importowanych bounds140–220 cm. Populacja używa
+  poprawionego ciała po prepare_district_locomotion. Ponowić i obejrzeć render.
   Zapis nagrody i pełna sesja należą do punktów 6–7.
 - Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,
   os error 2). Nie deklarować wizualnego QA bez rzeczywistego dowodu.
