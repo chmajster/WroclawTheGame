@@ -1,5 +1,17 @@
 # Full game expansion — implementation state
 
+## Bieżący punkt kontynuacji
+
+Punkt 5 zakończony: pełne modele ciała wybrane zamiast Eyebrows, poprawione
+jednostki importu, winding, yaw i słońce. Bake, locomotion, presentation,
+trzy testy native i sześć GIS PASS. Rzeczywisty render 12.10.2026 13:15 UTC:
+1234 klatki, średnia 17,83 ms, p95 18,87 ms (limit 60 FPS, przygotowanie Lumen
+w tle; nie jest to benchmark GPU). Saved/Tests/DistrictStreet.png potwierdza
+widoczne pełne sylwetki, podłoże i okna. Modele/elewacje pozostają uproszczone.
+Następny krok: z main utworzyć gałąź punktu 6, DistrictSaveSubsystem,
+minimalny polski HUD, menu zapisu oraz trwałe ustawienia myszy. Punkty 6–7
+pozostają w zakresie; zapis nagrody musi być atomowy wobec stanu ekonomii.
+
 ## Sesja otwartego świata — zlecenie 12.10.2026
 
 Ten zakres rozwija istniejącą grę w pierwszą kompletną sesję pieszo/samochodem
