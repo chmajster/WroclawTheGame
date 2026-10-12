@@ -12,6 +12,8 @@ class WROCLAWTHEGAME_API ASliceCharacter : public ACharacter
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaSeconds) override;
     virtual void SetupPlayerInputComponent(UInputComponent *Input) override;
+    void ApplyInputProfile();
+    const class UInputMappingContext* GetInputMapping() const { return Mapping; }
     virtual float TakeDamage(float Damage, const FDamageEvent &Event, AController *EventInstigator,
                              AActor *Causer) override;
     class USliceMission *Mission() const;
@@ -54,6 +56,8 @@ class WROCLAWTHEGAME_API ASliceCharacter : public ACharacter
     void MoveRight(const FInputActionValue &Value);
     void LookX(const FInputActionValue &Value);
     void LookY(const FInputActionValue &Value);
+    void LookPadX(const FInputActionValue &Value);
+    void LookPadY(const FInputActionValue &Value);
     void CrouchToggle();
     void SprintStart();
     void SprintEnd();

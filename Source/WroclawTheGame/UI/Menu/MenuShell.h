@@ -10,6 +10,7 @@ public:
     void Refresh();
     virtual bool SupportsKeyboardFocus() const override { return true; }
     virtual FReply OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E) override;
+    virtual FReply OnPreviewMouseButtonDown(const FGeometry& G,const FPointerEvent& E) override;
     void SelectPage(int32 Page);
 private:
     TWeakObjectPtr<UMenuFlowSubsystem> Flow;
@@ -17,6 +18,19 @@ private:
     TSharedPtr<class SVerticalBox> Navigation,Content;
     TArray<TSharedPtr<SWidget>> FocusOrder;
     int32 Page=0,Focused=0;
+    int32 SettingsCategory=0;
+    FName CapturingBinding;
+    bool CapturingGamepad=false;
+    double VideoConfirmDeadline=0;
+    bool VideoPending=false;
+    FIntPoint PendingResolution;
+    int32 PendingWindowMode=1;
+    virtual void Tick(const FGeometry& G,double Time,float Dt) override;
+    void BeginVideoChange();
+    void RevertVideoChange();
+    TSharedRef<SWidget> Choice(const FString& Label,const TArray<FString>& Values,int32 Selected,TFunction<void(int32)> Changed);
+    TSharedRef<SWidget> ValueSlider(const FString& Label,TAttribute<float> Value,TFunction<void(float)> Changed);
+    TSharedRef<SWidget> ValueToggle(const FString& Label,TAttribute<bool> Value,TFunction<void(bool)> Changed);
     FString DialogTitle,DialogBody;
     TFunction<void()> Pending;
     TSharedRef<SWidget> Action(const FString& Label,TFunction<void()> Click,bool Enabled=true,const FString& Hint=FString());

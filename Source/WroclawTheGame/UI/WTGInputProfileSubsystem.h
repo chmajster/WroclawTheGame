@@ -3,6 +3,14 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "WTGInputProfileSubsystem.generated.h"
 
+struct FWTGInputBinding
+{
+    FName Id;
+    FString Label;
+    FKey Keyboard,Gamepad;
+    FName Context;
+};
+
 USTRUCT(BlueprintType)
 struct WROCLAWTHEGAME_API FWTGInputProfile
 {
@@ -34,6 +42,10 @@ public:
     UFUNCTION(BlueprintCallable, Category="Input") void SetGamepadSensitivity(float Value);
     UFUNCTION(BlueprintCallable, Category="Input") void SetGamepadDeadzone(float Value);
     UFUNCTION(BlueprintCallable, Category="Input") void SetUIScale(float Value);
+    static const TArray<FWTGInputBinding>& Bindings();
+    FKey Key(FName ActionId,bool Gamepad=false) const;
+    void SaveProfile();
+    void ApplyToPlayer();
 private:
     void SaveMouseProfile();
     bool Rebind(TMap<FName,FKey>& Map, FName ActionId, FKey Key);

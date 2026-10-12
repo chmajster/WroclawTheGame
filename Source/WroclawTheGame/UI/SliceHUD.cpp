@@ -1,4 +1,5 @@
 #include "UI/SliceHUD.h"
+#include "UI/WTGInputProfileSubsystem.h"
 #include "UI/Menu/MenuFlowSubsystem.h"
 #include "Systems/WroclawMapSubsystem.h"
 #include "Systems/CityCoverageSubsystem.h"
@@ -114,6 +115,7 @@ void ASliceHUD::DrawDistrictHUD()
         if(PC->ProjectWorldLocationToScreen(D->Target()+FVector(0,0,180),Screen) && Screen.X>15 && Screen.X<Canvas->SizeX-100 && Screen.Y>145*S && Screen.Y<Canvas->SizeY-150*S)
         {DrawRect(Gold,Screen.X-5,Screen.Y-5,10,10);Text(TEXT("CEL"),Screen.X+12,Screen.Y,.65*S,Gold);}
     }
+    const FString InteractKey=GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->Key(Car?FName("CarExit"):FName("Interact")).GetDisplayName().ToString();
     FString Prompt=Car?TEXT("E — wysiądź (zatrzymaj auto)"):TEXT("");
     if(!Car)
         if(auto* Focus=Player->Interaction->Find(Player->Camera->GetComponentLocation(),Player->Camera->GetForwardVector()))
@@ -123,6 +125,7 @@ void ASliceHUD::DrawDistrictHUD()
         DrawRect(Ink,Canvas->SizeX-230*S,Canvas->SizeY-140*S,200*S,65*S);
         Text(FString::Printf(TEXT("%.0f km/h"),FMath::Abs(Car->Speed)*.036f),Canvas->SizeX-211*S,Canvas->SizeY-125*S,1.5*S);
     }
+    if(Prompt.StartsWith(TEXT("E \u2014")))Prompt=InteractKey+Prompt.Mid(1);
     if(!Prompt.IsEmpty())Text(Prompt,X,Canvas->SizeY-122*S,.85*S,Gold);
     Text(TEXT("ESC pauza  ·  F5 zapisz  ·  F9 wczytaj  ·  R ponów"),X,Canvas->SizeY-54*S,.7*S,DistrictMuted);
     auto* M=GetGameInstance()->GetSubsystem<USliceMission>();
@@ -274,7 +277,7 @@ void ASliceHUD::DrawHUD()
             Text(TEXT("UKRYCIE — E, aby wyjść"), 35, Canvas->SizeY - 200);
         DrawRect(FLinearColor::White, Canvas->SizeX / 2.f - 2, Canvas->SizeY / 2.f - 2, 4, 4);
         if (auto *Target = Cast<IInteractable>(P->Focus))
-            Text(TEXT("[E] ") + Target->Prompt(P).ToString(), Canvas->SizeX * .25, Canvas->SizeY * .72);
+            Text(TEXT("[")+GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->Key("Interact").GetDisplayName().ToString()+TEXT("] ")+Target->Prompt(P).ToString(), Canvas->SizeX * .25, Canvas->SizeY * .72);
         Text(FString::Printf(TEXT("HEAT %d / 5"), M->WorldState.HeatLevel()), 35, Canvas->SizeY - 220, .8f);
         Text(TEXT("J śledztwo | H podpowiedź | T telefon | I ekwipunek"), 300, Canvas->SizeY - 40, .75);
     }

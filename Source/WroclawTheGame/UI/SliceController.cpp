@@ -80,6 +80,7 @@ void ASliceController::SetupInputComponent()
         B.bConsumeInput = false;
     };
     Bind(EKeys::Escape, &ASliceController::Escape);
+    Bind(EKeys::Gamepad_Special_Right, &ASliceController::Escape);
     Bind(EKeys::R, &ASliceController::RetryDistrict);
     Bind(EKeys::F5, &ASliceController::SaveDistrict);
     Bind(EKeys::F9, &ASliceController::LoadDistrict);

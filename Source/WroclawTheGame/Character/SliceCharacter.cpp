@@ -141,9 +141,44 @@ void ASliceCharacter::SetupPlayerInputComponent(UInputComponent *Input)
                    &ASliceCharacter::HeavyAttack);
     EI->BindAction(Button(TEXT("Attack"), EKeys::LeftMouseButton), ETriggerEvent::Started, this,
                    &ASliceCharacter::Attack);
+    EI->BindAction(Axis(TEXT("PadYaw"),EKeys::Gamepad_RightX,FKey()),ETriggerEvent::Triggered,this,&ASliceCharacter::LookPadX);
+    EI->BindAction(Axis(TEXT("PadPitch"),EKeys::Gamepad_RightY,FKey()),ETriggerEvent::Triggered,this,&ASliceCharacter::LookPadY);
+    ApplyInputProfile();
     if (auto *PC = Cast<APlayerController>(Controller))
         if (auto *LP = PC->GetLocalPlayer())
             LP->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>()->AddMappingContext(Mapping, 0);
+}
+void ASliceCharacter::ApplyInputProfile()
+{
+    if(!Mapping)return;
+    auto* Profile=GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>();
+    Mapping->UnmapAll();
+    auto Map=[&](UInputAction* A,FKey K,bool Negate=false,bool Deadzone=false){
+        if(!K.IsValid())return;
+        auto& M=Mapping->MapKey(A,K);
+        if(Negate)M.Modifiers.Add(NewObject<UInputModifierNegate>(Mapping));
+        if(Deadzone){auto* D=NewObject<UInputModifierDeadZone>(Mapping);D->LowerThreshold=Profile->Profile.GamepadDeadzone;D->Type=EDeadZoneType::Axial;M.Modifiers.Add(D);}
+    };
+    for(UInputAction* A:Actions){const FName Id=A->GetFName();
+        if(Id==TEXT("Forward")){Map(A,Profile->Key("Forward"));Map(A,Profile->Key("Backward"),true);Map(A,EKeys::Gamepad_LeftY,false,true);}
+        else if(Id==TEXT("Right")){Map(A,Profile->Key("Right"));Map(A,Profile->Key("Left"),true);Map(A,EKeys::Gamepad_LeftX,false,true);}
+        else if(Id==TEXT("Yaw"))Map(A,EKeys::MouseX);
+        else if(Id==TEXT("Pitch"))Map(A,EKeys::MouseY);
+        else if(Id==TEXT("PadYaw"))Map(A,EKeys::Gamepad_RightX,false,true);
+        else if(Id==TEXT("PadPitch"))Map(A,EKeys::Gamepad_RightY,false,true);
+        else{Map(A,Profile->Key(Id));Map(A,Profile->Key(Id,true));}
+    }
+    if(auto* PC=Cast<APlayerController>(Controller))if(auto* LP=PC->GetLocalPlayer())
+        LP->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>()->RequestRebuildControlMappings(FModifyContextOptions(),EInputMappingRebuildType::RebuildWithFlush);
+}
+void ASliceCharacter::LookPadX(const FInputActionValue& V)
+{
+    AddControllerYawInput(V.Get<float>()*GetWorld()->GetDeltaSeconds()*120*GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->Profile.GamepadSensitivity);
+}
+void ASliceCharacter::LookPadY(const FInputActionValue& V)
+{
+    const auto& P=GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->Profile;
+    AddControllerPitchInput(V.Get<float>()*GetWorld()->GetDeltaSeconds()*120*P.GamepadSensitivity*(P.bInvertMouseY?1.f:-1.f));
 }
 void ASliceCharacter::MoveForward(const FInputActionValue &V)
 {

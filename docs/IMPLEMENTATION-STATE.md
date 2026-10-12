@@ -1,12 +1,13 @@
-# Menu rebuild - stage4/7 complete
+# Menu rebuild - stage5/7 complete
 
-Stages1-3 merged (#139-141). Stage4 adds six pause tabs, painted street map
-with actual player/mission/car markers, pan/zoom/waypoint, real character
-and persistent time/walk/drive statistics. Creator and legacy saves retained.
-Native build PASS; MenuViewSmoke main/pause actual renderer PASS paused=1.
-MenuPause.png inspected: all mission/car/player markers visible after fitting.
-Focus error eliminated. Next: stage5 settings/input from main.
-Remaining stages5-7: settings/input, transitions/loading, full QA.
+Stages1-4 merged (#139-142). Stage5 adds real graphics categories, resolution/
+window confirmation/revert, audio channels, persistent full input profile,
+conflict-aware remapping applied to foot/car and gamepad controls.
+Native build PASS. SettingsSmoke and a separate-process SettingsReplay PASS:
+graphics/audio/axes/key/pad profile persistence, rejected conflicts/reserved keys,
+live Enhanced Input mapping. Tests only write Saved/MenuQA/SettingsSmoke.ini.
+Next: merge PR143 then branch stage6 from main: cinematic camera, fades/blur,
+loading, focus loss and resource/frame budget. Full UI video/input QA in stage7.
 
 Prior open-world implementation history follows.
 

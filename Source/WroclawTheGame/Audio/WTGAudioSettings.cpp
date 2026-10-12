@@ -7,6 +7,7 @@ UWTGAudioSettings* UWTGAudioSettings::Get()
     Settings->SFXVolume = FMath::Clamp(Settings->SFXVolume, 0.0f, 1.0f);
     Settings->MusicVolume = FMath::Clamp(Settings->MusicVolume, 0.0f, 1.0f);
     Settings->UIVolume = FMath::Clamp(Settings->UIVolume, 0.0f, 1.0f);
+    Settings->AmbientVolume=FMath::Clamp(Settings->AmbientVolume,0.f,1.f);
     return Settings;
 }
 
@@ -40,5 +41,7 @@ void UWTGAudioSettings::ResetToDefaults()
     SFXVolume = 1.0f;
     MusicVolume = 1.0f;
     UIVolume = 1.0f;
+    AmbientVolume=1.0f;
     SaveConfig();
 }
+void UWTGAudioSettings::SetAmbientVolume(float V){AmbientVolume=FMath::IsFinite(V)?FMath::Clamp(V,0.f,1.f):1.f;SaveConfig();}
