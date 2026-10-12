@@ -1,4 +1,4 @@
-# Menu rebuild - stage6/7 in progress
+# Menu rebuild - stage6/7 complete
 
 Stages1-4 merged (#139-142). Stage5 adds real graphics categories, resolution/
 window confirmation/revert, audio channels, persistent full input profile,
@@ -10,8 +10,11 @@ PR143 merged. Stage6 adds cinematic drift/vignette, hides the player in frontend
 blur, .2s entrance/.14s exit, UI sounds/reduced motion, viewport-scaled dialogs,
 focus-loss pause, menu cap30 restored to gameplay cap, throttled audio refresh,
 MoviePlayer loading with original river/bridge illustration and indeterminate bar.
-Next: build stage6, fix concrete API errors and inspect fresh main/pause renders.
-Remaining: comprehensive native UI/navigation/video/resolution QA in stage7.
+Build PASS and actual MenuViewSmoke PASS main/pause/loading, no Error/Fatal.
+All three renders inspected. MoviePlayer startup hook logged actual map load.
+Next: merge PR144, stage7 from main: native interaction, safer save selection,
+map label layout, readable key labels, video revert and multi-resolution renders.
+Pause capture currently catches entrance animation; delay it in final QA.
 
 Prior open-world implementation history follows.
 
