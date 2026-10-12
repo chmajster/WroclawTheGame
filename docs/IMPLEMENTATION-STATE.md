@@ -1,6 +1,6 @@
 # City asset production — active pass 2026-10-12
 
-Primary live log: PR #149 (stream 4/6); #146-148 merged. Source decisions,
+Primary live log: PR #150 (stream 5/6); #146-149 merged. Source decisions,
 license and evidence: docs/CITY-ASSET-PRODUCTION.md and CITY-ASSET-CREDITS.md.
 Existing gameplay/menu work below is complete.
 
@@ -19,14 +19,17 @@ library reused instead of duplicate props. All five new meshes actually imported
 Native WTG.Assets.TenementKit PASS for original three; extension to five in
 stream 6. Four placement tests and ten acquisition/pipeline tests PASS.
 
-Do zrobienia: stream 5 materials/Nanite fallback/culling/budgets, stream 6
-one-command production and complete batch validation. Hero landmarks and wider
+Do zrobienia: stream 6 one-command production and complete batch validation.
+Stream 5 native quality complete; profiles visible in close perspective capture.
+Hero landmarks and wider
 city remain future production, explicitly listed in Data/city_asset_needs.json.
 The generated district has not been converted to World Partition.
 
-Następny krok: PR #149 source placement and capture review complete; merge,
-branch from main for stream 5 and configure CityKit material usage, Nanite
-fallback retention and HISM distance bounds. Screenshots are freshly generated
+Następny krok: merge complete PR #150, branch from main for stream 6;
+create Scripts/Invoke-CityAssetProduction.ps1 and extend native test to five.
+Budget PASS: 6,549,600 instanced LOD0 triangles, six unique textures, 26,077,960
+source bytes and 83,886,084 bytes conservative RGBA mip upper bound.
+Source quality policy applied on every future import/placement. Screenshots are freshly generated
 with hashes; capture success alone is not visual acceptance.
 
 Stan: in progress. Generic GIS facade enrichment, no surveyed reconstruction
