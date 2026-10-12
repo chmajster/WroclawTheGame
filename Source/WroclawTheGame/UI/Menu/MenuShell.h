@@ -15,6 +15,7 @@ public:
     void SelectPage(int32 Page);
     void PreviewVideoMode(FIntPoint Resolution,int32 WindowMode);
     bool IsVideoConfirmationPending() const { return VideoPending; }
+    int32 ActivePage() const { return Page; }
 private:
     TWeakObjectPtr<UMenuFlowSubsystem> Flow;
     TSharedPtr<class SOverlay> Layers;

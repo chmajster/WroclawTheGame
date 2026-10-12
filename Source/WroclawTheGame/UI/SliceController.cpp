@@ -352,7 +352,7 @@ bool ASliceController::StartCreatedCampaign()
     GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>()->CreatedSession();
     SetInputMode(FInputModeGameOnly()); bShowMouseCursor=false;
     if(GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()){
-        if(auto* Player=Cast<ASliceCharacter>(GetPawn()))Player->Appearance->ApplyAppearance(Creator->Committed.PlayerAppearanceData);
+        if(auto* CharacterPawn=Cast<ASliceCharacter>(GetPawn()))CharacterPawn->Appearance->ApplyAppearance(Creator->Committed.PlayerAppearanceData);
     }else Reload();return true;
 }
 void ASliceController::LoadGame()

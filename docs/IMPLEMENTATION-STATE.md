@@ -1,4 +1,4 @@
-# Menu rebuild - stage6/7 complete
+# Menu rebuild - stage7/7 in progress
 
 Stages1-4 merged (#139-142). Stage5 adds real graphics categories, resolution/
 window confirmation/revert, audio channels, persistent full input profile,
@@ -14,7 +14,13 @@ Build PASS and actual MenuViewSmoke PASS main/pause/loading, no Error/Fatal.
 All three renders inspected. MoviePlayer startup hook logged actual map load.
 Next: merge PR144, stage7 from main: native interaction, safer save selection,
 map label layout, readable key labels, video revert and multi-resolution renders.
-Pause capture currently catches entrance animation; delay it in final QA.
+Stage7 PR145: safer latest valid save, map label collision handling and wider
+initial fit; compact localized input glyphs; shared global shortcuts/conflicts;
+creator starts district without reload and restores Playing before map changes.
+MenuUISmoke exercises actual Slate key routing/pointer handlers and engine state
+using only Saved/MenuQA/UI.ini and explicitly named MenuQA save slots.
+Next: inspect MenuBuild.log, native UI probe then fix first failing check;
+finally multi-resolution captures and District regression, merge and visible start.
 
 Prior open-world implementation history follows.
 

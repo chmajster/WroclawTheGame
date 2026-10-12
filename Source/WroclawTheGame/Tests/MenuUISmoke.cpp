@@ -20,6 +20,7 @@
 #include "Misc/ConfigCacheIni.h"
 #include "Misc/Paths.h"
 #include "Misc/FileHelper.h"
+#include "Layout/WidgetPath.h"
 
 namespace WTGMenuQA
 {
@@ -49,7 +50,9 @@ bool Click(UMenuFlowSubsystem* Menu,const FString& Label,bool Mouse=false,FKey A
     const auto G=B->GetCachedGeometry();const auto P=G.LocalToAbsolute(G.GetLocalSize()*.5);
     FPointerEvent Down(0,P,P,TSet<FKey>{EKeys::LeftMouseButton},EKeys::LeftMouseButton,0,FModifierKeysState());
     FPointerEvent Up(0,P,P,TSet<FKey>{},EKeys::LeftMouseButton,0,FModifierKeysState());
-    B->OnMouseButtonDown(G,Down);B->OnMouseButtonUp(G,Up);return true;
+    FWidgetPath Path;FSlateApplication::Get().GeneratePathToWidgetUnchecked(B.ToSharedRef(),Path);
+    FSlateApplication::Get().ProcessReply(Path,B->OnMouseButtonDown(G,Down),&Path,&Down);
+    FSlateApplication::Get().ProcessReply(Path,B->OnMouseButtonUp(G,Up),&Path,&Up);return true;
 }
 void Shot(const TCHAR* Name){FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Tests")/Name,true,false);}
 }
@@ -68,7 +71,8 @@ static FAutoConsoleCommandWithWorld GMenuUISmoke(TEXT("WTG.MenuUISmoke"),TEXT("M
         auto* Menu=World->GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>();auto* D=World->GetSubsystem<UDistrictSaveSubsystem>();auto* S=GEngine->GetGameUserSettings();
         auto Check=[&](bool V,const TCHAR* Name){OK&=V;UE_LOG(LogTemp,Display,TEXT("WTG_MENU_UI_CHECK stage=%d %s=%s"),Stage,Name,V?TEXT("PASS"):TEXT("FAIL"));};
         auto Click=[&](const FString& Label,bool Mouse=false,FKey Accept=EKeys::Enter){const bool V=WTGMenuQA::Click(Menu,Label,Mouse,Accept);Check(V,*Label);};
-        if(Stage==0){if(Menu->Screen!=EWTGMenuScreen::Main || Total<4){if(Total<50)return true;Check(false,TEXT("startup_timeout"));}PreviousSlot=D->Slot;D->Slot=Slot;OriginalSize=S->GetScreenResolution();}
+        if(Stage==0){if(Menu->Screen!=EWTGMenuScreen::Main || Total<4){if(Total<50)return true;Check(false,TEXT("startup_timeout"));}PreviousSlot=D->Slot;D->Slot=Slot;
+            World->GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->ResetToDefaults();S->SetScreenResolution(FIntPoint(1600,900));S->SetFullscreenMode(EWindowMode::Windowed);S->ApplyResolutionSettings(false);S->ConfirmVideoMode();OriginalSize=S->GetScreenResolution();}
         else if(Age<.7f || Menu->IsTransitioning())return true;
         switch(Stage){
         case 0:Check(Menu->Screen==EWTGMenuScreen::Main && World->IsPaused() && Menu->Controller()->IsMoveInputIgnored() && Menu->Controller()->IsLookInputIgnored(),TEXT("startup_input_lock"));WTGMenuQA::Shot(TEXT("MenuQA_Main.png"));break;
@@ -89,7 +93,8 @@ static FAutoConsoleCommandWithWorld GMenuUISmoke(TEXT("WTG.MenuUISmoke"),TEXT("M
         case 11:Click(TEXT("Wczytaj"));break;
         case 12:Click(TEXT("Potwierdź"));break;
         case 13:Check(Menu->Screen==EWTGMenuScreen::Playing && Menu->PlayedSeconds>=SavedTime && D->Slot==Slot,TEXT("load_restores_stats_session"));Menu->Controller()->Escape();break;
-        case 14:for(int32 Pass=0;Pass<3;++Pass)for(const TCHAR* Label:{TEXT("GRA"),TEXT("POSTAĆ"),TEXT("STATYSTYKI"),TEXT("USTAWIENIA"),TEXT("STEROWANIE"),TEXT("MAPA")})Click(Label);Click(TEXT("USTAWIENIA"));break;
+        case 14:{const TCHAR* Labels[]={TEXT("GRA"),TEXT("POSTAĆ"),TEXT("STATYSTYKI"),TEXT("USTAWIENIA"),TEXT("STEROWANIE"),TEXT("MAPA")};const int32 Pages[]={0,11,12,2,3,10};
+            for(int32 Pass=0;Pass<3;++Pass)for(int32 I=0;I<6;++I){Click(Labels[I]);Check(Menu->SlateMenu()->ActivePage()==Pages[I],TEXT("tab_content"));}Click(TEXT("USTAWIENIA"));break;}
         case 15:WTGMenuQA::Shot(TEXT("MenuQA_Settings.png"));Menu->SlateMenu()->PreviewVideoMode(FIntPoint(1280,720),2);break;
         case 16:Check(S->GetScreenResolution()==FIntPoint(1280,720) && Menu->SlateMenu()->IsVideoConfirmationPending(),TEXT("video_preview"));WTGMenuQA::Key(EKeys::Escape);break;
         case 17:Check(S->GetScreenResolution()==OriginalSize && !Menu->SlateMenu()->IsVideoConfirmationPending(),TEXT("video_cancel_reverts"));Menu->SlateMenu()->PreviewVideoMode(FIntPoint(1280,720),2);break;
@@ -111,6 +116,8 @@ static FAutoConsoleCommandWithWorld GMenuUISmoke(TEXT("WTG.MenuUISmoke"),TEXT("M
         case 32:UGameplayStatics::DeleteGameInSlot(Slot,0);UGameplayStatics::DeleteGameInSlot(Broken,0);D->Slot=PreviousSlot;
             UE_LOG(LogTemp,Display,TEXT("WTG_MENU_UI_DONE result=%s elapsed=%.2f"),OK?TEXT("PASS"):TEXT("FAIL"),Total);Click(TEXT("Potwierdź"));return false;
         }
+        if(!OK){UGameplayStatics::DeleteGameInSlot(Slot,0);UGameplayStatics::DeleteGameInSlot(Broken,0);D->Slot=PreviousSlot;
+            UE_LOG(LogTemp,Error,TEXT("WTG_MENU_UI_DONE result=FAIL stage=%d"),Stage);FPlatformMisc::RequestExit(false);return false;}
         ++Stage;Age=0;return true;
     }));
  }));
