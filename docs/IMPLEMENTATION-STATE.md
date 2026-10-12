@@ -1,22 +1,22 @@
 # Start location production — 2026-10-12
 
-Primary live log: current start-location PR, stream 7/10.
+Primary live log: current start-location PR, stream 8/10.
 See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 7/10. Native quality applied and verified: 2272 instances / 29 HISM / 466628 aggregate new-scene LOD0 triangles below 1.6M cap. Full Nanite building fallback; near tree LOD retains branches, separate prop/building thresholds, cull180-260m, 21 streaming textures capped2k.
+Stream 8/10. Added real-game smoke: actual non-placeholder player, floor/8 wall/camera checks, ordinary 2 m walking, four screenshots and uncapped steady frame intervals after warmup. Development-only focus-pause exemption prevents QA from measuring a paused menu.
 
-Validation and limitations: Native quality PASS, persisted LOD thresholds compared with policy; 10 source tests PASS. Source budget counts actual Native triangles and colliders, not FPS or VRAM. Placement input regenerated after source policy hash change.
+Validation and limitations: Native compilation and actual execution pending. Smoke does not teleport player, write game saves or persist graphics preferences.
 
 ## Do zrobienia
-Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
+Build, run rendered smoke and district regressions; inspect every final image, fix discovered errors and archive fresh evidence.
 
 ## Następny krok
-Create stream 8 branch; implement non-pausing actual-game smoke with steady frame measurement, walking/camera/collision probes, run district regressions and inspect final screenshots.
+Build Editor module, run WTGDistrict regression suite and WTG.StartLocationSmoke with -WTGNoFocusPause at1280x720; require fresh reports/logs and inspect images.
 
 ## Stan
-Stream complete; overall implementation in progress. No CI manually run.
+In progress, stream 8/10. No CI manually run.
 
 # Earlier city asset production — completed first batch
 
