@@ -187,6 +187,12 @@ def main():
         bpy.ops.object.mode_set(mode="OBJECT")
         obj.data.calc_loop_triangles()
         report["assets"].append({"id":name,"triangles":len(obj.data.loop_triangles),"uv_layers":len(obj.data.uv_layers),"dimensions_m":list(obj.dimensions)})
+        if name=="ornate-balcony-railing":
+            # Three discrete safety panels keep the rear and center open.
+            for i,(center,size) in enumerate([((0,.5,.55),(2.45,.06,1.1)),
+                    ((-1.2,0,.55),(.06,1.04,1.1)),((1.2,0,.55),(.06,1.04,1.1))]):
+                collision=box("UCX_source_"+str(i),center,size,0)
+                collision.hide_render=True
         bpy.ops.wm.save_as_mainfile(filepath=str(OUT/f"{name}.blend"))
         select([obj])
         bpy.ops.export_scene.gltf(filepath=str(OUT/f"{name}.glb"),export_format="GLB",use_selection=True)

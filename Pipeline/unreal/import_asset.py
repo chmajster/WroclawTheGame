@@ -129,8 +129,8 @@ def configure_lods(base_mesh, generated: Path, mesh_name: str, destination: str,
     return integrated
 
 
-def prepare() -> None:
-    manifest_value = os.environ.get("WTG_ASSET_MANIFEST")
+def prepare(manifest_value=None) -> None:
+    manifest_value = manifest_value or os.environ.get("WTG_ASSET_MANIFEST")
     if not manifest_value:
         raise RuntimeError("WTG_ASSET_MANIFEST is not set")
     manifest_path = project_path(manifest_value)
@@ -183,6 +183,9 @@ def prepare() -> None:
         return (mesh_subsystem.get_simple_collision_count(base_mesh)
                 + mesh_subsystem.get_convex_collision_count(base_mesh))
     collision_count = collision_shapes()
+    if manifest["collision"]["mode"] == "none" and collision_count:
+        mesh_subsystem.remove_collisions(base_mesh)
+        collision_count=collision_shapes()
     if manifest["collision"]["mode"] == "simple" and collision_count <= 0:
         hull_count = int(manifest["collision"].get("max_hulls", 1))
         if not mesh_subsystem.set_convex_decomposition_collisions(base_mesh, hull_count, 32, 100000):
@@ -190,6 +193,8 @@ def prepare() -> None:
         collision_count = collision_shapes()
     if manifest["collision"]["mode"] == "simple" and collision_count <= 0:
         raise RuntimeError("Simple collision is required but none exists")
+    if manifest["collision"]["mode"] == "authored" and collision_count!=blender_report.get("collision_shapes"):
+        raise RuntimeError("Authored UCX collision shapes were not preserved")
 
     imported_textures = {}
     texture_destination = f"{destination}/Textures"
@@ -199,23 +204,39 @@ def prepare() -> None:
     material = create_material(asset_id, destination, imported_textures)
     if material is not None:
         base_mesh.set_material(0, material)
+    bindings={binding["slot"]:binding["asset"] for binding in manifest.get("materials",[])}
+    slot_count=len(base_mesh.get_editor_property("static_materials"))
+    if any(slot>=slot_count for slot in bindings): raise RuntimeError("Material binding slot does not exist")
+    for slot,path in bindings.items():
+        authored_material=unreal.load_asset(path)
+        if not isinstance(authored_material,unreal.MaterialInterface): raise RuntimeError("Missing material "+path)
+        base_mesh.set_material(slot,authored_material)
+    if imported_textures and any(slot not in bindings for slot in range(1,slot_count)):
+        raise RuntimeError("Multi-material mesh requires explicit bindings for every remaining slot")
 
     if not unreal.EditorAssetLibrary.save_loaded_asset(base_mesh, False):
         raise RuntimeError(f"Cannot save {expected_path}")
 
     bounds=base_mesh.get_bounds()
     actual_height_cm=bounds.box_extent.z*2
+    expected_bounds=blender_report.get("bounds_m")
+    actual_bounds=[bounds.box_extent.x*2,bounds.box_extent.y*2,actual_height_cm]
+    if expected_bounds and any(abs(actual-expected*100)>max(.5,expected) for actual,expected in zip(actual_bounds,expected_bounds)):
+        raise RuntimeError(f"Imported bounds/scale mismatch: {actual_bounds} cm != {expected_bounds} m")
     expected_height_cm=manifest.get('dimensions',{}).get('height_m',0)*100
     if expected_height_cm and not expected_height_cm*.8<=actual_height_cm<=expected_height_cm*1.2:
         raise RuntimeError(f'Imported asset scale mismatch: height {actual_height_cm:.2f} cm, expected {expected_height_cm:.2f} cm')
     report = {
         "height_cm":actual_height_cm,
+        "bounds_cm": actual_bounds,
+        "material_slots": slot_count,
+        "material_bindings": bindings,
         "asset_id": asset_id,
         "mesh": expected_path,
         "lods": integrated_lods,
         "expected_lods": expected_lod_count,
         "unreal_lod_count": actual_lod_count,
-        "nanite": bool(manifest["unreal"]["nanite"]),
+        "nanite": bool(mesh_subsystem.get_nanite_settings(base_mesh).get_editor_property("enabled")),
         "textures": {key: value.get_path_name() for key, value in imported_textures.items()},
         "material": material.get_path_name() if material else None,
         "collision": manifest["collision"]["mode"],

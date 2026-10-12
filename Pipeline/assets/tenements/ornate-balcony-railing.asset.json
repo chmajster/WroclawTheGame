@@ -6,7 +6,7 @@
   "source": {"model": "SourceAssets/Models/Wroclaw/TenementKit/ornate-balcony-railing.blend", "license": "Project-owned original geometry and textures", "reference_directory": null},
   "mesh": {"max_triangles": 60000, "combine": true, "generate_uv_if_missing": false},
   "lod": {"ratios": [1, 0.6, 0.3]},
-  "collision": {"mode": "none", "max_hulls": 1},
+  "collision": {"mode": "authored", "max_hulls": 3},
   "textures": {
     "base_color": "SourceAssets/Models/Wroclaw/TenementKit/Textures/iron_BC.png",
     "normal": "SourceAssets/Models/Wroclaw/TenementKit/Textures/iron_N.png",

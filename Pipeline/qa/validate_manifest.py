@@ -36,6 +36,7 @@ def validate_manifest(data: dict, check_files: bool = True) -> None:
         "source", "mesh", "lod", "collision", "textures", "unreal", "qa",
     }
     require(isinstance(data, dict), "manifest root must be an object")
+    require(not (set(data)-required-{"dimensions","materials"}), "unknown manifest fields")
     missing = sorted(required - set(data))
     require(not missing, f"missing required fields: {', '.join(missing)}")
     require(data["schema_version"] == 1, "schema_version must be 1")
@@ -47,6 +48,7 @@ def validate_manifest(data: dict, check_files: bool = True) -> None:
 
     source = data["source"]
     require(isinstance(source, dict) and isinstance(source.get("model"), str) and source["model"], "source.model is required")
+    require(isinstance(source.get("license"), str) and source["license"].strip(), "source.license is required")
     model = project_path(source["model"])
     require(model.suffix.lower() in MODEL_EXTENSIONS, f"unsupported source model extension: {model.suffix}")
     if check_files:
@@ -74,7 +76,7 @@ def validate_manifest(data: dict, check_files: bool = True) -> None:
     require(all(float(ratios[i]) > float(ratios[i + 1]) for i in range(len(ratios) - 1)), "LOD ratios must strictly decrease")
 
     collision = data["collision"]
-    require(isinstance(collision, dict) and collision.get("mode") in {"none", "simple"}, "collision.mode must be none or simple")
+    require(isinstance(collision, dict) and collision.get("mode") in {"none", "simple", "authored"}, "collision.mode must be none, simple or authored")
     if "max_hulls" in collision:
         require(isinstance(collision["max_hulls"], int) and 1 <= collision["max_hulls"] <= 32, "collision.max_hulls must be 1..32")
 
@@ -89,6 +91,16 @@ def validate_manifest(data: dict, check_files: bool = True) -> None:
         require(path.suffix.lower() in TEXTURE_EXTENSIONS, f"unsupported texture extension for {key}: {path.suffix}")
         if check_files:
             require(path.is_file(), f"missing texture {key}: {path}")
+
+    materials=data.get("materials",[])
+    require(isinstance(materials,list), "materials must be an array")
+    slots=set()
+    for binding in materials:
+        require(isinstance(binding,dict) and set(binding)=={"slot","asset"}, "material binding requires slot and asset only")
+        slot=binding["slot"]
+        require(type(slot) is int and slot>=0 and slot not in slots, "material slots must be unique nonnegative integers")
+        require(isinstance(binding["asset"],str) and binding["asset"].startswith("/Game/"), "material asset must start with /Game/")
+        slots.add(slot)
 
     unreal = data["unreal"]
     require(isinstance(unreal, dict), "unreal must be an object")

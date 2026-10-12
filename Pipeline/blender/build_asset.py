@@ -109,7 +109,9 @@ def bounds(objects: list[bpy.types.Object]) -> tuple[Vector, Vector]:
     return minimum, maximum
 
 
-def normalize(objects: list[bpy.types.Object], manifest: dict) -> None:
+def normalize(objects: list[bpy.types.Object], manifest: dict, collision_objects=None) -> None:
+    # Bounds come only from render objects; authored collision shares transforms.
+    all_objects=objects+list(collision_objects or [])
     scene = bpy.context.scene
     scene.unit_settings.system = "METRIC"
     scene.unit_settings.scale_length = 1.0
@@ -121,16 +123,16 @@ def normalize(objects: list[bpy.types.Object], manifest: dict) -> None:
         if source_height <= 1e-8:
             raise RuntimeError("Cannot scale zero-height mesh")
         factor = float(target_height) / source_height
-        for obj in objects:
+        for obj in all_objects:
             obj.location *= factor
             obj.scale *= factor
-        apply_transforms(objects)
+        apply_transforms(all_objects)
 
     minimum, maximum = bounds(objects)
     offset = Vector((-(minimum.x + maximum.x) / 2.0, -(minimum.y + maximum.y) / 2.0, -minimum.z))
-    for obj in objects:
+    for obj in all_objects:
         obj.location += offset
-    apply_transforms(objects)
+    apply_transforms(all_objects)
 
 
 def ensure_uv(obj: bpy.types.Object, generate: bool) -> None:
@@ -204,9 +206,15 @@ def main() -> None:
 
     manifest_path = resolve(args.manifest)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    sys.path.insert(0,str(ROOT/"Pipeline/qa"))
+    from validate_manifest import validate_manifest
+    validate_manifest(manifest)
     asset_id = manifest["id"]
     safe_name = "SM_" + "".join(ch if ch.isalnum() or ch == "_" else "_" for ch in asset_id)
     out = ROOT / "Saved" / "Pipeline" / "generated" / asset_id
+    out=out.resolve()
+    if not out.is_relative_to((ROOT/"Saved/Pipeline/generated").resolve()):
+        raise RuntimeError("Output escapes pipeline products directory")
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -217,14 +225,23 @@ def main() -> None:
 
     import_source(source)
     meshes = mesh_objects()
+    authored=[obj for obj in bpy.context.scene.objects if obj.type=="MESH" and obj.name.upper().startswith("UCX_")]
     if not meshes:
         raise RuntimeError("Source contains no mesh objects")
 
-    detach_keep_world(meshes)
-    normalize(meshes, manifest)
+    detach_keep_world(meshes+authored)
+    normalize(meshes, manifest, authored)
     base = join_copy(meshes, safe_name)
     ensure_uv(base, bool(manifest["mesh"]["generate_uv_if_missing"]))
     apply_transforms([base])
+    if any(not math.isfinite(value) for vertex in base.data.vertices for value in vertex.co):
+        raise RuntimeError("Non-finite render geometry")
+    if not base.data.polygons or not base.data.uv_layers:
+        raise RuntimeError("Empty geometry or missing UV layer")
+    if any(not math.isfinite(value) for uv in base.data.uv_layers.active.data for value in uv.uv):
+        raise RuntimeError("Non-finite UV coordinates")
+    minimum,maximum=bounds([base])
+    dimensions=list(maximum-minimum)
 
     lod0_triangles = triangle_count(base)
     max_triangles = int(manifest["mesh"]["max_triangles"])
@@ -245,14 +262,22 @@ def main() -> None:
         lod_objects.append(obj)
         lod_reports.append({"lod": index, "ratio": ratio, "triangles": count})
 
-    collision = None
-    if manifest["collision"]["mode"] == "simple":
-        collision = convex_collision(base, safe_name)
+    collisions=[]
+    if manifest["collision"]["mode"] == "authored":
+        if not authored: raise RuntimeError("Authored collision requires source UCX meshes")
+        for index,obj in enumerate(authored):
+            collision=convex_collision(obj,safe_name)
+            collision.name=f"UCX_{safe_name}_{index:02d}"
+            collisions.append(collision)
+    elif manifest["collision"]["mode"] == "simple" and manifest["collision"].get("max_hulls",1)==1:
+        collisions=[convex_collision(base,safe_name)]
+    # Multi-hull simple mode is decomposed by Unreal instead of sealing openings
+    # with a single enclosing hull.
 
     for index, obj in enumerate(lod_objects):
         export_objects = [obj]
-        if index == 0 and collision is not None:
-            export_objects.append(collision)
+        if index == 0:
+            export_objects.extend(collisions)
         export_fbx(out / f"{safe_name}_LOD{index}.fbx", export_objects)
 
     report = {
@@ -263,6 +288,10 @@ def main() -> None:
         "max_triangles": max_triangles,
         "lods": lod_reports,
         "collision": manifest["collision"]["mode"],
+        "collision_shapes": len(collisions),
+        "bounds_m": dimensions,
+        "uv_layers": len(base.data.uv_layers),
+        "material_slots": len(base.data.materials),
         "exports": [f"{safe_name}_LOD{i}.fbx" for i in range(len(lod_objects))],
         "status": "PASS",
     }
