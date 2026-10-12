@@ -43,6 +43,7 @@ def prepare():
             edit.connect_material_expressions(world,'',divide,'A');edit.connect_material_expressions(divide,'',mask,'Input')
             edit.connect_material_expressions(mask,'',base,'Coordinates')
             for node in (normal,orm):edit.connect_material_expressions(mask,'',node,'Coordinates')
+        for usage in [unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES,unreal.MaterialUsage.MATUSAGE_NANITE]:edit.set_material_usage(material,usage)
         edit.recompile_material(material);unreal.EditorAssetLibrary.save_loaded_asset(material,False);masters[name]=material
     constants={'Frame':((.75,.73,.67),.65,0),'Glazing':((.025,.055,.075),.18,.25),
                'Metal':((.07,.075,.08),.4,.85),'Wood':((.15,.065,.025),.76,0),
@@ -57,12 +58,20 @@ def prepare():
         for prop,value in [(unreal.MaterialProperty.MP_ROUGHNESS,roughness),(unreal.MaterialProperty.MP_METALLIC,metallic)]:
             node=edit.create_material_expression(mat,unreal.MaterialExpressionConstant,0,120);node.set_editor_property('r',value);edit.connect_material_property(node,'',prop)
         if name=='Leaf':mat.set_editor_property('two_sided',True)
+        for usage in [unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES,unreal.MaterialUsage.MATUSAGE_NANITE]:edit.set_material_usage(mat,usage)
         edit.recompile_material(mat);unreal.EditorAssetLibrary.save_loaded_asset(mat,False);masters[name]=mat
     for name,material in masters.items():
         path=DEST+'/MI_'+name;instance=unreal.load_asset(path)
         if not instance:instance=tools.create_asset('MI_'+name,DEST,unreal.MaterialInstanceConstant,unreal.MaterialInstanceConstantFactoryNew())
-        edit.set_material_instance_parent(instance,material);edit.update_material_instance(instance)
+        edit.set_material_instance_parent(instance,material)
+        for usage in [unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES,unreal.MaterialUsage.MATUSAGE_NANITE]:edit.set_material_usage_override(instance,usage,True,True)
+        edit.update_material_instance(instance)
         unreal.EditorAssetLibrary.save_loaded_asset(instance,False)
+    for path in ['/Game/SurfaceQuality/Instances/MI_PaintedMetal','/Game/Wroclaw/Nadodrze/MI_DistrictWindowGlazing']:
+        material=unreal.load_asset(path)
+        if isinstance(material,unreal.MaterialInstanceConstant):
+            edit.set_material_usage_override(material,unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES,True,True)
+            edit.update_material_instance(material);unreal.EditorAssetLibrary.save_loaded_asset(material,False)
     marker.write_text('PASS\n',encoding='utf-8');unreal.log('WTG_START_MATERIALS_PASS '+str(len(masters)))
 
 

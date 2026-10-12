@@ -7,12 +7,15 @@ import re
 import traceback
 import time
 import hashlib
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 import unreal
 
 ROOT = Path(unreal.Paths.project_dir()).resolve()
+sys.path.insert(0,str(ROOT/'Pipeline/unreal'))
+from import_asset import quit_after_editor_startup
 
 
 def project_path(value: str) -> Path:
@@ -54,7 +57,7 @@ def prepare() -> None:
     # Editor worlds do not run BeginPlay. Apply the existing game's daylight
     # environment for architectural QA; do not save this preview state.
     for actor in actor_subsystem.get_all_level_actors():
-        if isinstance(actor,unreal.WTGDayNightEnvironment): actor.set_time_of_day(12.)
+        if isinstance(actor,unreal.WTGDayNightEnvironment): actor.set_time_of_day(float(manifest['qa'].get('time_of_day_hours',12.)))
     cameras = {
         actor.get_actor_label(): actor
         for actor in actor_subsystem.get_all_level_actors()
@@ -72,7 +75,7 @@ def prepare() -> None:
     screenshot_files = [out / f"{name}.png" for name in safe_names]
     for filename in screenshot_files: filename.unlink(missing_ok=True)
     map_file=ROOT/"Content"/(manifest["unreal"]["qa_map"].removeprefix("/Game/")+".umap")
-    native_files=[map_file]+sorted((ROOT/"Content/Wroclaw/TenementKit").rglob("*.uasset"))
+    native_files=[map_file]+sorted((ROOT/"Content/Wroclaw/TenementKit").rglob("*.uasset"))+sorted((ROOT/"Content/Wroclaw/StartLocation").rglob("*.uasset"))
     native_hashes={str(path.relative_to(ROOT)).replace('\\','/'):hashlib.sha256(path.read_bytes()).hexdigest() for path in native_files if path.is_file()}
 
     @unreal.AutomationScheduler.add_latent_command
@@ -83,7 +86,7 @@ def prepare() -> None:
                 yield
             for name, filename in zip(camera_names, screenshot_files):
                 deadline=time.monotonic()+120
-                task=unreal.AutomationLibrary.take_high_res_screenshot(width,height,str(filename),camera=cameras[name],comparison_notes=f"{asset_id}:{name}",force_game_view=True)
+                task=unreal.AutomationLibrary.take_high_res_screenshot(width,height,str(filename),camera=cameras[name],comparison_notes=f"{asset_id}:{name}",delay=2.,force_game_view=True)
                 if not task.is_valid_task(): raise RuntimeError("Invalid screenshot task: "+name)
                 while not task.is_task_done():
                     if time.monotonic()>deadline: raise TimeoutError("Screenshot timed out: "+name)
@@ -101,8 +104,7 @@ def prepare() -> None:
             unreal.log_error(traceback.format_exc())
             report_path.write_text(json.dumps({"status":"FAILED","error":traceback.format_exc()},indent=2),encoding="utf-8")
         finally:
-            unreal.EditorPythonScripting.set_keep_python_script_alive(False)
-            unreal.SystemLibrary.quit_editor()
+            quit_after_editor_startup()
 
 
 try:

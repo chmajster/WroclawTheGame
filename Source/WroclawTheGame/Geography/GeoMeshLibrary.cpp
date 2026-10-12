@@ -55,6 +55,11 @@ UStaticMesh *UGeoMeshLibrary::BakeMesh(const FString &Path, const TArray<FVector
     UStaticMesh *Mesh =
         NewObject<UStaticMesh>(Package, *FPackageName::GetShortName(Path), RF_Public | RF_Standalone);
     Mesh->GetStaticMaterials().Add(FStaticMaterial());
+    // GIS supplies physical outward/upward normals explicitly. Preserve them
+    // independently of the raster winding conversion during editor rebuilds.
+    Mesh->SetNumSourceModels(1);
+    Mesh->GetSourceModel(0).BuildSettings.bRecomputeNormals = false;
+    Mesh->GetSourceModel(0).BuildSettings.bRecomputeTangents = true;
     UStaticMesh::FBuildMeshDescriptionsParams Params;
     Params.bBuildSimpleCollision = false;
     Params.bFastBuild = false;

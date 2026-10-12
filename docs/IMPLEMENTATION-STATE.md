@@ -5,18 +5,18 @@ See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 5/10. Actual native base bake PASS (439 mesh cells, 75158 GIS triangles), original gameplay actors and source anchors retained. All eight detailed buildings placed; 2272 source-driven instances in 28 HISM groups plus 50 steel rail strips. 250 source-classified surface cells updated to CC0 PBR including newly verified Grass Ground 1k by Charlotte Baglioni. OSM crossings/furniture retained; no invented signals.
+Stream 5/10. Eight buildings integrated, 2272 source-based instances in 29 HISM clusters, 29 nearby PBR surface cells and 50 rail strips. Reviewed CC0 grass acquired. Material usage and first-view warmup fixed; thin ground excluded from Lumen mesh SDF to remove black over-occlusion. Decorative cars avoid gameplay vehicle paths.
 
-Validation and limitations: 17 source tests PASS. Fresh isolated native placement PASS. Combined editor script encountered Niagara access violation during repeated world reload; used isolated editor process successfully and will make final orchestrator isolate steps. Rendered inspection is in progress, not yet accepted.
+Validation and limitations: Native module build, base bake, isolated placement and three rendered camera captures PASS. Every image actually inspected. 14 source tests and all 28 manifests PASS. Heights/windows estimated, roofs simplified, no accessible interiors. Actual walking/FPS follows in stream 8.
 
 ## Do zrobienia
-Inspect fresh actual game player/street images, fix integration/lighting/layout flaws and complete this stream.
+Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
 
 ## Następny krok
-Wait for StartFirstRender.log completion and fresh Saved/Tests/DistrictPlayer.png and DistrictStreet.png; inspect images, correct visible issues in source/model/placement, then update PR.
+Create stream 6 branch from main, align initial/recovery camera toward meeting point and add authored tree trunk collision; import and verify updated tree.
 
 ## Stan
-In progress, stream 5/10. No CI manually run.
+Stream complete; overall implementation in progress. No CI manually run.
 
 # Earlier city asset production — completed first batch
 

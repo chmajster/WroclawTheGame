@@ -33,6 +33,8 @@ def build():
     greens=unary_union([Polygon([p[:2] for p in f['rings'][0]]) for f in sector['features'] if f['kind']=='green'])
     paths=[f for f in sector['features'] if f['kind']=='road' and f['tags'].get('highway') in ['footway','path','cycleway'] and LineString([p[:2] for p in f['points']]).intersects(region)]
     path_shapes=unary_union([LineString([p[:2] for p in f['points']]).buffer(f['width_m']*50+50) for f in paths])
+    vehicle_paths=unary_union([LineString([p[:2] for p in district['delivery_route']]).buffer(100)]+
+        [LineString([p[:2] for p in r['points']]).buffer(100) for r in district['population_routes'] if r['vehicle']])
     nodes=[]
     for node in ET.fromstring(xml).findall('node'):
         tags={t.attrib['k']:t.attrib['v'] for t in node.findall('tag')}
@@ -95,9 +97,11 @@ def build():
         if road['tags'].get('highway')=='residential' and line.length>2200:
             for d in range(1100,int(line.length)-500,1600):
                 if counts['parked-car']>=6:break
-                q=line.interpolate(d);yaw=tangent(road,[q.x,q.y]);angle=math.radians(yaw+90);offset=road['width_m']*50-100
+                q=line.interpolate(d);yaw=tangent(road,[q.x,q.y]);angle=math.radians(yaw+90);offset=-(road['width_m']*50-100)
                 x,y=q.x+math.cos(angle)*offset,q.y+math.sin(angle)*offset
-                if region.covers(Point(x,y)) and not any(Point(x,y).distance(c)<800 for c in crossings):add('parked-car',[x,y,ground(x,y)+8],yaw,source=road['id']+':curbside-parking-estimate',radius=250)
+                c,s=math.cos(math.radians(yaw)),math.sin(math.radians(yaw))
+                footprint=Polygon([(x+u*c-v*s,y+u*s+v*c) for u,v in [(-225,-105),(225,-105),(225,105),(-225,105)]])
+                if region.covers(Point(x,y)) and not footprint.intersects(vehicle_paths) and not any(Point(x,y).distance(cross)<800 for cross in crossings):add('parked-car',[x,y,ground(x,y)+8],yaw,source=road['id']+':curbside-parking-estimate',radius=250)
     # Real steel rail heads follow existing OSM rail centrelines, 1435 mm gauge.
     strips=[]
     for f in sector['features']:

@@ -1,0 +1,5 @@
+{
+  "id": "start-location",
+  "unreal": {"qa_map": "/Game/Maps/Nadodrze_Playable"},
+  "qa": {"cameras": ["StartLocation_Start_Player", "StartLocation_Start_Street", "StartLocation_Start_Park"], "screenshot_width": 1280, "screenshot_height": 720, "time_of_day_hours": 13.5}
+}

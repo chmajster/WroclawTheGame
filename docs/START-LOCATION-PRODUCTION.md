@@ -81,3 +81,29 @@ uasset. `verify_start_location_assets.py` sprawdził w UE metrową skalę,
 UV w każdym z trzech LOD, nazwy i przypisanie materiałów, sekcje LOD oraz
 liczbę colliderów. PASS dla 13 siatek. Naprawiono import LOD, który pomijał
 materiał usuniętego drobnego detalu i mógł scalać sekcje na domyślnym materiale.
+
+## 5. Integracja otoczenia
+
+W mapie rzeczywiście zastąpiono osiem brył GIS szczegółowymi budynkami.
+Pozostałe systemy, punkty misji i sterowalny samochód zachowano. Rozmieszczenie
+odtwarza `build_start_location_plan.py`: 2272 instancje w 29 grupach HISM,
+w tym 2098 modułów krawężnika, 87 wpustów, 3 stojaki, 15 ławek,
+18 młodych drzew, kosz, 8 lamp i 6 samochodów dekoracyjnych. 36 pasów malowania
+odpowiada przejściom oznaczonym w OSM; nie dodano niepotwierdzonej sygnalizacji.
+50 odcinków stalowych główek szyn zachowuje źródłowe osie i rozstaw 1435 mm.
+Samochody dekoracyjne omijają trasę dostawy i ruchu ulicznego.
+
+29 komórek nawierzchni przecinających obszar startu otrzymuje PBR odpowiedni
+do klasy źródłowej: 6 asfaltu, 8 kostki, 12 chodnika i 3 zieleni. Grass Ground
+1k (Charlotte Baglioni, Poly Haven CC0) ma również sprawdzone sumy i licencję.
+Cienkie siatki gruntu nie uczestniczą w mesh SDF Lumen, ponieważ ich zgrubne
+pola odległości nadmiernie zaciemniały sąsiednie nawierzchnie. Budynki zachowują
+mesh SDF, a grunt zachowuje zwykłe cienie i śledzenie ekranowe.
+
+Natywny build modułu, wypiekanie 439 komórek, izolowane rozmieszczenie i trzy
+nowe zrzuty edytora zakończyły się powodzeniem. Obejrzano każdy kadr:
+dwusekundowe doczytywanie kamery usuwa artefakty pierwszego widoku Nanite;
+wyłączenie SDF cienkiego gruntu usuwa czarny pas ulicy. Materiały mają zapisane
+flagi Nanite i HISM. To kontrola architektury w edytorze; rozgrywka i FPS
+są odrębnym strumieniem 8. Dachy pozostają uproszczone, a architektura opiera
+się na referencjach i oszacowaniach, bez deklarowania dokładności pomiarowej.
