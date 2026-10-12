@@ -48,3 +48,19 @@ Każdy numer wymaga osobnej gałęzi/PR: 1 audyt, 2 referencje i układ,
 3 legalne zasoby, 4 modele Blender, 5 integracja otoczenia, 6 start/kolizje,
 7 optymalizacja, 8 testy gry, 9 organizacja, 10 odbiór i raport.
 Szczegóły wykonania i aktualny następny krok: `IMPLEMENTATION-STATE.md` oraz PR.
+
+## 3. Materiały i istniejące modele
+
+Pozyskane z Poly Haven materiały CC0: Painted Plaster Wall (Amal Kumar),
+Asphalt 03 (Dario Barresi / Charlotte Baglioni), Concrete Pavement 03
+(Charlotte Baglioni), Cobblestone Floor 08 i Roof Tiles 14 (Rob Tuytel).
+Każdy zestaw zawiera BC, normal DirectX oraz ORM w 2k. Dokładne adresy,
+autorzy, licencje, rozmiary oraz sumy MD5/SHA256 zapisane są w
+`Data/city_asset_acquisition.json`; pobranie i kontrolę wykonuje istniejący
+`Scripts/assets/acquire_city_assets.py`. Pozostaje wcześniejszy Sandstone Cracks.
+
+Wykorzystamy już sprowadzone lampy, ławki i kosze z biblioteki 66 modeli.
+Internetowe modele kamienic nie odpowiadają źródłowym obrysom i rytmowi okien
+Pomorskiej. Modele adresów, krawężnik, wpust, stojak rowerowy, młode drzewo
+oraz samochód dekoracyjny wymagają własnego autorstwa, z odtwarzalnym bpy.
+Parkowany model nie zastępuje sterowalnego samochodu misji.

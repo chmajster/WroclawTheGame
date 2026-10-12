@@ -44,6 +44,217 @@
           "sha256": "56eaeef39cf4de59438edbec4b70e07e7cb336bbb5d6f607c7fb90e130515968"
         }
       }
+    },
+    {
+      "id": "ph-painted-plaster-wall",
+      "slug": "painted_plaster_wall",
+      "type": "pbr_texture_set",
+      "name": "Painted Plaster Wall",
+      "provider": "Poly Haven",
+      "authors": {
+        "Amal Kumar": "All"
+      },
+      "source_url": "https://polyhaven.com/a/painted_plaster_wall",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "license_verified_on": "2026-10-12",
+      "dimensions_mm": [
+        2000,
+        2000
+      ],
+      "resolution": 2048,
+      "files": {
+        "base_color": {
+          "path": "SourceAssets/Textures/PolyHaven/painted_plaster_wall/painted_plaster_wall_BC.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/painted_plaster_wall/painted_plaster_wall_diff_2k.png",
+          "bytes": 22706294,
+          "md5": "a59f31e4461b4e9385e88030e32280d9",
+          "sha256": "5d3e476d633d873f2f9f443936a7d3f6a5830b5486c9bd704cef7c1f89dbb3cc"
+        },
+        "normal": {
+          "path": "SourceAssets/Textures/PolyHaven/painted_plaster_wall/painted_plaster_wall_N.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/painted_plaster_wall/painted_plaster_wall_nor_dx_2k.png",
+          "bytes": 22789119,
+          "md5": "8d007431481ffbff0e0d86684eb66e11",
+          "sha256": "148d654923ae5a5c4f9c248fabc74e06898578e583b5671d6ffb4ee159b897fd"
+        },
+        "orm": {
+          "path": "SourceAssets/Textures/PolyHaven/painted_plaster_wall/painted_plaster_wall_ORM.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/painted_plaster_wall/painted_plaster_wall_arm_2k.png",
+          "bytes": 14790707,
+          "md5": "89a4d4c345073c326ed4a29168e5e3f3",
+          "sha256": "8fc9a730b7ea6698d4109924984326b2a0c37a77489e425213e8b24962fc9cce"
+        }
+      }
+    },
+    {
+      "id": "ph-asphalt-03",
+      "slug": "asphalt_03",
+      "type": "pbr_texture_set",
+      "name": "Asphalt 03",
+      "provider": "Poly Haven",
+      "authors": {
+        "Dario Barresi": "processing",
+        "Charlotte Baglioni": "photography"
+      },
+      "source_url": "https://polyhaven.com/a/asphalt_03",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "license_verified_on": "2026-10-12",
+      "dimensions_mm": [
+        2049.999713897705,
+        2049.999713897705
+      ],
+      "resolution": 2048,
+      "files": {
+        "base_color": {
+          "path": "SourceAssets/Textures/PolyHaven/asphalt_03/asphalt_03_BC.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/asphalt_03/asphalt_03_diff_2k.png",
+          "bytes": 23209080,
+          "md5": "fe8b3d96d3784aa7225cc3012ff314af",
+          "sha256": "acb2fa9219e539ea14e4b53368b17b99d964b775bfc358b3e08e530b78924a74"
+        },
+        "normal": {
+          "path": "SourceAssets/Textures/PolyHaven/asphalt_03/asphalt_03_N.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/asphalt_03/asphalt_03_nor_dx_2k.png",
+          "bytes": 22952596,
+          "md5": "0601720500edbe268002b25800e6766a",
+          "sha256": "128bf6475fe2b96e68358a488924a3479becf7777e46ceca96dd3c4c4a6c59cf"
+        },
+        "orm": {
+          "path": "SourceAssets/Textures/PolyHaven/asphalt_03/asphalt_03_ORM.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/asphalt_03/asphalt_03_arm_2k.png",
+          "bytes": 18838157,
+          "md5": "52645610437c437422bfd016005e0d26",
+          "sha256": "42457a1e2d583cc47b41a4f9a985b82697e283f28021e651761bb095816506a6"
+        }
+      }
+    },
+    {
+      "id": "ph-concrete-pavement-03",
+      "slug": "concrete_pavement_03",
+      "type": "pbr_texture_set",
+      "name": "Concrete Pavement 03",
+      "provider": "Poly Haven",
+      "authors": {
+        "Charlotte Baglioni": "All"
+      },
+      "source_url": "https://polyhaven.com/a/concrete_pavement_03",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "license_verified_on": "2026-10-12",
+      "dimensions_mm": [
+        2099.9999046325684,
+        2099.9999046325684
+      ],
+      "resolution": 2048,
+      "files": {
+        "base_color": {
+          "path": "SourceAssets/Textures/PolyHaven/concrete_pavement_03/concrete_pavement_03_BC.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/concrete_pavement_03/concrete_pavement_03_diff_2k.png",
+          "bytes": 23324159,
+          "md5": "2c296ec08bfcc9294698b4e8ec79d01b",
+          "sha256": "df7862dc6578c7e35d8cb144d2dc97e655a52671d9d3e829b8d9a2b383617b24"
+        },
+        "normal": {
+          "path": "SourceAssets/Textures/PolyHaven/concrete_pavement_03/concrete_pavement_03_N.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/concrete_pavement_03/concrete_pavement_03_nor_dx_2k.png",
+          "bytes": 23619240,
+          "md5": "4012ef09532728ae6c80e040e776f566",
+          "sha256": "9bfba6416c93122f5eb2389fe2759b453eda563d50b167f6d3f2a8ee10bda62c"
+        },
+        "orm": {
+          "path": "SourceAssets/Textures/PolyHaven/concrete_pavement_03/concrete_pavement_03_ORM.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/concrete_pavement_03/concrete_pavement_03_arm_2k.png",
+          "bytes": 16895512,
+          "md5": "e54458d4d61d1cf08e03986c455dff72",
+          "sha256": "80fd484ade6b0f56ad258d56df34d3b81d14112049a5f8fe713b72d7aab13643"
+        }
+      }
+    },
+    {
+      "id": "ph-cobblestone-floor-08",
+      "slug": "cobblestone_floor_08",
+      "type": "pbr_texture_set",
+      "name": "Cobblestone Floor 08",
+      "provider": "Poly Haven",
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "source_url": "https://polyhaven.com/a/cobblestone_floor_08",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "license_verified_on": "2026-10-12",
+      "dimensions_mm": [
+        2000,
+        2000
+      ],
+      "resolution": 2048,
+      "files": {
+        "base_color": {
+          "path": "SourceAssets/Textures/PolyHaven/cobblestone_floor_08/cobblestone_floor_08_BC.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/cobblestone_floor_08/cobblestone_floor_08_diff_2k.png",
+          "bytes": 7656774,
+          "md5": "8511c8ed19d1f962e1c453f3f42e688c",
+          "sha256": "6811316df3e4b1552066937a3605b8cdff98461bb271bc6e1927f21c85b97ba2"
+        },
+        "normal": {
+          "path": "SourceAssets/Textures/PolyHaven/cobblestone_floor_08/cobblestone_floor_08_N.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/cobblestone_floor_08/cobblestone_floor_08_nor_dx_2k.png",
+          "bytes": 8379763,
+          "md5": "9737ecbd285ae102d57d013218090e30",
+          "sha256": "b9fd0c9779d1b7d5864678c878c51f8598615f7894da63a87501c5cd4a656b8b"
+        },
+        "orm": {
+          "path": "SourceAssets/Textures/PolyHaven/cobblestone_floor_08/cobblestone_floor_08_ORM.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/cobblestone_floor_08/cobblestone_floor_08_arm_2k.png",
+          "bytes": 5405230,
+          "md5": "82707c49d8c9f7caf186482434f73f9e",
+          "sha256": "06079567071f93aed7de1e537d0fd5e1c73442264e269637e4cb1b35f1ec5c6b"
+        }
+      }
+    },
+    {
+      "id": "ph-roof-tiles-14",
+      "slug": "roof_tiles_14",
+      "type": "pbr_texture_set",
+      "name": "Roof Tiles 14",
+      "provider": "Poly Haven",
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "source_url": "https://polyhaven.com/a/roof_tiles_14",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "license_verified_on": "2026-10-12",
+      "dimensions_mm": [
+        1500,
+        1500
+      ],
+      "resolution": 2048,
+      "files": {
+        "base_color": {
+          "path": "SourceAssets/Textures/PolyHaven/roof_tiles_14/roof_tiles_14_BC.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/roof_tiles_14/roof_tiles_14_diff_2k.png",
+          "bytes": 22702284,
+          "md5": "3d47b2683d0903ec67e3d48d5266a0f7",
+          "sha256": "d9e61883c4d0bd1f2bc34a6c3c6156e2800dfbe5661a29d2422dd88e34913e8e"
+        },
+        "normal": {
+          "path": "SourceAssets/Textures/PolyHaven/roof_tiles_14/roof_tiles_14_N.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/roof_tiles_14/roof_tiles_14_nor_dx_2k.png",
+          "bytes": 20192968,
+          "md5": "f28501196827d33c0238c77b23172461",
+          "sha256": "ec238c4efddf7232437c75d9ecc36e571f4d1124572bc12a337c52a7b6b70244"
+        },
+        "orm": {
+          "path": "SourceAssets/Textures/PolyHaven/roof_tiles_14/roof_tiles_14_ORM.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/roof_tiles_14/roof_tiles_14_arm_2k.png",
+          "bytes": 16438989,
+          "md5": "76deab33f76cdda4192e3a8c25417eee",
+          "sha256": "7cf8af03e47100094b9c8f1aab151c4b4b007f0b077adb3c264be919c584aa24"
+        }
+      }
     }
   ]
 }
