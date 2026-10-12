@@ -207,9 +207,15 @@ def prepare():
         lamp.set_editor_property('hlod_layer',hlod)
 
     for record in opening_records:
-        actor=spawn(unreal.StaticMeshActor,record['position'],record['id'],record.get('rotation',[0,0,0]))
-        apply_static_mesh(actor,free_models[record['model']],record.get('scale',[1,1,1]))
-        actor.set_editor_property('hlod_layer',hlod)
+        mesh=free_models[record['model']]
+        rotation=record.get('rotation',[0,0,0])
+        scale=record.get('scale',[1,1,1])
+        if isinstance(mesh,unreal.StaticMesh):
+            actor=spawn(unreal.StaticMeshActor,record['position'],record['id'],rotation)
+            apply_static_mesh(actor,mesh,scale)
+            actor.set_editor_property('hlod_layer',hlod)
+        else:
+            spawn_skeletal_visual(spawn,mesh,record['position'],record['id'],rotation,scale)
 
     content=json.loads(CHAPTER_INPUT.read_text(encoding='utf-8'))
     for action in content['actions']:
