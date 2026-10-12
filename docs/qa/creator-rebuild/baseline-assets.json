@@ -1,0 +1,182 @@
+{
+  "engine": "5.8.2-56702186+++UE5+Release-5.8",
+  "bodies": [
+    {
+      "id": "Male.Standard",
+      "mesh": "/Game/FreeModels/Quaternius/quaternius_ubc_superhero_male/Superhero_Male_FullBody/SkeletalMeshes/SuperHero_Male.SuperHero_Male",
+      "placeholder": true,
+      "morphs": [],
+      "idle": "<Object '/Game/FreeAnimations/Quaternius/quaternius_ual1_standard/UAL1_Standard/SkeletalMeshes/UAL1_StandardIdle_Loop.UAL1_StandardIdle_Loop' (0x000002B4B774E700) Class 'AnimSequence'>",
+      "animation_class": "None",
+      "materials": [
+        "<Object '/Game/FreeModels/Quaternius/quaternius_ubc_superhero_male/Superhero_Male_FullBody/Materials/MI_Superhero_Male.MI_Superhero_Male' (0x000002B4A9A80000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "Female.Standard",
+      "mesh": "/Game/FreeModels/Quaternius/quaternius_ubc_superhero_female/Superhero_Female_FullBody/SkeletalMeshes/Superhero_Female.Superhero_Female",
+      "placeholder": true,
+      "morphs": [],
+      "idle": "<Object '/Game/FreeAnimations/Quaternius/quaternius_ual1_standard/UAL1_Standard/SkeletalMeshes/UAL1_StandardIdle_Loop.UAL1_StandardIdle_Loop' (0x000002B4B774E700) Class 'AnimSequence'>",
+      "animation_class": "None",
+      "materials": [
+        "<Object '/Game/FreeModels/Quaternius/quaternius_ubc_superhero_female/Superhero_Female_FullBody/Materials/MI_Superhero_Female.MI_Superhero_Female' (0x000002B4A9A86800) Class 'MaterialInstanceConstant'>"
+      ]
+    }
+  ],
+  "parts": {
+    "hair_style_definitions": [
+      {
+        "id": "None",
+        "mesh": "None",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Short",
+        "mesh": "<Object '/Game/FreeModels/Quaternius/quaternius_ubc_hair_simple_parted/Hair_SimpleParted/SkeletalMeshes/Hair_SimpleParted.Hair_SimpleParted' (0x000002B4CFAB8200) Class 'SkeletalMesh'>",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Medium",
+        "mesh": "<Object '/Game/FreeModels/Quaternius/quaternius_ubc_hair_long/Hair_Long/SkeletalMeshes/Hair_Long.Hair_Long' (0x000002B4CFABF000) Class 'SkeletalMesh'>",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Crop",
+        "mesh": "<Object '/Game/FreeModels/Quaternius/quaternius_ubc_hair_buzzed/Hair_Buzzed/SkeletalMeshes/Hair_Buzzed.Hair_Buzzed' (0x000002B4CFFF5A00) Class 'SkeletalMesh'>",
+        "static": "None",
+        "placeholder": true
+      }
+    ],
+    "beard_style_definitions": [
+      {
+        "id": "None",
+        "mesh": "None",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Stubble",
+        "mesh": "<Object '/Game/FreeModels/Quaternius/quaternius_ubc_beard/Hair_Beard/SkeletalMeshes/Hair_Beard.Hair_Beard' (0x000002B4CFFF1E00) Class 'SkeletalMesh'>",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Short",
+        "mesh": "<Object '/Game/FreeModels/Quaternius/quaternius_ubc_beard/Hair_Beard/SkeletalMeshes/Hair_Beard.Hair_Beard' (0x000002B4CFFF1E00) Class 'SkeletalMesh'>",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Medium",
+        "mesh": "<Object '/Game/FreeModels/Quaternius/quaternius_ubc_beard/Hair_Beard/SkeletalMeshes/Hair_Beard.Hair_Beard' (0x000002B4CFFF1E00) Class 'SkeletalMesh'>",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Full",
+        "mesh": "<Object '/Game/FreeModels/Quaternius/quaternius_ubc_beard/Hair_Beard/SkeletalMeshes/Hair_Beard.Hair_Beard' (0x000002B4CFFF1E00) Class 'SkeletalMesh'>",
+        "static": "None",
+        "placeholder": true
+      }
+    ],
+    "eyebrow_style_definitions": [
+      {
+        "id": "Natural",
+        "mesh": "<Object '/Game/FreeModels/Quaternius/quaternius_ubc_eyebrows_regular/Eyebrows_Regular/SkeletalMeshes/Eyebrows_Regular.Eyebrows_Regular' (0x000002B4CFFF3C00) Class 'SkeletalMesh'>",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Fine",
+        "mesh": "<Object '/Game/FreeModels/Quaternius/quaternius_ubc_eyebrows_female/Eyebrows_Female/SkeletalMeshes/Eyebrows_Female.Eyebrows_Female' (0x000002B4D15C9600) Class 'SkeletalMesh'>",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Thick",
+        "mesh": "<Object '/Game/FreeModels/Quaternius/quaternius_ubc_eyebrows_regular/Eyebrows_Regular/SkeletalMeshes/Eyebrows_Regular.Eyebrows_Regular' (0x000002B4CFFF3C00) Class 'SkeletalMesh'>",
+        "static": "None",
+        "placeholder": true
+      }
+    ],
+    "clothing_definitions": [
+      {
+        "id": "Jacket01",
+        "mesh": "None",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Jacket02",
+        "mesh": "None",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "TShirt01",
+        "mesh": "None",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "TShirt02",
+        "mesh": "None",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Jeans01",
+        "mesh": "None",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Jeans02",
+        "mesh": "None",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Sneakers01",
+        "mesh": "None",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Sneakers02",
+        "mesh": "None",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Cap01",
+        "mesh": "None",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Glasses01",
+        "mesh": "None",
+        "static": "None",
+        "placeholder": true
+      },
+      {
+        "id": "Backpack01",
+        "mesh": "None",
+        "static": "None",
+        "placeholder": true
+      }
+    ]
+  },
+  "preview": {
+    "domain": "<MaterialDomain.MD_UI: 5>",
+    "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+    "texture_parameters": [
+      "PreviewTexture"
+    ]
+  }
+}

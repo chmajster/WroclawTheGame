@@ -1,3 +1,24 @@
+# Kreator postaci — bieżący stan
+
+## Wykonane
+1/3: audyt
+
+Przeanalizowano C++/UMG, katalog, renderowanie, zapis, seed, animacje, ubiór i przepływ nowej gry. Zarchiwizowano rzeczywiste obrazy i audyt natywnych zasobów.
+
+Sprawdzenia i ograniczenia: Baseline game smoke exit0, szkic zgodny z modelem; cały target i UI białe. Dwie siatki bez morphów; 11 ubrań bez modeli. Blender/UE dostępne. Raport nie deklaruje istniejących możliwości, których siatki nie mają.
+
+## Do zrobienia
+W audycie: nic. Całe zadanie: strumienie2 UI/studio i3 realna personalizacja.
+
+## Następny krok
+Po scaleniu audytu utworzyć gałąź z main dla strumienia2. Zacząć od CharacterCreator.cpp: izolacja atmosfery/światła i fizyczna ekspozycja; następnie CharacterCreatorWidget.
+
+## Stan
+Audyt zakończony; dalsza przebudowa w toku. Nie uruchamiano ani nie oczekiwano na CI.
+
+Pełny raport: docs/CHARACTER-CREATOR-REBUILD.md.
+
+# Earlier implementation records
 # Start location production — 2026-10-12
 
 Primary live log: current start-location PR, stream 10/10.
