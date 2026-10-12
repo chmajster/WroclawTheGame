@@ -1,0 +1,39 @@
+#pragma once
+#include "CoreMinimal.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include "Containers/Ticker.h"
+#include "MenuFlowSubsystem.generated.h"
+
+enum class EWTGMenuScreen : uint8 { Boot, Main, Pause, Playing };
+UCLASS()
+class WROCLAWTHEGAME_API UMenuFlowSubsystem : public UGameInstanceSubsystem
+{
+    GENERATED_BODY()
+public:
+    virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+    virtual void Deinitialize() override;
+    void Attach(class ASliceController* PlayerController);
+    void ShowMain();
+    void ShowPause();
+    void Resume();
+    bool StartNew();
+    bool Load(const FString& Slot);
+    bool Save();
+    void Quit();
+    bool IsFrontEnd() const { return Screen==EWTGMenuScreen::Main || Screen==EWTGMenuScreen::Boot; }
+    bool IsMenuOpen() const { return Screen!=EWTGMenuScreen::Playing; }
+    EWTGMenuScreen Screen=EWTGMenuScreen::Boot;
+    bool bHasSession=false;
+    FString Notice;
+    TArray<FString> SaveSlots() const;
+    FString DescribeSave(const FString& Slot, bool& Valid) const;
+    class ASliceController* Controller() const { return PC.Get(); }
+    class UWorld* MenuWorld() const;
+private:
+    UPROPERTY() TObjectPtr<class UFrontEndMenuWidget> Widget;
+    UPROPERTY() TObjectPtr<class ACameraActor> Camera;
+    TWeakObjectPtr<class ASliceController> PC;
+    FTSTicker::FDelegateHandle Ticker;
+    bool Tick(float Dt);
+    void Open(EWTGMenuScreen Target);
+};

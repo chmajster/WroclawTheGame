@@ -1,4 +1,5 @@
 #include "Save/DistrictSaveSubsystem.h"
+#include "UI/Menu/MenuFlowSubsystem.h"
 #include "Save/DistrictSaveGame.h"
 #include "Systems/DistrictGameplaySubsystem.h"
 #include "Mission/DistrictDeliverySubsystem.h"
@@ -147,7 +148,7 @@ bool UDistrictSaveSubsystem::LoadSaved()
     if(!Data || !Data->Validate(R->BoundsMin,R->BoundsMax,R->DistrictId))
     {bWriteBlocked=true;Report(TEXT("Zapis jest uszkodzony lub nowszy. Zachowano plik; nowa gra utworzy nowy zapis."));return false;}
     if(!Apply(Data)){Report(TEXT("Wczytanie wymaga bezpiecznego miejsca dla postaci i auta"));return false;}
-    bWriteBlocked=false;AutoSaveSeconds=0;Report(TEXT("Postęp wczytany"));return true;
+    bTriedAutoLoad=true;bWriteBlocked=false;AutoSaveSeconds=0;Report(TEXT("Postęp wczytany"));return true;
 }
 bool UDistrictSaveSubsystem::NewRun()
 {
@@ -158,10 +159,11 @@ bool UDistrictSaveSubsystem::NewRun()
     Car->Health=100;Car->Speed=0;Car->bEngine=false;G->Wanted={};
     GetWorld()->GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>()->ResetEconomy();
     auto* Delivery=GetWorld()->GetSubsystem<UDistrictDeliverySubsystem>();Delivery->State={};Delivery->FailureReason.Empty();Delivery->SynchronizeRecovery();
-    bWriteBlocked=false;const bool OK=Save();if(!OK){if(Old)Apply(Old);bWriteBlocked=Blocked;}return OK;
+    bWriteBlocked=false;const bool OK=Save();if(OK)bTriedAutoLoad=true;if(!OK){if(Old)Apply(Old);bWriteBlocked=Blocked;}return OK;
 }
 void UDistrictSaveSubsystem::Tick(float Dt)
 {
+    if(GetWorld()->GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>()->IsFrontEnd())return;
     auto* G=GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>();if(!G->IsActive())return;
     if(!bTriedAutoLoad)
     {

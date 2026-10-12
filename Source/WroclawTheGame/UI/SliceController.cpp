@@ -1,6 +1,7 @@
 #include "UI/SliceController.h"
 #include "UI/CharacterCreatorWidget.h"
 #include "UI/PlayerMenuWidget.h"
+#include "UI/Menu/MenuFlowSubsystem.h"
 #include "UI/PerformanceSettings.h"
 #include "Character/CharacterCreatorSubsystem.h"
 #include "Engine/TextureRenderTarget2D.h"
@@ -22,13 +23,16 @@
 void ASliceController::BeginPlay()
 {
     Super::BeginPlay();
+    bShouldPerformFullTickWhenPaused=true;
+    auto* Flow=GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>();
+    Flow->Attach(this);
     UWTGPerformanceSettings::Get()->Apply();
 #if !UE_BUILD_SHIPPING
     CheatClass = UDebugCheatManager::StaticClass();
     EnableCheats();
 #endif
     auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
-    if (Mission && Mission->bShowMenu && !Mission->bDead && !Mission->State.Finished())
+    if (!Flow->IsMenuOpen() && Mission && Mission->bShowMenu && !Mission->bDead && !Mission->State.Finished())
         OpenPlayerMenu();
     else
     {
@@ -39,39 +43,7 @@ void ASliceController::BeginPlay()
 
 void ASliceController::OpenPlayerMenu()
 {
-    auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
-    if (!Mission || Mission->bDead || Mission->State.Finished())
-        return;
-
-    if (!PlayerMenuWidget)
-    {
-        auto* Class = LoadClass<UPlayerMenuWidget>(
-            nullptr, TEXT("/Game/UI/WBP_PlayerMenu.WBP_PlayerMenu_C"));
-        PlayerMenuWidget = CreateWidget<UPlayerMenuWidget>(
-            this, Class ? Class : UPlayerMenuWidget::StaticClass());
-        if (PlayerMenuWidget)
-            PlayerMenuWidget->AddToViewport(200);
-    }
-
-    if (!PlayerMenuWidget)
-        return;
-
-    SetPause(true);
-    SetIgnoreMoveInput(true);
-    SetIgnoreLookInput(true);
-    if (auto* P = Cast<ASliceCharacter>(GetPawn()))
-    {
-        P->SetSprint(false);
-        P->SetBlock(false);
-        P->GetCharacterMovement()->StopMovementImmediately();
-    }
-
-    FInputModeGameAndUI Mode;
-    Mode.SetWidgetToFocus(PlayerMenuWidget->TakeWidget());
-    Mode.SetHideCursorDuringCapture(false);
-    SetInputMode(Mode);
-    bShowMouseCursor = true;
-    PlayerMenuWidget->Refresh();
+    GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>()->ShowPause();
 }
 
 void ASliceController::HidePlayerMenu()
@@ -83,6 +55,9 @@ void ASliceController::HidePlayerMenu()
 
 void ASliceController::ResumeGame()
 {
+    auto* Flow=GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>();
+    if(Flow->IsFrontEnd())return;
+    if(Flow->IsMenuOpen()){Flow->Resume();return;}
     auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
     if (!Mission || !Mission->bInGame)
         return;
@@ -242,6 +217,7 @@ void ASliceController::Peek()
 }
 void ASliceController::Escape()
 {
+    if(GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>()->IsMenuOpen())return;
     if (CharacterCreatorWidget) { CancelCharacterCreator(); return; }
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     if (M->bDead || M->State.Finished())

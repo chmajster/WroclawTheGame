@@ -1,4 +1,5 @@
 #include "UI/SliceHUD.h"
+#include "UI/Menu/MenuFlowSubsystem.h"
 #include "Systems/WroclawMapSubsystem.h"
 #include "Systems/CityCoverageSubsystem.h"
 #include "Systems/CityGameplaySubsystem.h"
@@ -142,7 +143,7 @@ void ASliceHUD::DrawHUD()
     auto *CityGameplay = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
     auto* District=GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>();
     auto* Delivery=GetWorld()->GetSubsystem<UDistrictDeliverySubsystem>();
-    if (M->bShowMenu && PC->PlayerMenuWidget)
+    if (GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>()->IsMenuOpen())
         return;
     if (Cast<AGeoPreviewGameMode>(GetWorld()->GetAuthGameMode()))
         Text(TEXT("Mapa: © OpenStreetMap contributors (ODbL) | teren: Copernicus EU-DEM / USGS, via Mapzen"),

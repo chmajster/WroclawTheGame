@@ -1,8 +1,13 @@
-# Menu rebuild - current task
+# Menu rebuild - stage3/7 complete
 
-Stage1 merged (#139). Stage2 complete: MenuStyle shared Slate components, native build PASS.
-Next: stage3 branch from main; FrontEndMenuWidget and MenuFlowSubsystem, controller integration.
-Remaining after stage2: frontend, pause, settings/input, transitions/loading, QA.
+Stages1-2 merged (#139,#140). Stage3 adds MenuFlowSubsystem, FrontEndMenuWidget,
+MenuShell: actual 3D background, seven main actions, file-based saves, modal
+confirmations and UIOnly input. Autosave/autoload suppressed in frontend.
+Build PASS; MenuViewSmoke real renderer PASS, paused=1, MenuMain.png inspected.
+Corrected non-focusable UMG wrapper and manual-load/autoload collision; build PASS.
+Next: stage4 pause/map/data. Full native action/focus regression remains stage7.
+Remaining stages4-7: pause, settings/input, transitions/loading, QA.
+
 Prior open-world implementation history follows.
 
 # Full game expansion — implementation state
