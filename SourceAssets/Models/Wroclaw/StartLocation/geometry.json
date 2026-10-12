@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "author": "WroclawTheGame original procedural authorship",
+  "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+  "assets": [
+    {
+      "asset": "pomorska-45",
+      "area": "Buildings",
+      "triangles": 47928,
+      "bounds_m": [
+        26.872600555419922,
+        27.664291381835938,
+        23.25
+      ],
+      "source_center_m": [
+        0.005520343780517578,
+        -0.060033321380615234,
+        0.0
+      ],
+      "collision_shapes": 10,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "pomorska-47",
+      "area": "Buildings",
+      "triangles": 40561,
+      "bounds_m": [
+        19.3790283203125,
+        19.528167724609375,
+        23.25
+      ],
+      "source_center_m": [
+        -0.1771402359008789,
+        0.0017704963684082031,
+        0.0
+      ],
+      "collision_shapes": 7,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "pomorska-43",
+      "area": "Buildings",
+      "triangles": 37456,
+      "bounds_m": [
+        21.895645141601562,
+        24.956445693969727,
+        21.850000381469727
+      ],
+      "source_center_m": [
+        0.0037374496459960938,
+        -0.0008592605590820312,
+        0.0
+      ],
+      "collision_shapes": 14,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "courtyard-east",
+      "area": "Buildings",
+      "triangles": 17529,
+      "bounds_m": [
+        21.214826583862305,
+        22.330902099609375,
+        19.049999237060547
+      ],
+      "source_center_m": [
+        -0.00024127960205078125,
+        0.003013134002685547,
+        0.0
+      ],
+      "collision_shapes": 11,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "courtyard-west",
+      "area": "Buildings",
+      "triangles": 4543,
+      "bounds_m": [
+        8.87407112121582,
+        7.113847255706787,
+        15.84999942779541
+      ],
+      "source_center_m": [
+        -0.0015971660614013672,
+        0.004355669021606445,
+        0.0
+      ],
+      "collision_shapes": 5,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "nobla-3",
+      "area": "Buildings",
+      "triangles": 18544,
+      "bounds_m": [
+        17.658885955810547,
+        18.794572830200195,
+        19.850000381469727
+      ],
+      "source_center_m": [
+        0.0002079010009765625,
+        -0.0007781982421875,
+        0.0
+      ],
+      "collision_shapes": 10,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "paulinska-2a",
+      "area": "Buildings",
+      "triangles": 34695,
+      "bounds_m": [
+        18.718299865722656,
+        16.62014389038086,
+        20.850000381469727
+      ],
+      "source_center_m": [
+        -0.10667705535888672,
+        0.0002079010009765625,
+        0.0
+      ],
+      "collision_shapes": 9,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "pomorska-32",
+      "area": "Buildings",
+      "triangles": 46174,
+      "bounds_m": [
+        20.182016372680664,
+        36.816322326660156,
+        21.850000381469727
+      ],
+      "source_center_m": [
+        -0.00046539306640625,
+        -0.00479888916015625,
+        0.0
+      ],
+      "collision_shapes": 8,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "curb",
+      "area": "Roads",
+      "triangles": 24,
+      "bounds_m": [
+        1.0,
+        0.1599999964237213,
+        0.24199999868869781
+      ],
+      "source_center_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "collision_shapes": 0,
+      "materials": [
+        "Stone"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "drain",
+      "area": "Roads",
+      "triangles": 144,
+      "bounds_m": [
+        0.44999998807907104,
+        0.3499999940395355,
+        0.06199999898672104
+      ],
+      "source_center_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "collision_shapes": 0,
+      "materials": [
+        "Metal"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "bike-rack",
+      "area": "Props",
+      "triangles": 1424,
+      "bounds_m": [
+        0.9900000095367432,
+        0.12999999523162842,
+        1.0199074745178223
+      ],
+      "source_center_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "collision_shapes": 0,
+      "materials": [
+        "Metal"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "young-tree",
+      "area": "Vegetation",
+      "triangles": 6008,
+      "bounds_m": [
+        3.558016538619995,
+        3.4281675815582275,
+        5.5724382400512695
+      ],
+      "source_center_m": [
+        0.019611120223999023,
+        0.16296398639678955,
+        -0.0027398462407290936
+      ],
+      "collision_shapes": 0,
+      "materials": [
+        "Metal",
+        "Wood",
+        "Leaf"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "parked-car",
+      "area": "Props",
+      "triangles": 2176,
+      "bounds_m": [
+        4.319999694824219,
+        2.062000036239624,
+        1.4300000667572021
+      ],
+      "source_center_m": [
+        -0.040000081062316895,
+        0.0,
+        0.030000030994415283
+      ],
+      "collision_shapes": 0,
+      "materials": [
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Rubber",
+        "Paint",
+        "Light"
+      ],
+      "uv": "2m physical projection"
+    }
+  ]
+}

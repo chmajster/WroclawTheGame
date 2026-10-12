@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "id": "wtg-start-young-tree",
+  "display_name": "young-tree",
+  "area": "start_location",
+  "type": "static_mesh",
+  "quality": "standard",
+  "source": {
+    "model": "SourceAssets/Models/Wroclaw/StartLocation/Vegetation/young-tree.blend",
+    "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+    "reference_directory": null
+  },
+  "mesh": {
+    "max_triangles": 18000,
+    "combine": true,
+    "generate_uv_if_missing": false
+  },
+  "lod": {
+    "ratios": [
+      1,
+      0.55,
+      0.22
+    ]
+  },
+  "collision": {
+    "mode": "none",
+    "max_hulls": 1
+  },
+  "textures": {},
+  "materials": [
+    {
+      "slot": 0,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Metal"
+    },
+    {
+      "slot": 1,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Wood"
+    },
+    {
+      "slot": 2,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Leaf"
+    }
+  ],
+  "unreal": {
+    "destination": "/Game/Wroclaw/StartLocation/Vegetation",
+    "nanite": false,
+    "qa_map": "/Game/Maps/Nadodrze_Playable"
+  },
+  "qa": {
+    "automation_filter": "WTG.District",
+    "cameras": [
+      "Start_Player",
+      "Start_Street"
+    ],
+    "screenshot_width": 1280,
+    "screenshot_height": 720
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "wtg-start-parked-car",
+  "display_name": "parked-car",
+  "area": "start_location",
+  "type": "static_mesh",
+  "quality": "standard",
+  "source": {
+    "model": "SourceAssets/Models/Wroclaw/StartLocation/Props/parked-car.blend",
+    "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+    "reference_directory": null
+  },
+  "mesh": {
+    "max_triangles": 18000,
+    "combine": true,
+    "generate_uv_if_missing": false
+  },
+  "lod": {
+    "ratios": [
+      1,
+      0.55,
+      0.22
+    ]
+  },
+  "collision": {
+    "mode": "simple",
+    "max_hulls": 1
+  },
+  "textures": {},
+  "materials": [
+    {
+      "slot": 0,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Frame"
+    },
+    {
+      "slot": 1,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Glazing"
+    },
+    {
+      "slot": 2,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Metal"
+    },
+    {
+      "slot": 3,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Rubber"
+    },
+    {
+      "slot": 4,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Paint"
+    },
+    {
+      "slot": 5,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Light"
+    }
+  ],
+  "unreal": {
+    "destination": "/Game/Wroclaw/StartLocation/Props",
+    "nanite": false,
+    "qa_map": "/Game/Maps/Nadodrze_Playable"
+  },
+  "qa": {
+    "automation_filter": "WTG.District",
+    "cameras": [
+      "Start_Player",
+      "Start_Street"
+    ],
+    "screenshot_width": 1280,
+    "screenshot_height": 720
+  }
+}

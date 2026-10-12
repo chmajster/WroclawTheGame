@@ -64,3 +64,20 @@ Internetowe modele kamienic nie odpowiadają źródłowym obrysom i rytmowi okie
 Pomorskiej. Modele adresów, krawężnik, wpust, stojak rowerowy, młode drzewo
 oraz samochód dekoracyjny wymagają własnego autorstwa, z odtwarzalnym bpy.
 Parkowany model nie zastępuje sterowalnego samochodu misji.
+
+## 4. Oryginalne modele produkcyjne
+
+`Scripts/assets/build_start_location_models.py` rzeczywiście uruchomiono
+w Blenderze 5.2.2 LTS. Wynik: osiem modeli budynków na obrysach OSM oraz
+krawężnik, wpust, stojak, drzewo i samochód — 13 modeli, 257206 trójkątów
+LOD0 łącznie. Są to pełne siatki z UV i materiałami; okna mają otwory w ścianie
+i cofnięte szkło. Budynki zawierają 74 proste hull-e ścian, zachowujące kształt
+obrysu, zamiast jednego collidera zamykającego podwórze. Dachy są uproszczone,
+wnętrza nie są dostępne; budynki nie są modelami z pomiarów fotogrametrycznych.
+
+Wykonano 39 eksportów FBX przez pipeline, natywny import wszystkich 13 siatek
+oraz 14 współdzielonych interfejsów materiałów. Powstało 59 wersjonowanych
+uasset. `verify_start_location_assets.py` sprawdził w UE metrową skalę,
+UV w każdym z trzech LOD, nazwy i przypisanie materiałów, sekcje LOD oraz
+liczbę colliderów. PASS dla 13 siatek. Naprawiono import LOD, który pomijał
+materiał usuniętego drobnego detalu i mógł scalać sekcje na domyślnym materiale.

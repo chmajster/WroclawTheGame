@@ -1,19 +1,19 @@
 # Start location production — 2026-10-12
 
-Primary live log: current start-location PR, stream 3/10.
+Primary live log: current start-location PR, stream 4/10.
 See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 3/10. Downloaded and verified five complete CC0 PBR sets at 2k (15 maps, 269900872 bytes) with provider MD5 and SHA256 locks. Existing prop library reused. Exact authors and licenses retained; original source-footprint Blender assets next.
+Stream 4/10. 13 original full meshes, 39 actual FBX LOD exports, 257206 aggregate LOD0 triangles, eight buildings with 74 separate wall hulls. 59 native uassets imported and saved. Shared 14 PBR/material interfaces. Fixed LOD name mapping and binding order after a concrete import failure.
 
-Validation and limitations: Actual download PASS 18 maps total, 3 reused. Native material integration belongs to subsequent streams.
+Validation and limitations: Actual native import batch PASS 13; fresh native asset verifier PASS 13: metric bounds, source/native slot names and interfaces, three UV-bearing LODs, valid multi-material sections and required hull counts. 28 manifests, 10 source tests and Python AST PASS. Building heights/layout estimated, roofs simplified, no accessible interiors.
 
 ## Do zrobienia
 Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
 
 ## Następny krok
-Merge stream 3; branch feat/start-location-models from main. Generate eight full buildings and five street props, manifest them and run Blender export/native import.
+Merge stream 4; branch feat/start-location-environment from main. Exclude eight replacement building IDs from background GIS bake and generic windows, build source-driven street plan, place full models and repeated props, apply road/sidewalk PBR and coherent daylight; actual rendered inspection follows.
 
 ## Stan
 Stream complete; overall implementation in progress. No CI manually run.
