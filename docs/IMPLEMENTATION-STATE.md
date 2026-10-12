@@ -1,22 +1,22 @@
 # Start location production — 2026-10-12
 
-Primary live log: current start-location PR, stream 9/10.
+Primary live log: current start-location PR, stream 10/10.
 See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 9/10. Organized original/native assets byBuildings/Roads/Props/Vegetation/Materials, generated source/license/path catalog13models7CC0sets3reused types; repaired all13 manifest QA camera labels. Executable Validate/Source/Full entry isolates every editor step, rejects stale evidence and reports only executed selected-mode success. Existing library shutdown uses proven startup-settle helper.
+Stream 10/10. Delivered improved existing100m start:13original/native models,6newCC0sets plus reusedSandstone,2272instances29HISM,sourceGISplacement,realcollision-safe start,LOD/streaming and actualgame/fullmission QA. Final report includes assets/authors/URLs/limits/evidence. Editor startup now matches actual game map without changing active editor or game spawn.
 
-Validation and limitations: Actual Validate-mode PASS:21checksummed files,28manifests,catalog paths. PowerShell parser and changedPython AST PASS. Native production steps already executed separately in4-8; entire Full entry not re-run against open user editor. No claim that selected-mode validation performed native import.
+Validation and limitations: Final evidence/PR merge audit and source consistency check pending. Actual native QA completed in8; final editor-startup-only config change checked statically against generated map and unchanged GameDefaultMap.
 
 ## Do zrobienia
-Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
+Verify nine prior PRs merged with live sections, report/source/hash consistency and final default map, then finalize/merge tenth PR.
 
 ## Następny krok
-Create stream10 branch from main; verify ten PR streams/evidence consistency, write final results and declared limitations, mark scopecomplete and merge final PR.
+Run final source/evidence/PR audit, resolve any mismatch, update final PR and IMPLEMENTATION-STATE to complete, merge into main.
 
 ## Stan
-Stream complete; overall implementation in progress. No CI manually run.
+In progress, stream10/10. No CI manually run.
 
 # Earlier city asset production — completed first batch
 
