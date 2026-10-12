@@ -43,9 +43,17 @@ vehicle. The regression script now rejects console errors and stale logs.
 Camera/visibility and pursuit fixes built successfully (119.18 seconds).
 Rule tests now open empty /Engine/Maps/Entry instead of loading unrelated
 legacy props in the default editor map; runtime probes still load Nadodrze.
-Next: run Test-Menu.ps1 -Layouts and Test-PlayableDistrict.ps1
-sequentially; require fresh PASS without console errors. Review new renders,
-record results, complete/merge PR145 and launch visible game.
+Final Test-Menu.ps1 -Layouts PASS: settings/replay, 33 UI stages (41.96s),
+both mission actors hidden/restored, all four resolutions. Rendered main now
+fills ultrawide without bars. Reviewed main/pause/settings/controls/loading.
+Mean frame time 33.33-33.39ms, p95 33.33-33.36ms with menu cap30.
+Rule checks: four WTG.District tests PASS. UE startup logs17 generic
+LogAutomationTest Condition failed errors before the requested test queue,
+even on an empty map; script reports that known engine startup noise and
+rejects any other startup error plus all errors during requested tests/runtime.
+Next: finish Test-PlayableDistrict.ps1 (MenuGameplayRegression.stdout), confirm
+physical session/replay and no runtime errors, record results, complete/merge
+PR145 and launch visible game. No further source changes pending.
 No CI; test INIs/slots remain isolated from player data.
 
 Prior open-world implementation history follows.

@@ -1,6 +1,6 @@
 # Menu Wrocław — wykonanie
 
-## Audyt
+## Audyt przed przebudową
 
 UE 5.8 / C++20, UMG, Slate, Enhanced Input i CommonUI są już w projekcie.
 `PlayerMenuWidget.cpp` buduje duży interfejs programowo: siedem zakładek,
@@ -63,7 +63,7 @@ konfigurację, a `MenuMap` projekcję ulic i world-space waypoint pod przyszły 
 `MenuLoadingScreen` jest autorską ilustracją wektorową, używaną także przez
 MoviePlayer podczas rzeczywistego ładowania mapy. Nie przedstawia procentów.
 
-Menu skaluje projektowy obszar1920×1080 do viewportu, zachowując szerokość
+Menu skaluje projektowy obszar 1920×1080 do viewportu, zachowując szerokość
 treści na ultrawide. Długie formularze przewijają się po zmianie focusu.
 TAB/strzałki lub D-pad wybierają kontrolkę, ENTER/A zatwierdzają, ESC/B/START
 wracają. Na mapie: przeciąganie, kółko/+/−, strzałki/D-pad, LB/RB zoom;
@@ -71,9 +71,9 @@ kliknięcie stawia znacznik. Podczas przechwytywania przypisania ESC/START
 anuluje. Skróty ekranów kampanii i F5/F9 są zarezerwowane.
 
 Grafika używa UGameUserSettings; audio ma master/music/effects/ambient/UI.
-Profil wejścia zapisuje32 akcje oraz czułości/invert/deadzone w GameUserSettings.
+Profil wejścia zapisuje 32 akcje oraz czułości/invert/deadzone w GameUserSettings.
 Konflikty uwzględniają pieszo/pojazd/globalne skróty. Ustawienia jakości/audio/
-wejścia zapisują się od razu; video ma osobny snapshot i15s na potwierdzenie.
+wejścia zapisują się od razu; video ma osobny snapshot i 15 s na potwierdzenie.
 Snapshot jest potrzebny, bo GameViewportClient sam aktualizuje UE LastConfirmed
 po resize. Blur jest wyłączany przed wymianą backbufferu i chroniony przed
 starą geometrią. CommonUI virtual-mouse accept jest tymczasowo wyłączany dla
@@ -81,7 +81,7 @@ menu Slate i przywracany dla gry/kreatora; pad A trafia do wybranej kontrolki.
 
 Scena dzielnicy jest zatrzymana w menu. Kamera porusza się niezależnie;
 wcześniej widoczne postaci są ukrywane i przywracane po wznowieniu.
-Menu ma cap30FPS, przywraca limit gracza; audio refresh jest ograniczony do5Hz.
+Menu ma limit 30 FPS, przywraca limit gracza; audio refresh jest ograniczony do 5 Hz.
 Utrata focusu otwiera pauzę. Zamknięcie menu oddaje kamerę i wejście postaci.
 
 UI nie dodaje zewnętrznych płatnych zasobów ani plików GTA. Typografia/brushes
@@ -99,3 +99,31 @@ okna i renderera. Własne INI są w Saved/MenuQA; dwa sloty MenuQA są chronione
 przed nadpisaniem i usuwane po teście. Test nie dotyka slotu gracza.
 Obrazy oraz budżet klatek trafiają do Saved/Tests i Saved/Logs.
 Regresja rozgrywki: `Scripts/Test-PlayableDistrict.ps1`. Żaden skrypt nie używa CI.
+
+## Poprawki wynikające z testów
+
+Test rzeczywistego okna wykrył crash D3D12 przy zmianie rozdzielczości z aktywnym
+blur. Menu opróżnia wcześniejsze klatki przed resize i sprawdza geometrię blur
+względem backbufferu. Osobny snapshot trybu ekranu chroni cofnięcie przed
+automatyczną zmianą `LastConfirmed` przez silnik. Test sprawdza anulowanie,
+15-sekundowy timeout oraz zatwierdzenie i zapis nowego trybu.
+
+Nawigacja kontrolerem wymagała zawieszenia symulacji myszy CommonUI, aby A
+aktywowało fokusowaną kontrolkę. Powrót do gry i kreatora przywraca ustawienie.
+Niepoprawny nagłówek pliku save jest sprawdzany przed deserializacją UE;
+`Kontynuuj` pomija uszkodzony najnowszy plik i wybiera najnowszy poprawny zapis.
+
+Przegląd renderów wykrył pasy kamery na ultrawide. Kamera frontend nie wymusza
+16:9; tylko szerokość interfejsu jest ograniczona. Ukrywane są również postacie
+misji typu `ADistrictDeliveryPoint`, a ich widoczność wraca po wznowieniu gry.
+
+Regresja fizycznej jazdy wykryła rekurencyjne czyszczenie pościgu przy `Destroy`
+radiowozu: odziedziczony `RaceSession::EndPlay` ponownie wywoływał `StopPursuit`.
+Lista jest teraz odłączana przed niszczeniem aktorów, a pojazdy AI nie resetują
+globalnego pościgu przy końcu życia. Nie zmieniono zasad jazdy, misji ani nagród.
+Skrypt regresji odrzuca błędy konsoli; testy reguł otwierają pustą mapę silnika,
+aby nie ładować niezwiązanych starych importów z domyślnej mapy edytora.
+UE 5.8 nadal wypisuje 17 ogólnych `LogAutomationTest: Condition failed` ze swoich
+testów startowych przed kolejką WTG.District, również na pustej mapie. Skrypt
+jawnie raportuje te wpisy, odrzuca inne błędy startowe oraz wszystkie błędy
+podczas wskazanych testów projektu i sond działającej gry. Nie poprawiano silnika.
