@@ -165,3 +165,42 @@ test używa świeżego profilu wyglądu postaci. Nie zmieniono zapisów użytkow
 Źródła, natywne zasoby, obrazy i raporty mają sumy kontrolne w
 `docs/qa/start-location-2026-10-12/`. Wszystkie testy faktycznie wykonano;
 surowe logi z identyfikatorami usług pozostają lokalnie w Saved.
+
+## 9. Organizacja i odtwarzanie
+
+Źródła w `SourceAssets/Models/Wroclaw/StartLocation/` i natywne zasoby w
+`Content/Wroclaw/StartLocation/` rozdzielają Buildings, Roads, Props,
+Vegetation i Materials/Textures. Pobrane mapy pozostają oddzielnie w
+`SourceAssets/Textures/PolyHaven/`. Generator bpy i narzędzia planowania są
+w `Scripts/assets/`, manifesty w `Pipeline/assets/start_location/`.
+`Data/start_location_asset_catalog.json` wiąże 13 siatek, siedem zestawów CC0
+i trzy typy ponownie użytych modeli z autorami, licencjami i ścieżkami.
+Wszystkie manifesty wskazują istniejące kamery QA z prefiksem StartLocation.
+
+Nowy punkt wejścia:
+
+```powershell
+Scripts/Invoke-StartLocationProduction.ps1 -Mode Validate
+Scripts/Invoke-StartLocationProduction.ps1 -Mode Source
+Scripts/Invoke-StartLocationProduction.ps1 -Mode Full -GameplayQA
+```
+
+Validate rzeczywiście wykonano: 21 plików z sumami, 28 manifestów i katalog
+PASS. Source odtwarza GIS, oryginalne modele i 39 FBX. Full dodatkowo buduje
+moduł, sprowadza istniejącą bibliotekę do UE, jeśli brakuje jej mapy importu,
+importuje 13 modeli, wypieka mapę, stosuje rozmieszczenie i jakość oraz zapisuje
+obrazy. Każdy etap edytora ma oddzielny proces i świeży marker; raport PASS
+dotyczy wyłącznie wybranego trybu i wykonanych etapów. Obrazy wymagają osobnego
+obejrzenia. Istniejący importer biblioteki korzysta z bezpiecznego zakończenia
+po inicjalizacji edytora, tak jak importer produkcyjny.
+
+Wymagane lokalnie: UE 5.8, Blender 5.2 i Python z zależnościami
+`Scripts/gis/requirements.txt` oraz `Scripts/assets/requirements.txt`.
+Domyślnie wykrywana jest istniejąca venv `Saved/GISPython`; ścieżki narzędzi
+można podać parametrami EngineRoot, BlenderExe, PythonExe. Brakujące, już
+zatwierdzone tekstury pobiera opcja `-DownloadReviewed`. Produkcja Source/Full
+wymaga gałęzi zadania, a Full możliwości podmiany DLL i zapisu zasobów.
+W tym przebiegu Full nie powtórzono jako jednego polecenia przy ponownie
+otwartym edytorze: wszystkie jego etapy produkcyjne wykonano wcześniej
+oddzielnie, a testy gry na zgodnej kopii kodu. Nowy punkt wejścia sprawdzono
+parserem PowerShell i rzeczywistym trybem Validate; skrypty Python parsują się.

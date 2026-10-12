@@ -19,7 +19,7 @@ def main():
             collision=dict(mode='authored' if asset['collision_shapes'] else ('simple' if asset['asset'] in ['curb','bike-rack','parked-car'] else 'none'),max_hulls=32 if building else 1),
             textures={},materials=[dict(slot=i,asset='/Game/Wroclaw/StartLocation/Materials/MI_'+name) for i,name in enumerate(asset['materials'])],
             unreal=dict(destination='/Game/Wroclaw/StartLocation/'+asset['area'],nanite=building,qa_map='/Game/Maps/Nadodrze_Playable'),
-            qa=dict(automation_filter='WTG.District',cameras=['Start_Player','Start_Street'],screenshot_width=1280,screenshot_height=720))
+            qa=dict(automation_filter='WTG.District',cameras=['StartLocation_Start_Player','StartLocation_Start_Street','StartLocation_Start_Park'],screenshot_width=1280,screenshot_height=720))
         (output/(asset['asset']+'.asset.json')).write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
     print('START_MANIFESTS_PASS',len(data['assets']))
 

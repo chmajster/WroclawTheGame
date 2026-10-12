@@ -1,0 +1,651 @@
+{
+  "schema_version": 1,
+  "scope": "Existing Pomorska/Paulinska start,100m",
+  "assets": [
+    {
+      "id": "wtg-start-pomorska-45",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/pomorska-45.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/pomorska-45.glb",
+      "manifest": "Pipeline/assets/start_location/pomorska-45.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_45",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 47928,
+      "bounds_m": [
+        26.872600555419922,
+        27.664291381835938,
+        23.25
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-pomorska-47",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/pomorska-47.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/pomorska-47.glb",
+      "manifest": "Pipeline/assets/start_location/pomorska-47.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_47",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 40561,
+      "bounds_m": [
+        19.3790283203125,
+        19.528167724609375,
+        23.25
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-pomorska-43",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/pomorska-43.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/pomorska-43.glb",
+      "manifest": "Pipeline/assets/start_location/pomorska-43.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_43",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 37456,
+      "bounds_m": [
+        21.895645141601562,
+        24.956445693969727,
+        21.850000381469727
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-courtyard-east",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/courtyard-east.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/courtyard-east.glb",
+      "manifest": "Pipeline/assets/start_location/courtyard-east.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_courtyard_east",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 17529,
+      "bounds_m": [
+        21.214826583862305,
+        22.330902099609375,
+        19.049999237060547
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-courtyard-west",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/courtyard-west.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/courtyard-west.glb",
+      "manifest": "Pipeline/assets/start_location/courtyard-west.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_courtyard_west",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 4543,
+      "bounds_m": [
+        8.87407112121582,
+        7.113847255706787,
+        15.84999942779541
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-nobla-3",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/nobla-3.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/nobla-3.glb",
+      "manifest": "Pipeline/assets/start_location/nobla-3.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_nobla_3",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 18544,
+      "bounds_m": [
+        17.658885955810547,
+        18.794572830200195,
+        19.850000381469727
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-paulinska-2a",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/paulinska-2a.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/paulinska-2a.glb",
+      "manifest": "Pipeline/assets/start_location/paulinska-2a.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_paulinska_2a",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 34695,
+      "bounds_m": [
+        18.718299865722656,
+        16.62014389038086,
+        20.850000381469727
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-pomorska-32",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/pomorska-32.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/pomorska-32.glb",
+      "manifest": "Pipeline/assets/start_location/pomorska-32.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_32",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 46174,
+      "bounds_m": [
+        20.182016372680664,
+        36.816322326660156,
+        21.850000381469727
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-curb",
+      "category": "Roads",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Roads/curb.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Roads/curb.glb",
+      "manifest": "Pipeline/assets/start_location/curb.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Roads/SM_wtg_start_curb",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 24,
+      "bounds_m": [
+        1.0,
+        0.1599999964237213,
+        0.24199999868869781
+      ],
+      "source_material_slots": [
+        "Stone"
+      ]
+    },
+    {
+      "id": "wtg-start-drain",
+      "category": "Roads",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Roads/drain.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Roads/drain.glb",
+      "manifest": "Pipeline/assets/start_location/drain.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Roads/SM_wtg_start_drain",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 144,
+      "bounds_m": [
+        0.44999998807907104,
+        0.3499999940395355,
+        0.06199999898672104
+      ],
+      "source_material_slots": [
+        "Metal"
+      ]
+    },
+    {
+      "id": "wtg-start-bike-rack",
+      "category": "Props",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Props/bike-rack.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Props/bike-rack.glb",
+      "manifest": "Pipeline/assets/start_location/bike-rack.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Props/SM_wtg_start_bike_rack",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 1424,
+      "bounds_m": [
+        0.9900000095367432,
+        0.12999999523162842,
+        1.0199074745178223
+      ],
+      "source_material_slots": [
+        "Metal"
+      ]
+    },
+    {
+      "id": "wtg-start-young-tree",
+      "category": "Vegetation",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Vegetation/young-tree.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Vegetation/young-tree.glb",
+      "manifest": "Pipeline/assets/start_location/young-tree.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Vegetation/SM_wtg_start_young_tree",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 6008,
+      "bounds_m": [
+        3.558016538619995,
+        3.4281675815582275,
+        5.5724382400512695
+      ],
+      "source_material_slots": [
+        "Metal",
+        "Wood",
+        "Leaf"
+      ]
+    },
+    {
+      "id": "wtg-start-parked-car",
+      "category": "Props",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Props/parked-car.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Props/parked-car.glb",
+      "manifest": "Pipeline/assets/start_location/parked-car.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Props/SM_wtg_start_parked_car",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 2176,
+      "bounds_m": [
+        4.319999694824219,
+        2.062000036239624,
+        1.4300000667572021
+      ],
+      "source_material_slots": [
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Rubber",
+        "Paint",
+        "Light"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "id": "ph-sandstone-cracks",
+      "name": "Sandstone Cracks",
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "source_url": "https://polyhaven.com/a/sandstone_cracks",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "resolution": 2048,
+      "files": {
+        "base_color": {
+          "path": "SourceAssets/Textures/PolyHaven/sandstone_cracks/sandstone_cracks_BC.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sandstone_cracks/sandstone_cracks_diff_2k.png",
+          "bytes": 8797615,
+          "md5": "1e9e60a45a23b4adb3bd06c5142e6033",
+          "sha256": "9fea59009b69f22aaef680419e8f040de8c104b910a54c4e96c0a4c2e4a83660"
+        },
+        "normal": {
+          "path": "SourceAssets/Textures/PolyHaven/sandstone_cracks/sandstone_cracks_N.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sandstone_cracks/sandstone_cracks_nor_dx_2k.png",
+          "bytes": 8801631,
+          "md5": "e477994074b14adaa12a1aa4cfbc45b6",
+          "sha256": "c95740b61f275225f1f8b04097726be49dfdb3c81f97daee6ae85093b19ff087"
+        },
+        "orm": {
+          "path": "SourceAssets/Textures/PolyHaven/sandstone_cracks/sandstone_cracks_ORM.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sandstone_cracks/sandstone_cracks_arm_2k.png",
+          "bytes": 6549168,
+          "md5": "9d3b652592989636e8bfffb573a8dc86",
+          "sha256": "56eaeef39cf4de59438edbec4b70e07e7cb336bbb5d6f607c7fb90e130515968"
+        }
+      }
+    },
+    {
+      "id": "ph-painted-plaster-wall",
+      "name": "Painted Plaster Wall",
+      "authors": {
+        "Amal Kumar": "All"
+      },
+      "source_url": "https://polyhaven.com/a/painted_plaster_wall",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "resolution": 2048,
+      "files": {
+        "base_color": {
+          "path": "SourceAssets/Textures/PolyHaven/painted_plaster_wall/painted_plaster_wall_BC.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/painted_plaster_wall/painted_plaster_wall_diff_2k.png",
+          "bytes": 22706294,
+          "md5": "a59f31e4461b4e9385e88030e32280d9",
+          "sha256": "5d3e476d633d873f2f9f443936a7d3f6a5830b5486c9bd704cef7c1f89dbb3cc"
+        },
+        "normal": {
+          "path": "SourceAssets/Textures/PolyHaven/painted_plaster_wall/painted_plaster_wall_N.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/painted_plaster_wall/painted_plaster_wall_nor_dx_2k.png",
+          "bytes": 22789119,
+          "md5": "8d007431481ffbff0e0d86684eb66e11",
+          "sha256": "148d654923ae5a5c4f9c248fabc74e06898578e583b5671d6ffb4ee159b897fd"
+        },
+        "orm": {
+          "path": "SourceAssets/Textures/PolyHaven/painted_plaster_wall/painted_plaster_wall_ORM.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/painted_plaster_wall/painted_plaster_wall_arm_2k.png",
+          "bytes": 14790707,
+          "md5": "89a4d4c345073c326ed4a29168e5e3f3",
+          "sha256": "8fc9a730b7ea6698d4109924984326b2a0c37a77489e425213e8b24962fc9cce"
+        }
+      }
+    },
+    {
+      "id": "ph-asphalt-03",
+      "name": "Asphalt 03",
+      "authors": {
+        "Dario Barresi": "processing",
+        "Charlotte Baglioni": "photography"
+      },
+      "source_url": "https://polyhaven.com/a/asphalt_03",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "resolution": 2048,
+      "files": {
+        "base_color": {
+          "path": "SourceAssets/Textures/PolyHaven/asphalt_03/asphalt_03_BC.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/asphalt_03/asphalt_03_diff_2k.png",
+          "bytes": 23209080,
+          "md5": "fe8b3d96d3784aa7225cc3012ff314af",
+          "sha256": "acb2fa9219e539ea14e4b53368b17b99d964b775bfc358b3e08e530b78924a74"
+        },
+        "normal": {
+          "path": "SourceAssets/Textures/PolyHaven/asphalt_03/asphalt_03_N.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/asphalt_03/asphalt_03_nor_dx_2k.png",
+          "bytes": 22952596,
+          "md5": "0601720500edbe268002b25800e6766a",
+          "sha256": "128bf6475fe2b96e68358a488924a3479becf7777e46ceca96dd3c4c4a6c59cf"
+        },
+        "orm": {
+          "path": "SourceAssets/Textures/PolyHaven/asphalt_03/asphalt_03_ORM.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/asphalt_03/asphalt_03_arm_2k.png",
+          "bytes": 18838157,
+          "md5": "52645610437c437422bfd016005e0d26",
+          "sha256": "42457a1e2d583cc47b41a4f9a985b82697e283f28021e651761bb095816506a6"
+        }
+      }
+    },
+    {
+      "id": "ph-concrete-pavement-03",
+      "name": "Concrete Pavement 03",
+      "authors": {
+        "Charlotte Baglioni": "All"
+      },
+      "source_url": "https://polyhaven.com/a/concrete_pavement_03",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "resolution": 2048,
+      "files": {
+        "base_color": {
+          "path": "SourceAssets/Textures/PolyHaven/concrete_pavement_03/concrete_pavement_03_BC.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/concrete_pavement_03/concrete_pavement_03_diff_2k.png",
+          "bytes": 23324159,
+          "md5": "2c296ec08bfcc9294698b4e8ec79d01b",
+          "sha256": "df7862dc6578c7e35d8cb144d2dc97e655a52671d9d3e829b8d9a2b383617b24"
+        },
+        "normal": {
+          "path": "SourceAssets/Textures/PolyHaven/concrete_pavement_03/concrete_pavement_03_N.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/concrete_pavement_03/concrete_pavement_03_nor_dx_2k.png",
+          "bytes": 23619240,
+          "md5": "4012ef09532728ae6c80e040e776f566",
+          "sha256": "9bfba6416c93122f5eb2389fe2759b453eda563d50b167f6d3f2a8ee10bda62c"
+        },
+        "orm": {
+          "path": "SourceAssets/Textures/PolyHaven/concrete_pavement_03/concrete_pavement_03_ORM.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/concrete_pavement_03/concrete_pavement_03_arm_2k.png",
+          "bytes": 16895512,
+          "md5": "e54458d4d61d1cf08e03986c455dff72",
+          "sha256": "80fd484ade6b0f56ad258d56df34d3b81d14112049a5f8fe713b72d7aab13643"
+        }
+      }
+    },
+    {
+      "id": "ph-cobblestone-floor-08",
+      "name": "Cobblestone Floor 08",
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "source_url": "https://polyhaven.com/a/cobblestone_floor_08",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "resolution": 2048,
+      "files": {
+        "base_color": {
+          "path": "SourceAssets/Textures/PolyHaven/cobblestone_floor_08/cobblestone_floor_08_BC.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/cobblestone_floor_08/cobblestone_floor_08_diff_2k.png",
+          "bytes": 7656774,
+          "md5": "8511c8ed19d1f962e1c453f3f42e688c",
+          "sha256": "6811316df3e4b1552066937a3605b8cdff98461bb271bc6e1927f21c85b97ba2"
+        },
+        "normal": {
+          "path": "SourceAssets/Textures/PolyHaven/cobblestone_floor_08/cobblestone_floor_08_N.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/cobblestone_floor_08/cobblestone_floor_08_nor_dx_2k.png",
+          "bytes": 8379763,
+          "md5": "9737ecbd285ae102d57d013218090e30",
+          "sha256": "b9fd0c9779d1b7d5864678c878c51f8598615f7894da63a87501c5cd4a656b8b"
+        },
+        "orm": {
+          "path": "SourceAssets/Textures/PolyHaven/cobblestone_floor_08/cobblestone_floor_08_ORM.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/cobblestone_floor_08/cobblestone_floor_08_arm_2k.png",
+          "bytes": 5405230,
+          "md5": "82707c49d8c9f7caf186482434f73f9e",
+          "sha256": "06079567071f93aed7de1e537d0fd5e1c73442264e269637e4cb1b35f1ec5c6b"
+        }
+      }
+    },
+    {
+      "id": "ph-roof-tiles-14",
+      "name": "Roof Tiles 14",
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "source_url": "https://polyhaven.com/a/roof_tiles_14",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "resolution": 2048,
+      "files": {
+        "base_color": {
+          "path": "SourceAssets/Textures/PolyHaven/roof_tiles_14/roof_tiles_14_BC.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/roof_tiles_14/roof_tiles_14_diff_2k.png",
+          "bytes": 22702284,
+          "md5": "3d47b2683d0903ec67e3d48d5266a0f7",
+          "sha256": "d9e61883c4d0bd1f2bc34a6c3c6156e2800dfbe5661a29d2422dd88e34913e8e"
+        },
+        "normal": {
+          "path": "SourceAssets/Textures/PolyHaven/roof_tiles_14/roof_tiles_14_N.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/roof_tiles_14/roof_tiles_14_nor_dx_2k.png",
+          "bytes": 20192968,
+          "md5": "f28501196827d33c0238c77b23172461",
+          "sha256": "ec238c4efddf7232437c75d9ecc36e571f4d1124572bc12a337c52a7b6b70244"
+        },
+        "orm": {
+          "path": "SourceAssets/Textures/PolyHaven/roof_tiles_14/roof_tiles_14_ORM.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/roof_tiles_14/roof_tiles_14_arm_2k.png",
+          "bytes": 16438989,
+          "md5": "76deab33f76cdda4192e3a8c25417eee",
+          "sha256": "7cf8af03e47100094b9c8f1aab151c4b4b007f0b077adb3c264be919c584aa24"
+        }
+      }
+    },
+    {
+      "id": "ph-grass-ground",
+      "name": "Grass Ground",
+      "authors": {
+        "Charlotte Baglioni": "All"
+      },
+      "source_url": "https://polyhaven.com/a/grass_ground",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "resolution": 1024,
+      "files": {
+        "base_color": {
+          "path": "SourceAssets/Textures/PolyHaven/grass_ground/grass_ground_BC.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/grass_ground/grass_ground_diff_1k.png",
+          "bytes": 5696034,
+          "md5": "8501412ae79eea2cf8ab31e68caa5cf4",
+          "sha256": "fbab95206455b849677a07372ea2050956afbb559d9da6db946e3e6c02aae6a1"
+        },
+        "normal": {
+          "path": "SourceAssets/Textures/PolyHaven/grass_ground/grass_ground_N.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/grass_ground/grass_ground_nor_dx_1k.png",
+          "bytes": 6072086,
+          "md5": "2e56d783a8fadf277ed330d7d8f893cd",
+          "sha256": "23b614d2a37c193accf0ed8dbe62da8293a4a5834702fa080f02110f67b32828"
+        },
+        "orm": {
+          "path": "SourceAssets/Textures/PolyHaven/grass_ground/grass_ground_ORM.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/grass_ground/grass_ground_arm_1k.png",
+          "bytes": 4284843,
+          "md5": "a081f1a80097fbb3f29e0b2ad3dcff75",
+          "sha256": "ec5d434f3d5a0a471f74cb4050e45b0e83ffb4035d6125631f68690c6232c0ca"
+        }
+      }
+    }
+  ],
+  "reused_models": [
+    {
+      "slug": "street_lamp_01",
+      "name": "Street Lamp 01",
+      "intended_use": "Urban street lighting prop for authored city detail passes.",
+      "source_page": "https://polyhaven.com/a/street_lamp_01",
+      "provider": "Poly Haven",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "authors": {
+        "Josh Dean": "All"
+      },
+      "category": "Lighting/Street & Outdoor/Street Lamps",
+      "dimensions_mm": [
+        704.3362259864807,
+        386.49316132068634,
+        3870.5554008483887
+      ],
+      "files_hash": "002d697fa195d73f627e82804612208853212519",
+      "format": "fbx",
+      "resolution": "1k",
+      "primary_path": "SourceAssets/Models/PolyHaven/street_lamp_01/street_lamp_01_1k.fbx"
+    },
+    {
+      "slug": "modular_street_seating",
+      "name": "Modular Street Seating",
+      "intended_use": "Street/park bench for clue placement and city dressing.",
+      "source_page": "https://polyhaven.com/a/modular_street_seating",
+      "provider": "Poly Haven",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "authors": {
+        "Stuart Attenborrow": "All"
+      },
+      "category": "Furniture/Seating/Benches",
+      "dimensions_mm": [
+        4339.9999141693115,
+        770.3700959682465,
+        950.000050743509
+      ],
+      "files_hash": "95d5a9ba8bf29d4db6c9089297b8bdb920994f6d",
+      "format": "fbx",
+      "resolution": "1k",
+      "primary_path": "SourceAssets/Models/PolyHaven/modular_street_seating/modular_street_seating_1k.fbx"
+    },
+    {
+      "slug": "metal_trash_can",
+      "name": "Metal Trash Can",
+      "intended_use": "Courtyard/street trash prop.",
+      "source_page": "https://polyhaven.com/a/metal_trash_can",
+      "provider": "Poly Haven",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "authors": {
+        "GurJas Studios": "All"
+      },
+      "category": "Containers & Storage/Cans, Tins & Bottles/Trash Cans",
+      "dimensions_mm": [
+        1846.9352722167969,
+        556.2898814678192,
+        906.1697272554738
+      ],
+      "files_hash": "3ecbee3adbcc53b4af3c8f010e76e10c5b7558a2",
+      "format": "fbx",
+      "resolution": "1k",
+      "primary_path": "SourceAssets/Models/PolyHaven/metal_trash_can/metal_trash_can_1k.fbx"
+    }
+  ],
+  "credit": "Powered by Poly Haven",
+  "placement_sources": [
+    "Data/start_location.json",
+    "Data/start_location_buildings.json",
+    "Data/playable_district.json",
+    "Data/source/wroclaw/osm/wave1.osm.gz (part-aware source_bytes reader)"
+  ],
+  "verification": "Source paths/metadata only. File presence does not certify native import, collision or visual QA; see archived native reports."
+}
