@@ -23,4 +23,5 @@ private:
     UPROPERTY() TObjectPtr<class AWTGDistrictRegistry> Registry;
     float Accumulator=0;
     double NextPoliceAttempt=0;
+    bool bLoggedReady=false;
 };

@@ -3,10 +3,15 @@
 #include "Vehicles/VehiclePursuitSubsystem.h"
 #include "Vehicles/DriveableVehicle.h"
 #include "Character/SliceCharacter.h"
+#include "Character/CharacterAppearanceComponent.h"
+#include "Animation/BlendSpace1D.h"
+#include "Animation/AnimSingleNodeInstance.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Components/GameplayComponents.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Mission/SliceMission.h"
 #include "Engine/GameInstance.h"
@@ -57,6 +62,13 @@ void UDistrictGameplaySubsystem::Tick(float Dt)
     if (!Registry)
         for (TActorIterator<AWTGDistrictRegistry> It(GetWorld());It;++It) { Registry=*It;break; }
     if (!Registry || UGameplayStatics::IsGamePaused(this)) return;
+    if (!bLoggedReady)
+        if (auto* Player=Cast<ASliceCharacter>(UGameplayStatics::GetPlayerPawn(this,0)))
+            if (Player->GetCharacterMovement()->MovementMode==MOVE_Walking && Player->Appearance->BodyMesh && Player->Appearance->BodyMesh->GetSingleNodeInstance() && Cast<UBlendSpace1D>(Player->Appearance->BodyMesh->GetSingleNodeInstance()->GetCurrentAsset()))
+            {
+                bLoggedReady=true;
+                UE_LOG(LogTemp,Display,TEXT("WTG_DISTRICT_GAMEPLAY_READY: floor=walking locomotion=BlendSpace cameraCollision=%d registry=%s"),Player->Boom->bDoCollisionTest,*Registry->DistrictId);
+            }
     auto* Pursuit=GetWorld()->GetSubsystem<UVehiclePursuitSubsystem>();
     Wanted.Tick(Dt,Pursuit->GetState()==EVehiclePursuitState::Chase);
     const double Now=GetWorld()->GetTimeSeconds();

@@ -32,7 +32,6 @@ ADriveableVehicle::ADriveableVehicle()
     Chassis->SetNotifyRigidBodyCollision(true);
     Chassis->SetLinearDamping(.04f);
     Chassis->SetAngularDamping(2);
-    Chassis->SetCenterOfMass(FVector(0,0,-20));
     BodyVisual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
     BodyVisual->SetupAttachment(Chassis);
     BodyVisual->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -104,6 +103,7 @@ void ADriveableVehicle::BeginPlay()
     if (!Definition)
         Definition = NewObject<UVehicleDefinition>(this);
     Chassis->SetMassOverrideInKg(NAME_None, FMath::Clamp(Definition->MassKg, 400.f, 5000.f));
+    Chassis->SetCenterOfMass(FVector(0,0,-20));
     Health = Definition->MaxHealth;
     GetWorld()->GetSubsystem<UCityGameplaySubsystem>()->RestoreVehicle(this);
     Chassis->OnComponentHit.AddDynamic(this, &ADriveableVehicle::Collision);

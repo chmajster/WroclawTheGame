@@ -31,6 +31,9 @@ void AGeoPreviewGameMode::BeginPlay()
     M->bInGame = true;
     M->bShowMenu = false;
     M->bDead = false;
+    // Controllers can open the campaign menu during actor BeginPlay before the
+    // geographic mode marks the session active. Clear that pause/input state.
+    if (auto* PC=Cast<ASliceController>(UGameplayStatics::GetPlayerController(this,0))) PC->ResumeGame();
     if (auto *P = Cast<ASliceCharacter>(UGameplayStatics::GetPlayerPawn(this, 0)))
     {
         Start = P->GetActorLocation();

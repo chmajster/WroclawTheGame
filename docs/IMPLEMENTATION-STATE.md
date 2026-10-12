@@ -12,7 +12,7 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
   (LOD 108/54/26) → FBX → UE; liczenie UCX poprawiono na osobne convex collision.
   Pełny bake PASS (439 komórek, 12 000 fasad, 244 balustrady, 740 aktorów).
   Proces generatora zakończył się kodem 0. Mapa uruchomiona w oknie `-game`.
-- Punkty 3–7: w zakresie, jeszcze niewykonane. Osobne gałęzie i PR-y w kolejności.
+- Punkt 3: wdrożony, końcowa kontrola startu. Punkty 4–7 pozostają w zakresie.
 - Decyzja: wykorzystać istniejące GIS, postać, pojazd, populację, ekonomię i menu;
   nie zmieniać silnika ani wdrażać zastępczego frameworka gry.
 - Punkt 2 scalony do `main` przez PR #133. Punkt 3 rozpoczęty na
@@ -22,16 +22,16 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
   deterministyczne pierwszeństwo. Bezpieczne wyjście uwzględnia kapsułę i ściany,
   auto włącza silnik przy wejściu. Piesi mają reakcję na obrażenia i omijanie.
   LocomotionAssetLibrary tworzy BlendSpace po kontroli nazw/hierarchii kości,
-  CharacterAppearanceComponent odtwarza go w runtime; nie potwierdzono jeszcze
-  przygotowania assetów (skrypt dobierał również Crouch_Idle_Loop jako Idle,
-  doprecyzowano dokładną nazwę, trwa ponowienie).
-- Następny krok: sprawdzić DistrictLocomotion.log oraz marker, poprawić tylko
-  konkretne błędy przygotowania rigów. Skompilować końcową partię (test wanted,
-  animacje kół/światła), uruchomić WTG.District.WantedDecay i potwierdzić assety.
-  Spiąć runtime locomotion w `CharacterAppearanceComponent`, bezpieczne wyjście
-  z `DriveableVehicle`, pościg/wykroczenia i kontrolę skrzyżowań. Punktów 4–7
-  nie oznaczać jako gotowych na podstawie samej mapy.
-  Nie oznaczać misji/pościgu/zapisu jako gotowych na podstawie samej mapy.
+  CharacterAppearanceComponent odtwarza go w runtime. Przygotowanie obu rigów
+  i sześciu klipów PASS (`Saved/DistrictLocomotionReady.ok`). Test native
+  `WTG.District.WantedDecay` PASS, końcowy UHT/UBT PASS. Poprawiono restart
+  animacji co klatkę (GetCurrentAsset zamiast serializowanego AnimationData)
+  i pozostawioną pauzę menu kampanii przy starcie GeoPreviewGameMode.
+- Następny krok: potwierdzić marker `WTG_DISTRICT_GAMEPLAY_READY` w
+  `Saved/Logs/GameplaySmoke.log`, zakończyć proces własnego testu, zatwierdzić
+  assety/korekty i scalić PR #134. Rozpocząć punkt 4 na nowej gałęzi: misja
+  dostawy w osobnym subsystemie ze zleceniodawcą i odbiorcą, etapami,
+  restartem oraz idempotentną transakcją UWTGEconomySubsystem.
 - Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,
   os error 2). Nie deklarować wizualnego QA bez rzeczywistego dowodu.
 - Stan: w trakcie całego zakresu, punkty 1–2 wykonane; dalsze sekcje poniżej to historyczny

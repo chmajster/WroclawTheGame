@@ -244,7 +244,8 @@ void UCharacterAppearanceComponent::TickComponent(float Dt,ELevelTick T,FActorCo
         const bool Falling=Character && Character->GetCharacterMovement()->IsFalling();
         UAnimationAsset* Anim=Falling?B->JumpLoop.Get():(Crouched?B->Crouch.Get():B->Locomotion.Get());
         if (!Anim) Anim=Speed>300?B->Jog.Get():(Speed>10?B->Walk.Get():B->CreatorIdle.Get());
-        if (Anim && BodyMesh->AnimationData.AnimToPlay!=Anim) BodyMesh->PlayAnimation(Anim,true);
+        auto* Current=BodyMesh->GetSingleNodeInstance();
+        if (Anim && (!Current || Current->GetCurrentAsset()!=Anim)) BodyMesh->PlayAnimation(Anim,true);
         if (auto* Instance=BodyMesh->GetSingleNodeInstance())
         {
             if (Cast<UBlendSpace1D>(Anim)) Instance->SetBlendSpacePosition(FVector(Speed,0,0));
