@@ -57,8 +57,18 @@
       "additionalProperties": false,
       "required": ["mode"],
       "properties": {
-        "mode": {"enum": ["none", "simple"]},
+        "mode": {"enum": ["none", "simple", "authored"]},
         "max_hulls": {"type": "integer", "minimum": 1, "maximum": 32}
+      }
+    },
+    "materials": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["slot", "asset"],
+        "properties": {
+          "slot": {"type": "integer", "minimum": 0},
+          "asset": {"type": "string", "pattern": "^/Game/"}
+        }
       }
     },
     "textures": {

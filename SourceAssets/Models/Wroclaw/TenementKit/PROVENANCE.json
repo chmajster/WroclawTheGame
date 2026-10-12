@@ -9,6 +9,6 @@
   "reference_policy": "Architecture viewing only. No photographs downloaded, embedded or redistributed.",
   "fidelity": "Generic architectural enrichment, not measured reconstruction of a specific building.",
   "axis_convention": "Blender metres; X along facade, +Y outward, Z up; pipeline centers XY and puts base at Z=0.",
-  "collision_policy": "Decorative components only; original building/slab collision remains authoritative. Not standalone traversal barriers.",
+  "collision_policy": "Railing has three authored UCX guard panels with an open back and central space; stone trim is decorative without collision. Building/slab collision remains authoritative.",
   "textures": "Original deterministic 1024x1024 base color, DirectX tangent normals and packed AO/roughness/metallic. Opaque painted iron and limestone."
 }

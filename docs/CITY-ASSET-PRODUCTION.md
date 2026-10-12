@@ -66,3 +66,27 @@ three files. Five infrastructure/prop roles reuse the existing library of 66
 Poly Haven models; the audit checks actual source files. Exact credits and API
 terms: docs/CITY-ASSET-CREDITS.md. Priority hero gaps remain explicit in
 Data/city_asset_needs.json. No Geoportal candidate was downloaded or relabeled.
+
+## Import evidence (stream 3)
+
+Three meshes and six shared textures were actually imported into
+`/Game/Wroclaw/TenementKit`. Native bounds match metre sources converted to cm;
+three LODs and one PBR slot per mesh are retained. Stone details use Nanite;
+thin ironwork uses conventional LODs. Three authored UCX guard panels leave
+the rear and center of the balcony open. Stone trim has no collision.
+
+Two legacy FBX problems were found: reimport ignored unit conversion and
+temporary LOD defaults appended material slots. The importer now creates a
+fresh product in an isolated temporary package, replaces the manifest's stable
+path and matches material interfaces before attaching LODs. Artist edits to
+pipeline products belong in the source/manifest. Start on /Engine/Maps/Entry
+and delay shutdown until tool contexts settle; Python commandlet mode lacks
+the required StaticMeshEditorSubsystem.
+
+Two consecutive passes completed in one process (six imports). Native
+WTG.Assets.TenementKit PASS; final editor build PASS (7.01 s). The test checks
+source LODs separately from Nanite's derived fallback, scale, PBR slots, Nanite
+and open collision space. Five pipeline validation tests PASS. Automation
+report validation now rejects empty, failed and unfinished test queues.
+17 generic engine startup smoke errors precede the requested test; its result
+is Success without errors. Screenshots/appearance verification follows later.
