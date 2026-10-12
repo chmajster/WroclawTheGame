@@ -25,6 +25,12 @@ public:
     EWTGMenuScreen Screen=EWTGMenuScreen::Boot;
     bool bHasSession=false;
     FString Notice;
+    double PlayedSeconds=0,WalkedCm=0,DrivenCm=0;
+    TOptional<FVector> MapWaypoint;
+    void ResetTracking(){LastTrackedPawn.Reset();}
+    void HideForCreator();
+    void RestoreAfterCreator();
+    void CreatedSession();
     TArray<FString> SaveSlots() const;
     FString DescribeSave(const FString& Slot, bool& Valid) const;
     class ASliceController* Controller() const { return PC.Get(); }
@@ -36,4 +42,6 @@ private:
     FTSTicker::FDelegateHandle Ticker;
     bool Tick(float Dt);
     void Open(EWTGMenuScreen Target);
+    TWeakObjectPtr<class APawn> LastTrackedPawn;
+    FVector LastPosition=FVector::ZeroVector;
 };

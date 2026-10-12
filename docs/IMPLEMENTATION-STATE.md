@@ -1,12 +1,12 @@
-# Menu rebuild - stage3/7 complete
+# Menu rebuild - stage4/7 complete
 
-Stages1-2 merged (#139,#140). Stage3 adds MenuFlowSubsystem, FrontEndMenuWidget,
-MenuShell: actual 3D background, seven main actions, file-based saves, modal
-confirmations and UIOnly input. Autosave/autoload suppressed in frontend.
-Build PASS; MenuViewSmoke real renderer PASS, paused=1, MenuMain.png inspected.
-Corrected non-focusable UMG wrapper and manual-load/autoload collision; build PASS.
-Next: stage4 pause/map/data. Full native action/focus regression remains stage7.
-Remaining stages4-7: pause, settings/input, transitions/loading, QA.
+Stages1-3 merged (#139-141). Stage4 adds six pause tabs, painted street map
+with actual player/mission/car markers, pan/zoom/waypoint, real character
+and persistent time/walk/drive statistics. Creator and legacy saves retained.
+Native build PASS; MenuViewSmoke main/pause actual renderer PASS paused=1.
+MenuPause.png inspected: all mission/car/player markers visible after fitting.
+Focus error eliminated. Next: stage5 settings/input from main.
+Remaining stages5-7: settings/input, transitions/loading, full QA.
 
 Prior open-world implementation history follows.
 

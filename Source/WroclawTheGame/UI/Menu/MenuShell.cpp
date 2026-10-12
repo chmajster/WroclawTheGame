@@ -1,5 +1,16 @@
 #include "UI/Menu/MenuShell.h"
 #include "UI/Menu/MenuStyle.h"
+#include "UI/Menu/MenuMap.h"
+#include "Character/SliceCharacter.h"
+#include "Character/CharacterCreatorSubsystem.h"
+#include "Components/GameplayComponents.h"
+#include "Vehicles/DriveableVehicle.h"
+#include "Systems/DistrictGameplaySubsystem.h"
+#include "Systems/WTGEconomySubsystem.h"
+#include "Mission/DistrictDeliverySubsystem.h"
+#include "Mission/SliceMission.h"
+#include "Engine/GameInstance.h"
+#include "Engine/World.h"
 #include "UI/Menu/MenuFlowSubsystem.h"
 #include "UI/SliceController.h"
 #include "Audio/SliceAudio.h"
@@ -14,9 +25,9 @@
 #include "Engine/Engine.h"
 #include "GameFramework/GameUserSettings.h"
 #include "Kismet/GameplayStatics.h"
-using namespace WTGMenu;
 
-void SMenuShell::Construct(const FArguments& Args){Flow=Args._Flow;Refresh();}
+
+void SMenuShell::Construct(const FArguments& Args){Flow=Args._Flow;Page=Flow.IsValid() && !Flow->IsFrontEnd()?10:0;Refresh();}
 TSharedRef<SWidget> SMenuShell::Action(const FString& Label,TFunction<void()> Click,bool Enabled,const FString& Hint)
 {
     auto B=SNew(SWTGMenuButton).Label(Label).Hint(Hint).OnClicked_Lambda([this,Click]{
@@ -34,12 +45,13 @@ void SMenuShell::FocusFirst()
 void SMenuShell::SelectPage(int32 Index){Page=Index;Refresh();}
 void SMenuShell::Refresh()
 {
-    FocusOrder.Reset();Pending=nullptr;DialogTitle.Empty();
+    FocusOrder.Reset();MapView.Reset();Pending=nullptr;DialogTitle.Empty();
     if(!Flow.IsValid())return;
     if(Flow->Screen==EWTGMenuScreen::Boot){
-        ChildSlot[Card(SNew(SVerticalBox)+SVerticalBox::Slot().VAlign(VAlign_Center)
-            [Text(TEXT("WROCŁAW THE GAME\n\nPrzygotowywanie świata…"),42,Paper,true)],FMargin(100))];return;
+        ChildSlot[WTGMenu::Card(SNew(SVerticalBox)+SVerticalBox::Slot().VAlign(VAlign_Center)
+            [WTGMenu::Text(TEXT("WROCŁAW THE GAME\n\nPrzygotowywanie świata…"),42,WTGMenu::Paper,true)],FMargin(100))];return;
     }
+    TSharedPtr<SHorizontalBox> Body,Tabs;
     ChildSlot[SAssignNew(Layers,SOverlay)
         +SOverlay::Slot()[SNew(SBorder).BorderImage(FCoreStyle::Get().GetBrush("WhiteBrush"))
             .BorderBackgroundColor(FLinearColor(0,0,0,Flow->IsFrontEnd()?.28f:.76f))]
@@ -48,25 +60,27 @@ void SMenuShell::Refresh()
                 [SNew(SBox).WidthOverride(1920).HeightOverride(1080)
                     [SNew(SVerticalBox)
                         +SVerticalBox::Slot().AutoHeight().Padding(100,60,100,12)
-                            [Text(Flow->IsFrontEnd()?TEXT("W R O C Ł A W"):TEXT("WROCŁAW THE GAME"),Flow->IsFrontEnd()?62:32,Paper,true)]
-                        +SVerticalBox::Slot().AutoHeight().Padding(100,0,100,45)
-                            [Text(Flow->IsFrontEnd()?TEXT("T H E  G A M E  /  NADODRZE"):TEXT("PAUZA  /  NADODRZE"),18,Accent,true)]
-                        +SVerticalBox::Slot().FillHeight(1).Padding(100,0,100,36)
-                            [SNew(SHorizontalBox)
-                                +SHorizontalBox::Slot().AutoWidth()[SNew(SBox).WidthOverride(430)
-                                    [Card(SAssignNew(Navigation,SVerticalBox),FMargin(16,24))]]
-                                +SHorizontalBox::Slot().FillWidth(1).Padding(40,0,0,0)
-                                    [SNew(SScrollBox)+SScrollBox::Slot()[SAssignNew(Content,SVerticalBox)]]]
+                            [WTGMenu::Text(Flow->IsFrontEnd()?TEXT("W R O C \u0141 A W"):TEXT("WROC\u0141AW THE GAME"),Flow->IsFrontEnd()?62:32,WTGMenu::Paper,true)]
+                        +SVerticalBox::Slot().AutoHeight().Padding(100,0,100,30)
+                            [WTGMenu::Text(Flow->IsFrontEnd()?TEXT("T H E  G A M E  /  NADODRZE"):TEXT("PAUZA  /  NADODRZE"),18,WTGMenu::Accent,true)]
+                        +SVerticalBox::Slot().AutoHeight().Padding(100,0,100,22)[SAssignNew(Tabs,SHorizontalBox)]
+                        +SVerticalBox::Slot().FillHeight(1).Padding(100,0,100,36)[SAssignNew(Body,SHorizontalBox)]
                         +SVerticalBox::Slot().AutoHeight().Padding(100,0,100,50)
-                            [Text(TEXT("↑ ↓  NAWIGACJA     ENTER / A  WYBIERZ     ESC / B  WSTECZ"),16,Paper)]
+                            [WTGMenu::Text(TEXT("TAB  /  \u2191 \u2193  NAWIGACJA     ENTER / A  WYBIERZ     ESC / B  WSTECZ"),16,WTGMenu::Paper)]
                     ]]]];
+    if(Flow->IsFrontEnd())Body->AddSlot().AutoWidth()[SNew(SBox).WidthOverride(430)[WTGMenu::Card(SAssignNew(Navigation,SVerticalBox),FMargin(16,24))]];
+    Body->AddSlot().FillWidth(1).Padding(Flow->IsFrontEnd()?FMargin(40,0,0,0):FMargin(0))
+        [SNew(SScrollBox)+SScrollBox::Slot()[SAssignNew(Content,SVerticalBox)]];
     if(Flow->IsFrontEnd())BuildMain();else{
-        Navigation->AddSlot().AutoHeight()[Action(TEXT("GRA"),[this]{SelectPage(0);})];
-        Navigation->AddSlot().AutoHeight()[Action(TEXT("USTAWIENIA"),[this]{SelectPage(2);})];
-        Navigation->AddSlot().AutoHeight()[Action(TEXT("STEROWANIE"),[this]{SelectPage(3);})];
+        const TCHAR* Labels[]={TEXT("MAPA"),TEXT("GRA"),TEXT("POSTA\u0106"),TEXT("STATYSTYKI"),TEXT("USTAWIENIA"),TEXT("STEROWANIE")};
+        const int32 Pages[]={10,0,11,12,2,3};
+        for(int32 I=0;I<6;++I){const int32 Target=Pages[I];
+            auto Button=SNew(SWTGMenuButton).Label(Labels[I]).Selected(Page==Target)
+                .OnClicked_Lambda([this,Target]{SelectPage(Target);return FReply::Handled();});
+            FocusOrder.Add(Button->FocusTarget());Tabs->AddSlot().FillWidth(1).Padding(0,0,5,0)[Button];}
     }
-    switch(Page){case 0:if(!Flow->IsFrontEnd())BuildGame();break;case 1:BuildSaves();break;case 2:BuildSettings();break;case 3:BuildControls();break;case 4:BuildAbout();break;}
-    Content->AddSlot().AutoHeight().Padding(0,22)[Text(Flow->Notice,18,Accent)];
+    switch(Page){case 0:if(!Flow->IsFrontEnd())BuildGame();break;case 1:BuildSaves();break;case 2:BuildSettings();break;case 3:BuildControls();break;case 4:BuildAbout();break;case 10:BuildMap();break;case 11:BuildCharacter();break;case 12:BuildStats();break;}
+    Content->AddSlot().AutoHeight().Padding(0,22)[WTGMenu::Text(Flow->Notice,18,WTGMenu::Accent)];
     FocusFirst();
 }
 void SMenuShell::BuildMain()
@@ -85,15 +99,15 @@ void SMenuShell::BuildMain()
     if(Page==0){
         Content->AddSlot().FillHeight(1).VAlign(VAlign_Bottom)
             [SNew(SBox).WidthOverride(630).HAlign(HAlign_Left)
-                [Card(SNew(SVerticalBox)
-                    +SVerticalBox::Slot().AutoHeight()[Text(TEXT("01  /  NADODRZE"),18,Accent,true)]
-                    +SVerticalBox::Slot().AutoHeight().Padding(0,20)[Text(TEXT("Miasto ma\nswoje historie."),48,Paper,true)]
-                    +SVerticalBox::Slot().AutoHeight()[Text(TEXT("Kilka ulic, jedna przesyłka i droga nad Odrę.\nTwoja pierwsza historia zaczyna się przy pracowni Mai."),22,Paper)])]];
+                [WTGMenu::Card(SNew(SVerticalBox)
+                    +SVerticalBox::Slot().AutoHeight()[WTGMenu::Text(TEXT("01  /  NADODRZE"),18,WTGMenu::Accent,true)]
+                    +SVerticalBox::Slot().AutoHeight().Padding(0,20)[WTGMenu::Text(TEXT("Miasto ma\nswoje historie."),48,WTGMenu::Paper,true)]
+                    +SVerticalBox::Slot().AutoHeight()[WTGMenu::Text(TEXT("Kilka ulic, jedna przesyłka i droga nad Odrę.\nTwoja pierwsza historia zaczyna się przy pracowni Mai."),22,WTGMenu::Paper)])]];
     }
 }
 void SMenuShell::BuildGame()
 {
-    Content->AddSlot().AutoHeight()[Text(TEXT("Twoja rozgrywka"),38,Paper,true)];
+    Content->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Twoja rozgrywka"),38,WTGMenu::Paper,true)];
     Content->AddSlot().AutoHeight().Padding(0,24)[Action(TEXT("Wznów"),[this]{Flow->Resume();})];
     Content->AddSlot().AutoHeight()[Action(TEXT("Zapisz grę"),[this]{Flow->Save();Refresh();})];
     Content->AddSlot().AutoHeight()[Action(TEXT("Wczytaj zapis"),[this]{SelectPage(1);})];
@@ -103,29 +117,60 @@ void SMenuShell::BuildGame()
 }
 void SMenuShell::BuildSaves()
 {
-    Content->AddSlot().AutoHeight()[Text(TEXT("Zapisane historie"),38,Paper,true)];
-    auto Slots=Flow->SaveSlots();if(Slots.IsEmpty())Content->AddSlot().AutoHeight().Padding(0,30)[Text(TEXT("Nie masz jeszcze zapisanej gry."),22,Muted)];
+    Content->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Zapisane historie"),38,WTGMenu::Paper,true)];
+    auto Slots=Flow->SaveSlots();if(Slots.IsEmpty())Content->AddSlot().AutoHeight().Padding(0,30)[WTGMenu::Text(TEXT("Nie masz jeszcze zapisanej gry."),22,WTGMenu::Muted)];
     for(const auto& Slot:Slots){bool Valid=false;const FString Description=Flow->DescribeSave(Slot,Valid);
-        Content->AddSlot().AutoHeight().Padding(0,14)[Card(SNew(SVerticalBox)
-            +SVerticalBox::Slot().AutoHeight()[Text(Description,20,Valid?Paper:Muted)]
+        Content->AddSlot().AutoHeight().Padding(0,14)[WTGMenu::Card(SNew(SVerticalBox)
+            +SVerticalBox::Slot().AutoHeight()[WTGMenu::Text(Description,20,Valid?WTGMenu::Paper:WTGMenu::Muted)]
             +SVerticalBox::Slot().AutoHeight().Padding(0,16,0,0)[Action(TEXT("Wczytaj"),[this,Slot]{Confirm(TEXT("Wczytać zapis?"),TEXT("Niezapisany postęp bieżącej sesji zostanie utracony."),[this,Slot]{if(!Flow->Load(Slot))Refresh();});},Valid)])];
     }
 }
 void SMenuShell::BuildSettings()
 {
-    Content->AddSlot().AutoHeight()[Text(TEXT("Ustawienia obrazu"),38,Paper,true)];
+    Content->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Ustawienia obrazu"),38,WTGMenu::Paper,true)];
     for(int32 Q=0;Q<4;++Q){const TCHAR* Labels[]={TEXT("Niska"),TEXT("Średnia"),TEXT("Wysoka"),TEXT("Ultra")};
         Content->AddSlot().AutoHeight().Padding(0,10)[Action(Labels[Q],[Q]{auto* S=GEngine->GetGameUserSettings();S->SetOverallScalabilityLevel(Q);S->ApplyNonResolutionSettings();S->SaveSettings();})];}
 }
 void SMenuShell::BuildControls()
 {
-    Content->AddSlot().AutoHeight()[Text(TEXT("Sterowanie"),38,Paper,true)];
-    Content->AddSlot().AutoHeight().Padding(0,30)[Card(Text(TEXT("WASD — ruch / jazda\nMysz — kamera\nE — interakcja / wejście / wyjście\nShift — sprint\nCtrl — kucanie\nSpacja — skok / hamulec ręczny\nF5 / F9 — zapis / odczyt\nEsc — pauza"),24))];
+    Content->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Sterowanie"),38,WTGMenu::Paper,true)];
+    Content->AddSlot().AutoHeight().Padding(0,30)[WTGMenu::Card(WTGMenu::Text(TEXT("WASD — ruch / jazda\nMysz — kamera\nE — interakcja / wejście / wyjście\nShift — sprint\nCtrl — kucanie\nSpacja — skok / hamulec ręczny\nF5 / F9 — zapis / odczyt\nEsc — pauza"),24))];
 }
 void SMenuShell::BuildAbout()
 {
-    Content->AddSlot().AutoHeight()[Text(TEXT("Wrocław The Game"),38,Paper,true)];
-    Content->AddSlot().AutoHeight().Padding(0,28)[Card(Text(TEXT("Autorska gra akcji osadzona we Wrocławiu.\nProjekt: chmajster / WroclawTheGame.\n\nŚwiat: © OpenStreetMap contributors (ODbL), Copernicus EU-DEM / USGS przez Mapzen.\nModele i tekstury: lokalny katalog CC0; autorzy i licencje w dokumentacji zasobów projektu.\n\nInterfejs jest oryginalny. Nie używa grafik, logotypów ani plików Grand Theft Auto.\n\nWersja rozwojowa — Nadodrze / Odra."),24))];
+    Content->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Wrocław The Game"),38,WTGMenu::Paper,true)];
+    Content->AddSlot().AutoHeight().Padding(0,28)[WTGMenu::Card(WTGMenu::Text(TEXT("Autorska gra akcji osadzona we Wrocławiu.\nProjekt: chmajster / WroclawTheGame.\n\nŚwiat: © OpenStreetMap contributors (ODbL), Copernicus EU-DEM / USGS przez Mapzen.\nModele i tekstury: lokalny katalog CC0; autorzy i licencje w dokumentacji zasobów projektu.\n\nInterfejs jest oryginalny. Nie używa grafik, logotypów ani plików Grand Theft Auto.\n\nWersja rozwojowa — Nadodrze / Odra."),24))];
+}
+void SMenuShell::BuildMap()
+{
+    Content->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Nadodrze / Odra"),32,WTGMenu::Paper,true)];
+    auto Map=SNew(SMenuMap).Flow(Flow.Get());MapView=Map;FocusOrder.Add(Map);
+    Content->AddSlot().AutoHeight().Padding(0,18)[SNew(SBox).HeightOverride(520)[Map]];
+    Content->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Przeciągnij mapę. Kółko / + −: zoom. Kliknij: znacznik. Strzałki / D-pad: przesuwanie. TAB: następna kontrolka."),18,WTGMenu::Muted)];
+    auto Clear=Action(TEXT("Usuń własny znacznik"),[this]{Flow->MapWaypoint.Reset();Refresh();});
+    Clear->SetEnabled(TAttribute<bool>::CreateLambda([Weak=Flow]{return Weak.IsValid() && Weak->MapWaypoint.IsSet();}));
+    Content->AddSlot().AutoHeight().Padding(0,8)[Clear];
+}
+void SMenuShell::BuildCharacter()
+{
+    auto* W=Flow->MenuWorld();auto* P=Cast<ASliceCharacter>(Flow->Controller()->GetPawn());
+    if(auto* V=Cast<ADriveableVehicle>(Flow->Controller()->GetPawn()))P=V->Driver;
+    const auto& Appearance=W->GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Committed.PlayerAppearanceData;
+    Content->AddSlot().AutoHeight()[WTGMenu::Text(Appearance.Name,42,WTGMenu::Paper,true)];
+    if(P)Content->AddSlot().AutoHeight().Padding(0,24)[WTGMenu::Card(WTGMenu::Text(FString::Printf(TEXT("Zdrowie   %.0f / %.0f\nWytrzymałość   %.0f / %.0f\nWzrost   %.0f cm\nLokalizacja   %s\nPortfel   %.2f zł"),
+        P->HealthState->Value,P->HealthState->Maximum,P->StaminaState->Value,P->StaminaState->Maximum,Appearance.Height,
+        W->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()?TEXT("Nadodrze / Odra"):TEXT("Bieżąca mapa"),W->GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>()->BalanceCents/100.0),26))];
+    Content->AddSlot().AutoHeight().Padding(0,10)[WTGMenu::Text(W->GetGameInstance()->GetSubsystem<USliceMission>()->InventoryText(),20,WTGMenu::Muted)];
+    Content->AddSlot().AutoHeight()[Action(TEXT("Nowa postać i rozgrywka"),[this]{Confirm(TEXT("Utworzyć nową postać?"),TEXT("Po zatwierdzeniu kreatora rozpoczniesz nową grę. Zapis zostanie zastąpiony."),[this]{Flow->Controller()->NewGame();});})];
+}
+void SMenuShell::BuildStats()
+{
+    auto* W=Flow->MenuWorld();auto* D=W->GetSubsystem<UDistrictDeliverySubsystem>();
+    Content->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Twoja historia w liczbach"),38,WTGMenu::Paper,true)];
+    Content->AddSlot().AutoHeight().Padding(0,28)[WTGMenu::Card(WTGMenu::Text(FString::Printf(TEXT("Czas gry   %02d:%02d:%02d\nDystans pieszo   %.2f km\nDystans samochodem   %.2f km\nPróby dostawy   %u\nDostawa ukończona   %s\nTransakcje w portfelu   %d"),
+        int(Flow->PlayedSeconds)/3600,int(Flow->PlayedSeconds)/60%60,int(Flow->PlayedSeconds)%60,Flow->WalkedCm/100000,Flow->DrivenCm/100000,
+        D->State.Attempts,D->State.Stage==Wroclaw::DeliveryStage::Complete?TEXT("Tak"):TEXT("Nie"),W->GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>()->Ledger.Num()),26))];
+    Content->AddSlot().AutoHeight().Padding(0,14)[WTGMenu::Text(TEXT("Czas i dystans są mierzone od rozpoczęcia tej rozgrywki i przechowywane w jej zapisie. Starsze zapisy zaczynają te liczniki od zera."),18,WTGMenu::Muted)];
 }
 void SMenuShell::Confirm(const FString& Title,const FString& Body,TFunction<void()> A)
 {
@@ -137,9 +182,9 @@ void SMenuShell::DrawDialog()
     Layers->AddSlot()[SNew(SBorder).BorderImage(FCoreStyle::Get().GetBrush("WhiteBrush"))
         .BorderBackgroundColor(FLinearColor(0,0,0,.88f)).HAlign(HAlign_Center).VAlign(VAlign_Center)
         [SNew(SBox).WidthOverride(650)
-            [Card(SNew(SVerticalBox)
-                +SVerticalBox::Slot().AutoHeight()[Text(DialogTitle,32,Paper,true)]
-                +SVerticalBox::Slot().AutoHeight().Padding(0,20,0,30)[Text(DialogBody,22,Muted)]
+            [WTGMenu::Card(SNew(SVerticalBox)
+                +SVerticalBox::Slot().AutoHeight()[WTGMenu::Text(DialogTitle,32,WTGMenu::Paper,true)]
+                +SVerticalBox::Slot().AutoHeight().Padding(0,20,0,30)[WTGMenu::Text(DialogBody,22,WTGMenu::Muted)]
                 +SVerticalBox::Slot().AutoHeight()[Action(TEXT("Anuluj"),[this]{Refresh();})]
                 +SVerticalBox::Slot().AutoHeight()[Action(TEXT("Potwierdź"),[this]{auto A=MoveTemp(Pending);if(A)A();})])]]];
     FocusFirst();
@@ -148,7 +193,8 @@ FReply SMenuShell::OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E)
 {
     const FKey K=E.GetKey();
     if(K==EKeys::Escape || K==EKeys::Gamepad_FaceButton_Right){
-        if(Pending)Refresh();else if(Page!=0)SelectPage(0);else if(Flow.IsValid() && !Flow->IsFrontEnd())Flow->Resume();return FReply::Handled();}
+        if(Pending)Refresh();else if(Flow.IsValid() && !Flow->IsFrontEnd())Flow->Resume();else if(Page!=0)SelectPage(0);return FReply::Handled();}
+    if(MapView && MapView->HasKeyboardFocus() && K!=EKeys::Tab)return FReply::Unhandled();
     const int Step=(K==EKeys::Up || K==EKeys::Gamepad_DPad_Up)?-1:(K==EKeys::Down || K==EKeys::Gamepad_DPad_Down)?1:0;
     if((Step || K==EKeys::Tab) && !FocusOrder.IsEmpty()){
         for(int32 I=0;I<FocusOrder.Num();++I)if(FocusOrder[I]->HasKeyboardFocus())Focused=I;
