@@ -15,7 +15,9 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
 - Punkty 3–7: w zakresie, jeszcze niewykonane. Osobne gałęzie i PR-y w kolejności.
 - Decyzja: wykorzystać istniejące GIS, postać, pojazd, populację, ekonomię i menu;
   nie zmieniać silnika ani wdrażać zastępczego frameworka gry.
-- Następny krok: scalić ukończony punkt 2, utworzyć gałąź punktu 3 z `main`.
+- Punkt 2 scalony do `main` przez PR #133. Punkt 3 rozpoczęty na
+  `feat/03-district-gameplay`.
+- Następny krok: wdrożyć punkt 3 na bieżącej gałęzi.
   Spiąć runtime locomotion w `CharacterAppearanceComponent`, bezpieczne wyjście
   z `DriveableVehicle`, pościg/wykroczenia i kontrolę skrzyżowań. Punktów 4–7
   nie oznaczać jako gotowych na podstawie samej mapy.
