@@ -1,7 +1,7 @@
 # Menu rebuild - current task
 
-Stage1 merged (#139). Stage2 in progress: MenuStyle shared Slate components added.
-Next: compile MenuStyle, validate lifetime of static style brushes, commit/merge.
+Stage1 merged (#139). Stage2 complete: MenuStyle shared Slate components, native build PASS.
+Next: stage3 branch from main; FrontEndMenuWidget and MenuFlowSubsystem, controller integration.
 Remaining after stage2: frontend, pause, settings/input, transitions/loading, QA.
 Prior open-world implementation history follows.
 
