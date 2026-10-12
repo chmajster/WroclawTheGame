@@ -96,7 +96,7 @@ for ($Index = $StartIndex; $Index -lt $Stages.Count; $Index++) {
                 $Marker = Join-Path $ProjectRoot "Saved\Pipeline\import\$AssetId.ok"
                 Remove-Item -LiteralPath $Marker -Force -ErrorAction SilentlyContinue
                 $Script = Join-Path $ProjectRoot 'Pipeline\unreal\import_asset.py'
-                & $Editor $Project "-ExecutePythonScript=$Script" -unattended -nosplash -nullrhi -nop4 -stdout -FullStdOutLogOutput
+                & $Editor $Project /Engine/Maps/Entry "-ExecutePythonScript=$Script" -unattended -nosplash -nullrhi -nop4 -stdout -FullStdOutLogOutput
                 Assert-Exit 'Unreal asset import process'
                 if (-not (Test-Path -LiteralPath $Marker)) { throw "Unreal import marker missing: $Marker" }
             }
@@ -110,16 +110,22 @@ for ($Index = $StartIndex; $Index -lt $Stages.Count; $Index++) {
                 $Filter = [string]$ManifestData.qa.automation_filter
                 & $Editor $Project ([string]$ManifestData.unreal.qa_map) "-ExecCmds=Automation RunTests $Filter" '-TestExit=Automation Test Queue Empty' "-ReportExportPath=$AutomationRoot" -unattended -nosplash -nullrhi -nop4 -stdout -FullStdOutLogOutput
                 $AutomationExit = $LASTEXITCODE
+                $AutomationValid = $false
+                if ($AutomationExit -eq 0) {
+                    & $PythonExe (Join-Path $ProjectRoot 'Pipeline/qa/check_automation.py') $AutomationRoot $Filter
+                    $AutomationValid = $LASTEXITCODE -eq 0
+                }
                 $AutomationReportRoot = Join-Path $ProjectRoot 'Saved\Pipeline\automation'
                 New-Item -ItemType Directory -Force -Path $AutomationReportRoot | Out-Null
                 [ordered]@{
                     asset_id = $AssetId
-                    status = $(if ($AutomationExit -eq 0) { 'PASS' } else { 'FAIL' })
+                    status = $(if ($AutomationExit -eq 0 -and $AutomationValid) { 'PASS' } else { 'FAIL' })
                     exit_code = $AutomationExit
                     filter = $Filter
                     report_directory = $AutomationRoot
                 } | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $AutomationReportRoot "$AssetId.json") -Encoding utf8
                 if ($AutomationExit -ne 0) { throw "Unreal Automation failed with exit code $AutomationExit" }
+                if (-not $AutomationValid) { throw 'Automation report has no successful selected tests' }
             }
             'screenshots' {
                 Remove-Item -LiteralPath (Join-Path $ProjectRoot "Saved\Pipeline\visual\$AssetId.json") -Force -ErrorAction SilentlyContinue

@@ -8,7 +8,7 @@ import unreal
 
 ROOT=Path(unreal.Paths.project_dir()).resolve()
 sys.path.insert(0,str(ROOT/"Pipeline/unreal"))
-from import_asset import prepare
+from import_asset import prepare, quit_after_editor_startup
 
 marker=ROOT/"Saved/Pipeline/import/batch.ok"
 marker.parent.mkdir(parents=True,exist_ok=True)
@@ -23,4 +23,7 @@ except Exception:
     unreal.log_error(traceback.format_exc())
     raise
 finally:
-    unreal.SystemLibrary.quit_editor()
+    # Let editor startup/tool contexts and asynchronous asset work settle before
+    # closing. Immediate quit inside the startup Python call can destroy a
+    # partially initialized ModeManagerInteractiveToolsContext in UE 5.8.
+    quit_after_editor_startup()

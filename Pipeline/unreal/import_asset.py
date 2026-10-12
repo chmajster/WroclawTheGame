@@ -5,6 +5,7 @@ import json
 import os
 import re
 import traceback
+import uuid
 from pathlib import Path
 
 import unreal
@@ -22,14 +23,24 @@ def clean_name(value: str) -> str:
     return re.sub(r"[^A-Za-z0-9_]+", "_", value).strip("_")
 
 
-def import_task(filename: Path, destination: str, static_mesh: bool = False):
+def import_task(filename: Path, destination: str, static_mesh: bool = False, name=None):
     task = unreal.AssetImportTask()
     task.set_editor_property("filename", str(filename))
     task.set_editor_property("destination_path", destination)
+    if name: task.set_editor_property("destination_name",name)
     task.set_editor_property("automated", True)
     task.set_editor_property("replace_existing", True)
+    task.set_editor_property("replace_existing_settings", True)
     task.set_editor_property("save", True)
     if static_mesh:
+        if name:
+            existing=unreal.load_asset(f"{destination}/{name}")
+            if isinstance(existing,unreal.StaticMesh):
+                data=existing.get_editor_property("asset_import_data")
+                if isinstance(data,unreal.FbxStaticMeshImportData):
+                    data.set_editor_property("convert_scene_unit",True)
+                    data.set_editor_property("convert_scene",True)
+                    data.set_editor_property("import_uniform_scale",1.)
         # The pipeline supplies FbxImportUI and UCX meshes. UE 5.8's default
         # Interchange importer ignores these legacy options; select their factory.
         task.set_editor_property("factory", unreal.FbxFactory())
@@ -120,6 +131,13 @@ def configure_lods(base_mesh, generated: Path, mesh_name: str, destination: str,
     for index in range(1, lod_count):
         lod_file = generated / f"{mesh_name}_LOD{index}.fbx"
         source = first_asset(import_task(lod_file, temp_root, True), unreal.StaticMesh)
+        # Match the render source's slot order using the same interfaces before
+        # attaching a LOD. Reimport retains authored materials on the base while
+        # temporary FBX meshes get defaults; UE would append duplicate slots.
+        source_slots=list(source.get_editor_property("static_materials"))
+        base_slots=list(base_mesh.get_editor_property("static_materials"))
+        if len(source_slots)!=len(base_slots): raise RuntimeError("LOD material slot layout differs from LOD0")
+        source.set_editor_property("static_materials",base_slots)
         result = subsystem.set_lod_from_static_mesh(base_mesh, index, source, 0, True)
         if result < 0:
             raise RuntimeError(f"Cannot attach LOD{index} from {lod_file}")
@@ -146,7 +164,12 @@ def prepare(manifest_value=None) -> None:
 
     destination = manifest["unreal"]["destination"].rstrip("/")
     base_file = generated / f"{mesh_name}_LOD0.fbx"
-    base_mesh = first_asset(import_task(base_file, destination, True), unreal.StaticMesh)
+    # The legacy FBX reimport path in UE 5.8 can ignore metre conversion even
+    # with replace_existing_settings and stored convert_scene_unit enabled.
+    # Build a fresh pipeline product in isolation, then replace the manifest's
+    # stable package path. Never depend on old per-user FBX import state.
+    stage=f"/Game/_PipelineTemp/Import_{clean_name(asset_id)}_{uuid.uuid4().hex}"
+    base_mesh = first_asset(import_task(base_file, stage, True, mesh_name), unreal.StaticMesh)
 
     expected_path = f"{destination}/{mesh_name}"
     current_path = base_mesh.get_path_name().split(".")[0]
@@ -156,8 +179,16 @@ def prepare(manifest_value=None) -> None:
         if not unreal.EditorAssetLibrary.rename_asset(current_path, expected_path):
             raise RuntimeError(f"Cannot rename {current_path} to {expected_path}")
         base_mesh = unreal.load_asset(expected_path)
+    if unreal.EditorAssetLibrary.does_directory_exist(stage):
+        unreal.EditorAssetLibrary.delete_directory(stage)
     if base_mesh is None:
         raise RuntimeError(f"Cannot load imported base mesh {expected_path}")
+    expected_slots=blender_report.get("material_slots")
+    if expected_slots:
+        slots=list(base_mesh.get_editor_property("static_materials"))
+        if len(slots)<expected_slots: raise RuntimeError("Imported material slots missing")
+        if len(slots)>expected_slots:
+            base_mesh.set_editor_property("static_materials",slots[:expected_slots])
 
     integrated_lods = configure_lods(
         base_mesh,
@@ -250,6 +281,16 @@ def prepare(manifest_value=None) -> None:
     unreal.log("WTG_ASSET_IMPORT_READY " + json.dumps(report))
 
 
+def quit_after_editor_startup():
+    ticks=[0]
+    def settle(delta):
+        ticks[0]+=1
+        if ticks[0]>=30:
+            unreal.unregister_slate_post_tick_callback(handle)
+            unreal.SystemLibrary.quit_editor()
+    handle=unreal.register_slate_post_tick_callback(settle)
+
+
 if __name__ == '__main__':
     try:
         prepare()
@@ -257,4 +298,4 @@ if __name__ == '__main__':
         unreal.log_error(traceback.format_exc())
         raise
     finally:
-        unreal.SystemLibrary.quit_editor()
+        quit_after_editor_startup()

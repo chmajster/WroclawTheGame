@@ -1,6 +1,6 @@
 # City asset production — active pass 2026-10-12
 
-Primary live log: PR #147 (stream 2/6); #146 merged. Scope and provenance policy:
+Primary live log: PR #148 (stream 3/6); #146-147 merged. Scope and provenance policy:
 docs/CITY-ASSET-PRODUCTION.md. Existing gameplay/menu work below is complete.
 
 Wykonane: original bpy railing, entrance surround and cornice, deterministic
@@ -17,9 +17,12 @@ Do zrobienia: ordered streams 3 pipeline/import, 4 GIS placement,
 5 graphics/budgets, 6 executable end-to-end validation; major real landmarks
 and the wider city remain long-term production work, not completed models.
 
-Następny krok: merge completed acquisition stream 2 after its offline checks;
-create stream 3 from main, strengthen Pipeline validation and import all three
-kit assets in Unreal. Native import/placement is not yet performed.
+Następny krok: stream 3 complete; merge and create stream 4 from main for GIS
+placement and QA studio. Two repeated imports PASS; native asset test PASS
+in Saved/Logs/TenementNativeTest-final.log, final build 7.01 s. Stable cm scale,
+one PBR slot, 3 LOD and 3 UCX verified. Legacy FBX unit reimport is bypassed
+by isolated fresh products moved to the stable manifest package path. Appearance
+and district placement remain unverified; do not claim them yet.
 
 Stan: in progress. Generic facade enrichment, no claim of surveyed architecture
 or AAA quality. Decoration has no collision; existing building/slab collision

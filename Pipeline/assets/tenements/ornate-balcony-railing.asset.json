@@ -13,5 +13,5 @@
     "orm": "SourceAssets/Models/Wroclaw/TenementKit/Textures/iron_ORM.png"
   },
   "unreal": {"destination": "/Game/Wroclaw/TenementKit", "nanite": false, "qa_map": "/Game/Maps/TenementKit_QA"},
-  "qa": {"automation_filter": "WTG.SurfaceQuality", "cameras": ["Kit_Front", "Kit_Oblique"], "screenshot_width": 1280, "screenshot_height": 960}
+  "qa": {"automation_filter": "WTG.Assets.TenementKit", "cameras": ["Kit_Front", "Kit_Oblique"], "screenshot_width": 1280, "screenshot_height": 960}
 }
