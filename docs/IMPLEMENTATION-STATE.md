@@ -1,36 +1,33 @@
 # Full game expansion — implementation state
 
-## Current continuation point - stream 7 / PR #138
+## Current state - complete first playable slice (streams 1-7)
 
-Streams 1-6 are merged. Stream 7 remains in progress on
-`feat/07-playable-session-validation`.
+Streams 1-6 are merged; stream 7 / PR #138 is complete and ready to merge.
+All requested implementation streams for this first bounded slice are done.
+No remaining implementation work in this pass. This is a functional prototype,
+not the final GTA-VI-level visual target or a full Wroclaw city simulation.
 
-Full physical SessionSmoke PASS 15:02:38 UTC: 151.88 seconds, 459.48 m,
-walking/wall/floor/jump/camera, giver/failure/restart/prompt/entry/exit,
-real delivery, wanted lost, one reward saved, police dispatch and saved
-progress restored. Replay PASS 15:04:11 UTC in a new process: completed
-mission, 430 PLN, one transaction. All SaveSmoke checks and four native
-rules PASS; eight GIS tests PASS. The earlier traffic-overlap load failure
-was fixed by occupied-space checks at NPC spawn. Car body and proportions,
-physical steering, nearest-lane lookahead, checked yielding/passing fixed.
+Final physical SessionSmoke PASS 16:01:06 UTC: 199.91 seconds, 463.06 m.
+Walking/wall/floor/jump/camera, giver/failure/restart/prompt/entry/exit,
+real delivery, wanted decay after losing contact, one reward saved, new
+police dispatch and saved progress restored. New-process replay PASS
+16:01:54 UTC: complete mission, 430 PLN and exactly one ledger entry.
+Test save slots were removed after replay; player saves remain separate.
 
-Latest build PASS. Restored 12000 facade instances; checks run once after
-game physics registers (editor commandlet query scene was unavailable).
-Refitted imported pivots, rebaked 127 building meshes from current source,
-added private double-sided wall material instances for complete presentation.
-Geo startup preserves actor yaw for the third-person camera and gives a
-district-specific Polish greeting.
+Traffic cleared its mutual stop through checked yield/retry; the long delay
+is a known limitation of the basic AI. Cover search was added to the probe,
+but not selected in the final passing run: wanted cleared before the receiver.
+The production Lost redispatch bug and stale pursuit after loading are fixed.
 
-Next: final SessionSmoke is running (exec session 7960); inspect
-Saved/Logs/DistrictSessionSmoke.log. Native build after the cover-search
-change PASS. The probe now searches a clear reachable position behind an
-existing wall/obstacle and walks there to lose police visual contact.
-Require police_evaded, delivery/reward/save and new police_dispatch PASS,
-then run new-process replay. Production fix: Lost does not redispatch until
-a new crime, and loading resets transient pursuit. Rules4 and SaveSmoke PASS
-after these changes. Then record final results, visible launch, complete/merge
-PR #138. Final graphics already inspected: player/back/car/street/river;
-1310 frames mean16.78ms/p9516.67ms with cap60. No CI.
+Native build PASS; rules4 and SaveSmoke PASS after production pursuit fixes;
+eight GIS PASS. Final UE renderer screenshots inspected: player/back/car/
+street/river; 1310 frames mean16.78ms/p9516.67ms with cap60. No CI invoked.
+Visible Launch-District started PID44308 at16:02 UTC, window responding,
+Load map complete /Game/Maps/Nadodrze_Playable. Leave this game window open.
+
+Next step: no implementation remains in scope. Finalize PR #138 merge and
+return to main. For another play session use Scripts/Launch-District.ps1;
+controls and reproduction instructions are in docs/PLAYABLE-DISTRICT.md.
 
 Historical notes below are prior batches, not current acceptance status.
 Presentation remains a CC0/procedural prototype without full wardrobe/hero

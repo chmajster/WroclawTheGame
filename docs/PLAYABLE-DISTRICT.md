@@ -59,9 +59,12 @@ ręcznej rozgrywki i nie nadpisują slotu gracza.
 Potwierdzone: build UHT/UBT, cztery testy WTG.District, osiem testów GIS,
 pipeline ram/balustrad, przygotowanie mapy/animacji/audio, render HUD i
 SaveSmoke pieszo/w aucie/complete/reward once/future version preserved.
-Pełny SessionSmoke PASS: 151,88 s, 459,48 m rzeczywistej jazdy, rozpoczęcie,
+Pełny SessionSmoke PASS: 199,91 s, 463,06 m rzeczywistej jazdy, rozpoczęcie,
 restart, wejście/wyjście, dostawa, utrata wanted, reakcja policji i zapis.
 Replay w nowym procesie PASS: ukończona misja, 430 zł i pojedyncza transakcja.
+W tym przebiegu ruch NPC wymagał długiego manewru ustępowania;
+poziom poszukiwania po kolizji wygasł podczas przejazdu. Nowy proces
+potwierdził odczyt ukończonej misji i jednokrotnie rozliczonej nagrody.
 Pomiar dotyczy automatycznego sterowania przez tę samą fizykę, bez teleportacji
 przejazdu; nie jest ręcznym testem odczuć sterowania.
 
