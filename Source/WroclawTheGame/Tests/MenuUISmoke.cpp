@@ -51,11 +51,11 @@ bool Click(UMenuFlowSubsystem* Menu,const FString& Label,bool Mouse=false,FKey A
     FPointerEvent Down(0,P,P,TSet<FKey>{EKeys::LeftMouseButton},EKeys::LeftMouseButton,0,FModifierKeysState());
     FPointerEvent Up(0,P,P,TSet<FKey>{},EKeys::LeftMouseButton,0,FModifierKeysState());
     FWidgetPath Path;FSlateApplication::Get().GeneratePathToWidgetUnchecked(B.ToSharedRef(),Path);
-    // Model a pointer over this control independently of the physical OS cursor.
-    B->SetHover(TAttribute<bool>(true));
-    B->OnMouseEnter(G,Down);
-    FSlateApplication::Get().ProcessReply(Path,B->OnMouseButtonDown(G,Down),&Path,&Down);
-    FSlateApplication::Get().ProcessReply(Path,B->OnMouseButtonUp(G,Up),&Path,&Up);B->SetHover(TAttribute<bool>());B->OnMouseLeave(Up);return true;
+    // Route a synthetic pointer path independently of the physical OS cursor.
+    FPointerEvent Move(0,P,P,TSet<FKey>{},FKey(),0,FModifierKeysState());
+    FSlateApplication::Get().RoutePointerMoveEvent(Path,Move,true);
+    FSlateApplication::Get().RoutePointerDownEvent(Path,Down);
+    FSlateApplication::Get().RoutePointerUpEvent(Path,Up);return true;
 }
 void Shot(const TCHAR* Name){FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Tests")/Name,true,false);}
 }

@@ -33,6 +33,8 @@ private:
     double VideoApplyDeadline=0,BlurSuspendedUntil=0;
     bool VideoPending=false;
     FIntPoint PendingResolution;
+    FIntPoint PreviousResolution;
+    int32 PreviousWindowMode=1;
     int32 PendingWindowMode=1;
     virtual void Tick(const FGeometry& G,double Time,float Dt) override;
     void BeginVideoChange();

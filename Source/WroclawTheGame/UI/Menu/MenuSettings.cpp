@@ -106,7 +106,8 @@ void SMenuShell::BuildControls()
 }
 void SMenuShell::BeginVideoChange()
 {
-    if(VideoPending)return;auto* S=GEngine->GetGameUserSettings();S->ConfirmVideoMode();
+    if(VideoPending)return;auto* S=GEngine->GetGameUserSettings();
+    PreviousResolution=S->GetScreenResolution();PreviousWindowMode=int32(S->GetFullscreenMode());S->ConfirmVideoMode();
     S->SetScreenResolution(PendingResolution);S->SetFullscreenMode(EWindowMode::Type(PendingWindowMode));
     // Let existing Slate blur draw commands drain before replacing the backbuffer.
     // Also guard against stale geometry during external/manual window resizing.
@@ -117,7 +118,10 @@ void SMenuShell::BeginVideoChange()
 }
 void SMenuShell::RevertVideoChange()
 {
-    if(!VideoPending)return;auto* S=GEngine->GetGameUserSettings();S->RevertVideoMode();VideoPending=false;
+    if(!VideoPending)return;auto* S=GEngine->GetGameUserSettings();
+    // Window resize callbacks may update UE's LastConfirmed fields themselves.
+    // Keep our own transaction snapshot until the user actually confirms.
+    S->SetScreenResolution(PreviousResolution);S->SetFullscreenMode(EWindowMode::Type(PreviousWindowMode));S->ConfirmVideoMode();S->SaveSettings();VideoPending=false;
     UE_LOG(LogTemp,Display,TEXT("WTG_MENU_VIDEO reverted=%dx%d"),S->GetScreenResolution().X,S->GetScreenResolution().Y);
     BlurSuspendedUntil=FPlatformTime::Seconds()+1;VideoApplyDeadline=FPlatformTime::Seconds()+.15;
 }

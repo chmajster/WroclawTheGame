@@ -67,7 +67,7 @@ bool UMenuFlowSubsystem::Tick(float Dt)
     const auto* Audio=UWTGAudioSettings::Get();
     const auto* Performance=UWTGPerformanceSettings::Get();
     const float Cap=IsMenuOpen()?30.f:float(Performance->FPSLimit);
-    if(Cap!=AppliedFrameCap && GEngine){GEngine->SetMaxFPS(Cap);AppliedFrameCap=Cap;}
+    if(GEngine && (Cap!=AppliedFrameCap || !FMath::IsNearlyEqual(GEngine->GetMaxFPS(),Cap))){GEngine->SetMaxFPS(Cap);AppliedFrameCap=Cap;}
     if(DeferredOperation){TransitionSeconds+=Dt;TransitionOpacity=1-FMath::Clamp(TransitionSeconds/.14f,0.f,1.f);
         if(TransitionSeconds>=.14f){auto Operation=MoveTemp(DeferredOperation);ExecutingTransition=true;Operation();ExecutingTransition=false;TransitionOpacity=1;}}
     if(Screen==EWTGMenuScreen::Main && Camera && !Performance->bReduceUIMotion){
