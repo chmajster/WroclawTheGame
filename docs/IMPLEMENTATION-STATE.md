@@ -1,26 +1,22 @@
 # Start location production — 2026-10-12
 
-Primary live log: start-location PR, stream 1/10. New user scope replaces the
-previous next landmark batch: improve the existing Pomorska/Paulińska start,
-not expand Rynek. See docs/START-LOCATION-PRODUCTION.md.
+Primary live log: current start-location PR, stream 2/10.
+See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
+Start XY, mission, vehicle and gameplay systems retained.
 
-Wykonane: actual source inventory (45 buildings / 91 roads within 100 m),
-engine/map/anchor identification and a fresh rendered baseline. Existing game
-ran WTG.DistrictViewSmoke: 1311 warm frames, mean 16.78 ms, p95 16.67 ms at
-1280x720 with current frame cap; this is not an uncapped GPU benchmark.
-Four fresh screenshots were captured and the player view inspected.
+## Wykonane
+Stream 2/10. Municipal street reconstruction and Pomorska 47 photographs inspected. Reference policy records surface distinctions, estimated heights, facade characteristics and fixed player anchor. Eight exact OSM footprints extracted into compact versioned production inputs.
 
-Do zrobienia: streams 2-10: references/layout, legal PBR acquisition, detailed
-Blender models, deterministic integration, spawn/collision, optimization,
-gameplay/render QA, organization and final report. Baseline is plainly
-prototype art, not contemporary AAA quality.
+Validation and limitations: Input generation PASS for eight buildings, Blender CLI 5.2.2 LTS confirmed. Heights and detailed window placement are estimates, not survey data. Reference photographs not redistributed or used as textures.
 
-Następny krok: merge completed audit stream; branch from main for stream 2,
-record municipal reference/photo decisions and a bounded start-location policy.
-Keep player XY and mission anchors unchanged. Inspect Pomorska reconstruction
-photos and source OSM road/rail positions before placing street furniture.
+## Do zrobienia
+Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
 
-Stan: in progress, audit stream complete. No CI execution.
+## Następny krok
+Merge stream 2; branch feat/start-location-acquisition from main. Acquire reviewed CC0 plaster, asphalt and pavement PBR through Data/city_asset_acquisition.json and reuse existing prop catalog.
+
+## Stan
+Stream complete; overall implementation in progress. No CI manually run.
 
 # Earlier city asset production — completed first batch
 
