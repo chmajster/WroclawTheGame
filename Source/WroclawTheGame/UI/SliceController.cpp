@@ -18,6 +18,7 @@
 #include "Audio/SliceAudio.h"
 #include "Mission/DistrictDeliverySubsystem.h"
 #include "Systems/DistrictGameplaySubsystem.h"
+#include "Save/DistrictSaveSubsystem.h"
 void ASliceController::BeginPlay()
 {
     Super::BeginPlay();
@@ -105,6 +106,8 @@ void ASliceController::SetupInputComponent()
     };
     Bind(EKeys::Escape, &ASliceController::Escape);
     Bind(EKeys::R, &ASliceController::RetryDistrict);
+    Bind(EKeys::F5, &ASliceController::SaveDistrict);
+    Bind(EKeys::F9, &ASliceController::LoadDistrict);
     Bind(EKeys::Enter, &ASliceController::Confirm);
     Bind(EKeys::N, &ASliceController::NewGame);
     Bind(EKeys::L, &ASliceController::LoadGame);
@@ -315,7 +318,7 @@ void ASliceController::Confirm()
 void ASliceController::Reload()
 {
     CloseModal();
-    UGameplayStatics::OpenLevel(this, GetWorld()->GetSubsystem<UCityGameplaySubsystem>()->IsActive() ? FName(TEXT("Nadodrze_GIS")) : FName(TEXT("Przebudzenie_Source")));
+    UGameplayStatics::OpenLevel(this, GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive() ? FName(TEXT("Nadodrze_Playable")) : (GetWorld()->GetSubsystem<UCityGameplaySubsystem>()->IsActive() ? FName(TEXT("Nadodrze_GIS")) : FName(TEXT("Przebudzenie_Source"))));
 }
 void ASliceController::NewGame()
 {
@@ -352,7 +355,8 @@ bool ASliceController::StartCreatedCampaign()
     const auto Previous=Creator->Committed; Creator->Restore(Creator->MakeSaveData());
     auto* M=GetGameInstance()->GetSubsystem<USliceMission>(); auto* City=GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
     bool Saved=false;
-    if (City->IsActive()) Saved=City->NewRun();
+    if (GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()) Saved=GetWorld()->GetSubsystem<UDistrictSaveSubsystem>()->NewRun();
+    else if (City->IsActive()) Saved=City->NewRun();
     else
     {
         const auto OldState=M->State; const auto OldWorld=M->WorldState; const auto OldNPCs=M->NPCs; const auto OldAnchor=M->Anchor;
@@ -368,6 +372,7 @@ bool ASliceController::StartCreatedCampaign()
 void ASliceController::LoadGame()
 {
     if (CharacterCreatorWidget) return;
+    if(GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()){LoadDistrict();return;}
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     if (!M->bShowMenu && !M->bDead)
         return;
@@ -378,6 +383,14 @@ void ASliceController::LoadGame()
         return;
     }
     if (M->ContinueGame()) Reload();
+}
+void ASliceController::SaveDistrict()
+{
+    if(!CharacterCreatorWidget && !GameplayBlocked() && GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive())GetWorld()->GetSubsystem<UDistrictSaveSubsystem>()->Save();
+}
+void ASliceController::LoadDistrict()
+{
+    if(!CharacterCreatorWidget && !GameplayBlocked() && GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive())GetWorld()->GetSubsystem<UDistrictSaveSubsystem>()->LoadSaved();
 }
 void ASliceController::RetryDistrict()
 {

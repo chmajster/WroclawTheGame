@@ -13,6 +13,7 @@ public:
     virtual bool DoesSupportWorldType(EWorldType::Type Type) const override { return Type==EWorldType::Game || Type==EWorldType::PIE; }
     void Interact(bool Receiver,class ASliceCharacter* Player);
     bool Restart();
+    void SynchronizeRecovery();
     FString Objective() const;
     FVector Target() const;
     FString FailureReason;

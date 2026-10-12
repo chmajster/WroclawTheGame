@@ -2,6 +2,35 @@
 
 ## Bieżący punkt kontynuacji
 
+Punkt 6 zakończony: cztery testy native, build i pełny roundtrip PASS.
+Render HUD 13:32:08 UTC: 1100 klatek, mean20,00ms/p9528,07ms przy
+przygotowywaniu Lumen. Polskie zdrowie/pieniądze/cel/kierunek i podpowiedzi
+widoczne. Punkt 7: nowa gałąź z main, DistrictSessionSmoke i Launch-District.
+Sprawdzić rzeczywistą jazdę/misję, ściany/kamerę/restart, cross-process load,
+zdiagnozować niespodziewane wanted1 podczas renderu (ReportCrime dodać log).
+
+Punkt 6: build PASS, cztery native testy WTG.District PASS. Faktyczny World
+WTG.DistrictSaveSmoke PASS (13:29:51 UTC): pieszo, auto, re-exit, complete/
+reward once, future version preserved. Osobny slot testowy usunięty.
+Następny krok: dokończyć render HUD (DistrictHUDRender.log, DistrictStreet.png),
+scalić punkt 6. Następnie punkt 7: test prawdziwej jazdy po DeliveryRoute,
+wejść/wyjść, kamery/kolizji, restartu i ukończenia dostawy przez Interact,
+odczyt zachowanego slotu w nowym procesie oraz końcowe uruchomienie widoczne.
+
+Punkt 6 w trakcie na feat/06-district-hud-save. Następna konkretna zmiana:
+Save/DistrictSaveSubsystem i DistrictSaveGame; niezależny slot, walidacja danych,
+autoload/auto/manual save, rollback nagrody przy błędzie zapisu. Następnie
+SliceHUD, SliceController i PlayerMenuWidget oraz trwałe ustawienia myszy.
+Punkt 7 (pełna sesja) nadal niewykonany.
+
+Partia C++ punktu 6: DistrictSaveGame/Subsystem z walidacją schema/pozycji/
+ledger/ukończenia, osobnym slotem i Windows atomic replace; rollback nagrody,
+autoload i autosave30s. Polski HUD i kierunek celu, F5/F9/menu oraz czułość/
+invert myszy zapisane w ini i wspólne dla auta/postaci. Domyślna mapa Nadodrze.
+Następny krok: DistrictSaveBuild.log, poprawić błędy UHT/UBT; native
+WTG.District.SaveValidation oraz test Save/Load w rzeczywistym World. Nie
+deklarować zapisu jako sprawdzonego przed kontrolą roundtrip.
+
 Punkt 5 zakończony: pełne modele ciała wybrane zamiast Eyebrows, poprawione
 jednostki importu, winding, yaw i słońce. Bake, locomotion, presentation,
 trzy testy native i sześć GIS PASS. Rzeczywisty render 12.10.2026 13:15 UTC:

@@ -138,6 +138,9 @@ private:
     UFUNCTION() void Resume();
     UFUNCTION() void NewGame();
     UFUNCTION() void LoadGame();
+    UFUNCTION() void SaveDistrict();
+    UFUNCTION() void CycleMouseSensitivity();
+    UFUNCTION() void ToggleInvertMouse();
     UFUNCTION() void QuitGame();
 
     UFUNCTION() void PreviewFullBody();
