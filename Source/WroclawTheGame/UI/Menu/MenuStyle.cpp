@@ -6,6 +6,7 @@
 #include "Widgets/Text/STextBlock.h"
 #include "Widgets/Input/SSlider.h"
 #include "Widgets/Input/SCheckBox.h"
+#include "UI/PerformanceSettings.h"
 
 namespace WTGMenu
 {
@@ -41,7 +42,7 @@ void SWTGMenuButton::Construct(const FArguments& Args)
 {
     Selected=Args._Selected;
     ChildSlot[SAssignNew(Button,SButton).ButtonStyle(&FCoreStyle::Get().GetWidgetStyle<FButtonStyle>("NoBorder"))
-        .ContentPadding(FMargin(0)).OnClicked(Args._OnClicked).ToolTipText(FText::FromString(Args._Hint))
+        .ContentPadding(FMargin(0)).OnClicked(Args._OnClicked).OnHovered(Args._OnHovered).ToolTipText(FText::FromString(Args._Hint))
         [SNew(SBorder).BorderImage(FCoreStyle::Get().GetBrush("WhiteBrush"))
             .BorderBackgroundColor_Lambda([this]{return FLinearColor(.82f,.79f,.70f,.025f+.19f*Highlight);})
             .Padding(FMargin(0))
@@ -58,5 +59,5 @@ void SWTGMenuButton::Tick(const FGeometry& G,double T,float Dt)
 {
     SCompoundWidget::Tick(G,T,Dt);
     const bool Active=Selected.Get() || IsHovered() || HasKeyboardFocus() || HasFocusedDescendants();
-    Highlight=FMath::FInterpTo(Highlight,Active?1.f:0.f,Dt,14.f);
+    Highlight=UWTGPerformanceSettings::Get()->bReduceUIMotion?(Active?1.f:0.f):FMath::FInterpTo(Highlight,Active?1.f:0.f,Dt,14.f);
 }

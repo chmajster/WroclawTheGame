@@ -35,6 +35,9 @@ public:
     FString DescribeSave(const FString& Slot, bool& Valid) const;
     class ASliceController* Controller() const { return PC.Get(); }
     class UWorld* MenuWorld() const;
+    float TransitionOpacity=1;
+    bool IsTransitioning() const { return bool(DeferredOperation); }
+    void ApplicationActivationChanged(bool Active);
 private:
     UPROPERTY() TObjectPtr<class UFrontEndMenuWidget> Widget;
     UPROPERTY() TObjectPtr<class ACameraActor> Camera;
@@ -44,4 +47,12 @@ private:
     void Open(EWTGMenuScreen Target);
     TWeakObjectPtr<class APawn> LastTrackedPawn;
     FVector LastPosition=FVector::ZeroVector;
+    FVector CameraBase,CameraLook;
+    double CameraSeconds=0,AudioElapsed=0;
+    float AppliedFrameCap=-1,TransitionSeconds=0;
+    TFunction<void()> DeferredOperation;
+    bool ExecutingTransition=false;
+    FDelegateHandle ActivationHandle,LoadHandle;
+    void PrepareLoadingScreen(const FString& Map);
+    bool Transition(TFunction<void()> Operation);
 };

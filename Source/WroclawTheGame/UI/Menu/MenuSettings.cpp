@@ -12,6 +12,7 @@
 #include "Engine/GameInstance.h"
 #include "Engine/Engine.h"
 #include "GameFramework/GameUserSettings.h"
+#include "Rendering/SlateRenderTransform.h"
 
 TSharedRef<SWidget> SMenuShell::Choice(const FString& Label,const TArray<FString>& Values,int32 Selected,TFunction<void(int32)> Changed)
 {
@@ -116,5 +117,8 @@ void SMenuShell::RevertVideoChange()
 void SMenuShell::Tick(const FGeometry& G,double T,float Dt)
 {
     SCompoundWidget::Tick(G,T,Dt);
+    EntranceSeconds+=Dt;
+    const float Alpha=UWTGPerformanceSettings::Get()->bReduceUIMotion?1.f:1-FMath::Pow(1-FMath::Clamp(EntranceSeconds/.2f,0.f,1.f),3.f);
+    if(Stage){Stage->SetRenderOpacity(Alpha*(Flow.IsValid()?Flow->TransitionOpacity:1.f));Stage->SetRenderTransform(FSlateRenderTransform(FVector2D((1-Alpha)*22,0)));}
     if(VideoPending && FPlatformTime::Seconds()>VideoConfirmDeadline){RevertVideoChange();Refresh();}
 }

@@ -47,6 +47,7 @@ void UWTGPerformanceSettings::Apply() const
     if (UGameUserSettings* UserSettings = GEngine->GetGameUserSettings())
     {
         UserSettings->SetFrameRateLimit(FPSLimit > 0 ? static_cast<float>(FPSLimit) : 0.0f);
+        UserSettings->ApplyNonResolutionSettings();
         UserSettings->SaveSettings();
     }
 }

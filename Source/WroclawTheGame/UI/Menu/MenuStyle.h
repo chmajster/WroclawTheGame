@@ -23,6 +23,7 @@ public:
         SLATE_ARGUMENT(FString, Hint)
         SLATE_ATTRIBUTE(bool, Selected)
         SLATE_EVENT(FOnClicked, OnClicked)
+        SLATE_EVENT(FSimpleDelegate, OnHovered)
     SLATE_END_ARGS()
     void Construct(const FArguments& Args);
     virtual void Tick(const FGeometry& Geometry, double Time, float Dt) override;
