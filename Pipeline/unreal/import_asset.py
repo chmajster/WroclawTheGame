@@ -213,9 +213,11 @@ def prepare() -> None:
     unreal.log("WTG_ASSET_IMPORT_READY " + json.dumps(report))
 
 
-try:
-    prepare()
-except Exception:
-    unreal.log_error(traceback.format_exc())
-finally:
-    unreal.SystemLibrary.quit_editor()
+if __name__ == '__main__':
+    try:
+        prepare()
+    except Exception:
+        unreal.log_error(traceback.format_exc())
+        raise
+    finally:
+        unreal.SystemLibrary.quit_editor()
