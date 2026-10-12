@@ -44,6 +44,15 @@ class DistrictTests(unittest.TestCase):
             triangles += len(mesh['triangles']) // 3
         self.assertLessEqual(triangles, self.plan['budgets']['mesh_triangles'])
 
+    def test_dressing_clearance(self):
+        self.assertGreater(len(self.plan['dressing']), 10)
+        walks = unary_union([LineString([p[:2] for p in r['points']]).buffer(45)
+                             for r in self.plan['population_routes'] if not r['vehicle']])
+        for item in self.plan['dressing']:
+            footprint = Point(item['position'][:2]).buffer(item['radius'])
+            self.assertFalse(footprint.intersects(self.obstacles))
+            self.assertFalse(footprint.intersects(walks))
+
     def test_dijkstra_respects_direction_and_disconnected_destinations(self):
         graph = {'a': [('b', 10), ('c', 50)], 'b': [('c', 10)], 'c': []}
         self.assertEqual(route_between(graph, 'a', 'c'), ['a', 'b', 'c'])

@@ -20,12 +20,22 @@
 #include "Systems/DistrictGameplaySubsystem.h"
 #include "World/CityPopulation.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundBase.h"
+#include "Audio/WTGAudioSettings.h"
 ADriveableVehicle::ADriveableVehicle()
 {
     PrimaryActorTick.bCanEverTick = true;
     CreateDefaultSubobject<URaceSession>(TEXT("RaceSession"));
     Chassis = CreateDefaultSubobject<UBoxComponent>(TEXT("Chassis"));
     SetRootComponent(Chassis);
+    EngineAudio=CreateDefaultSubobject<UAudioComponent>(TEXT("EngineAudio"));
+    EngineAudio->SetupAttachment(Chassis);
+    EngineAudio->bAutoActivate=false;
+    EngineAudio->bOverrideAttenuation=true;
+    EngineAudio->AttenuationOverrides.bAttenuate=true;
+    EngineAudio->AttenuationOverrides.AttenuationShapeExtents=FVector(300);
+    EngineAudio->AttenuationOverrides.FalloffDistance=3000;
     Chassis->SetBoxExtent(FVector(210, 90, 28));
     Chassis->SetCollisionProfileName(TEXT("PhysicsActor"));
     Chassis->SetSimulatePhysics(true);
@@ -216,6 +226,18 @@ bool ADriveableVehicle::Exit()
 void ADriveableVehicle::Tick(float Dt)
 {
     Super::Tick(Dt);
+    if (bEngine && Health>0)
+    {
+        if (!EngineAudio->IsPlaying())
+        {
+            EngineAudio->SetSound(LoadObject<USoundBase>(nullptr,bSiren?TEXT("/Game/Generated/Audio/Siren.Siren"):TEXT("/Game/Generated/Audio/EngineIdle.EngineIdle")));
+            EngineAudio->Play();
+        }
+        const auto* Audio=UWTGAudioSettings::Get();
+        EngineAudio->SetVolumeMultiplier((bSiren?.45f:.25f)*Audio->MasterVolume*Audio->SFXVolume);
+        EngineAudio->SetPitchMultiplier(bSiren?1.f:1.f+FMath::Clamp(FMath::Abs(Speed)/3500.f,0.f,1.8f));
+    }
+    else EngineAudio->Stop();
     if (!Definition)
         return;
     if (bWaitingForGround)

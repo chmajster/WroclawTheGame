@@ -36,6 +36,8 @@ class WROCLAWTHEGAME_API ADriveableVehicle : public APawn,
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UWorldPartitionStreamingSourceComponent> StreamingSource;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class USpringArmComponent> Boom;
     UPROPERTY(VisibleAnywhere) TObjectPtr<class UCameraComponent> Camera;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<class UAudioComponent> EngineAudio;
+    bool bSiren = false;
     UPROPERTY() TArray<TObjectPtr<class USpotLightComponent>> Lights;
     UPROPERTY() TObjectPtr<ASliceCharacter> Driver;
     bool bEngine = false, bLights = false;

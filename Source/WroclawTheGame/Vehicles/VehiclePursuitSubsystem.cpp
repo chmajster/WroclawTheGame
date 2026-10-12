@@ -90,6 +90,7 @@ bool UVehiclePursuitSubsystem::StartPursuit(int32 PursuerCount)
         if (!Pursuer)
             continue;
         Pursuer->bPersistentPlayerVehicle = false;
+        Pursuer->bSiren = true;
         Pursuer->SetVisualMeshes(Population->TrafficBodyMesh,Population->TrafficWheelMesh);
         for (int32 Lamp=0;Lamp<2;++Lamp)
         {

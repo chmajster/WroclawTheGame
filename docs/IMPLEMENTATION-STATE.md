@@ -46,7 +46,12 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
 - Punkt 4 ukończony: build, trzy testy native i pięć testów danych PASS.
   DeliverySmoke.log: giver=1 receiver=1 reward=18000, walking/BlendSpace.
 - Punkt 5 rozpoczęty: `feat/05-district-presentation`, oprawa i audio miasta.
-- Następny krok: SurfaceQualityDirector, przygotowanie detali i ciągłego audio.
+- Punkt 5: PBR director z ekspozycją outdoor EV 4–14, ciągłe audio miasta,
+  przestrzenne silniki zależne od prędkości i syreny. Naprawiony kierunek słońca.
+  Generator detali sprawdza source buildings/water i trasy piesze; 44 props,
+  pięć oryginalnie syntezowanych/importowanych dźwięków, sześć testów GIS PASS.
+- Następny krok: końcowy build oprawy, WTG.DistrictViewSmoke i ogląd zrzutów
+  Saved/Tests/DistrictStreet.png oraz DistrictRiver.png; finalizacja PR #136.
   Zapis nagrody i pełna sesja należą do punktów 6–7.
 - Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,
   os error 2). Nie deklarować wizualnego QA bez rzeczywistego dowodu.

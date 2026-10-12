@@ -31,6 +31,9 @@ try {
     if(!(Test-Path 'Saved/PlayableDistrictReady.ok')){throw 'District generation did not complete'}
     & $Editor $Project "-ExecutePythonScript=$Root/Scripts/prepare_district_locomotion.py" -unattended -nosplash -nullrhi "-abslog=$Root/Saved/Logs/DistrictLocomotion.log"
     if($LASTEXITCODE -ne 0 -or !(Test-Path 'Saved/DistrictLocomotionReady.ok')){throw 'District locomotion preparation failed'}
+    Remove-Item 'Saved/DistrictPresentationReady.ok' -ErrorAction SilentlyContinue
+    & $Editor $Project "-ExecutePythonScript=$Root/Scripts/prepare_district_presentation.py" -unattended -nosplash -nullrhi "-abslog=$Root/Saved/Logs/DistrictPresentation.log"
+    if($LASTEXITCODE -ne 0 -or !(Test-Path 'Saved/DistrictPresentationReady.ok')){throw 'District presentation failed'}
     if($Launch){
         Start-Process (Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor.exe') -ArgumentList @("`"$Project`"",'/Game/Maps/Nadodrze_Playable','-game','-windowed','-ResX=1600','-ResY=900','-nosplash')
     }

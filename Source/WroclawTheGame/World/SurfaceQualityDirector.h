@@ -10,6 +10,8 @@ class WROCLAWTHEGAME_API ASurfaceQualityDirector : public AActor
     GENERATED_BODY()
   public:
     ASurfaceQualityDirector();
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) bool DistrictOutdoor = false;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<class UAudioComponent> Ambience;
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaSeconds) override;
     virtual void EndPlay(const EEndPlayReason::Type Reason) override;
