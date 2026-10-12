@@ -1,19 +1,19 @@
 # Start location production — 2026-10-12
 
-Primary live log: current start-location PR, stream 7/10.
+Primary live log: current start-location PR, stream 8/10.
 See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 7/10. Native quality applied and verified: 2272 instances / 29 HISM / 466628 aggregate new-scene LOD0 triangles below 1.6M cap. Full Nanite building fallback; near tree LOD retains branches, separate prop/building thresholds, cull180-260m, 21 streaming textures capped2k.
+Stream 8/10. Actual D3D12 gameplay PASS: correct floor, all8 walls blocking, clear collision-aware camera, non-placeholder player and 201.4cm ordinary walking. Four fresh images inspected/archived. Native district four tests and save/full460m mission/replay sessions PASS. Wall-clock1163 frames mean16.764ms/59.65FPS p95 17.684ms at1280x720, observed60FPS cap.
 
-Validation and limitations: Native quality PASS, persisted LOD thresholds compared with policy; 10 source tests PASS. Source budget counts actual Native triangles and colliders, not FPS or VRAM. Placement input regenerated after source policy hash change.
+Validation and limitations: Identical171 cpp/h compiled in isolated native project using same Content/Data because open main editor locks DLL. Fresh source/native hashes and QA evidence archived. RTX5070Ti; limited60FPS run, not uncappedGPUbenchmark. Simplified roofs, estimated architecture and existing background/default-avatar limitations remain documented. Generic17 engine startup errors precede passing project test queue.
 
 ## Do zrobienia
 Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
 
 ## Następny krok
-Create stream 8 branch; implement non-pausing actual-game smoke with steady frame measurement, walking/camera/collision probes, run district regressions and inspect final screenshots.
+Create stream9 branch from main; install production orchestrator/catalog, correct manifest QA camera paths, validate source/path/provenance consistency and selected production mode.
 
 ## Stan
 Stream complete; overall implementation in progress. No CI manually run.

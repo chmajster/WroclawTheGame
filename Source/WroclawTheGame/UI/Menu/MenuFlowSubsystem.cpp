@@ -184,6 +184,9 @@ bool UMenuFlowSubsystem::Transition(TFunction<void()> Operation)
 }
 void UMenuFlowSubsystem::ApplicationActivationChanged(bool Active)
 {
+#if WITH_DEV_AUTOMATION_TESTS
+    if(FParse::Param(FCommandLine::Get(),TEXT("WTGNoFocusPause")))return;
+#endif
     if(!Active && Screen==EWTGMenuScreen::Playing && PC.IsValid() && bHasSession)ShowPause();
 }
 void UMenuFlowSubsystem::PrepareLoadingScreen(const FString& Map)
