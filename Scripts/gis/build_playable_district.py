@@ -120,6 +120,12 @@ def build_district(output):
             length=max(1,math.hypot(dx,dy))
             points.append([round(p[0]-dy/length*125,2),round(p[1]+dx/length*125,2),p[2]+8])
         return points
+    first_drive=lane_path(outbound)
+    goal=first_drive[0]
+    dx,dy=goal[0]-anchors['vehicle'][0],goal[1]-anchors['vehicle'][1]
+    if math.hypot(dx,dy)<150:
+        dx,dy=first_drive[1][0]-goal[0],first_drive[1][1]-goal[1]
+    yaw=math.degrees(math.atan2(dy,dx))
     traffic = lane_path(loop)
     if len(traffic)<4:
         raise ValueError('District needs a connected driving circuit')

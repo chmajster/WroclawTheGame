@@ -53,6 +53,11 @@ class DistrictTests(unittest.TestCase):
             self.assertFalse(footprint.intersects(self.obstacles))
             self.assertFalse(footprint.intersects(walks))
 
+    def test_parked_vehicle_faces_legal_exit(self):
+        a=self.plan['anchors']['vehicle'];b=self.plan['delivery_route'][0]
+        direction=math.atan2(b[1]-a[1],b[0]-a[0])
+        self.assertGreater(math.cos(direction-math.radians(self.plan['vehicle_yaw'])),.95)
+
     def test_dijkstra_respects_direction_and_disconnected_destinations(self):
         graph = {'a': [('b', 10), ('c', 50)], 'b': [('c', 10)], 'c': []}
         self.assertEqual(route_between(graph, 'a', 'c'), ['a', 'b', 'c'])

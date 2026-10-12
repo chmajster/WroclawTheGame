@@ -1,6 +1,7 @@
 #include "Components/GameplayComponents.h"
 #include "Character/CharacterAppearanceComponent.h"
 #include "Engine/World.h"
+#include "Engine/OverlapResult.h"
 #include "Engine/GameInstance.h"
 #include "Engine/DamageEvents.h"
 #include "GameFramework/Character.h"
@@ -13,6 +14,7 @@
 #include "Framework/GameplayFramework.h"
 #include "Systems/GameplayEventBus.h"
 #include "Systems/NoiseSystem.h"
+#include "Systems/DistrictGameplaySubsystem.h"
 namespace
 {
 USliceMission *Mission(const UActorComponent *C)
@@ -156,10 +158,24 @@ AActor *UInteractionComponent::Find(const FVector &Start, const FVector &Directi
     FHitResult Hit;
     FCollisionQueryParams Params(SCENE_QUERY_STAT(WTGInteraction), false, GetOwner());
     GetWorld()->LineTraceSingleByChannel(Hit, Start, Start + Direction * 600, ECC_Visibility, Params);
-    return Hit.GetActor() && Hit.GetActor()->Implements<UInteractable>() &&
-                   FVector::Dist(GetOwner()->GetActorLocation(), Hit.ImpactPoint) < Range
-               ? Hit.GetActor()
-               : nullptr;
+    if(Hit.GetActor() && Hit.GetActor()->Implements<UInteractable>() && FVector::Dist(GetOwner()->GetActorLocation(),Hit.ImpactPoint)<Range)return Hit.GetActor();
+    if(!GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive())return nullptr;
+    // Third-person cameras sit above the car's chassis. Offer a nearby visible
+    // dynamic interaction even when the centre ray passes over its collider.
+    FCollisionObjectQueryParams Objects;Objects.AddObjectTypesToQuery(ECC_Pawn);Objects.AddObjectTypesToQuery(ECC_PhysicsBody);Objects.AddObjectTypesToQuery(ECC_WorldDynamic);
+    TArray<FOverlapResult> Overlaps;
+    GetWorld()->OverlapMultiByObjectType(Overlaps,GetOwner()->GetActorLocation(),FQuat::Identity,Objects,FCollisionShape::MakeSphere(Range+150),Params);
+    AActor* Best=nullptr;float Distance=Range+150;
+    for(const auto& O:Overlaps)
+    {
+        auto* A=O.GetActor();if(!A || A==GetOwner() || A->IsHidden() || !A->Implements<UInteractable>())continue;
+        const FVector To=A->GetActorLocation()-GetOwner()->GetActorLocation();const float D=To.Size();
+        if(D>=Distance || FVector::DotProduct(To.GetSafeNormal2D(),Direction.GetSafeNormal2D())<.25)continue;
+        FHitResult Obstacle;GetWorld()->LineTraceSingleByChannel(Obstacle,GetOwner()->GetActorLocation(),A->GetActorLocation(),ECC_Visibility,Params);
+        if(Obstacle.bBlockingHit && Obstacle.GetActor()!=A)continue;
+        Distance=D;Best=A;
+    }
+    return Best;
 }
 bool UInteractionComponent::Interact(AActor *Target)
 {

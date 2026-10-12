@@ -50,9 +50,10 @@ static FAutoConsoleCommandWithWorld GDistrictSessionSmoke(TEXT("WTG.DistrictSess
         if(S->Elapsed>330){Check(false,TEXT("timeout"));Finish();return false;}
         if(!R)return true;auto* Car=R->DeliveryVehicle.Get();if(!IsValid(Car))return true;
         auto* PC=Cast<ASliceController>(UGameplayStatics::GetPlayerController(W,0));if(!PC)return true;
+        if(S->Stage==0){PC->DisableInput(PC);if(APawn* Pawn=PC->GetPawn())Pawn->DisableInput(PC);}
         auto* D=W->GetSubsystem<UDistrictDeliverySubsystem>();auto* E=W->GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>();
         auto Advance=[&](int Stage){S->Stage=Stage;S->StepAt=S->Elapsed;};
-        auto Walk=[&](const FVector& Goal){if(auto* P=S->Player.Get())P->AddMovementInput((Goal-P->GetActorLocation()).GetSafeNormal2D(),1,true);};
+        auto Walk=[&](const FVector& Goal){if(auto* P=S->Player.Get()){const FVector Direction=Goal-P->GetActorLocation();PC->SetControlRotation(FRotator(-12,Direction.Rotation().Yaw,0));P->AddMovementInput(Direction.GetSafeNormal2D(),1,true);}};
         if(S->Stage==0 && S->Elapsed>5)
         {
             auto* P=Cast<ASliceCharacter>(PC->GetPawn());if(!P || P->GetCharacterMovement()->MovementMode!=MOVE_Walking)return true;
@@ -92,7 +93,7 @@ static FAutoConsoleCommandWithWorld GDistrictSessionSmoke(TEXT("WTG.DistrictSess
             Walk(Car->GetActorLocation()+Car->GetActorRightVector()*190);
             if(S->Elapsed>S->NextDiagnostic){S->NextDiagnostic=S->Elapsed+5;UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_WALK player=%s car=%s"),*S->Player->GetActorLocation().ToString(),*Car->GetActorLocation().ToString());}
             if(FVector::Dist2D(S->Player->GetActorLocation(),Car->GetActorLocation())<340)
-            {Check(S->Player->Interaction->Interact(Car),TEXT("vehicle_interaction_range"));Check(Car->Driver==S->Player.Get(),TEXT("enter"));Advance(6);}
+            {auto* Focus=S->Player->Interaction->Find(S->Player->Camera->GetComponentLocation(),S->Player->Camera->GetForwardVector());UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_FOCUS actor=%s forward=%s to_car=%s hidden=%d collision=%d"),*GetNameSafe(Focus),*S->Player->Camera->GetForwardVector().ToString(),*(Car->GetActorLocation()-S->Player->GetActorLocation()).ToString(),Car->IsHidden(),int(Car->Chassis->GetCollisionEnabled()));Check(Focus==Car,TEXT("vehicle_prompt"));Check(S->Player->Interaction->Interact(Car),TEXT("vehicle_interaction_range"));Check(Car->Driver==S->Player.Get(),TEXT("enter"));Advance(6);}
         }
         if(S->Stage==6 && S->Elapsed-S->StepAt>.8)
         {
@@ -103,7 +104,7 @@ static FAutoConsoleCommandWithWorld GDistrictSessionSmoke(TEXT("WTG.DistrictSess
         if(S->Stage==7)
         {
             S->DriveDistance+=FVector::Dist2D(Car->GetActorLocation(),S->LastCar);S->LastCar=Car->GetActorLocation();
-            if(S->Elapsed>S->NextDiagnostic){S->NextDiagnostic=S->Elapsed+10;UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_DRIVE position=%s speed=%.1f health=%.1f target_m=%.1f wanted=%d"),*Car->GetActorLocation().ToString(),Car->Speed,Car->Health,FVector::Dist2D(Car->GetActorLocation(),R->DeliveryPoint)/100,G->WantedLevel());}
+            if(S->Elapsed>S->NextDiagnostic){S->NextDiagnostic=S->Elapsed+10;UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_DRIVE position=%s speed=%.1f health=%.1f target_m=%.1f wanted=%d %s"),*Car->GetActorLocation().ToString(),Car->Speed,Car->Health,FVector::Dist2D(Car->GetActorLocation(),R->DeliveryPoint)/100,G->WantedLevel(),*S->AI->Diagnostic);}
             if(FVector::Dist2D(Car->GetActorLocation(),R->DeliveryPoint)<700){S->AI->StopAI();Car->SetAIControl(true,0,0,true);Advance(8);}
             if(Car->Health<=0 || !D->State.Active()){Check(false,TEXT("drive_survival"));Finish();return false;}
         }

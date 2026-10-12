@@ -2,6 +2,16 @@
 
 ## Bieżący punkt kontynuacji
 
+Punkt7 nadal w trakcie. Samochód zaparkowany przeciwnie do legalnego wyjazdu
+przekierowany w generatorze yaw=-91,6608; mały prepare_district_placement
+PASS, siedem GIS PASS. Naprawiono reverse steering sign/histerezę i dodano
+lookahead po polyline oraz wykrywanie minięcia zakrętu. Sensor patrzy w planowany
+kierunek jazdy. Wcześniejsze runtime: enter/exit/reenter PASS, ale auto stało
+przed StaticMeshActor_38 przy node1; nowy run po lookahead w toku.
+Vehicle_prompt FAIL jest diagnozowany (WTG_SESSION_FOCUS log); nie oznaczać
+sesji jako ukończonej. Następny krok: DistrictSessionSmoke.log z obecnego
+procesu, fizyczna dostawa PASS → replay → final render → merge/visible launch.
+
 Punkt7: znaleziono i naprawiono rzeczywisty błąd kamery postaci oraz auta:
 SetupAttachment(Boom) mocował ją w początku; dodano SpringArm SocketName
 w konstruktorze i BeginPlay dla istniejących BP. Runtime PASS: walking/wall,

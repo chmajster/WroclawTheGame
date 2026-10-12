@@ -20,6 +20,7 @@ class WROCLAWTHEGAME_API UVehicleAIDriverComponent : public UActorComponent
     void StopAI();
 
     bool IsActive() const { return bActive; }
+    FString Diagnostic;
     void SetPursuitGoal(const FVector& Goal) { PursuitGoal=Goal;bPursuit=true; }
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Wroclaw|VehicleAI")
@@ -37,4 +38,5 @@ class WROCLAWTHEGAME_API UVehicleAIDriverComponent : public UActorComponent
     bool bActive = false;
     bool bPursuit = false;
     FVector PursuitGoal=FVector::ZeroVector;
+    FVector EntryPoint=FVector::ZeroVector;
 };
