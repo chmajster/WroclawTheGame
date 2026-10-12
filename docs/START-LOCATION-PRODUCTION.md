@@ -26,6 +26,22 @@ Partition. Renderer korzysta z Lumen i VSM. Nowe zasoby przechodzą istniejący
 pipeline manifest → Blender/FBX/LOD → natywny import → źródłowe rozmieszczenie.
 Screenshot i pomiar klatek mają pochodzić z gry, nie z renderu Blendera.
 
+## 2. Referencje i źródła położenia
+
+Obejrzano zdjęcia miejskie przebudowy torowiska oraz Pomorskiej 47 w remoncie
+z 2022 r. Kremowy tynk, białe ramy, trójkątne nadokienniki, żelazne balkony,
+parter usługowy i mniejsze okna poddasza zastępują przypadkową cegłę.
+Linki, autorzy i zakres wykorzystania są w `Data/start_location.json`.
+Fotografie służą jako referencje; nie są dystrybuowane ani kopiowane do tekstur.
+OSM/DEM zachowuje istniejące przypisanie autorstwa w grze.
+
+Osiem budynków ma dokładne źródłowe obrysy w
+`Data/start_location_buildings.json`, odtwarzane przez
+`Scripts/assets/build_start_location_inputs.py`. Wysokości bez pomiaru oraz
+układ okien są oszacowaniem na podstawie architektury okolicy, jawnie opisanym
+w polityce. Nie jest to geodezyjny model wszystkich adresów. Układ dróg,
+torowiska, kierunki ruchu i rozróżnienie nawierzchni pozostają źródłowe.
+
 ## Strumienie pracy
 
 Każdy numer wymaga osobnej gałęzi/PR: 1 audyt, 2 referencje i układ,
