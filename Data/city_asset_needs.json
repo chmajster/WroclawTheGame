@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "roles": [
+    {"role": "balcony_ironwork", "manifest": "Pipeline/assets/tenements/ornate-balcony-railing.asset.json", "status": "authored"},
+    {"role": "entrance_stone_trim", "manifest": "Pipeline/assets/tenements/stone-entrance-surround.asset.json", "status": "authored"},
+    {"role": "cornice", "manifest": "Pipeline/assets/tenements/dentil-cornice.asset.json", "status": "authored"},
+    {"role": "street_lighting", "existing_slug": "street_lamp_02", "status": "reuse"},
+    {"role": "street_seating", "existing_slug": "modular_street_seating", "status": "reuse"},
+    {"role": "refuse_bin", "existing_slug": "metal_trash_can", "status": "reuse"},
+    {"role": "utility_boxes", "existing_slug": "utility_box_01", "status": "reuse"},
+    {"role": "storefront_shutters", "existing_slug": "rollershutter_window_01", "status": "reuse"},
+    {"role": "weathered_stone_material", "acquisition_id": "ph-sandstone-cracks", "status": "acquired"}
+  ],
+  "priority_areas": [
+    {"id": "market_and_town_hall", "status": "needs_hero_geometry"},
+    {"id": "plac_solny", "status": "needs_verified_facades"},
+    {"id": "ostrow_tumski", "status": "needs_hero_geometry"},
+    {"id": "grunwaldzki_bridge", "status": "needs_hero_geometry"},
+    {"id": "centennial_hall", "status": "needs_hero_geometry_and_gis_coverage"},
+    {"id": "main_station", "status": "needs_hero_geometry"},
+    {"id": "tenements", "status": "first_modular_detail_kit"},
+    {"id": "roads_trams_signals", "status": "existing_prototype_needs_realistic_vehicle_art"},
+    {"id": "odra_quays_bridges", "status": "existing_gis_and_railing_needs_detailed_expansion"}
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "credit": "Powered by Poly Haven",
+  "api_terms": "https://github.com/Poly-Haven/Public-API/blob/master/ToS.md",
+  "assets": [{
+    "id": "ph-sandstone-cracks", "slug": "sandstone_cracks", "type": "pbr_texture_set",
+    "name": "Sandstone Cracks", "provider": "Poly Haven", "authors": {"Rob Tuytel": "All"},
+    "source_url": "https://polyhaven.com/a/sandstone_cracks",
+    "license": "CC0-1.0", "license_url": "https://polyhaven.com/license",
+    "license_verified_on": "2026-10-12", "dimensions_mm": [2000, 2000], "resolution": 2048,
+    "files": {
+      "base_color": {"path": "SourceAssets/Textures/PolyHaven/sandstone_cracks/sandstone_cracks_BC.png", "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sandstone_cracks/sandstone_cracks_diff_2k.png", "bytes": 8797615, "md5": "1e9e60a45a23b4adb3bd06c5142e6033"},
+      "normal": {"path": "SourceAssets/Textures/PolyHaven/sandstone_cracks/sandstone_cracks_N.png", "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sandstone_cracks/sandstone_cracks_nor_dx_2k.png", "bytes": 8801631, "md5": "e477994074b14adaa12a1aa4cfbc45b6"},
+      "orm": {"path": "SourceAssets/Textures/PolyHaven/sandstone_cracks/sandstone_cracks_ORM.png", "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sandstone_cracks/sandstone_cracks_arm_2k.png", "bytes": 6549168, "md5": "9d3b652592989636e8bfffb573a8dc86"}
+    }
+  }]
+}
