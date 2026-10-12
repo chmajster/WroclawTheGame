@@ -149,6 +149,17 @@ def cornice():
     return parts,"stone"
 
 
+def balcony_slab():
+    parts=[box("Load-bearing slab",(0,0,.52),(2.6,1.16,.16),.014),
+           box("Drip moulding",(0,0,.43),(2.7,1.2,.10),.012)]
+    for x in [-.8,.8]:
+        # Stepped corbels transfer the cantilever towards its facade attachment.
+        for i in range(5):
+            depth=.32+i*.11
+            parts.append(box("Stone corbel course",(x,-.56+depth/2,.045+i*.085),(.22,depth,.09),.014))
+    return parts,"stone"
+
+
 def material(kind):
     mat=bpy.data.materials.new("Authored_"+kind)
     mat.use_nodes=True
@@ -170,11 +181,16 @@ def material(kind):
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--render",action="store_true")
+    parser.add_argument("--asset",choices=["ornate-balcony-railing","stone-entrance-surround","dentil-cornice","balcony-slab"])
     args=parser.parse_args(sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else [])
     OUT.mkdir(parents=True,exist_ok=True)
-    report={"units":"metres","generator":"original bpy geometry","assets":[]}
-    for name, builder in [("ornate-balcony-railing",railing),("stone-entrance-surround",portal),("dentil-cornice",cornice)]:
+    metadata=OUT/"geometry.json"
+    report=json.loads(metadata.read_text(encoding="utf-8")) if args.asset and metadata.exists() else {"units":"metres","generator":"original bpy geometry","assets":[]}
+    builders=[("ornate-balcony-railing",railing),("stone-entrance-surround",portal),("dentil-cornice",cornice),("balcony-slab",balcony_slab)]
+    for name, builder in builders:
+        if args.asset and name!=args.asset: continue
         bpy.ops.wm.read_factory_settings(use_empty=True)
+        bpy.context.preferences.filepaths.save_version=0
         bpy.context.scene.unit_settings.system="METRIC"
         parts,kind=builder()
         select(parts); bpy.ops.object.join()
@@ -186,6 +202,7 @@ def main():
         bpy.ops.uv.smart_project(angle_limit=math.radians(66),island_margin=.01)
         bpy.ops.object.mode_set(mode="OBJECT")
         obj.data.calc_loop_triangles()
+        report["assets"]=[asset for asset in report["assets"] if asset["id"]!=name]
         report["assets"].append({"id":name,"triangles":len(obj.data.loop_triangles),"uv_layers":len(obj.data.uv_layers),"dimensions_m":list(obj.dimensions)})
         if name=="ornate-balcony-railing":
             # Three discrete safety panels keep the rear and center open.

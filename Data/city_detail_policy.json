@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "map": "/Game/Maps/Nadodrze_Playable",
+  "source_definition": "Data/playable_district.json",
+  "fidelity": "generic_style_enrichment_not_surveyed_facades",
+  "cell_cm": 12800,
+  "route_radius_cm": 18000,
+  "limits": {"balconies": 120, "entrances": 32, "cornice_segments": 600},
+  "meshes": {
+    "railing": "/Game/Wroclaw/TenementKit/SM_wtg_tenement_ornate_balcony_railing",
+    "slab": "/Game/Wroclaw/TenementKit/SM_wtg_tenement_balcony_slab",
+    "entrance": "/Game/Wroclaw/TenementKit/SM_wtg_tenement_stone_entrance_surround",
+    "cornice": "/Game/Wroclaw/TenementKit/SM_wtg_tenement_dentil_cornice"
+  },
+  "source_sizes_cm": {"railing": [250, 110, 110.6847], "slab": [270, 120, 60], "entrance": [280, 48, 389], "cornice": [300, 49, 44]},
+  "slab_top_cm": 60,
+  "entrance_clear_width_cm": 180,
+  "entrance_spring_cm": 230,
+  "corner_clearance_cm": 15
+}
