@@ -83,8 +83,8 @@ def apply_skeletal_mesh(actor, mesh, scale=(1, 1, 1), rotation=None):
     component.set_relative_scale3d(unreal.Vector(*scale))
     capsule = actor.get_component_by_class(unreal.CapsuleComponent)
     if capsule:
-        component.set_relative_location(unreal.Vector(0,0,-capsule.get_unscaled_capsule_half_height()))
-    component.set_relative_rotation(unreal.Rotator(*(rotation or [0,-90,0])))
+        component.set_relative_location(unreal.Vector(0,0,-capsule.get_unscaled_capsule_half_height()),False,False)
+    component.set_relative_rotation(unreal.Rotator(*(rotation or [0,-90,0])),False,False)
     hide_static_visuals(actor)
     return component
 
