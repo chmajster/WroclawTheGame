@@ -1,4 +1,28 @@
-# City asset production — active pass 2026-10-12
+# Start location production — 2026-10-12
+
+Primary live log: start-location PR, stream 1/10. New user scope replaces the
+previous next landmark batch: improve the existing Pomorska/Paulińska start,
+not expand Rynek. See docs/START-LOCATION-PRODUCTION.md.
+
+Wykonane: actual source inventory (45 buildings / 91 roads within 100 m),
+engine/map/anchor identification and a fresh rendered baseline. Existing game
+ran WTG.DistrictViewSmoke: 1311 warm frames, mean 16.78 ms, p95 16.67 ms at
+1280x720 with current frame cap; this is not an uncapped GPU benchmark.
+Four fresh screenshots were captured and the player view inspected.
+
+Do zrobienia: streams 2-10: references/layout, legal PBR acquisition, detailed
+Blender models, deterministic integration, spawn/collision, optimization,
+gameplay/render QA, organization and final report. Baseline is plainly
+prototype art, not contemporary AAA quality.
+
+Następny krok: merge completed audit stream; branch from main for stream 2,
+record municipal reference/photo decisions and a bounded start-location policy.
+Keep player XY and mission anchors unchanged. Inspect Pomorska reconstruction
+photos and source OSM road/rail positions before placing street furniture.
+
+Stan: in progress, audit stream complete. No CI execution.
+
+# Earlier city asset production — completed first batch
 
 Primary live log: PR #151 (stream 6/6 complete); #146-150 merged. Source decisions,
 license and evidence: docs/CITY-ASSET-PRODUCTION.md and CITY-ASSET-CREDITS.md.
