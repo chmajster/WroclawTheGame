@@ -66,6 +66,13 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
 - Naprawiono jednostki FBX: convert_scene_unit=True (wcześniej 1:100).
   Wysokość ramy UE 150 cm, balustrady 110 cm; importer i presentation sprawdzają
   wysokości deklarowane w manifestach. Końcowy bake po konwersji PASS.
+- Ogląd renderu: powierzchnie i okna poprawne, ale klipy zgodnej hierarchii
+  mają różne translacje/proporcje; pełna postać zapadała się do niskiej pozy.
+  LinkCompatibleRig zachowuje teraz translacje skeleton body i animuje rotacje
+  dla in-place clips; zapisuje oba skeletons. Dodano runtime bone-height log.
+  Lumen cached preexposure EV6 obejmuje wymagane EV4–14 bez clipping warning.
+- Następny krok: po locomotion uruchomić render, sprawdzić bone_height_cm
+  i pełną sylwetkę; zakończyć PR #136, przejść do HUD/zapisu (punkt 6).
   Zapis nagrody i pełna sesja należą do punktów 6–7.
 - Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,
   os error 2). Nie deklarować wizualnego QA bez rzeczywistego dowodu.

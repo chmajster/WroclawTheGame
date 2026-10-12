@@ -25,6 +25,11 @@ bool ULocomotionAssetLibrary::LinkCompatibleRig(USkeletalMesh* Mesh,UAnimSequenc
         if (ParentA!=INDEX_NONE && A.GetBoneName(ParentA)!=B.GetBoneName(ParentB)) return false;
     }
     Target->AddCompatibleSkeleton(Source);Source->AddCompatibleSkeleton(Target);
+    // Same hierarchy does not imply matching authored bone lengths/units.
+    // These clips are in-place: retain the body's reference translations and
+    // animate rotations, avoiding a collapsed body from source unit mismatch.
+    for(int32 I=0;I<B.GetNum();++I)Target->SetBoneTranslationRetargetingMode(I,EBoneTranslationRetargetingMode::Skeleton);
+    for(int32 I=0;I<A.GetNum();++I)Source->SetBoneTranslationRetargetingMode(I,EBoneTranslationRetargetingMode::Skeleton);
     Target->MarkPackageDirty();Source->MarkPackageDirty();return true;
 #else
     return false;
