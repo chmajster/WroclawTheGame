@@ -43,13 +43,13 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
   floor=walking, locomotion=BlendSpace, cameraCollision=1, registry=nadodrze_odra.
   Skrypt postaci jest powtarzalny i zachowuje oznaczenie CC0 modeli jako
   prototypów kreatora (nie mają pełnego kompletu morfów twarzy).
-- Następny krok: sprawdzić `Saved/Logs/DeliveryBuild.log` oraz źródłowy build
-  dzielnicy; wykonać `WTG.District.DeliveryRules`, przebudować mapę i animacje
-  po nowej kotwicy gracza. Potwierdzić startup, zaktualizować PR punktu 4 i
-  scalić ukończony zakres. Następnie punkt 5: oprawa/atmosfera. Zapis w punkcie 6.
+- Punkt 4 ukończony: build, trzy testy native i pięć testów danych PASS.
+  DeliverySmoke.log: giver=1 receiver=1 reward=18000, walking/BlendSpace.
+- Następny krok: punkt 5 z main, SurfaceQualityDirector, detale i audio miasta.
+  Zapis nagrody i pełna sesja należą do punktów 6–7.
 - Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,
   os error 2). Nie deklarować wizualnego QA bez rzeczywistego dowodu.
-- Stan: w trakcie całego zakresu, punkty 1–3 wykonane; dalsze sekcje poniżej to historyczny
+- Stan: w trakcie całego zakresu, punkty 1–4 wykonane; dalsze sekcje poniżej to historyczny
   zapis wcześniejszych zakresów i nie stanowią odbioru nowego zadania.
 
 Updated: 2026-09-18
