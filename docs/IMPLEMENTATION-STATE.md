@@ -21,11 +21,17 @@ added private double-sided wall material instances for complete presentation.
 Geo startup preserves actor yaw for the third-person camera and gives a
 district-specific Polish greeting.
 
-Next: final Test-PlayableDistrict.ps1 is running (exec session2774), including
-rules/save/full session/replay after the visual and startup changes. Inspect
-DistrictFinalTests.log and individual smoke logs. Final native renderer
-PID472 captures player/car/street/river and frame measurements; inspect images,
-record results, finalize docs/PR, merge and launch visible game. No CI.
+Next: finish current DistrictSessionBuild.log. The latest full regression
+passed rules/save/entry but got trapped by a building after passing traffic
+at node39. AI recovery now reverses away from static blockers, steers toward
+the lane, and probes behind the chassis so an initial front contact does not
+incorrectly block retreat. Priority governs passing; after four seconds a
+boxed priority vehicle may also retreat. Rerun full local test helper.
+The static car screenshot camera was inside a building (a false floating-window
+impression); its pose now faces the street side and sweeps against camera
+collision. Re-render and inspect all shots. Source startup now shows the
+player's back and the correct district greeting. Then results/docs/merge and
+visible launch. No CI.
 
 Historical notes below are prior batches, not current acceptance status.
 Presentation remains a CC0/procedural prototype without full wardrobe/hero

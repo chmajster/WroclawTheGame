@@ -159,6 +159,7 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
     const FVector Start = Vehicle->GetActorLocation() + FVector(0, 0, 45);
     const FVector End = Start + SteeringDirection * ObstacleLookAhead;
     ADriveableVehicle* BlockingCar=nullptr;
+    bool ObstacleBlocks=false;
     if (GetWorld()->SweepSingleByChannel(
             Hit, Start, End, SteeringDirection.Rotation().Quaternion(), ECC_Pawn,
             FCollisionShape::MakeBox(FVector(170, 70, 55)), Params))
@@ -170,14 +171,15 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
             bBrake = true;
             Throttle = 0.0f;
             BlockingCar=Cast<ADriveableVehicle>(Hit.GetActor());
+            ObstacleBlocks=true;
         }
         else
             Throttle *= FMath::Clamp((Distance - 350.0f) / FMath::Max(ObstacleLookAhead - 350.0f, 1.0f), 0.15f, 1.0f);
     }
     // Resolve mutual stops without deleting visible traffic or disabling collisions.
     // The later actor yields by backing into a checked clear space, then retries.
-    if(BlockingCar && FMath::Abs(ForwardSpeed)<30)ObstacleWait+=Dt;else ObstacleWait=0;
-    if(ObstacleWait>1.5f && PassSeconds<=0){
+    if(ObstacleBlocks && FMath::Abs(ForwardSpeed)<30)ObstacleWait+=Dt;else ObstacleWait=0;
+    if(ObstacleWait>1.5f && PassSeconds<=0 && BlockingCar && Vehicle->GetUniqueID()<BlockingCar->GetUniqueID()){
         const FVector Side(-SteeringDirection.Y,SteeringDirection.X,0);
         for(float Sign:{1.f,-1.f}){
             const FVector Candidate=Position+SteeringDirection*450+Side*(Sign*600);
@@ -188,15 +190,17 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
             if(Clear && Ground){PassGoal=Candidate;PassSeconds=4;ObstacleWait=0;break;}
         }
     }
-    if(ObstacleWait>2 && Vehicle->GetUniqueID()>BlockingCar->GetUniqueID()){
-        YieldReverse=1.5f;ObstacleWait=0;
+    if(ObstacleWait>2 && (!BlockingCar || Vehicle->GetUniqueID()>BlockingCar->GetUniqueID() || ObstacleWait>4)){
+        YieldReverse=1.5f;ObstacleWait=0;PassSeconds=0;
     }
     if(YieldReverse>0){
         YieldReverse-=Dt;FHitResult Rear;
         const FVector BackEnd=Start-Vehicle->GetActorForwardVector()*450;
-        const bool Blocked=GetWorld()->SweepSingleByChannel(Rear,Start,BackEnd,Vehicle->GetActorQuat(),ECC_Pawn,FCollisionShape::MakeBox(FVector(170,70,45)),Params);
+        const FVector RearStart=Start-Vehicle->GetActorForwardVector()*220;
+        const bool Blocked=GetWorld()->SweepSingleByChannel(Rear,RearStart,BackEnd,Vehicle->GetActorQuat(),ECC_Pawn,FCollisionShape::MakeBox(FVector(70,85,45)),Params);
         Throttle=Blocked?0.f:-.3f;bBrake=Blocked || ForwardSpeed< -220;
-        Vehicle->SetAIControl(true,Throttle,0,bBrake);return;
+        Diagnostic=FString::Printf(TEXT("node=%d yielding_reverse=%d blocked=%d steer=%.2f"),TargetIndex,YieldReverse>0,Blocked,-Steering);
+        Vehicle->SetAIControl(true,Throttle,-Steering,bBrake);return;
     }
 
 #if !UE_BUILD_SHIPPING

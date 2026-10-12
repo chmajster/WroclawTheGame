@@ -30,7 +30,10 @@ static FAutoConsoleCommandWithWorld GDistrictViewSmoke(TEXT("WTG.DistrictViewSmo
         if(Stage==0 && Elapsed>8){
             Camera=W->SpawnActor<ACameraActor>();Camera->GetCameraComponent()->SetFieldOfView(70);
             if(auto* Car=R->DeliveryVehicle.Get()){
-                const FVector P=Car->GetActorLocation()+Car->GetActorRightVector()*650-Car->GetActorForwardVector()*400+FVector(0,0,220);
+                FVector P=Car->GetActorLocation()-Car->GetActorRightVector()*650-Car->GetActorForwardVector()*400+FVector(0,0,220);
+                FHitResult Wall;FCollisionQueryParams Params(SCENE_QUERY_STAT(CarViewCamera),false,Car);
+                const FVector Focus=Car->GetActorLocation()+FVector(0,0,80);
+                if(W->SweepSingleByChannel(Wall,Focus,P,FQuat::Identity,ECC_Camera,FCollisionShape::MakeSphere(20),Params))P=Wall.Location+Wall.ImpactNormal*25;
                 Camera->SetActorLocationAndRotation(P,(Car->GetActorLocation()+FVector(0,0,40)-P).Rotation());
             }
             PC->SetViewTarget(Camera.Get());Stage=1;
