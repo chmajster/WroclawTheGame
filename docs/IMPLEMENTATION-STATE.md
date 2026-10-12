@@ -5,15 +5,15 @@ See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 3/10. Downloaded and verified five complete CC0 PBR sets at 2k (15 maps, 269910872 bytes) with provider MD5 and independent SHA256 locks. Existing 66-model library inspected; lamps, bins and seating can be reused. Exact source addresses/authors/licenses retained. No suitable address-specific building model found; own GIS-conforming Blender authoring next.
+Stream 3/10. Downloaded and verified five complete CC0 PBR sets at 2k (15 maps, 269900872 bytes) with provider MD5 and SHA256 locks. Existing prop library reused. Exact authors and licenses retained; original source-footprint Blender assets next.
 
-Validation and limitations: Actual acquire_city_assets.py --download PASS 18 maps total / 3 reused. Source licenses reviewed on Poly Haven license page. New materials not yet imported; native integration belongs to subsequent streams.
+Validation and limitations: Actual download PASS 18 maps total, 3 reused. Native material integration belongs to subsequent streams.
 
 ## Do zrobienia
 Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
 
 ## Następny krok
-Merge stream 3; branch feat/start-location-models from main. Author eight full source-footprint buildings plus curb, drain, bike rack, young tree and parked car; create production manifests, UVs and three LODs, then actual import through existing Pipeline.
+Merge stream 3; branch feat/start-location-models from main. Generate eight full buildings and five street props, manifest them and run Blender export/native import.
 
 ## Stan
 Stream complete; overall implementation in progress. No CI manually run.
