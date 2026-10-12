@@ -48,6 +48,7 @@ class WROCLAWTHEGAME_API ADriveableVehicle : public APawn,
     bool bAIControlled = false, bAIBrake = false;
     float AIThrottle = 0.0f, AISteering = 0.0f;
     double EnteredAt = 0, LastImpact = 0, LastHorn = 0;
+    float WheelRoll=0;
     UFUNCTION()
     void Collision(UPrimitiveComponent *Hit, AActor *Other, UPrimitiveComponent *OtherComponent,
                    FVector Impulse, const FHitResult &Result);

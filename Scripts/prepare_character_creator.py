@@ -51,8 +51,18 @@ def prepare():
         mesh = imported_mesh(model_id)
         if not isinstance(mesh, unreal.SkeletalMesh):
             raise RuntimeError(f'Character body is not a SkeletalMesh: {model_id}')
+        skeletal=unreal.get_editor_subsystem(unreal.SkeletalMeshEditorSubsystem)
+        if skeletal.get_lod_count(mesh)<2:
+            if not skeletal.regenerate_lod(mesh,2,False,False):
+                raise RuntimeError('Cannot generate character LOD: '+model_id)
+            if skeletal.get_lod_count(mesh)<2:
+                raise RuntimeError('Character LOD generation incomplete: '+model_id)
+            unreal.EditorAssetLibrary.save_loaded_asset(mesh,False)
         body.set_editor_property('mesh', mesh)
         body.set_editor_property('mesh_rotation', unreal.Rotator(0, -90, 0))
+        # These audited CC0 bodies are gameplay prototypes, not full facial-
+        # morph creator rigs. Keep that existing catalog capability flag honest.
+        body.set_editor_property('placeholder', True)
     catalog.set_editor_property('bodies', bodies)
 
     part_sources = {

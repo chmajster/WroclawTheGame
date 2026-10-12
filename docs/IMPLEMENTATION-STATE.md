@@ -12,17 +12,38 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
   (LOD 108/54/26) → FBX → UE; liczenie UCX poprawiono na osobne convex collision.
   Pełny bake PASS (439 komórek, 12 000 fasad, 244 balustrady, 740 aktorów).
   Proces generatora zakończył się kodem 0. Mapa uruchomiona w oknie `-game`.
-- Punkty 3–7: w zakresie, jeszcze niewykonane. Osobne gałęzie i PR-y w kolejności.
+- Punkt 3: wykonany, PR #134. Punkty 4–7 pozostają w zakresie.
 - Decyzja: wykorzystać istniejące GIS, postać, pojazd, populację, ekonomię i menu;
   nie zmieniać silnika ani wdrażać zastępczego frameworka gry.
-- Następny krok: scalić ukończony punkt 2, utworzyć gałąź punktu 3 z `main`.
-  Spiąć runtime locomotion w `CharacterAppearanceComponent`, bezpieczne wyjście
-  z `DriveableVehicle`, pościg/wykroczenia i kontrolę skrzyżowań. Punktów 4–7
-  nie oznaczać jako gotowych na podstawie samej mapy.
-  Nie oznaczać misji/pościgu/zapisu jako gotowych na podstawie samej mapy.
+- Punkt 2 scalony do `main` przez PR #133. Punkt 3 rozpoczęty na
+  `feat/03-district-gameplay`, draft PR #134. Pierwsza partia C++ kompiluje się.
+  Wdrożono wykroczenia/decay wanted, widoczne auta policji z dojazdem do ostatniej
+  pozycji również pieszo i kontrolą widoczności spawnu; skrzyżowania mają
+  deterministyczne pierwszeństwo. Bezpieczne wyjście uwzględnia kapsułę i ściany,
+  auto włącza silnik przy wejściu. Piesi mają reakcję na obrażenia i omijanie.
+  LocomotionAssetLibrary tworzy BlendSpace po kontroli nazw/hierarchii kości,
+  CharacterAppearanceComponent odtwarza go w runtime. Przygotowanie obu rigów
+  i sześciu klipów PASS (`Saved/DistrictLocomotionReady.ok`). Test native
+  `WTG.District.WantedDecay` PASS, końcowy UHT/UBT PASS. Poprawiono restart
+  animacji co klatkę (GetCurrentAsset zamiast serializowanego AnimationData)
+  i pozostawioną pauzę menu kampanii przy starcie GeoPreviewGameMode.
+- Kontrola runtime wykazała konkretny brak kolizji podłoża: animacja załadowana,
+  GameMode tick i streaming aktywne, ale floor trace nie trafia (postać MOVE_None).
+  `GeoMeshLibrary::BakeMesh` budował/cookował body przed ustawieniem
+  complex-as-simple; dodano jawne flagi sekcji i invalidację/re-cook body.
+  Natywny `WTG.District.GeneratedMeshCollision` potwierdził trójkąty renderu,
+  dane kolizji i gotowy cooked triangle mesh. Oba testy WTG.District PASS.
+  Mapa przebudowana z kolizją; assety animacji ponowione, dwa LOD-y postaci.
+  GameplaySmoke.log 12:07:35 UTC potwierdza WTG_DISTRICT_GAMEPLAY_READY:
+  floor=walking, locomotion=BlendSpace, cameraCollision=1, registry=nadodrze_odra.
+  Skrypt postaci jest powtarzalny i zachowuje oznaczenie CC0 modeli jako
+  prototypów kreatora (nie mają pełnego kompletu morfów twarzy).
+- Następny krok: scalić PR #134; punkt 4 na nowej gałęzi z main: misja
+  dostawy w osobnym subsystemie ze zleceniodawcą i odbiorcą, etapami,
+  restartem oraz idempotentną transakcją UWTGEconomySubsystem.
 - Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,
   os error 2). Nie deklarować wizualnego QA bez rzeczywistego dowodu.
-- Stan: w trakcie całego zakresu, punkty 1–2 wykonane; dalsze sekcje poniżej to historyczny
+- Stan: w trakcie całego zakresu, punkty 1–3 wykonane; dalsze sekcje poniżej to historyczny
   zapis wcześniejszych zakresów i nie stanowią odbioru nowego zadania.
 
 Updated: 2026-09-18

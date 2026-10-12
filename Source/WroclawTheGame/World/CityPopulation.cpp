@@ -7,6 +7,8 @@
 #include "Engine/SkeletalMesh.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
+#include "Animation/AnimSequence.h"
+#include "Animation/AnimSingleNodeInstance.h"
 
 ACityAmbientAgent::ACityAmbientAgent()
 {
@@ -23,6 +25,7 @@ ACityAmbientAgent::ACityAmbientAgent()
     PedestrianVisual->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     PedestrianVisual->SetCanEverAffectNavigation(false);
     PedestrianVisual->SetVisibility(false);
+    PedestrianVisual->VisibilityBasedAnimTickOption=EVisibilityBasedAnimTickOption::OnlyTickPoseWhenRendered;
     SetSimulationLevel(ECityAgentSimulationLevel::Dormant);
 }
 
@@ -58,6 +61,7 @@ void ACityAmbientAgent::Configure(const FCityPopulationRoute &Definition, int32 
     Route = Definition.Points;
     bVehicle = Definition.Vehicle;
     CurrentSpeed = 0.0f;
+    HurtSeconds = 0;
     const FVector Size = bVehicle ? FVector(180,80,50) : FVector(25,25,85);
     Body->SetBoxExtent(Size);
     if (bVehicle)
@@ -74,6 +78,7 @@ void ACityAmbientAgent::Configure(const FCityPopulationRoute &Definition, int32 
         PedestrianVisual->SetRelativeScale3D(FVector(1));
         PedestrianVisual->SetRelativeLocation(FVector(0,0,-97));
         PedestrianVisual->SetRelativeRotation(FRotator(0,-90,0));
+        if (WalkAnimation) PedestrianVisual->PlayAnimation(WalkAnimation,true);
         Visual->SetVisibility(false);
     }
     if (Route.Num() < 2)
@@ -105,7 +110,7 @@ void ACityAmbientAgent::Tick(float Dt)
         return;
     }
 
-    const FVector NextDirection = Delta.GetSafeNormal2D();
+    FVector NextDirection = Delta.GetSafeNormal2D();
     float DesiredSpeed = CruiseSpeed;
     FCollisionQueryParams Params(SCENE_QUERY_STAT(CityAmbientFloor), false, this);
 
@@ -124,11 +129,22 @@ void ACityAmbientAgent::Tick(float Dt)
             DesiredSpeed = ObstacleDistance <= StopDistance
                                ? 0.0f
                                : CruiseSpeed * FMath::Clamp((ObstacleDistance - StopDistance) / LookAhead, 0.15f, 1.0f);
+            if (!bVehicle && DesiredSpeed<1)
+                for (float Side:{-1.f,1.f})
+                {
+                    const FVector Avoid=(NextDirection+FVector(-NextDirection.Y,NextDirection.X,0)*Side).GetSafeNormal();
+                    FHitResult SideHit;
+                    if (!GetWorld()->SweepSingleByChannel(SideHit,GetActorLocation(),GetActorLocation()+Avoid*100,GetActorQuat(),ECC_Pawn,FCollisionShape::MakeBox(Extent),Params))
+                    {NextDirection=Avoid;DesiredSpeed=CruiseSpeed*.6f;break;}
+                }
         }
     }
 
     const float SpeedResponse = bVehicle ? 2.5f : 6.0f;
+    HurtSeconds=FMath::Max(0.f,HurtSeconds-Dt);
+    if (HurtSeconds>0) DesiredSpeed=0;
     CurrentSpeed = FMath::FInterpTo(CurrentSpeed, DesiredSpeed, Dt, SpeedResponse);
+    if (auto* Instance=PedestrianVisual->GetSingleNodeInstance()) Instance->SetPlayRate(CurrentSpeed/180.f);
     if (CurrentSpeed < 1.0f)
         return;
 
@@ -147,6 +163,12 @@ void ACityAmbientAgent::Tick(float Dt)
     const float TurnResponse = bVehicle ? 3.0f : 8.0f;
     SetActorRotation(FMath::RInterpTo(GetActorRotation(), Delta.Rotation(), Dt, TurnResponse));
     SetActorLocation(Next, SimulationLevel == ECityAgentSimulationLevel::Full);
+}
+float ACityAmbientAgent::TakeDamage(float Damage,const FDamageEvent&,AController*,AActor*)
+{
+    if (!FMath::IsFinite(Damage) || Damage<=0) return 0;
+    HurtSeconds=FMath::Min(8.f,Damage*.2f);
+    return Damage;
 }
 
 ACityPopulation::ACityPopulation()
@@ -231,6 +253,7 @@ void ACityPopulation::Tick(float Dt)
             const int32 Start = (I % 3) * (Route.Points.Num() - 1) / 3;
             if (FVector::DistSquared(Route.Points[Start], PlayerPosition) < FMath::Square(600.0))
                 continue;
+            Pool[I]->WalkAnimation=PedestrianWalk;
             Pool[I]->Configure(Route, Start, VehicleMesh, PedestrianMesh);
             AssignedRoutes[I] = RouteIndex;
         }

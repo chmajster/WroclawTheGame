@@ -18,6 +18,8 @@
 #include "Engine/World.h"
 #include "Animation/AnimationAsset.h"
 #include "Animation/AnimInstance.h"
+#include "Animation/AnimSingleNodeInstance.h"
+#include "Animation/BlendSpace1D.h"
 
 UCharacterAppearanceComponent::UCharacterAppearanceComponent()
 { PrimaryComponentTick.bCanEverTick=true; PrimaryComponentTick.bTickEvenWhenPaused=true; }
@@ -40,7 +42,7 @@ void UCharacterAppearanceComponent::ApplyAppearance(const FCharacterAppearanceDe
     TArray<FSoftObjectPath> Paths;
     auto Add=[&](const auto& Ref){ if (!Ref.IsNull()) Paths.AddUnique(Ref.ToSoftObjectPath()); };
     if (const auto* B=Catalog->Body(Appearance.BodyPreset))
-    { Add(B->Mesh); Add(B->FaceMesh); Add(B->AnimationClass); Add(B->FaceAnimationClass); Add(B->SkinMaterial); Add(B->CreatorIdle); Add(B->Walk); Add(B->Jog); Add(B->Crouch); }
+    { Add(B->Mesh); Add(B->FaceMesh); Add(B->AnimationClass); Add(B->FaceAnimationClass); Add(B->SkinMaterial); Add(B->CreatorIdle); Add(B->Walk); Add(B->Jog); Add(B->Crouch); Add(B->Locomotion);Add(B->JumpLoop); }
     auto AddPart=[&](const FAppearancePartDefinition* P){if (P) { Add(P->Mesh); Add(P->StaticMesh); Add(P->Material); }};
     AddPart(Catalog->Part(Catalog->HairStyleDefinitions,Appearance.HairStyle));
     AddPart(Catalog->Part(Catalog->BeardStyleDefinitions,Appearance.BeardStyle));
@@ -235,11 +237,20 @@ void UCharacterAppearanceComponent::TickComponent(float Dt,ELevelTick T,FActorCo
         }
         if (bPreview) VisualRoot->SetRelativeLocation(FVector::ZeroVector);
     }
-    else if (bPreview)
+    else if (Catalog)
     {
         const auto* B=Catalog->Body(Appearance.BodyPreset); if (!B) return;
-        UAnimationAsset* Anim=PreviewMovement==TEXT("Walk")?B->Walk.Get():(PreviewMovement==TEXT("Jog")?B->Jog.Get():(PreviewMovement==TEXT("Crouch")?B->Crouch.Get():B->CreatorIdle.Get()));
-        if (Anim && BodyMesh->AnimationData.AnimToPlay!=Anim) BodyMesh->PlayAnimation(Anim,true);
+        if (!bPreview && B->AnimationClass.Get()) return;
+        const bool Falling=Character && Character->GetCharacterMovement()->IsFalling();
+        UAnimationAsset* Anim=Falling?B->JumpLoop.Get():(Crouched?B->Crouch.Get():B->Locomotion.Get());
+        if (!Anim) Anim=Speed>300?B->Jog.Get():(Speed>10?B->Walk.Get():B->CreatorIdle.Get());
+        auto* Current=BodyMesh->GetSingleNodeInstance();
+        if (Anim && (!Current || Current->GetCurrentAsset()!=Anim)) BodyMesh->PlayAnimation(Anim,true);
+        if (auto* Instance=BodyMesh->GetSingleNodeInstance())
+        {
+            if (Cast<UBlendSpace1D>(Anim)) Instance->SetBlendSpacePosition(FVector(Speed,0,0));
+            else Instance->SetPlayRate(Speed>10 && !Falling?FMath::Clamp(Speed/(Crouched?140.f:180.f),.7f,1.6f):1.f);
+        }
     }
 }
 TArray<FName> UWardrobeComponent::OwnedClothing() const

@@ -31,6 +31,9 @@ void AGeoPreviewGameMode::BeginPlay()
     M->bInGame = true;
     M->bShowMenu = false;
     M->bDead = false;
+    // Controllers can open the campaign menu during actor BeginPlay before the
+    // geographic mode marks the session active. Clear that pause/input state.
+    if (auto* PC=Cast<ASliceController>(UGameplayStatics::GetPlayerController(this,0))) PC->ResumeGame();
     if (auto *P = Cast<ASliceCharacter>(UGameplayStatics::GetPlayerPawn(this, 0)))
     {
         Start = P->GetActorLocation();
@@ -63,6 +66,9 @@ void AGeoPreviewGameMode::Tick(float Dt)
     auto *P = Cast<ASliceCharacter>(UGameplayStatics::GetPlayerPawn(this, 0));
     if (!P || !P->StreamingSource->IsStreamingCompleted())
         return;
+    // Default pawn creation can happen after BeginPlay. Resolve its real spawn
+    // here instead of tracing from an unset cached anchor near world origin.
+    Start=P->GetActorLocation();
     FHitResult Hit;
     FCollisionQueryParams Params(SCENE_QUERY_STAT(GeoFloor), false, P);
     if (!GetWorld()->LineTraceSingleByChannel(Hit, Start + FVector(0, 0, 100), Start - FVector(0, 0, 400),

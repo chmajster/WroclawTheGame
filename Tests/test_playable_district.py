@@ -57,6 +57,7 @@ class DistrictTests(unittest.TestCase):
             self.assertEqual(route['points'][0], route['points'][-1])
         path = self.plan['delivery_route']
         self.assertGreater(sum(math.dist(a, b) for a, b in zip(path, path[1:])), 25000)
+        self.assertFalse(LineString([p[:2] for p in path]).buffer(90).intersects(self.obstacles))
 
 
 if __name__ == '__main__':

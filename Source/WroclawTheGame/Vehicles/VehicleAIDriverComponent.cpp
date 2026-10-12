@@ -2,6 +2,8 @@
 #include "Vehicles/DriveableVehicle.h"
 #include "Components/BoxComponent.h"
 #include "Engine/World.h"
+#include "Geography/DistrictRegistry.h"
+#include "EngineUtils.h"
 
 UVehicleAIDriverComponent::UVehicleAIDriverComponent()
 {
@@ -41,6 +43,7 @@ bool UVehicleAIDriverComponent::ConfigureRoute(const TArray<FVector> &Points, in
 void UVehicleAIDriverComponent::StopAI()
 {
     bActive = false;
+    bPursuit = false;
     Route.Reset();
     TargetIndex = 0;
     if (Vehicle)
@@ -73,23 +76,48 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
         ToTarget = Route[TargetIndex] - Vehicle->GetActorLocation();
     }
 
-    const FVector Direction = ToTarget.GetSafeNormal2D();
-    const float ForwardDot = FVector::DotProduct(Vehicle->GetActorForwardVector(), Direction);
-    const float RightDot = FVector::DotProduct(Vehicle->GetActorRightVector(), Direction);
+    if (bPursuit && FVector::Dist2D(Vehicle->GetActorLocation(),PursuitGoal)<2000)
+    {
+        FHitResult Wall;
+        FCollisionQueryParams Params(SCENE_QUERY_STAT(PursuitSteering),false,Vehicle);
+        // Keep to the source street circuit until the last short, clear approach.
+        if (!GetWorld()->LineTraceSingleByChannel(Wall,Vehicle->GetActorLocation()+FVector(0,0,60),PursuitGoal+FVector(0,0,60),ECC_WorldStatic,Params))
+            ToTarget=PursuitGoal-Vehicle->GetActorLocation();
+    }
+    const FVector SteeringDirection=ToTarget.GetSafeNormal2D();
+    const float ForwardDot = FVector::DotProduct(Vehicle->GetActorForwardVector(), SteeringDirection);
+    const float RightDot = FVector::DotProduct(Vehicle->GetActorRightVector(), SteeringDirection);
     const float Angle = FMath::Atan2(RightDot, ForwardDot);
-    const float Steering = FMath::Clamp(Angle / FMath::DegreesToRadians(48.0f), -1.0f, 1.0f);
+    const bool Reverse=ForwardDot<-.35f;
+    const float Steering = FMath::Clamp((Reverse?FMath::Atan2(-RightDot,-ForwardDot):Angle) / FMath::DegreesToRadians(48.0f), -1.0f, 1.0f);
 
     const float TurnPenalty = FMath::Clamp(FMath::Abs(Angle) / PI, 0.0f, 0.75f);
     const float DesiredSpeed = CruiseSpeed * (1.0f - TurnPenalty);
     const float ForwardSpeed = Vehicle->Speed;
 
-    bool bBrake = ForwardDot < -0.1f || FMath::Abs(ForwardSpeed) > DesiredSpeed * 1.15f;
+    bool bBrake = FMath::Abs(ForwardSpeed) > DesiredSpeed * 1.15f;
     float Throttle = bBrake ? 0.0f : FMath::Clamp((DesiredSpeed - ForwardSpeed) / FMath::Max(CruiseSpeed, 1.0f), 0.18f, 1.0f);
+    if (Reverse) { bBrake=ForwardSpeed< -400;Throttle=bBrake?0.f:-.4f; }
+    if (bPursuit && FVector::Dist2D(Vehicle->GetActorLocation(),PursuitGoal)<450) {bBrake=true;Throttle=0;}
+    // Deterministic right of way: lowest stable actor ID owns a shared junction
+    // while within its crossing radius. A car already inside always clears it.
+    for (TActorIterator<AWTGDistrictRegistry> Registry(GetWorld());Registry;++Registry)
+        for (const FVector& Junction:Registry->Intersections)
+        {
+            const float Distance=FVector::Dist2D(Vehicle->GetActorLocation(),Junction);
+            if (Distance<500 || Distance>1600 || FVector::DotProduct((Junction-Vehicle->GetActorLocation()).GetSafeNormal2D(),Vehicle->GetActorForwardVector())<.3) continue;
+            for (TActorIterator<ADriveableVehicle> Other(GetWorld());Other;++Other)
+            {
+                if (*Other==Vehicle || Other->IsHidden() || !Other->IsAIControlled()) continue;
+                const float TheirDistance=FVector::Dist2D(Other->GetActorLocation(),Junction);
+                if (TheirDistance<500 || (TheirDistance<1500 && Other->GetUniqueID()<Vehicle->GetUniqueID())) {bBrake=true;Throttle=0;break;}
+            }
+        }
 
     FCollisionQueryParams Params(SCENE_QUERY_STAT(VehicleAIObstacle), false, Vehicle);
     FHitResult Hit;
     const FVector Start = Vehicle->GetActorLocation() + FVector(0, 0, 45);
-    const FVector End = Start + Vehicle->GetActorForwardVector() * ObstacleLookAhead;
+    const FVector End = Start + Vehicle->GetActorForwardVector() * ObstacleLookAhead * (Reverse?-1:1);
     if (GetWorld()->SweepSingleByChannel(
             Hit, Start, End, Vehicle->GetActorQuat(), ECC_Pawn,
             FCollisionShape::MakeBox(FVector(170, 70, 55)), Params))

@@ -36,10 +36,13 @@ class WROCLAWTHEGAME_API ACityAmbientAgent : public AActor
     void Configure(const FCityPopulationRoute &Definition, int32 StartIndex, class UStaticMesh *VehicleMesh, class USkeletalMesh *PedestrianMesh);
     void SetSimulationLevel(ECityAgentSimulationLevel Level);
     ECityAgentSimulationLevel GetSimulationLevel() const { return SimulationLevel; }
+    virtual float TakeDamage(float Damage,const FDamageEvent& Event,AController* Instigator,AActor* Causer) override;
+    UPROPERTY() TObjectPtr<class UAnimSequence> WalkAnimation;
 
   private:
     ECityAgentSimulationLevel SimulationLevel = ECityAgentSimulationLevel::Dormant;
     float CurrentSpeed = 0.0f;
+    float HurtSeconds = 0;
 };
 
 UCLASS()
@@ -61,6 +64,7 @@ class WROCLAWTHEGAME_API ACityPopulation : public AActor
     float TrafficActivationRadius = 12000.0f;
     UPROPERTY(EditAnywhere) TObjectPtr<class UStaticMesh> VehicleMesh;
     UPROPERTY(EditAnywhere) TObjectPtr<class USkeletalMesh> PedestrianMesh;
+    UPROPERTY(EditAnywhere) TObjectPtr<class UAnimSequence> PedestrianWalk;
     UPROPERTY(EditAnywhere) TObjectPtr<class UStaticMesh> TrafficBodyMesh;
     UPROPERTY(EditAnywhere) TObjectPtr<class UStaticMesh> TrafficWheelMesh;
     virtual void Tick(float DeltaTime) override;
