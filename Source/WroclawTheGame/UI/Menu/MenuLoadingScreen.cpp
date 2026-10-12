@@ -12,6 +12,9 @@
 // No world/UObject reads: MoviePlayer can paint this while the game thread loads.
 class SMenuRiverIllustration : public SLeafWidget
 {
+public:
+    SLATE_BEGIN_ARGS(SMenuRiverIllustration) {} SLATE_END_ARGS()
+    void Construct(const FArguments&) {}
     virtual FVector2D ComputeDesiredSize(float) const override { return FVector2D(1920,1080); }
     virtual int32 OnPaint(const FPaintArgs&,const FGeometry& G,const FSlateRect&,FSlateWindowElementList& Out,int32 L,const FWidgetStyle&,bool) const override
     {
