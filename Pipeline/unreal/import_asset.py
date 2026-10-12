@@ -40,6 +40,9 @@ def import_task(filename: Path, destination: str, static_mesh: bool = False):
         options.set_editor_property("import_textures", False)
         static_options = options.get_editor_property("static_mesh_import_data")
         static_options.set_editor_property("combine_meshes", True)
+        # Blender's metre scene is encoded in FBX unit metadata. Without this
+        # UE treats metre coordinates as centimetres and produces 1:100 props.
+        static_options.set_editor_property("convert_scene_unit", True)
         static_options.set_editor_property("generate_lightmap_u_vs", True)
         static_options.set_editor_property("auto_generate_collision", False)
         task.set_editor_property("options", options)
@@ -200,7 +203,13 @@ def prepare() -> None:
     if not unreal.EditorAssetLibrary.save_loaded_asset(base_mesh, False):
         raise RuntimeError(f"Cannot save {expected_path}")
 
+    bounds=base_mesh.get_bounds()
+    actual_height_cm=bounds.box_extent.z*2
+    expected_height_cm=manifest.get('dimensions',{}).get('height_m',0)*100
+    if expected_height_cm and not expected_height_cm*.8<=actual_height_cm<=expected_height_cm*1.2:
+        raise RuntimeError(f'Imported asset scale mismatch: height {actual_height_cm:.2f} cm, expected {expected_height_cm:.2f} cm')
     report = {
+        "height_cm":actual_height_cm,
         "asset_id": asset_id,
         "mesh": expected_path,
         "lods": integrated_lods,

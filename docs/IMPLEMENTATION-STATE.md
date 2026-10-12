@@ -63,6 +63,9 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
   Autorska rama okienna w Pipeline/assets/nadodrze/window-frame.asset.json:
   OBJ/MTL → Blender LOD 96/48/24 → UE trzy LOD, NoCollision (source walls blokują).
   Okna mają osobne szkło PBR i ramę, instancing i skale z source openings.
+- Naprawiono jednostki FBX: convert_scene_unit=True (wcześniej 1:100).
+  Wysokość ramy UE 150 cm, balustrady 110 cm; importer i presentation sprawdzają
+  wysokości deklarowane w manifestach. Końcowy bake po konwersji PASS.
   Zapis nagrody i pełna sesja należą do punktów 6–7.
 - Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,
   os error 2). Nie deklarować wizualnego QA bez rzeczywistego dowodu.

@@ -37,6 +37,12 @@ def prepare():
     director.set_editor_property('district_outdoor',True)
     director.set_editor_property('follow_weather',False)
     plan=json.loads((ROOT/'Saved/PlayableDistrict/district.json').read_text(encoding='utf-8'))
+    heights={}
+    for identifier,expected in (('nadodrze-river-railing',110),('nadodrze-window-frame',150)):
+        record=json.loads((ROOT/f'Saved/Pipeline/import/{identifier}.json').read_text(encoding='utf-8'))
+        mesh=unreal.load_asset(record['mesh']);height=mesh.get_bounds().box_extent.z*2
+        if abs(height-expected)>expected*.2:raise RuntimeError('Pipeline metric scale mismatch: '+identifier)
+        heights[identifier]=height
     imports=json.loads((ROOT/'Saved/FreeModelImportMap.json').read_text(encoding='utf-8'))
     # Reuse licensed meshes already imported by the repository asset catalog.
     # Their real bounds define metre dimensions rather than guessed unit scales.
@@ -56,7 +62,7 @@ def prepare():
         component.set_static_mesh(mesh);component.set_collision_profile_name('BlockAll')
         actor.set_actor_scale3d(unreal.Vector(scale,scale,scale));placed.append(item)
     if not levels.save_current_level():raise RuntimeError('Cannot save dressed map')
-    report={'status':'Prepared','audio':5,'props':len(placed),
+    report={'status':'Prepared','audio':5,'props':len(placed),'pipeline_height_cm':heights,
             'exposure_ev':[4,14],'pbr':'Existing cm-scale triplanar CC0/procedural profiles',
             'nanite':'Not needed for the bounded low-poly slice; HISM facade batches retained'}
     MARKER.write_text(json.dumps(report),encoding='utf-8')
