@@ -4,6 +4,7 @@
 #include "MeshDescription.h"
 #include "StaticMeshAttributes.h"
 #include "PhysicsEngine/BodySetup.h"
+#include "StaticMeshResources.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "Misc/PackageName.h"
 #include "UObject/Package.h"
@@ -59,7 +60,18 @@ UStaticMesh *UGeoMeshLibrary::BakeMesh(const FString &Path, const TArray<FVector
     Descriptions.Add(&Description);
     Mesh->BuildFromMeshDescriptions(Descriptions, Params);
     Mesh->CreateBodySetup();
+    // The editor build can cook a body before we switch to complex-as-simple.
+    // Invalidate that cached body and explicitly retain collision on sections.
+    for (int32 I=0;I<Mesh->GetRenderData()->LODResources[0].Sections.Num();++I)
+    {
+        auto Info=Mesh->GetSectionInfoMap().Get(0,I);
+        Info.bEnableCollision=true;
+        Mesh->GetSectionInfoMap().Set(0,I,Info);
+        Mesh->GetRenderData()->LODResources[0].Sections[I].bEnableCollision=true;
+    }
     Mesh->GetBodySetup()->CollisionTraceFlag = CTF_UseComplexAsSimple;
+    Mesh->GetBodySetup()->bDoubleSidedGeometry=true;
+    Mesh->GetBodySetup()->InvalidatePhysicsData();
     Mesh->GetBodySetup()->CreatePhysicsMeshes();
     FAssetRegistryModule::AssetCreated(Mesh);
     Mesh->MarkPackageDirty();

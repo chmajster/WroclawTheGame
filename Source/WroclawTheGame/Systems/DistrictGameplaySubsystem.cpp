@@ -12,6 +12,8 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/GameModeBase.h"
+#include "Components/WorldPartitionStreamingSourceComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Mission/SliceMission.h"
 #include "Engine/GameInstance.h"
@@ -62,6 +64,21 @@ void UDistrictGameplaySubsystem::Tick(float Dt)
     if (!Registry)
         for (TActorIterator<AWTGDistrictRegistry> It(GetWorld());It;++It) { Registry=*It;break; }
     if (!Registry || UGameplayStatics::IsGamePaused(this)) return;
+    if (!bLoggedReady && GetWorld()->GetTimeSeconds()>NextReadyDiagnostic)
+    {
+        NextReadyDiagnostic=GetWorld()->GetTimeSeconds()+10;
+        if (auto* Player=Cast<ASliceCharacter>(UGameplayStatics::GetPlayerPawn(this,0)))
+        {
+            UE_LOG(LogTemp,Display,TEXT("WTG_DISTRICT_WAITING position=%s movement=%d appearanceLoading=%d placeholder=%d animation=%s"),*Player->GetActorLocation().ToString(),int32(Player->GetCharacterMovement()->MovementMode),Player->Appearance->bLoading,Player->Appearance->bUsingPlaceholder,Player->Appearance->BodyMesh && Player->Appearance->BodyMesh->GetSingleNodeInstance()?*GetNameSafe(Player->Appearance->BodyMesh->GetSingleNodeInstance()->GetCurrentAsset()):TEXT("none"));
+            FHitResult Floor;
+            FCollisionQueryParams Params(SCENE_QUERY_STAT(DistrictStartupDiagnosis),false,Player);
+            const FVector Position=Player->GetActorLocation();
+            const bool Found=GetWorld()->LineTraceSingleByChannel(Floor,Position+FVector(0,0,100),Position-FVector(0,0,450),ECC_Visibility,Params);
+            bool Blocked=false;
+            if (Found) Blocked=GetWorld()->OverlapBlockingTestByChannel(Floor.ImpactPoint+FVector(0,0,Player->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()+4),FQuat::Identity,ECC_Pawn,FCollisionShape::MakeCapsule(Player->GetCapsuleComponent()->GetScaledCapsuleRadius(),Player->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()),Params);
+            UE_LOG(LogTemp,Display,TEXT("WTG_DISTRICT_FLOOR_DIAG floor=%d actor=%s point=%s capsuleBlocked=%d gameModeTick=%d streamingComplete=%d"),Found,*GetNameSafe(Floor.GetActor()),*Floor.ImpactPoint.ToString(),Blocked,GetWorld()->GetAuthGameMode()->IsActorTickEnabled(),Player->StreamingSource->IsStreamingCompleted());
+        }
+    }
     if (!bLoggedReady)
         if (auto* Player=Cast<ASliceCharacter>(UGameplayStatics::GetPlayerPawn(this,0)))
             if (Player->GetCharacterMovement()->MovementMode==MOVE_Walking && Player->Appearance->BodyMesh && Player->Appearance->BodyMesh->GetSingleNodeInstance() && Cast<UBlendSpace1D>(Player->Appearance->BodyMesh->GetSingleNodeInstance()->GetCurrentAsset()))

@@ -27,9 +27,16 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
   `WTG.District.WantedDecay` PASS, końcowy UHT/UBT PASS. Poprawiono restart
   animacji co klatkę (GetCurrentAsset zamiast serializowanego AnimationData)
   i pozostawioną pauzę menu kampanii przy starcie GeoPreviewGameMode.
-- Następny krok: potwierdzić marker `WTG_DISTRICT_GAMEPLAY_READY` w
-  `Saved/Logs/GameplaySmoke.log`, zakończyć proces własnego testu, zatwierdzić
-  assety/korekty i scalić PR #134. Rozpocząć punkt 4 na nowej gałęzi: misja
+- Kontrola runtime wykazała konkretny brak kolizji podłoża: animacja załadowana,
+  GameMode tick i streaming aktywne, ale floor trace nie trafia (postać MOVE_None).
+  `GeoMeshLibrary::BakeMesh` budował/cookował body przed ustawieniem
+  complex-as-simple; dodano jawne flagi sekcji i invalidację/re-cook body.
+  Natywny `WTG.District.GeneratedMeshCollision` sprawdza trójkąty renderu,
+  dane kolizji i gotowy cooked triangle mesh. Ta poprawka nie jest jeszcze odebrana.
+- Następny krok: zakończyć kompilację, uruchomić dwa testy `WTG.District`,
+  ponowić `prepare_playable_district.py` oraz `prepare_district_locomotion.py`
+  (niezbędny nowy bake kolizji mapy), potwierdzić marker gotowości w
+  GameplaySmoke.log i dopiero scalić PR #134. Punkt 4 na nowej gałęzi: misja
   dostawy w osobnym subsystemie ze zleceniodawcą i odbiorcą, etapami,
   restartem oraz idempotentną transakcją UWTGEconomySubsystem.
 - Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,

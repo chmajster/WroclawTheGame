@@ -24,4 +24,5 @@ private:
     float Accumulator=0;
     double NextPoliceAttempt=0;
     bool bLoggedReady=false;
+    double NextReadyDiagnostic=5;
 };

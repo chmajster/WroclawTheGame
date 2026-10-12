@@ -71,7 +71,7 @@ bool UVehiclePursuitSubsystem::StartPursuit(int32 PursuerCount)
         const float HalfFov=PC->PlayerCameraManager?PC->PlayerCameraManager->GetFOVAngle()*.5f:50.f;
         for (int32 Offset=5+I*7;Offset<CycleLength+5+I*7;++Offset)
         {
-            const int32 Candidate=(NearestIndex-Offset+CycleLength*3)%CycleLength;
+            const int32 Candidate=((NearestIndex-Offset)%CycleLength+CycleLength)%CycleLength;
             const FVector Point=BestRoute->Points[Candidate]+FVector(0,0,85);
             if (FVector::DistSquared2D(Point,PlayerVehicle->GetActorLocation())<FMath::Square(3500.0)) continue;
             FCollisionQueryParams Params(SCENE_QUERY_STAT(PoliceSpawnVisibility),false,PlayerVehicle);
