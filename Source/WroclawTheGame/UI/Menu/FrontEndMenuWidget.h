@@ -9,6 +9,7 @@ class WROCLAWTHEGAME_API UFrontEndMenuWidget : public UUserWidget
 public:
     UFrontEndMenuWidget(const FObjectInitializer& Initializer);
     void Refresh();
+    TSharedPtr<class SMenuShell> SlateMenu() const { return Shell; }
     virtual void ReleaseSlateResources(bool ReleaseChildren) override;
 protected:
     virtual TSharedRef<SWidget> RebuildWidget() override;

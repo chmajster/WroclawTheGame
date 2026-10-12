@@ -8,11 +8,14 @@ public:
     SLATE_BEGIN_ARGS(SMenuShell) {} SLATE_ARGUMENT(UMenuFlowSubsystem*,Flow) SLATE_END_ARGS()
     void Construct(const FArguments& Args);
     virtual ~SMenuShell() override;
-    void Refresh();
+    void Refresh(bool PreserveFocus=false);
     virtual bool SupportsKeyboardFocus() const override { return true; }
     virtual FReply OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E) override;
     virtual FReply OnPreviewMouseButtonDown(const FGeometry& G,const FPointerEvent& E) override;
     void SelectPage(int32 Page);
+    void PreviewVideoMode(FIntPoint Resolution,int32 WindowMode);
+    bool IsVideoConfirmationPending() const { return VideoPending; }
+    int32 ActivePage() const { return Page; }
 private:
     TWeakObjectPtr<UMenuFlowSubsystem> Flow;
     TSharedPtr<class SOverlay> Layers;
@@ -27,14 +30,17 @@ private:
     FName CapturingBinding;
     bool CapturingGamepad=false;
     double VideoConfirmDeadline=0;
+    double VideoApplyDeadline=0,BlurSuspendedUntil=0;
     bool VideoPending=false;
     FIntPoint PendingResolution;
+    FIntPoint PreviousResolution;
+    int32 PreviousWindowMode=1;
     int32 PendingWindowMode=1;
     virtual void Tick(const FGeometry& G,double Time,float Dt) override;
     void BeginVideoChange();
     void RevertVideoChange();
     TSharedRef<SWidget> Choice(const FString& Label,const TArray<FString>& Values,int32 Selected,TFunction<void(int32)> Changed);
-    TSharedRef<SWidget> ValueSlider(const FString& Label,TAttribute<float> Value,TFunction<void(float)> Changed);
+    TSharedRef<SWidget> ValueSlider(const FString& Label,TAttribute<float> Value,TFunction<void(float)> Changed,TAttribute<FString> Readout=TAttribute<FString>());
     TSharedRef<SWidget> ValueToggle(const FString& Label,TAttribute<bool> Value,TFunction<void(bool)> Changed);
     FString DialogTitle,DialogBody;
     TFunction<void()> Pending;
@@ -51,5 +57,5 @@ private:
     void BuildCharacter();
     void BuildStats();
     TSharedPtr<SWidget> MapView;
-    void FocusFirst();
+    void FocusFirst(int32 Preferred=0);
 };

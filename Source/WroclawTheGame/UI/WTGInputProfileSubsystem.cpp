@@ -4,6 +4,27 @@
 #include "Character/SliceCharacter.h"
 #include "Vehicles/DriveableVehicle.h"
 #include "Engine/GameInstance.h"
+#include "UI/SliceController.h"
+
+static bool WTGReservedInputKey(FKey K)
+{
+    return K==EKeys::Escape || K==EKeys::F5 || K==EKeys::F9 || K==EKeys::Enter || K==EKeys::N || K==EKeys::L || K==EKeys::Q || K==EKeys::Gamepad_Special_Right;
+}
+FString UWTGInputProfileSubsystem::DisplayKey(FKey K)
+{
+    static const TMap<FKey,FString> Names={
+        {EKeys::Gamepad_FaceButton_Bottom,TEXT("PAD A")},{EKeys::Gamepad_FaceButton_Right,TEXT("PAD B")},
+        {EKeys::Gamepad_FaceButton_Left,TEXT("PAD X")},{EKeys::Gamepad_FaceButton_Top,TEXT("PAD Y")},
+        {EKeys::Gamepad_LeftShoulder,TEXT("PAD LB")},{EKeys::Gamepad_RightShoulder,TEXT("PAD RB")},
+        {EKeys::Gamepad_LeftThumbstick,TEXT("PAD L3")},{EKeys::Gamepad_RightThumbstick,TEXT("PAD R3")},
+        {EKeys::Gamepad_DPad_Up,TEXT("D-pad ↑")},{EKeys::Gamepad_DPad_Down,TEXT("D-pad ↓")},
+        {EKeys::Gamepad_DPad_Left,TEXT("D-pad ←")},{EKeys::Gamepad_DPad_Right,TEXT("D-pad →")},
+        {EKeys::Gamepad_Special_Left,TEXT("PAD WSTECZ")},{EKeys::SpaceBar,TEXT("SPACJA")},
+        {EKeys::LeftMouseButton,TEXT("LPM")},{EKeys::RightMouseButton,TEXT("PPM")},{EKeys::MiddleMouseButton,TEXT("ŚPM")},
+        {EKeys::LeftShift,TEXT("LEWY SHIFT")},{EKeys::LeftControl,TEXT("LEWY CTRL")},{EKeys::LeftAlt,TEXT("LEWY ALT")},
+        {EKeys::NumPadZero,TEXT("NUM 0")},{EKeys::Add,TEXT("NUM +")},{EKeys::Multiply,TEXT("NUM *")}};
+    if(const auto* Name=Names.Find(K))return *Name;return K.GetDisplayName().ToString();
+}
 
 const TArray<FWTGInputBinding>& UWTGInputProfileSubsystem::Bindings()
 {
@@ -32,7 +53,14 @@ const TArray<FWTGInputBinding>& UWTGInputProfileSubsystem::Bindings()
         {"CarHandbrake",TEXT("Samoch\u00f3d: hamulec r\u0119czny"),EKeys::SpaceBar,EKeys::Gamepad_FaceButton_Left,"vehicle"},
         {"CarEngine",TEXT("Samoch\u00f3d: silnik"),EKeys::NumPadZero,EKeys::Gamepad_FaceButton_Top,"vehicle"},
         {"CarLights",TEXT("Samoch\u00f3d: \u015bwiat\u0142a"),EKeys::Add,EKeys::Gamepad_DPad_Up,"vehicle"},
-        {"CarHorn",TEXT("Samoch\u00f3d: klakson"),EKeys::Multiply,EKeys::Gamepad_RightThumbstick,"vehicle"}
+        {"CarHorn",TEXT("Samoch\u00f3d: klakson"),EKeys::Multiply,EKeys::Gamepad_RightThumbstick,"vehicle"},
+        {"Retry",TEXT("Ponów dostawę / odzyskaj postać"),EKeys::R,FKey(),"global"},
+        {"QuestLog",TEXT("Dziennik zadań"),EKeys::B,FKey(),"global"},
+        {"Inventory",TEXT("Ekwipunek"),EKeys::I,FKey(),"global"},
+        {"Investigation",TEXT("Śledztwo"),EKeys::J,FKey(),"global"},
+        {"Hint",TEXT("Wskazówka"),EKeys::H,FKey(),"global"},
+        {"Achievements",TEXT("Osiągnięcia"),EKeys::K,FKey(),"global"},
+        {"Context",TEXT("Akcja kontekstowa kampanii"),EKeys::C,FKey(),"global"}
     };
     return Values;
 }
@@ -55,9 +83,14 @@ void UWTGInputProfileSubsystem::Initialize(FSubsystemCollectionBase& C)
         FString Value;const TCHAR* Section=Pad?TEXT("WTG.Input.Gamepad"):TEXT("WTG.Input.Keyboard");
         if(GConfig->GetString(Section,*B.Id.ToString(),Value,GGameUserSettingsIni)){
             const FKey K{FName(*Value)};
-            if(K.IsValid() && K.IsGamepadKey()==Pad && K!=EKeys::Escape && K!=EKeys::F5 && K!=EKeys::F9)
+            if(K.IsValid() && !K.IsAnalog() && K.IsGamepadKey()==Pad && !WTGReservedInputKey(K) && (!Pad || B.Gamepad.IsValid()))
                 (Pad?Profile.GamepadOverrides:Profile.KeyboardOverrides).Add(B.Id,K);
         }
+    }
+    // Reject hand-edited conflicts; valid profiles written by the UI already satisfy this.
+    for(bool Pad:{false,true})for(const auto& B:Bindings()){
+        auto& Overrides=Pad?Profile.GamepadOverrides:Profile.KeyboardOverrides;if(!Overrides.Contains(B.Id))continue;
+        for(const auto& Other:Bindings())if(B.Id!=Other.Id && (B.Context==Other.Context || B.Context=="global" || Other.Context=="global") && Key(B.Id,Pad)==Key(Other.Id,Pad)){Overrides.Remove(B.Id);break;}
     }
 }
 void UWTGInputProfileSubsystem::SaveProfile()
@@ -76,6 +109,7 @@ void UWTGInputProfileSubsystem::ApplyToPlayer()
 {
     auto* Pawn=UGameplayStatics::GetPlayerPawn(GetGameInstance(),0);auto* P=Cast<ASliceCharacter>(Pawn);
     if(auto* Car=Cast<ADriveableVehicle>(Pawn))P=Car->Driver;if(P)P->ApplyInputProfile();
+    if(auto* PC=Cast<ASliceController>(UGameplayStatics::GetPlayerController(GetGameInstance(),0)))PC->ApplyShortcutProfile();
 }
 void UWTGInputProfileSubsystem::ToggleInvertMouse(){Profile.bInvertMouseY=!Profile.bInvertMouseY;SaveProfile();}
 void UWTGInputProfileSubsystem::ResetToDefaults(){Profile=FWTGInputProfile();SaveProfile();ApplyToPlayer();}
@@ -83,9 +117,9 @@ bool UWTGInputProfileSubsystem::Rebind(TMap<FName,FKey>& Map,FName Id,FKey K)
 {
     const bool Pad=&Map==&Profile.GamepadOverrides;
     const auto* Binding=Bindings().FindByPredicate([Id](const FWTGInputBinding& B){return B.Id==Id;});
-    if(!Binding || !K.IsValid() || K.IsGamepadKey()!=Pad || K.IsAnalog() || K==EKeys::Escape || K==EKeys::F5 || K==EKeys::F9 || K==EKeys::Gamepad_Special_Right)return false;
+    if(!Binding || !K.IsValid() || K.IsGamepadKey()!=Pad || K.IsAnalog() || WTGReservedInputKey(K))return false;
     if(Pad && !Binding->Gamepad.IsValid())return false;
-    for(const auto& B:Bindings())if(B.Id!=Id && B.Context==Binding->Context && Key(B.Id,Pad)==K)return false;
+    for(const auto& B:Bindings())if(B.Id!=Id && (B.Context==Binding->Context || B.Context=="global" || Binding->Context=="global") && Key(B.Id,Pad)==K)return false;
     Map.Add(Id,K);SaveProfile();ApplyToPlayer();return true;
 }
 bool UWTGInputProfileSubsystem::RebindKeyboard(FName Id,FKey K){return Rebind(Profile.KeyboardOverrides,Id,K);}

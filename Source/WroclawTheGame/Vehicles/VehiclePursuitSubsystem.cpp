@@ -122,17 +122,20 @@ bool UVehiclePursuitSubsystem::StartPursuit(int32 PursuerCount)
 
 void UVehiclePursuitSubsystem::StopPursuit()
 {
-    for (auto &Pursuer : Pursuers)
-        if (Pursuer)
-        {
-            Pursuer->DeactivateTraffic();
-            Pursuer->Destroy();
-        }
+    // Actor destruction invokes EndPlay synchronously. Detach the list first
+    // so cleanup callbacks cannot mutate an array we are iterating.
+    const auto RetiringPursuers = MoveTemp(Pursuers);
     Pursuers.Reset();
     State = EVehiclePursuitState::Inactive;
     LastKnown = FVector::ZeroVector;
     LastSeenAt = -1000.0;
     Accumulator = 0.0f;
+    for (const auto &Pursuer : RetiringPursuers)
+        if (Pursuer)
+        {
+            Pursuer->DeactivateTraffic();
+            Pursuer->Destroy();
+        }
 }
 
 bool UVehiclePursuitSubsystem::HasVisualContact(
@@ -155,13 +158,7 @@ bool UVehiclePursuitSubsystem::HasVisualContact(
 
 void UVehiclePursuitSubsystem::EnterLost()
 {
-    for (auto &Pursuer : Pursuers)
-        if (Pursuer)
-        {
-            Pursuer->DeactivateTraffic();
-            Pursuer->Destroy();
-        }
-    Pursuers.Reset();
+    StopPursuit();
     State = EVehiclePursuitState::Lost;
 }
 

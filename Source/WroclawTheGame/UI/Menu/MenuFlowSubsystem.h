@@ -37,6 +37,7 @@ public:
     class UWorld* MenuWorld() const;
     float TransitionOpacity=1;
     bool IsTransitioning() const { return bool(DeferredOperation); }
+    TSharedPtr<class SMenuShell> SlateMenu() const;
     void ApplicationActivationChanged(bool Active);
 private:
     UPROPERTY() TObjectPtr<class UFrontEndMenuWidget> Widget;
@@ -48,8 +49,11 @@ private:
     TWeakObjectPtr<class APawn> LastTrackedPawn;
     FVector LastPosition=FVector::ZeroVector;
     FVector CameraBase,CameraLook;
+    TArray<TWeakObjectPtr<class AActor>> HiddenFrontendActors;
     double CameraSeconds=0,AudioElapsed=0;
     float AppliedFrameCap=-1,TransitionSeconds=0;
+    int32 PreviousVirtualAccept=-1;
+    void SetRawSlateAccept(bool Enabled);
     TFunction<void()> DeferredOperation;
     bool ExecutingTransition=false;
     FDelegateHandle ActivationHandle,LoadHandle;

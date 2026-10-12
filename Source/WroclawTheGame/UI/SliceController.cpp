@@ -20,6 +20,8 @@
 #include "Mission/DistrictDeliverySubsystem.h"
 #include "Systems/DistrictGameplaySubsystem.h"
 #include "Save/DistrictSaveSubsystem.h"
+#include "UI/WTGInputProfileSubsystem.h"
+#include "Character/CharacterAppearanceComponent.h"
 void ASliceController::BeginPlay()
 {
     Super::BeginPlay();
@@ -81,19 +83,20 @@ void ASliceController::SetupInputComponent()
     };
     Bind(EKeys::Escape, &ASliceController::Escape);
     Bind(EKeys::Gamepad_Special_Right, &ASliceController::Escape);
-    Bind(EKeys::R, &ASliceController::RetryDistrict);
+    auto* InputProfile=GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>();
+    Bind(InputProfile->Key("Retry"), &ASliceController::RetryDistrict);
     Bind(EKeys::F5, &ASliceController::SaveDistrict);
     Bind(EKeys::F9, &ASliceController::LoadDistrict);
     Bind(EKeys::Enter, &ASliceController::Confirm);
     Bind(EKeys::N, &ASliceController::NewGame);
     Bind(EKeys::L, &ASliceController::LoadGame);
     Bind(EKeys::Q, &ASliceController::Quit);
-    Bind(EKeys::B, &ASliceController::QuestLog);
-    Bind(EKeys::I, &ASliceController::Inventory);
-    Bind(EKeys::J, &ASliceController::Investigation);
-    Bind(EKeys::H, &ASliceController::Hint);
-    Bind(EKeys::K, &ASliceController::Achievements);
-    Bind(EKeys::C, &ASliceController::ContextAction);
+    Bind(InputProfile->Key("QuestLog"), &ASliceController::QuestLog);
+    Bind(InputProfile->Key("Inventory"), &ASliceController::Inventory);
+    Bind(InputProfile->Key("Investigation"), &ASliceController::Investigation);
+    Bind(InputProfile->Key("Hint"), &ASliceController::Hint);
+    Bind(InputProfile->Key("Achievements"), &ASliceController::Achievements);
+    Bind(InputProfile->Key("Context"), &ASliceController::ContextAction);
     Bind(EKeys::BackSpace, &ASliceController::Backspace);
     Bind(EKeys::Up, &ASliceController::ScrollUp);
     Bind(EKeys::Down, &ASliceController::ScrollDown);
@@ -139,6 +142,7 @@ void ASliceController::SetupInputComponent()
         Bind(Pad[I], Functions[I]);
     }
 }
+void ASliceController::ApplyShortcutProfile(){if(InputComponent){InputComponent->KeyBindings.Reset();SetupInputComponent();}}
 void ASliceController::Suspend(bool bPause)
 {
     SetPause(bPause);
@@ -346,7 +350,10 @@ bool ASliceController::StartCreatedCampaign()
     Creator->bEditing=false; Creator->bSummary=false;
     CharacterCreatorWidget->RemoveFromParent(); CharacterCreatorWidget=nullptr;
     GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>()->CreatedSession();
-    SetInputMode(FInputModeGameOnly()); bShowMouseCursor=false; Reload(); return true;
+    SetInputMode(FInputModeGameOnly()); bShowMouseCursor=false;
+    if(GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()){
+        if(auto* CharacterPawn=Cast<ASliceCharacter>(GetPawn()))CharacterPawn->Appearance->ApplyAppearance(Creator->Committed.PlayerAppearanceData);
+    }else Reload();return true;
 }
 void ASliceController::LoadGame()
 {

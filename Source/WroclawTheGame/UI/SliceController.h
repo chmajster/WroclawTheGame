@@ -9,6 +9,7 @@ class WROCLAWTHEGAME_API ASliceController : public APlayerController
   public:
     virtual void SetupInputComponent() override;
     virtual void BeginPlay() override;
+    void ApplyShortcutProfile();
     void OpenPlayerMenu();
     void ResumeGame();
     UPROPERTY() TObjectPtr<class UPlayerMenuWidget> PlayerMenuWidget;

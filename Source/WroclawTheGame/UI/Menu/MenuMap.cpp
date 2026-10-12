@@ -16,7 +16,7 @@ void SMenuMap::Construct(const FArguments& A)
     if(Flow.IsValid() && Flow->MenuWorld())if(auto* R=Flow->MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->GetRegistry()){
         const FVector Start=Flow->Controller() && Flow->Controller()->GetPawn()?Flow->Controller()->GetPawn()->GetActorLocation():R->PlayerStart;
         Center=FVector2D((Start+R->DeliveryPoint)*.5);
-        Width=FMath::Max(60000.,FMath::Max(FMath::Abs(Start.Y-R->DeliveryPoint.Y)*3.5,FMath::Abs(Start.X-R->DeliveryPoint.X)*1.5));
+        Width=FMath::Max(60000.,FMath::Max(FMath::Abs(Start.Y-R->DeliveryPoint.Y)*4.5,FMath::Abs(Start.X-R->DeliveryPoint.X)*1.5));
     }
 }
 FVector2D SMenuMap::Project(const FVector& P,const FVector2D& Size) const
@@ -35,11 +35,20 @@ int32 SMenuMap::OnPaint(const FPaintArgs& Args,const FGeometry& G,const FSlateRe
     auto* R=Flow->MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->GetRegistry();
     if(R)for(const auto& Street:R->Streets){TArray<FVector2D> Points;for(const auto& P:Street.Points)Points.Add(Project(P,Size));
         if(Points.Num()>1){Line(Points,Street.bWalkway?FLinearColor(.18,.21,.23,1):FLinearColor(.46,.48,.46,1),Street.bWalkway?2.f:7.f);}}
+    TArray<FSlateRect> LabelRects;
     auto Mark=[&](const FVector& World,const FString& Name,FLinearColor Color){
         const FVector2D P=Project(World,Size);
+        if(P.X<0 || P.X>Size.X || P.Y<0 || P.Y>Size.Y)return;
         FSlateDrawElement::MakeBox(Out,Layer+3,G.ToPaintGeometry(FVector2D(12),FSlateLayoutTransform(P-FVector2D(6))),FCoreStyle::Get().GetBrush("WhiteBrush"),ESlateDrawEffect::None,Color);
-        const FVector2D Offset=Name==TEXT("TY")?FVector2D(-40,-28):Name==TEXT("SAMOCHÓD")?FVector2D(12,18):FVector2D(12,-10);
-        FSlateDrawElement::MakeText(Out,Layer+3,G.ToPaintGeometry(FVector2D(240,25),FSlateLayoutTransform(P+Offset)),Name,WTGMenu::Font(16,true),ESlateDrawEffect::None,Color);
+        const float LabelWidth=FMath::Min(float(Size.X-24),float(Name.Len()*11+16));
+        FVector2D Label(FMath::Clamp(P.X+16,12.,Size.X-LabelWidth-12),FMath::Clamp(P.Y-12,12.,Size.Y-30));
+        for(int32 I=0;I<20;++I){FSlateRect Rect(Label.X,Label.Y,Label.X+LabelWidth,Label.Y+26);
+            if(!LabelRects.ContainsByPredicate([&](const FSlateRect& Rct){return FSlateRect::DoRectanglesIntersect(Rect,Rct);}))break;
+            Label.Y-=30;if(Label.Y<12){Label.X=FMath::Clamp(P.X-LabelWidth-16,12.,Size.X-LabelWidth-12);Label.Y=FMath::Clamp(P.Y+26,12.,Size.Y-30);}}
+        LabelRects.Add(FSlateRect(Label.X,Label.Y,Label.X+LabelWidth,Label.Y+26));
+        Line({P,Label+FVector2D(0,12)},Color.CopyWithNewOpacity(.35f),1);
+        FSlateDrawElement::MakeBox(Out,Layer+2,G.ToPaintGeometry(FVector2D(LabelWidth,26),FSlateLayoutTransform(Label-FVector2D(4,0))),FCoreStyle::Get().GetBrush("WhiteBrush"),ESlateDrawEffect::None,WTGMenu::Ink);
+        FSlateDrawElement::MakeText(Out,Layer+3,G.ToPaintGeometry(FVector2D(LabelWidth,25),FSlateLayoutTransform(Label)),Name,WTGMenu::Font(16,true),ESlateDrawEffect::None,Color);
     };
     if(R){Mark(R->MeetingPoint,TEXT("MAJA / PRACOWNIA"),WTGMenu::Accent);
         Mark(R->DeliveryPoint,TEXT("OLEK / BULWAR"),WTGMenu::Accent);

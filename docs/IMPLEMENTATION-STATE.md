@@ -1,20 +1,45 @@
-# Menu rebuild - stage6/7 complete
+# Menu rebuild - stages 1-7 complete
 
-Stages1-4 merged (#139-142). Stage5 adds real graphics categories, resolution/
-window confirmation/revert, audio channels, persistent full input profile,
-conflict-aware remapping applied to foot/car and gamepad controls.
-Native build PASS. SettingsSmoke and a separate-process SettingsReplay PASS:
-graphics/audio/axes/key/pad profile persistence, rejected conflicts/reserved keys,
-live Enhanced Input mapping. Tests only write Saved/MenuQA/SettingsSmoke.ini.
-PR143 merged. Stage6 adds cinematic drift/vignette, hides the player in frontend,
-blur, .2s entrance/.14s exit, UI sounds/reduced motion, viewport-scaled dialogs,
-focus-loss pause, menu cap30 restored to gameplay cap, throttled audio refresh,
-MoviePlayer loading with original river/bridge illustration and indeterminate bar.
-Build PASS and actual MenuViewSmoke PASS main/pause/loading, no Error/Fatal.
-All three renders inspected. MoviePlayer startup hook logged actual map load.
-Next: merge PR144, stage7 from main: native interaction, safer save selection,
-map label layout, readable key labels, video revert and multi-resolution renders.
-Pause capture currently catches entrance animation; delay it in final QA.
+Implemented in PRs #139-145, each on its own branch from main:
+1. Architecture audit/integration contracts.
+2. Shared original Slate visual system and UMG viewport wrapper.
+3. Cinematic frontend with seven working actions and validated save selection.
+4. Pause with six tabs, real map/character/session data and save confirmation.
+5. Persistent graphics/audio/input configuration and full conflict-aware remap.
+6. Camera drift, transitions, loading, focus-loss pause and menu frame cap.
+7. Native interaction/render/regression tests and fixes found during acceptance.
+
+Final editor build PASS (119.18 s). Test-Menu.ps1 -Layouts PASS:
+settings + separate-process replay, all 33 UI stages (41.96 s), actual
+quit, video cancel/15 s timeout/confirm, keyboard/mouse/pad Slate routing,
+frozen world/input, stats save/load, corrupt-save fallback, NPC visibility.
+20 native PNGs have verified dimensions at 1080p/1440p/4K/3440x1440.
+Reviewed main/pause/settings/controls/loading; ultrawide background fills
+viewport. Mean frame time 33.33-33.39 ms; p95 33.33-33.36 ms with menu cap 30.
+
+Test-PlayableDistrict.ps1 PASS: four project rules/geometry/save tests,
+foot/vehicle persistence, real physical session 147.29 s/459.60 m, separate
+process replay 5.02 s. Runtime/menu logs have no Error/Fatal. Engine startup
+smoke still logs 17 generic Condition failed lines before the requested
+editor test queue; script reports these and rejects other startup errors
+and all errors in requested tests/runtime. No engine modification or CI.
+
+QA fixes: blur/resize geometry and video rollback snapshot; raw Slate
+accept vs CommonUI virtual cursor; safe save-header check; map labels;
+ultrawide camera constraint; frontend mission actors restored in gameplay;
+reentrant pursuit destruction caused by inherited RaceSession EndPlay.
+All corrected paths have native evidence. Input tests use automation;
+physical controller hardware was not tested manually. Existing city art
+remains prototype quality. Details/results: docs/MENU-REBUILD.md.
+
+Visible game launched with Scripts/Launch-District.ps1. Fresh default log
+shows real Nadodrze map load, gameplay readiness and WTG_MENU_SCREEN main
+at 18:36:40 UTC on 2026-10-12. Keep the game open for the user.
+
+Remaining implementation: none in the requested menu scope.
+Next action: no implementation continuation required. A later fresh game
+start uses Scripts/Launch-District.ps1; further changes start from main
+on a new dedicated branch. Final delivery PR: #145.
 
 Prior open-world implementation history follows.
 
@@ -22,7 +47,7 @@ Prior open-world implementation history follows.
 
 ## Current state - complete first playable slice (streams 1-7)
 
-Streams 1-6 are merged; stream 7 / PR #138 is complete and ready to merge.
+All streams 1-7 / PRs #132-138 are merged.
 All requested implementation streams for this first bounded slice are done.
 No remaining implementation work in this pass. This is a functional prototype,
 not the final GTA-VI-level visual target or a full Wroclaw city simulation.

@@ -27,13 +27,13 @@ TSharedRef<SWidget> SMenuShell::Choice(const FString& Label,const TArray<FString
         +SHorizontalBox::Slot().FillWidth(1).VAlign(VAlign_Center).Padding(0,12)[WTGMenu::Text(Label,22)]
         +SHorizontalBox::Slot().FillWidth(1).VAlign(VAlign_Center).Padding(10,12)[Combo];
 }
-TSharedRef<SWidget> SMenuShell::ValueSlider(const FString& Label,TAttribute<float> Value,TFunction<void(float)> Changed)
+TSharedRef<SWidget> SMenuShell::ValueSlider(const FString& Label,TAttribute<float> Value,TFunction<void(float)> Changed,TAttribute<FString> Readout)
 {
     auto Slider=SNew(SSlider).Value(Value).StepSize(.05f).SliderBarColor(WTGMenu::Muted).SliderHandleColor(WTGMenu::Accent)
         .OnValueChanged_Lambda([Changed](float V){Changed(V);});FocusOrder.Add(Slider);
     return SNew(SVerticalBox)
         +SVerticalBox::Slot().AutoHeight().Padding(0,14,0,8)
-            [SNew(STextBlock).Text_Lambda([Label,Value]{return FText::FromString(FString::Printf(TEXT("%s  /  %.0f%%"),*Label,Value.Get()*100));}).Font(WTGMenu::Font(20)).ColorAndOpacity(WTGMenu::Paper)]
+            [SNew(STextBlock).Text_Lambda([Label,Value,Readout]{return FText::FromString(Label+TEXT("  /  ")+(Readout.IsSet()?Readout.Get():FString::Printf(TEXT("%.0f%%"),Value.Get()*100)));}).Font(WTGMenu::Font(20)).ColorAndOpacity(WTGMenu::Paper)]
         +SVerticalBox::Slot().AutoHeight().Padding(0,8,0,20)[Slider];
 }
 TSharedRef<SWidget> SMenuShell::ValueToggle(const FString& Label,TAttribute<bool> Value,TFunction<void(bool)> Changed)
@@ -62,7 +62,8 @@ void SMenuShell::BuildSettings()
         Form->AddSlot().AutoHeight()[Choice(TEXT("Limit FPS"),{TEXT("Bez limitu"),TEXT("30"),TEXT("60"),TEXT("90"),TEXT("120"),TEXT("144"),TEXT("165"),TEXT("240")},FMath::Max(0,Limit),[Limits](int32 I){UWTGPerformanceSettings::Get()->SetFPSLimit(Limits[I]);})];
         const TArray<FString> Quality={TEXT("Niska"),TEXT("Średnia"),TEXT("Wysoka"),TEXT("Ultra")};
         auto Apply=[S]{S->ApplyNonResolutionSettings();S->SaveSettings();};
-        Form->AddSlot().AutoHeight()[Choice(TEXT("Preset jakości"),Quality,S->GetOverallScalabilityLevel(),[this,S,Apply](int32 I){S->SetOverallScalabilityLevel(I);Apply();Refresh();})];
+        auto Presets=Quality;Presets.Add(TEXT("Własne ustawienia"));
+        Form->AddSlot().AutoHeight()[Choice(TEXT("Preset jakości"),Presets,S->GetOverallScalabilityLevel()<0?4:S->GetOverallScalabilityLevel(),[this,S,Apply](int32 I){if(I<4){S->SetOverallScalabilityLevel(I);Apply();Refresh();}})];
         Form->AddSlot().AutoHeight()[Choice(TEXT("Tekstury"),Quality,S->GetTextureQuality(),[S,Apply](int32 I){S->SetTextureQuality(I);Apply();})];
         Form->AddSlot().AutoHeight()[Choice(TEXT("Cienie"),Quality,S->GetShadowQuality(),[S,Apply](int32 I){S->SetShadowQuality(I);Apply();})];
         Form->AddSlot().AutoHeight()[Choice(TEXT("Antyaliasing"),Quality,S->GetAntiAliasingQuality(),[S,Apply](int32 I){S->SetAntiAliasingQuality(I);Apply();})];
@@ -88,35 +89,48 @@ void SMenuShell::BuildControls()
     auto* I=Flow->GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>();
     Content->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Sterowanie"),38,WTGMenu::Paper,true)];
     auto Form=SNew(SVerticalBox);Content->AddSlot().AutoHeight().Padding(0,18)[WTGMenu::Card(Form)];
-    Form->AddSlot().AutoHeight()[ValueSlider(TEXT("Czułość myszy (0,1–5)"),TAttribute<float>::CreateLambda([I]{return (I->Profile.MouseSensitivity-.1f)/4.9f;}),[I](float V){I->SetMouseSensitivity(.1f+4.9f*V);})];
+    Form->AddSlot().AutoHeight()[ValueSlider(TEXT("Czułość myszy (0,1–5)"),TAttribute<float>::CreateLambda([I]{return (I->Profile.MouseSensitivity-.1f)/4.9f;}),[I](float V){I->SetMouseSensitivity(.1f+4.9f*V);},TAttribute<FString>::CreateLambda([I]{return FString::Printf(TEXT("%.2f ×"),I->Profile.MouseSensitivity);}))];
     Form->AddSlot().AutoHeight()[ValueToggle(TEXT("Odwróć oś Y"),TAttribute<bool>::CreateLambda([I]{return I->Profile.bInvertMouseY;}),[I](bool V){I->Profile.bInvertMouseY=V;I->SaveProfile();})];
-    Form->AddSlot().AutoHeight()[ValueSlider(TEXT("Czułość kontrolera (0,1–5)"),TAttribute<float>::CreateLambda([I]{return (I->Profile.GamepadSensitivity-.1f)/4.9f;}),[I](float V){I->SetGamepadSensitivity(.1f+4.9f*V);})];
-    Form->AddSlot().AutoHeight()[ValueSlider(TEXT("Martwa strefa kontrolera (0–0,5)"),TAttribute<float>::CreateLambda([I]{return I->Profile.GamepadDeadzone*2;}),[I](float V){I->SetGamepadDeadzone(V*.5f);})];
-    Form->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Pad: lewy drążek — ruch / skręt; prawy — kamera; RT/LT — gaz / hamowanie. ESC / START: pauza. F5/F9: zapis/odczyt (zarezerwowane)."),18,WTGMenu::Muted)];
+    Form->AddSlot().AutoHeight()[ValueSlider(TEXT("Czułość kontrolera (0,1–5)"),TAttribute<float>::CreateLambda([I]{return (I->Profile.GamepadSensitivity-.1f)/4.9f;}),[I](float V){I->SetGamepadSensitivity(.1f+4.9f*V);},TAttribute<FString>::CreateLambda([I]{return FString::Printf(TEXT("%.2f ×"),I->Profile.GamepadSensitivity);}))];
+    Form->AddSlot().AutoHeight()[ValueSlider(TEXT("Martwa strefa kontrolera (0–0,5)"),TAttribute<float>::CreateLambda([I]{return I->Profile.GamepadDeadzone*2;}),[I](float V){I->SetGamepadDeadzone(V*.5f);},TAttribute<FString>::CreateLambda([I]{return FString::Printf(TEXT("%.2f"),I->Profile.GamepadDeadzone);}))];
+    Form->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Pad: lewy drążek — ruch / skręt; prawy — kamera; RT/LT — gaz / hamowanie. Stałe: ESC / START — pauza; F5/F9 — zapis/odczyt; ENTER, N, L, Q — skróty ekranów kampanii."),18,WTGMenu::Muted)];
     Form->AddSlot().AutoHeight()[Action(TEXT("Przywróć domyślne sterowanie"),[this,I]{Confirm(TEXT("Przywrócić sterowanie?"),TEXT("Własne przypisania i czułość zostaną zastąpione."),[this,I]{I->ResetToDefaults();Refresh();});})];
-    if(!CapturingBinding.IsNone())Form->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Naciśnij nowy klawisz / przycisk. ESC: anuluj."),24,WTGMenu::Accent,true)];
+    if(!CapturingBinding.IsNone())Form->AddSlot().AutoHeight()[WTGMenu::Text(TEXT("Naciśnij nowy klawisz / przycisk. ESC / START: anuluj."),24,WTGMenu::Accent,true)];
     for(const auto& B:I->Bindings()){
         Form->AddSlot().AutoHeight().Padding(0,10,0,0)[WTGMenu::Text(B.Label,20,WTGMenu::Muted)];
         auto Row=SNew(SHorizontalBox);
-        Row->AddSlot().FillWidth(1)[Action(I->Key(B.Id).GetDisplayName().ToString(),[this,Id=B.Id]{CapturingBinding=Id;CapturingGamepad=false;Refresh();})];
-        if(B.Gamepad.IsValid())Row->AddSlot().FillWidth(1).Padding(8,0)[Action(I->Key(B.Id,true).GetDisplayName().ToString(),[this,Id=B.Id]{CapturingBinding=Id;CapturingGamepad=true;Refresh();})];
+        Row->AddSlot().FillWidth(1)[Action(I->DisplayKey(I->Key(B.Id)),[this,Id=B.Id]{CapturingBinding=Id;CapturingGamepad=false;Refresh(true);})];
+        if(B.Gamepad.IsValid())Row->AddSlot().FillWidth(1).Padding(8,0)[Action(I->DisplayKey(I->Key(B.Id,true)),[this,Id=B.Id]{CapturingBinding=Id;CapturingGamepad=true;Refresh(true);})];
         Form->AddSlot().AutoHeight()[Row];
     }
 }
 void SMenuShell::BeginVideoChange()
 {
-    if(VideoPending)return;auto* S=GEngine->GetGameUserSettings();S->ConfirmVideoMode();
-    S->SetScreenResolution(PendingResolution);S->SetFullscreenMode(EWindowMode::Type(PendingWindowMode));S->ApplyResolutionSettings(false);
-    VideoPending=true;VideoConfirmDeadline=FPlatformTime::Seconds()+15;
+    if(VideoPending)return;auto* S=GEngine->GetGameUserSettings();
+    PreviousResolution=S->GetScreenResolution();PreviousWindowMode=int32(S->GetFullscreenMode());S->ConfirmVideoMode();
+    S->SetScreenResolution(PendingResolution);S->SetFullscreenMode(EWindowMode::Type(PendingWindowMode));
+    // Let existing Slate blur draw commands drain before replacing the backbuffer.
+    // Also guard against stale geometry during external/manual window resizing.
+    BlurSuspendedUntil=FPlatformTime::Seconds()+1;VideoApplyDeadline=FPlatformTime::Seconds()+.15;
+    VideoPending=true;VideoConfirmDeadline=VideoApplyDeadline+15;
+    UE_LOG(LogTemp,Display,TEXT("WTG_MENU_VIDEO preview=%dx%d confirmed=%dx%d"),PendingResolution.X,PendingResolution.Y,S->GetLastConfirmedScreenResolution().X,S->GetLastConfirmedScreenResolution().Y);
     Confirm(TEXT("Zachować tryb ekranu?"),TEXT("Potwierdź w ciągu 15 sekund. Brak odpowiedzi przywróci poprzedni tryb."),[this,S]{S->ConfirmVideoMode();S->SaveSettings();VideoPending=false;Refresh();});
 }
 void SMenuShell::RevertVideoChange()
 {
-    if(!VideoPending)return;auto* S=GEngine->GetGameUserSettings();S->RevertVideoMode();S->ApplyResolutionSettings(false);VideoPending=false;
+    if(!VideoPending)return;auto* S=GEngine->GetGameUserSettings();
+    // Window resize callbacks may update UE's LastConfirmed fields themselves.
+    // Keep our own transaction snapshot until the user actually confirms.
+    S->SetScreenResolution(PreviousResolution);S->SetFullscreenMode(EWindowMode::Type(PreviousWindowMode));S->ConfirmVideoMode();S->SaveSettings();VideoPending=false;
+    UE_LOG(LogTemp,Display,TEXT("WTG_MENU_VIDEO reverted=%dx%d"),S->GetScreenResolution().X,S->GetScreenResolution().Y);
+    BlurSuspendedUntil=FPlatformTime::Seconds()+1;VideoApplyDeadline=FPlatformTime::Seconds()+.15;
 }
+void SMenuShell::PreviewVideoMode(FIntPoint Resolution,int32 Mode){PendingResolution=Resolution;PendingWindowMode=Mode;BeginVideoChange();}
 void SMenuShell::Tick(const FGeometry& G,double T,float Dt)
 {
     SCompoundWidget::Tick(G,T,Dt);
+    if(VideoApplyDeadline>0 && FPlatformTime::Seconds()>=VideoApplyDeadline){GEngine->GetGameUserSettings()->ApplyResolutionSettings(false);VideoApplyDeadline=0;
+        RegisterActiveTimer(.3f,FWidgetActiveTimerDelegate::CreateLambda([this](double,float){FocusFirst();return EActiveTimerReturnType::Stop;}));}
     EntranceSeconds+=Dt;
     const float Alpha=UWTGPerformanceSettings::Get()->bReduceUIMotion?1.f:1-FMath::Pow(1-FMath::Clamp(EntranceSeconds/.2f,0.f,1.f),3.f);
     if(Stage){Stage->SetRenderOpacity(Alpha*(Flow.IsValid()?Flow->TransitionOpacity:1.f));Stage->SetRenderTransform(FSlateRenderTransform(FVector2D((1-Alpha)*22,0)));}

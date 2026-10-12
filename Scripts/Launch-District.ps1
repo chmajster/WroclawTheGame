@@ -11,4 +11,4 @@ Start-Process -FilePath $Editor -WorkingDirectory $ProjectRoot -ArgumentList @(
     ('"{0}"' -f $Project), '/Game/Maps/Nadodrze_Playable', '-game', '-windowed',
     '-ResX=1600', '-ResY=900', '-nosplash', '-ExecCmds="DisableAllScreenMessages"'
 )
-Write-Output 'Uruchomiono Nadodrze. E: interakcja; F5/F9: zapis/odczyt; Esc: pauza.'
+Write-Output 'Uruchomiono menu Wroclaw The Game. Wybierz Kontynuuj lub Nowa gra; Esc otwiera pauze.'
