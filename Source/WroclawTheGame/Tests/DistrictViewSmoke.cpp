@@ -17,7 +17,7 @@ static FAutoConsoleCommandWithWorld GDistrictViewSmoke(TEXT("WTG.DistrictViewSmo
  FConsoleCommandWithWorldDelegate::CreateLambda([](UWorld* World){
     if (!World || !World->IsGameWorld())return;
     FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda(
-      [Weak=TWeakObjectPtr<UWorld>(World),Elapsed=0.f,Stage=0,Camera=TWeakObjectPtr<ACameraActor>(),Frames=TArray<float>()](float Dt) mutable {
+      [Weak=TWeakObjectPtr<UWorld>(World),Elapsed=0.f,Stage=0,PlayerShot=false,Camera=TWeakObjectPtr<ACameraActor>(),Frames=TArray<float>()](float Dt) mutable {
         UWorld* W=Weak.Get();if(!W)return false;
         Elapsed+=Dt;
         auto* PC=UGameplayStatics::GetPlayerController(W,0);if(!PC)return true;
@@ -25,6 +25,7 @@ static FAutoConsoleCommandWithWorld GDistrictViewSmoke(TEXT("WTG.DistrictViewSmo
         AWTGDistrictRegistry* R=nullptr;
         for(TActorIterator<AWTGDistrictRegistry> It(W);It;++It){R=*It;break;}
         if(!R)return true;
+        if(!PlayerShot && Elapsed>5){FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Tests/DistrictPlayer.png"),true,false);PlayerShot=true;}
         if(Stage==0 && Elapsed>8){
             Camera=W->SpawnActor<ACameraActor>();Camera->GetCameraComponent()->SetFieldOfView(70);
             const FVector P=R->PlayerStart+FVector(-650,-500,320);

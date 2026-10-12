@@ -2,6 +2,14 @@
 
 ## Bieżący punkt kontynuacji
 
+Punkt7: znaleziono i naprawiono rzeczywisty błąd kamery postaci oraz auta:
+SetupAttachment(Boom) mocował ją w początku; dodano SpringArm SocketName
+w konstruktorze i BeginPlay dla istniejących BP. Runtime PASS: walking/wall,
+floor, jump, camera258,64→150,75cm, Maja, lost-car failure/restart. Test podejścia
+do auta poprawiony do rzeczywistego Interaction.Range+150 (kapsuła nie może
+wejść w środek nadwozia). Następny krok: nowy DistrictSessionSmoke.log,
+fizyczna jazda/dostawa/replay; wyniku całej sesji jeszcze brak.
+
 Punkt 7 w trakcie na feat/07-playable-session-validation: Launch-District.ps1.
 Następna zmiana: Tests/DistrictSessionSmoke.cpp: ruch i ściana/kamera,
 Maja, fail/restart, samochód z prawdziwą fizyką po DeliveryRoute, Olek,

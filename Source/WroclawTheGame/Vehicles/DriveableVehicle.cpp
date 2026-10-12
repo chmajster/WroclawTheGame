@@ -75,7 +75,7 @@ ADriveableVehicle::ADriveableVehicle()
     Boom->CameraLagSpeed = 7;
     Boom->bUseCameraLagSubstepping = true;
     Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-    Camera->SetupAttachment(Boom);
+    Camera->SetupAttachment(Boom,USpringArmComponent::SocketName);
     StreamingSource =
         CreateDefaultSubobject<UWorldPartitionStreamingSourceComponent>(TEXT("StreamingSource"));
     for (int I = 0; I < 2; I++)
@@ -110,6 +110,7 @@ void ADriveableVehicle::SetVisualMeshes(UStaticMesh *BodyMesh, UStaticMesh *Whee
 void ADriveableVehicle::BeginPlay()
 {
     Super::BeginPlay();
+    Camera->AttachToComponent(Boom,FAttachmentTransformRules::KeepRelativeTransform,USpringArmComponent::SocketName);
     if (bPersistentPlayerVehicle)
         StreamingProbe = GetWorld()->SpawnActor<ACityStreamingProbe>();
     if (!Definition)

@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/GameplayComponents.h"
 #include "Character/SliceCharacter.h"
 #include "Vehicles/DriveableVehicle.h"
 #include "Vehicles/VehicleAIDriverComponent.h"
@@ -28,7 +29,7 @@ struct FDistrictSessionProbe
 {
     float Elapsed=0,StepAt=0,DriveDistance=0,NextDiagnostic=0;
     int Stage=0;bool OK=true;
-    FVector Origin=FVector::ZeroVector,LastCar=FVector::ZeroVector;
+    FVector Origin=FVector::ZeroVector,LastCar=FVector::ZeroVector,CameraBack=FVector::ZeroVector;
     float CameraDistance=0;
     TWeakObjectPtr<AActor> Wall,CameraWall;
     TWeakObjectPtr<ASliceCharacter> Player;
@@ -58,6 +59,8 @@ static FAutoConsoleCommandWithWorld GDistrictSessionSmoke(TEXT("WTG.DistrictSess
             P->DisableInput(PC);PC->DisableInput(PC);S->Player=P;
             if(Resume){Check(Save->LoadSaved(),TEXT("new_process_load"));Check(D->State.Stage==Wroclaw::DeliveryStage::Complete && E->BalanceCents==43000 && E->Ledger.Num()==1,TEXT("new_process_progress"));Finish();return false;}
             S->Origin=P->GetActorLocation();S->CameraDistance=FVector::Dist(P->Camera->GetComponentLocation(),S->Origin);
+            S->CameraBack=(P->Camera->GetComponentLocation()-P->Boom->GetComponentLocation()).GetSafeNormal();
+            UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_CAMERA initial_distance=%.2f back=%s"),S->CameraDistance,*S->CameraBack.ToString());
             auto Block=[&](const FVector& Location,const FVector& Extent){auto* A=W->SpawnActor<AActor>();auto* B=NewObject<UBoxComponent>(A);A->SetRootComponent(B);B->SetBoxExtent(Extent);B->SetCollisionProfileName(TEXT("BlockAll"));B->RegisterComponent();A->SetActorLocation(Location);return A;};
             S->Wall=Block(S->Origin+FVector(240,0,0),FVector(20,120,160));
             S->CameraWall=Block((P->Camera->GetComponentLocation()+S->Origin)*.5,FVector(55,55,160));Advance(1);
@@ -65,12 +68,13 @@ static FAutoConsoleCommandWithWorld GDistrictSessionSmoke(TEXT("WTG.DistrictSess
         if(S->Stage==1)
         {
             auto* P=S->Player.Get();P->AddMovementInput(FVector::ForwardVector,1,true);
-            S->CameraWall->SetActorLocation(P->GetActorLocation()+FVector(-225,0,60));
+            S->CameraWall->SetActorLocation(P->Boom->GetComponentLocation()+S->CameraBack*225);
             if(S->Elapsed-S->StepAt>1.2)
             {
                 const float Moved=FVector::Dist2D(P->GetActorLocation(),S->Origin);
                 Check(Moved>50 && Moved<220,TEXT("walk_wall_collision"));Check(P->GetCharacterMovement()->MovementMode==MOVE_Walking,TEXT("floor"));
                 Check(FVector::Dist(P->Camera->GetComponentLocation(),P->GetActorLocation())<S->CameraDistance*.8,TEXT("camera_wall"));
+                UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_CAMERA obstructed_distance=%.2f collision=%d"),FVector::Dist(P->Camera->GetComponentLocation(),P->GetActorLocation()),P->Boom->bDoCollisionTest);
                 S->Wall->Destroy();S->CameraWall->Destroy();P->Jump();Advance(2);
             }
         }
@@ -86,8 +90,9 @@ static FAutoConsoleCommandWithWorld GDistrictSessionSmoke(TEXT("WTG.DistrictSess
         if(S->Stage==5)
         {
             Walk(Car->GetActorLocation()+Car->GetActorRightVector()*190);
-            if(FVector::Dist2D(S->Player->GetActorLocation(),Car->GetActorLocation())<250)
-            {Car->Interact(S->Player.Get());Check(Car->Driver==S->Player.Get(),TEXT("enter"));Advance(6);}
+            if(S->Elapsed>S->NextDiagnostic){S->NextDiagnostic=S->Elapsed+5;UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_WALK player=%s car=%s"),*S->Player->GetActorLocation().ToString(),*Car->GetActorLocation().ToString());}
+            if(FVector::Dist2D(S->Player->GetActorLocation(),Car->GetActorLocation())<340)
+            {Check(S->Player->Interaction->Interact(Car),TEXT("vehicle_interaction_range"));Check(Car->Driver==S->Player.Get(),TEXT("enter"));Advance(6);}
         }
         if(S->Stage==6 && S->Elapsed-S->StepAt>.8)
         {
