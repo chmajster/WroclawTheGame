@@ -52,6 +52,12 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
   pięć oryginalnie syntezowanych/importowanych dźwięków, sześć testów GIS PASS.
 - Następny krok: końcowy build oprawy, WTG.DistrictViewSmoke i ogląd zrzutów
   Saved/Tests/DistrictStreet.png oraz DistrictRiver.png; finalizacja PR #136.
+- Render wykazał niewidoczne podłoże: GIS CCW nie odpowiada clockwise UE
+  MeshDescription (Engine normal = Cross(C-A, B-A)). BakeMesh odwraca teraz
+  indeksy, test sprawdza normalną w górę. Źródłowe ściany normalizują ring winding.
+  Kenney windows mają normalną X (Y/Z plane), usunięto błędne +90 yaw,
+  dopasowano wymiary/pivot i wysunięto poza pełną geometrię ścian.
+  Następne: ponowny bake po zakończeniu build, locomotion/presentation, render.
   Zapis nagrody i pełna sesja należą do punktów 6–7.
 - Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,
   os error 2). Nie deklarować wizualnego QA bez rzeczywistego dowodu.

@@ -41,7 +41,9 @@ UStaticMesh *UGeoMeshLibrary::BakeMesh(const FString &Path, const TArray<FVector
         TArray<FVertexInstanceID> Instances;
         for (int32 J = 0; J < 3; J++)
         {
-            const int32 Index = Triangles[I + J];
+            // GIS inputs use mathematical CCW winding. UE MeshDescription
+            // uses clockwise fronts (its normal is Cross(C-A, B-A)).
+            const int32 Index = Triangles[I + (J==1?2:(J==2?1:0))];
             const FVertexInstanceID Instance = Description.CreateVertexInstance(IDs[Index]);
             Normals[Instance] = FVector3f(Normal);
             UVs.Set(Instance, 0, FVector2f(Vertices[Index].X / 400, Vertices[Index].Y / 400));

@@ -29,18 +29,18 @@ static FAutoConsoleCommandWithWorld GDistrictViewSmoke(TEXT("WTG.DistrictViewSmo
             Camera->SetActorLocationAndRotation(P,(R->MeetingPoint+FVector(0,0,100)-P).Rotation());
             PC->SetViewTarget(Camera.Get());Stage=1;
         }
-        if(Elapsed>12 && Elapsed<34)Frames.Add(Dt*1000);
-        if(Stage==1 && Elapsed>20){
+        if(Elapsed>52 && Elapsed<74)Frames.Add(Dt*1000);
+        if(Stage==1 && Elapsed>60){
             FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Tests/DistrictStreet.png"),true,false);Stage=2;
         }
-        if(Stage==2 && Elapsed>23){
+        if(Stage==2 && Elapsed>63){
             const FVector P=R->DeliveryPoint+FVector(-2200,-1300,900);
             Camera->SetActorLocationAndRotation(P,(R->DeliveryPoint+FVector(1200,1600,0)-P).Rotation());Stage=3;
         }
-        if(Stage==3 && Elapsed>34){
+        if(Stage==3 && Elapsed>74){
             FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Tests/DistrictRiver.png"),true,false);Stage=4;
         }
-        if(Stage==4 && Elapsed>37){
+        if(Stage==4 && Elapsed>77){
             if(!Frames.IsEmpty()){
                 float Total=0;for(float V:Frames)Total+=V;Frames.Sort();
                 UE_LOG(LogTemp,Display,TEXT("WTG_DISTRICT_RENDER_DONE frames=%d mean_ms=%.2f p95_ms=%.2f screenshots=DistrictStreet.png,DistrictRiver.png"),Frames.Num(),Total/Frames.Num(),Frames[FMath::Min(Frames.Num()-1,FMath::FloorToInt(Frames.Num()*.95f))]);
