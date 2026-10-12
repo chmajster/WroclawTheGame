@@ -1,4 +1,5 @@
 #include "Save/DistrictSaveSubsystem.h"
+#include "UI/Menu/MenuFlowSubsystem.h"
 #include "Save/DistrictSaveGame.h"
 #include "Systems/DistrictGameplaySubsystem.h"
 #include "Mission/DistrictDeliverySubsystem.h"
@@ -162,6 +163,7 @@ bool UDistrictSaveSubsystem::NewRun()
 }
 void UDistrictSaveSubsystem::Tick(float Dt)
 {
+    if(GetWorld()->GetGameInstance()->GetSubsystem<UMenuFlowSubsystem>()->IsFrontEnd())return;
     auto* G=GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>();if(!G->IsActive())return;
     if(!bTriedAutoLoad)
     {
