@@ -24,6 +24,13 @@
 #include "World/SurfaceQualityDirector.h"
 #include "Audio/WTGAudioSettings.h"
 #include "Components/AudioComponent.h"
+#include "UI/PerformanceSettings.h"
+#include "UI/Menu/MenuLoadingScreen.h"
+#include "Framework/Application/SlateApplication.h"
+#include "UObject/UObjectGlobals.h"
+#include "MoviePlayer.h"
+#include "Engine/Engine.h"
+#include "Camera/PlayerCameraManager.h"
 
 void UMenuFlowSubsystem::Initialize(FSubsystemCollectionBase& C)
 {
@@ -32,10 +39,15 @@ void UMenuFlowSubsystem::Initialize(FSubsystemCollectionBase& C)
         (FParse::Param(FCommandLine::Get(),TEXT("WTGNoDistrictAutoLoad")) && !FParse::Param(FCommandLine::Get(),TEXT("WTGMenuTest")));
     Screen=Skip?EWTGMenuScreen::Playing:EWTGMenuScreen::Boot;bHasSession=Skip;
     Ticker=FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this,&UMenuFlowSubsystem::Tick));
+    LoadHandle=FCoreUObjectDelegates::PreLoadMap.AddUObject(this,&UMenuFlowSubsystem::PrepareLoadingScreen);
+    if(FSlateApplication::IsInitialized())ActivationHandle=FSlateApplication::Get().OnApplicationActivationStateChanged().AddUObject(this,&UMenuFlowSubsystem::ApplicationActivationChanged);
 }
 void UMenuFlowSubsystem::Deinitialize()
 {
     FTSTicker::GetCoreTicker().RemoveTicker(Ticker);if(Widget)Widget->RemoveFromParent();Widget=nullptr;
+    FCoreUObjectDelegates::PreLoadMap.Remove(LoadHandle);
+    if(FSlateApplication::IsInitialized())FSlateApplication::Get().OnApplicationActivationStateChanged().Remove(ActivationHandle);
+    DeferredOperation=nullptr;
     if(Camera)Camera->Destroy();Camera=nullptr;PC.Reset();Super::Deinitialize();
 }
 UWorld* UMenuFlowSubsystem::MenuWorld() const { return PC.IsValid()?PC->GetWorld():nullptr; }
@@ -52,7 +64,17 @@ bool UMenuFlowSubsystem::Tick(float Dt)
 {
     if(!PC.IsValid())return true;
     const auto* Audio=UWTGAudioSettings::Get();
-    if(IsMenuOpen()){
+    const auto* Performance=UWTGPerformanceSettings::Get();
+    const float Cap=IsMenuOpen()?30.f:float(Performance->FPSLimit);
+    if(Cap!=AppliedFrameCap && GEngine){GEngine->SetMaxFPS(Cap);AppliedFrameCap=Cap;}
+    if(DeferredOperation){TransitionSeconds+=Dt;TransitionOpacity=1-FMath::Clamp(TransitionSeconds/.14f,0.f,1.f);
+        if(TransitionSeconds>=.14f){auto Operation=MoveTemp(DeferredOperation);ExecutingTransition=true;Operation();ExecutingTransition=false;TransitionOpacity=1;}}
+    if(Screen==EWTGMenuScreen::Main && Camera && !Performance->bReduceUIMotion){
+        CameraSeconds+=Dt;const FVector Offset(120*FMath::Sin(CameraSeconds*.055),80*FMath::Sin(CameraSeconds*.038),20*FMath::Sin(CameraSeconds*.07));
+        const FVector Position=CameraBase+Offset;Camera->SetActorLocationAndRotation(Position,(CameraLook-Position).Rotation());
+    }
+    AudioElapsed+=Dt;
+    if(IsMenuOpen() && AudioElapsed>=.2){AudioElapsed=0;
         for(TActorIterator<ASurfaceQualityDirector> It(MenuWorld());It;++It)
             if(It->Ambience)It->Ambience->SetVolumeMultiplier(.18f*Audio->MasterVolume*Audio->AmbientVolume);
         for(TActorIterator<ADriveableVehicle> It(MenuWorld());It;++It)
@@ -87,22 +109,33 @@ void UMenuFlowSubsystem::ShowMain()
     if(!PC.IsValid())return;
     auto* R=MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->GetRegistry();
     if(!Camera){Camera=MenuWorld()->SpawnActor<ACameraActor>();Camera->GetCameraComponent()->SetFieldOfView(60);}
-    if(R){const FVector P=R->PlayerStart+FVector(-1100,-900,650);Camera->SetActorLocationAndRotation(P,(R->MeetingPoint+FVector(500,1200,150)-P).Rotation());}
+    if(Screen==EWTGMenuScreen::Pause && Transition([this]{ShowMain();}))return;
+    if(R){CameraBase=R->PlayerStart+FVector(-1100,-900,850);CameraLook=R->MeetingPoint+FVector(500,1600,300);CameraSeconds=0;
+        Camera->SetActorLocationAndRotation(CameraBase,(CameraLook-CameraBase).Rotation());}
+    else {CameraBase=PC->GetPawn()?PC->GetPawn()->GetActorLocation()+FVector(-1000,-500,700):FVector::ZeroVector;CameraLook=CameraBase+FVector(1000,500,-300);Camera->SetActorLocationAndRotation(CameraBase,(CameraLook-CameraBase).Rotation());}
+    auto& PP=Camera->GetCameraComponent()->PostProcessSettings;
+    PP.bOverride_VignetteIntensity=true;PP.VignetteIntensity=.4f;
+    PP.bOverride_ColorSaturation=true;PP.ColorSaturation=FVector4(.85,.85,.85,1);
+    if(auto* Player=Cast<ASliceCharacter>(PC->GetPawn()))Player->SetActorHiddenInGame(true);
     PC->SetViewTarget(Camera);Open(EWTGMenuScreen::Main);
 }
 void UMenuFlowSubsystem::ShowPause(){Open(EWTGMenuScreen::Pause);}
 void UMenuFlowSubsystem::Resume()
 {
     if(!PC.IsValid() || !bHasSession)return;
+    if(Transition([this]{Resume();}))return;
     Screen=EWTGMenuScreen::Playing;GetGameInstance()->GetSubsystem<USliceMission>()->bShowMenu=false;
     if(Widget)Widget->RemoveFromParent();Widget=nullptr;
     if(APawn* P=PC->GetPawn())P->SetActorHiddenInGame(false);
     ResetTracking();PC->SetViewTarget(PC->GetPawn());PC->ResetIgnoreMoveInput();PC->ResetIgnoreLookInput();
     PC->SetPause(false);PC->SetInputMode(FInputModeGameOnly());PC->bShowMouseCursor=false;
+    if(PC->PlayerCameraManager && !UWTGPerformanceSettings::Get()->bReduceUIMotion)PC->PlayerCameraManager->StartCameraFade(1,0,.18f,FLinearColor::Black,false);
+    UE_LOG(LogTemp,Display,TEXT("WTG_MENU_SCREEN playing"));
 }
 bool UMenuFlowSubsystem::StartNew()
 {
     if(!MenuWorld())return false;
+    if(Transition([this]{if(!StartNew() && Widget)Widget->Refresh();}))return true;
     if(!MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()){PC->NewGame();return true;}
     auto* D=MenuWorld()->GetSubsystem<UDistrictSaveSubsystem>();
     bool OK=MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive()?D->NewRun():false;
@@ -111,6 +144,7 @@ bool UMenuFlowSubsystem::StartNew()
 bool UMenuFlowSubsystem::Load(const FString& Slot)
 {
     if(!MenuWorld())return false;
+    if(Transition([this,Slot]{if(!Load(Slot) && Widget)Widget->Refresh();}))return true;
     if(Slot==TEXT("campaign") || Slot==TEXT("city")){
         auto* M=GetGameInstance()->GetSubsystem<USliceMission>();
         const bool OK=Slot==TEXT("city")?MenuWorld()->GetSubsystem<UCityGameplaySubsystem>()->LoadSaved():M->ContinueGame();
@@ -132,7 +166,23 @@ bool UMenuFlowSubsystem::Save()
     const bool OK=City->IsActive()?City->SaveAppearance():GetGameInstance()->GetSubsystem<USliceMission>()->SaveCheckpoint();
     Notice=OK?TEXT("Postęp zapisany"):TEXT("Nie można zapisać postępu.");return OK;
 }
-void UMenuFlowSubsystem::Quit(){if(PC.IsValid())UKismetSystemLibrary::QuitGame(PC.Get(),PC.Get(),EQuitPreference::Quit,false);}
+void UMenuFlowSubsystem::Quit(){if(Transition([this]{Quit();}))return;if(PC.IsValid())UKismetSystemLibrary::QuitGame(PC.Get(),PC.Get(),EQuitPreference::Quit,false);}
+bool UMenuFlowSubsystem::Transition(TFunction<void()> Operation)
+{
+    if(ExecutingTransition || UWTGPerformanceSettings::Get()->bReduceUIMotion)return false;
+    if(!DeferredOperation){DeferredOperation=MoveTemp(Operation);TransitionSeconds=0;}return true;
+}
+void UMenuFlowSubsystem::ApplicationActivationChanged(bool Active)
+{
+    if(!Active && Screen==EWTGMenuScreen::Playing && PC.IsValid() && bHasSession)ShowPause();
+}
+void UMenuFlowSubsystem::PrepareLoadingScreen(const FString& Map)
+{
+    if(IsRunningDedicatedServer() || !IsMoviePlayerEnabled())return;
+    FLoadingScreenAttributes Loading;Loading.MinimumLoadingScreenDisplayTime=0;Loading.bAutoCompleteWhenLoadingCompletes=true;
+    Loading.WidgetLoadingScreen=WTGMenu::LoadingScreen();GetMoviePlayer()->SetupLoadingScreen(Loading);
+    UE_LOG(LogTemp,Display,TEXT("WTG_MENU_LOADING %s"),*Map);
+}
 void UMenuFlowSubsystem::HideForCreator(){if(Widget)Widget->RemoveFromParent();Widget=nullptr;}
 void UMenuFlowSubsystem::RestoreAfterCreator(){if(IsFrontEnd())ShowMain();else ShowPause();}
 void UMenuFlowSubsystem::CreatedSession(){bHasSession=true;Resume();}

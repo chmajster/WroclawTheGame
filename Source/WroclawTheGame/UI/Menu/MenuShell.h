@@ -7,6 +7,7 @@ class SMenuShell : public SCompoundWidget
 public:
     SLATE_BEGIN_ARGS(SMenuShell) {} SLATE_ARGUMENT(UMenuFlowSubsystem*,Flow) SLATE_END_ARGS()
     void Construct(const FArguments& Args);
+    virtual ~SMenuShell() override;
     void Refresh();
     virtual bool SupportsKeyboardFocus() const override { return true; }
     virtual FReply OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E) override;
@@ -16,6 +17,10 @@ private:
     TWeakObjectPtr<UMenuFlowSubsystem> Flow;
     TSharedPtr<class SOverlay> Layers;
     TSharedPtr<class SVerticalBox> Navigation,Content;
+    TSharedPtr<SWidget> Stage;
+    float EntranceSeconds=0;
+    double LastNavigationSound=0;
+    void NavigationSound(float Volume);
     TArray<TSharedPtr<SWidget>> FocusOrder;
     int32 Page=0,Focused=0;
     int32 SettingsCategory=0;
