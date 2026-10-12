@@ -5,18 +5,18 @@ See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 7/10. Source policy now sets separate building/prop/vegetation LOD thresholds, full Nanite fallback and 180-260 m instance culling. Production importer applies it automatically; native quality stage checks actual scene triangles/instancing and shared streaming textures.
+Stream 7/10. Native quality applied and verified: 2272 instances / 29 HISM / 466628 aggregate new-scene LOD0 triangles below 1.6M cap. Full Nanite building fallback; near tree LOD retains branches, separate prop/building thresholds, cull180-260m, 21 streaming textures capped2k.
 
-Validation and limitations: Native quality application and measured engineering budget pending; these limits are not an FPS claim.
+Validation and limitations: Native quality PASS, persisted LOD thresholds compared with policy; 10 source tests PASS. Source budget counts actual Native triangles and colliders, not FPS or VRAM. Placement input regenerated after source policy hash change.
 
 ## Do zrobienia
-Apply native quality stage, verify saved thresholds and budget, update evidence and complete stream.
+Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
 
 ## Następny krok
-Run Scripts/assets/prepare_start_location_quality.py in isolated Unreal editor and inspect fresh quality-report.json.
+Create stream 8 branch; implement non-pausing actual-game smoke with steady frame measurement, walking/camera/collision probes, run district regressions and inspect final screenshots.
 
 ## Stan
-In progress, stream 7/10. No CI manually run.
+Stream complete; overall implementation in progress. No CI manually run.
 
 # Earlier city asset production — completed first batch
 
