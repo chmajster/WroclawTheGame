@@ -112,7 +112,9 @@ def prepare():
             identifier=item.get('asset_id')
             if not identifier or str(identifier).startswith('procedural:'):
                 continue
-            mesh=mesh_cache.setdefault(identifier,model(identifier))
+            if identifier not in mesh_cache:
+                mesh_cache[identifier]=model(identifier)
+            mesh=mesh_cache[identifier]
             if not isinstance(mesh,unreal.StaticMesh):
                 continue
             p=list(item['world_position'])
@@ -121,7 +123,7 @@ def prepare():
             p[1]+=math.sin(math.radians(yaw))*18
             scale=facade_bindings.get('asset_scales',{}).get(identifier,[1,1,1])
             yaw+=float(facade_bindings.get('asset_yaw_offsets_deg',{}).get(identifier,0))
-            transform=unreal.Transform(location=unreal.Vector(*p),rotation=unreal.Rotator(0,yaw,0).quaternion(),scale=unreal.Vector(*scale))
+            transform=unreal.Transform(location=unreal.Vector(*p),rotation=unreal.Rotator(0,yaw,0),scale=unreal.Vector(*scale))
             cluster(p).add_facade_instance(mesh,transform)
             facade_count+=1
     registry=spawn(unreal.WTGDistrictRegistry,(0,0,0),'Registry')
@@ -134,8 +136,21 @@ def prepare():
     registry.set_editor_property('bounds_max',unreal.Vector(*plan['bounds_max']))
     registry.set_editor_property('delivery_route',[unreal.Vector(*p) for p in plan['delivery_route']])
     registry.set_editor_property('intersections',[unreal.Vector(*p) for p in plan['intersections']])
-    registry.set_editor_property('streets',[unreal.WTGDistrictStreet(name=s['name'],points=[unreal.Vector(*p) for p in s['points']],walkway=s['walkway']) for s in plan['streets']])
-    routes=[unreal.CityPopulationRoute(id=r['id'],vehicle=r['vehicle'],points=[unreal.Vector(*p) for p in r['points']]) for r in plan['population_routes']]
+    streets=[]
+    for s in plan['streets']:
+        value=unreal.WTGDistrictStreet()
+        value.set_editor_property('name',s['name'])
+        value.set_editor_property('points',[unreal.Vector(*p) for p in s['points']])
+        value.set_editor_property('walkway',s['walkway'])
+        streets.append(value)
+    registry.set_editor_property('streets',streets)
+    routes=[]
+    for r in plan['population_routes']:
+        value=unreal.CityPopulationRoute()
+        value.set_editor_property('id',r['id'])
+        value.set_editor_property('vehicle',r['vehicle'])
+        value.set_editor_property('points',[unreal.Vector(*p) for p in r['points']])
+        routes.append(value)
     registry.set_editor_property('population_routes',routes)
     registry.set_editor_property('delivery_reward_cents',plan['mission']['reward_cents'])
     registry.set_editor_property('delivery_time_limit',plan['mission']['time_limit_seconds'])
