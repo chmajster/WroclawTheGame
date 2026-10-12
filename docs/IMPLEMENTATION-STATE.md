@@ -1,19 +1,19 @@
 # Start location production — 2026-10-12
 
-Primary live log: current start-location PR, stream 4/10.
+Primary live log: current start-location PR, stream 5/10.
 See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 4/10. 13 original full meshes, 39 actual FBX LOD exports, 257206 aggregate LOD0 triangles, eight buildings with 74 separate wall hulls. 59 native uassets imported and saved. Shared 14 PBR/material interfaces. Fixed LOD name mapping and binding order after a concrete import failure.
+Stream 5/10. Eight buildings integrated, 2272 source-based instances in 29 HISM clusters, 29 nearby PBR surface cells and 50 rail strips. Reviewed CC0 grass acquired. Material usage and first-view warmup fixed; thin ground excluded from Lumen mesh SDF to remove black over-occlusion. Decorative cars avoid gameplay vehicle paths.
 
-Validation and limitations: Actual native import batch PASS 13; fresh native asset verifier PASS 13: metric bounds, source/native slot names and interfaces, three UV-bearing LODs, valid multi-material sections and required hull counts. 28 manifests, 10 source tests and Python AST PASS. Building heights/layout estimated, roofs simplified, no accessible interiors.
+Validation and limitations: Native module build, base bake, isolated placement and three rendered camera captures PASS. Every image actually inspected. 14 source tests and all 28 manifests PASS. Heights/windows estimated, roofs simplified, no accessible interiors. Actual walking/FPS follows in stream 8.
 
 ## Do zrobienia
 Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
 
 ## Następny krok
-Merge stream 4; branch feat/start-location-environment from main. Exclude eight replacement building IDs from background GIS bake and generic windows, build source-driven street plan, place full models and repeated props, apply road/sidewalk PBR and coherent daylight; actual rendered inspection follows.
+Create stream 6 branch from main, align initial/recovery camera toward meeting point and add authored tree trunk collision; import and verify updated tree.
 
 ## Stan
 Stream complete; overall implementation in progress. No CI manually run.

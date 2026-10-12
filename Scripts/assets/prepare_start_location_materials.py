@@ -17,7 +17,7 @@ def prepare():
     registry=json.loads((ROOT/'Data/city_asset_acquisition.json').read_text(encoding='utf-8'))
     by_slug={a['slug']:a for a in registry['assets']}
     surfaces={'Plaster':'painted_plaster_wall','Stone':'sandstone_cracks','Roof':'roof_tiles_14',
-              'Asphalt':'asphalt_03','Pavement':'concrete_pavement_03','Cobble':'cobblestone_floor_08'}
+              'Asphalt':'asphalt_03','Pavement':'concrete_pavement_03','Cobble':'cobblestone_floor_08','Grass':'grass_ground'}
     masters={}
     for name,slug in surfaces.items():
         textures={role:import_texture(ROOT/f['path'],DEST+'/Textures',role) for role,f in by_slug[slug]['files'].items()}
@@ -34,7 +34,7 @@ def prepare():
         orm=texture_sample(edit,material,textures['orm'],-600,300,'ORM')
         edit.connect_material_property(normal,'RGB',unreal.MaterialProperty.MP_NORMAL)
         for pin,prop in [('R',unreal.MaterialProperty.MP_AMBIENT_OCCLUSION),('G',unreal.MaterialProperty.MP_ROUGHNESS),('B',unreal.MaterialProperty.MP_METALLIC)]:edit.connect_material_property(orm,pin,prop)
-        if name in ['Asphalt','Pavement','Cobble']:
+        if name in ['Asphalt','Pavement','Cobble','Grass']:
             # GIS ground has arbitrary/degenerate UVs; use centimetre world XY.
             world=edit.create_material_expression(material,unreal.MaterialExpressionWorldPosition,-1100,0)
             divide=edit.create_material_expression(material,unreal.MaterialExpressionDivide,-900,0);divide.set_editor_property('const_b',float(by_slug[slug]['dimensions_mm'][0])/10)
@@ -43,6 +43,7 @@ def prepare():
             edit.connect_material_expressions(world,'',divide,'A');edit.connect_material_expressions(divide,'',mask,'Input')
             edit.connect_material_expressions(mask,'',base,'Coordinates')
             for node in (normal,orm):edit.connect_material_expressions(mask,'',node,'Coordinates')
+        for usage in [unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES,unreal.MaterialUsage.MATUSAGE_NANITE]:edit.set_material_usage(material,usage)
         edit.recompile_material(material);unreal.EditorAssetLibrary.save_loaded_asset(material,False);masters[name]=material
     constants={'Frame':((.75,.73,.67),.65,0),'Glazing':((.025,.055,.075),.18,.25),
                'Metal':((.07,.075,.08),.4,.85),'Wood':((.15,.065,.025),.76,0),
@@ -57,12 +58,20 @@ def prepare():
         for prop,value in [(unreal.MaterialProperty.MP_ROUGHNESS,roughness),(unreal.MaterialProperty.MP_METALLIC,metallic)]:
             node=edit.create_material_expression(mat,unreal.MaterialExpressionConstant,0,120);node.set_editor_property('r',value);edit.connect_material_property(node,'',prop)
         if name=='Leaf':mat.set_editor_property('two_sided',True)
+        for usage in [unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES,unreal.MaterialUsage.MATUSAGE_NANITE]:edit.set_material_usage(mat,usage)
         edit.recompile_material(mat);unreal.EditorAssetLibrary.save_loaded_asset(mat,False);masters[name]=mat
     for name,material in masters.items():
         path=DEST+'/MI_'+name;instance=unreal.load_asset(path)
         if not instance:instance=tools.create_asset('MI_'+name,DEST,unreal.MaterialInstanceConstant,unreal.MaterialInstanceConstantFactoryNew())
-        edit.set_material_instance_parent(instance,material);edit.update_material_instance(instance)
+        edit.set_material_instance_parent(instance,material)
+        for usage in [unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES,unreal.MaterialUsage.MATUSAGE_NANITE]:edit.set_material_usage_override(instance,usage,True,True)
+        edit.update_material_instance(instance)
         unreal.EditorAssetLibrary.save_loaded_asset(instance,False)
+    for path in ['/Game/SurfaceQuality/Instances/MI_PaintedMetal','/Game/Wroclaw/Nadodrze/MI_DistrictWindowGlazing']:
+        material=unreal.load_asset(path)
+        if isinstance(material,unreal.MaterialInstanceConstant):
+            edit.set_material_usage_override(material,unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES,True,True)
+            edit.update_material_instance(material);unreal.EditorAssetLibrary.save_loaded_asset(material,False)
     marker.write_text('PASS\n',encoding='utf-8');unreal.log('WTG_START_MATERIALS_PASS '+str(len(masters)))
 
 

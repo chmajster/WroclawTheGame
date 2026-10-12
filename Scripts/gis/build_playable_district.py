@@ -170,7 +170,9 @@ def build_district(output):
             if feature['tags'].get('bridge','no')!='no' and feature['tags'].get('tunnel','no')=='no':
                 feature['surface_built']=True
     meshes=output/'Meshes'
-    generate_meshes(meshes,data,geo)
+    start_policy=read(ROOT/'Data/start_location.json')
+    replacement_ids=[b['id'] for b in start_policy['buildings']]
+    generate_meshes(meshes,data,geo,exclude_feature_ids=replacement_ids)
     # Keep the river genuinely open: no collision terrain immediately under water.
     for filename in read(meshes/'meshes.json'):
         record=read(meshes/filename)
@@ -233,6 +235,7 @@ def build_district(output):
             if not obstacles.intersects(candidate) and not candidate.intersects(LineString([a[:2] for a in points]).buffer(45)):
                 dressing.append({'model':name,'position':[x,y,elevation(x,y)+20],'yaw':yaw,'radius':radius})
     plan['dressing']=dressing
+    plan['start_location_replacement_ids']=replacement_ids
     (output/'district.json').write_text(json.dumps(plan,ensure_ascii=False,indent=2),encoding='utf-8')
     triangles=sum(len(read(meshes/n)['triangles'])//3 for n in filenames)
     if triangles>config['budgets']['mesh_triangles']:

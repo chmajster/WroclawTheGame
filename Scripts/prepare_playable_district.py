@@ -65,6 +65,10 @@ def prepare():
         glass='Glazing' in str(slot.get_editor_property('material_slot_name'))
         window.set_material(index,glazing if glass else unreal.load_asset('/Game/SurfaceQuality/Instances/MI_PaintedMetal'))
     unreal.EditorAssetLibrary.save_loaded_asset(window,False)
+    for material in [glazing,unreal.load_asset('/Game/SurfaceQuality/Instances/MI_PaintedMetal')]:
+        unreal.MaterialEditingLibrary.set_material_usage_override(material,unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES,True,True)
+        unreal.MaterialEditingLibrary.update_material_instance(material)
+        unreal.EditorAssetLibrary.save_loaded_asset(material,False)
     levels=unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
     actors=unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
     path=plan['map']
@@ -131,6 +135,8 @@ def prepare():
     facade_count=0
     mesh_cache={}
     for building in sorted(facades,key=proximity):
+        if building['building_id'] in plan.get('start_location_replacement_ids',[]):
+            continue
         if proximity(building)>23000:
             continue
         for item in building.get('openings',[]):
@@ -191,7 +197,7 @@ def prepare():
     population.set_editor_property('max_traffic_vehicles',plan['budgets']['traffic'])
     registry.set_editor_property('population',population)
     env=spawn(unreal.WTGDayNightEnvironment,(0,0,0),'Sky')
-    env.set_editor_property('time_of_day_hours',16.2)
+    env.set_editor_property('time_of_day_hours',13.5)
     env.set_editor_property('day_length_minutes',45)
     # Name signs and a recognizable river-island information point, in Polish.
     names=set()
@@ -238,4 +244,6 @@ except Exception:
     MARKER.unlink(missing_ok=True)
     raise
 finally:
-    unreal.SystemLibrary.quit_editor()
+    sys.path.insert(0,str(ROOT/'Pipeline/unreal'))
+    from import_asset import quit_after_editor_startup
+    quit_after_editor_startup()

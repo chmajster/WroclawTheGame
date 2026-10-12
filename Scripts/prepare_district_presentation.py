@@ -35,7 +35,7 @@ def prepare():
     director=actors.spawn_actor_from_class(unreal.SurfaceQualityDirector,unreal.Vector(),unreal.Rotator())
     director.set_actor_label('District_Detail_SurfaceDirector')
     director.set_editor_property('district_outdoor',True)
-    director.set_editor_property('follow_weather',False)
+    director.set_editor_property('follow_weather',True)
     plan=json.loads((ROOT/'Saved/PlayableDistrict/district.json').read_text(encoding='utf-8'))
     heights={}
     for identifier,expected in (('nadodrze-river-railing',110),('nadodrze-window-frame',150)):
@@ -73,4 +73,7 @@ except Exception:
     MARKER.unlink(missing_ok=True)
     unreal.log_error(traceback.format_exc())
     raise
-finally:unreal.SystemLibrary.quit_editor()
+finally:
+    sys.path.insert(0,str(ROOT/'Pipeline/unreal'))
+    from import_asset import quit_after_editor_startup
+    quit_after_editor_startup()
