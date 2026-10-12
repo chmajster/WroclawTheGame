@@ -5,6 +5,8 @@ import json
 import os
 import re
 import traceback
+import time
+import hashlib
 from pathlib import Path
 
 import unreal
@@ -18,6 +20,9 @@ def project_path(value: str) -> Path:
 
 
 def prepare() -> None:
+    # UE 5.8's command-line Python executor otherwise closes the editor as soon
+    # as this startup function returns, before latent screenshot work ticks.
+    unreal.EditorPythonScripting.set_keep_python_script_alive(True)
     manifest_value = os.environ.get("WTG_ASSET_MANIFEST")
     if not manifest_value:
         raise RuntimeError("WTG_ASSET_MANIFEST is not set")
@@ -30,11 +35,13 @@ def prepare() -> None:
     marker = out / "capture.ok"
     report_path = out / "capture.json"
     marker.unlink(missing_ok=True)
+    report_path.unlink(missing_ok=True)
 
     if not camera_names:
         report = {"asset_id": asset_id, "status": "SKIPPED", "reason": "no QA cameras configured", "screenshots": []}
         report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
         marker.write_text("SKIPPED\n", encoding="utf-8")
+        unreal.EditorPythonScripting.set_keep_python_script_alive(False)
         unreal.SystemLibrary.quit_editor()
         return
 
@@ -43,6 +50,10 @@ def prepare() -> None:
         raise RuntimeError(f"Cannot load QA map: {manifest['unreal']['qa_map']}")
 
     actor_subsystem = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
+    # Editor worlds do not run BeginPlay. Apply the existing game's daylight
+    # environment for architectural QA; do not save this preview state.
+    for actor in actor_subsystem.get_all_level_actors():
+        if isinstance(actor,unreal.WTGDayNightEnvironment): actor.set_time_of_day(12.)
     cameras = {
         actor.get_actor_label(): actor
         for actor in actor_subsystem.get_all_level_actors()
@@ -58,43 +69,40 @@ def prepare() -> None:
     if len(set(safe_names)) != len(safe_names):
         raise RuntimeError("QA camera labels collide after filename sanitization")
     screenshot_files = [out / f"{name}.png" for name in safe_names]
+    for filename in screenshot_files: filename.unlink(missing_ok=True)
 
     @unreal.AutomationScheduler.add_latent_command
     def capture_all():
-        unreal.AutomationLibrary.finish_loading_before_screenshot()
-        for name, filename in zip(camera_names, screenshot_files):
-            task = unreal.AutomationLibrary.take_high_res_screenshot(
-                width,
-                height,
-                str(filename),
-                camera=cameras[name],
-                comparison_notes=f"{asset_id}:{name}",
-                force_game_view=True,
-            )
-            if not task.is_valid_task():
-                raise RuntimeError(f"Screenshot task is invalid for camera {name}")
-            while not task.is_task_done():
+        try:
+            unreal.AutomationLibrary.finish_loading_before_screenshot()
+            for _ in range(30):
                 yield
-
-    @unreal.AutomationScheduler.add_latent_command
-    def finalize():
-        missing_files = [str(path) for path in screenshot_files if not path.is_file()]
-        if missing_files:
-            raise RuntimeError("Screenshot files were not created: " + ", ".join(missing_files))
-        report = {
-            "asset_id": asset_id,
-            "map": manifest["unreal"]["qa_map"],
-            "status": "PASS",
-            "screenshots": [str(path.relative_to(ROOT)) for path in screenshot_files],
-        }
-        report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
-        marker.write_text("PASS\n", encoding="utf-8")
-        unreal.log("WTG_SCREENSHOT_QA_READY " + json.dumps(report))
-        unreal.SystemLibrary.quit_editor()
+            for name, filename in zip(camera_names, screenshot_files):
+                deadline=time.monotonic()+120
+                task=unreal.AutomationLibrary.take_high_res_screenshot(width,height,str(filename),camera=cameras[name],comparison_notes=f"{asset_id}:{name}",force_game_view=True)
+                if not task.is_valid_task(): raise RuntimeError("Invalid screenshot task: "+name)
+                while not task.is_task_done():
+                    if time.monotonic()>deadline: raise TimeoutError("Screenshot timed out: "+name)
+                    yield
+            if any(not path.is_file() or path.stat().st_size<100 for path in screenshot_files):
+                raise RuntimeError("Fresh screenshot files missing")
+            report={"asset_id":asset_id,"map":manifest["unreal"]["qa_map"],"status":"PASS",
+                "visual_review":"NOT_REVIEWED","screenshots":[str(path.relative_to(ROOT)) for path in screenshot_files],
+                "sha256":{path.name:hashlib.sha256(path.read_bytes()).hexdigest() for path in screenshot_files}}
+            report_path.write_text(json.dumps(report,indent=2),encoding="utf-8")
+            marker.write_text("PASS\n",encoding="utf-8")
+            unreal.log("WTG_SCREENSHOT_QA_READY "+json.dumps(report))
+        except Exception:
+            unreal.log_error(traceback.format_exc())
+            report_path.write_text(json.dumps({"status":"FAILED","error":traceback.format_exc()},indent=2),encoding="utf-8")
+        finally:
+            unreal.EditorPythonScripting.set_keep_python_script_alive(False)
+            unreal.SystemLibrary.quit_editor()
 
 
 try:
     prepare()
 except Exception:
     unreal.log_error(traceback.format_exc())
+    unreal.EditorPythonScripting.set_keep_python_script_alive(False)
     unreal.SystemLibrary.quit_editor()

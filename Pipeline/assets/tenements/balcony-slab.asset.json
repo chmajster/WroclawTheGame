@@ -1,0 +1,15 @@
+{
+  "schema_version": 1, "id": "wtg-tenement-balcony-slab",
+  "display_name": "Autorska płyta balkonowa z gzymsem i kamiennymi wspornikami",
+  "area": "tenements", "type": "static_mesh", "quality": "standard",
+  "source": {"model": "SourceAssets/Models/Wroclaw/TenementKit/balcony-slab.blend", "license": "Project-owned original geometry; Poly Haven CC0 textures, Rob Tuytel", "reference_directory": null},
+  "mesh": {"max_triangles": 8000, "combine": true, "generate_uv_if_missing": false},
+  "lod": {"ratios": [1, 0.6, 0.3]}, "collision": {"mode": "simple", "max_hulls": 1},
+  "textures": {
+    "base_color": "SourceAssets/Textures/PolyHaven/sandstone_cracks/sandstone_cracks_BC.png",
+    "normal": "SourceAssets/Textures/PolyHaven/sandstone_cracks/sandstone_cracks_N.png",
+    "orm": "SourceAssets/Textures/PolyHaven/sandstone_cracks/sandstone_cracks_ORM.png"
+  },
+  "unreal": {"destination": "/Game/Wroclaw/TenementKit", "nanite": true, "qa_map": "/Game/Maps/TenementKit_QA"},
+  "qa": {"automation_filter": "WTG.Assets.TenementKit", "cameras": ["Kit_Front", "Kit_Oblique"], "screenshot_width": 1280, "screenshot_height": 960}
+}
