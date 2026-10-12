@@ -8,7 +8,7 @@ public:
     SLATE_BEGIN_ARGS(SMenuShell) {} SLATE_ARGUMENT(UMenuFlowSubsystem*,Flow) SLATE_END_ARGS()
     void Construct(const FArguments& Args);
     virtual ~SMenuShell() override;
-    void Refresh();
+    void Refresh(bool PreserveFocus=false);
     virtual bool SupportsKeyboardFocus() const override { return true; }
     virtual FReply OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E) override;
     virtual FReply OnPreviewMouseButtonDown(const FGeometry& G,const FPointerEvent& E) override;
@@ -30,6 +30,7 @@ private:
     FName CapturingBinding;
     bool CapturingGamepad=false;
     double VideoConfirmDeadline=0;
+    double VideoApplyDeadline=0,BlurSuspendedUntil=0;
     bool VideoPending=false;
     FIntPoint PendingResolution;
     int32 PendingWindowMode=1;
@@ -54,5 +55,5 @@ private:
     void BuildCharacter();
     void BuildStats();
     TSharedPtr<SWidget> MapView;
-    void FocusFirst();
+    void FocusFirst(int32 Preferred=0);
 };

@@ -125,7 +125,7 @@ void UMenuFlowSubsystem::Resume()
 {
     if(!PC.IsValid() || !bHasSession)return;
     if(Transition([this]{Resume();}))return;
-    Screen=EWTGMenuScreen::Playing;GetGameInstance()->GetSubsystem<USliceMission>()->bShowMenu=false;
+    Screen=EWTGMenuScreen::Playing;Notice.Empty();GetGameInstance()->GetSubsystem<USliceMission>()->bShowMenu=false;
     if(Widget)Widget->RemoveFromParent();Widget=nullptr;
     if(APawn* P=PC->GetPawn())P->SetActorHiddenInGame(false);
     ResetTracking();PC->SetViewTarget(PC->GetPawn());PC->ResetIgnoreMoveInput();PC->ResetIgnoreLookInput();

@@ -99,26 +99,31 @@ void SMenuShell::BuildControls()
     for(const auto& B:I->Bindings()){
         Form->AddSlot().AutoHeight().Padding(0,10,0,0)[WTGMenu::Text(B.Label,20,WTGMenu::Muted)];
         auto Row=SNew(SHorizontalBox);
-        Row->AddSlot().FillWidth(1)[Action(I->DisplayKey(I->Key(B.Id)),[this,Id=B.Id]{CapturingBinding=Id;CapturingGamepad=false;Refresh();})];
-        if(B.Gamepad.IsValid())Row->AddSlot().FillWidth(1).Padding(8,0)[Action(I->DisplayKey(I->Key(B.Id,true)),[this,Id=B.Id]{CapturingBinding=Id;CapturingGamepad=true;Refresh();})];
+        Row->AddSlot().FillWidth(1)[Action(I->DisplayKey(I->Key(B.Id)),[this,Id=B.Id]{CapturingBinding=Id;CapturingGamepad=false;Refresh(true);})];
+        if(B.Gamepad.IsValid())Row->AddSlot().FillWidth(1).Padding(8,0)[Action(I->DisplayKey(I->Key(B.Id,true)),[this,Id=B.Id]{CapturingBinding=Id;CapturingGamepad=true;Refresh(true);})];
         Form->AddSlot().AutoHeight()[Row];
     }
 }
 void SMenuShell::BeginVideoChange()
 {
     if(VideoPending)return;auto* S=GEngine->GetGameUserSettings();S->ConfirmVideoMode();
-    S->SetScreenResolution(PendingResolution);S->SetFullscreenMode(EWindowMode::Type(PendingWindowMode));S->ApplyResolutionSettings(false);
-    VideoPending=true;VideoConfirmDeadline=FPlatformTime::Seconds()+15;
+    S->SetScreenResolution(PendingResolution);S->SetFullscreenMode(EWindowMode::Type(PendingWindowMode));
+    // Let existing Slate blur draw commands drain before replacing the backbuffer.
+    // Also guard against stale geometry during external/manual window resizing.
+    BlurSuspendedUntil=FPlatformTime::Seconds()+1;VideoApplyDeadline=FPlatformTime::Seconds()+.15;
+    VideoPending=true;VideoConfirmDeadline=VideoApplyDeadline+15;
     Confirm(TEXT("Zachować tryb ekranu?"),TEXT("Potwierdź w ciągu 15 sekund. Brak odpowiedzi przywróci poprzedni tryb."),[this,S]{S->ConfirmVideoMode();S->SaveSettings();VideoPending=false;Refresh();});
 }
 void SMenuShell::RevertVideoChange()
 {
-    if(!VideoPending)return;auto* S=GEngine->GetGameUserSettings();S->RevertVideoMode();S->ApplyResolutionSettings(false);VideoPending=false;
+    if(!VideoPending)return;auto* S=GEngine->GetGameUserSettings();S->RevertVideoMode();VideoPending=false;
+    BlurSuspendedUntil=FPlatformTime::Seconds()+1;VideoApplyDeadline=FPlatformTime::Seconds()+.15;
 }
 void SMenuShell::PreviewVideoMode(FIntPoint Resolution,int32 Mode){PendingResolution=Resolution;PendingWindowMode=Mode;BeginVideoChange();}
 void SMenuShell::Tick(const FGeometry& G,double T,float Dt)
 {
     SCompoundWidget::Tick(G,T,Dt);
+    if(VideoApplyDeadline>0 && FPlatformTime::Seconds()>=VideoApplyDeadline){GEngine->GetGameUserSettings()->ApplyResolutionSettings(false);VideoApplyDeadline=0;}
     EntranceSeconds+=Dt;
     const float Alpha=UWTGPerformanceSettings::Get()->bReduceUIMotion?1.f:1-FMath::Pow(1-FMath::Clamp(EntranceSeconds/.2f,0.f,1.f),3.f);
     if(Stage){Stage->SetRenderOpacity(Alpha*(Flow.IsValid()?Flow->TransitionOpacity:1.f));Stage->SetRenderTransform(FSlateRenderTransform(FVector2D((1-Alpha)*22,0)));}

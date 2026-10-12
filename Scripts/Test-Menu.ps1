@@ -13,7 +13,7 @@ function Run-MenuProbe([string]$Name,[string]$Command,[string]$Marker,[string[]]
         '-WTGMenuTest','-WTGNoDistrictAutoLoad','-WTGNoDistrictAutoSave',
         ('-ExecCmds="DisableAllScreenMessages,{0}"' -f $Command),
         ('-GameUserSettingsINI="{0}/Saved/MenuQA/{1}.ini"' -f $Root,$Name),('-abslog="{0}"' -f $Log))
-    if($Rendered){$Arguments+=@('-windowed','-ResX=1600','-ResY=900')}else{$Arguments+='-nullrhi'}
+    if($Rendered){$Arguments+='-windowed';if(!($Extra -match '^-ResX=')){$Arguments+=@('-ResX=1600','-ResY=900')}}else{$Arguments+='-nullrhi'}
     $Arguments+=$Extra
     $Process=Start-Process -FilePath $Executable -WorkingDirectory $Root -ArgumentList $Arguments -WindowStyle Hidden -PassThru
     $Deadline=[DateTime]::UtcNow.AddSeconds(150)

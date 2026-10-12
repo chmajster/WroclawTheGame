@@ -27,6 +27,7 @@
 #include "Framework/Application/SlateApplication.h"
 #include "Styling/CoreStyle.h"
 #include "Engine/Engine.h"
+#include "Engine/GameViewportClient.h"
 #include "GameFramework/GameUserSettings.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -40,22 +41,25 @@ void SMenuShell::NavigationSound(float Volume)
 }
 TSharedRef<SWidget> SMenuShell::Action(const FString& Label,TFunction<void()> Click,bool Enabled,const FString& Hint)
 {
-    auto B=SNew(SWTGMenuButton).Label(Label).Hint(Hint).OnClicked_Lambda([this,Click]{
-        if(Flow.IsValid() && !Flow->IsTransitioning()){NavigationSound(.25f);Click();}return FReply::Handled();})
-        .OnHovered_Lambda([this]{NavigationSound(.09f);});
+    auto B=SNew(SWTGMenuButton).Label(Label).Hint(Hint).OnClicked_Lambda([this,Click,Label]{
+        if(Flow.IsValid() && !Flow->IsTransitioning() && (VideoApplyDeadline==0 || Label==TEXT("Anuluj"))){NavigationSound(.25f);Click();}return FReply::Handled();})
+        .OnHovered_Lambda([this]{NavigationSound(.09f);})
+        .Selected_Lambda([this,Label]{return Flow.IsValid() && Flow->IsFrontEnd() && ((Page==1 && Label==TEXT("Wczytaj grę")) || (Page==2 && Label==TEXT("Ustawienia")) || (Page==3 && Label==TEXT("Sterowanie")) || (Page==4 && Label==TEXT("O grze")));});
     B->SetEnabled(Enabled);if(Enabled)FocusOrder.Add(B->FocusTarget());return B;
 }
-void SMenuShell::FocusFirst()
+void SMenuShell::FocusFirst(int32 Preferred)
 {
-    Focused=0;
-    RegisterActiveTimer(0,FWidgetActiveTimerDelegate::CreateLambda([this](double,float){
-        if(!FocusOrder.IsEmpty())FSlateApplication::Get().SetKeyboardFocus(FocusOrder[0],EFocusCause::SetDirectly);
+    Focused=Preferred;
+    RegisterActiveTimer(0,FWidgetActiveTimerDelegate::CreateLambda([this,Preferred](double,float){
+        if(!FocusOrder.IsEmpty()){Focused=FMath::Clamp(Preferred,0,FocusOrder.Num()-1);FSlateApplication::Get().SetKeyboardFocus(FocusOrder[Focused],EFocusCause::SetDirectly);}
         return EActiveTimerReturnType::Stop;
     }));
 }
 void SMenuShell::SelectPage(int32 Index){Page=Index;Refresh();}
-void SMenuShell::Refresh()
+void SMenuShell::Refresh(bool PreserveFocus)
 {
+    int32 PreviousFocus=Focused;
+    for(int32 I=0;I<FocusOrder.Num();++I)if(FocusOrder[I]->HasKeyboardFocus() || FocusOrder[I]->HasFocusedDescendants())PreviousFocus=I;
     FocusOrder.Reset();MapView.Reset();Pending=nullptr;DialogTitle.Empty();EntranceSeconds=0;
     if(!Flow.IsValid())return;
     if(Flow->Screen==EWTGMenuScreen::Boot){
@@ -63,7 +67,12 @@ void SMenuShell::Refresh()
     }
     TSharedPtr<SHorizontalBox> Body,Tabs;
     ChildSlot[SAssignNew(Layers,SOverlay)
-        +SOverlay::Slot()[SNew(SBackgroundBlur).BlurStrength_Lambda([]{return UWTGPerformanceSettings::Get()->bMenuBackgroundBlur?3.f:0.f;})]
+        +SOverlay::Slot()[SNew(SBackgroundBlur).Clipping(EWidgetClipping::ClipToBoundsAlways).BlurStrength_Lambda([this]{
+            if(!Flow.IsValid() || FPlatformTime::Seconds()<BlurSuspendedUntil || !UWTGPerformanceSettings::Get()->bMenuBackgroundBlur)return 0.f;
+            auto* Viewport=Flow->MenuWorld()->GetGameViewport();if(!Viewport || !Viewport->Viewport)return 0.f;
+            const auto Pixels=Viewport->Viewport->GetSizeXY();const auto Size=GetCachedGeometry().GetAbsoluteSize();
+            return Size.X<=Pixels.X+.5 && Size.Y<=Pixels.Y+.5?3.f:0.f;
+        })]
         +SOverlay::Slot()[SNew(SBorder).BorderImage(FCoreStyle::Get().GetBrush("WhiteBrush"))
             .BorderBackgroundColor(FLinearColor(0,0,0,Flow->IsFrontEnd()?.28f:.76f))]
         +SOverlay::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center)
@@ -92,9 +101,12 @@ void SMenuShell::Refresh()
                 .OnClicked_Lambda([this,Target]{if(!Flow->IsTransitioning()){NavigationSound(.25f);SelectPage(Target);}return FReply::Handled();});
             FocusOrder.Add(Button->FocusTarget());Tabs->AddSlot().FillWidth(1).Padding(0,0,5,0)[Button];}
     }
+    const int32 FirstPageControl=FocusOrder.Num();
     switch(Page){case 0:if(!Flow->IsFrontEnd())BuildGame();break;case 1:BuildSaves();break;case 2:BuildSettings();break;case 3:BuildControls();break;case 4:BuildAbout();break;case 10:BuildMap();break;case 11:BuildCharacter();break;case 12:BuildStats();break;}
-    Content->AddSlot().AutoHeight().Padding(0,22)[WTGMenu::Text(Flow->Notice,18,WTGMenu::Accent)];
-    FocusFirst();
+    if(!Flow->Notice.IsEmpty())Content->AddSlot().AutoHeight().Padding(0,22)[WTGMenu::Card(WTGMenu::Text(Flow->Notice,18,WTGMenu::Accent),FMargin(18))];
+    const int32 PausePages[]={10,0,11,12,2,3};int32 Preferred=0;
+    if(Flow->IsFrontEnd()){if(Page!=0)Preferred=FirstPageControl;}else for(int32 I=0;I<6;++I)if(PausePages[I]==Page)Preferred=I;
+    FocusFirst(PreserveFocus?PreviousFocus:Preferred);
 }
 void SMenuShell::BuildMain()
 {
@@ -189,19 +201,20 @@ void SMenuShell::DrawDialog()
                 +SVerticalBox::Slot().AutoHeight()[WTGMenu::Text(DialogTitle,32,WTGMenu::Paper,true)]
                 +SVerticalBox::Slot().AutoHeight().Padding(0,20,0,30)[WTGMenu::Text(DialogBody,22,WTGMenu::Muted)]
                 +SVerticalBox::Slot().AutoHeight()[Action(TEXT("Anuluj"),[this]{RevertVideoChange();Refresh();})]
-                +SVerticalBox::Slot().AutoHeight()[Action(TEXT("Potwierdź"),[this]{auto A=MoveTemp(Pending);if(A)A();})])]]]]];
+                +SVerticalBox::Slot().AutoHeight()[SNew(SBox).IsEnabled_Lambda([this]{return !VideoPending || VideoApplyDeadline==0;})[Action(TEXT("Potwierdź"),[this]{auto A=MoveTemp(Pending);if(A)A();})]])]]]]];
     FocusFirst();
 }
 FReply SMenuShell::OnPreviewKeyDown(const FGeometry& G,const FKeyEvent& E)
 {
     const FKey K=E.GetKey();
     if(Flow.IsValid() && Flow->IsTransitioning())return FReply::Handled();
+    if(VideoApplyDeadline>0 && !VideoPending)return FReply::Handled();
     if(!CapturingBinding.IsNone()){
-        if(K==EKeys::Escape || K==EKeys::Gamepad_Special_Right || (!CapturingGamepad && K==EKeys::Gamepad_FaceButton_Right)){CapturingBinding=NAME_None;Refresh();return FReply::Handled();}
+        if(K==EKeys::Escape || K==EKeys::Gamepad_Special_Right || (!CapturingGamepad && K==EKeys::Gamepad_FaceButton_Right)){CapturingBinding=NAME_None;Refresh(true);return FReply::Handled();}
         auto* Input=Flow->GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>();
         const bool OK=CapturingGamepad?Input->RebindGamepad(CapturingBinding,K):Input->RebindKeyboard(CapturingBinding,K);
-        if(OK){CapturingBinding=NAME_None;Flow->Notice=TEXT("Przypisanie zapisane.");Refresh();}
-        else {Flow->Notice=TEXT("Ten klawisz jest zarezerwowany lub zaj\u0119ty w tym kontek\u015bcie.");Refresh();}
+        if(OK){CapturingBinding=NAME_None;Flow->Notice=TEXT("Przypisanie zapisane.");Refresh(true);}
+        else {Flow->Notice=TEXT("Ten klawisz jest zarezerwowany lub zaj\u0119ty w tym kontek\u015bcie.");Refresh(true);}
         return FReply::Handled();
     }
     if(K==EKeys::Escape || K==EKeys::Gamepad_FaceButton_Right){
@@ -220,5 +233,5 @@ FReply SMenuShell::OnPreviewMouseButtonDown(const FGeometry&,const FPointerEvent
     if(CapturingBinding.IsNone() || CapturingGamepad)return FReply::Unhandled();
     const bool OK=Flow->GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->RebindKeyboard(CapturingBinding,E.GetEffectingButton());
     if(OK){CapturingBinding=NAME_None;Flow->Notice=TEXT("Przypisanie zapisane.");}
-    else Flow->Notice=TEXT("Przycisk myszy jest już zajęty w tym kontekście.");Refresh();return FReply::Handled();
+    else Flow->Notice=TEXT("Przycisk myszy jest już zajęty w tym kontekście.");Refresh(true);return FReply::Handled();
 }
