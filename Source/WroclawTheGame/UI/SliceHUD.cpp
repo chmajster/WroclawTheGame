@@ -19,6 +19,7 @@
 #include "Interaction/Interactable.h"
 #include "Core/SliceGameMode.h"
 #include "Character/CharacterCreatorSubsystem.h"
+#include "Systems/DistrictGameplaySubsystem.h"
 void ASliceHUD::Text(const FString &Value, float X, float Y, float Scale, const FLinearColor &Color)
 {
     DrawText(Value, Color, X, Y, GEngine->GetMediumFont(), Scale, false);
@@ -92,6 +93,9 @@ void ASliceHUD::DrawHUD()
         return;
     auto *M = GetGameInstance()->GetSubsystem<USliceMission>();
     auto *CityGameplay = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
+    auto* District=GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>();
+    if (District->IsActive() && !M->bShowMenu)
+        Text(FString::Printf(TEXT("POSZUKIWANIE %d / 3%s"),District->WantedLevel(),District->IsSearching()?TEXT(" — szukanie"):TEXT("")),Canvas->SizeX-330,55,.85f,FLinearColor(1,.8f,.3f));
     if (M->bShowMenu && PC->PlayerMenuWidget)
         return;
     if (Cast<AGeoPreviewGameMode>(GetWorld()->GetAuthGameMode()))

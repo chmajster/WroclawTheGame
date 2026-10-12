@@ -20,6 +20,7 @@ class WROCLAWTHEGAME_API UVehicleAIDriverComponent : public UActorComponent
     void StopAI();
 
     bool IsActive() const { return bActive; }
+    void SetPursuitGoal(const FVector& Goal) { PursuitGoal=Goal;bPursuit=true; }
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Wroclaw|VehicleAI")
     float CruiseSpeed = 1200.0f;
@@ -34,4 +35,6 @@ class WROCLAWTHEGAME_API UVehicleAIDriverComponent : public UActorComponent
     int32 TargetIndex = 0;
     bool bLoopRoute = true;
     bool bActive = false;
+    bool bPursuit = false;
+    FVector PursuitGoal=FVector::ZeroVector;
 };

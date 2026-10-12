@@ -1,4 +1,5 @@
 #include "Vehicles/CityTrafficVehicle.h"
+#include "Vehicles/VehicleDefinition.h"
 #include "Vehicles/VehicleAIDriverComponent.h"
 #include "Components/BoxComponent.h"
 

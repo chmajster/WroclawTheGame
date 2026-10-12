@@ -17,6 +17,9 @@
 #include "Engine/StaticMesh.h"
 #include "Engine/DamageEvents.h"
 #include "Audio/SliceAudio.h"
+#include "Systems/DistrictGameplaySubsystem.h"
+#include "World/CityPopulation.h"
+#include "Components/CapsuleComponent.h"
 ADriveableVehicle::ADriveableVehicle()
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -29,6 +32,7 @@ ADriveableVehicle::ADriveableVehicle()
     Chassis->SetNotifyRigidBodyCollision(true);
     Chassis->SetLinearDamping(.04f);
     Chassis->SetAngularDamping(2);
+    Chassis->SetCenterOfMass(FVector(0,0,-20));
     BodyVisual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
     BodyVisual->SetupAttachment(Chassis);
     BodyVisual->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -54,6 +58,11 @@ ADriveableVehicle::ADriveableVehicle()
     Boom->SetRelativeLocation(FVector(0, 0, 150));
     Boom->SetRelativeRotation(FRotator(-15, 0, 0));
     Boom->bUsePawnControlRotation = true;
+    Boom->bDoCollisionTest = true;
+    Boom->ProbeSize = 20;
+    Boom->bEnableCameraLag = true;
+    Boom->CameraLagSpeed = 7;
+    Boom->bUseCameraLagSubstepping = true;
     Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
     Camera->SetupAttachment(Boom);
     StreamingSource =
@@ -157,6 +166,8 @@ void ADriveableVehicle::Interact(ASliceCharacter *Player)
     StreamingSource->EnableStreamingSource();
     bWaitingForGround=true;Chassis->SetSimulatePhysics(false);
     EnteredAt = GetWorld()->GetTimeSeconds();
+    bEngine = Health > 0;
+    USliceAudio::Play(this,TEXT("EngineStart"),GetActorLocation(),.6f);
 }
 bool ADriveableVehicle::Exit()
 {
@@ -165,16 +176,23 @@ bool ADriveableVehicle::Exit()
         return false;
     FCollisionQueryParams Params(SCENE_QUERY_STAT(VehicleExit), false, this);
     Params.AddIgnoredActor(Driver);
-    for (float Side : {-1.f, 1.f})
+    const float Radius=Driver->GetCapsuleComponent()->GetScaledCapsuleRadius();
+    const float HalfHeight=Driver->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+    // Both doors, then the rear and front. Use the real appearance capsule and
+    // trace the path from the door so an exit cannot teleport through a wall.
+    for (const FVector Offset : {FVector(0,-190,0),FVector(0,190,0),FVector(-290,0,0),FVector(290,0,0)})
     {
-        FVector Point = GetActorLocation() + GetActorRightVector() * Side * 170;
+        FVector Point = GetActorTransform().TransformPosition(Offset);
         FHitResult Floor;
         if (!GetWorld()->LineTraceSingleByChannel(Floor, Point + FVector(0, 0, 150),
                                                   Point - FVector(0, 0, 350), ECC_Visibility, Params))
             continue;
-        Point = Floor.ImpactPoint + FVector(0, 0, 94);
+        if (Floor.ImpactNormal.Z<.7) continue;
+        Point = Floor.ImpactPoint + FVector(0, 0, HalfHeight+4);
+        FHitResult Path;
+        if (GetWorld()->SweepSingleByChannel(Path,GetActorLocation()+FVector(0,0,HalfHeight),Point,FQuat::Identity,ECC_Pawn,FCollisionShape::MakeSphere(Radius),Params)) continue;
         if (GetWorld()->OverlapBlockingTestByChannel(Point, FQuat::Identity, ECC_Pawn,
-                                                     FCollisionShape::MakeCapsule(36, 92), Params))
+                                                     FCollisionShape::MakeCapsule(Radius, HalfHeight), Params))
             continue;
         auto *Passenger = Driver.Get();
         Passenger->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
@@ -189,6 +207,8 @@ bool ADriveableVehicle::Exit()
         StreamingSource->DisableStreamingSource();
         if (StreamingProbe) StreamingProbe->Source->DisableStreamingSource();
         bEngine = false;
+        Chassis->SetPhysicsLinearVelocity(FVector::ZeroVector);
+        Chassis->SetSimulatePhysics(false);
         return true;
     }
     return false;
@@ -294,6 +314,9 @@ void ADriveableVehicle::Tick(float Dt)
         Chassis->AddTorqueInRadians(FVector(0, 0, (Yaw - Angular.Z) * Mass * 28000));
     }
     Gear = FMath::Abs(Speed) < 20 ? 0 : (Speed < 0 ? -1 : FMath::Clamp(1 + int(Speed / 500), 1, 5));
+    WheelRoll=FMath::Fmod(WheelRoll+FMath::RadiansToDegrees(Speed*Dt/32.f),360.f);
+    for (int32 I=0;I<WheelVisuals.Num();++I)
+        WheelVisuals[I]->SetRelativeRotation(FRotator(WheelRoll,I>=2?Steering*28.f:0.f,90));
     if (Health <= 0)
         bEngine = false;
 }
@@ -319,6 +342,9 @@ void ADriveableVehicle::Collision(UPrimitiveComponent *Hit, AActor *Other,
     {
         auto *Mission = GetWorld()->GetGameInstance()->GetSubsystem<USliceMission>();
         Mission->WorldState.AddHeat(FMath::Clamp(Severity * 0.003f, 0.5f, 4.0f));
+        GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->ReportCrime(
+            Cast<ACityAmbientAgent>(Other)?35.f:12.f,
+            Cast<ACityAmbientAgent>(Other)?TEXT("Potrącenie pieszego — policja w drodze."):TEXT("Niebezpieczna kolizja — zgłoszenie policji."));
     }
 }
 FString ADriveableVehicle::Status() const

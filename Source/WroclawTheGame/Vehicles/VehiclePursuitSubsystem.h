@@ -51,5 +51,5 @@ class WROCLAWTHEGAME_API UVehiclePursuitSubsystem : public UTickableWorldSubsyst
     double LastSeenAt = -1000.0;
     float Accumulator = 0.0f;
     void EnterLost();
-    bool HasVisualContact(class ACityTrafficVehicle *Pursuer, class ADriveableVehicle *PlayerVehicle) const;
+    bool HasVisualContact(class ACityTrafficVehicle *Pursuer, class AActor *PlayerVehicle) const;
 };

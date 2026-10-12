@@ -27,6 +27,7 @@
 #include "Components/SpotLightComponent.h"
 #include "Interaction/NoiseThrowable.h"
 #include "Engine/World.h"
+#include "Systems/DistrictGameplaySubsystem.h"
 ASliceCharacter::ASliceCharacter()
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -52,11 +53,19 @@ ASliceCharacter::ASliceCharacter()
     GetCharacterMovement()->MaxWalkSpeedCrouched = 140;
     GetCharacterMovement()->JumpZVelocity = 420;
     GetCharacterMovement()->AirControl = 0.25f;
+    GetCharacterMovement()->MaxAcceleration = 1500;
+    GetCharacterMovement()->BrakingDecelerationWalking = 1200;
+    GetCharacterMovement()->GroundFriction = 6;
     Boom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
     Boom->SetupAttachment(RootComponent);
     Boom->TargetArmLength = 250;
     Boom->SocketOffset = FVector(0, 35, 55);
     Boom->bUsePawnControlRotation = true;
+    Boom->bDoCollisionTest = true;
+    Boom->ProbeSize = 15;
+    Boom->bEnableCameraLag = true;
+    Boom->CameraLagSpeed = 12;
+    Boom->bUseCameraLagSubstepping = true;
     Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
     Camera->SetupAttachment(Boom);
     Camera->FieldOfView = 85;
@@ -304,12 +313,12 @@ void ASliceCharacter::ToggleFlashlight()
 void ASliceCharacter::Attack()
 {
     if (!CastChecked<ASliceController>(Controller)->GameplayBlocked() && !Hiding.IsValid())
-        Combat->Attack(false);
+        if (Combat->Attack(false)) GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->ReportCrime(15,TEXT("Agresja w miejscu publicznym — zgłoszenie policji."));
 }
 void ASliceCharacter::HeavyAttack()
 {
     if (!CastChecked<ASliceController>(Controller)->GameplayBlocked() && !Hiding.IsValid())
-        Combat->Attack(true);
+        if (Combat->Attack(true)) GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->ReportCrime(25,TEXT("Agresja w miejscu publicznym — zgłoszenie policji."));
 }
 void ASliceCharacter::SetBlock(bool Value)
 {

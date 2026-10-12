@@ -6,6 +6,10 @@
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/PlayerController.h"
+#include "Camera/PlayerCameraManager.h"
+#include "Components/PointLightComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 int32 UVehiclePursuitSubsystem::ActivePursuerCount() const
 {
@@ -18,8 +22,8 @@ int32 UVehiclePursuitSubsystem::ActivePursuerCount() const
 
 bool UVehiclePursuitSubsystem::StartPursuit(int32 PursuerCount)
 {
-    auto *PlayerVehicle = Cast<ADriveableVehicle>(UGameplayStatics::GetPlayerPawn(this, 0));
-    if (!PlayerVehicle || !PlayerVehicle->bPersistentPlayerVehicle || PursuerCount <= 0)
+    auto *PlayerVehicle = UGameplayStatics::GetPlayerPawn(this, 0);
+    if (!PlayerVehicle || PursuerCount <= 0)
         return false;
 
     ACityPopulation *Population = nullptr;
@@ -59,17 +63,43 @@ bool UVehiclePursuitSubsystem::StartPursuit(int32 PursuerCount)
     const int32 CycleLength = BestRoute->Points.Num() - 1;
     for (int32 I = 0; I < PursuerCount; ++I)
     {
-        const int32 Offset = 3 + I * 3;
-        const int32 StartIndex = (NearestIndex - Offset + CycleLength * 2) % CycleLength;
-        if (FVector::DistSquared2D(
-                BestRoute->Points[StartIndex], PlayerVehicle->GetActorLocation()) <
-            FMath::Square(1200.0))
-            continue;
+        int32 StartIndex=INDEX_NONE;
+        auto* PC=UGameplayStatics::GetPlayerController(this,0);
+        FVector View; FRotator Rotation;
+        if (!PC) continue;
+        PC->GetPlayerViewPoint(View,Rotation);
+        const float HalfFov=PC->PlayerCameraManager?PC->PlayerCameraManager->GetFOVAngle()*.5f:50.f;
+        for (int32 Offset=5+I*7;Offset<CycleLength+5+I*7;++Offset)
+        {
+            const int32 Candidate=(NearestIndex-Offset+CycleLength*3)%CycleLength;
+            const FVector Point=BestRoute->Points[Candidate]+FVector(0,0,85);
+            if (FVector::DistSquared2D(Point,PlayerVehicle->GetActorLocation())<FMath::Square(3500.0)) continue;
+            FCollisionQueryParams Params(SCENE_QUERY_STAT(PoliceSpawnVisibility),false,PlayerVehicle);
+            FHitResult Occlusion;
+            const bool InView=FVector::DotProduct((Point-View).GetSafeNormal(),Rotation.Vector()) > FMath::Cos(FMath::DegreesToRadians(HalfFov+20));
+            const bool Occluded=GetWorld()->LineTraceSingleByChannel(Occlusion,View,Point,ECC_Visibility,Params);
+            if (InView && !Occluded) continue;
+            FHitResult Ground;
+            if (!GetWorld()->LineTraceSingleByChannel(Ground,Point+FVector(0,0,100),Point-FVector(0,0,250),ECC_Visibility,Params)) continue;
+            if (GetWorld()->OverlapBlockingTestByChannel(Point,FQuat::Identity,ECC_Pawn,FCollisionShape::MakeBox(FVector(210,90,28)),Params)) continue;
+            StartIndex=Candidate;break;
+        }
+        if (StartIndex==INDEX_NONE) continue;
 
         auto *Pursuer = GetWorld()->SpawnActor<ACityTrafficVehicle>();
         if (!Pursuer)
             continue;
         Pursuer->bPersistentPlayerVehicle = false;
+        Pursuer->SetVisualMeshes(Population->TrafficBodyMesh,Population->TrafficWheelMesh);
+        for (int32 Lamp=0;Lamp<2;++Lamp)
+        {
+            auto* Light=NewObject<UPointLightComponent>(Pursuer);
+            Light->SetupAttachment(Pursuer->GetRootComponent());
+            Light->SetRelativeLocation(FVector(0,Lamp?40:-40,110));
+            Light->SetLightColor(Lamp?FLinearColor::Blue:FLinearColor::Red);
+            Light->SetIntensity(1800);Light->SetAttenuationRadius(500);
+            Light->RegisterComponent();
+        }
         Pursuer->TrafficDriver->CruiseSpeed = 1650.0f + I * 120.0f;
         if (!Pursuer->ConfigureTraffic(BestRoute->Points, StartIndex))
         {
@@ -105,7 +135,7 @@ void UVehiclePursuitSubsystem::StopPursuit()
 }
 
 bool UVehiclePursuitSubsystem::HasVisualContact(
-    ACityTrafficVehicle *Pursuer, ADriveableVehicle *PlayerVehicle) const
+    ACityTrafficVehicle *Pursuer, AActor *PlayerVehicle) const
 {
     if (!Pursuer || !PlayerVehicle ||
         FVector::DistSquared(Pursuer->GetActorLocation(), PlayerVehicle->GetActorLocation()) >
@@ -145,8 +175,8 @@ void UVehiclePursuitSubsystem::Tick(float DeltaTime)
         return;
     Accumulator = 0.0f;
 
-    auto *PlayerVehicle = Cast<ADriveableVehicle>(UGameplayStatics::GetPlayerPawn(this, 0));
-    if (!PlayerVehicle || !PlayerVehicle->bPersistentPlayerVehicle)
+    auto *PlayerVehicle = UGameplayStatics::GetPlayerPawn(this, 0);
+    if (!PlayerVehicle)
     {
         const double SinceSeen = GetWorld()->GetTimeSeconds() - LastSeenAt;
         State = SinceSeen > SearchSeconds ? EVehiclePursuitState::Lost : EVehiclePursuitState::Search;
@@ -177,8 +207,15 @@ void UVehiclePursuitSubsystem::Tick(float DeltaTime)
         LastKnown = PlayerVehicle->GetActorLocation();
         LastSeenAt = Now;
         State = EVehiclePursuitState::Chase;
-        return;
     }
+    for (const auto& Pursuer:Pursuers)
+        if (Pursuer)
+        {
+            Pursuer->TrafficDriver->SetPursuitGoal(LastKnown);
+            TArray<UPointLightComponent*> Beacons;Pursuer->GetComponents(Beacons);
+            for (int32 I=0;I<Beacons.Num();++I) Beacons[I]->SetVisibility((int32(Now*4)+I)%2==0);
+        }
+    if (bContact) return;
 
     const double SinceSeen = Now - LastSeenAt;
     if (SinceSeen > SearchSeconds)

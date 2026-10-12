@@ -16,8 +16,18 @@ na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
 - Decyzja: wykorzystać istniejące GIS, postać, pojazd, populację, ekonomię i menu;
   nie zmieniać silnika ani wdrażać zastępczego frameworka gry.
 - Punkt 2 scalony do `main` przez PR #133. Punkt 3 rozpoczęty na
-  `feat/03-district-gameplay`.
-- Następny krok: wdrożyć punkt 3 na bieżącej gałęzi.
+  `feat/03-district-gameplay`, draft PR #134. Pierwsza partia C++ kompiluje się.
+  Wdrożono wykroczenia/decay wanted, widoczne auta policji z dojazdem do ostatniej
+  pozycji również pieszo i kontrolą widoczności spawnu; skrzyżowania mają
+  deterministyczne pierwszeństwo. Bezpieczne wyjście uwzględnia kapsułę i ściany,
+  auto włącza silnik przy wejściu. Piesi mają reakcję na obrażenia i omijanie.
+  LocomotionAssetLibrary tworzy BlendSpace po kontroli nazw/hierarchii kości,
+  CharacterAppearanceComponent odtwarza go w runtime; nie potwierdzono jeszcze
+  przygotowania assetów (skrypt dobierał również Crouch_Idle_Loop jako Idle,
+  doprecyzowano dokładną nazwę, trwa ponowienie).
+- Następny krok: sprawdzić DistrictLocomotion.log oraz marker, poprawić tylko
+  konkretne błędy przygotowania rigów. Skompilować końcową partię (test wanted,
+  animacje kół/światła), uruchomić WTG.District.WantedDecay i potwierdzić assety.
   Spiąć runtime locomotion w `CharacterAppearanceComponent`, bezpieczne wyjście
   z `DriveableVehicle`, pościg/wykroczenia i kontrolę skrzyżowań. Punktów 4–7
   nie oznaczać jako gotowych na podstawie samej mapy.

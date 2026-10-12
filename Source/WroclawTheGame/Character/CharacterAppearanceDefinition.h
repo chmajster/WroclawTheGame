@@ -109,6 +109,8 @@ struct FBodyPresetDefinition
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TSoftObjectPtr<class UAnimationAsset> Walk;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TSoftObjectPtr<class UAnimationAsset> Jog;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TSoftObjectPtr<class UAnimationAsset> Crouch;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) TSoftObjectPtr<class UBlendSpace1D> Locomotion;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) TSoftObjectPtr<class UAnimationAsset> JumpLoop;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TSoftObjectPtr<class UMaterialInterface> SkinMaterial;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) float ReferenceHeight = 180;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FRotator MeshRotation = FRotator(0,-90,0);
