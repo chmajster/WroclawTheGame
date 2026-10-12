@@ -21,6 +21,10 @@
 #include "Misc/Paths.h"
 #include "Misc/FileHelper.h"
 #include "Layout/WidgetPath.h"
+#include "EngineUtils.h"
+#include "Camera/CameraActor.h"
+#include "Camera/CameraComponent.h"
+#include "Mission/DistrictDeliveryPoint.h"
 
 namespace WTGMenuQA
 {
@@ -82,12 +86,17 @@ static FAutoConsoleCommandWithWorld GMenuUISmoke(TEXT("WTG.MenuUISmoke"),TEXT("M
             World->GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->ResetToDefaults();S->SetScreenResolution(FIntPoint(1600,900));S->SetFullscreenMode(EWindowMode::Windowed);S->ApplyResolutionSettings(false);S->ConfirmVideoMode();OriginalSize=S->GetScreenResolution();}
         else if(Age<.7f || Menu->IsTransitioning())return true;
         switch(Stage){
-        case 0:Check(Menu->Screen==EWTGMenuScreen::Main && World->IsPaused() && Menu->Controller()->IsMoveInputIgnored() && Menu->Controller()->IsLookInputIgnored(),TEXT("startup_input_lock"));WTGMenuQA::Shot(TEXT("MenuQA_Main.png"));break;
+        case 0:{Check(Menu->Screen==EWTGMenuScreen::Main && World->IsPaused() && Menu->Controller()->IsMoveInputIgnored() && Menu->Controller()->IsLookInputIgnored(),TEXT("startup_input_lock"));
+            auto* FrontCamera=Cast<ACameraActor>(Menu->Controller()->GetViewTarget());Check(FrontCamera && !FrontCamera->GetCameraComponent()->bConstrainAspectRatio,TEXT("frontend_fills_aspect_ratio"));
+            int32 HiddenPoints=0;for(TActorIterator<ADistrictDeliveryPoint> It(World);It;++It){Check(It->IsHidden(),TEXT("frontend_hides_mission_character"));++HiddenPoints;}Check(HiddenPoints==2,TEXT("frontend_mission_characters_found"));
+            WTGMenuQA::Shot(TEXT("MenuQA_Main.png"));break;}
         case 1:Click(TEXT("Nowa gra"));Check(WTGMenuQA::Button(Menu,TEXT("Potwierdź")).IsValid(),TEXT("new_confirmation"));break;
         case 2:WTGMenuQA::Key(EKeys::Escape);Check(!UGameplayStatics::DoesSaveGameExist(Slot,0) && Menu->Screen==EWTGMenuScreen::Main,TEXT("cancel_preserves_save"));break;
         case 3:Click(TEXT("Nowa gra"),true);break;
         case 4:Click(TEXT("Potwierdź"));break;
-        case 5:Check(Menu->Screen==EWTGMenuScreen::Playing && !World->IsPaused() && !Menu->Controller()->IsMoveInputIgnored() && !Menu->Controller()->IsLookInputIgnored() && D->HasSave(),TEXT("new_actual_session"));Menu->Controller()->Escape();Frozen=World->GetTimeSeconds();FrozenStats=Menu->PlayedSeconds;Position=Menu->Controller()->GetPawn()->GetActorLocation();break;
+        case 5:Check(Menu->Screen==EWTGMenuScreen::Playing && !World->IsPaused() && !Menu->Controller()->IsMoveInputIgnored() && !Menu->Controller()->IsLookInputIgnored() && D->HasSave(),TEXT("new_actual_session"));
+            for(TActorIterator<ADistrictDeliveryPoint> It(World);It;++It)Check(!It->IsHidden(),TEXT("gameplay_restores_mission_character"));
+            Menu->Controller()->Escape();Frozen=World->GetTimeSeconds();FrozenStats=Menu->PlayedSeconds;Position=Menu->Controller()->GetPawn()->GetActorLocation();break;
         case 6:Check(Menu->Screen==EWTGMenuScreen::Pause && World->IsPaused() && FMath::IsNearlyEqual(World->GetTimeSeconds(),Frozen,.01) && FMath::IsNearlyEqual(Menu->PlayedSeconds,FrozenStats,.01) && Menu->Controller()->GetPawn()->GetActorLocation().Equals(Position,.1),TEXT("pause_frozen"));WTGMenuQA::Shot(TEXT("MenuQA_Map.png"));break;
         case 7:{auto Found=WTGMenuQA::Find(Menu->SlateMenu().ToSharedRef(),[](const TSharedRef<SWidget>& X){return X->GetTypeAsString()==TEXT("SMenuMap");});Check(Found.IsValid(),TEXT("map_widget"));
             if(Found){auto Map=StaticCastSharedPtr<SMenuMap>(Found);const auto Center=Map->ViewCenter();const float Zoom=Map->ViewZoom();FSlateApplication::Get().SetKeyboardFocus(Map);WTGMenuQA::Key(EKeys::Up);WTGMenuQA::Key(EKeys::Add);

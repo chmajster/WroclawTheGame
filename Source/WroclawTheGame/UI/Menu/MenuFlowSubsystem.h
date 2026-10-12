@@ -49,7 +49,7 @@ private:
     TWeakObjectPtr<class APawn> LastTrackedPawn;
     FVector LastPosition=FVector::ZeroVector;
     FVector CameraBase,CameraLook;
-    TArray<TWeakObjectPtr<class ACharacter>> HiddenCharacters;
+    TArray<TWeakObjectPtr<class AActor>> HiddenFrontendActors;
     double CameraSeconds=0,AudioElapsed=0;
     float AppliedFrameCap=-1,TransitionSeconds=0;
     int32 PreviousVirtualAccept=-1;

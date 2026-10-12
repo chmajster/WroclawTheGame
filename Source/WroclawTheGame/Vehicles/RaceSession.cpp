@@ -59,7 +59,10 @@ void URaceSession::BeginPlay()
 
 void URaceSession::EndPlay(const EEndPlayReason::Type Reason)
 {
-    CleanupScenario(true);
+    // Ambient cars and pursuers inherit this component too. Destroying one
+    // must not cancel the player's pursuit or recurse into its cleanup.
+    const auto* OwnerVehicle=Cast<ADriveableVehicle>(GetOwner());
+    CleanupScenario(OwnerVehicle && OwnerVehicle->bPersistentPlayerVehicle);
     Super::EndPlay(Reason);
 }
 

@@ -2,6 +2,7 @@
 #include "UI/Menu/FrontEndMenuWidget.h"
 #include "UI/SliceController.h"
 #include "Mission/SliceMission.h"
+#include "Mission/DistrictDeliveryPoint.h"
 #include "Save/DistrictSaveSubsystem.h"
 #include "Save/DistrictSaveGame.h"
 #include "Systems/DistrictGameplaySubsystem.h"
@@ -56,7 +57,7 @@ UWorld* UMenuFlowSubsystem::MenuWorld() const { return PC.IsValid()?PC->GetWorld
 TSharedPtr<SMenuShell> UMenuFlowSubsystem::SlateMenu() const { return Widget?Widget->SlateMenu():nullptr; }
 void UMenuFlowSubsystem::Attach(ASliceController* C)
 {
-    if(Widget)Widget->RemoveFromParent();Widget=nullptr;Camera=nullptr;HiddenCharacters.Reset();PC=C;
+    if(Widget)Widget->RemoveFromParent();Widget=nullptr;Camera=nullptr;HiddenFrontendActors.Reset();PC=C;
     if(IsFrontEnd()){
         Screen=EWTGMenuScreen::Boot;
         C->SetIgnoreMoveInput(true);C->SetIgnoreLookInput(true);C->SetInputMode(FInputModeUIOnly());
@@ -112,7 +113,7 @@ void UMenuFlowSubsystem::ShowMain()
 {
     if(!PC.IsValid())return;
     auto* R=MenuWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->GetRegistry();
-    if(!Camera){Camera=MenuWorld()->SpawnActor<ACameraActor>();Camera->GetCameraComponent()->SetFieldOfView(60);}
+    if(!Camera){Camera=MenuWorld()->SpawnActor<ACameraActor>();Camera->GetCameraComponent()->SetFieldOfView(60);Camera->GetCameraComponent()->bConstrainAspectRatio=false;}
     if(Screen==EWTGMenuScreen::Pause && Transition([this]{ShowMain();}))return;
     if(R){CameraBase=R->PlayerStart+FVector(-1100,-900,850);CameraLook=R->MeetingPoint+FVector(500,1600,300);CameraSeconds=0;
         Camera->SetActorLocationAndRotation(CameraBase,(CameraLook-CameraBase).Rotation());}
@@ -120,7 +121,10 @@ void UMenuFlowSubsystem::ShowMain()
     auto& PP=Camera->GetCameraComponent()->PostProcessSettings;
     PP.bOverride_VignetteIntensity=true;PP.VignetteIntensity=.4f;
     PP.bOverride_ColorSaturation=true;PP.ColorSaturation=FVector4(.85,.85,.85,1);
-    for(TActorIterator<ACharacter> It(MenuWorld());It;++It)if(!It->IsHidden()){It->SetActorHiddenInGame(true);HiddenCharacters.Add(*It);}
+    for(TActorIterator<AActor> It(MenuWorld());It;++It)
+        if((It->IsA<ACharacter>() || It->IsA<ADistrictDeliveryPoint>()) && !It->IsHidden()){
+            It->SetActorHiddenInGame(true);HiddenFrontendActors.Add(*It);
+        }
     PC->SetViewTarget(Camera);Open(EWTGMenuScreen::Main);
 }
 void UMenuFlowSubsystem::ShowPause(){Open(EWTGMenuScreen::Pause);}
@@ -130,7 +134,7 @@ void UMenuFlowSubsystem::Resume()
     if(Transition([this]{Resume();}))return;
     Screen=EWTGMenuScreen::Playing;Notice.Empty();SetRawSlateAccept(false);GetGameInstance()->GetSubsystem<USliceMission>()->bShowMenu=false;
     if(Widget)Widget->RemoveFromParent();Widget=nullptr;
-    for(auto& Character:HiddenCharacters)if(Character.IsValid())Character->SetActorHiddenInGame(false);HiddenCharacters.Reset();
+    for(auto& Actor:HiddenFrontendActors)if(Actor.IsValid())Actor->SetActorHiddenInGame(false);HiddenFrontendActors.Reset();
     if(APawn* P=PC->GetPawn())P->SetActorHiddenInGame(false);
     ResetTracking();PC->SetViewTarget(PC->GetPawn());PC->ResetIgnoreMoveInput();PC->ResetIgnoreLookInput();
     PC->SetPause(false);PC->SetInputMode(FInputModeGameOnly());PC->bShowMouseCursor=false;

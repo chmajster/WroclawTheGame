@@ -23,11 +23,30 @@ Resize with blur exposed a D3D12 copy-bounds crash; blur drain/geometry guard
 fix is built. Engine resize also automatically updated LastConfirmed mode;
 menu now holds an independent transaction snapshot and restores metadata/config.
 CommonUI virtual accept-mouse is suspended only in raw Slate menus and restored
-for gameplay/creator. Final build PASS. Full test suite running:
-Saved/Logs/MenuFullQA.stdout (settings/replay/UI/1080/1440/4K/ultrawide).
-Next: inspect first failed assertion if any; then District regression, inspect
-rendered pages, record exact results in MENU-REBUILD.md, complete/merge PR145
-and launch visible game. No CI; test INIs/slots remain isolated from player data.
+for gameplay/creator. Final build PASS. Full Test-Menu.ps1 -Layouts PASS:
+settings, separate-process replay, all 33 native UI steps (41.95 seconds),
+1080p/1440p/4K/ultrawide renders. Menu mean frame time 33.34-33.37 ms with
+30 FPS cap, p95 33.33-33.46 ms. Native input is automated Slate routing.
+Test-PlayableDistrict.ps1 is running; output Saved/Logs/MenuGameplayRegression.stdout.
+Render review found frontend camera letterboxing on ultrawide and visible
+mission actors (AActor, not ACharacter). Source now disables camera aspect
+constraint and preserves/restores visibility for delivery points as well.
+MenuUISmoke now asserts both characters are hidden in frontend and restored
+in gameplay. Launcher message now names the new frontend.
+DistrictRules/SaveSmoke/SessionSmoke/SessionReplay reported PASS; the physical
+session took147.91s and459.79m. However, a real handled ensure was logged in
+VehiclePursuitSubsystem::EnterLost: URaceSession::EndPlay on a destroyed
+police actor called StopPursuit recursively and mutated the iteration array.
+StopPursuit now detaches its list before actor destruction; EnterLost reuses
+that cleanup. RaceSession::EndPlay only resets global pursuit for the player
+vehicle. The regression script now rejects console errors and stale logs.
+Camera/visibility and pursuit fixes built successfully (119.18 seconds).
+Rule tests now open empty /Engine/Maps/Entry instead of loading unrelated
+legacy props in the default editor map; runtime probes still load Nadodrze.
+Next: run Test-Menu.ps1 -Layouts and Test-PlayableDistrict.ps1
+sequentially; require fresh PASS without console errors. Review new renders,
+record results, complete/merge PR145 and launch visible game.
+No CI; test INIs/slots remain isolated from player data.
 
 Prior open-world implementation history follows.
 
