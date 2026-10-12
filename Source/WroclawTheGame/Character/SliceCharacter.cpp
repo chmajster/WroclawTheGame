@@ -68,7 +68,7 @@ ASliceCharacter::ASliceCharacter()
     Boom->CameraLagSpeed = 12;
     Boom->bUseCameraLagSubstepping = true;
     Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-    Camera->SetupAttachment(Boom);
+    Camera->SetupAttachment(Boom,USpringArmComponent::SocketName);
     Camera->FieldOfView = 85;
     Flashlight = CreateDefaultSubobject<USpotLightComponent>(TEXT("Flashlight"));
     Flashlight->SetupAttachment(Camera);
@@ -80,6 +80,7 @@ ASliceCharacter::ASliceCharacter()
 void ASliceCharacter::BeginPlay()
 {
     Super::BeginPlay();
+    Camera->AttachToComponent(Boom,FAttachmentTransformRules::KeepRelativeTransform,USpringArmComponent::SocketName);
 }
 USliceMission *ASliceCharacter::Mission() const
 {

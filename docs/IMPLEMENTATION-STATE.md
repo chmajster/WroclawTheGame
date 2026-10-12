@@ -1,45 +1,37 @@
 # Full game expansion — implementation state
 
-## Bieżący punkt kontynuacji
+## Current state - complete first playable slice (streams 1-7)
 
-Punkt 6 zakończony: cztery testy native, build i pełny roundtrip PASS.
-Render HUD 13:32:08 UTC: 1100 klatek, mean20,00ms/p9528,07ms przy
-przygotowywaniu Lumen. Polskie zdrowie/pieniądze/cel/kierunek i podpowiedzi
-widoczne. Punkt 7: nowa gałąź z main, DistrictSessionSmoke i Launch-District.
-Sprawdzić rzeczywistą jazdę/misję, ściany/kamerę/restart, cross-process load,
-zdiagnozować niespodziewane wanted1 podczas renderu (ReportCrime dodać log).
+Streams 1-6 are merged; stream 7 / PR #138 is complete and ready to merge.
+All requested implementation streams for this first bounded slice are done.
+No remaining implementation work in this pass. This is a functional prototype,
+not the final GTA-VI-level visual target or a full Wroclaw city simulation.
 
-Punkt 6: build PASS, cztery native testy WTG.District PASS. Faktyczny World
-WTG.DistrictSaveSmoke PASS (13:29:51 UTC): pieszo, auto, re-exit, complete/
-reward once, future version preserved. Osobny slot testowy usunięty.
-Następny krok: dokończyć render HUD (DistrictHUDRender.log, DistrictStreet.png),
-scalić punkt 6. Następnie punkt 7: test prawdziwej jazdy po DeliveryRoute,
-wejść/wyjść, kamery/kolizji, restartu i ukończenia dostawy przez Interact,
-odczyt zachowanego slotu w nowym procesie oraz końcowe uruchomienie widoczne.
+Final physical SessionSmoke PASS 16:01:06 UTC: 199.91 seconds, 463.06 m.
+Walking/wall/floor/jump/camera, giver/failure/restart/prompt/entry/exit,
+real delivery, wanted decay after losing contact, one reward saved, new
+police dispatch and saved progress restored. New-process replay PASS
+16:01:54 UTC: complete mission, 430 PLN and exactly one ledger entry.
+Test save slots were removed after replay; player saves remain separate.
 
-Punkt 6 w trakcie na feat/06-district-hud-save. Następna konkretna zmiana:
-Save/DistrictSaveSubsystem i DistrictSaveGame; niezależny slot, walidacja danych,
-autoload/auto/manual save, rollback nagrody przy błędzie zapisu. Następnie
-SliceHUD, SliceController i PlayerMenuWidget oraz trwałe ustawienia myszy.
-Punkt 7 (pełna sesja) nadal niewykonany.
+Traffic cleared its mutual stop through checked yield/retry; the long delay
+is a known limitation of the basic AI. Cover search was added to the probe,
+but not selected in the final passing run: wanted cleared before the receiver.
+The production Lost redispatch bug and stale pursuit after loading are fixed.
 
-Partia C++ punktu 6: DistrictSaveGame/Subsystem z walidacją schema/pozycji/
-ledger/ukończenia, osobnym slotem i Windows atomic replace; rollback nagrody,
-autoload i autosave30s. Polski HUD i kierunek celu, F5/F9/menu oraz czułość/
-invert myszy zapisane w ini i wspólne dla auta/postaci. Domyślna mapa Nadodrze.
-Następny krok: DistrictSaveBuild.log, poprawić błędy UHT/UBT; native
-WTG.District.SaveValidation oraz test Save/Load w rzeczywistym World. Nie
-deklarować zapisu jako sprawdzonego przed kontrolą roundtrip.
+Native build PASS; rules4 and SaveSmoke PASS after production pursuit fixes;
+eight GIS PASS. Final UE renderer screenshots inspected: player/back/car/
+street/river; 1310 frames mean16.78ms/p9516.67ms with cap60. No CI invoked.
+Visible Launch-District started PID44308 at16:02 UTC, window responding,
+Load map complete /Game/Maps/Nadodrze_Playable. Leave this game window open.
 
-Punkt 5 zakończony: pełne modele ciała wybrane zamiast Eyebrows, poprawione
-jednostki importu, winding, yaw i słońce. Bake, locomotion, presentation,
-trzy testy native i sześć GIS PASS. Rzeczywisty render 12.10.2026 13:15 UTC:
-1234 klatki, średnia 17,83 ms, p95 18,87 ms (limit 60 FPS, przygotowanie Lumen
-w tle; nie jest to benchmark GPU). Saved/Tests/DistrictStreet.png potwierdza
-widoczne pełne sylwetki, podłoże i okna. Modele/elewacje pozostają uproszczone.
-Następny krok: z main utworzyć gałąź punktu 6, DistrictSaveSubsystem,
-minimalny polski HUD, menu zapisu oraz trwałe ustawienia myszy. Punkty 6–7
-pozostają w zakresie; zapis nagrody musi być atomowy wobec stanu ekonomii.
+Next step: no implementation remains in scope. Finalize PR #138 merge and
+return to main. For another play session use Scripts/Launch-District.ps1;
+controls and reproduction instructions are in docs/PLAYABLE-DISTRICT.md.
+
+Historical notes below are prior batches, not current acceptance status.
+Presentation remains a CC0/procedural prototype without full wardrobe/hero
+art or a full-city simulation.
 
 ## Sesja otwartego świata — zlecenie 12.10.2026
 

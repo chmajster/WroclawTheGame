@@ -15,6 +15,7 @@ class WROCLAWTHEGAME_API AWTGFacadeInstanceCluster : public AActor
 
 public:
     AWTGFacadeInstanceCluster();
+    virtual void BeginPlay() override;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Facade")
     TObjectPtr<USceneComponent> SceneRoot;
@@ -30,4 +31,5 @@ private:
     TArray<TObjectPtr<UHierarchicalInstancedStaticMeshComponent>> FacadeComponents;
 
     UHierarchicalInstancedStaticMeshComponent* FindOrCreateComponent(UStaticMesh* Mesh);
+    void ValidateWallSupport();
 };

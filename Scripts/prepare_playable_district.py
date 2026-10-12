@@ -7,11 +7,13 @@ import importlib.util
 import json
 import math
 import os
+import sys
 import traceback
 from pathlib import Path
 import unreal
 
 ROOT=Path(unreal.Paths.project_dir()).resolve()
+sys.path.insert(0,str(ROOT/'Scripts'))
 INPUT=ROOT/'Saved/PlayableDistrict'
 MARKER=ROOT/'Saved/PlayableDistrictReady.ok'
 
@@ -29,6 +31,11 @@ def prepare():
     facade_bindings=read(ROOT/'Data/facade_asset_bindings.json')
     def model(identifier):
         item=imported.get(identifier)
+        if item and identifier in ('kenney-car-sedan','kenney-car-sedan-sports'):
+            meshes=[unreal.load_asset(p) for p in item['objects']]
+            body=next((m for m in meshes if isinstance(m,unreal.StaticMesh) and m.get_name().lower()=='body'),None)
+            if body:
+                item['primary_object']=body.get_path_name()
         mesh=unreal.load_asset(item['primary_object']) if item else None
         if not isinstance(mesh,(unreal.StaticMesh,unreal.SkeletalMesh)):
             raise RuntimeError('Required model missing: '+identifier)
@@ -95,7 +102,11 @@ def prepare():
         if not mesh:
             raise RuntimeError('Mesh generation failed: '+name)
         surface=record.get('material') or {'water':'Water','terrain':'Soil','rail':'Metal','green':'Soil'}.get(record['kind'],'Concrete')
-        material=unreal.load_asset('/Game/SurfaceQuality/Instances/MI_'+surface) or unreal.load_asset('/Game/Generated/M_'+surface)
+        if record['kind']=='building':
+            from district_facades import wall_material
+            material=wall_material(unreal,surface)
+        else:
+            material=unreal.load_asset('/Game/SurfaceQuality/Instances/MI_'+surface) or unreal.load_asset('/Game/Generated/M_'+surface)
         if material:
             mesh.set_material(0,material)
         if not unreal.EditorAssetLibrary.save_loaded_asset(mesh,False):
@@ -133,24 +144,9 @@ def prepare():
             mesh=mesh_cache[identifier]
             if not isinstance(mesh,unreal.StaticMesh):
                 continue
-            p=list(item['world_position'])
-            yaw=float(item.get('yaw_deg',0))
+            from district_facades import opening_pose
             bounds=mesh.get_bounds()
-            # Kenney windows are in the Y/Z plane (normal X), not X/Z.
-            # Fit the authored opening, centre the imported pivot, and place
-            # its face outside the solid source footprint (no cut-out CSG).
-            local_width=bounds.box_extent.y*2 if identifier.startswith('kenney-') else bounds.box_extent.x*2
-            scale=[1,item.get('width_m',1)*100/max(local_width,1),item.get('height_m',2)*100/max(bounds.box_extent.z*2,1)]
-            if not identifier.startswith('kenney-'):
-                scale[0],scale[1]=scale[1],1
-                yaw+=90
-            p[2]-=bounds.origin.z*scale[2]
-            outward=float(item.get('yaw_deg',0));distance=55
-            p[0]+=math.cos(math.radians(outward))*distance
-            p[1]+=math.sin(math.radians(outward))*distance
-            # Offset the non-centred door pivot in its rotated local Y.
-            p[0]+=math.sin(math.radians(yaw))*bounds.origin.y*scale[1]
-            p[1]-=math.cos(math.radians(yaw))*bounds.origin.y*scale[1]
+            p,yaw,scale=opening_pose(item,[bounds.origin.x,bounds.origin.y,bounds.origin.z],[bounds.box_extent.x,bounds.box_extent.y,bounds.box_extent.z])
             transform=unreal.Transform(location=unreal.Vector(*p),rotation=unreal.Rotator(pitch=0,yaw=yaw,roll=0),scale=unreal.Vector(*scale))
             cluster(p).add_facade_instance(mesh,transform)
             facade_count+=1

@@ -30,11 +30,14 @@ bool UVehicleAIDriverComponent::ConfigureRoute(const TArray<FVector> &Points, in
     if (!Vehicle || Points.Num() < 2)
         return false;
     Route = Points;
+    EntryPoint=Vehicle->GetActorLocation();
     bLoopRoute = bLoop;
     TargetIndex = FMath::Clamp(StartIndex, 0, Route.Num() - 1);
     if (FVector::Dist2D(Vehicle->GetActorLocation(), Route[TargetIndex]) < WaypointRadius)
         TargetIndex = (TargetIndex + 1) % Route.Num();
     bActive = true;
+    ObstacleWait=YieldReverse=0;
+    PassSeconds=0;
     SetComponentTickEnabled(true);
     Vehicle->SetAIControl(true, 0.0f, 0.0f, true);
     return true;
@@ -61,8 +64,17 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
         return;
     }
 
-    FVector ToTarget = Route[TargetIndex] - Vehicle->GetActorLocation();
-    if (ToTarget.Size2D() <= WaypointRadius)
+    const FVector Position=Vehicle->GetActorLocation();
+    FVector ToTarget = Route[TargetIndex] - Position;
+    bool PassedCorner=false;
+    if(TargetIndex+1<Route.Num())
+    {
+        FVector A=TargetIndex>0?Route[TargetIndex-1]:EntryPoint,B=Route[TargetIndex],C=Route[TargetIndex+1],P=Position;
+        A.Z=B.Z=C.Z=P.Z=0;
+        const FVector Next=C-B;const float Along=FVector::DotProduct(P-B,Next)/FMath::Max(1.f,Next.SizeSquared());
+        PassedCorner=Along>.02f && FVector::DistSquared(P,FMath::ClosestPointOnSegment(P,B,C))+2500<FVector::DistSquared(P,FMath::ClosestPointOnSegment(P,A,B));
+    }
+    if (ToTarget.Size2D() <= WaypointRadius || PassedCorner)
     {
         if (TargetIndex + 1 < Route.Num())
             ++TargetIndex;
@@ -74,6 +86,31 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
             return;
         }
         ToTarget = Route[TargetIndex] - Vehicle->GetActorLocation();
+    }
+
+    // Follow a point ahead along the polyline. Waiting until the intersection
+    // centre to turn leaves a physical car facing the opposite pavement.
+    const FVector Previous=TargetIndex>0?Route[TargetIndex-1]:EntryPoint;
+    FVector FlatPosition=Position,FlatPrevious=Previous,FlatTarget=Route[TargetIndex];
+    FlatPosition.Z=FlatPrevious.Z=FlatTarget.Z=0;
+    const FVector Nearest=FMath::ClosestPointOnSegment(FlatPosition,FlatPrevious,FlatTarget);
+    float Ahead=FMath::Clamp(250.f+FMath::Abs(Vehicle->Speed)*.65f,250.f,650.f);
+    const float Remaining=FVector::Dist2D(Nearest,FlatTarget);
+    FVector Aim=Nearest+(FlatTarget-Nearest).GetSafeNormal2D()*FMath::Min(Ahead,Remaining);
+    Ahead-=Remaining;int32 LookIndex=TargetIndex;
+    for(int32 Step=0;Ahead>0 && Step<Route.Num()-1;++Step)
+    {
+        const int32 NextIndex=LookIndex+1<Route.Num()?LookIndex+1:(bLoopRoute?0:-1);
+        if(NextIndex<0)break;
+        const FVector Segment=Route[NextIndex]-Aim;const float Length=Segment.Size2D();
+        if(Length>Ahead){Aim+=Segment*(Ahead/Length);break;}
+        Ahead-=Length;Aim=Route[NextIndex];LookIndex=NextIndex;
+    }
+    ToTarget=Aim-Position;
+    if(PassSeconds>0){
+        PassSeconds-=Dt;
+        if(FVector::Dist2D(Position,PassGoal)<200)PassSeconds=0;
+        else ToTarget=PassGoal-Position;
     }
 
     if (bPursuit && FVector::Dist2D(Vehicle->GetActorLocation(),PursuitGoal)<2000)
@@ -88,14 +125,15 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
     const float ForwardDot = FVector::DotProduct(Vehicle->GetActorForwardVector(), SteeringDirection);
     const float RightDot = FVector::DotProduct(Vehicle->GetActorRightVector(), SteeringDirection);
     const float Angle = FMath::Atan2(RightDot, ForwardDot);
-    const bool Reverse=ForwardDot<-.35f;
-    const float Steering = FMath::Clamp((Reverse?FMath::Atan2(-RightDot,-ForwardDot):Angle) / FMath::DegreesToRadians(48.0f), -1.0f, 1.0f);
+    const bool Reverse=ForwardDot<-.35f || (Vehicle->Speed< -50 && ForwardDot<.35f);
+    const float Steering = FMath::Clamp((Reverse?-FMath::Atan2(-RightDot,-ForwardDot):Angle) / FMath::DegreesToRadians(48.0f), -1.0f, 1.0f);
 
     const float TurnPenalty = FMath::Clamp(FMath::Abs(Angle) / PI, 0.0f, 0.75f);
     const float DesiredSpeed = CruiseSpeed * (1.0f - TurnPenalty);
     const float ForwardSpeed = Vehicle->Speed;
 
     bool bBrake = FMath::Abs(ForwardSpeed) > DesiredSpeed * 1.15f;
+    FString BrakeReason;
     float Throttle = bBrake ? 0.0f : FMath::Clamp((DesiredSpeed - ForwardSpeed) / FMath::Max(CruiseSpeed, 1.0f), 0.18f, 1.0f);
     if (Reverse) { bBrake=ForwardSpeed< -400;Throttle=bBrake?0.f:-.4f; }
     if (bPursuit && FVector::Dist2D(Vehicle->GetActorLocation(),PursuitGoal)<450) {bBrake=true;Throttle=0;}
@@ -105,32 +143,68 @@ void UVehicleAIDriverComponent::TickComponent(float Dt, ELevelTick TickType,
         for (const FVector& Junction:Registry->Intersections)
         {
             const float Distance=FVector::Dist2D(Vehicle->GetActorLocation(),Junction);
-            if (Distance<500 || Distance>1600 || FVector::DotProduct((Junction-Vehicle->GetActorLocation()).GetSafeNormal2D(),Vehicle->GetActorForwardVector())<.3) continue;
+            const FVector ToJunction=Junction-Vehicle->GetActorLocation();
+            const float Along=FVector::DotProduct(ToJunction,SteeringDirection);
+            if (Distance<500 || Along<0 || Along>1000 || (ToJunction-SteeringDirection*Along).Size2D()>300) continue;
             for (TActorIterator<ADriveableVehicle> Other(GetWorld());Other;++Other)
             {
                 if (*Other==Vehicle || Other->IsHidden() || !Other->IsAIControlled()) continue;
                 const float TheirDistance=FVector::Dist2D(Other->GetActorLocation(),Junction);
-                if (TheirDistance<500 || (TheirDistance<1500 && Other->GetUniqueID()<Vehicle->GetUniqueID())) {bBrake=true;Throttle=0;break;}
+                if (TheirDistance<500 || (TheirDistance<1500 && Other->GetUniqueID()<Vehicle->GetUniqueID())) {bBrake=true;Throttle=0;BrakeReason=TEXT("junction:")+Other->GetName();break;}
             }
         }
 
     FCollisionQueryParams Params(SCENE_QUERY_STAT(VehicleAIObstacle), false, Vehicle);
     FHitResult Hit;
     const FVector Start = Vehicle->GetActorLocation() + FVector(0, 0, 45);
-    const FVector End = Start + Vehicle->GetActorForwardVector() * ObstacleLookAhead * (Reverse?-1:1);
+    const FVector End = Start + SteeringDirection * ObstacleLookAhead;
+    ADriveableVehicle* BlockingCar=nullptr;
+    bool ObstacleBlocks=false;
     if (GetWorld()->SweepSingleByChannel(
-            Hit, Start, End, Vehicle->GetActorQuat(), ECC_Pawn,
+            Hit, Start, End, SteeringDirection.Rotation().Quaternion(), ECC_Pawn,
             FCollisionShape::MakeBox(FVector(170, 70, 55)), Params))
     {
         const float Distance = FVector::Dist2D(Start, Hit.ImpactPoint);
+        BrakeReason=TEXT("obstacle:")+(Hit.GetActor()?Hit.GetActor()->GetActorNameOrLabel():TEXT("none"))+FString::Printf(TEXT(" %.1f"),Distance);
         if (Distance < 350.0f)
         {
             bBrake = true;
             Throttle = 0.0f;
+            BlockingCar=Cast<ADriveableVehicle>(Hit.GetActor());
+            ObstacleBlocks=true;
         }
         else
             Throttle *= FMath::Clamp((Distance - 350.0f) / FMath::Max(ObstacleLookAhead - 350.0f, 1.0f), 0.15f, 1.0f);
     }
+    // Resolve mutual stops without deleting visible traffic or disabling collisions.
+    // The later actor yields by backing into a checked clear space, then retries.
+    if(ObstacleBlocks && FMath::Abs(ForwardSpeed)<30)ObstacleWait+=Dt;else ObstacleWait=0;
+    if(ObstacleWait>1.5f && PassSeconds<=0 && BlockingCar && Vehicle->GetUniqueID()<BlockingCar->GetUniqueID()){
+        const FVector Side(-SteeringDirection.Y,SteeringDirection.X,0);
+        for(float Sign:{1.f,-1.f}){
+            const FVector Candidate=Position+SteeringDirection*450+Side*(Sign*600);
+            FHitResult SideHit,Floor;
+            const FVector Direction=(Candidate-Position).GetSafeNormal2D();
+            const bool Clear=!GetWorld()->SweepSingleByChannel(SideHit,Start,Candidate+FVector(0,0,45),Direction.Rotation().Quaternion(),ECC_Pawn,FCollisionShape::MakeBox(FVector(170,85,45)),Params);
+            const bool Ground=GetWorld()->LineTraceSingleByChannel(Floor,Candidate+FVector(0,0,200),Candidate-FVector(0,0,300),ECC_Visibility,Params) && Floor.ImpactNormal.Z>.7 && FMath::Abs(Floor.ImpactPoint.Z-(Position.Z-65))<140;
+            if(Clear && Ground){PassGoal=Candidate;PassSeconds=4;ObstacleWait=0;break;}
+        }
+    }
+    if(ObstacleWait>2 && (!BlockingCar || Vehicle->GetUniqueID()>BlockingCar->GetUniqueID() || ObstacleWait>4)){
+        YieldReverse=1.5f;ObstacleWait=0;PassSeconds=0;
+    }
+    if(YieldReverse>0){
+        YieldReverse-=Dt;FHitResult Rear;
+        const FVector BackEnd=Start-Vehicle->GetActorForwardVector()*450;
+        const FVector RearStart=Start-Vehicle->GetActorForwardVector()*220;
+        const bool Blocked=GetWorld()->SweepSingleByChannel(Rear,RearStart,BackEnd,Vehicle->GetActorQuat(),ECC_Pawn,FCollisionShape::MakeBox(FVector(70,85,45)),Params);
+        Throttle=Blocked?0.f:-.3f;bBrake=Blocked || ForwardSpeed< -220;
+        Diagnostic=FString::Printf(TEXT("node=%d yielding_reverse=%d blocked=%d steer=%.2f"),TargetIndex,YieldReverse>0,Blocked,-Steering);
+        Vehicle->SetAIControl(true,Throttle,-Steering,bBrake);return;
+    }
 
+#if !UE_BUILD_SHIPPING
+    Diagnostic=FString::Printf(TEXT("node=%d dist=%.1f dot=%.2f throttle=%.2f steer=%.2f brake=%d reason=%s"),TargetIndex,ToTarget.Size2D(),ForwardDot,Throttle,Steering,bBrake,*BrakeReason);
+#endif
     Vehicle->SetAIControl(true, Throttle, Steering, bBrake);
 }

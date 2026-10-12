@@ -31,9 +31,11 @@ try {
         throw 'Import the repository free model catalog first (Scripts/import_free_models.py).'
     }
     $Editor=Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor-Cmd.exe'
+    Remove-Item -LiteralPath 'Saved/PlayableDistrictReady.ok' -ErrorAction SilentlyContinue
     & $Editor $Project "-ExecutePythonScript=$Root/Scripts/prepare_playable_district.py" -unattended -nosplash -nullrhi '-ExecCmds=Interchange.FeatureFlags.Import.FBX 0' "-abslog=$Root/Saved/Logs/DistrictBake.log"
     if($LASTEXITCODE -ne 0){throw 'Unreal district generation process failed; inspect Saved/Logs/DistrictBake.log'}
     if(!(Test-Path 'Saved/PlayableDistrictReady.ok')){throw 'District generation did not complete'}
+    Remove-Item -LiteralPath 'Saved/DistrictLocomotionReady.ok' -ErrorAction SilentlyContinue
     & $Editor $Project "-ExecutePythonScript=$Root/Scripts/prepare_district_locomotion.py" -unattended -nosplash -nullrhi "-abslog=$Root/Saved/Logs/DistrictLocomotion.log"
     if($LASTEXITCODE -ne 0 -or !(Test-Path 'Saved/DistrictLocomotionReady.ok')){throw 'District locomotion preparation failed'}
     Remove-Item 'Saved/DistrictPresentationReady.ok' -ErrorAction SilentlyContinue

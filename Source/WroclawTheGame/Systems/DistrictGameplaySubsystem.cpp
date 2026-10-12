@@ -28,6 +28,11 @@ void UDistrictGameplaySubsystem::ReportCrime(float Severity,const FString& Reaso
 {
     if (!Registry) return;
     Wanted.Report(Severity);
+    auto* Pursuit=GetWorld()->GetSubsystem<UVehiclePursuitSubsystem>();
+    if(Severity>0 && Pursuit->GetState()==EVehiclePursuitState::Lost){
+        Pursuit->StopPursuit();NextPoliceAttempt=0;
+    }
+    UE_LOG(LogTemp,Display,TEXT("WTG_DISTRICT_CRIME severity=%.1f heat=%.1f reason=%s"),Severity,Wanted.Heat,*Reason);
     GetWorld()->GetGameInstance()->GetSubsystem<USliceMission>()->Notify(Reason);
 }
 void UDistrictGameplaySubsystem::RecoverPlayer()
@@ -94,7 +99,7 @@ void UDistrictGameplaySubsystem::Tick(float Dt)
     auto* Pursuit=GetWorld()->GetSubsystem<UVehiclePursuitSubsystem>();
     Wanted.Tick(Dt,Pursuit->GetState()==EVehiclePursuitState::Chase);
     const double Now=GetWorld()->GetTimeSeconds();
-    if (Wanted.Level()>0 && Pursuit->ActivePursuerCount()==0 && Now>=NextPoliceAttempt)
+    if (Wanted.Level()>0 && Pursuit->ActivePursuerCount()==0 && Pursuit->GetState()!=EVehiclePursuitState::Lost && Now>=NextPoliceAttempt)
     {
         Pursuit->StartPursuit(Wanted.Level());
         NextPoliceAttempt=Now+8;

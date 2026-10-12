@@ -14,6 +14,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
+#include "Geography/DistrictRegistry.h"
 AGeoPreviewGameMode::AGeoPreviewGameMode()
 {
     DefaultPawnClass = ASliceCharacter::StaticClass();
@@ -53,7 +54,10 @@ void AGeoPreviewGameMode::BeginPlay()
         P->StreamingSource->EnableStreamingSource();
     }
     if (!GetWorld()->GetSubsystem<UCityGameplaySubsystem>()->IsWriteBlocked())
-    M->Notify(TEXT("Wrocław — świat GIS. B: dziennik. Postęp miasta zapisuje się oddzielnie od kampanii."));
+    {
+        bool District=false;for(TActorIterator<AWTGDistrictRegistry> It(GetWorld());It;++It){District=true;break;}
+        M->Notify(District?TEXT("Nadodrze — porozmawiaj z Mają. E: interakcja; F5/F9: zapis/odczyt; Esc: pauza."):TEXT("Wrocław — świat GIS. B: dziennik. Postęp miasta zapisuje się oddzielnie od kampanii."));
+    }
 }
 void AGeoPreviewGameMode::InitGame(const FString& MapName,const FString& Options,FString& ErrorMessage)
 {
@@ -77,7 +81,7 @@ void AGeoPreviewGameMode::Tick(float Dt)
                                               ECC_Visibility, Params))
         return;
     P->SetActorEnableCollision(true);
-    if (!P->TeleportTo(Hit.ImpactPoint + FVector(0, 0, P->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()+4), FRotator::ZeroRotator, false, false))
+    if (!P->TeleportTo(Hit.ImpactPoint + FVector(0, 0, P->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()+4), P->GetActorRotation(), false, false))
     {
         P->SetActorEnableCollision(false);
         return;

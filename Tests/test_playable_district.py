@@ -9,7 +9,7 @@ from shapely.ops import unary_union
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'Scripts/gis'))
-from build_playable_district import route_between
+from build_playable_district import route_between, attach_car_anchor
 
 
 class DistrictTests(unittest.TestCase):
@@ -52,6 +52,25 @@ class DistrictTests(unittest.TestCase):
             footprint = Point(item['position'][:2]).buffer(item['radius'])
             self.assertFalse(footprint.intersects(self.obstacles))
             self.assertFalse(footprint.intersects(walks))
+
+    def test_parked_vehicle_faces_legal_exit(self):
+        a=self.plan['anchors']['vehicle'];b=self.plan['delivery_route'][0]
+        if math.dist(a[:2],b[:2])<150:
+            b=self.plan['delivery_route'][1]
+        direction=math.atan2(b[1]-a[1],b[0]-a[0])
+        self.assertGreater(math.cos(direction-math.radians(self.plan['vehicle_yaw'])),.95)
+        yaw=math.radians(self.plan['vehicle_yaw']);c,s=math.cos(yaw),math.sin(yaw)
+        footprint=Polygon([(a[0]+x*c-y*s,a[1]+x*s+y*c) for x,y in ((-210,-90),(-210,90),(210,90),(210,-90))])
+        self.assertFalse(footprint.intersects(self.obstacles))
+
+    def test_interior_road_anchor_respects_one_way(self):
+        graph={'a':[('b',1000)],'b':[]};nodes={'a':[0,0,0],'b':[1000,0,0]}
+        edges=[{'from':'a','to':'b','bridge':'no','tunnel':'no','layer':'0','car_forward':True,'car_backward':False}]
+        key=attach_car_anchor(graph,nodes,edges,[500,100,0],lambda x,y:0)
+        self.assertEqual(route_between(graph,key,'b'),[key,'b'])
+        self.assertEqual(route_between(graph,'a',key),['a',key])
+        with self.assertRaises(ValueError):route_between(graph,key,'a')
+        with self.assertRaises(ValueError):route_between(graph,'b',key)
 
     def test_dijkstra_respects_direction_and_disconnected_destinations(self):
         graph = {'a': [('b', 10), ('c', 50)], 'b': [('c', 10)], 'c': []}

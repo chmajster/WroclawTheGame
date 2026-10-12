@@ -77,6 +77,9 @@ def import_one(tools, item):
             preferred = object_path
     if not readable:
         raise RuntimeError(f"Imported assets unreadable: {item['id']}")
+    if item['id'] in {'kenney-car-sedan','kenney-car-sedan-sports'}:
+        bodies=[unreal.load_asset(p) for p in readable]
+        preferred=next(m.get_path_name() for m in bodies if isinstance(m,unreal.StaticMesh) and m.get_name().lower()=='body')
     if item['id'] in {'quaternius-ubc-superhero-male','quaternius-ubc-superhero-female'}:
         bodies=[unreal.load_asset(p) for p in readable]
         bodies=[m for m in bodies if isinstance(m,unreal.SkeletalMesh)]
