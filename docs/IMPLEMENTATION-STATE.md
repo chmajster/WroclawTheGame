@@ -21,17 +21,16 @@ added private double-sided wall material instances for complete presentation.
 Geo startup preserves actor yaw for the third-person camera and gives a
 district-specific Polish greeting.
 
-Next: finish current DistrictSessionBuild.log. The latest full regression
-passed rules/save/entry but got trapped by a building after passing traffic
-at node39. AI recovery now reverses away from static blockers, steers toward
-the lane, and probes behind the chassis so an initial front contact does not
-incorrectly block retreat. Priority governs passing; after four seconds a
-boxed priority vehicle may also retreat. Rerun full local test helper.
-The static car screenshot camera was inside a building (a false floating-window
-impression); its pose now faces the street side and sweeps against camera
-collision. Re-render and inspect all shots. Source startup now shows the
-player's back and the correct district greeting. Then results/docs/merge and
-visible launch. No CI.
+Next: inspect current DistrictSessionSmoke.log after the test scenario fix.
+Latest game rules/save/render passed; car physically travelled 460.15 m and
+exited at delivery, but the probe stood under police observation until its
+330 s timeout. That was a test behavior error: wanted correctly stayed active.
+The probe now sprints back along legal route nodes to break contact, then
+returns along those nodes and delivers. Test deadline450 s; actual mission
+still420 s. Require police_evaded/delivery/reward/save PASS, then replay in a
+new process. Final renderer PASS: 1310 frames mean16.78ms/p9516.67ms (cap60).
+Player/back/car/street/river screenshots inspected, car camera now outside
+walls. No CI. After final PASS update docs/PR, visible launch and merge.
 
 Historical notes below are prior batches, not current acceptance status.
 Presentation remains a CC0/procedural prototype without full wardrobe/hero

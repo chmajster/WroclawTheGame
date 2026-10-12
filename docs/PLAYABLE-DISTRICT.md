@@ -75,4 +75,7 @@ z renderera UE, bez ręcznej kontroli aplikacji przez Computer Use.
 
 Dotychczasowe pomiary: 1234 klatki, mean17,83ms/p9518,87ms oraz 1100 klatek,
 mean20,00ms/p9528,07ms przy limicie60FPS i przygotowaniu Lumen w tle.
+Końcowy render: 1310 klatek, średnia16,78ms, p9516,67ms (limit60FPS).
+Zrzuty `Saved/Tests/DistrictPlayer.png`, `DistrictCar.png`, `DistrictStreet.png`
+i `DistrictRiver.png` pochodzą z faktycznego renderera UE.
 To pomiary czasu klatki tej sesji, nie benchmark GPU ani gwarancja FPS.

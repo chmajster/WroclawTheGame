@@ -29,6 +29,7 @@ struct FDistrictSessionProbe
 {
     float Elapsed=0,StepAt=0,DriveDistance=0,NextDiagnostic=0;
     int Stage=0;bool OK=true;
+    int EscapeIndex=INDEX_NONE;bool Returning=false;
     FVector Origin=FVector::ZeroVector,LastCar=FVector::ZeroVector,CameraBack=FVector::ZeroVector;
     float CameraDistance=0;
     TWeakObjectPtr<AActor> Wall,CameraWall;
@@ -47,7 +48,7 @@ static FAutoConsoleCommandWithWorld GDistrictSessionSmoke(TEXT("WTG.DistrictSess
         auto* Save=W->GetSubsystem<UDistrictSaveSubsystem>();auto* G=W->GetSubsystem<UDistrictGameplaySubsystem>();auto* R=G->GetRegistry();
         auto Check=[&](bool Value,const TCHAR* Name){S->OK&=Value;UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_CHECK %s=%s"),Name,Value?TEXT("PASS"):TEXT("FAIL"));};
         auto Finish=[&](){if(Resume || !S->OK)UGameplayStatics::DeleteGameInSlot(Save->Slot,0);UE_LOG(LogTemp,Display,TEXT("WTG_DISTRICT_SESSION_DONE result=%s resume=%d elapsed=%.2f physical_distance_m=%.2f"),S->OK?TEXT("PASS"):TEXT("FAIL"),Resume,S->Elapsed,S->DriveDistance/100);FPlatformMisc::RequestExit(false);};
-        if(S->Elapsed>330){Check(false,TEXT("timeout"));Finish();return false;}
+        if(S->Elapsed>450){Check(false,TEXT("timeout"));Finish();return false;}
         if(!R)return true;auto* Car=R->DeliveryVehicle.Get();if(!IsValid(Car))return true;
         auto* PC=Cast<ASliceController>(UGameplayStatics::GetPlayerController(W,0));if(!PC)return true;
         if(S->Stage==0){PC->DisableInput(PC);if(APawn* Pawn=PC->GetPawn())Pawn->DisableInput(PC);}
@@ -113,6 +114,25 @@ static FAutoConsoleCommandWithWorld GDistrictSessionSmoke(TEXT("WTG.DistrictSess
         {Car->SetAIControl(false);Check(S->DriveDistance>35000,TEXT("physical_drive_distance"));Check(Car->Exit(),TEXT("delivery_exit"));Advance(9);}
         if(S->Stage==9)
         {
+            if(G->WantedLevel()>0){
+                if(S->EscapeIndex==INDEX_NONE){
+                    float Best=MAX_flt;
+                    for(int32 I=0;I<R->DeliveryRoute.Num();++I){const float Distance=FVector::DistSquared2D(S->Player->GetActorLocation(),R->DeliveryRoute[I]);if(Distance<Best){Best=Distance;S->EscapeIndex=I;}}
+                }
+                S->Player->SetSprint(true);Walk(R->DeliveryRoute[S->EscapeIndex]);
+                if(FVector::Dist2D(S->Player->GetActorLocation(),R->DeliveryRoute[S->EscapeIndex])<150 && S->EscapeIndex>0)--S->EscapeIndex;
+                if(S->Elapsed>S->NextDiagnostic){S->NextDiagnostic=S->Elapsed+5;UE_LOG(LogTemp,Display,TEXT("WTG_SESSION_EVADE heat=%.1f node=%d position=%s"),G->Wanted.Heat,S->EscapeIndex,*S->Player->GetActorLocation().ToString());}
+                return true;
+            }
+            if(S->EscapeIndex!=INDEX_NONE){
+                if(!S->Returning){Check(true,TEXT("police_evaded"));S->Returning=true;}
+                Walk(R->DeliveryRoute[S->EscapeIndex]);
+                if(FVector::Dist2D(S->Player->GetActorLocation(),R->DeliveryRoute[S->EscapeIndex])<150){
+                    if(S->EscapeIndex+1<R->DeliveryRoute.Num())++S->EscapeIndex;
+                    else{S->EscapeIndex=INDEX_NONE;S->Player->SetSprint(false);}
+                }
+                return true;
+            }
             Walk(R->DeliveryPoint);
             if(FVector::Dist2D(S->Player->GetActorLocation(),R->DeliveryPoint)<200)
             {
