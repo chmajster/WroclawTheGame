@@ -2,6 +2,12 @@
 
 ## Bieżący punkt kontynuacji
 
+Punkt 7 w trakcie na feat/07-playable-session-validation: Launch-District.ps1.
+Następna zmiana: Tests/DistrictSessionSmoke.cpp: ruch i ściana/kamera,
+Maja, fail/restart, samochód z prawdziwą fizyką po DeliveryRoute, Olek,
+idempotentna nagroda i zapis; drugi proces odczytuje slot testowy.
+ReportCrime log pozwoli ustalić źródło wanted w renderze. Bez CI.
+
 Punkt 6 zakończony: cztery testy native, build i pełny roundtrip PASS.
 Render HUD 13:32:08 UTC: 1100 klatek, mean20,00ms/p9528,07ms przy
 przygotowywaniu Lumen. Polskie zdrowie/pieniądze/cel/kierunek i podpowiedzi
