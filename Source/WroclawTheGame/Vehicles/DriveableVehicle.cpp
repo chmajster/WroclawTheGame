@@ -23,6 +23,8 @@
 #include "Components/AudioComponent.h"
 #include "Sound/SoundBase.h"
 #include "Audio/WTGAudioSettings.h"
+#include "UI/WTGInputProfileSubsystem.h"
+#include "Engine/GameInstance.h"
 ADriveableVehicle::ADriveableVehicle()
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -295,8 +297,9 @@ void ADriveableVehicle::Tick(float Dt)
         Brake = PC->IsInputKeyDown(EKeys::SpaceBar);
         float X, Y;
         PC->GetInputMouseDelta(X, Y);
-        PC->AddYawInput(X);
-        PC->AddPitchInput(-Y);
+        const auto& Profile=GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->Profile;
+        PC->AddYawInput(X*Profile.MouseSensitivity);
+        PC->AddPitchInput(Y*Profile.MouseSensitivity*(Profile.bInvertMouseY?1.f:-1.f));
     }
     int Grounded = 0;
     const float Mass = Chassis->GetMass();

@@ -8,6 +8,7 @@ struct WROCLAWTHEGAME_API FWTGInputProfile
 {
     GENERATED_BODY()
     UPROPERTY(BlueprintReadWrite) float MouseSensitivity = 1.0f;
+    UPROPERTY(BlueprintReadWrite) bool bInvertMouseY = false;
     UPROPERTY(BlueprintReadWrite) float GamepadSensitivity = 1.0f;
     UPROPERTY(BlueprintReadWrite) float GamepadDeadzone = 0.15f;
     UPROPERTY(BlueprintReadWrite) float UIScale = 1.0f;
@@ -23,14 +24,17 @@ class WROCLAWTHEGAME_API UWTGInputProfileSubsystem : public UGameInstanceSubsyst
 {
     GENERATED_BODY()
 public:
+    virtual void Initialize(FSubsystemCollectionBase& Collection) override;
     UPROPERTY(BlueprintReadOnly, Category="Input") FWTGInputProfile Profile;
     UFUNCTION(BlueprintCallable, Category="Input") void ResetToDefaults();
     UFUNCTION(BlueprintCallable, Category="Input") bool RebindKeyboard(FName ActionId, FKey Key);
     UFUNCTION(BlueprintCallable, Category="Input") bool RebindGamepad(FName ActionId, FKey Key);
     UFUNCTION(BlueprintCallable, Category="Input") void SetMouseSensitivity(float Value);
+    UFUNCTION(BlueprintCallable, Category="Input") void ToggleInvertMouse();
     UFUNCTION(BlueprintCallable, Category="Input") void SetGamepadSensitivity(float Value);
     UFUNCTION(BlueprintCallable, Category="Input") void SetGamepadDeadzone(float Value);
     UFUNCTION(BlueprintCallable, Category="Input") void SetUIScale(float Value);
 private:
+    void SaveMouseProfile();
     bool Rebind(TMap<FName,FKey>& Map, FName ActionId, FKey Key);
 };

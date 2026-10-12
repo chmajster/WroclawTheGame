@@ -1,4 +1,5 @@
 #include "Character/SliceCharacter.h"
+#include "UI/WTGInputProfileSubsystem.h"
 #include "Character/CharacterAppearanceComponent.h"
 #include "Geography/GeoPreviewGameMode.h"
 #include "Components/WorldPartitionStreamingSourceComponent.h"
@@ -155,11 +156,12 @@ void ASliceCharacter::MoveRight(const FInputActionValue &V)
 }
 void ASliceCharacter::LookX(const FInputActionValue &V)
 {
-    AddControllerYawInput(V.Get<float>());
+    AddControllerYawInput(V.Get<float>()*GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->Profile.MouseSensitivity);
 }
 void ASliceCharacter::LookY(const FInputActionValue &V)
 {
-    AddControllerPitchInput(-V.Get<float>());
+    const auto& Profile=GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->Profile;
+    AddControllerPitchInput(V.Get<float>()*Profile.MouseSensitivity*(Profile.bInvertMouseY?1.f:-1.f));
 }
 void ASliceCharacter::CrouchToggle()
 {

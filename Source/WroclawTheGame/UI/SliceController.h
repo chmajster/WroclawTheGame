@@ -27,6 +27,8 @@ class WROCLAWTHEGAME_API ASliceController : public APlayerController
     bool StartCreatedCampaign();
     UPROPERTY() TObjectPtr<class UCharacterCreatorWidget> CharacterCreatorWidget;
     void LoadGame();
+    void SaveDistrict();
+    void LoadDistrict();
     void Quit();
     void Inventory();
     void Backspace();

@@ -1,4 +1,9 @@
 #include "UI/PlayerMenuWidget.h"
+#include "Systems/DistrictGameplaySubsystem.h"
+#include "Mission/DistrictDeliverySubsystem.h"
+#include "Save/DistrictSaveSubsystem.h"
+#include "UI/WTGInputProfileSubsystem.h"
+#include "Systems/WTGEconomySubsystem.h"
 
 #include "UI/SliceController.h"
 #include "UI/PerformanceSettings.h"
@@ -634,9 +639,10 @@ void UPlayerMenuWidget::UpdateContextStatus()
     auto* City = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
     const bool bCity = City && City->IsActive();
     const bool bInGame = Mission && Mission->bInGame;
-    const bool bHasSave = bCity || (Mission && Mission->HasSave());
+    const bool bDistrict=GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive();
+    const bool bHasSave = bDistrict?GetWorld()->GetSubsystem<UDistrictSaveSubsystem>()->HasSave():(bCity || (Mission && Mission->HasSave()));
 
-    const FString Mode = bCity ? TEXT("OTWARTY ŚWIAT") : TEXT("KAMPANIA");
+    const FString Mode = (bCity || bDistrict) ? TEXT("OTWARTY ŚWIAT") : TEXT("KAMPANIA");
     const FString Session = bInGame ? TEXT("SESJA AKTYWNA") : TEXT("MENU GŁÓWNE");
     const FString Save = bHasSave ? TEXT("ZAPIS DOSTĘPNY") : TEXT("BRAK ZAPISU");
 
@@ -820,7 +826,8 @@ void UPlayerMenuWidget::AddGameHero()
     auto* City = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
     const bool bCity = City && City->IsActive();
     const bool bInGame = Mission && Mission->bInGame;
-    const bool bHasSave = bCity || (Mission && Mission->HasSave());
+    const bool bDistrict=GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive();
+    const bool bHasSave = bDistrict?GetWorld()->GetSubsystem<UDistrictSaveSubsystem>()->HasSave():(bCity || (Mission && Mission->HasSave()));
 
     int32 Completed = 0;
     int32 Total = 0;
@@ -1227,6 +1234,24 @@ void UPlayerMenuWidget::AddPlayerStatus()
 
 void UPlayerMenuWidget::BuildGameTab()
 {
+    if(GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive())
+    {
+        auto* Save=GetWorld()->GetSubsystem<UDistrictSaveSubsystem>();
+        ActionColumn->AddChildToVerticalBox(MakeText(TEXT("NADODRZE / ODRA"),21,true,TextPrimary));
+        auto AddAction=[&](const FString& Label,int Action,bool Enabled=true){auto* B=MakeButton(Label);switch(Action){case 0:B->OnClicked.AddDynamic(this,&UPlayerMenuWidget::Resume);break;case 1:B->OnClicked.AddDynamic(this,&UPlayerMenuWidget::SaveDistrict);break;case 2:B->OnClicked.AddDynamic(this,&UPlayerMenuWidget::LoadGame);break;case 3:B->OnClicked.AddDynamic(this,&UPlayerMenuWidget::NewGame);break;case 4:B->OnClicked.AddDynamic(this,&UPlayerMenuWidget::TabSettings);break;case 5:B->OnClicked.AddDynamic(this,&UPlayerMenuWidget::QuitGame);break;}B->SetIsEnabled(Enabled);ActionColumn->AddChildToVerticalBox(B)->SetPadding(FMargin(0,8));};
+        AddAction(TEXT("WRÓĆ DO GRY"),0);
+        AddAction(TEXT("ZAPISZ POSTĘP · F5"),1,!Save->IsWriteBlocked());
+        AddAction(TEXT("WCZYTAJ POSTĘP · F9"),2,Save->HasSave());
+        AddAction(TEXT("NOWA GRA"),3);
+        AddAction(TEXT("USTAWIENIA"),4);
+        AddAction(TEXT("WYJDŹ Z GRY"),5);
+        CenterColumn->AddChildToVerticalBox(MakeText(TEXT("PRZESYŁKA ZNAD ODRY"),22,true,Accent));
+        CenterColumn->AddChildToVerticalBox(MakeText(GetWorld()->GetSubsystem<UDistrictDeliverySubsystem>()->Objective(),16));
+        CenterColumn->AddChildToVerticalBox(MakeText(Save->Status,12,false,Muted));
+        CenterColumn->AddChildToVerticalBox(MakeText(TEXT("WASD — ruch / jazda\nMysz — kamera\nShift — sprint · Ctrl — kucanie · Spacja — skok / hamulec ręczny\nE — rozmowa / wsiądź / wysiądź\nR — ponów nieudaną dostawę\nF5 — zapisz · F9 — wczytaj · Esc — pauza"),14));
+        RightColumn->AddChildToVerticalBox(MakeText(FString::Printf(TEXT("%.2f zł"),GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>()->GetBalancePLN()),22,true,Accent));
+        return;
+    }
     PageTitle->SetText(FText::FromString(TEXT("CENTRUM GRACZA  /  GRA")));
 
     auto* Mission = GetGameInstance()->GetSubsystem<USliceMission>();
@@ -1258,7 +1283,8 @@ void UPlayerMenuWidget::BuildGameTab()
 
     auto* LoadButton = MakeButton(bCity ? TEXT("WCZYTAJ MIASTO") : TEXT("WCZYTAJ ZAPIS"));
     LoadButton->OnClicked.AddDynamic(this, &UPlayerMenuWidget::LoadGame);
-    const bool bHasSave = bCity || (Mission && Mission->HasSave());
+    const bool bDistrict=GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->IsActive();
+    const bool bHasSave = bDistrict?GetWorld()->GetSubsystem<UDistrictSaveSubsystem>()->HasSave():(bCity || (Mission && Mission->HasSave()));
     LoadButton->SetIsEnabled(bHasSave);
     ActionColumn->AddChildToVerticalBox(LoadButton)->SetPadding(FMargin(0, 0, 0, 10));
 
@@ -2401,6 +2427,11 @@ void UPlayerMenuWidget::BuildSettingsTab()
 
     if (SettingsSection == 2)
     {
+        auto* Input=GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>();
+        auto* Sensitivity=MakeButton(FString::Printf(TEXT("CZUŁOŚĆ MYSZY · %.2f"),Input->Profile.MouseSensitivity));
+        Sensitivity->OnClicked.AddDynamic(this,&UPlayerMenuWidget::CycleMouseSensitivity);AddCenterButton(Sensitivity);
+        auto* Invert=MakeButton(Input->Profile.bInvertMouseY?TEXT("ODWRÓCONA OŚ Y · WŁ."):TEXT("ODWRÓCONA OŚ Y · WYŁ."));
+        Invert->OnClicked.AddDynamic(this,&UPlayerMenuWidget::ToggleInvertMouse);AddCenterButton(Invert);
         PageTitle->SetText(FText::FromString(TEXT("USTAWIENIA  /  INTERFEJS")));
         CenterColumn->AddChildToVerticalBox(MakeText(TEXT("INTERFEJS"), 22, true, TextPrimary))
             ->SetPadding(FMargin(18, 16, 18, 3));
@@ -2600,6 +2631,9 @@ void UPlayerMenuWidget::ResetSettings()
         TEXT("Zostaną przywrócone domyślne ustawienia jakości, skali renderu, VSync, dynamicznej rozdzielczości, limitu FPS, interfejsu i dźwięku. Tryb ekranu i rozdzielczość pozostaną bez zmian."),
         TEXT("PRZYWRÓĆ"));
 }
+void UPlayerMenuWidget::SaveDistrict(){if(auto* C=Cast<ASliceController>(GetOwningPlayer()))C->SaveDistrict();Refresh();}
+void UPlayerMenuWidget::CycleMouseSensitivity(){auto* I=GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>();I->SetMouseSensitivity(I->Profile.MouseSensitivity>=2.f?.5f:I->Profile.MouseSensitivity+.25f);RefreshWithSettingsToast();}
+void UPlayerMenuWidget::ToggleInvertMouse(){GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->ToggleInvertMouse();RefreshWithSettingsToast();}
 
 void UPlayerMenuWidget::Resume()
 {
@@ -2826,6 +2860,7 @@ void UPlayerMenuWidget::ConfirmPendingAction()
 
     if (Action == 5)
     {
+        GetGameInstance()->GetSubsystem<UWTGInputProfileSubsystem>()->ResetToDefaults();
         ClearConfirmation();
 
         if (auto* Preferences = UWTGPerformanceSettings::Get())

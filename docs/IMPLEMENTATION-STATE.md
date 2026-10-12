@@ -8,6 +8,14 @@ autoload/auto/manual save, rollback nagrody przy błędzie zapisu. Następnie
 SliceHUD, SliceController i PlayerMenuWidget oraz trwałe ustawienia myszy.
 Punkt 7 (pełna sesja) nadal niewykonany.
 
+Partia C++ punktu 6: DistrictSaveGame/Subsystem z walidacją schema/pozycji/
+ledger/ukończenia, osobnym slotem i Windows atomic replace; rollback nagrody,
+autoload i autosave30s. Polski HUD i kierunek celu, F5/F9/menu oraz czułość/
+invert myszy zapisane w ini i wspólne dla auta/postaci. Domyślna mapa Nadodrze.
+Następny krok: DistrictSaveBuild.log, poprawić błędy UHT/UBT; native
+WTG.District.SaveValidation oraz test Save/Load w rzeczywistym World. Nie
+deklarować zapisu jako sprawdzonego przed kontrolą roundtrip.
+
 Punkt 5 zakończony: pełne modele ciała wybrane zamiast Eyebrows, poprawione
 jednostki importu, winding, yaw i słońce. Bake, locomotion, presentation,
 trzy testy native i sześć GIS PASS. Rzeczywisty render 12.10.2026 13:15 UTC:

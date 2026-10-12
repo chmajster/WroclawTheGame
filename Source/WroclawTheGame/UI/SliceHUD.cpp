@@ -21,6 +21,10 @@
 #include "Character/CharacterCreatorSubsystem.h"
 #include "Systems/DistrictGameplaySubsystem.h"
 #include "Mission/DistrictDeliverySubsystem.h"
+#include "Systems/WTGEconomySubsystem.h"
+#include "Save/DistrictSaveSubsystem.h"
+#include "Camera/CameraComponent.h"
+#include "Camera/PlayerCameraManager.h"
 void ASliceHUD::Text(const FString &Value, float X, float Y, float Scale, const FLinearColor &Color)
 {
     DrawText(Value, Color, X, Y, GEngine->GetMediumFont(), Scale, false);
@@ -82,6 +86,48 @@ void ASliceHUD::Panel(const FString &Title, const FString &Body)
     if (Lines.Num() > Visible)
         Text(TEXT("↑ / ↓ — przewijaj"), X, Canvas->SizeY - 55, .8f);
 }
+void ASliceHUD::DrawDistrictHUD()
+{
+    auto* PC=Cast<ASliceController>(PlayerOwner);auto* Pawn=PC->GetPawn();if(!Pawn)return;
+    auto* Car=Cast<ADriveableVehicle>(Pawn);auto* Player=Car?Car->Driver.Get():Cast<ASliceCharacter>(Pawn);
+    if(!Player)return;
+    auto* G=GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>();auto* D=GetWorld()->GetSubsystem<UDistrictDeliverySubsystem>();
+    const float S=FMath::Clamp(Canvas->SizeX/1600.f,.65f,1.25f), X=28*S;
+    const FLinearColor Ink(.012,.018,.023,.82),Gold(1,.79,.36),Muted(.75,.81,.83);
+    DrawRect(Ink,X,24*S,630*S,94*S);
+    Text(FString::Printf(TEXT("ZDROWIE %.0f  ·  %.2f zł"),Player->HealthState->Value,GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>()->GetBalancePLN()),X+14*S,36*S,.9*S);
+    Text(D->Objective(),X+14*S,66*S,.75*S,Gold);
+    if(D->State.Active())Text(FString::Printf(TEXT("CZAS %d:%02d"),int(D->State.Remaining)/60,int(D->State.Remaining)%60),X+14*S,94*S,.7*S,Muted);
+    const float Right=Canvas->SizeX-310*S;
+    DrawRect(Ink,Right,55*S,280*S,50*S);
+    Text(FString::Printf(TEXT("POSZUKIWANIE %d / 3%s"),G->WantedLevel(),G->IsSearching()?TEXT(" · SZUKANIE"):TEXT("")),Right+12*S,72*S,.75*S,Gold);
+    if(D->State.Stage!=Wroclaw::DeliveryStage::Complete)
+    {
+        const FVector Delta=D->Target()-Pawn->GetActorLocation();const float Distance=Delta.Size2D()/100;
+        const float Bearing=FMath::FindDeltaAngleDegrees(PC->PlayerCameraManager->GetCameraRotation().Yaw,Delta.Rotation().Yaw);
+        const FString Direction=FMath::Abs(Bearing)<25?TEXT("↑"):FMath::Abs(Bearing)>155?TEXT("↓"):Bearing>0?TEXT("→"):TEXT("←");
+        const float Mid=Canvas->SizeX*.5f;
+        DrawRect(Ink,Mid-92*S,24*S,184*S,38*S);
+        Text(FString::Printf(TEXT("%s  CEL %.0f m"),*Direction,Distance),Mid-75*S,34*S,.75*S,Gold);
+        FVector2D Screen;
+        if(PC->ProjectWorldLocationToScreen(D->Target()+FVector(0,0,180),Screen) && Screen.X>15 && Screen.X<Canvas->SizeX-100 && Screen.Y>145*S && Screen.Y<Canvas->SizeY-150*S)
+        {DrawRect(Gold,Screen.X-5,Screen.Y-5,10,10);Text(TEXT("CEL"),Screen.X+12,Screen.Y,.65*S,Gold);}
+    }
+    FString Prompt=Car?TEXT("E — wysiądź (zatrzymaj auto)"):TEXT("");
+    if(!Car)
+        if(auto* Focus=Player->Interaction->Find(Player->Camera->GetComponentLocation(),Player->Camera->GetForwardVector()))
+            if(auto* I=Cast<IInteractable>(Focus))Prompt=I->Prompt(Player).ToString();
+    if(Car)
+    {
+        DrawRect(Ink,Canvas->SizeX-230*S,Canvas->SizeY-140*S,200*S,65*S);
+        Text(FString::Printf(TEXT("%.0f km/h"),FMath::Abs(Car->Speed)*.036f),Canvas->SizeX-211*S,Canvas->SizeY-125*S,1.5*S);
+    }
+    if(!Prompt.IsEmpty())Text(Prompt,X,Canvas->SizeY-122*S,.85*S,Gold);
+    Text(TEXT("ESC pauza  ·  F5 zapisz  ·  F9 wczytaj  ·  R ponów"),X,Canvas->SizeY-54*S,.7*S,Muted);
+    auto* M=GetGameInstance()->GetSubsystem<USliceMission>();
+    if(FPlatformTime::Seconds()<M->NotificationUntil)
+    {DrawRect(Ink,X,Canvas->SizeY-200*S,930*S,44*S);Text(M->Notification.Left(130),X+14*S,Canvas->SizeY-186*S,.72*S,Gold);}
+}
 void ASliceHUD::DrawHUD()
 {
     Super::DrawHUD();
@@ -96,25 +142,17 @@ void ASliceHUD::DrawHUD()
     auto *CityGameplay = GetWorld()->GetSubsystem<UCityGameplaySubsystem>();
     auto* District=GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>();
     auto* Delivery=GetWorld()->GetSubsystem<UDistrictDeliverySubsystem>();
-    if (District->IsActive() && !M->bShowMenu)
-    {
-        Text(FString::Printf(TEXT("POSZUKIWANIE %d / 3%s"),District->WantedLevel(),District->IsSearching()?TEXT(" — szukanie"):TEXT("")),Canvas->SizeX-330,55,.85f,FLinearColor(1,.8f,.3f));
-        if (Delivery->State.Active()) Text(FString::Printf(TEXT("Dostawa · %d:%02d"),int(Delivery->State.Remaining)/60,int(Delivery->State.Remaining)%60),30,115,.85f);
-        if (PC->GetPawn() && Delivery->State.Stage!=Wroclaw::DeliveryStage::Complete)
-        {
-            FVector2D Screen;
-            if (PC->ProjectWorldLocationToScreen(Delivery->Target()+FVector(0,0,180),Screen) && Screen.X>15 && Screen.X<Canvas->SizeX-160 && Screen.Y>140 && Screen.Y<Canvas->SizeY-100)
-            {
-                DrawRect(FLinearColor(1,.7f,.2f),Screen.X-6,Screen.Y-6,12,12);
-                Text(FString::Printf(TEXT("CEL · %.0f m"),FVector::Dist2D(PC->GetPawn()->GetActorLocation(),Delivery->Target())/100),Screen.X+12,Screen.Y,.7f,FLinearColor(1,.8f,.4f));
-            }
-        }
-    }
     if (M->bShowMenu && PC->PlayerMenuWidget)
         return;
     if (Cast<AGeoPreviewGameMode>(GetWorld()->GetAuthGameMode()))
         Text(TEXT("Mapa: © OpenStreetMap contributors (ODbL) | teren: Copernicus EU-DEM / USGS, via Mapzen"),
              20, Canvas->SizeY - 22, .65f);
+    if(District->IsActive() && !M->bShowMenu && !PC->GameplayBlocked())
+    {
+        if(M->bDead)Panel(TEXT("UTRATA PRZYTOMNOŚCI"),TEXT("R — wróć na chodnik / ponów dostawę\nF9 — wczytaj zapis"));
+        else DrawDistrictHUD();
+        return;
+    }
 #if !UE_BUILD_SHIPPING
     if (GetWorld()->GetSubsystem<UCityCoverageSubsystem>()->bShowOverlay)
     {

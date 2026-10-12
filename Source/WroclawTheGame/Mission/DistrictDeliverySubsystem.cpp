@@ -15,6 +15,7 @@
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
 #include "Engine/SkeletalMesh.h"
+#include "Save/DistrictSaveSubsystem.h"
 #include "Animation/AnimationAsset.h"
 const FString UDistrictDeliverySubsystem::RewardId=TEXT("odra.delivery.completed.v1");
 void UDistrictDeliverySubsystem::CreatePoints()
@@ -84,10 +85,13 @@ void UDistrictDeliverySubsystem::Interact(bool IsReceiver,ASliceCharacter* Playe
     if (!State.CanDeliver(UGameplayStatics::GetPlayerPawn(this,0)==Player,FVector::Dist2D(Player->GetActorLocation(),Registry->DeliveryPoint)<240,IsValid(Car) && FVector::Dist2D(Car->GetActorLocation(),Registry->DeliveryPoint)<900,IsValid(Car) && FMath::Abs(Car->Speed)<100,GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->WantedLevel()))
     {M->Notify(TEXT("Przywieź auto, zatrzymaj je przy bulwarze i podejdź do Olka. Zgub ewentualny pościg."));return;}
     auto* Economy=GetWorld()->GetGameInstance()->GetSubsystem<UWTGEconomySubsystem>();
+    const auto BeforeEconomy=Economy->ExportSaveState();const auto BeforeState=State;
     const bool Applied=Economy->HasAppliedTransaction(RewardId) || Economy->ApplyTransaction(RewardId,Registry->DeliveryRewardCents,TEXT("Przesyłka znad Odry"));
-    if (State.Complete(Applied)) M->Notify(FString::Printf(TEXT("Olek: Uratowałeś sąsiedzki koncert. Dostawa ukończona! +%.2f zł"),Registry->DeliveryRewardCents/100.0));
-    else M->Notify(TEXT("Nie udało się rozliczyć dostawy. Spróbuj ponownie."));
+    if (State.Complete(Applied) && GetWorld()->GetSubsystem<UDistrictSaveSubsystem>()->Save(false)) M->Notify(FString::Printf(TEXT("Olek: Uratowałeś sąsiedzki koncert. Dostawa ukończona! +%.2f zł · zapisano"),Registry->DeliveryRewardCents/100.0));
+    else {Economy->ImportSaveState(BeforeEconomy);State=BeforeState;M->Notify(TEXT("Nie udało się zapisać rozliczenia dostawy. Spróbuj ponownie."));}
 }
+void UDistrictDeliverySubsystem::SynchronizeRecovery()
+{RecoveryAtStart=GetWorld()->GetSubsystem<UDistrictGameplaySubsystem>()->RecoverySerial;}
 bool UDistrictDeliverySubsystem::Restart()
 {
     if (!Registry) return false;

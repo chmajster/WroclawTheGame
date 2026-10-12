@@ -14,6 +14,7 @@ class WROCLAWTHEGAME_API ASliceHUD : public AHUD
               const FLinearColor &Color = FLinearColor::White);
     void DrawCityCoverage();
     void DrawFPSCounter();
+    void DrawDistrictHUD();
     void Panel(const FString &Title, const FString &Body);
     float SmoothedFPS = 0.0f;
 };
