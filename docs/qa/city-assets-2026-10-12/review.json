@@ -1,0 +1,36 @@
+{
+  "status": "PASS_WITH_LIMITATIONS",
+  "reviewer": "Codex native PNG inspection",
+  "reviewed_utc": "2026-10-12T20:24:16.036426+00:00",
+  "notes": "Inspected all five fresh perspective captures. Front-facing handles/panels, open balcony rear, floor with corbels and dentil profiles are present; portal clears the balcony above. Stone PBR and iron materials render. Context uses existing prototype wall/window/ground art and has high sun/shade contrast with visible temporal noise. Generic facade enrichment, not a surveyed historic reconstruction. Decorative static doors do not add interiors. No claim of AAA quality, full World Partition/HLOD, or measured whole-city FPS.",
+  "captures": {
+    "citykit-studio": "2026-10-12T20:19:23.117265+00:00",
+    "citykit-district-context": "2026-10-12T20:19:40.664661+00:00"
+  },
+  "screenshots_sha256": {
+    "Saved/Pipeline/screenshots/citykit-studio/Kit_Front.png": "efcec87abbeb3f249d13097238fe716db2e0d0827ec9a0090f01e6238a6cb4bd",
+    "Saved/Pipeline/screenshots/citykit-studio/Kit_Oblique.png": "9fb968ff8b5dae0edb86f8c37590ed21d9197ca0dfd7204c7adb7f2733d55820",
+    "Saved/Pipeline/screenshots/citykit-studio/Kit_Cornice_Close.png": "38192827d4a71a5fe638527998f90f3f24dc982a9e8d1beeeffa913a15fd5377",
+    "Saved/Pipeline/screenshots/citykit-district-context/CityKit_Street.png": "3fa85c04eff017402ce6f1ab29e8f49a257491d19a07144c7b50fadc9daf9a6f",
+    "Saved/Pipeline/screenshots/citykit-district-context/CityKit_Balcony.png": "5edfbfbebb9da25792e9bcffeeda98d3ec6ec912b24e343e0a4fdf6e88b40250"
+  },
+  "native_files_sha256": {
+    "Content/Maps/TenementKit_QA.umap": "5543b6a539e4dc372c02b660de8d38dd90234fef29a860b9c2451004fb262800",
+    "Content/Wroclaw/TenementKit/M_wtg_tenement_balcony_slab.uasset": "1cf13efdec0ef9b00b3c29b9a5f25e4385cae31ae139960420d53f22e7b8011c",
+    "Content/Wroclaw/TenementKit/M_wtg_tenement_dentil_cornice.uasset": "873e3073cb1c6ff071f2e662cff349d0b70c4fbd3b2979d9c82877c1c2ef6e72",
+    "Content/Wroclaw/TenementKit/M_wtg_tenement_ornate_balcony_railing.uasset": "b53c32230782c73fefe3a2bc856d7b8ed32799189e10c83fa76fed92784f94f7",
+    "Content/Wroclaw/TenementKit/M_wtg_tenement_stone_entrance_surround.uasset": "c08841a4ee47dc93a6c9061ebadc36cf12bc7cc4f267e4d7664f581180e15bf8",
+    "Content/Wroclaw/TenementKit/SM_wtg_tenement_balcony_slab.uasset": "146cafce057f5a68d06c59ac5b64022f8b427e47d4678345fc6d4a2542079968",
+    "Content/Wroclaw/TenementKit/SM_wtg_tenement_dentil_cornice.uasset": "20ac3547e3f2ee2afdc8b85f20fa3e950a6aab379457d866678acf2646d2fcf6",
+    "Content/Wroclaw/TenementKit/SM_wtg_tenement_ornate_balcony_railing.uasset": "701c90895e3f07656f763c42ff6e4ee48b01237ec1314298a5ba5f16153a4308",
+    "Content/Wroclaw/TenementKit/SM_wtg_tenement_paneled_entrance_door.uasset": "442cac5c0588f829fc82da3fc25286344e5306c458d8db71ae49222e430d4b1b",
+    "Content/Wroclaw/TenementKit/SM_wtg_tenement_stone_entrance_surround.uasset": "aba905c5566c04046d28253824dd8a9eec249069067a3ae38dbcabedaca1a9d3",
+    "Content/Wroclaw/TenementKit/Textures/iron_BC.uasset": "1df28014e85e76092e626de9a348530ef8c8f147c5b07c574ec9eacaa868964c",
+    "Content/Wroclaw/TenementKit/Textures/iron_N.uasset": "3dc227eb8bd64beff14144ed5964dace9823c600e581b0e73509cb32f478e24b",
+    "Content/Wroclaw/TenementKit/Textures/iron_ORM.uasset": "9d018bea9eabac91550065b2911ce35e9d66fd2d41191804c064ddf41f71d514",
+    "Content/Wroclaw/TenementKit/Textures/sandstone_cracks_BC.uasset": "9631ab072e4013703d2d9f000fbf388885a0c173d7b120fe68b4a8942dfe5050",
+    "Content/Wroclaw/TenementKit/Textures/sandstone_cracks_N.uasset": "485350a21a23e2d32a4040f00cdcb444b8fad2cbf7fb15c013ede4d5d413ff9b",
+    "Content/Wroclaw/TenementKit/Textures/sandstone_cracks_ORM.uasset": "7db29e66d59a3020edefb268bbb641bcccdd228249b39bd0d6fe307e7e45d24d",
+    "Content/Maps/Nadodrze_Playable.umap": "88e538cac96f4591cfd18a650c21fe3a6900493f15f0e556100796364e9cf21c"
+  }
+}

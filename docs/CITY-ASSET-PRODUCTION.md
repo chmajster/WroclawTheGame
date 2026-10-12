@@ -97,6 +97,68 @@ not measured resident VRAM. Two limit/accounting tests PASS. This district is
 not World Partition and these checks do not establish whole-city FPS or HLOD
 streaming. Those require a separate source-driven large-world production stream.
 
+## Reproduce this batch (stream 6)
+
+From the repository on this machine:
+
+```powershell
+./Scripts/Invoke-CityAssetProduction.ps1 `
+  -Python './Saved/GISPython/Scripts/python.exe' -GameplayChecks
+```
+
+Use -EngineRoot/-Blender for other installations. The Python environment needs
+Scripts/assets/requirements.txt; the existing district source generator also
+needs Scripts/gis/requirements.txt when Saved/PlayableDistrict is missing.
+The default verifies/reuses reviewed sources, exports five FBX products, builds
+the editor module, imports, places, applies quality, creates QA scenes, runs the
+five-asset native test and captures five views. -GameplayChecks adds district
+rules/save/full-session/replay regression tests. No CI is invoked.
+
+- -SourcesOnly runs source/license/manifest/tests/GIS budget checks, records
+  SOURCE_CHECKS_PASS and explicitly leaves native work NOT_RUN.
+- -DownloadReviewed downloads only missing files from the approved CC0 registry.
+- -RebuildSources regenerates original textures and all five editable sources;
+  use it deliberately because source .blend edits are otherwise retained.
+- -PrepareDistrict uses the existing district builder. Its imported free-model
+  catalog (Saved/FreeModelImportMap.json) is an explicit prerequisite; on a fresh
+  checkout import the audited catalog with Scripts/import_free_models.py first.
+  Rebuild the district when base GIS inputs change; default mode enriches the
+  existing baked district using its associated facade descriptors.
+
+Saved/CityDetails/production.json records the current stage, real success/failure
+and continuation. Native markers are deleted before every stage, exit status,
+freshness and Python/material errors checked; empty Automation reports fail.
+QA output is NOT_REVIEWED until explicit inspection. After viewing all five:
+
+```powershell
+python Scripts/assets/record_city_visual_review.py `
+  --reviewer 'reviewer name' --status PASS_WITH_LIMITATIONS `
+  --notes 'observed geometry, materials, placement and remaining limitations'
+```
+
+The recorder rejects changed/missing PNGs or changed native map/asset fingerprints.
+It records an explicit review rather than pretending captures alone validate art.
+Generated .umap/FBX/reports remain derived outputs; source GIS, manifests,
+editable originals and native mesh/material/texture products are versioned.
+
+Integrated run 20261012-201713 completed: five exports/imports, saved native
+placement/quality, five-asset Automation, five rendered views and district
+rules/save/delivery-session/replay all PASS. Explicit five-view inspection is
+PASS_WITH_LIMITATIONS; see [archived native evidence](qa/city-assets-2026-10-12/README.md).
+The first batch is complete. Broader priority landmarks, detailed facade art,
+World Partition/HLOD conversion and whole-city performance remain future work.
+Next start market_and_town_hall in Data/city_asset_needs.json, using real geometry,
+legal references and a production manifest rather than a placeholder landmark.
+
+| Stream | PR |
+|---|---|
+| Blender original sources | [#146](https://github.com/chmajster/WroclawTheGame/pull/146) |
+| Audited CC0 acquisition | [#147](https://github.com/chmajster/WroclawTheGame/pull/147) |
+| Native pipeline import | [#148](https://github.com/chmajster/WroclawTheGame/pull/148) |
+| GIS district placement | [#149](https://github.com/chmajster/WroclawTheGame/pull/149) |
+| Native quality and budgets | [#150](https://github.com/chmajster/WroclawTheGame/pull/150) |
+| Executable production and validation | [#151](https://github.com/chmajster/WroclawTheGame/pull/151) |
+
 ## Acquisition evidence (stream 2)
 
 Acquired Sandstone Cracks by Rob Tuytel under verified Poly Haven CC0-1.0:

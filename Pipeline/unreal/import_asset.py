@@ -7,6 +7,7 @@ import re
 import traceback
 import uuid
 import sys
+import time
 from pathlib import Path
 
 import unreal
@@ -296,9 +297,12 @@ def prepare(manifest_value=None) -> None:
 def quit_after_editor_startup():
     unreal.EditorPythonScripting.set_keep_python_script_alive(True)
     ticks=[0]
+    started=time.monotonic()
     def settle(delta):
         ticks[0]+=1
-        if ticks[0]>=30:
+        # NullRHI can tick 30 frames in a fraction of a second. Give editor
+        # map/tool teardown a real settling interval before command-line exit.
+        if ticks[0]>=30 and time.monotonic()-started>=3:
             unreal.unregister_slate_post_tick_callback(handle)
             unreal.EditorPythonScripting.set_keep_python_script_alive(False)
             unreal.SystemLibrary.quit_editor()
