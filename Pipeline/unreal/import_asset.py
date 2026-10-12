@@ -146,8 +146,16 @@ def configure_lods(base_mesh, generated: Path, mesh_name: str, destination: str,
         # temporary FBX meshes get defaults; UE would append duplicate slots.
         source_slots=list(source.get_editor_property("static_materials"))
         base_slots=list(base_mesh.get_editor_property("static_materials"))
-        if len(source_slots)!=len(base_slots): raise RuntimeError("LOD material slot layout differs from LOD0")
-        source.set_editor_property("static_materials",base_slots)
+        # Decimation can remove every polygon of a small handle/material. FBX
+        # then omits that slot; match semantic names instead of array indices.
+        def slot_name(slot):
+            return str(slot.get_editor_property('imported_material_slot_name') or slot.get_editor_property('material_slot_name'))
+        base_by_name={slot_name(slot):slot for slot in base_slots}
+        for slot in source_slots:
+            name=slot_name(slot)
+            if name not in base_by_name: raise RuntimeError('LOD contains unknown material slot '+name)
+            slot.set_editor_property('material_interface',base_by_name[name].get_editor_property('material_interface'))
+        source.set_editor_property("static_materials",source_slots)
         result = subsystem.set_lod_from_static_mesh(base_mesh, index, source, 0, True)
         if result < 0:
             raise RuntimeError(f"Cannot attach LOD{index} from {lod_file}")
@@ -200,24 +208,11 @@ def prepare(manifest_value=None) -> None:
         if len(slots)>expected_slots:
             base_mesh.set_editor_property("static_materials",slots[:expected_slots])
 
-    integrated_lods = configure_lods(
-        base_mesh,
-        generated,
-        mesh_name,
-        destination,
-        len(manifest["lod"]["ratios"]),
-    )
-
     mesh_subsystem = unreal.get_editor_subsystem(unreal.StaticMeshEditorSubsystem)
     mesh_subsystem.set_generate_lightmap_uv(base_mesh, True)
     nanite = mesh_subsystem.get_nanite_settings(base_mesh)
     nanite.set_editor_property("enabled", bool(manifest["unreal"]["nanite"]))
     mesh_subsystem.set_nanite_settings(base_mesh, nanite, True)
-
-    actual_lod_count = mesh_subsystem.get_lod_count(base_mesh)
-    expected_lod_count = len(manifest["lod"]["ratios"])
-    if actual_lod_count != expected_lod_count:
-        raise RuntimeError(f"Unexpected Unreal LOD count: {actual_lod_count} != {expected_lod_count}")
 
     # UE reports spheres/boxes/capsules separately from convex UCX hulls.
     def collision_shapes():
@@ -254,6 +249,14 @@ def prepare(manifest_value=None) -> None:
         base_mesh.set_material(slot,authored_material)
     if imported_textures and any(slot not in bindings for slot in range(1,slot_count)):
         raise RuntimeError("Multi-material mesh requires explicit bindings for every remaining slot")
+
+    # Set real, distinct interfaces before UE's LOD copy. Its implementation
+    # matches by interface identity; assigning later collapses all default-grid
+    # sections onto slot zero even when source material names are different.
+    integrated_lods=configure_lods(base_mesh,generated,mesh_name,destination,len(manifest['lod']['ratios']))
+    actual_lod_count=mesh_subsystem.get_lod_count(base_mesh)
+    expected_lod_count=len(manifest['lod']['ratios'])
+    if actual_lod_count!=expected_lod_count:raise RuntimeError('Unexpected Unreal LOD count')
 
     sys.path.insert(0,str(ROOT/"Pipeline/unreal"))
     from city_quality import configure_mesh

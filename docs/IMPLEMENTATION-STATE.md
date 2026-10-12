@@ -5,15 +5,15 @@ See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 4/10. Authored eight full OSM-footprint buildings with real recessed window openings, frames, sill/cornice mouldings, gutters, pipes, service fronts and forged balcony geometry. Authored curb, drain, U bike rack, young supported tree and rounded parked saloon. Blender 5.2.2 actually produced editable blend and GLB files; 13 production manifests and shared PBR material import script added.
+Stream 4/10. 13 original source meshes and manifests produced; all 39 FBX LOD exports PASS, 257206 total LOD0 triangles, 73 wall UCX hulls plus three prop hulls. Shared PBR materials actually imported (14 interfaces). Native import revealed disappearing small-material slots after decimation; pipeline now maps LOD slots by names and binds real interfaces before copying, avoiding default-material section collapse.
 
-Validation and limitations: Source generation PASS, 28 manifests PASS. Native import and exported LOD validation are still in progress. Building heights/windows are documented architectural estimates; no interior access.
+Validation and limitations: 28 manifests and pipeline/acquisition unit tests PASS. Actual native import is progressing; fresh completion marker still required. Height/windows remain estimated; static fronts have no accessible interiors.
 
 ## Do zrobienia
-Run three-LOD FBX pipeline for all 13 meshes, import shared materials and every native mesh, verify actual reports and scale/collision.
+Finish native import for all 13 and validate complete reports, bounds and LOD sections. Do not count earlier failed import as successful.
 
 ## Następny krok
-Run Pipeline/blender/build_asset.py for Pipeline/assets/start_location/*.asset.json, then prepare_start_location_materials.py and Pipeline/unreal/import_batch.py with absolute paths in full Editor Entry NullRHI. Verify fresh markers and native logs.
+Wait for active StartImport.log process, verify WTG_BATCH_IMPORT_PASS 13 and fresh 13 import reports; inspect material section mappings and update this PR before merge.
 
 ## Stan
 In progress, stream 4/10. No CI manually run.
