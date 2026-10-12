@@ -1,3 +1,10 @@
+# Menu rebuild - current task
+
+Stage1/7 complete: repository architecture audited in docs/MENU-REBUILD.md.
+Next: stage2 branch from main, shared Slate controls/style and viewport wrapper.
+Remaining: stages2-7, each its own PR; runtime/visual acceptance in stage7.
+Prior open-world implementation history follows.
+
 # Full game expansion — implementation state
 
 ## Current state - complete first playable slice (streams 1-7)
