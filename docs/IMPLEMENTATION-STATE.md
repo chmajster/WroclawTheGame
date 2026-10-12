@@ -2,6 +2,12 @@
 
 ## Bieżący punkt kontynuacji
 
+Punkt 6 w trakcie na feat/06-district-hud-save. Następna konkretna zmiana:
+Save/DistrictSaveSubsystem i DistrictSaveGame; niezależny slot, walidacja danych,
+autoload/auto/manual save, rollback nagrody przy błędzie zapisu. Następnie
+SliceHUD, SliceController i PlayerMenuWidget oraz trwałe ustawienia myszy.
+Punkt 7 (pełna sesja) nadal niewykonany.
+
 Punkt 5 zakończony: pełne modele ciała wybrane zamiast Eyebrows, poprawione
 jednostki importu, winding, yaw i słońce. Bake, locomotion, presentation,
 trzy testy native i sześć GIS PASS. Rzeczywisty render 12.10.2026 13:15 UTC:
