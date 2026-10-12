@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "author": "WroclawTheGame project / original procedural authoring",
+  "license": "Project-owned original geometry and textures",
+  "generator": "Scripts/assets/build_tenement_kit.py",
+  "texture_generator": "Scripts/assets/make_kit_textures.py",
+  "seed": 20261012,
+  "reference_urls": ["https://www.wroclaw.pl/dla-mieszkanca/nadodrze-krolestwem-kamienic-z-pieknymi-detalami-zdjecia"],
+  "reference_policy": "Architecture viewing only. No photographs downloaded, embedded or redistributed.",
+  "fidelity": "Generic architectural enrichment, not measured reconstruction of a specific building.",
+  "axis_convention": "Blender metres; X along facade, +Y outward, Z up; pipeline centers XY and puts base at Z=0.",
+  "collision_policy": "Decorative components only; original building/slab collision remains authoritative. Not standalone traversal barriers.",
+  "textures": "Original deterministic 1024x1024 base color, DirectX tangent normals and packed AO/roughness/metallic. Opaque painted iron and limestone."
+}

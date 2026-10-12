@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "wtg-tenement-ornate-balcony-railing",
+  "display_name": "Autorska kuta balustrada balkonowa",
+  "area": "tenements", "type": "static_mesh", "quality": "standard",
+  "source": {"model": "SourceAssets/Models/Wroclaw/TenementKit/ornate-balcony-railing.blend", "license": "Project-owned original geometry and textures", "reference_directory": null},
+  "mesh": {"max_triangles": 60000, "combine": true, "generate_uv_if_missing": false},
+  "lod": {"ratios": [1, 0.6, 0.3]},
+  "collision": {"mode": "none", "max_hulls": 1},
+  "textures": {
+    "base_color": "SourceAssets/Models/Wroclaw/TenementKit/Textures/iron_BC.png",
+    "normal": "SourceAssets/Models/Wroclaw/TenementKit/Textures/iron_N.png",
+    "orm": "SourceAssets/Models/Wroclaw/TenementKit/Textures/iron_ORM.png"
+  },
+  "unreal": {"destination": "/Game/Wroclaw/TenementKit", "nanite": false, "qa_map": "/Game/Maps/TenementKit_QA"},
+  "qa": {"automation_filter": "WTG.SurfaceQuality", "cameras": ["Kit_Front", "Kit_Oblique"], "screenshot_width": 1280, "screenshot_height": 960}
+}
