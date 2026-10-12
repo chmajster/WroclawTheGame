@@ -41,8 +41,9 @@
   "qa": {
     "automation_filter": "WTG.District",
     "cameras": [
-      "Start_Player",
-      "Start_Street"
+      "StartLocation_Start_Player",
+      "StartLocation_Start_Street",
+      "StartLocation_Start_Park"
     ],
     "screenshot_width": 1280,
     "screenshot_height": 720

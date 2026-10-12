@@ -1,22 +1,22 @@
 # Start location production — 2026-10-12
 
-Primary live log: current start-location PR, stream 8/10.
+Primary live log: current start-location PR, stream 9/10.
 See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 8/10. Actual D3D12 gameplay PASS: correct floor, all8 walls blocking, clear collision-aware camera, non-placeholder player and 201.4cm ordinary walking. Four fresh images inspected/archived. Native district four tests and save/full460m mission/replay sessions PASS. Wall-clock1163 frames mean16.764ms/59.65FPS p95 17.684ms at1280x720, observed60FPS cap.
+Stream 9/10. Installed executable production entry with Validate/Source/Full modes, fresh native marker checks, one process per editor stage, actual selected-mode status, source/manifest/provenance catalog and correct QA camera labels.
 
-Validation and limitations: Identical171 cpp/h compiled in isolated native project using same Content/Data because open main editor locks DLL. Fresh source/native hashes and QA evidence archived. RTX5070Ti; limited60FPS run, not uncappedGPUbenchmark. Simplified roofs, estimated architecture and existing background/default-avatar limitations remain documented. Generic17 engine startup errors precede passing project test queue.
+Validation and limitations: Source catalog paths and pinned CC0 metadata PASS. Native steps already performed in streams4-8; final entry Validate-mode execution and parser checks pending. Full mode not re-run against open user editor.
 
 ## Do zrobienia
-Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
+Execute Validate mode, inspect report, verify parser/AST/manifests and document dependencies/commands.
 
 ## Następny krok
-Create stream9 branch from main; install production orchestrator/catalog, correct manifest QA camera paths, validate source/path/provenance consistency and selected production mode.
+Run Scripts/Invoke-StartLocationProduction.ps1 -Mode Validate; require three executed stages PASS, then finalize paths/dependencies documentation.
 
 ## Stan
-Stream complete; overall implementation in progress. No CI manually run.
+In progress, stream9/10. No CI manually run.
 
 # Earlier city asset production — completed first batch
 
