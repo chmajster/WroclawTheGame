@@ -30,8 +30,8 @@ AWTG_CharacterCreator::AWTG_CharacterCreator()
     Capture->PostProcessSettings.bOverride_AutoExposureApplyPhysicalCameraExposure=true;
     Capture->PostProcessSettings.AutoExposureApplyPhysicalCameraExposure=true;
     Capture->PostProcessSettings.bOverride_CameraISO=true; Capture->PostProcessSettings.CameraISO=100;
-    Capture->PostProcessSettings.bOverride_CameraShutterSpeed=true; Capture->PostProcessSettings.CameraShutterSpeed=60;
-    Capture->PostProcessSettings.bOverride_DepthOfFieldFstop=true; Capture->PostProcessSettings.DepthOfFieldFstop=2.8f;
+    Capture->PostProcessSettings.bOverride_CameraShutterSpeed=true; Capture->PostProcessSettings.CameraShutterSpeed=15;
+    Capture->PostProcessSettings.bOverride_DepthOfFieldFstop=true; Capture->PostProcessSettings.DepthOfFieldFstop=1.8f;
     Capture->ShowFlags.SetAtmosphere(false); Capture->ShowFlags.SetFog(false);
     Capture->ShowFlags.SetVolumetricFog(false); Capture->ShowFlags.SetSkyLighting(false); Capture->ShowFlags.SetMotionBlur(false);
     KeyLight->SetMobility(EComponentMobility::Movable);
@@ -41,7 +41,8 @@ AWTG_CharacterCreator::AWTG_CharacterCreator()
     FillLight->SetIntensityUnits(ELightUnits::Lumens);
     RimLight->SetIntensityUnits(ELightUnits::Lumens);
     for (auto* Light:{KeyLight.Get(),FillLight.Get(),RimLight.Get()})
-    { Light->LightingChannels.bChannel0=false; Light->LightingChannels.bChannel1=true; }
+    { Light->SetLightingChannels(true,false,false); Light->ViewLightingChannels.bViewChannel0=false;Light->ViewLightingChannels.bViewChannel1=true; }
+    Capture->ViewLightingChannels.bViewChannel0=false;Capture->ViewLightingChannels.bViewChannel1=true;
     StudioFloor=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StudioFloor")); StudioFloor->SetupAttachment(ModelRoot);
     StudioWall=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StudioWall")); StudioWall->SetupAttachment(ModelRoot);
 }
@@ -61,7 +62,7 @@ void AWTG_CharacterCreator::BeginPlay()
     auto* Material=LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/SurfaceQuality/Instances/MI_Concrete.MI_Concrete"));
     if (!Material) Material=LoadObject<UMaterialInterface>(nullptr,TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
     for (auto* Mesh:{StudioFloor.Get(),StudioWall.Get()})
-    { Mesh->SetStaticMesh(Cube); Mesh->SetMaterial(0,Material); Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision); Mesh->SetLightingChannels(false,true,false); }
+    { Mesh->SetStaticMesh(Cube); Mesh->SetMaterial(0,Material); Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision); Mesh->SetLightingChannels(true,false,false); }
     StudioFloor->SetRelativeLocation(FVector(0,0,-3)); StudioFloor->SetRelativeScale3D(FVector(16,16,.05));
     StudioWall->SetRelativeLocation(FVector(-360,0,250)); StudioWall->SetRelativeScale3D(FVector(.05,16,5));
     GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->OnChanged.AddDynamic(this,&AWTG_CharacterCreator::RefreshAppearance);
@@ -71,12 +72,20 @@ void AWTG_CharacterCreator::RefreshAppearance()
 { Appearance->ApplyAppearance(GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>()->Draft); }
 void AWTG_CharacterCreator::ResizePreview(FIntPoint Size)
 {
-    Size.X=FMath::Clamp(Size.X,256,1280); Size.Y=FMath::Clamp(Size.Y,256,1440);
-    if (RenderTarget && (RenderTarget->SizeX!=Size.X || RenderTarget->SizeY!=Size.Y)) RenderTarget->ResizeTarget(Size.X,Size.Y);
+    const float Scale=FMath::Min3(1.f,1280.f/FMath::Max(Size.X,1),1440.f/FMath::Max(Size.Y,1));
+    Size.X=FMath::Max(128,FMath::RoundToInt(Size.X*Scale)); Size.Y=FMath::Max(128,FMath::RoundToInt(Size.Y*Scale));
+    if (RenderTarget && (RenderTarget->SizeX!=Size.X || RenderTarget->SizeY!=Size.Y)) {RenderTarget->ResizeTarget(Size.X,Size.Y);UpdateFraming();}
 }
 void AWTG_CharacterCreator::SetAngle(float Degrees) { TargetYaw=FMath::UnwindDegrees(Degrees); }
 void AWTG_CharacterCreator::SetView(FName View)
-{ TargetDistance=View==TEXT("Face")?65:(View==TEXT("UpperBody")?160:290); TargetHeight=View==TEXT("Face")?165:(View==TEXT("UpperBody")?133:92); }
+{CurrentView=View;ZoomFactor=1;UpdateFraming();}
+void AWTG_CharacterCreator::UpdateFraming()
+{
+    const float Aspect=RenderTarget?float(RenderTarget->SizeX)/FMath::Max(1,RenderTarget->SizeY):.72f;
+    const float HalfHeight=CurrentView==TEXT("Face")?22.f:(CurrentView==TEXT("UpperBody")?65.f:105.f);
+    TargetDistance=FMath::Clamp(HalfHeight*Aspect/FMath::Tan(FMath::DegreesToRadians(Capture->FOVAngle*.5f))*ZoomFactor,35.f,900.f);
+    TargetHeight=CurrentView==TEXT("Face")?165.f:(CurrentView==TEXT("UpperBody")?133.f:92.f);
+}
 void AWTG_CharacterCreator::SetLighting(FName P)
 {
     const bool bModern = P == TEXT("Modern");
@@ -99,11 +108,10 @@ void AWTG_CharacterCreator::Rotate(float Degrees) { TargetYaw=FMath::UnwindDegre
 void AWTG_CharacterCreator::ResetPresentation()
 {
     TargetYaw = 0.0f;
-    TargetDistance = 290.0f;
-    TargetHeight = 92.0f;
+    SetView(TEXT("FullBody"));
     SetLighting(TEXT("Modern"));
 }
-void AWTG_CharacterCreator::Zoom(float Amount) { TargetDistance=FMath::Clamp(TargetDistance+Amount,45.f,380.f); }
+void AWTG_CharacterCreator::Zoom(float Amount) { ZoomFactor=FMath::Clamp(ZoomFactor+Amount/250.f,.5f,1.7f);UpdateFraming(); }
 void AWTG_CharacterCreator::Tick(float Dt)
 {
     Super::Tick(Dt);
@@ -111,7 +119,7 @@ void AWTG_CharacterCreator::Tick(float Dt)
     Distance=FMath::FInterpTo(Distance,TargetDistance,Dt,7); CameraHeight=FMath::FInterpTo(CameraHeight,TargetHeight,Dt,7);
     Yaw=FMath::UnwindDegrees(Yaw+FMath::FindDeltaAngleDegrees(Yaw,TargetYaw)*FMath::Min(Dt*10,1.f));
     TArray<UPrimitiveComponent*> Parts; GetComponents(Parts);
-    for (auto* Part:Parts) Part->SetLightingChannels(false,true,false);
+    for (auto* Part:Parts) Part->SetLightingChannels(true,false,false);
     const float Angle=FMath::DegreesToRadians(Yaw); FVector Position=FVector(FMath::Cos(Angle)*Distance,FMath::Sin(Angle)*Distance,CameraHeight*Appearance->HeightRatio);
     Capture->SetRelativeLocation(Position); Capture->SetRelativeRotation((FVector(0,0,CameraHeight*Appearance->HeightRatio)-Position).Rotation());
     Capture->CaptureScene();

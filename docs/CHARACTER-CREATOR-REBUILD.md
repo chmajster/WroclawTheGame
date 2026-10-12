@@ -49,10 +49,29 @@ Nie kopiujemy kodu MakeHuman ani zasobów GTA/The Sims.
 Źródła licencji: [MakeHuman](https://static.makehumancommunity.org/about/license.html),
 [LICENSE.md](https://github.com/makehumancommunity/makehuman/blob/master/LICENSE.md).
 
+## 2. Interfejs i studio
+
+Trzy panele: 16% kategorie, 56% model, 28% edycja. Oryginalne ikony
+wektorowe, animowane zaznaczenie/hover/focus, kontekstowe palety i suwaki,
+czytelne podsumowanie oraz wspólne kolory/fonty istniejącego menu.
+Usunięto techniczne polecenia z ekranu użytkownika. Zachowano undo/redo,
+losowanie, powrót i rzeczywisty zapis przed rozpoczęciem gry.
+
+Studio ma izolowane kanały widoku i światła, wyłączoną atmosferę świata,
+fizyczną ekspozycję, podłogę/cień i target skalowany z zachowaniem proporcji.
+Kadrowanie uwzględnia proporcje panelu. Obrót/zoom działa tylko w podglądzie;
+przód/profil/tył i kategorie twarzy zmieniają kamerę płynnie w czasie rzeczywistym
+nawet przy pauzie. Animacja siatki jawnie odświeża kości przy pauzie.
+
+Kompilacja UE zakończona powodzeniem. Rzeczywiste przebiegi gry 1280×720
+i 1920×1080: otwarcie, zgodność szkicu, capture i zamknięcie exit 0; obejrzano
+obrazy. Biały target usunięty, postać widoczna, idle aktualizuje szkielet.
+`studio-ui-1080.png` pokazuje jeszcze bazę Quaternius przed produkcją nowych
+modeli w strumieniu 3. Nie jest dowodem gotowych morphów lub garderoby.
+
 ## Do zrobienia
 
-2. Wdrożyć nowe UI, izolowane studio, interakcje i zweryfikować rzeczywisty render.
 3. Wdrożyć siatki z morphami, dopasowany ubiór, materiały i personalizację,
    rozszerzyć historię/zapis, sprawdzić przepływ do gry i udokumentować wyniki.
 
-Stan: audyt zakończony, implementacja kolejnych strumieni w toku.
+Stan: audyt i UI/studio zakończone, personalizacja w toku.

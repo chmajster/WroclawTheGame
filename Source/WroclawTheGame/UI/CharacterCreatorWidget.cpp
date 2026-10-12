@@ -53,6 +53,25 @@ public:
     }
 private:int32 Index=0;
 };
+class SCreatorCategoryButton : public SCompoundWidget
+{
+public:
+    SLATE_BEGIN_ARGS(SCreatorCategoryButton){} SLATE_ARGUMENT(UCharacterCreatorWidget*,Owner) SLATE_ARGUMENT(int32,Index) SLATE_END_ARGS()
+    void Construct(const FArguments& A)
+    {
+        Owner=A._Owner;Index=A._Index;
+        ChildSlot[SNew(SButton).ButtonStyle(&FCoreStyle::Get().GetWidgetStyle<FButtonStyle>("NoBorder")).ContentPadding(0)
+            .OnClicked_Lambda([this]{if(Owner.IsValid())Owner->SelectCategory(Index);return FReply::Handled();})
+            [SNew(SBorder).BorderImage(FCoreStyle::Get().GetBrush("WhiteBrush"))
+                .BorderBackgroundColor_Lambda([this]{return FLinearColor(.78f,.67f,.43f,.015f+.13f*Highlight);}).Padding(FMargin(9,10))
+                [SNew(SHorizontalBox)+SHorizontalBox::Slot().AutoWidth().VAlign(VAlign_Center)[SNew(SCreatorIcon).Index(Index)]
+                 +SHorizontalBox::Slot().FillWidth(1).Padding(9,0)[SNew(STextBlock).Text(FText::FromString(Categories[Index].Name)).Font(WTGMenu::Font(18))
+                    .ColorAndOpacity_Lambda([this]{return FSlateColor(FMath::Lerp(WTGMenu::Paper,WTGMenu::Accent,Highlight));})]]]];
+    }
+    virtual void Tick(const FGeometry& G,double T,float Dt) override
+    {SCompoundWidget::Tick(G,T,Dt);const float V=(Owner.IsValid() && Owner->SelectedCategory()==Index) || IsHovered() || HasFocusedDescendants()?1.f:0.f;Highlight=UWTGPerformanceSettings::Get()->bReduceUIMotion?V:FMath::FInterpTo(Highlight,V,Dt,14.f);}
+private:TWeakObjectPtr<UCharacterCreatorWidget> Owner;int32 Index=0;float Highlight=0;
+};
 class SStudioPreview : public SCompoundWidget
 {
 public:
@@ -80,12 +99,7 @@ public:
     {
         Owner=A._Owner;auto Nav=SNew(SVerticalBox);
         Nav->AddSlot().AutoHeight().Padding(8,8,0,16)[Text(TEXT("WYGLĄD"),16,WTGMenu::Muted,true)];
-        for(int32 I=0;I<UE_ARRAY_COUNT(Categories);++I)Nav->AddSlot().AutoHeight().Padding(0,2)
-            [SNew(SButton).ButtonStyle(&FCoreStyle::Get().GetWidgetStyle<FButtonStyle>("NoBorder")).ContentPadding(FMargin(9,10))
-                .OnClicked_Lambda([this,I]{Owner->SelectCategory(I);return FReply::Handled();})
-                [SNew(SHorizontalBox)+SHorizontalBox::Slot().AutoWidth().VAlign(VAlign_Center)[SNew(SCreatorIcon).Index(I)]
-                 +SHorizontalBox::Slot().FillWidth(1).Padding(9,0)[SNew(STextBlock).Text(FText::FromString(Categories[I].Name)).Font(WTGMenu::Font(18))
-                    .ColorAndOpacity_Lambda([this,I]{return Owner.IsValid() && Owner->SelectedCategory()==I?WTGMenu::Accent:WTGMenu::Paper;})]];
+        for(int32 I=0;I<UE_ARRAY_COUNT(Categories);++I)Nav->AddSlot().AutoHeight().Padding(0,2)[SNew(SCreatorCategoryButton).Owner(Owner.Get()).Index(I)];
         auto Views=SNew(SHorizontalBox);TArray<TPair<FString,float>> Angles={{TEXT("Przód"),0},{TEXT("Profil"),90},{TEXT("Tył"),180}};
         for(auto P:Angles)Views->AddSlot().FillWidth(1).Padding(3)[Button(P.Key,[this,P]{Owner->Studio->SetAngle(P.Value);})];
         auto Tools=SNew(SHorizontalBox);
@@ -160,7 +174,7 @@ private:
     void Parts(const FString& Label,FName Field,const TArray<FAppearancePartDefinition>& P,FName Selected,bool Optional=false)
     {TArray<TPair<FName,FString>> Items;if(Optional)Items.Add({NAME_None,TEXT("Brak")});for(const auto& X:P)if(Owner->Creator->Catalog->Compatible(X,Owner->Creator->Draft))Items.Add({X.ID,X.ID.IsNone()?TEXT("Brak"):X.DisplayName.ToString()});Options(Label,Field,Items,Selected);}
     void Palette(const FString& Label,FName Field,const TArray<FLinearColor>& Colors)
-    {Content->AddSlot().AutoHeight().Padding(0,14,0,6)[Text(Label,18)];auto Grid=SNew(SUniformGridPanel).SlotPadding(FMargin(3));for(int32 I=0;I<Colors.Num();++I)Grid->AddSlot(I%6,I/6)[SNew(SButton).ButtonStyle(&FCoreStyle::Get().GetWidgetStyle<FButtonStyle>("NoBorder")).ContentPadding(3).ToolTipText(FText::FromString(FString::Printf(TEXT("%s %d"),*Label,I+1))).OnClicked_Lambda([this,Field,I]{Owner->SetNumber(Field,float(I));return FReply::Handled();})[SNew(SBorder).BorderImage(FCoreStyle::Get().GetBrush("WhiteBrush")).BorderBackgroundColor_Lambda([this,Field,I]{return FMath::RoundToInt(Value(Field))==I?WTGMenu::Accent:WTGMenu::Panel;}).Padding(3)[SNew(SBox).HeightOverride(26).WidthOverride(26)[SNew(SBorder).BorderImage(FCoreStyle::Get().GetBrush("WhiteBrush")).BorderBackgroundColor(Colors[I])]]];Content->AddSlot().AutoHeight()[Grid];}
+    {Content->AddSlot().AutoHeight().Padding(0,14,0,6)[Text(Label,18)];auto Grid=SNew(SUniformGridPanel).SlotPadding(FMargin(3));for(int32 I=0;I<Colors.Num();++I)Grid->AddSlot(I%6,I/6)[SNew(SButton).ButtonStyle(&FCoreStyle::Get().GetWidgetStyle<FButtonStyle>("NoBorder")).ContentPadding(3).ToolTipText(FText::FromString(FString::Printf(TEXT("%s %d"),*Label,I+1))).OnClicked_Lambda([this,Field,I]{Owner->SetNumber(Field,float(I));return FReply::Handled();})[SNew(SBorder).BorderImage(FCoreStyle::Get().GetBrush("WhiteBrush")).BorderBackgroundColor_Lambda([this,Field,I]{return FMath::RoundToInt(Value(Field))==I?WTGMenu::Accent:WTGMenu::Panel;}).Padding(3)[SNew(SBox).HeightOverride(26).WidthOverride(26)[SNew(SBorder).BorderImage(FCoreStyle::Get().GetBrush("WhiteBrush")).BorderBackgroundColor(Colors[I])]]]];Content->AddSlot().AutoHeight()[Grid];}
 };
 void UCharacterCreatorWidget::NativeOnInitialized()
 {Super::NativeOnInitialized();SetIsFocusable(true);Creator=GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>();FActorSpawnParameters P;P.SpawnCollisionHandlingOverride=ESpawnActorCollisionHandlingMethod::AlwaysSpawn;Studio=GetWorld()->SpawnActor<AWTG_CharacterCreator>(AWTG_CharacterCreator::StaticClass(),FVector(0,0,-50000),FRotator::ZeroRotator,P);PreviewBrush.SetResourceObject(Studio->RenderTarget);PreviewBrush.ImageSize=FVector2D(720,1000);Status=TEXT("Wygląd aktualizuje się na żywo.  PgUp / PgDn: kategorie  •  Ctrl+Z: cofnij");}

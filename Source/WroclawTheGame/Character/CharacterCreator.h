@@ -31,4 +31,7 @@ public:
 private:
     float Distance=290, TargetDistance=290, TargetHeight=92, CameraHeight=92, Yaw=0, TargetYaw=0;
     double LastRealTime=0;
+    FName CurrentView=TEXT("FullBody");
+    float ZoomFactor=1;
+    void UpdateFraming();
 };

@@ -3,18 +3,18 @@
 ## Wykonane
 2/3: UI i studio
 
-Wdrożono trzy panele Slate ze wspólną typografią menu,13 kategorii, wektorowe ikony, kontekstowe suwaki/palety/opcje i podsumowanie. Studio izoluje atmosferę/światła, stosuje fizyczną ekspozycję, ma podłogę i skalowany target. Obrót/zoom wyłącznie w centrum.
+Trzy panele16/56/28,13 kategorii z ikonami i animacją, kontekstowe edytory, palety, działające podsumowanie i istniejący zapis/menu. Usunięto przyczynę białego targetu: izolacja kanałów widoku/światła i atmosfery, fizyczna ekspozycja. Skalowanie i kadrowanie zależne od panelu, płynny obrót/zoom i animacja kości przy pauzie.
 
-Sprawdzenia i ograniczenia: Prace w toku. Native capture przed zmianą potwierdził źródłowy biały target; poprawka wymaga jeszcze obrazu po zmianie. Brakujące morphy/ubiór należą do strumienia3.
+Sprawdzenia i ograniczenia: UE native build PASS. Rzeczywisty CreatorSmoke1280x720 i1920x1080 exit0, szkic zgodny, model widoczny, idle działa; obrazy obejrzane. Obraz1080 archiwizowany. Baza i garderoba przed strumieniem3 mają dotychczasowe ograniczenia; nie deklarujemy gotowej personalizacji.
 
 ## Do zrobienia
-Skompilować i sprawdzić rzeczywisty render, poprawić kadrowanie/responsywność i animację zaznaczenia.
+W strumieniu2 nic. Całe zadanie: strumień3 siatki/morphy/ubiór/materiały i kontrola zapisu/gry.
 
 ## Następny krok
-Kompilacja WroclawTheGameEditor; uruchomienie WTG.CreatorSmoke i obejrzenie nowych obrazów.
+Po scaleniu utworzyć gałąź z main dla strumienia3. Pozyskać przypięte CC0 MakeHuman base/targets; Blender generator dopasowany do istniejącego riggu, import i funkcjonalna personalizacja.
 
 ## Stan
-W toku. Nie uruchamiano ani nie oczekiwano na CI.
+UI i studio zakończone; całe zadanie nadal w toku. Nie uruchamiano ani nie oczekiwano na CI.
 
 Pełny raport: docs/CHARACTER-CREATOR-REBUILD.md.
 
