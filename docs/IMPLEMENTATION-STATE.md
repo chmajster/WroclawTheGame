@@ -1,3 +1,27 @@
+# City asset production — active pass 2026-10-12
+
+Primary live log: PR #146 (stream 1/6). Scope and provenance policy:
+docs/CITY-ASSET-PRODUCTION.md. Existing gameplay/menu work below is complete.
+
+Wykonane: original bpy railing, entrance surround and cornice, deterministic
+iron/stone PBR maps, editable .blend/.glb sources and three production manifests.
+Source previews reviewed; scale, openings and ornament geometry are visible.
+Manifest validation PASS (13 manifests). Blender pipeline exported three LODs
+per asset; native import/placement has not yet been performed.
+
+Do zrobienia: ordered streams 2 acquisition, 3 pipeline/import, 4 GIS placement,
+5 graphics/budgets, 6 executable end-to-end validation; major real landmarks
+and the wider city remain long-term production work, not completed models.
+
+Następny krok: stream 1 authoring/export is complete; create stream 2 branch
+from main for verified CC0 acquisition. Stream 3 must import the kit before
+any in-game claim. LOD triangle counts and exact rebuild command are recorded
+in docs/CITY-ASSET-PRODUCTION.md.
+
+Stan: in progress. Generic facade enrichment, no claim of surveyed architecture
+or AAA quality. Decoration has no collision; existing building/slab collision
+is retained. No GitHub Actions were invoked.
+
 # Menu rebuild - stages 1-7 complete
 
 Implemented in PRs #139-145, each on its own branch from main:

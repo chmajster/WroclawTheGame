@@ -1,0 +1,36 @@
+{
+  "units": "metres",
+  "generator": "original bpy geometry",
+  "assets": [
+    {
+      "id": "ornate-balcony-railing",
+      "triangles": 25912,
+      "uv_layers": 1,
+      "dimensions_m": [
+        2.5,
+        1.100000023841858,
+        1.106846809387207
+      ]
+    },
+    {
+      "id": "stone-entrance-surround",
+      "triangles": 6508,
+      "uv_layers": 1,
+      "dimensions_m": [
+        2.8000001907348633,
+        0.47999995946884155,
+        3.8899998664855957
+      ]
+    },
+    {
+      "id": "dentil-cornice",
+      "triangles": 4700,
+      "uv_layers": 1,
+      "dimensions_m": [
+        3.0,
+        0.49000000953674316,
+        0.4399999976158142
+      ]
+    }
+  ]
+}
