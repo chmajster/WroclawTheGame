@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "scope": "tenement-kit",
+  "nanite_fallback_percent_triangles": 1.0,
+  "lod_screen_sizes": [1.0, 0.22, 0.06],
+  "texture_max_size": 2048,
+  "instance_cull_cm": {"start": 18000, "end": 24000},
+  "budgets": {
+    "instances": 1000,
+    "instanced_lod0_triangles": 7000000,
+    "unique_source_texture_bytes": 67108864,
+    "rgba_full_mip_upper_bound_bytes": 100663296
+  },
+  "note": "Engineering caps for this batch, not measured FPS or whole-city memory. Preserve small stone profiles in conventional Nanite fallback; existing Lumen/weather reused. District is not World Partition."
+}

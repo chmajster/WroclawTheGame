@@ -6,6 +6,7 @@ import os
 import re
 import traceback
 import uuid
+import sys
 from pathlib import Path
 
 import unreal
@@ -79,6 +80,12 @@ def import_texture(path: Path, destination: str, kind: str):
         texture.set_editor_property("compression_settings", unreal.TextureCompressionSettings.TC_NORMALMAP)
     elif kind == "orm":
         texture.set_editor_property("srgb", False)
+        texture.set_editor_property("compression_settings",unreal.TextureCompressionSettings.TC_MASKS)
+    else:
+        texture.set_editor_property("srgb",True)
+    texture.set_editor_property("never_stream",False)
+    texture.set_editor_property("max_texture_size",2048)
+    texture.set_editor_property("mip_gen_settings",unreal.TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP)
     unreal.EditorAssetLibrary.save_loaded_asset(texture, False)
     return texture
 
@@ -87,6 +94,8 @@ def texture_sample(edit, material, texture, x, y, parameter_name):
     node = edit.create_material_expression(material, unreal.MaterialExpressionTextureSampleParameter2D, x, y)
     node.set_editor_property("texture", texture)
     node.set_editor_property("parameter_name", parameter_name)
+    if parameter_name=="Normal": node.set_editor_property("sampler_type",unreal.MaterialSamplerType.SAMPLERTYPE_NORMAL)
+    elif parameter_name=="ORM": node.set_editor_property("sampler_type",unreal.MaterialSamplerType.SAMPLERTYPE_LINEAR_COLOR)
     return node
 
 
@@ -245,6 +254,9 @@ def prepare(manifest_value=None) -> None:
     if imported_textures and any(slot not in bindings for slot in range(1,slot_count)):
         raise RuntimeError("Multi-material mesh requires explicit bindings for every remaining slot")
 
+    sys.path.insert(0,str(ROOT/"Pipeline/unreal"))
+    from city_quality import configure_mesh
+    configure_mesh(base_mesh,manifest)
     if not unreal.EditorAssetLibrary.save_loaded_asset(base_mesh, False):
         raise RuntimeError(f"Cannot save {expected_path}")
 

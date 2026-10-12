@@ -10,6 +10,7 @@ import unreal
 ROOT=Path(unreal.Paths.project_dir()).resolve()
 sys.path.insert(0,str(ROOT/"Pipeline/unreal"))
 from import_asset import quit_after_editor_startup
+from city_quality import configure_instances
 
 marker=ROOT/"Saved/CityDetails/placement.ok"; marker.parent.mkdir(parents=True,exist_ok=True); marker.unlink(missing_ok=True)
 try:
@@ -37,6 +38,7 @@ try:
         if clusters[key].add_facade_instance(meshes[item["role"]],transform)<0: raise RuntimeError("Instance creation failed")
     for key,cluster in clusters.items():
         for component in cluster.get_components_by_class(unreal.HierarchicalInstancedStaticMeshComponent):
+            configure_instances(component)
             if key[2] in {"railing","slab"}: component.set_collision_profile_name("BlockAll")
             else: component.set_collision_profile_name("NoCollision")
     actual=sum(cluster.get_facade_instance_count() for cluster in clusters.values())
