@@ -1,5 +1,23 @@
 # Full game expansion — implementation state
 
+## Sesja otwartego świata — zlecenie 12.10.2026
+
+Ten zakres rozwija istniejącą grę w pierwszą kompletną sesję pieszo/samochodem
+na zwartym fragmencie Wrocławia. Plan i audyt: `docs/OPEN-WORLD-SLICE.md`.
+
+- Punkt 1: rozpoznanie wykonane, UE 5.8.2 i działający start kampanii potwierdzone.
+- Punkty 2–7: w zakresie, jeszcze niewykonane. Każdy otrzymuje osobną gałąź i PR.
+- Decyzja: wykorzystać istniejące GIS, postać, pojazd, populację, ekonomię i menu;
+  nie zmieniać silnika ani wdrażać zastępczego frameworka gry.
+- Następny krok: punkt 2, gałąź z aktualnego `main`; dodać źródłowy manifest
+  fragmentu Nadodrze/Odra i generator `Scripts/gis/build_playable_district.py`,
+  następnie `Scripts/prepare_playable_district.py`. Źródło: `wave1.osm.gz` z
+  istniejących części oraz teren Wave 1; produkty w `Saved/PlayableDistrict`.
+- Weryfikacja: lokalny UE jest dostępny; natywny Computer Use nie działa (pipe,
+  os error 2). Nie deklarować wizualnego QA bez rzeczywistego dowodu.
+- Stan: w trakcie, zakończono rozpoznanie; dalsze sekcje poniżej to historyczny
+  zapis wcześniejszych zakresów i nie stanowią odbioru nowego zadania.
+
 Updated: 2026-09-18
 Working branch: `codex/official-wroclaw-buildings-3d`
 
