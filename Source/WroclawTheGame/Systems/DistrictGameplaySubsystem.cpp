@@ -55,8 +55,12 @@ void UDistrictGameplaySubsystem::RecoverPlayer()
         FHitResult Floor;
         FCollisionQueryParams Params(SCENE_QUERY_STAT(DistrictRecovery),false,Player);
         if (!GetWorld()->LineTraceSingleByChannel(Floor,Registry->PlayerStart+FVector(0,0,150),Registry->PlayerStart-FVector(0,0,500),ECC_Visibility,Params)) return;
+        if (Floor.ImpactNormal.Z < Player->GetCharacterMovement()->GetWalkableFloorZ()) return;
         const FVector Safe=Floor.ImpactPoint+FVector(0,0,Player->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()+4);
-        if (!Player->TeleportTo(Safe,FRotator::ZeroRotator,false,false)) return;
+        const FRotator View=Registry->StartViewRotation();
+        if (!Player->TeleportTo(Safe,FRotator(0,View.Yaw,0),false,false)) return;
+        Player->GetCharacterMovement()->StopMovementImmediately();
+        if (auto* PC=Player->GetController()) PC->SetControlRotation(View);
         Player->HealthState->Value=100;
         Player->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
         auto* M=GetWorld()->GetGameInstance()->GetSubsystem<USliceMission>();

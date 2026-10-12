@@ -7,6 +7,8 @@ Estimated architecture is explicitly recorded in Data/start_location.json.
 import json
 import math
 import random
+import argparse
+import sys
 from pathlib import Path
 import bpy
 from mathutils import Vector
@@ -211,7 +213,8 @@ def tree():
     for x,y in [(-.28,0),(.28,0)]:
         m.rod((x,y,0),(x,y,1.4),.032,6,10)
         m.rod((x,y,1.1),(.06,0,1.1),.014,4,8)
-    return m,[]
+    trunk=Mesh();trunk.box((.04,.02,1.55),(.24,.24,3.1),6)
+    return m,[trunk]
 
 
 def car():
@@ -265,12 +268,23 @@ def save(name,mesh,colliders,area):
 
 
 def main():
-    records=[]
+    parser=argparse.ArgumentParser();parser.add_argument('--asset')
+    options=parser.parse_args(sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [])
+    metadata=OUTPUT/'geometry.json'
+    records=json.loads(metadata.read_text(encoding='utf-8'))['assets'] if options.asset and metadata.exists() else []
+    updated=[]
     data=json.loads((ROOT/'Data/start_location_buildings.json').read_text(encoding='utf-8'))
     for config in data['buildings']:
-        reset();mesh,collision=building(config);records.append(save(config['asset'],mesh,collision,'Buildings'))
+        if options.asset and options.asset!=config['asset']:continue
+        reset();mesh,collision=building(config);updated.append(save(config['asset'],mesh,collision,'Buildings'))
     for name,func,area in [('curb',curb,'Roads'),('drain',drain,'Roads'),('bike-rack',rack,'Props'),('young-tree',tree,'Vegetation'),('parked-car',car,'Props')]:
-        reset();mesh,collision=func();records.append(save(name,mesh,collision,area))
+        if options.asset and options.asset!=name:continue
+        reset();mesh,collision=func();updated.append(save(name,mesh,collision,area))
+    if not updated:raise ValueError('Unknown production asset '+str(options.asset))
+    if options.asset:
+        by_name={r['asset']:r for r in updated}
+        records=[by_name.pop(r['asset'],r) for r in records]+list(by_name.values())
+    else:records=updated
     (OUTPUT/'geometry.json').write_text(json.dumps(dict(schema_version=1,author='WroclawTheGame original procedural authorship',
         license='Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0',assets=records),indent=2)+'\n',encoding='utf-8')
     print('START_MODELS_CREATED '+json.dumps({r['asset']:r['triangles'] for r in records}))

@@ -1,22 +1,22 @@
 # Start location production — 2026-10-12
 
-Primary live log: current start-location PR, stream 5/10.
+Primary live log: current start-location PR, stream 6/10.
 See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start, 100 m.
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 5/10. Eight buildings integrated, 2272 source-based instances in 29 HISM clusters, 29 nearby PBR surface cells and 50 rail strips. Reviewed CC0 grass acquired. Material usage and first-view warmup fixed; thin ground excluded from Lumen mesh SDF to remove black over-occlusion. Decorative cars avoid gameplay vehicle paths.
+Stream 6/10. Source changes align initial and recovery cameras to the meeting point, reject steep floor hits and clear recovery velocity. Tree generator now authors a narrow trunk collider and can rebuild one selected asset.
 
-Validation and limitations: Native module build, base bake, isolated placement and three rendered camera captures PASS. Every image actually inspected. 14 source tests and all 28 manifests PASS. Heights/windows estimated, roofs simplified, no accessible interiors. Actual walking/FPS follows in stream 8.
+Validation and limitations: Native rebuild, tree pipeline import and asset validation pending. Scope retains original source XY and uses existing camera spring-arm collision.
 
 ## Do zrobienia
-Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
+Run Blender tree generation, FBX/LOD export, native import/asset verification and C++ build.
 
 ## Następny krok
-Create stream 6 branch from main, align initial/recovery camera toward meeting point and add authored tree trunk collision; import and verify updated tree.
+Run build_start_location_models.py --asset young-tree, regenerate manifests and import tree through repository pipeline.
 
 ## Stan
-Stream complete; overall implementation in progress. No CI manually run.
+In progress, stream 6/10. No CI manually run.
 
 # Earlier city asset production — completed first batch
 
