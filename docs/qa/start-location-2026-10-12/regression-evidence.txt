@@ -1,0 +1,54 @@
+DistrictRulesTest
+[2026.10.12-22.30.09:850][303]LogAutomationController: Display: Test Completed. Result={Success} Name={DeliveryRules} Path={WTG.District.DeliveryRules}
+[2026.10.12-22.30.09:885][305]LogAutomationController: Display: Test Completed. Result={Success} Name={GeneratedMeshCollision} Path={WTG.District.GeneratedMeshCollision}
+[2026.10.12-22.30.09:933][308]LogAutomationController: Display: Test Completed. Result={Success} Name={SaveValidation} Path={WTG.District.SaveValidation}
+[2026.10.12-22.30.09:983][311]LogAutomationController: Display: Test Completed. Result={Success} Name={WantedDecay} Path={WTG.District.WantedDecay}
+
+DistrictSaveSmoke
+[2026.10.12-22.30.23:319][296]LogTemp: Display: WTG_SAVE_CHECK foot_write=PASS status=Postęp zapisany
+[2026.10.12-22.30.23:326][296]LogTemp: Display: WTG_SAVE_CHECK foot_read=PASS status=Postęp wczytany
+[2026.10.12-22.30.23:326][296]LogTemp: Display: WTG_SAVE_CHECK foot_roundtrip=PASS status=Postęp wczytany
+[2026.10.12-22.30.23:329][296]LogTemp: Display: WTG_SAVE_CHECK enter=PASS status=Postęp wczytany
+[2026.10.12-22.30.27:318][535]LogTemp: Display: WTG_SAVE_CHECK vehicle_write=PASS status=Postęp zapisany
+[2026.10.12-22.30.27:319][535]LogTemp: Display: WTG_SAVE_CHECK exit=PASS status=Postęp zapisany
+[2026.10.12-22.30.28:318][596]LogTemp: Display: WTG_SAVE_CHECK vehicle_read=PASS status=Postęp wczytany
+[2026.10.12-22.30.28:318][596]LogTemp: Display: WTG_SAVE_CHECK vehicle_roundtrip=PASS status=Postęp wczytany
+[2026.10.12-22.30.30:321][715]LogTemp: Display: WTG_SAVE_CHECK reexit=PASS status=Postęp wczytany
+[2026.10.12-22.30.30:322][715]LogTemp: Display: WTG_SAVE_CHECK completed_write=PASS status=Postęp zapisany
+[2026.10.12-22.30.30:329][715]LogTemp: Display: WTG_SAVE_CHECK completed_read=PASS status=Postęp wczytany
+[2026.10.12-22.30.30:329][715]LogTemp: Display: WTG_SAVE_CHECK reward_once=PASS status=Postęp wczytany
+[2026.10.12-22.30.30:334][715]LogTemp: Display: WTG_SAVE_CHECK future_preserved=PASS status=Nie można zapisać postępu
+[2026.10.12-22.30.30:335][715]LogTemp: Display: WTG_SAVE_CHECK future_unchanged=PASS status=Nie można zapisać postępu
+[2026.10.12-22.30.30:335][715]LogTemp: Display: WTG_DISTRICT_SAVE_DONE result=PASS
+
+DistrictSessionSmoke
+[2026.10.12-22.30.45:469][367]LogTemp: Display: WTG_SESSION_CHECK walk_wall_collision=PASS
+[2026.10.12-22.30.45:469][367]LogTemp: Display: WTG_SESSION_CHECK floor=PASS
+[2026.10.12-22.30.45:469][367]LogTemp: Display: WTG_SESSION_CHECK camera_wall=PASS
+[2026.10.12-22.30.45:619][376]LogTemp: Display: WTG_SESSION_CHECK jump=PASS
+[2026.10.12-22.30.48:320][539]LogTemp: Display: WTG_SESSION_CHECK giver_start=PASS
+[2026.10.12-22.30.48:537][551]LogTemp: Display: WTG_SESSION_CHECK lost_vehicle_failure=PASS
+[2026.10.12-22.30.48:537][551]LogTemp: Display: WTG_SESSION_CHECK restart=PASS
+[2026.10.12-22.30.48:537][552]LogTemp: Display: WTG_SESSION_CHECK restart_restores=PASS
+[2026.10.12-22.31.06:378][621]LogTemp: Display: WTG_SESSION_CHECK vehicle_prompt=PASS
+[2026.10.12-22.31.06:378][622]LogTemp: Display: WTG_SESSION_CHECK vehicle_interaction_range=PASS
+[2026.10.12-22.31.06:378][622]LogTemp: Display: WTG_SESSION_CHECK enter=PASS
+[2026.10.12-22.31.07:182][669]LogTemp: Display: WTG_SESSION_CHECK safe_exit=PASS
+[2026.10.12-22.31.07:182][669]LogTemp: Display: WTG_SESSION_CHECK early_exit_preserves_mission=PASS
+[2026.10.12-22.31.07:182][669]LogTemp: Display: WTG_SESSION_CHECK reenter=PASS
+[2026.10.12-22.31.07:182][669]LogTemp: Display: WTG_SESSION_CHECK physical_route_start=PASS
+[2026.10.12-22.32.29:547][597]LogTemp: Display: WTG_SESSION_CHECK physical_drive_distance=PASS
+[2026.10.12-22.32.29:547][597]LogTemp: Display: WTG_SESSION_CHECK delivery_exit=PASS
+[2026.10.12-22.32.54:192][ 38]LogTemp: Display: WTG_SESSION_CHECK police_evaded=PASS
+[2026.10.12-22.32.57:794][255]LogTemp: Display: WTG_SESSION_CHECK delivery_reward_saved=PASS
+[2026.10.12-22.32.57:794][255]LogTemp: Display: WTG_SESSION_CHECK reward_once=PASS
+[2026.10.12-22.32.57:794][255]LogTemp: Display: WTG_SESSION_CHECK save_exists=PASS
+[2026.10.12-22.33.06:801][793]LogTemp: Display: WTG_SESSION_CHECK police_dispatch=PASS
+[2026.10.12-22.33.06:803][793]LogTemp: Display: WTG_SESSION_CHECK saved_progress_restored=PASS
+[2026.10.12-22.33.06:803][793]LogTemp: Display: WTG_SESSION_CHECK saved_progress=PASS
+[2026.10.12-22.33.06:803][793]LogTemp: Display: WTG_DISTRICT_SESSION_DONE result=PASS resume=0 elapsed=147.56 physical_distance_m=460.04
+
+DistrictSessionReplay
+[2026.10.12-22.33.22:923][296]LogTemp: Display: WTG_SESSION_CHECK new_process_load=PASS
+[2026.10.12-22.33.22:923][296]LogTemp: Display: WTG_SESSION_CHECK new_process_progress=PASS
+[2026.10.12-22.33.22:923][296]LogTemp: Display: WTG_DISTRICT_SESSION_DONE result=PASS resume=1 elapsed=5.01 physical_distance_m=0.00

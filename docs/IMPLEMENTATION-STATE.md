@@ -5,18 +5,18 @@ See docs/START-LOCATION-PRODUCTION.md. Scope: existing Pomorska/Paulińska start
 Start XY, mission, vehicle and gameplay systems retained.
 
 ## Wykonane
-Stream 8/10. Added real-game smoke: actual non-placeholder player, floor/8 wall/camera checks, ordinary 2 m walking, four screenshots and uncapped steady frame intervals after warmup. Development-only focus-pause exemption prevents QA from measuring a paused menu.
+Stream 8/10. Actual D3D12 gameplay PASS: correct floor, all8 walls blocking, clear collision-aware camera, non-placeholder player and 201.4cm ordinary walking. Four fresh images inspected/archived. Native district four tests and save/full460m mission/replay sessions PASS. Wall-clock1163 frames mean16.764ms/59.65FPS p95 17.684ms at1280x720, observed60FPS cap.
 
-Validation and limitations: Native compilation and actual execution pending. Smoke does not teleport player, write game saves or persist graphics preferences.
+Validation and limitations: Identical171 cpp/h compiled in isolated native project using same Content/Data because open main editor locks DLL. Fresh source/native hashes and QA evidence archived. RTX5070Ti; limited60FPS run, not uncappedGPUbenchmark. Simplified roofs, estimated architecture and existing background/default-avatar limitations remain documented. Generic17 engine startup errors precede passing project test queue.
 
 ## Do zrobienia
-Build, run rendered smoke and district regressions; inspect every final image, fix discovered errors and archive fresh evidence.
+Nothing remains in this completed stream; subsequent numbered streams continue the overall task.
 
 ## Następny krok
-Build Editor module, run WTGDistrict regression suite and WTG.StartLocationSmoke with -WTGNoFocusPause at1280x720; require fresh reports/logs and inspect images.
+Create stream9 branch from main; install production orchestrator/catalog, correct manifest QA camera paths, validate source/path/provenance consistency and selected production mode.
 
 ## Stan
-In progress, stream 8/10. No CI manually run.
+Stream complete; overall implementation in progress. No CI manually run.
 
 # Earlier city asset production — completed first batch
 

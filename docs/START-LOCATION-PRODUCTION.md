@@ -136,3 +136,32 @@ nowego otoczenia razem z instancjami (limit 1600000), 2259 prostych kształtów
 kolizji. Kontrola zapisanych progów LOD zakończyła się PASS. Nie jest to
 pomiar VRAM ani FPS całej dzielnicy; istniejący świat, postacie i stare detale
 mają odrębny koszt. Mapa nadal korzysta z komórek GIS, bez World Partition.
+
+## 8. Rzeczywiste testy gry i obrazy
+
+Uruchomiono grę z rendererem D3D12 na RTX 5070 Ti, 1280×720. Po 50 s
+rozgrzewania zebrano 1163 odstępy klatek z zegara monotonicznego: średnio
+16,764 ms / 59,65 FPS, p95 17,684 ms. Raport końcowy potwierdził limit
+`t.MaxFPS=60`, pomimo wcześniejszej próby wyłączenia go przez konsolę.
+Nie przedstawiamy tego wyniku jako benchmarku bez limitu ani pomiaru GPU.
+Wcześniejsza scena miała 16,78 ms przy limicie 60, z innym testem i kamerą.
+
+PASS: gracz bez modelu zastępczego, poprawna podłoga, osiem blokujących ścian,
+kamera poza kolizją i 2,01 m zwykłego chodzenia. Zapisano i obejrzano świeże
+obrazy gracza, chodzenia, ulicy i parku. Gałęzie drzew są widoczne po korekcie
+LOD; nie występują wcześniejsze artefakty pierwszego kadru Nanite.
+
+PASS: cztery natywne testy `WTG.District`, zapis/odzyskiwanie/pojazd,
+pełna misja z fizycznym przejazdem 460,04 m w 147,56 s oraz odczyt sesji
+w kolejnym procesie. 17 ogólnych błędów testów startowych samego silnika
+poprzedzało kolejkę; żaden nie pochodził z tych czterech testów projektu.
+Ich treść pozostała w lokalnym logu; archiwum zawiera wyłącznie wyniki projektu.
+
+Edytor ponownie otwarty przez użytkownika blokował główną DLL (LNK1104).
+Kompilacja i testy odbyły się w izolowanym projekcie z identycznymi 171 plikami
+C++ i tymi samymi zasobami przez junction Content/Data. Zmieniono jedynie
+ustawienie adaptive unity celu kompilacji kopii. Katalog zapisów był osobny;
+test używa świeżego profilu wyglądu postaci. Nie zmieniono zapisów użytkownika.
+Źródła, natywne zasoby, obrazy i raporty mają sumy kontrolne w
+`docs/qa/start-location-2026-10-12/`. Wszystkie testy faktycznie wykonano;
+surowe logi z identyfikatorami usług pozostają lokalnie w Saved.

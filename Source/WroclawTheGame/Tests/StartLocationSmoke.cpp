@@ -11,6 +11,7 @@
 #include "Engine/StaticMeshActor.h"
 #include "Engine/GameViewportClient.h"
 #include "Engine/World.h"
+#include "Engine/Engine.h"
 #include "EngineUtils.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
@@ -33,7 +34,9 @@ static FAutoConsoleCommandWithWorld GStartLocationSmoke(TEXT("WTG.StartLocationS
     FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda(
       [Weak=TWeakObjectPtr<UWorld>(World),Elapsed=0.f,ReadyAt=-1.f,Stage=0,WalkShot=false,
        OK=true,FloorOK=false,CameraOK=false,Walls=0,WalkDistance=0.f,
-       Initial=FVector::ZeroVector,Frames=TArray<float>(),Output](float Dt) mutable {
+       Initial=FVector::ZeroVector,Frames=TArray<float>(),LastFrameSeconds=FPlatformTime::Seconds(),Output](float Dt) mutable {
+        const double Now=FPlatformTime::Seconds();
+        const float WallFrameMs=float((Now-LastFrameSeconds)*1000);LastFrameSeconds=Now;
         auto* W=Weak.Get();if(!W)return false;Elapsed+=Dt;
         auto* PC=UGameplayStatics::GetPlayerController(W,0);
         auto* P=Cast<ASliceCharacter>(UGameplayStatics::GetPlayerPawn(W,0));
@@ -81,7 +84,7 @@ static FAutoConsoleCommandWithWorld GStartLocationSmoke(TEXT("WTG.StartLocationS
         }
         const float Since=ReadyAt>=0?Elapsed-ReadyAt:0;
         if(Stage==1 && P && R){
-            if(Since>.5f && Since<20){Frames.Add(Dt*1000);OK&=!W->IsPaused();}
+            if(Since>.5f && Since<20){Frames.Add(WallFrameMs);OK&=!W->IsPaused();}
             if(Since>1 && Since<3)P->AddMovementInput((R->MeetingPoint-R->PlayerStart).GetSafeNormal2D(),.4f,true);
             if(Since>4 && !WalkShot){
                 WalkDistance=FVector::Dist2D(Initial,P->GetActorLocation());
@@ -110,7 +113,11 @@ static FAutoConsoleCommandWithWorld GStartLocationSmoke(TEXT("WTG.StartLocationS
             Report->SetBoolField(TEXT("character_placeholder"),!P || !P->Appearance || P->Appearance->bUsingPlaceholder);
             const FIntPoint Size=W->GetGameViewport()->Viewport->GetSizeXY();
             Report->SetNumberField(TEXT("width"),Size.X);Report->SetNumberField(TEXT("height"),Size.Y);
-            Report->SetStringField(TEXT("measurement"),TEXT("actual game, 50s warmup, uncapped VSync-off wall-frame intervals; includes walk and one capture, not isolated GPU timing"));
+            for(const TCHAR* Name:{TEXT("r.VSync"),TEXT("t.MaxFPS")})
+                if(auto* Value=IConsoleManager::Get().FindConsoleVariable(Name))Report->SetNumberField(Name,Value->GetFloat());
+            Report->SetBoolField(TEXT("engine_smooth_framerate"),GEngine && GEngine->bSmoothFrameRate);
+            Report->SetBoolField(TEXT("engine_fixed_framerate"),GEngine && GEngine->bUseFixedFrameRate);
+            Report->SetStringField(TEXT("measurement"),TEXT("actual game, 50s warmup, monotonic wall-clock frame intervals; console requests VSync off/no cap, engine pacing recorded; includes walk and one capture, not isolated GPU timing"));
             FString Json;auto Writer=TJsonWriterFactory<>::Create(&Json);FJsonSerializer::Serialize(Report,Writer);
             if(!FFileHelper::SaveStringToFile(Json,*Output))OK=false;
             UE_LOG(LogTemp,Display,TEXT("WTG_START_GAME_DONE result=%s %s"),OK?TEXT("PASS"):TEXT("FAIL"),*Json);
