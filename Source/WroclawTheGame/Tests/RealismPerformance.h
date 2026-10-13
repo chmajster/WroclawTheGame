@@ -8,6 +8,7 @@
 #include "Scalability.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "LegacyScreenPercentageDriver.h"
 
 // Development-only real movement, public engine timing and on-screen warnings.
 // No save writes, teleports, shadow budget changes or hidden diagnostics.
@@ -76,6 +77,7 @@ static FAutoConsoleCommandWithWorld GRealismPerformance(TEXT("WTG.RealismPerform
    Report->SetNumberField(TEXT("texture_pool_bytes"),Textures.TexturePoolSize);
    Report->SetStringField(TEXT("memory_scope"),TEXT("Process working set; RHI texture allocation, not total GPU device memory."));
    Report->SetNumberField(TEXT("distance_cm"),Distance);Report->SetNumberField(TEXT("completed_segments"),TargetIndex);
+   Report->SetNumberField(TEXT("warmup_elapsed_s"),Started);
    Report->SetBoolField(TEXT("floor_valid"),FloorOK);Report->SetBoolField(TEXT("camera_clear"),CameraOK);
    Report->SetStringField(TEXT("route"),TEXT("Six physical 4m square laps, forward toward meeting, right perpendicular; 180cm/s; 60s asset warmup then 65s sample."));
    TArray<TSharedPtr<FJsonValue>> Coordinates;
@@ -92,9 +94,21 @@ static FAutoConsoleCommandWithWorld GRealismPerformance(TEXT("WTG.RealismPerform
      Report->SetNumberField(Pair.Key,Pair.Value);
    for(const TCHAR* Name:{TEXT("r.ScreenPercentage"),TEXT("sg.ResolutionQuality"),TEXT("r.DynamicRes.OperationMode"),
      TEXT("r.VSync"),TEXT("t.MaxFPS"),TEXT("r.Shadow.Virtual.Enable"),TEXT("r.Shadow.Virtual.AllowScreenOverflowMessages"),
-     TEXT("r.Shadow.Virtual.MaxPhysicalPages"),TEXT("r.Nanite"),TEXT("r.TemporalAA.Upsampling")})
+     TEXT("r.Shadow.Virtual.MaxPhysicalPages"),TEXT("r.Nanite"),TEXT("r.TemporalAA.Upsampling"),
+     TEXT("r.ScreenPercentage.Default"),TEXT("r.ScreenPercentage.Default.Desktop.Mode"),
+     TEXT("r.ScreenPercentage.MinResolution"),TEXT("r.ScreenPercentage.MaxResolution"),
+     TEXT("r.SecondaryScreenPercentage.GameViewport")})
      if(auto* V=IConsoleManager::Get().FindConsoleVariable(Name))Report->SetNumberField(Name,V->GetFloat());
    const auto Size=W->GetGameViewport()->Viewport->GetSizeXY();Report->SetNumberField(TEXT("width"),Size.X);Report->SetNumberField(TEXT("height"),Size.Y);
+   FStaticResolutionFractionHeuristic Heuristic;
+   Heuristic.Settings.PullRunTimeRenderingSettings(EViewStatusForScreenPercentage::Desktop);
+   Heuristic.TotalDisplayedPixelCount=Size.X*Size.Y;
+   Heuristic.DPIScale=W->GetGameViewport()->GetDPIScale();
+   // Match GameViewportClient's static driver with dynamic resolution off.
+   const auto* Secondary=IConsoleManager::Get().FindConsoleVariable(TEXT("r.SecondaryScreenPercentage.GameViewport"));
+   Heuristic.SecondaryViewFraction=Secondary && Secondary->GetFloat()>0 ? Secondary->GetFloat()/100.f : FMath::Min(1.f,1.f/Heuristic.DPIScale);
+   Report->SetNumberField(TEXT("resolved_static_primary_fraction"),Heuristic.ResolveResolutionFraction());
+   Report->SetNumberField(TEXT("secondary_fraction"),Heuristic.SecondaryViewFraction);
    TArray<TSharedPtr<FJsonValue>> Inventory;
    for(TActorIterator<AActor> It(W);It;++It){TArray<UStaticMeshComponent*> Components;It->GetComponents(Components);
      for(auto* C:Components){UStaticMesh* M=C->GetStaticMesh();if(!M || !C->IsRegistered())continue;

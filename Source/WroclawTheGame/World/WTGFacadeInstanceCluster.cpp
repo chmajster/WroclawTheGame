@@ -48,6 +48,7 @@ UHierarchicalInstancedStaticMeshComponent* AWTGFacadeInstanceCluster::FindOrCrea
     Component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     Component->SetCollisionProfileName(TEXT("NoCollision"));
     Component->SetCastShadow(true);
+    Component->SetCullDistances(18000,26000);
     AddInstanceComponent(Component);
     Component->RegisterComponent();
     FacadeComponents.Add(Component);
@@ -71,6 +72,10 @@ void AWTGFacadeInstanceCluster::BeginPlay()
     // Editor commandlet worlds have no query scene. Check support after the
     // game world's baked mesh physics has registered, including loaded maps.
     if(GetActorNameOrLabel().StartsWith(TEXT("District_Facades_"))){
+        // Also apply to previously baked sectors; keep close start-location
+        // and vegetation policies supplied by their production placement.
+        for(const auto& Component:FacadeComponents)
+            if(Component)Component->SetCullDistances(18000,26000);
         FTimerHandle Handle;GetWorldTimerManager().SetTimer(Handle,this,&AWTGFacadeInstanceCluster::ValidateWallSupport,2,false);
     }
 }
