@@ -19,7 +19,7 @@ try:
         mesh=unreal.load_asset(manifest['unreal']['destination']+'/SM_wtg_start_'+record['asset'].replace('-','_'))
         configure_mesh(mesh,manifest)
         sizes=list(editor.get_lod_screen_sizes(mesh))
-        category='building' if record['area']=='Buildings' else ('vegetation' if record['asset']=='young-tree' else 'prop')
+        category='building' if record['area']=='Buildings' else ('vegetation' if record['area']=='Vegetation' else 'prop')
         if any(abs(a-b)>1e-5 for a,b in zip(sizes,policy['lod_screen_sizes'][category])):raise RuntimeError('LOD thresholds not retained')
         records.append(dict(asset=record['asset'],lod_screen_sizes=sizes,nanite=bool(editor.get_nanite_settings(mesh).enabled),lod0_triangles=mesh.get_num_triangles(0)))
     levels=unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)

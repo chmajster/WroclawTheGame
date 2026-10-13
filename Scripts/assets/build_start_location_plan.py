@@ -38,6 +38,7 @@ def build():
     path_shapes=unary_union([LineString([p[:2] for p in f['points']]).buffer(f['width_m']*50+50) for f in paths])
     vehicle_paths=unary_union([LineString([p[:2] for p in district['delivery_route']]).buffer(100)]+
         [LineString([p[:2] for p in r['points']]).buffer(100) for r in district['population_routes'] if r['vehicle']])
+    tram_clearance=unary_union([LineString([p[:2] for p in f['points']]).buffer(180) for f in sector['features'] if f['kind']=='rail'])
     nodes=[]
     for node in ET.fromstring(xml).findall('node'):
         tags={t.attrib['k']:t.attrib['v'] for t in node.findall('tag')}
@@ -74,11 +75,21 @@ def build():
     def tangent(f,p):
         line=LineString([v[:2] for v in f['points']]);d=line.project(Point(p[:2]));a=line.interpolate(max(0,d-50));b=line.interpolate(min(line.length,d+50))
         return math.degrees(math.atan2(b.y-a.y,b.x-a.x))
+    def add_tree(p,source,radius=60):
+        point=Point(p[:2])
+        if paved.covers(point) or tram_clearance.covers(point) or buildings.buffer(80).covers(point):return
+        seed=int(hashlib.sha256(source.encode()).hexdigest()[:8],16)
+        green=greens.covers(point) and not path_shapes.covers(point)
+        role=['young-tree','young-maple','park-lime'][seed%3 if green else seed%2]
+        scale=.93+(seed%15)/100
+        pos=[p[0],p[1],ground(*p[:2])+(4 if green else 20)]
+        before=len(items);add(role,pos,seed%360,(scale,scale,scale),source,radius)
+        if len(items)>before and not green:add('tree-pit',[pos[0],pos[1],pos[2]+.2],source=source+':soil-pit')
     for node in nodes:
         tags=node['tags'];p=node['position_cm'];yaw=tangent(nearest_road(p),p)
         role={'bench':'seating','bicycle_parking':'bike-rack','waste_basket':'bin'}.get(tags.get('amenity'))
         if role:add(role,[p[0],p[1],p[2]+20],yaw,source=node['id'],radius={'seating':110,'bike-rack':60,'bin':40}[role])
-        if tags.get('natural')=='tree':add('young-tree',p,yaw,source=node['id'],radius=60)
+        if tags.get('natural')=='tree':add_tree(p,node['id'])
         marking=tags.get('crossing:markings',tags.get('footway:crossing:markings'))
         if marking=='zebra':
             road=nearest_road(p)
@@ -86,17 +97,17 @@ def build():
             # Zebra stripes run parallel to traffic, span the mapped road width.
             for i in range(max(2,int(road['width_m']))):
                 angle=math.radians(yaw+90);offset=(i-(int(road['width_m'])-1)/2)*100
-                add('paint',[p[0]+math.cos(angle)*offset,p[1]+math.sin(angle)*offset,p[2]+10],yaw,(3,.5,.015),node['id'])
+                add('paint',[p[0]+math.cos(angle)*offset,p[1]+math.sin(angle)*offset,p[2]+8.04],yaw,(3,.5,.0004),node['id'])
     # Supplement vegetation only inside mapped green land, clear of foot/cycle paths.
     for path in sorted(paths,key=lambda f:f['id']):
-        if counts['young-tree']>=18:break
+        if sum(counts[k] for k in ['young-tree','young-maple','park-lime'])>=18:break
         line=LineString([p[:2] for p in path['points']])
         for d in range(900,int(line.length),1800):
             q=line.interpolate(d);a=line.interpolate(max(0,d-50));b=line.interpolate(min(line.length,d+50));dx,dy=b.x-a.x,b.y-a.y;length=max(1,math.hypot(dx,dy))
             for side in (-1,1):
                 x,y=q.x-dy/length*350*side,q.y+dx/length*350*side;point=Point(x,y)
-                if region.covers(point) and greens.covers(point) and not path_shapes.covers(point) and counts['young-tree']<18:
-                    add('young-tree',[x,y,ground(x,y)+4],(d*.13)%360,source=path['id']+':green-strip-estimate',radius=120)
+                if region.covers(point) and greens.covers(point) and not path_shapes.covers(point) and sum(counts[k] for k in ['young-tree','young-maple','park-lime'])<18:
+                    add_tree([x,y,ground(x,y)],path['id']+f':green-strip-estimate:{d}:{side}',radius=120)
     for road in sorted(roads,key=lambda f:f['id']):
         line=LineString([p[:2] for p in road['points']])
         if road['tags'].get('lit')=='yes':

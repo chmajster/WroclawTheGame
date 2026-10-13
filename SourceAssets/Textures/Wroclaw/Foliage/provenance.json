@@ -1,0 +1,12 @@
+{
+  "author": "WroclawTheGame original procedural authorship",
+  "license": "Project-owned original texture; source and game redistribution permitted",
+  "resolution": 512,
+  "normal_convention": "DirectX",
+  "files": {
+    "bark_base_color.png": "011efc1040882fa0588fc9f63667a59b08bfc957fa67f0cab4ffa9b04d8c0848",
+    "bark_normal.png": "dfee076d4bcfa160d2a755833c256091e6687e99367a019a22b01c740f1913a4",
+    "leaf_base_color.png": "a3ba61e0367bd0b677ece01f78023109599d93930dbdce5b4813dbdba65c52bc",
+    "leaf_normal.png": "466b7b62c50791651aab3d03111b579e3cb33bd6af50415991a54f893228c5b8"
+  }
+}

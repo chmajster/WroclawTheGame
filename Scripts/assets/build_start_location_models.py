@@ -18,20 +18,21 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from architecture_geometry import roof_triangles, roof_height
 OUTPUT = ROOT/'SourceAssets/Models/Wroclaw/StartLocation'
-MATERIALS = ['Plaster', 'Stone', 'Frame', 'Glazing', 'Metal', 'Roof', 'Wood', 'Leaf', 'Rubber', 'Paint', 'Light']
+MATERIALS = ['Plaster', 'Stone', 'Frame', 'Glazing', 'Metal', 'Roof', 'Wood', 'Leaf', 'Rubber', 'Paint', 'Light', 'Bark', 'Soil']
 COLORS = [(.78,.73,.63,1), (.64,.60,.52,1), (.82,.80,.71,1), (.035,.07,.095,1),
           (.08,.085,.09,1), (.26,.10,.045,1), (.16,.085,.035,1), (.08,.22,.035,1),
-          (.025,.025,.025,1), (.12,.18,.23,1), (.75,.75,.6,1)]
+          (.025,.025,.025,1), (.12,.18,.23,1), (.75,.75,.6,1), (.16,.12,.08,1), (.08,.06,.035,1)]
 
 
 class Mesh:
-    def __init__(self): self.vertices, self.faces, self.slots = [], [], []
+    def __init__(self): self.vertices, self.faces, self.slots, self.face_uvs, self.smooth = [], [], [], [], []
 
-    def face(self, points, slot):
+    def face(self, points, slot, uvs=None, smooth=False):
         start = len(self.vertices)
         self.vertices.extend(points)
         self.faces.append(tuple(range(start, start+len(points))))
         self.slots.append(slot)
+        self.face_uvs.append(uvs);self.smooth.append(smooth)
 
     def box(self, center, size, slot=0, axes=None):
         if any(v<=0 for v in size):raise ValueError('Nonpositive architectural/prop box size '+str(size))
@@ -61,11 +62,18 @@ class Mesh:
             uv = mesh.uv_layers.new(name='UV_Physical2m')
             for poly,slot in zip(mesh.polygons,self.slots):
                 poly.material_index = slot
+                poly.use_smooth=self.smooth[poly.index]
                 normal = poly.normal; axis = max(range(3),key=lambda i:abs(normal[i]))
                 projection = ((1,2),(0,2),(0,1))[axis]
-                for loop in poly.loop_indices:
+                for corner,loop in enumerate(poly.loop_indices):
                     p = mesh.vertices[mesh.loops[loop].vertex_index].co
-                    uv.data[loop].uv = (p[projection[0]]/2,p[projection[1]]/2)
+                    uv.data[loop].uv = self.face_uvs[poly.index][corner] if self.face_uvs[poly.index] else (p[projection[0]]/2,p[projection[1]]/2)
+            # Connect bark rings for continuous normals; leaf vertices stay
+            # independent, with their own atlas islands and flat leaf normals.
+            if any(self.smooth):
+                bpy.context.view_layer.objects.active=obj;obj.select_set(True)
+                bpy.ops.object.mode_set(mode='EDIT');bpy.ops.mesh.select_all(action='SELECT')
+                bpy.ops.mesh.remove_doubles(threshold=.00001);bpy.ops.object.mode_set(mode='OBJECT')
         return obj
 
 
@@ -243,26 +251,96 @@ def rack():
     return m,[]
 
 
-def tree():
-    rng=random.Random(45047);m=Mesh()
-    m.rod((0,0,0),(.08,.04,3.1),.095,6,16)
-    for i in range(15):
-        angle=i*2.399;start=Vector((.06,.03,2+i*.16));end=Vector((math.cos(angle)*1.35,math.sin(angle)*1.35,3.5+i*.10))
-        m.rod(start,end,.032,6,10)
-        for j in range(4):
-            q=start.lerp(end,.35+j*.2);e=q+Vector((rng.uniform(-.5,.5),rng.uniform(-.5,.5),.65))
-            m.rod(q,e,.014,6,8)
-            for k in range(15):
-                center=q.lerp(e,rng.random())+Vector((rng.uniform(-.28,.28),rng.uniform(-.28,.28),rng.uniform(-.1,.18)))
-                u=Vector((math.cos(angle+k),math.sin(angle+k),rng.uniform(-.3,.3)))*rng.uniform(.08,.14)
-                v=Vector((-u.y,u.x,.04))*.5
-                for side in (-1,1):
-                    m.face([center-u,center-v*side,center+u,center+v*side],7)
-    for x,y in [(-.28,0),(.28,0)]:
-        m.rod((x,y,0),(x,y,1.4),.032,6,10)
-        m.rod((x,y,1.1),(.06,0,1.1),.014,4,8)
-    trunk=Mesh();trunk.box((.04,.02,1.55),(.24,.24,3.1),6)
-    return m,[trunk]
+def tree(variant=0):
+    rng=random.Random(45047+variant*173);m=Mesh()
+    height=[5.4,5.9,7.2][variant];spread=[1.7,1.9,2.5][variant]
+    def branch(points,radii,sides=10):
+        rings=[]
+        for i,(p,r) in enumerate(zip(points,radii)):
+            d=(Vector(points[min(i+1,len(points)-1)])-Vector(points[max(0,i-1)])).normalized()
+            u=d.cross(Vector((0,1,0))).normalized();v=d.cross(u)
+            rings.append([Vector(p)+r*(u*math.cos(k*math.tau/sides)+v*math.sin(k*math.tau/sides)) for k in range(sides)])
+        for a,b in zip(rings,rings[1:]):
+            for k in range(sides):m.face([a[k],a[(k+1)%sides],b[(k+1)%sides],b[k]],11,smooth=True)
+        m.face(list(reversed(rings[0])),11);m.face(rings[-1],11)
+    trunk=[(0,0,-.06),(.04,-.03,.35),(.08,.02,1.8),(.02,.08,height*.58),(.12,.04,height*.88)]
+    branch(trunk,[.17,.135,.105,.068,.014],16)
+    for i in range(5):
+        a=i*math.tau/5+.3
+        branch([(0,0,.16),(.3*math.cos(a),.3*math.sin(a),.03),(.48*math.cos(a),.48*math.sin(a),-.015)],[.045,.028,.006],8)
+    # Each branch supports an irregular ellipsoidal lobe of individual leaves.
+    lobes=[]
+    for i in range(18):
+        a=i*2.399+rng.uniform(-.18,.18);level=i/17
+        start=Vector((.06,.03,height*(.34+level*.38)))
+        reach=spread*(.74+.26*math.sin(level*math.pi))
+        end=Vector((math.cos(a)*reach,math.sin(a)*reach,height*(.60+level*.30)))
+        mid=start.lerp(end,.52)+Vector((0,0,.18))
+        branch([start,mid,end],[.055*(1-level*.45),.029,.006],10)
+        for j in range(3):
+            q=start.lerp(end,.46+j*.23)
+            tip=q+Vector((math.cos(a+.6*(j-1))*.5,math.sin(a+.6*(j-1))*.5,.42))
+            branch([q,tip],[.017,.003],7)
+        lobes.append(end*.83+start*.17)
+    count=[6000,6000,6800][variant]
+    for i in range(count):
+        c=lobes[i%len(lobes)];az=rng.random()*math.tau;z=rng.uniform(-1,1);r=rng.random()**(1/3)
+        center=c+Vector((math.cos(az)*math.sqrt(1-z*z)*r*.95,math.sin(az)*math.sqrt(1-z*z)*r*.95,z*r*.95))
+        angle=rng.random()*math.tau;tilt=rng.uniform(-.8,.8)
+        u=Vector((math.cos(angle),math.sin(angle),tilt)).normalized()*rng.uniform(.07,.12)
+        v=Vector((-math.sin(angle),math.cos(angle),rng.uniform(-.5,.5))).normalized()*u.length*.65
+        # One leaf card, never duplicate a coincident backface. Shader is two-sided.
+        cell=rng.randrange(2)+(2 if variant==1 else 0);x=(cell%2)*.5;y=(cell//2)*.5
+        uv=[(x+.008,y+.008),(x+.492,y+.008),(x+.492,y+.492),(x+.008,y+.492)]
+        m.face([center-u-v,center+u-v,center+u+v,center-u+v],7,uvs=uv)
+    collision=Mesh();collision.box((.04,.01,1.55),(.29,.29,3.22),11)
+    return m,[collision]
+
+
+def tree_pit():
+    m=Mesh();sides=32
+    # Soil sits 2 mm above the selected ground; lip projects only 12 mm.
+    for i in range(sides):
+        a=i*math.tau/sides;b=(i+1)*math.tau/sides
+        m.face([(0,0,0),(.72*math.cos(a),.72*math.sin(a),0),(.72*math.cos(b),.72*math.sin(b),0)],12)
+        m.face([(.72*math.cos(a),.72*math.sin(a),-.012),(.75*math.cos(a),.75*math.sin(a),-.012),(.75*math.cos(b),.75*math.sin(b),-.012),(.72*math.cos(b),.72*math.sin(b),-.012)],12)
+    return m,[]
+
+
+def lamp():
+    m=Mesh();m.rod((0,0,.04),(0,0,5.5),.055,4,20)
+    # Functional modern street fixture, estimated placement on mapped lit roads.
+    pts=[(0,0,5.5),(.12,0,5.75),(.42,0,5.88),(1.0,0,5.88)]
+    for a,b in zip(pts,pts[1:]):m.rod(a,b,.039,4,16)
+    m.box((1.06,0,5.86),(.55,.24,.075),4);m.box((1.06,0,5.813),(.45,.19,.015),10)
+    m.box((0,0,.025),(.24,.24,.05),4)
+    for x in (-.085,.085):
+        for y in (-.085,.085):m.rod((x,y,.05),(x,y,.075),.014,4,6)
+    c=Mesh();c.box((0,0,2.8),(.15,.15,5.65),4)
+    return m,[c]
+
+
+def street_bin():
+    # The legacy import map selects handle_left as its primary object. Assemble
+    # the real body, lid and both handles instead of height-scaling that handle.
+    source=ROOT/'SourceAssets/Models/PolyHaven/metal_trash_can/metal_trash_can_1k.fbx'
+    bpy.ops.import_scene.fbx(filepath=str(source))
+    names={'metal_trash_can','metal_trash_can_lid','metal_trash_can_handle_left','metal_trash_can_handle_right'}
+    objects=[o for o in bpy.data.objects if o.type=='MESH' and o.name in names]
+    if {o.name for o in objects}!=names:raise RuntimeError('Incomplete licensed bin assembly')
+    points=[o.matrix_world@v.co for o in objects for v in o.data.vertices]
+    lo=Vector(tuple(min(v[i] for v in points) for i in range(3)));hi=Vector(tuple(max(v[i] for v in points) for i in range(3)))
+    offset=Vector(((lo.x+hi.x)/2,(lo.y+hi.y)/2,lo.z));factor=.85/(hi.z-lo.z)
+    mesh=Mesh()
+    for o in objects:
+        uv=o.data.uv_layers.active
+        for f in o.data.polygons:
+            mesh.face([(o.matrix_world@o.data.vertices[i].co-offset)*factor for i in f.vertices],4,
+                      [tuple(uv.data[i].uv) for i in f.loop_indices],f.use_smooth)
+    for o in list(bpy.data.objects):
+        if o.type=='MESH':bpy.data.objects.remove(o,do_unlink=True)
+    collision=Mesh();collision.box((0,0,.425),((hi.x-lo.x)*factor,(hi.y-lo.y)*factor,.85),4)
+    return mesh,[collision]
 
 
 def car():
@@ -332,9 +410,15 @@ def main():
             'roof':'flat' if config['tags'].get('roof:shape')=='flat' else 'interpreted hipped roof',
             'context':bool(config.get('context')),'footprint':'unaltered source rings; mouldings project beyond wall'}
         updated.append(record)
-    for name,func,area in [('curb',curb,'Roads'),('drain',drain,'Roads'),('bike-rack',rack,'Props'),('young-tree',tree,'Vegetation'),('parked-car',car,'Props')]:
+    for name,func,area in [('curb',curb,'Roads'),('drain',drain,'Roads'),('bike-rack',rack,'Props'),('young-tree',tree,'Vegetation'),('young-maple',lambda:tree(1),'Vegetation'),('park-lime',lambda:tree(2),'Vegetation'),('tree-pit',tree_pit,'Props'),('modern-lamp',lamp,'Props'),('street-bin',street_bin,'Props'),('parked-car',car,'Props')]:
         if options.buildings_only or (options.asset and options.asset!=name):continue
-        reset();mesh,collision=func();updated.append(save(name,mesh,collision,area))
+        reset();mesh,collision=func();record=save(name,mesh,collision,area)
+        if name=='street-bin':
+            record['provenance']={'author':'GurJas Studios','license':'CC0-1.0','url':'https://polyhaven.com/a/metal_trash_can',
+                'license_url':'https://polyhaven.com/license','game_use':True,'public_source_redistribution':True,
+                'source':'SourceAssets/Models/PolyHaven/metal_trash_can/metal_trash_can_1k.fbx',
+                'parts':['metal_trash_can','metal_trash_can_lid','metal_trash_can_handle_left','metal_trash_can_handle_right']}
+        updated.append(record)
     if not updated:raise ValueError('Unknown production asset '+str(options.asset))
     if options.asset or options.buildings_only:
         by_name={r['asset']:r for r in updated}

@@ -292,16 +292,15 @@
       "author": "WroclawTheGame original procedural geometry",
       "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
       "generator": "Scripts/assets/build_start_location_models.py",
-      "triangles_lod0": 6008,
+      "triangles_lod0": 14680,
       "bounds_m": [
-        3.558016538619995,
-        3.4281675815582275,
-        5.5724382400512695
+        4.72196626663208,
+        4.542019844055176,
+        5.726846218109131
       ],
       "source_material_slots": [
-        "Metal",
-        "Wood",
-        "Leaf"
+        "Leaf",
+        "Bark"
       ]
     },
     {
@@ -391,7 +390,7 @@
       "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101348438-0.glb",
       "manifest": "Pipeline/assets/start_location/context-way-101348438-0.asset.json",
       "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101348438_0",
-      "native_file_present": false,
+      "native_file_present": true,
       "author": "WroclawTheGame original procedural geometry",
       "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
       "generator": "Scripts/assets/build_start_location_models.py",
@@ -976,6 +975,114 @@
         "Metal",
         "Roof",
         "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-young-maple",
+      "category": "Vegetation",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Vegetation/young-maple.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Vegetation/young-maple.glb",
+      "manifest": "Pipeline/assets/start_location/young-maple.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Vegetation/SM_wtg_start_young_maple",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 14680,
+      "bounds_m": [
+        4.747821807861328,
+        4.938991546630859,
+        6.17503023147583
+      ],
+      "source_material_slots": [
+        "Leaf",
+        "Bark"
+      ]
+    },
+    {
+      "id": "wtg-start-park-lime",
+      "category": "Vegetation",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Vegetation/park-lime.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Vegetation/park-lime.glb",
+      "manifest": "Pipeline/assets/start_location/park-lime.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Vegetation/SM_wtg_start_park_lime",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 16280,
+      "bounds_m": [
+        6.006597518920898,
+        5.828546047210693,
+        7.2537336349487305
+      ],
+      "source_material_slots": [
+        "Leaf",
+        "Bark"
+      ]
+    },
+    {
+      "id": "wtg-start-tree-pit",
+      "category": "Props",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Props/tree-pit.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Props/tree-pit.glb",
+      "manifest": "Pipeline/assets/start_location/tree-pit.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Props/SM_wtg_start_tree_pit",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 96,
+      "bounds_m": [
+        1.5,
+        1.5,
+        0.012000000104308128
+      ],
+      "source_material_slots": [
+        "Soil"
+      ]
+    },
+    {
+      "id": "wtg-start-modern-lamp",
+      "category": "Props",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Props/modern-lamp.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Props/modern-lamp.glb",
+      "manifest": "Pipeline/assets/start_location/modern-lamp.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Props/SM_wtg_start_modern_lamp",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 372,
+      "bounds_m": [
+        1.4549999237060547,
+        0.23999999463558197,
+        5.919000148773193
+      ],
+      "source_material_slots": [
+        "Metal",
+        "Light"
+      ]
+    },
+    {
+      "id": "wtg-start-street-bin",
+      "category": "Props",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Props/street-bin.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Props/street-bin.glb",
+      "manifest": "Pipeline/assets/start_location/street-bin.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Props/SM_wtg_start_street_bin",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "CC0-1.0; GurJas Studios; https://polyhaven.com/a/metal_trash_can",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 6428,
+      "bounds_m": [
+        0.7297917604446411,
+        0.5218132734298706,
+        0.8499999642372131
+      ],
+      "source_material_slots": [
+        "Metal"
       ]
     }
   ],
