@@ -46,7 +46,9 @@ def prepare():
         edit.update_material_instance(instance)
         unreal.EditorAssetLibrary.save_loaded_asset(instance,False);component.set_material(0,instance)
     role_mesh={r['asset']:unreal.load_asset(DEST+'/'+r['area']+'/SM_wtg_start_'+r['asset'].replace('-','_')) for r in metadata['assets'] if r['area']!='Buildings'}
-    for role,slug in [('lamp','street_lamp_01'),('seating','modular_street_seating'),('bin','metal_trash_can')]:role_mesh[role]=unreal.load_asset(imported[slug]['primary_object'])
+    for role,slug in [('lamp','street_lamp_01'),('bin','metal_trash_can')]:role_mesh[role]=unreal.load_asset(imported[slug]['primary_object'])
+    role_mesh['seating']=unreal.load_asset(DEST+'/Props/SM_wtg_start_street_bench')
+    role_mesh['embedded-tram-rail']=unreal.load_asset(DEST+'/Roads/SM_wtg_start_embedded_tram_rail')
     role_mesh['paint']=unreal.load_asset('/Engine/BasicShapes/Cube')
     clusters={}
     for item in plan['items']:
@@ -54,7 +56,8 @@ def prepare():
         if not isinstance(mesh,unreal.StaticMesh):raise RuntimeError('Missing '+role)
         p=list(item['position_cm']);yaw=item['yaw_deg'];scale=list(item['scale']);bounds=mesh.get_bounds()
         if role in ['lamp','seating','bin']:
-            target={'lamp':750,'seating':80,'bin':85}[role];s=target/max(1,bounds.box_extent.z*2);scale=[s,s,s]
+            target={'lamp':750,'seating':86.6914,'bin':85}[role];s=target/max(1,bounds.box_extent.z*2);scale=[s,s,s]
+            if role=='seating' and (s>1.1 or max(bounds.box_extent.x,bounds.box_extent.y)*2>250):raise RuntimeError('Bench is not the complete metric assembly')
             # Centre imported models on their mapped locations and put the base on ground.
             c,ss=math.cos(math.radians(yaw)),math.sin(math.radians(yaw))
             p[0]-=(bounds.origin.x*c-bounds.origin.y*ss)*s;p[1]-=(bounds.origin.x*ss+bounds.origin.y*c)*s
@@ -63,7 +66,7 @@ def prepare():
         if key not in clusters:
             cluster=actors.spawn_actor_from_class(unreal.WTGFacadeInstanceCluster,unreal.Vector(key[0]*12800,key[1]*12800,0))
             cluster.set_actor_label('StartLocation_Instances_'+'_'.join(map(str,key)));clusters[key]=cluster
-        transform=unreal.Transform(location=unreal.Vector(*p),rotation=unreal.Rotator(pitch=0,yaw=yaw,roll=0),scale=unreal.Vector(*scale))
+        transform=unreal.Transform(location=unreal.Vector(*p),rotation=unreal.Rotator(pitch=item.get('pitch_deg',0),yaw=yaw,roll=0),scale=unreal.Vector(*scale))
         if clusters[key].add_facade_instance(mesh,transform)<0:raise RuntimeError('Cannot instance '+role)
     for key,cluster in clusters.items():
         for component in cluster.get_components_by_class(unreal.HierarchicalInstancedStaticMeshComponent):

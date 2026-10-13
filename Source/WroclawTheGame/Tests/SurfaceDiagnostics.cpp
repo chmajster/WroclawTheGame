@@ -36,11 +36,11 @@ static FAutoConsoleCommandWithWorld GSurfaceDiagnostics(TEXT("WTG.SurfaceDiagnos
                     auto Item=MakeShared<FJsonObject>();Item->SetStringField(TEXT("actor"),It->GetActorNameOrLabel());Item->SetStringField(TEXT("class"),Component->GetClass()->GetName());
                     Item->SetStringField(TEXT("component"),Component->GetName());Item->SetStringField(TEXT("asset"),Asset);Item->SetNumberField(TEXT("instance"),Instance);
                     Item->SetStringField(TEXT("bounds"),Bounds.ToString());Item->SetStringField(TEXT("transform"),Transform.ToString());Item->SetNumberField(TEXT("collision"),int(Component->GetCollisionEnabled()));
-                    FVector2D Screen;PC->ProjectWorldLocationToScreen(Bounds.Origin,Screen);Item->SetNumberField(TEXT("screen_x"),Screen.X);Item->SetNumberField(TEXT("screen_y"),Screen.Y);
+                    FVector2D Screen=FVector2D::ZeroVector;const bool Projected=PC->ProjectWorldLocationToScreen(Bounds.Origin,Screen);Item->SetBoolField(TEXT("projected"),Projected);Item->SetNumberField(TEXT("screen_x"),Screen.X);Item->SetNumberField(TEXT("screen_y"),Screen.Y);
                     Objects.Add(MakeShared<FJsonValueObject>(Item));
                 };
                 if(auto* Instances=Cast<UInstancedStaticMeshComponent>(Component)){
-                    if(auto* Mesh=Instances->GetStaticMesh())for(int32 I=0;I<Instances->GetInstanceCount();++I){FTransform Transform;Instances->GetInstanceTransform(I,Transform,true);Add(Mesh->GetBounds().TransformBy(Transform),Mesh->GetPathName(),I,Transform);}
+                    if(UStaticMesh* Mesh=Instances->GetStaticMesh())for(int32 I=0;I<Instances->GetInstanceCount();++I){FTransform Transform;Instances->GetInstanceTransform(I,Transform,true);Add(Mesh->GetBounds().TransformBy(Transform),Mesh->GetPathName(),I,Transform);}
                 }else if(auto* Static=Cast<UStaticMeshComponent>(Component))Add(Component->Bounds,GetPathNameSafe(Static->GetStaticMesh()),INDEX_NONE,Component->GetComponentTransform());
                 else if(auto* Skel=Cast<USkeletalMeshComponent>(Component))Add(Component->Bounds,GetPathNameSafe(Skel->GetSkeletalMeshAsset()),INDEX_NONE,Component->GetComponentTransform());
                 else Add(Component->Bounds,Component->GetClass()->GetPathName(),INDEX_NONE,Component->GetComponentTransform());

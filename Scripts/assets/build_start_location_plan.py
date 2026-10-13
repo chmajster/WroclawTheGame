@@ -102,16 +102,32 @@ def build():
                 c,s=math.cos(math.radians(yaw)),math.sin(math.radians(yaw))
                 footprint=Polygon([(x+u*c-v*s,y+u*s+v*c) for u,v in [(-225,-105),(225,-105),(225,105),(-225,105)]])
                 if region.covers(Point(x,y)) and not footprint.intersects(vehicle_paths) and not any(Point(x,y).distance(cross)<800 for cross in crossings):add('parked-car',[x,y,ground(x,y)+8],yaw,source=road['id']+':curbside-parking-estimate',radius=250)
-    # Real steel rail heads follow existing OSM rail centrelines, 1435 mm gauge.
+    # The production profile has a real head/web/flange. Gauge is measured
+    # between inner rail-head faces, not between the two profile centres.
     strips=[]
     for f in sector['features']:
         if f['kind']!='rail':continue
-        for a,b in zip(f['points'],f['points'][1:]):
+        line=LineString([p[:2] for p in f['points']]).intersection(region)
+        lines=list(getattr(line,'geoms',[line]))
+        for segment in lines:
+          if segment.geom_type!='LineString':continue
+          for a,b in zip(segment.coords,list(segment.coords)[1:]):
             dx,dy=b[0]-a[0],b[1]-a[1];length=math.hypot(dx,dy)
-            if length<1 or not LineString([a[:2],b[:2]]).intersects(region):continue
+            if length<1:continue
+            try:gauge=float(f['tags'].get('gauge','1435').split(';')[0])/10
+            except ValueError:gauge=143.5
+            steps=math.ceil(length/200)
             for side in (-1,1):
-                offset=71.75*side
-                strips.append([[a[0]-dy/length*(offset+w),a[1]+dx/length*(offset+w),a[2]+12] if j<2 else [b[0]-dy/length*(offset+w),b[1]+dx/length*(offset+w),b[2]+12] for j,w in enumerate([-1.7,1.7,1.7,-1.7])])
+                offset=(gauge+6.8)*.5*side
+                for step in range(steps):
+                    t=(step+.5)/steps;x=a[0]+dx*t-dy/length*offset;y=a[1]+dy*t+dx/length*offset
+                    ax=a[0]+dx*step/steps-dy/length*offset;ay=a[1]+dy*step/steps+dx/length*offset
+                    bx=ax+dx/steps;by=ay+dy/steps;za=ground(ax,ay);zb=ground(bx,by)
+                    # 18 cm profile is embedded below paving; head is 3 mm proud.
+                    items.append(dict(role='embedded-tram-rail',position_cm=[x,y,(za+zb)*.5+8.3-18],
+                        yaw_deg=math.degrees(math.atan2(dy,dx)),pitch_deg=math.degrees(math.atan2(zb-za,length/steps)),
+                        scale=[math.hypot(length/steps,zb-za)/100,1,1],source=f['id'],gauge_cm=gauge))
+                    counts['embedded-tram-rail']+=1
     # Continuous panel order: a-left, a-right, b-right, b-left.
     output=dict(schema_version=1,map=policy['map'],items=items,counts=dict(counts),rail_strips=strips,
         source_nodes=nodes,source_files={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in [policy_path,district_path,sector_path,ROOT/'Data/start_location_buildings.json']},

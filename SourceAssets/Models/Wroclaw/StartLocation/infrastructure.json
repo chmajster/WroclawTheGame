@@ -1,0 +1,45 @@
+{
+  "assets": [
+    {
+      "asset": "street-bench",
+      "source": "SourceAssets/Models/PolyHaven/modular_street_seating/modular_street_seating_1k.fbx",
+      "sha256": "93261a79163465f962ee213f58fa390cbaeaa4d655e8e4f4a79898dd0be25774",
+      "author": "Stuart Attenborrow",
+      "license": "CC0-1.0",
+      "url": "https://polyhaven.com/a/modular_street_seating",
+      "game_use": true,
+      "public_source_redistribution": true,
+      "parts": [
+        "arm_rest_01",
+        "arm_rest_02",
+        "back_support_l",
+        "back_support_r",
+        "crossbar",
+        "legs_double",
+        "legs_single",
+        "seat",
+        "seat_back",
+        "suspended_support_01"
+      ],
+      "triangles": 12500,
+      "use": "Complete assembled bench, not a height-scaled crossbar",
+      "generator": "Scripts/assets/build_street_infrastructure.py"
+    },
+    {
+      "asset": "embedded-tram-rail",
+      "author": "WroclawTheGame contributors",
+      "license": "CC0-1.0",
+      "source": "Original rail cross-section, not a surveyed infrastructure replica",
+      "game_use": true,
+      "public_source_redistribution": true,
+      "dimensions_m": [
+        1,
+        0.14,
+        0.18
+      ],
+      "rail_head_width_cm": 6.8,
+      "web_height_cm": 18,
+      "generator": "Scripts/assets/build_street_infrastructure.py"
+    }
+  ]
+}

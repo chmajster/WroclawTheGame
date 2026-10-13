@@ -5,17 +5,38 @@ Punkty 1–3 scalone (#165–167). Dodano WTG.SurfaceDiagnostics: rzeczywista
 inwentaryzacja komponentów i instancji w promieniu 150 m, bounds/transformy,
 rzuty na ekran i trafienia promieni w kamerze StartLocation_Start_Street.
 Diagnostyka nie zmienia mapy, infrastruktury ani elementów misji.
+Ustalono przyczynę „rury”: StartLocation_Instances_*_seating używał
+Poly Haven modular_street_seating/crossbar zamiast kompletnej ławki. Wysokość
+poprzeczki 4 cm powodowała scale=20 i obiekty o długości około 37 m.
+Złożono prawdziwą ławkę z dziesięciu licencjonowanych części (Stuart Attenborrow,
+CC0, użycie w grze i publiczna redystrybucja potwierdzone na polyhaven.com/license).
+Ławka ma 2,067 × 0,670 × 0,867 m i zachowuje mapped nodes oraz funkcję wyposażenia.
+
+Dodano autorski profil szyny 18 cm z główką 6,8 cm, środnikiem i stopką.
+Dwa nowe źródła Blender, manifesty i natywne .uasset przeszły istniejący pipeline:
+3 LOD, trzy materiały i dwie kolizje ławki; szyna bez kolizji, 52 trójkąty.
+Placement używa pełnej ławki oraz odcinków szyny 2 m zgodnych z OSM,
+rozstawem między wewnętrznymi krawędziami i lokalnym DEM (główka 3 mm nad brukiem).
+
+Nowy surface_mesh.py daje priorytet nawierzchniom i oddziela je od zieleni/terenu;
+eliminuje koplanarne road/rail/footway. Zielone poligony próbkują DEM zamiast
+max wysokości obwodu. Chodniki/jezdnie mają tessellację constrained Delaunay
+z zachowaniem otworów i poprzecznego spadku. Trójkąty są dokładnie przycinane
+do 128 m sektorów z interpolacją Z (także pionowe ściany), zamiast centroidów.
+Regeneracja źródeł: 441 komórek, 211419 trójkątów poniżej budżetu 250000.
+Osiem istniejących testów dzielnicy PASS; dodatkowe kontrakty geometrii w toku.
 
 ## Do zrobienia
-Zidentyfikować poziomy obiekt, poprawić generator ciągłego podłoża/chodników,
-nakładanie powierzchni, osadzenie torów i krawężników oraz granice sektorów.
-Wygenerować/importować rzeczywistą mapę, sprawdzić geometrię i zrzuty.
+Uruchomić dodatkowe kontrakty, przebudować rzeczywistą mapę i ponownie zastosować
+presentation / city details / start placement / quality. Sprawdzić zrzuty,
+kolizję i powtórzenie generowania; naprawić ewentualne konkretne problemy.
 
 ## Następny krok
-Zbudować Tests/SurfaceDiagnostics.cpp. Uruchomić WTG.SurfaceDiagnostics na
-Nadodrze_Playable, odczytać Saved/Realism/surface-runtime.json. Na podstawie
-trafionego komponentu poprawić właściwe źródło. Następnie przebudować
-Scripts/gis/build_meshes.py i build_playable_district.py.
+Uruchomić Tests.test_surface_mesh w GISPython. Sprawdzić import-infrastructure.log
+(WTG_BATCH_IMPORT_PASS 2) i nowy plan. Uruchomić Scripts/prepare_playable_district.py,
+prepare_district_presentation.py, assets/place_city_details.py,
+assets/place_start_location.py i prepare_start_location_quality.py. Potem
+WTG.RealismDiagnostics i WTG.StartLocationSmoke na Nadodrze_Playable.
 
 ## Stan
 W toku, draft. Bez CI; bez zmian w pierwotnym worktree i PR #164.

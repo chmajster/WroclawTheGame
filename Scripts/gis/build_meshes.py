@@ -7,18 +7,16 @@ from shapely.geometry import Polygon, box
 from shapely.ops import triangulate
 from shapely.geometry.polygon import orient
 from import_sector import build, parts, OUTPUT, ROOT
+from surface_mesh import emit_triangle, emit_surface, surface_shapes, elevation_sampler
 
 def generate(destination, data=None, geo=None, exclude_feature_ids=None):
     if data is None or geo is None: data,geo=build()
     excluded=set(exclude_feature_ids or ())
     cells={};size=12800
+    shapes=surface_shapes(data);elevation=elevation_sampler(geo)
     material=None
     def triangle(kind,points):
-        center=[sum(p[i] for p in points)/3 for i in range(3)]
-        key=(kind,math.floor(center[0]/size),math.floor(center[1]/size),material)
-        record=cells.setdefault(key,{'kind':kind,'material':material,'origin':[key[1]*size,key[2]*size,0],'vertices':[],'triangles':[]})
-        index=len(record['vertices']);record['vertices'] += [[round(p[i]-record['origin'][i],3) for i in range(3)] for p in points]
-        record['triangles'] += [index,index+1,index+2]
+        emit_triangle(cells,kind,material,points)
     def face(kind,ring):
         if kind in ('road','rail'):ring=list(reversed(ring))
         triangle(kind,[ring[0],ring[1],ring[2]]);triangle(kind,[ring[0],ring[2],ring[3]])
@@ -26,7 +24,7 @@ def generate(destination, data=None, geo=None, exclude_feature_ids=None):
         if feature.get('id') in excluded:continue
         kind=feature['kind']
         material=feature.get('material')
-        if kind in ('building','green','water'):
+        if kind in ('building','water'):
             rings=feature['rings']; polygon=Polygon([p[:2] for p in rings[0]],[[p[:2] for p in r] for r in rings[1:]])
             # Source OSM rings may have either winding. Walls need one
             # outward mathematical normal before UE converts front winding.
@@ -40,14 +38,10 @@ def generate(destination, data=None, geo=None, exclude_feature_ids=None):
             if kind=='building':
                 for ring in rings:
                     for a,b in zip(ring,ring[1:]):face(kind,[[a[0],a[1],min(a[2],base)-50],[b[0],b[1],min(b[2],base)-50],[b[0],b[1],base+height],[a[0],a[1],base+height]])
-        elif kind in ('road','rail'):
-            if not feature.get('surface_built',False) and (feature['tags'].get('bridge','no')!='no' or feature['tags'].get('tunnel','no')!='no'):continue
-            half=feature.get('width_m',1.4)*50
-            for a,b in zip(feature['points'],feature['points'][1:]):
-                dx=b[0]-a[0];dy=b[1]-a[1];length=math.hypot(dx,dy)
-                if length<1:continue
-                ox=-dy/length*half;oy=dx/length*half
-                face(kind,[[a[0]+ox,a[1]+oy,a[2]+8],[b[0]+ox,b[1]+oy,b[2]+8],[b[0]-ox,b[1]-oy,b[2]+8],[a[0]-ox,a[1]-oy,a[2]+8]])
+    emit_surface(cells,shapes['green'],'green',None,lambda x,y:elevation(x,y)+4)
+    emit_surface(cells,shapes['rail'],'rail',None,lambda x,y:elevation(x,y)+8)
+    for road_material,shape in shapes['roads'].items():
+        emit_surface(cells,shape,'road',road_material,lambda x,y:elevation(x,y)+(20 if road_material=='Concrete' else 8))
     # Terrain samples are interpolation of the source raster, never invented hills.
     west,south,east,north=data['bbox']
     material=None
@@ -56,7 +50,9 @@ def generate(destination, data=None, geo=None, exclude_feature_ids=None):
     columns=max(128,math.ceil(width/1200));rows=max(128,math.ceil(height/1200))
     for y in range(rows):
         for x in range(columns):
-            face('terrain',[geo.world(west+(east-west)*u/columns,north-(north-south)*v/rows) for u,v in ((x,y),(x+1,y),(x+1,y+1),(x,y+1))])
+            ring=[geo.world(west+(east-west)*u/columns,north-(north-south)*v/rows) for u,v in ((x,y),(x+1,y),(x+1,y+1),(x,y+1))]
+            tile=Polygon([p[:2] for p in ring]).difference(shapes['ground_covered'])
+            emit_surface(cells,tile,'terrain',None,elevation)
     destination.mkdir(parents=True,exist_ok=True)
     meshes=[]
     for (kind,x,y,material),record in sorted(cells.items(),key=lambda item: str(item[0])):

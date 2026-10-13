@@ -48,6 +48,8 @@ def prepare():
     # Their real bounds define metre dimensions rather than guessed unit scales.
     meshes={name:unreal.load_asset(imports[name]['primary_object']) for name in
             ('street_lamp_01','modular_street_seating','metal_trash_can')}
+    meshes['modular_street_seating']=unreal.load_asset('/Game/Wroclaw/StartLocation/Props/SM_wtg_start_street_bench')
+    if not meshes['modular_street_seating']:raise RuntimeError('Import the street-bench production manifest before dressing the map')
     placed=[]
     for index,item in enumerate(plan['dressing']):
         name=item['model'];p=item['position'];yaw=item['yaw']

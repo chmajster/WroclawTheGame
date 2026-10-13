@@ -15,6 +15,7 @@ from shapely.ops import unary_union, triangulate
 from import_sector import ROOT, build, DRIVE
 from build_meshes import generate as generate_meshes
 from generate_facades import generate as generate_facades
+from surface_mesh import surface_shapes, emit_surface, elevation_sampler
 
 CONFIG = ROOT/'Data/playable_district.json'
 
@@ -187,26 +188,13 @@ def build_district(output):
             record['triangles']=valid
             (meshes/filename).write_text(json.dumps(record,separators=(',',':')),encoding='utf-8')
     # Sidewalk polygons respect building footprints rather than passing through walls.
-    sidewalks=unary_union([LineString([p[:2] for p in road['points']]).buffer(road['width_m']*50+160,
-                         cap_style=2,join_style=2).difference(LineString([p[:2] for p in road['points']]).buffer(road['width_m']*50,
-                         cap_style=2,join_style=2)) for road in roads]).difference(buildings).difference(water)
+    sidewalks=surface_shapes(data)['sidewalk']
     cells={}
-    for polygon in getattr(sidewalks,'geoms',(sidewalks,)):
-        if polygon.geom_type!='Polygon':
-            continue
-        for triangle in triangulate(polygon):
-            if not polygon.covers(triangle):
-                continue
-            coords=list(triangle.exterior.coords)[:3]
-            key=(math.floor(triangle.centroid.x/12800),math.floor(triangle.centroid.y/12800))
-            record=cells.setdefault(key,{'kind':'sidewalk','material':'Concrete','origin':[key[0]*12800,key[1]*12800,0],
-                                        'vertices':[],'triangles':[]})
-            base=len(record['vertices'])
-            record['vertices'] += [[x-record['origin'][0],y-record['origin'][1],elevation(x,y)+20] for x,y in coords]
-            record['triangles'] += [base,base+1,base+2]
+    surface_elevation=elevation_sampler(geo)
+    emit_surface(cells,sidewalks,'sidewalk','Concrete',lambda x,y:surface_elevation(x,y)+20)
     filenames=read(meshes/'meshes.json')
     for key,record in sorted(cells.items()):
-        name=f'sidewalk_{key[0]}_{key[1]}.json'
+        name=f'sidewalk_{key[1]}_{key[2]}.json'
         (meshes/name).write_text(json.dumps(record,separators=(',',':')),encoding='utf-8')
         filenames.append(name)
     (meshes/'meshes.json').write_text(json.dumps(filenames),encoding='utf-8')
