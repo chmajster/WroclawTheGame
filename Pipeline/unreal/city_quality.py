@@ -28,17 +28,19 @@ def configure_mesh(mesh,manifest):
     for slot in mesh.get_editor_property("static_materials"):
         material=slot.get_editor_property("material_interface")
         if material is None: raise RuntimeError("Unbound material")
-        if isinstance(material,unreal.Material):
-            unreal.MaterialEditingLibrary.set_material_usage(material,usage)
-            if nanite.get_editor_property("enabled"):
-                unreal.MaterialEditingLibrary.set_material_usage(material,unreal.MaterialUsage.MATUSAGE_NANITE)
+        required=[usage]+([unreal.MaterialUsage.MATUSAGE_NANITE] if nanite.get_editor_property("enabled") else [])
+        missing=[flag for flag in required if not unreal.MaterialEditingLibrary.has_material_usage(material,flag)]
+        if missing and isinstance(material,unreal.Material):
+            for flag in missing:unreal.MaterialEditingLibrary.set_material_usage(material,flag)
             unreal.MaterialEditingLibrary.recompile_material(material)
-        elif isinstance(material,unreal.MaterialInstanceConstant):
-            # Persist usage on this instance without changing its shared master.
-            unreal.MaterialEditingLibrary.set_material_usage_override(material,usage,True,True)
+        elif missing and isinstance(material,unreal.MaterialInstanceConstant):
+            for flag in missing:unreal.MaterialEditingLibrary.set_material_usage_override(material,flag,True,True)
             unreal.MaterialEditingLibrary.update_material_instance(material)
         if not unreal.MaterialEditingLibrary.has_material_usage(material,usage): raise RuntimeError("HISM usage not retained")
-        if not unreal.EditorAssetLibrary.save_loaded_asset(material,False): raise RuntimeError("Material save failed")
+        if any(not unreal.MaterialEditingLibrary.has_material_usage(material,flag) for flag in required):raise RuntimeError("Material usage not retained")
+        # Shared materials recur across many meshes. Re-saving an unchanged
+        # package repeatedly can race UE's async package reads (Windows code 32).
+        if missing and not unreal.EditorAssetLibrary.save_loaded_asset(material,False): raise RuntimeError("Material save failed")
     if not unreal.EditorAssetLibrary.save_loaded_asset(mesh,False): raise RuntimeError("Mesh quality save failed")
 
 

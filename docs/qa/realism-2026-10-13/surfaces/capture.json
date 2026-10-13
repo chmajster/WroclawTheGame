@@ -1,0 +1,19 @@
+{
+	"map": "/Game/Maps/Nadodrze_Playable",
+	"status": "CAPTURED_REQUIRES_INSPECTION",
+	"captured_utc": "2026-10-13T15:16:09.558Z",
+	"screenshots": [
+		"street_lit.png",
+		"street_unlit.png",
+		"street_wireframe.png",
+		"street_lighting.png",
+		"street_normals.png",
+		"street_collision.png",
+		"park_lit.png",
+		"park_unlit.png",
+		"park_wireframe.png",
+		"park_lighting.png",
+		"park_normals.png",
+		"park_collision.png"
+	]
+}

@@ -1,65 +1,60 @@
 # Realizm — punkt 4/10
 
 ## Wykonane
-Punkty 1–3 scalone (#165–167). Dodano WTG.SurfaceDiagnostics: rzeczywista
-inwentaryzacja komponentów i instancji w promieniu 150 m, bounds/transformy,
-rzuty na ekran i trafienia promieni w kamerze StartLocation_Start_Street.
-Diagnostyka nie zmienia mapy, infrastruktury ani elementów misji.
-Ustalono przyczynę „rury”: StartLocation_Instances_*_seating używał
-Poly Haven modular_street_seating/crossbar zamiast kompletnej ławki. Wysokość
-poprzeczki 4 cm powodowała scale=20 i obiekty o długości około 37 m.
-Złożono prawdziwą ławkę z dziesięciu licencjonowanych części (Stuart Attenborrow,
-CC0, użycie w grze i publiczna redystrybucja potwierdzone na polyhaven.com/license).
-Ławka ma 2,067 × 0,670 × 0,867 m i zachowuje mapped nodes oraz funkcję wyposażenia.
+Naprawiono źródło nawierzchni na Nadodrze_Playable: wspólny DEM, priorytety
+road/rail/footway/sidewalk/green, constrained Delaunay z otworami, jawny CCW,
+odrzucanie zerowych/odwróconych sliverów po kwantyzacji i dokładne przycinanie
+trójkątów do sektorów 128 m. Zielone poligony nie używają maksymalnej wysokości
+obwodu. Pionowe krawędzie do DEM−3 cm domykają uskoki 4/8/20 cm.
+Usunięto redundantną triangulację rastra. Wynik: 440 komórek, 280208 trójkątów;
+budżet 320000 uwzględnia fizyczne krawędzie. BakeMesh zachowuje normalne,
+projektuje UV ścian w ich płaszczyźnie i zapisuje ortogonalne tangenty.
 
-Dodano autorski profil szyny 18 cm z główką 6,8 cm, środnikiem i stopką.
-Dwa nowe źródła Blender, manifesty i natywne .uasset przeszły istniejący pipeline:
-3 LOD, trzy materiały i dwie kolizje ławki; szyna bez kolizji, 52 trójkąty.
-Placement używa pełnej ławki oraz odcinków szyny 2 m zgodnych z OSM,
-rozstawem między wewnętrznymi krawędziami i lokalnym DEM (główka 3 mm nad brukiem).
+„Rura” była poprzeczką modular_street_seating/crossbar powiększoną 20 razy
+do około 37 m. Zastąpiono ją pełną ławką z dziesięciu części Poly Haven:
+Stuart Attenborrow, CC0, potwierdzone użycie w grze i publiczna redystrybucja.
+Ławka 2,067 × 0,670 × 0,867 m zachowuje źródłowe mapped nodes i funkcję.
+Dodano autorski profil szyny 18 cm z główką 6,8 cm, osadzony 3 mm nad brukiem;
+422 odcinki do 2 m, układ OSM i gauge 1435 mm między wewnętrznymi krawędziami.
+Krawężnik jest parą metrowych kamieni z fugą (48/26/10 trójkątów w LOD).
+Odpływy osadzono 2 mm nad jezdnią i odsunięto od krawężnika.
+Nowe/zmienione źródła Blender i manifesty przeszły rzeczywisty pipeline:
+natywne .uasset, trzy LOD, materiały i kolizje. Source/Full odtwarza modele.
+Współdzielone materiały zapisuje się tylko przy brakujących wymaganych flagach,
+co usuwa zaobserwowany błąd 32 przy powtarzanych zapisach pakietu.
 
-Nowy surface_mesh.py daje priorytet nawierzchniom i oddziela je od zieleni/terenu;
-eliminuje koplanarne road/rail/footway. Zielone poligony próbkują DEM zamiast
-max wysokości obwodu. Chodniki/jezdnie mają tessellację constrained Delaunay
-z zachowaniem otworów i poprzecznego spadku. Trójkąty są dokładnie przycinane
-do 128 m sektorów z interpolacją Z (także pionowe ściany), zamiast centroidów.
-Regeneracja źródeł: 440 komórek, 280208 trójkątów poniżej budżetu 320000.
-Trzynaście testów dzielnicy i geometrii PASS. Plan ma 422 odcinki szyn,
-1058 segmentów krawężnika i 1654 instancje, poniżej budżetu 2400. Pipeline
-Source/Full odtwarza oba nowe modele. BakeMesh zachowuje fizyczne normalne,
-projektuje UV ścian w ich płaszczyźnie i jawnie buduje ortogonalne tangenty.
-Rzeczywisty probe potwierdził 15 pełnych ławek i 422 szyny; brak dawnego
-crossbar. Placement/quality: PASS, 31 HISM, 650217 trójkątów, 1234 kolizje.
-Próba regeneracji dała identyczne SHA wszystkich 442 plików geometrii.
-Widoki silnika ujawniły CW z constrained Delaunay: generator jawnie ustawia
-CCW i odrzuca slivery odwrócone/zerowe po kwantyzacji do 0,001 cm. Kontrakty
-sprawdzają teraz kierunek wszystkich rzeczywiście zapisanych nawierzchni.
-Diagnostyka i test startu czekają na zakończenie kompilacji zasobów,
-aby zrzuty nie przedstawiały niedokończonych tekstur/SDF/kart Lumen.
+Walidacja: kompilacja UE 5.8.2 PASS; 13 testów geometrii/dzielnicy PASS;
+powtórzona regeneracja daje identyczne SHA wszystkich 440 referencjonowanych
+komórek. Bake → presentation → city details → placement → quality PASS.
+1654 instancje, 31 HISM, 675609 trójkątów nowych obiektów i 1234 kolizje.
+Rzeczywista inwentaryzacja: 15 pełnych ławek, 422 szyny, brak crossbar.
+D3D12, 1280×720: przejrzano 12 widoków diagnostycznych oraz zwykłą kamerę.
+W Unlit zniknęły prześwity; Lit zachowuje normalne cienie budynków.
+Zwykłe chodzenie PASS: 201,43 cm, podłoże, osiem ścian i kamera poprawne,
+gracz bez placeholdera. Zrzuty i raporty: docs/qa/realism-2026-10-13/surfaces.
 
-Nawierzchnie mają pionowe krawędzie do DEM−3 cm: usunięto widoczne w Unlit
-prześwity między zielenią (+4 cm), jezdnią (+8 cm) i chodnikami (+20 cm).
-Końce krawędzi pokrywają się z siatką próbkowania, także przy otworach.
-Usunięto redundantną drugą triangulację rastra. Budżet 320 tys. uwzględnia
-rzeczywiste domknięcie geometrii; sektory nadal 128 m.
-Krawężnik to dwie metrowe sztuki z fugą, a nie jedna sztuka rozciągnięta do 2 m:
-48/26/10 trójkątów w LOD, źródło Blender/GLB, manifest i import natywny PASS.
-Odpływy cofnięto 30 cm na jezdnię i osadzono 2 mm nad lokalną nawierzchnią.
-Przed domknięciem krawędzi zwykły start/chodzenie/8 ścian/kamera PASS.
+Ograniczenia: profil szyny jest autorską interpretacją, nie pomiarem lokalnego
+typu szyny. DEM/OSM mają źródłową dokładność; próbki powierzchni co 6 m.
+Czas dnia jest dynamiczny, więc porównanie geometrii opiera się przede wszystkim
+na tych samych kamerach Unlit/normalne. Istniejący widok Collision_Park ma
+taki sam bliski ekranowy obszar kolizji jak baseline; zwykła kamera ma niezależny
+test braku overlap. Architektura, roślinność, materiały/oświetlenie, dokładna
+diagnoza VSM i pełny scenariusz misja/zapis należą do kolejnych punktów.
+Logi startowe silnika zawierają własne self-testy/ostrzeżenia SDK; wykonane
+skrypty mają świeże PASS i kończą się bez LogPython Error/Fatal.
 
 ## Do zrobienia
-Dokończyć ostatni bake/placement i kontrolę renderowania po domknięciu krawędzi.
-Zapisać finalne dowody, ocenić kolizję i pozostałe ograniczenia powierzchni.
+Nic nie pozostaje w zakresie punktu 4.
 
 ## Następny krok
-Zakończyć trwający proces Saved/Realism/*-surfaces-accepted.log
-(base → presentation → details → placement → quality → RealismDiagnostics
-→ StartLocationSmoke). Proces narzędzia 18683. Sprawdzić 12 świeżych PNG
-Saved/Realism/Diagnostics i raport Saved/StartLocation/gameplay-report.json.
-Potem skopiować zaakceptowane dowody do docs/qa/.../surfaces i zakończyć PR.
+Scalić ten PR, utworzyć z aktualnego main gałąź dla punktu 5.
+Rozpocząć od Scripts/assets/build_start_location_models.py::building:
+poprawić dachy, wejścia i obróbki oraz bliski dalszy plan, zachowując źródłowe
+obrysy i wysokości. Zweryfikować przez istniejący pipeline i rzeczywistą mapę.
 
 ## Stan
-W toku, draft. Bez CI; bez zmian w pierwotnym worktree i PR #164.
+Punkt 4 ukończony. Punkty 1–3 scalone (#165–167).
+Bez CI; pierwotny worktree i PR #164 pozostają poza tym zadaniem.
 
 # Realizm — punkt 3/10
 

@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "buildings": 8,
+  "instances": 1654,
+  "clusters": 31,
+  "counts": {
+    "curb": 1058,
+    "drain": 87,
+    "bike-rack": 3,
+    "paint": 36,
+    "seating": 15,
+    "young-tree": 18,
+    "bin": 1,
+    "lamp": 8,
+    "parked-car": 6,
+    "embedded-tram-rail": 422
+  },
+  "surfaces": {
+    "Grass": 3,
+    "Cobble": 8,
+    "Asphalt": 6,
+    "Pavement": 12
+  },
+  "rail_strips": 0,
+  "accuracy": "OSM nodes exact; curb follows source widths; supplemental vegetation/lighting/parking explicitly estimated; no invented traffic signals"
+}
