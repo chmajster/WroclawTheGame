@@ -1,0 +1,932 @@
+{
+  "schema_version": 1,
+  "engine_association": "5.8",
+  "map": "/Game/Maps/Nadodrze_Playable",
+  "scope_radius_m": 100,
+  "player_anchor_cm": [
+    44611.8,
+    62830.93,
+    143.77
+  ],
+  "source_sha256": {
+    "WroclawTheGame.uproject": "ce70881ccefb627dea54ef0cbbf311fc35023046310c7ddc9822bc373f1c91f0",
+    "Config/DefaultEngine.ini": "de5ae1e5211bc336975a24024fb61ac5c95a5802f0c6b6fc6396e7accfa3f47f",
+    "Scripts/gis/build_meshes.py": "d50c8eb2c8e7f9d106de344b63520c4e1359b478d9198fd11c1b105c9a411de6",
+    "Scripts/gis/build_playable_district.py": "b7ff907d8728f933dd8af20126ade4f636abacc0c7a8c04dc0a87b02be3d8cb1",
+    "Scripts/prepare_character_creator.py": "62591822e4b526c99b947be8d6c40a9bd21f8b3e0b1f972f9a9cba9fecf0afe0",
+    "Scripts/assets/build_start_location_models.py": "b326249631e997660efc5cf7f1ea093c2816ef2204b181de5d0608744ffc299c"
+  },
+  "surface_candidates": [
+    {
+      "mesh": "building_2_4_Brick.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        27774.893,
+        50443.838,
+        -127.188
+      ],
+      "bounds_max_cm": [
+        38639.882,
+        64741.149,
+        1886.84
+      ],
+      "oversized_cell": true,
+      "triangles": 229
+    },
+    {
+      "mesh": "building_2_4_Concrete.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        26571.087,
+        51004.362,
+        -111.988
+      ],
+      "bounds_max_cm": [
+        37284.319,
+        64321.886,
+        2170.12
+      ],
+      "oversized_cell": true,
+      "triangles": 267
+    },
+    {
+      "mesh": "building_2_4_Plaster.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        30426.903,
+        51030.685,
+        -110.512
+      ],
+      "bounds_max_cm": [
+        38990.004,
+        63363.948000000004,
+        1768.12
+      ],
+      "oversized_cell": false,
+      "triangles": 113
+    },
+    {
+      "mesh": "building_2_5_Brick.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        26452.28,
+        62951.564,
+        -29.089
+      ],
+      "bounds_max_cm": [
+        39813.38,
+        77331.144,
+        1823.788
+      ],
+      "oversized_cell": true,
+      "triangles": 209
+    },
+    {
+      "mesh": "building_2_5_Concrete.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        25960.217,
+        63381.25,
+        -49.382
+      ],
+      "bounds_max_cm": [
+        38368.987,
+        78021.304,
+        3100.72
+      ],
+      "oversized_cell": true,
+      "triangles": 300
+    },
+    {
+      "mesh": "building_2_5_Plaster.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        26125.2,
+        64304.621,
+        -49.565
+      ],
+      "bounds_max_cm": [
+        38631.657,
+        77413.266,
+        2012.88
+      ],
+      "oversized_cell": true,
+      "triangles": 293
+    },
+    {
+      "mesh": "building_3_4_Brick.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        38203.447,
+        50938.584,
+        0.043
+      ],
+      "bounds_max_cm": [
+        51968.481,
+        60230.655,
+        1508.588
+      ],
+      "oversized_cell": true,
+      "triangles": 67
+    },
+    {
+      "mesh": "building_3_4_Concrete.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        39654.109,
+        50330.9,
+        0.043
+      ],
+      "bounds_max_cm": [
+        51431.041,
+        60300.601,
+        3658.588
+      ],
+      "oversized_cell": false,
+      "triangles": 115
+    },
+    {
+      "mesh": "building_3_4_Plaster.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        37757.386,
+        52711.464,
+        54.396
+      ],
+      "bounds_max_cm": [
+        51283.263,
+        63247.842000000004,
+        1768.12
+      ],
+      "oversized_cell": true,
+      "triangles": 98
+    },
+    {
+      "mesh": "building_3_5_Brick.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        37661.132,
+        67818.947,
+        109.759
+      ],
+      "bounds_max_cm": [
+        52078.051999999996,
+        77095.684,
+        1645.285
+      ],
+      "oversized_cell": true,
+      "triangles": 197
+    },
+    {
+      "mesh": "building_3_5_Concrete.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        38434.929,
+        65151.089,
+        45.81
+      ],
+      "bounds_max_cm": [
+        51869.625,
+        70678.887,
+        1929.68
+      ],
+      "oversized_cell": true,
+      "triangles": 55
+    },
+    {
+      "mesh": "building_3_5_Plaster.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        38081.062,
+        67412.98,
+        4.116
+      ],
+      "bounds_max_cm": [
+        51409.496,
+        75737.85800000001,
+        1599.444
+      ],
+      "oversized_cell": true,
+      "triangles": 61
+    },
+    {
+      "mesh": "building_4_4_Brick.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        50239.945,
+        50985.841,
+        -46.047
+      ],
+      "bounds_max_cm": [
+        64693.651,
+        64643.252,
+        2010.466
+      ],
+      "oversized_cell": true,
+      "triangles": 265
+    },
+    {
+      "mesh": "building_4_4_Concrete.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        51202.0,
+        50687.39,
+        -55.26
+      ],
+      "bounds_max_cm": [
+        64335.701,
+        64643.252,
+        2545.76
+      ],
+      "oversized_cell": true,
+      "triangles": 194
+    },
+    {
+      "mesh": "building_4_4_Plaster.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        50753.959,
+        50787.016,
+        -97.916
+      ],
+      "bounds_max_cm": [
+        64207.151,
+        63935.74,
+        1831.28
+      ],
+      "oversized_cell": true,
+      "triangles": 291
+    },
+    {
+      "mesh": "building_4_5_Brick.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        50334.113,
+        63646.38,
+        -49.972
+      ],
+      "bounds_max_cm": [
+        64850.653,
+        77312.532,
+        2010.466
+      ],
+      "oversized_cell": true,
+      "triangles": 322
+    },
+    {
+      "mesh": "building_4_5_Concrete.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        50415.008,
+        63646.38,
+        -49.972
+      ],
+      "bounds_max_cm": [
+        64655.615,
+        76680.324,
+        2700.365
+      ],
+      "oversized_cell": true,
+      "triangles": 130
+    },
+    {
+      "mesh": "building_4_5_Plaster.json",
+      "kind": "building",
+      "bounds_min_cm": [
+        50978.006,
+        64683.078,
+        4.116
+      ],
+      "bounds_max_cm": [
+        64850.653,
+        76873.285,
+        2038.919
+      ],
+      "oversized_cell": true,
+      "triangles": 324
+    },
+    {
+      "mesh": "green_2_4.json",
+      "kind": "green",
+      "bounds_min_cm": [
+        25101.159,
+        52776.002,
+        64.816
+      ],
+      "bounds_max_cm": [
+        41904.503,
+        63444.173,
+        308.948
+      ],
+      "oversized_cell": true,
+      "triangles": 28
+    },
+    {
+      "mesh": "green_3_4.json",
+      "kind": "green",
+      "bounds_min_cm": [
+        35958.679000000004,
+        50668.203,
+        308.948
+      ],
+      "bounds_max_cm": [
+        45833.005,
+        70941.114,
+        369.462
+      ],
+      "oversized_cell": true,
+      "triangles": 18
+    },
+    {
+      "mesh": "green_3_5.json",
+      "kind": "green",
+      "bounds_min_cm": [
+        37866.03,
+        60503.179000000004,
+        209.335
+      ],
+      "bounds_max_cm": [
+        46222.484,
+        86067.80900000001,
+        385.68
+      ],
+      "oversized_cell": true,
+      "triangles": 30
+    },
+    {
+      "mesh": "rail_3_4.json",
+      "kind": "rail",
+      "bounds_min_cm": [
+        42282.255,
+        49765.203,
+        108.0
+      ],
+      "bounds_max_cm": [
+        45541.31,
+        64963.628,
+        407.372
+      ],
+      "oversized_cell": true,
+      "triangles": 28
+    },
+    {
+      "mesh": "rail_3_5.json",
+      "kind": "rail",
+      "bounds_min_cm": [
+        45178.709,
+        63159.642,
+        148.437
+      ],
+      "bounds_max_cm": [
+        48011.782999999996,
+        76522.234,
+        361.104
+      ],
+      "oversized_cell": true,
+      "triangles": 33
+    },
+    {
+      "mesh": "road_2_4_Asphalt.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        24161.156,
+        51297.869,
+        -21.588
+      ],
+      "bounds_max_cm": [
+        38325.710999999996,
+        63317.914000000004,
+        304.588
+      ],
+      "oversized_cell": true,
+      "triangles": 45
+    },
+    {
+      "mesh": "road_2_4_Concrete.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        25262.815,
+        50450.888,
+        -60.743
+      ],
+      "bounds_max_cm": [
+        39337.206,
+        65235.428,
+        308.0
+      ],
+      "oversized_cell": true,
+      "triangles": 251
+    },
+    {
+      "mesh": "road_2_4_Stone.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        25417.714,
+        51601.645,
+        -16.008
+      ],
+      "bounds_max_cm": [
+        39721.401,
+        64419.914000000004,
+        302.695
+      ],
+      "oversized_cell": true,
+      "triangles": 89
+    },
+    {
+      "mesh": "road_2_5_Asphalt.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        25276.143,
+        62493.058,
+        121.684
+      ],
+      "bounds_max_cm": [
+        38419.971,
+        77920.619,
+        468.26
+      ],
+      "oversized_cell": true,
+      "triangles": 81
+    },
+    {
+      "mesh": "road_2_5_Concrete.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        25417.79,
+        63347.764,
+        22.8
+      ],
+      "bounds_max_cm": [
+        39529.651,
+        77996.063,
+        491.424
+      ],
+      "oversized_cell": true,
+      "triangles": 75
+    },
+    {
+      "mesh": "road_2_5_Stone.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        25215.006,
+        63686.492,
+        25.126
+      ],
+      "bounds_max_cm": [
+        38893.064,
+        75573.916,
+        507.076
+      ],
+      "oversized_cell": true,
+      "triangles": 78
+    },
+    {
+      "mesh": "road_3_4_Asphalt.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        38242.499,
+        50410.935,
+        105.193
+      ],
+      "bounds_max_cm": [
+        52221.007,
+        65379.425,
+        506.341
+      ],
+      "oversized_cell": true,
+      "triangles": 139
+    },
+    {
+      "mesh": "road_3_4_Concrete.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        37398.086,
+        50188.471,
+        20.544
+      ],
+      "bounds_max_cm": [
+        51858.299,
+        64897.176999999996,
+        352.544
+      ],
+      "oversized_cell": true,
+      "triangles": 166
+    },
+    {
+      "mesh": "road_3_4_Stone.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        38103.094,
+        49707.777,
+        52.228
+      ],
+      "bounds_max_cm": [
+        51447.173,
+        64470.172,
+        489.317
+      ],
+      "oversized_cell": true,
+      "triangles": 87
+    },
+    {
+      "mesh": "road_3_5_Asphalt.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        38366.092,
+        63115.423,
+        86.358
+      ],
+      "bounds_max_cm": [
+        50947.933000000005,
+        80121.583,
+        408.0
+      ],
+      "oversized_cell": true,
+      "triangles": 109
+    },
+    {
+      "mesh": "road_3_5_Concrete.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        37530.883,
+        63926.988,
+        73.328
+      ],
+      "bounds_max_cm": [
+        51127.493,
+        77113.15,
+        407.984
+      ],
+      "oversized_cell": true,
+      "triangles": 202
+    },
+    {
+      "mesh": "road_3_5_Stone.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        37556.246,
+        62998.267,
+        86.358
+      ],
+      "bounds_max_cm": [
+        54498.724,
+        78311.10800000001,
+        408.0
+      ],
+      "oversized_cell": true,
+      "triangles": 110
+    },
+    {
+      "mesh": "road_4_4_Asphalt.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        49383.619,
+        50382.929,
+        21.72
+      ],
+      "bounds_max_cm": [
+        64582.748,
+        63916.385,
+        408.0
+      ],
+      "oversized_cell": true,
+      "triangles": 62
+    },
+    {
+      "mesh": "road_4_4_Concrete.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        51102.855,
+        51109.186,
+        -6.074
+      ],
+      "bounds_max_cm": [
+        62925.87,
+        64125.460999999996,
+        358.008
+      ],
+      "oversized_cell": true,
+      "triangles": 92
+    },
+    {
+      "mesh": "road_4_4_Stone.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        51188.974,
+        50324.628,
+        -7.277
+      ],
+      "bounds_max_cm": [
+        64338.645000000004,
+        64340.268,
+        373.197
+      ],
+      "oversized_cell": true,
+      "triangles": 94
+    },
+    {
+      "mesh": "road_4_5_Asphalt.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        54047.967,
+        63810.728,
+        140.184
+      ],
+      "bounds_max_cm": [
+        62885.107,
+        76820.047,
+        496.56
+      ],
+      "oversized_cell": true,
+      "triangles": 75
+    },
+    {
+      "mesh": "road_4_5_Concrete.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        54089.464,
+        63080.197,
+        126.504
+      ],
+      "bounds_max_cm": [
+        64325.18,
+        76825.145,
+        496.56
+      ],
+      "oversized_cell": true,
+      "triangles": 134
+    },
+    {
+      "mesh": "road_4_5_Stone.json",
+      "kind": "road",
+      "bounds_min_cm": [
+        47977.847,
+        62548.62,
+        92.657
+      ],
+      "bounds_max_cm": [
+        64827.083,
+        76838.559,
+        356.588
+      ],
+      "oversized_cell": true,
+      "triangles": 84
+    },
+    {
+      "mesh": "terrain_2_4.json",
+      "kind": "terrain",
+      "bounds_min_cm": [
+        25322.645,
+        50886.084,
+        -75.875
+      ],
+      "bounds_max_cm": [
+        38867.047,
+        64255.108,
+        300.0
+      ],
+      "oversized_cell": true,
+      "triangles": 931
+    },
+    {
+      "mesh": "terrain_2_5.json",
+      "kind": "terrain",
+      "bounds_min_cm": [
+        25130.685,
+        63681.565,
+        3.188
+      ],
+      "bounds_max_cm": [
+        38825.881,
+        77109.383,
+        492.312
+      ],
+      "oversized_cell": true,
+      "triangles": 930
+    },
+    {
+      "mesh": "terrain_3_4.json",
+      "kind": "terrain",
+      "bounds_min_cm": [
+        38129.011,
+        50891.02,
+        8.027
+      ],
+      "bounds_max_cm": [
+        51673.459,
+        64318.898,
+        477.225
+      ],
+      "oversized_cell": true,
+      "triangles": 928
+    },
+    {
+      "mesh": "terrain_3_5.json",
+      "kind": "terrain",
+      "bounds_min_cm": [
+        37923.854,
+        63686.398,
+        54.687
+      ],
+      "bounds_max_cm": [
+        51632.895000000004,
+        77114.285,
+        433.432
+      ],
+      "oversized_cell": true,
+      "triangles": 928
+    },
+    {
+      "mesh": "terrain_4_4.json",
+      "kind": "terrain",
+      "bounds_min_cm": [
+        50921.721,
+        50895.342,
+        -85.96
+      ],
+      "bounds_max_cm": [
+        64466.203,
+        64323.288,
+        400.0
+      ],
+      "oversized_cell": true,
+      "triangles": 930
+    },
+    {
+      "mesh": "terrain_4_5.json",
+      "kind": "terrain",
+      "bounds_min_cm": [
+        50730.696,
+        63729.915,
+        18.125
+      ],
+      "bounds_max_cm": [
+        64426.243,
+        77118.574,
+        498.492
+      ],
+      "oversized_cell": true,
+      "triangles": 931
+    },
+    {
+      "mesh": "sidewalk_2_4.json",
+      "kind": "sidewalk",
+      "bounds_min_cm": [
+        25511.744848045986,
+        51140.18028518791,
+        -20.278
+      ],
+      "bounds_max_cm": [
+        38672.01780909547,
+        64355.36034851632,
+        317.172
+      ],
+      "oversized_cell": true,
+      "triangles": 367
+    },
+    {
+      "mesh": "sidewalk_2_5.json",
+      "kind": "sidewalk",
+      "bounds_min_cm": [
+        25459.878967981545,
+        62469.17560490015,
+        33.796
+      ],
+      "bounds_max_cm": [
+        38456.67151656292,
+        77908.35586045388,
+        513.9159999999999
+      ],
+      "oversized_cell": true,
+      "triangles": 362
+    },
+    {
+      "mesh": "sidewalk_3_4.json",
+      "kind": "sidewalk",
+      "bounds_min_cm": [
+        38200.503736468665,
+        50408.70241255358,
+        46.06
+      ],
+      "bounds_max_cm": [
+        52115.93311557446,
+        64559.25894610439,
+        519.8389999999999
+      ],
+      "oversized_cell": true,
+      "triangles": 457
+    },
+    {
+      "mesh": "sidewalk_3_5.json",
+      "kind": "sidewalk",
+      "bounds_min_cm": [
+        37984.224147467336,
+        63441.38577545034,
+        50.903
+      ],
+      "bounds_max_cm": [
+        51949.91403916157,
+        80151.74151323934,
+        420.0
+      ],
+      "oversized_cell": true,
+      "triangles": 319
+    },
+    {
+      "mesh": "sidewalk_4_4.json",
+      "kind": "sidewalk",
+      "bounds_min_cm": [
+        49692.11934201976,
+        50375.87699386414,
+        20.525
+      ],
+      "bounds_max_cm": [
+        64583.76004510525,
+        64114.693744923556,
+        420.0
+      ],
+      "oversized_cell": true,
+      "triangles": 301
+    },
+    {
+      "mesh": "sidewalk_4_5.json",
+      "kind": "sidewalk",
+      "bounds_min_cm": [
+        51193.80158765818,
+        63800.39121477674,
+        70.827
+      ],
+      "bounds_max_cm": [
+        62557.7729029862,
+        76821.7910584053,
+        519.0550000000001
+      ],
+      "oversized_cell": true,
+      "triangles": 339
+    }
+  ],
+  "findings": [
+    {
+      "id": "character",
+      "evidence": "Scripts/prepare_character_creator.py: body_sources",
+      "cause": "The repeatable importer assigns Quaternius Superhero full-body prototypes, not a realistic civilian body."
+    },
+    {
+      "id": "regeneration",
+      "evidence": "Scripts/prepare_character_creator.py: prepare",
+      "cause": "Every preparation overwrites Male.Standard/Female.Standard and hair references, even when a better catalog exists."
+    },
+    {
+      "id": "green-height",
+      "evidence": "Scripts/gis/build_meshes.py: generate",
+      "cause": "Green polygons use the maximum perimeter elevation for every triangle rather than the DEM at each vertex; verify intersecting candidates below."
+    },
+    {
+      "id": "cell-bounds",
+      "evidence": "Scripts/gis/build_meshes.py: triangle; Scripts/gis/build_playable_district.py: sidewalk triangulation",
+      "cause": "Triangles are assigned by centroid without clipping to cells, so actual bounds can exceed the claimed 128 m sector."
+    },
+    {
+      "id": "trees",
+      "evidence": "Scripts/assets/build_start_location_models.py: tree",
+      "cause": "Leaf faces are flat kite-shaped quads with generic planar UVs and no leaf silhouette mask."
+    }
+  ],
+  "unverified": [
+    "No original screenshot was attached; the tube cannot be uniquely identified from its description.",
+    "Source findings do not establish the cause of every dark pixel. Native diagnostic views are separate evidence."
+  ],
+  "engine_build": {
+    "MajorVersion": 5,
+    "MinorVersion": 8,
+    "PatchVersion": 2,
+    "Changelist": 56702186,
+    "CompatibleChangelist": 55116800,
+    "IsLicenseeVersion": 0,
+    "IsPromotedBuild": 1,
+    "BranchName": "++UE5+Release-5.8"
+  },
+  "vsm": {
+    "source": "D:\\SteamLibrary\\UnrealEngine\\UE_5.8\\Engine\\Source\\Runtime\\Renderer\\Private\\VirtualShadowMaps\\VirtualShadowMapCacheManager.cpp",
+    "diagnostics": [
+      {
+        "line": 1081,
+        "text": "case VSM_STAT_OVERFLOW_FLAG_MARKING_JOB_QUEUE: return LOCTEXT(\"VSM_MarkingJobQueueOverflow\", \"[VSM] Non-Nanite Marking Job Queue overflow. Performance may be affected. This occurs when many non-nanite meshes cover a large area of the shadow map.\");"
+      },
+      {
+        "line": 1082,
+        "text": "case VSM_STAT_OVERFLOW_FLAG_OPP_MAX_LIGHTS: return LOCTEXT(\"VSM_OPPMaxLightsOverflow\", \"[VSM] One Pass Projection max lights overflow. If you see shadow artifacts, decrease the amount of local lights per pixel, or increase r.Shadow.Virtual.OnePassProjection.MaxLightsPerPixel.\");"
+      },
+      {
+        "line": 1083,
+        "text": "case VSM_STAT_OVERFLOW_FLAG_PAGE_POOL: return LOCTEXT(\"VSM_PagePoolOverflow\", \"[VSM] Page Pool overflow detected, this will produce visual artifacts (missing shadow). Increase the page pool limit or reduce resolution bias to avoid.\");"
+      },
+      {
+        "line": 1084,
+        "text": "case VSM_STAT_OVERFLOW_FLAG_VISIBLE_INSTANCES: return LOCTEXT(\"VSM_VisibleInstancesOverflow\", \"[VSM] Non-Nanite visible instances buffer overflow detected, this will produce visual artifacts (missing shadow).\");"
+      }
+    ],
+    "interpretation": "MARKING_JOB_QUEUE and PAGE_POOL are different overflow flags. Do not change page-pool size to fix the marking queue."
+  }
+}

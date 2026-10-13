@@ -1,0 +1,17 @@
+{
+  "source_commit": "939d86d",
+  "engine": "5.8.2",
+  "map": "/Game/Maps/Nadodrze_Playable",
+  "native_components": 822,
+  "non_nanite_components": 733,
+  "missing_packages": 0,
+  "screenshot_sha256": {
+    "street_lit.png": "1bc82d63a51be1116c039c002d4609794c671f7e054d4f3ee17598ce8732338f",
+    "park_lit.png": "7047ddf15dd3d430f7ee9e30e3c3228a745fc4bc4cf54ee66379614081e08e03",
+    "park_unlit.png": "f98ea47396ed8b7758018b7b7faa16758de7b66ffeab3a609f9cff1b48b19baf",
+    "park_wireframe.png": "1eb1c36afe8b5b54261c6b07d25b39c6ef1b562e73fc8de0f84cfeeeeb983a35",
+    "park_normals.png": "64f014e5b259aa57cfd7e5d0614961a05e100cf0dac25d0d60837ba29a51a484",
+    "park_collision.png": "ba727ff6983624ab34b1624b913792a6fe3b197fe030ac168cc7f0670b7e6bc1"
+  },
+  "note": "Read-only inherited generated map, main source in isolated worktree; final warmed captures. Marking queue reproduced in earlier cold diagnostic run. No FPS claim."
+}

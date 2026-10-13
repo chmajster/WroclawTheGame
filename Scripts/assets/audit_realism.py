@@ -28,7 +28,7 @@ def audit(engine_root=None):
             {'id': 'cell-bounds', 'evidence': 'Scripts/gis/build_meshes.py: triangle; Scripts/gis/build_playable_district.py: sidewalk triangulation',
              'cause': 'Triangles are assigned by centroid without clipping to cells, so actual bounds can exceed the claimed 128 m sector.'},
             {'id': 'trees', 'evidence': 'Scripts/assets/build_start_location_models.py: tree',
-             'cause': 'Leaf faces are rectangular quads with generic planar UVs and no leaf silhouette mask.'},
+             'cause': 'Leaf faces are flat kite-shaped quads with generic planar UVs and no leaf silhouette mask.'},
         ],
         'unverified': ['No original screenshot was attached; the tube cannot be uniquely identified from its description.',
                        'Source findings do not establish the cause of every dark pixel. Native diagnostic views are separate evidence.'],

@@ -1,18 +1,18 @@
-# Realizm ? strumie? 1/10
+# Realizm — strumień 1/10
 
 ## Wykonane
-Audyt ?r?d?owy i narz?dzie natywnej inspekcji. UE 5.8.2; mapa Nadodrze_Playable; zakres 100 m. Wykryto nadpisywanie cia?a przez importer, p?ask? wysoko?? zieleni i kom?rki o bounds wi?kszych ni? deklarowany sektor. Dok?adny komunikat VSM znaleziony w kodzie silnika.
+Audyt źródłowy i natywny: UE 5.8.2, mapa Nadodrze_Playable, zakres 100 m. Wykryto nadpisywanie ciała przez importer, płaską wysokość zieleni i komórki większe niż deklarowany sektor. Wykonano izolowany build i 12 świeżych kadrów gry (Lit, Unlit, Wireframe, oświetlenie, normalne, kolizje). Natywny audyt: 822 komponenty, 733 non-Nanite; zero brakujących pakietów. Dokładny komunikat VSM odtworzono w zimnym przebiegu. Dowody: docs/qa/realism-2026-10-13/before. Raport: docs/REALISM-REBUILD.md.
 
 ## Do zrobienia
-Zako?czy? izolowany build i natywn? diagnostyk?. Punkty 2?10 w kolejnych oddzielnych PR.
+Nic w zakresie rozpoznania źródeł i dostępnej mapy. Cała przebudowa pozostaje w punktach 2–10, w kolejnych osobnych PR.
 
-## Nast?pny krok
-Sprawdzi? Saved/Realism/build-baseline.log; uruchomi? Scripts/assets/inspect_realism_native.py.
+## Następny krok
+Scalić zakończony PR #165. Następnie utworzyć z main gałąź punktu 2 i wdrożyć ocenione źródła MakeHuman, cywilne ubranie i włosy z oficjalnej paczki CC0. Narzędzia pobierania i źródła referencyjne są obecnie tylko w Saved/Realism; nie są wdrożonymi assetami.
 
 ## Stan
-W toku. Nie uruchamiano CI. Oryginalny screen nie zosta? za??czony; nie ustalono to?samo?ci poziomego elementu.
+Punkt 1 zakończony. Całe zadanie w toku. Nie uruchamiano CI. Oryginalny screen nie został załączony; nie ustalono jednoznacznie tożsamości opisanego poziomego elementu i nie usunięto infrastruktury.
 
-# Wcze?niejsze zadania
+# Wcześniejsze zadania
 
 # Kreator postaci — bieżący stan
 
