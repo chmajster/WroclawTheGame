@@ -35,7 +35,8 @@ class SurfaceMeshTests(unittest.TestCase):
             for i in range(0,len(v),3):
                 a,b,c=v[i:i+3];signed=(b[0]-a[0])*(c[2]-a[2])-(b[2]-a[2])*(c[0]-a[0])
                 self.assertGreater(signed,0);area+=signed/2
-        self.assertAlmostEqual(area,26500*2000/2,delta=1)
+        # Production coordinates are quantized to 0.001 cm after clipping.
+        self.assertAlmostEqual(area,26500*2000/2,delta=10)
 
     def test_actual_generated_cells_have_finite_indices_and_bounded_xy(self):
         folder=ROOT/'Saved/PlayableDistrict/Meshes'

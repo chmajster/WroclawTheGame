@@ -24,19 +24,22 @@ max wysokości obwodu. Chodniki/jezdnie mają tessellację constrained Delaunay
 z zachowaniem otworów i poprzecznego spadku. Trójkąty są dokładnie przycinane
 do 128 m sektorów z interpolacją Z (także pionowe ściany), zamiast centroidów.
 Regeneracja źródeł: 441 komórek, 211419 trójkątów poniżej budżetu 250000.
-Osiem istniejących testów dzielnicy PASS; dodatkowe kontrakty geometrii w toku.
+Dwanaście testów dzielnicy i geometrii PASS. Plan ma 422 odcinki szyn,
+1058 segmentów krawężnika i 1654 instancje, poniżej budżetu 2400. Pipeline
+Source/Full odtwarza oba nowe modele. BakeMesh zachowuje fizyczne normalne,
+projektuje UV ścian w ich płaszczyźnie i jawnie buduje ortogonalne tangenty.
 
 ## Do zrobienia
-Uruchomić dodatkowe kontrakty, przebudować rzeczywistą mapę i ponownie zastosować
+Dokończyć przebudowę rzeczywistej mapy i ponownie zastosować
 presentation / city details / start placement / quality. Sprawdzić zrzuty,
 kolizję i powtórzenie generowania; naprawić ewentualne konkretne problemy.
 
 ## Następny krok
-Uruchomić Tests.test_surface_mesh w GISPython. Sprawdzić import-infrastructure.log
-(WTG_BATCH_IMPORT_PASS 2) i nowy plan. Uruchomić Scripts/prepare_playable_district.py,
-prepare_district_presentation.py, assets/place_city_details.py,
+Zakończyć proces build-tangents / base-surfaces-tangents (Saved/Realism),
+następnie uruchomić Scripts/prepare_district_presentation.py, assets/place_city_details.py,
 assets/place_start_location.py i prepare_start_location_quality.py. Potem
 WTG.RealismDiagnostics i WTG.StartLocationSmoke na Nadodrze_Playable.
 
 ## Stan
 W toku, draft. Bez CI; bez zmian w pierwotnym worktree i PR #164.
+

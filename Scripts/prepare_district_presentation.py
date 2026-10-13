@@ -55,7 +55,7 @@ def prepare():
         name=item['model'];p=item['position'];yaw=item['yaw']
         if any(name==q['model'] and math.dist(p,q['position'])<700 for q in placed):continue
         position=unreal.Vector(*p);mesh=meshes[name];bounds=mesh.get_bounds()
-        height={'street_lamp_01':420,'metal_trash_can':85,'modular_street_seating':50}[name]
+        height={'street_lamp_01':420,'metal_trash_can':85,'modular_street_seating':86.6914}[name]
         scale=min(height/max(bounds.box_extent.z*2,1),item['radius']/max(bounds.box_extent.x,bounds.box_extent.y,1))
         position.z-=bounds.origin.z*scale-bounds.box_extent.z*scale
         actor=actors.spawn_actor_from_class(unreal.StaticMeshActor,position,unreal.Rotator(pitch=0,yaw=yaw,roll=0))

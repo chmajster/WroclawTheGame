@@ -52,14 +52,16 @@ def build():
         if radius:occupied.append((point,radius))
         items.append(dict(role=role,position_cm=[round(v,3) for v in p],yaw_deg=round(yaw,3),scale=list(scale),source=source));counts[role]+=1
     crossings=[Point(n['position_cm'][:2]) for n in nodes if n['tags'].get('highway')=='crossing']
+    curb_building_clearance=buildings.buffer(30)
     for line in getattr(paved.boundary.intersection(region),'geoms',[paved.boundary.intersection(region)]):
         if line.geom_type!='LineString':continue
-        for step in range(int(line.length/100)):
-            distance=(step+.5)*100;q=line.interpolate(distance);a=line.interpolate(max(0,distance-25));b=line.interpolate(min(line.length,distance+25))
-            if buildings.buffer(30).covers(q) or q.distance(region.boundary)<80:continue
+        for step in range(math.ceil(line.length/200)):
+            span=min(200,line.length-step*200)
+            distance=step*200+span*.5;q=line.interpolate(distance);a=line.interpolate(max(0,distance-25));b=line.interpolate(min(line.length,distance+25))
+            if curb_building_clearance.covers(q) or q.distance(region.boundary)<80:continue
             lowered=any(q.distance(c)<220 for c in crossings)
-            add('curb',[q.x,q.y,ground(q.x,q.y)-(12 if lowered else 1)],math.degrees(math.atan2(b.y-a.y,b.x-a.x)))
-            if step%24==12 and not lowered:add('drain',[q.x,q.y,ground(q.x,q.y)+8],math.degrees(math.atan2(b.y-a.y,b.x-a.x)))
+            add('curb',[q.x,q.y,ground(q.x,q.y)-(12 if lowered else 1)],math.degrees(math.atan2(b.y-a.y,b.x-a.x)),(span/100,1,1))
+            if step%12==6 and not lowered:add('drain',[q.x,q.y,ground(q.x,q.y)+8],math.degrees(math.atan2(b.y-a.y,b.x-a.x)))
     def nearest_road(p):return min(roads,key=lambda f:LineString([v[:2] for v in f['points']]).distance(Point(p[:2])))
     def tangent(f,p):
         line=LineString([v[:2] for v in f['points']]);d=line.project(Point(p[:2]));a=line.interpolate(max(0,d-50));b=line.interpolate(min(line.length,d+50))
@@ -106,7 +108,7 @@ def build():
     # between inner rail-head faces, not between the two profile centres.
     strips=[]
     for f in sector['features']:
-        if f['kind']!='rail':continue
+        if f['kind']!='rail' or f['tags'].get('railway')!='tram':continue
         line=LineString([p[:2] for p in f['points']]).intersection(region)
         lines=list(getattr(line,'geoms',[line]))
         for segment in lines:

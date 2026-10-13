@@ -52,6 +52,7 @@ try {
   Invoke-Step 'start-audit' {& $PythonExe Scripts/assets/audit_start_location.py}
   Invoke-Step 'source-footprints' {& $PythonExe Scripts/assets/build_start_location_inputs.py}
   Invoke-Step 'original-blender-models' {& $BlenderExe --background --python-exit-code 1 --python Scripts/assets/build_start_location_models.py *> (Join-Path $out 'models.log')}
+  Invoke-Step 'street-infrastructure-models' {& $BlenderExe --background --python-exit-code 1 --python Scripts/assets/build_street_infrastructure.py *> (Join-Path $out 'infrastructure.log')}
   Invoke-Step 'production-manifests' {& $PythonExe Scripts/assets/make_start_location_manifests.py}
   Invoke-Step 'manifest-validation' {& $PythonExe Pipeline/qa/validate_manifest.py --all}
   foreach($manifest in Get-ChildItem -LiteralPath Pipeline/assets/start_location -Filter '*.asset.json'){
