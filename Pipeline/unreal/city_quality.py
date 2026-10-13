@@ -11,7 +11,7 @@ def configure_mesh(mesh,manifest):
     if area not in ["tenements","start_location"]: return
     if area=="start_location":
         policy=json.loads((ROOT/"Data/start_location.json").read_text(encoding="utf-8"))["quality"]
-        category="building" if manifest['unreal']['destination'].endswith('/Buildings') else ("vegetation" if manifest["display_name"]=="young-tree" else "prop")
+        category="building" if manifest['unreal']['destination'].endswith('/Buildings') else ("vegetation" if manifest['unreal']['destination'].endswith('/Vegetation') else "prop")
         screen_sizes=policy["lod_screen_sizes"][category]
     else:
         policy=json.loads((ROOT/"Data/city_asset_quality.json").read_text(encoding="utf-8"))
@@ -52,3 +52,6 @@ def configure_instances(component,policy=None):
         cull=policy["instance_cull_cm"]
     else:cull={"start":policy["instance_cull_start_cm"],"end":policy["instance_cull_end_cm"]}
     component.set_cull_distances(cull["start"],cull["end"])
+    mesh=component.get_editor_property('static_mesh')
+    if mesh and mesh.get_name() in ['SM_wtg_start_young_tree','SM_wtg_start_young_maple','SM_wtg_start_park_lime']:
+        component.set_cull_distances(10000,16000)

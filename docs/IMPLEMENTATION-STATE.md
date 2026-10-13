@@ -17,6 +17,8 @@ shader w prepare_start_location_assets.py, LOD w Pipeline/blender/build_asset.py
 ## Stan
 W toku. Osobna gałąź punktu 6 z main; bez CI i zmian w oryginalnym worktree.
 
+Implementation: 3 authored trees (14680/14680/16280 triangles), leaf-card LOD, 512px leaf/bark atlas, masked TwoSidedFoliage, soil pit, modern lamp. Native materials/import PASS. Source plan: 18 trees (7 lime/7 maple/4 broad lime), 2 pits, 8 lamps; no new traffic subsystem. Next: finish native quality/assets/foliage checks (session 48499), run actual D3D12 RealismDiagnostics, inspect park and ordinary gameplay, archive evidence and merge #170.
+
 # Realizm — punkt 5/10
 
 ## Wykonane

@@ -346,22 +346,21 @@
     {
       "asset": "young-tree",
       "area": "Vegetation",
-      "triangles": 6008,
+      "triangles": 14680,
       "bounds_m": [
-        3.558016538619995,
-        3.4281675815582275,
-        5.5724382400512695
+        4.72196626663208,
+        4.542019844055176,
+        5.726846218109131
       ],
       "source_center_m": [
-        0.019611120223999023,
-        0.16296398639678955,
-        -0.0027398462407290936
+        -0.0003075599670410156,
+        0.05305206775665283,
+        -0.0803619772195816
       ],
       "collision_shapes": 1,
       "materials": [
-        "Metal",
-        "Wood",
-        "Leaf"
+        "Leaf",
+        "Bark"
       ],
       "uv": "2m physical projection"
     },
@@ -1229,6 +1228,90 @@
         "context": true,
         "footprint": "unaltered source rings; mouldings project beyond wall"
       }
+    },
+    {
+      "asset": "young-maple",
+      "area": "Vegetation",
+      "triangles": 14680,
+      "bounds_m": [
+        4.747821807861328,
+        4.938991546630859,
+        6.17503023147583
+      ],
+      "source_center_m": [
+        0.01620948314666748,
+        0.06533980369567871,
+        -0.0803619772195816
+      ],
+      "collision_shapes": 1,
+      "materials": [
+        "Leaf",
+        "Bark"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "park-lime",
+      "area": "Vegetation",
+      "triangles": 16280,
+      "bounds_m": [
+        6.006597518920898,
+        5.828546047210693,
+        7.2537336349487305
+      ],
+      "source_center_m": [
+        0.05643749237060547,
+        0.045635223388671875,
+        -0.0803619772195816
+      ],
+      "collision_shapes": 1,
+      "materials": [
+        "Leaf",
+        "Bark"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "tree-pit",
+      "area": "Props",
+      "triangles": 96,
+      "bounds_m": [
+        1.5,
+        1.5,
+        0.012000000104308128
+      ],
+      "source_center_m": [
+        0.0,
+        0.0,
+        -0.012000000104308128
+      ],
+      "collision_shapes": 0,
+      "materials": [
+        "Metal",
+        "Soil"
+      ],
+      "uv": "2m physical projection"
+    },
+    {
+      "asset": "modern-lamp",
+      "area": "Props",
+      "triangles": 372,
+      "bounds_m": [
+        1.4549999237060547,
+        0.23999999463558197,
+        5.919000148773193
+      ],
+      "source_center_m": [
+        0.6074999608099461,
+        0.0,
+        0.0
+      ],
+      "collision_shapes": 1,
+      "materials": [
+        "Metal",
+        "Light"
+      ],
+      "uv": "2m physical projection"
     }
   ]
 }

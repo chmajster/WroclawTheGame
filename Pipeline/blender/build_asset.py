@@ -14,6 +14,7 @@ import traceback
 from pathlib import Path
 
 import bpy
+import bmesh
 from mathutils import Vector
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -152,13 +153,22 @@ def triangle_count(obj: bpy.types.Object) -> int:
     return len(obj.data.loop_triangles)
 
 
-def decimated_copy(source: bpy.types.Object, ratio: float, name: str) -> bpy.types.Object:
+def decimated_copy(source: bpy.types.Object, ratio: float, name: str, leaf_cards=False) -> bpy.types.Object:
     obj = source.copy()
     obj.data = source.data.copy()
     bpy.context.collection.objects.link(obj)
     obj.name = name
     obj.data.name = name
-    if ratio < 0.999999:
+    if ratio < 0.999999 and leaf_cards:
+        # Preserve each atlas quad, its UVs and winding. Generic decimation
+        # clips leaves into narrow shards and changes the alpha silhouette.
+        bm=bmesh.new();bm.from_mesh(obj.data)
+        leaf_slots={i for i,mat in enumerate(obj.data.materials) if mat.name=='Leaf'}
+        leaves=[f for f in bm.faces if f.material_index in leaf_slots]
+        remove=[f for i,f in enumerate(leaves) if ((i*2654435761)%100000)/100000>=ratio]
+        bmesh.ops.delete(bm,geom=remove,context='FACES')
+        bm.to_mesh(obj.data);bm.free();obj.data.update()
+    elif ratio < 0.999999:
         select_only([obj])
         modifier = obj.modifiers.new(name="WTG_LOD_DECIMATE", type="DECIMATE")
         modifier.ratio = float(ratio)
@@ -272,7 +282,7 @@ def main() -> None:
     lod_reports = []
     for index, ratio in enumerate(ratios):
         lod_name = safe_name if index == 0 else f"{safe_name}_LOD{index}"
-        obj = decimated_copy(base, ratio, lod_name)
+        obj = decimated_copy(base, ratio, lod_name,manifest['lod'].get('preserve_leaf_cards',False))
         count = triangle_count(obj)
         lod_objects.append(obj)
         lod_reports.append({"lod": index, "ratio": ratio, "triangles": count})

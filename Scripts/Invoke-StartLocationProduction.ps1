@@ -51,6 +51,7 @@ try {
   Invoke-Step 'source-gis' {& $PythonExe Scripts/gis/build_playable_district.py}
   Invoke-Step 'start-audit' {& $PythonExe Scripts/assets/audit_start_location.py}
   Invoke-Step 'source-footprints' {& $PythonExe Scripts/assets/build_start_location_inputs.py}
+  Invoke-Step 'foliage-source-textures' {& $PythonExe Scripts/assets/build_foliage_textures.py}
   Invoke-Step 'original-blender-models' {& $BlenderExe --background --python-exit-code 1 --python Scripts/assets/build_start_location_models.py *> (Join-Path $out 'models.log')}
   Invoke-Step 'street-infrastructure-models' {& $BlenderExe --background --python-exit-code 1 --python Scripts/assets/build_street_infrastructure.py *> (Join-Path $out 'infrastructure.log')}
   Invoke-Step 'production-manifests' {& $PythonExe Scripts/assets/make_start_location_manifests.py}
@@ -69,6 +70,7 @@ try {
    Invoke-Step 'existing-library-import' {Invoke-Editor 'library' 'Scripts/import_free_models.py' 'Saved/FreeModelsReady.ok'}
   }
   Invoke-Step 'shared-materials' {Invoke-Editor 'materials' 'Scripts/assets/prepare_start_location_materials.py' 'Saved/StartLocation/materials.ok'}
+  Invoke-Step 'foliage-materials' {Invoke-Editor 'foliage' 'Scripts/assets/prepare_foliage_materials.py' 'Saved/StartLocation/foliage.ok'}
   $env:WTG_ASSET_MANIFESTS=ConvertTo-Json -Compress -InputObject @((Get-ChildItem -LiteralPath Pipeline/assets/start_location -Filter '*.asset.json').FullName)
   Invoke-Step 'native-model-import' {Invoke-Editor 'import' 'Pipeline/unreal/import_batch.py' 'Saved/Pipeline/import/batch.ok'}
   Invoke-Step 'native-asset-verification' {Invoke-Editor 'assets' 'Scripts/assets/verify_start_location_assets.py' 'Saved/StartLocation/assets.ok'}

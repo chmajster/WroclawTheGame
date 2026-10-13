@@ -20,7 +20,8 @@
       1,
       0.55,
       0.22
-    ]
+    ],
+    "preserve_leaf_cards": true
   },
   "collision": {
     "mode": "authored",
@@ -30,15 +31,11 @@
   "materials": [
     {
       "slot": 0,
-      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Metal"
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Leaf"
     },
     {
       "slot": 1,
-      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Wood"
-    },
-    {
-      "slot": 2,
-      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Leaf"
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Bark"
     }
   ],
   "unreal": {
