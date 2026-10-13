@@ -11,7 +11,7 @@ def configure_mesh(mesh,manifest):
     if area not in ["tenements","start_location"]: return
     if area=="start_location":
         policy=json.loads((ROOT/"Data/start_location.json").read_text(encoding="utf-8"))["quality"]
-        category="building" if manifest["quality"]=="hero" else ("vegetation" if manifest["display_name"]=="young-tree" else "prop")
+        category="building" if manifest['unreal']['destination'].endswith('/Buildings') else ("vegetation" if manifest["display_name"]=="young-tree" else "prop")
         screen_sizes=policy["lod_screen_sizes"][category]
     else:
         policy=json.loads((ROOT/"Data/city_asset_quality.json").read_text(encoding="utf-8"))

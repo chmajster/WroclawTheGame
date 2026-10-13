@@ -15,6 +15,8 @@ from mathutils import Vector
 from mathutils.geometry import tessellate_polygon
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from architecture_geometry import roof_triangles, roof_height
 OUTPUT = ROOT/'SourceAssets/Models/Wroclaw/StartLocation'
 MATERIALS = ['Plaster', 'Stone', 'Frame', 'Glazing', 'Metal', 'Roof', 'Wood', 'Leaf', 'Rubber', 'Paint', 'Light']
 COLORS = [(.78,.73,.63,1), (.64,.60,.52,1), (.82,.80,.71,1), (.035,.07,.095,1),
@@ -83,49 +85,71 @@ def fix_slots(obj):
 def building(config):
     m = Mesh(); collision = []
     height, floors = config['height_m'], config['floors']
+    flat = config['tags'].get('roof:shape') == 'flat'
+    eaves = height-(.35 if flat else (2.46 if height>=18 else 1.66))
+    foundation = min(p[2] for r in config['rings_m'] for p in r)-.3
     rings = [[Vector((p[0],-p[1],0)) for p in r] for r in config['rings_m']]
     street = Vector(((44611.8-config['origin_cm'][0])/100,-(62830.93-config['origin_cm'][1])/100,0))
     edges = []
-    for ring in rings:
+    for ring_index,ring in enumerate(rings):
         area = sum(a.x*b.y-b.x*a.y for a,b in zip(ring,ring[1:]))
-        if area < 0: ring = list(reversed(ring))
+        if (area < 0) == (ring_index==0): ring = list(reversed(ring))
+        rings[ring_index] = ring
         for a,b in zip(ring,ring[1:]):
             tangent = b-a; length = tangent.length
             if length < .05: continue
             tangent.normalize(); normal = Vector((tangent.y,-tangent.x,0))
             edges.append((a,b,tangent,normal,length))
     front = max(range(len(edges)),key=lambda i: ((street-(edges[i][0]+edges[i][1])/2).normalized().dot(edges[i][3]) if edges[i][4]>9 else -2))
+    # The entrance datum follows its source DEM edge, while the roof datum is
+    # still the source maximum height. Foundations extend through the slope.
+    source_z={(round(p[0],5),round(-p[1],5)):p[2] for ring in config['rings_m'] for p in ring}
+    entrance_base=sum(source_z[(round(p.x,5),round(p.y,5))] for p in edges[front][:2])/2+.2
+    first_height=min(3.8,max(3.1,(eaves-entrance_base)/floors+0.5))
+    attic_height=min(2.2,(eaves-entrance_base-first_height)/(floors-1))
+    heights=[first_height]+[(eaves-entrance_base-first_height-attic_height)/max(1,floors-2)]*(floors-2)+[attic_height]
+    floor_bases=[entrance_base+sum(heights[:i]) for i in range(floors)]
     for edge_index,(a,b,t,n,length) in enumerate(edges):
         axes = (t,n,Vector((0,0,1)))
         def box(x,z,w,h,depth=.28,offset=-.14,slot=0):
             m.box(a+t*x+n*offset+Vector((0,0,z)),(w,depth,h),slot,axes)
-        c = Mesh(); c.box((a+b)/2-n*.14+Vector((0,0,height/2)),(length,.32,height),0,axes)
+        c = Mesh(); c.box((a+b)/2-n*.14+Vector((0,0,(eaves+foundation)/2)),(length,.32,eaves-foundation),0,axes)
         collision.append(c)
         bays = max(1,int(length/2.8)); bay = length/bays
         if length < 2.3:
-            box(length/2,height/2,length,height)
+            box(length/2,(eaves+foundation)/2,length,eaves-foundation)
             continue
-        heights = [3.8]+[(height-6)/max(1,floors-2)]*(floors-2)+[2.2]
-        floor_base = 0
+        floor_base = entrance_base
         for floor, floor_height in enumerate(heights):
             for column in range(bays):
                 x = (column+.5)*bay
                 storefront = floor==0 and edge_index==front
-                w = min(bay-.55,2.15 if storefront else 1.18)
+                entrance = storefront and column==bays//2
+                w = min(bay-.55,1.65 if entrance else (2.15 if storefront else 1.18))
                 h = min(floor_height-.5,2.9 if storefront else (1.15 if floor==floors-1 else 1.95))
-                sill = floor_base+(.2 if storefront else .72)
+                sill = floor_base+(.08 if entrance else (.2 if storefront else .72))
                 top = sill+h
                 box(column*bay+(bay-w)/4,floor_base+floor_height/2,(bay-w)/2,floor_height)
                 box((column+1)*bay-(bay-w)/4,floor_base+floor_height/2,(bay-w)/2,floor_height)
                 box(x,(floor_base+sill)/2,w,sill-floor_base)
                 box(x,(top+floor_base+floor_height)/2,w,floor_base+floor_height-top)
                 # Recess reveals and glazing inside a real opening.
-                box(x,sill+h/2,w-.06,h-.06,.035,-.23,3)
+                box(x,sill+h/2,w-.06,h-.06,.035,-.36 if entrance else -.23,3)
                 for dx in (-w/2,w/2): box(x+dx,sill+h/2,.08,h+.12,.13,-.07,2)
                 for dz in (0,h): box(x,sill+dz,w+.12,.08,.13,-.07,2)
-                box(x,sill+h/2,.052,h,.08,-.045,2)
+                box(x,sill+h/2,.052,h,.08,-.29 if entrance else -.045,2)
                 box(x,sill+h*.7,w,.048,.08,-.045,2)
                 box(x,sill-.08,w+.28,.13,.39,.025,1)
+                if entrance:
+                    # Deep stone jambs, timber leaf rails and transom; the
+                    # exterior collision stays closed (no new interior system).
+                    for dx in (-w/2-.1,w/2+.1):box(x+dx,sill+h/2,.17,h+.3,.48,-.1,1)
+                    box(x,top+.12,w+.44,.24,.48,-.1,1)
+                    for dx in (-w*.4,0,w*.4):box(x+dx,sill+h*.45,.085,h*.9,.10,-.29,6)
+                    box(x,sill+h*.1,w,.24,.1,-.29,6)
+                    box(x,sill+h*.83,w,.12,.1,-.29,6)
+                    box(x+.13,sill+h*.45,.025,.30,.05,-.21,4)
+                    box(x,sill-.09,w+.25,.16,.56,-.06,1)
                 if floor>0 and floor<floors-1 and config['style']!='plain':
                     box(x,top+.13,w+.35,.14,.22,.045,1)
                     box(x,top+.23,w+.43,.06,.28,.07,1)
@@ -141,17 +165,28 @@ def building(config):
                 for depth,thickness,dz in [(.16,.09,0),(.25,.08,.09),(.34,.055,.16)]:
                     box(length/2,floor_base+floor_height+dz,length,thickness,depth,depth/2-.01,1)
             floor_base += floor_height
-        box(length/2,.22,length,.44,.33,.015,1)
-        for level,width in [(height+.02,.38),(height+.13,.50),(height+.23,.58)]:
+        plinth_top=entrance_base if edge_index==front else entrance_base+.42
+        box(length/2,(foundation+plinth_top)/2,length,plinth_top-foundation,.33,.015,1)
+        for level,width in [(eaves+.02,.38),(eaves+.13,.50),(eaves+.23,.58)]:
             box(length/2,level,length,.12,width,width/2-.1,1)
         # Eaves and real drain pipes, not flat texture lines.
-        m.rod(a+n*.27+Vector((0,0,height+.12)),b+n*.27+Vector((0,0,height+.12)),.065,4,12)
-        m.rod(a+t*.25+n*.15+Vector((0,0,.3)),a+t*.25+n*.15+Vector((0,0,height)),.055,4,12)
+        # Open half-round gutter, seam lip and an elbow down to the plinth.
+        for k in range(8):
+            theta=math.pi+k*math.pi/8;theta2=theta+math.pi/8
+            p=n*(.27+.065*math.cos(theta))+Vector((0,0,eaves+.16+.065*math.sin(theta)))
+            q=n*(.27+.065*math.cos(theta2))+Vector((0,0,eaves+.16+.065*math.sin(theta2)))
+            m.face([a+p,b+p,b+q,a+q],4)
+        m.rod(a+n*.34+Vector((0,0,eaves+.16)),b+n*.34+Vector((0,0,eaves+.16)),.009,4,8)
+        down=a+t*.25+n*.15
+        ground=source_z[(round(a.x,5),round(a.y,5))]+.2
+        m.rod(down+Vector((0,0,ground+.12)),down+Vector((0,0,eaves-.1)),.055,4,12)
+        m.rod(down+Vector((0,0,eaves-.1)),a+t*.25+n*.27+Vector((0,0,eaves+.14)),.055,4,12)
+        m.rod(down+Vector((0,0,ground+.12)),down+n*.1+Vector((0,0,ground+.03)),.055,4,12)
         if edge_index==front and config['style']!='plain':
             x = (int(bays/2)+.5)*bay
             for floor in (2,3,4):
                 if floor>=floors-1: continue
-                z = 3.8+(floor-1)*(height-6)/max(1,floors-2)+.65
+                z = floor_bases[floor]+.65
                 box(x,z,2.4,.18,1.04,.46,1)
                 for dx in (-1.13,1.13):
                     m.rod(a+t*(x+dx)+n*.97+Vector((0,0,z)),a+t*(x+dx)+n*.97+Vector((0,0,z+1.04)),.035,4,12)
@@ -164,11 +199,20 @@ def building(config):
                     for p,q in zip(points,points[1:]):m.rod(p,q,.009,4,6)
     # Tiled upper roof, parapet, ventilation chimneys on the source footprint.
     flattened=[p for ring in rings for p in ring]
-    for tri in tessellate_polygon(rings):
-        points=[flattened[p] if isinstance(p,int) else p for p in tri]
-        m.face([Vector((p.x,p.y,height+.05)) for p in points],5)
+    triangles=[[tuple(flattened[p] if isinstance(p,int) else p) for p in tri] for tri in tessellate_polygon(rings)]
+    coordinates=[[tuple(p) for p in ring] for ring in rings]
+    for tri in roof_triangles(triangles,coordinates,eaves+.29,height-.02,flat):m.face(tri,5)
     for i,p in enumerate(rings[0][:-1]):
-        if i%4==0:m.box((p.x*.65,p.y*.65,height+.45),(.65,.55,.8),1)
+        if i%4!=0:continue
+        centre=p*.65
+        # Only place a chimney if this roof point lies safely inside the roof.
+        roof_z=roof_height(tuple(centre),coordinates,eaves+.29,height-.02,flat)
+        if roof_z<eaves+.5 and not flat:continue
+        chimney_top=min(height,roof_z+.8)
+        if chimney_top-roof_z>.15:
+            m.box((centre.x,centre.y,(roof_z+chimney_top)/2),(.65,.55,chimney_top-roof_z),1)
+            m.box((centre.x,centre.y,chimney_top-.03),(.75,.65,.06),4)
+    if max(p[2] for p in m.vertices)>height+.001:raise ValueError('Architecture exceeded source height '+config['asset'])
     return m,collision
 
 
@@ -271,20 +315,27 @@ def save(name,mesh,colliders,area):
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--asset')
+    parser=argparse.ArgumentParser();parser.add_argument('--asset');parser.add_argument('--buildings-only',action='store_true')
     options=parser.parse_args(sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [])
     metadata=OUTPUT/'geometry.json'
-    records=json.loads(metadata.read_text(encoding='utf-8'))['assets'] if options.asset and metadata.exists() else []
+    records=json.loads(metadata.read_text(encoding='utf-8'))['assets'] if (options.asset or options.buildings_only) and metadata.exists() else []
     updated=[]
     data=json.loads((ROOT/'Data/start_location_buildings.json').read_text(encoding='utf-8'))
-    for config in data['buildings']:
+    for config in data['buildings']+data.get('context_buildings',[]):
         if options.asset and options.asset!=config['asset']:continue
-        reset();mesh,collision=building(config);updated.append(save(config['asset'],mesh,collision,'Buildings'))
+        reset();mesh,collision=building(config)
+        record=save(config['asset'],mesh,collision,'Buildings')
+        record['architecture']={'source_id':config['id'],'height_datum_m':config['height_m'],
+            'maximum_z_m':round(max(p[2] for p in mesh.vertices),5),
+            'foundation_z_m':round(min(p[2] for p in mesh.vertices),5),
+            'roof':'flat' if config['tags'].get('roof:shape')=='flat' else 'interpreted hipped roof',
+            'context':bool(config.get('context')),'footprint':'unaltered source rings; mouldings project beyond wall'}
+        updated.append(record)
     for name,func,area in [('curb',curb,'Roads'),('drain',drain,'Roads'),('bike-rack',rack,'Props'),('young-tree',tree,'Vegetation'),('parked-car',car,'Props')]:
-        if options.asset and options.asset!=name:continue
+        if options.buildings_only or (options.asset and options.asset!=name):continue
         reset();mesh,collision=func();updated.append(save(name,mesh,collision,area))
     if not updated:raise ValueError('Unknown production asset '+str(options.asset))
-    if options.asset:
+    if options.asset or options.buildings_only:
         by_name={r['asset']:r for r in updated}
         records=[by_name.pop(r['asset'],r) for r in records]+list(by_name.values())
     else:records=updated

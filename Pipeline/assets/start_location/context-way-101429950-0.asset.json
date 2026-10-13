@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "id": "wtg-start-context-way-101429950-0",
+  "display_name": "context-way-101429950-0",
+  "area": "start_location",
+  "type": "static_mesh",
+  "quality": "hero",
+  "source": {
+    "model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101429950-0.blend",
+    "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+    "reference_directory": null
+  },
+  "mesh": {
+    "max_triangles": 120000,
+    "combine": true,
+    "generate_uv_if_missing": false
+  },
+  "lod": {
+    "ratios": [
+      1,
+      0.55,
+      0.22
+    ]
+  },
+  "collision": {
+    "mode": "authored",
+    "max_hulls": 32
+  },
+  "textures": {},
+  "materials": [
+    {
+      "slot": 0,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Plaster"
+    },
+    {
+      "slot": 1,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Stone"
+    },
+    {
+      "slot": 2,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Frame"
+    },
+    {
+      "slot": 3,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Glazing"
+    },
+    {
+      "slot": 4,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Metal"
+    },
+    {
+      "slot": 5,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Roof"
+    },
+    {
+      "slot": 6,
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Wood"
+    }
+  ],
+  "unreal": {
+    "destination": "/Game/Wroclaw/StartLocation/Buildings",
+    "nanite": true,
+    "qa_map": "/Game/Maps/Nadodrze_Playable"
+  },
+  "qa": {
+    "automation_filter": "WTG.District",
+    "cameras": [
+      "StartLocation_Start_Player",
+      "StartLocation_Start_Street",
+      "StartLocation_Start_Park"
+    ],
+    "screenshot_width": 1280,
+    "screenshot_height": 720
+  }
+}

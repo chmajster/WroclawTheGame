@@ -29,14 +29,14 @@ def prepare():
     for actor in actors.get_all_level_actors():
         if actor.get_actor_label().startswith(policy['placement_prefix']):actors.destroy_actor(actor)
     tools=unreal.AssetToolsHelpers.get_asset_tools();edit=unreal.MaterialEditingLibrary
-    for building in source['buildings']:
+    for building in source['buildings']+source.get('context_buildings',[]):
         record=records[building['asset']]
         mesh=unreal.load_asset(DEST+'/Buildings/SM_wtg_start_'+building['asset'].replace('-','_'))
         if not isinstance(mesh,unreal.StaticMesh):raise RuntimeError('Production mesh missing '+building['asset'])
         center=record['source_center_m'];origin=building['origin_cm']
         position=[origin[0]+center[0]*100,origin[1]-center[1]*100,origin[2]+center[2]*100]
         actor=actors.spawn_actor_from_class(unreal.StaticMeshActor,unreal.Vector(*position))
-        actor.set_actor_label('StartLocation_Building_'+building['asset'])
+        actor.set_actor_label(('StartLocation_Context_' if building.get('context') else 'StartLocation_Building_')+building['asset'])
         component=actor.get_component_by_class(unreal.StaticMeshComponent);component.set_static_mesh(mesh);component.set_collision_profile_name('BlockAll')
         name='MI_Wall_'+building['asset'].replace('-','_');instance=unreal.load_asset(DEST+'/Materials/'+name)
         if not instance:instance=tools.create_asset(name,DEST+'/Materials',unreal.MaterialInstanceConstant,unreal.MaterialInstanceConstantFactoryNew())
@@ -137,7 +137,7 @@ def prepare():
         camera_component.set_editor_property('post_process_blend_weight',1.)
     if sum(c.get_facade_instance_count() for c in clusters.values())!=len(plan['items']):raise RuntimeError('Instance count mismatch')
     if not levels.save_current_level():raise RuntimeError('Save failed')
-    report=dict(status='PASS',buildings=len(source['buildings']),instances=len(plan['items']),clusters=len(clusters),counts=plan['counts'],surfaces=surfaces,rail_strips=len(plan['rail_strips']),accuracy=plan['placement_accuracy'])
+    report=dict(status='PASS',buildings=len(source['buildings']),context_buildings=len(source.get('context_buildings',[])),instances=len(plan['items']),clusters=len(clusters),counts=plan['counts'],surfaces=surfaces,rail_strips=len(plan['rail_strips']),accuracy=plan['placement_accuracy'])
     (marker.parent/'placement-report.json').write_text(json.dumps(report,indent=2),encoding='utf-8');marker.write_text('PASS\n',encoding='utf-8');unreal.log('WTG_START_LOCATION_PLACED '+json.dumps(report))
 
 
