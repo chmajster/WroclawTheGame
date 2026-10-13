@@ -85,7 +85,8 @@ int32 UGeoMeshLibrary::RepairAuthoredMeshTangents(UStaticMesh* Mesh,int32 LodInd
     return Repaired;
 }
 UStaticMesh *UGeoMeshLibrary::BakeMesh(const FString &Path, const TArray<FVector> &Vertices,
-                                       const TArray<int32> &Triangles)
+                                       const TArray<int32> &Triangles,
+                                       bool EnableNanite, bool GenerateDistanceField)
 {
 #if WITH_EDITOR
     if (!Path.StartsWith(TEXT("/Game/Generated/GIS/")) || Vertices.IsEmpty() || Triangles.Num() % 3)
@@ -148,6 +149,17 @@ UStaticMesh *UGeoMeshLibrary::BakeMesh(const FString &Path, const TArray<FVector
     Mesh->SetNumSourceModels(1);
     Mesh->GetSourceModel(0).BuildSettings.bRecomputeNormals = false;
     Mesh->GetSourceModel(0).BuildSettings.bRecomputeTangents = false;
+    // Sector-sized opaque GIS geometry can use Nanite's shadow path. Retain
+    // the complete fallback for complex collision and software Lumen.
+    auto& Nanite=Mesh->GetNaniteSettings();
+    Nanite.bEnabled=EnableNanite;
+    Nanite.bExplicitTangents=true;
+    Nanite.FallbackTarget=ENaniteFallbackTarget::PercentTriangles;
+    Nanite.FallbackPercentTriangles=1.f;
+    Nanite.FallbackRelativeError=0.f;
+    // Open, nearly planar ground is unsuitable for a thick voxelized mesh SDF.
+    // Architectural volumes retain SDFs; this does not disable raster shadows.
+    Mesh->GetSourceModel(0).BuildSettings.DistanceFieldResolutionScale=GenerateDistanceField?1.f:0.f;
     UStaticMesh::FBuildMeshDescriptionsParams Params;
     Params.bBuildSimpleCollision = false;
     Params.bFastBuild = false;

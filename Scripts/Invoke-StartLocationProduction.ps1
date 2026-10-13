@@ -80,6 +80,7 @@ try {
   Invoke-Step 'native-city-details' {Invoke-Editor 'details' 'Scripts/assets/place_city_details.py' 'Saved/CityDetails/placement.ok'}
   Invoke-Step 'native-start-placement' {Invoke-Editor 'placement' 'Scripts/assets/place_start_location.py' 'Saved/StartLocation/placement.ok'}
   Invoke-Step 'native-quality' {Invoke-Editor 'quality' 'Scripts/assets/prepare_start_location_quality.py' 'Saved/StartLocation/quality.ok'}
+  Invoke-Step 'native-rendering-verification' {Invoke-Editor 'rendering-qa' 'Scripts/assets/verify_start_rendering.py' 'Saved/StartLocation/rendering.ok'}
   Invoke-Step 'native-foliage-verification' {Invoke-Editor 'foliage-qa' 'Scripts/assets/verify_start_foliage.py' 'Saved/StartLocation/foliage-qa.ok'}
   Invoke-Step 'native-pbr-verification' {Invoke-Editor 'pbr-qa' 'Scripts/assets/verify_start_pbr.py' 'Saved/StartLocation/pbr.ok'}
   $env:WTG_ASSET_MANIFEST='Data/start_location_qa.json'

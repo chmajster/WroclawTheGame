@@ -12,6 +12,8 @@ Dodać WTG.RealismPerformance w Tests/RealismPerformance.h włączonym przez ist
 ## Stan
 W toku. Osobna gałąź z main. Bez CI. Bez zmian oryginalnego worktree.
 
+Pomiar bazowy PASS 18:08:19 UTC: 92.87 m, 24 odcinki, prawidlowe podloze i kamera; ostrzezenia VSM 0 w logu/delegate. 882 statyczne komponenty, 112 z danymi Nanite, 756 non-Nanite rzucajacych cienie. CPU Ryzen 7800X3D, GPU RTX 5070 Ti. Mean ms game 1.829/render 4.505/RHI 1.594/GPU 3.071; cap60/VSync1, D3D12 1280x720, screenpercentage0(auto). Native kompilacja Nanite/SDF PASS. Nastepny krok: Saved/Realism/regenerate8.ps1 fazy 0-5, potem identyczny pomiar po i archiwum. Bez CI.
+
 # Realizm — punkt 7/10
 
 ## Wykonane

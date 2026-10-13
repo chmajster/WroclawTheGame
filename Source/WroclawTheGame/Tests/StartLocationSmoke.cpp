@@ -22,6 +22,7 @@
 #include "Misc/Paths.h"
 #include "Serialization/JsonSerializer.h"
 #include "Tests/RealismCaptureReady.h"
+#include "Tests/RealismPerformance.h"
 
 // Uses ordinary character movement and the real renderer. No teleports,
 // gameplay transactions, save writes or permanent graphics settings changes.

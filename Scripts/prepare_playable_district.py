@@ -102,7 +102,9 @@ def prepare():
             continue
         name=Path(filename).stem
         asset_path='/Game/Generated/GIS/PlayableDistrict/'+name
-        mesh=unreal.GeoMeshLibrary.bake_mesh(asset_path,[unreal.Vector(*p) for p in record['vertices']],record['triangles'])
+        opaque=record['kind']!='water'
+        volume=record['kind']=='building'
+        mesh=unreal.GeoMeshLibrary.bake_mesh(asset_path,[unreal.Vector(*p) for p in record['vertices']],record['triangles'],opaque,volume)
         if not mesh:
             raise RuntimeError('Mesh generation failed: '+name)
         surface=record.get('material') or {'water':'Water','terrain':'Soil','rail':'Metal','green':'Soil'}.get(record['kind'],'Concrete')
@@ -112,6 +114,14 @@ def prepare():
         else:
             material=unreal.load_asset('/Game/SurfaceQuality/Instances/MI_'+surface) or unreal.load_asset('/Game/Generated/M_'+surface)
         if material:
+            if opaque and not unreal.MaterialEditingLibrary.has_material_usage(material,unreal.MaterialUsage.MATUSAGE_NANITE):
+                if isinstance(material,unreal.MaterialInstanceConstant):
+                    unreal.MaterialEditingLibrary.set_material_usage_override(material,unreal.MaterialUsage.MATUSAGE_NANITE,True,True)
+                    unreal.MaterialEditingLibrary.update_material_instance(material)
+                else:
+                    unreal.MaterialEditingLibrary.set_material_usage(material,unreal.MaterialUsage.MATUSAGE_NANITE)
+                    unreal.MaterialEditingLibrary.recompile_material(material)
+                unreal.EditorAssetLibrary.save_loaded_asset(material,False)
             mesh.set_material(0,material)
         if not unreal.EditorAssetLibrary.save_loaded_asset(mesh,False):
             raise RuntimeError('Cannot save '+asset_path)
