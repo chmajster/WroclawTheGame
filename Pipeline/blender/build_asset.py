@@ -206,6 +206,9 @@ def main() -> None:
 
     manifest_path = resolve(args.manifest)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    sys.path.insert(0,str(ROOT/"Pipeline/qa"))
+    from validate_manifest import validate_manifest
+    validate_manifest(manifest)
     if manifest['type']=='skeletal_mesh':
         import runpy
         runpy.run_path(str(resolve(manifest['skeletal']['generator'])),run_name='__main__')
@@ -218,9 +221,6 @@ def main() -> None:
         folder=ROOT/'Saved/Pipeline/generated'/manifest['id'];folder.mkdir(parents=True,exist_ok=True)
         (folder/'blender-report.json').write_text(json.dumps(report,indent=2))
         return
-    sys.path.insert(0,str(ROOT/"Pipeline/qa"))
-    from validate_manifest import validate_manifest
-    validate_manifest(manifest)
     asset_id = manifest["id"]
     safe_name = "SM_" + "".join(ch if ch.isalnum() or ch == "_" else "_" for ch in asset_id)
     out = ROOT / "Saved" / "Pipeline" / "generated" / asset_id

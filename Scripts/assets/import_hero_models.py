@@ -28,16 +28,16 @@ def expr(material,cls):return EDIT.create_material_expression(material,cls)
 
 
 def vector(material,name,color):
-    n=expr(material,unreal.MaterialExpressionVectorParameter);n.parameter_name=name;n.default_value=unreal.LinearColor(*color,1);return n
+    n=expr(material,unreal.MaterialExpressionVectorParameter);n.set_editor_property('parameter_name',name);n.set_editor_property('default_value',unreal.LinearColor(*color,1));return n
 
 
 def scalar(material,name,value):
-    n=expr(material,unreal.MaterialExpressionScalarParameter);n.parameter_name=name;n.default_value=value;return n
+    n=expr(material,unreal.MaterialExpressionScalarParameter);n.set_editor_property('parameter_name',name);n.set_editor_property('default_value',value);return n
 
 
 def sample(material,tex):
-    n=expr(material,unreal.MaterialExpressionTextureSample);n.texture=tex
-    if tex.get_editor_property('compression_settings')==unreal.TextureCompressionSettings.TC_NORMALMAP:n.sampler_type=unreal.MaterialSamplerType.SAMPLERTYPE_NORMAL
+    n=expr(material,unreal.MaterialExpressionTextureSample);n.set_editor_property('texture',tex)
+    if tex.get_editor_property('compression_settings')==unreal.TextureCompressionSettings.TC_NORMALMAP:n.set_editor_property('sampler_type',unreal.MaterialSamplerType.SAMPLERTYPE_NORMAL)
     return n
 
 
@@ -73,12 +73,16 @@ def materials():
                 mult=expr(mat,unreal.MaterialExpressionMultiply);EDIT.connect_material_expressions(s,'RGB',mult,'A');EDIT.connect_material_expressions(tint,'RGB',mult,'B')
                 if kind=='Skin':
                     div=expr(mat,unreal.MaterialExpressionDivide);EDIT.connect_material_expressions(mult,'',div,'A');EDIT.connect_material_expressions(vector(mat,'SkinReference',(.58,.36,.24)),'RGB',div,'B');color=div
-                elif kind=='Eyes':color=s
+                elif kind=='Eyes':
+                    # Keep white sclera and pupils; recolor only the brown iris.
+                    mask=expr(mat,unreal.MaterialExpressionSubtract);EDIT.connect_material_expressions(s,'R',mask,'A');EDIT.connect_material_expressions(s,'B',mask,'B')
+                    iris=expr(mat,unreal.MaterialExpressionLinearInterpolate);EDIT.connect_material_expressions(s,'RGB',iris,'A');EDIT.connect_material_expressions(mult,'',iris,'B');EDIT.connect_material_expressions(mask,'',iris,'Alpha');color=iris
                 else:color=mult
             else:
                 dot=expr(mat,unreal.MaterialExpressionDesaturation);EDIT.connect_material_expressions(s,'RGB',dot,'Input')
+                EDIT.connect_material_expressions(scalar(mat,'Desaturation',1),'',dot,'Fraction')
                 mult=expr(mat,unreal.MaterialExpressionMultiply);EDIT.connect_material_expressions(dot,'',mult,'A');EDIT.connect_material_expressions(tint,'RGB',mult,'B');color=mult
-        EDIT.connect_material_property(color,'RGB' if color in [tint] or kind=='Eyes' else '',unreal.MaterialProperty.MP_BASE_COLOR)
+        EDIT.connect_material_property(color,'RGB' if color==tint else '',unreal.MaterialProperty.MP_BASE_COLOR)
         EDIT.connect_material_property(scalar(mat,'Roughness',rough),'',unreal.MaterialProperty.MP_ROUGHNESS)
         EDIT.connect_material_property(scalar(mat,'Specular',.3 if kind=='Skin' else .4),'',unreal.MaterialProperty.MP_SPECULAR)
         if normal:EDIT.connect_material_property(sample(mat,normal),'RGB',unreal.MaterialProperty.MP_NORMAL)
@@ -97,6 +101,7 @@ def materials():
 
 
 def prepare(manifest):
+    unreal.SystemLibrary.execute_console_command(None,'Interchange.FeatureFlags.Import.FBX 0')
     out=ROOT/'Saved/Pipeline/import';out.mkdir(parents=True,exist_ok=True)
     marker=out/(manifest['id']+'.ok');marker.unlink(missing_ok=True)
     for record in json.loads((ROOT/manifest['skeletal']['sources']).read_text())['assets']:
@@ -104,7 +109,12 @@ def prepare(manifest):
             raise RuntimeError('Source hash mismatch: '+record['path'])
     mats=materials();metadata=json.loads((ROOT/manifest['skeletal']['geometry']).read_text());meshes={};reports=[]
     editor=unreal.get_editor_subsystem(unreal.SkeletalMeshEditorSubsystem)
-    skeleton=None
+    skeleton=unreal.load_asset(DEST+'/SK_CivilianSkeleton')
+    if not skeleton:
+        existing_body=unreal.load_asset(DEST+'/Meshes/SK_Civilian_Body')
+        if existing_body:
+            skeleton=unreal.LocomotionAssetLibrary.create_civilian_skeleton(existing_body)
+            if not skeleton:raise RuntimeError('Civilian skeleton creation failed')
     for record in metadata['assets']:
         source=ROOT/record['fbx']
         if hashlib.sha256(source.read_bytes()).hexdigest()!=record['fbx_sha256']:raise RuntimeError('Stale export '+record['id'])
@@ -114,11 +124,15 @@ def prepare(manifest):
         options.import_materials=False;options.import_textures=False;options.import_animations=False
         options.mesh_type_to_import=unreal.FBXImportType.FBXIT_SKELETAL_MESH;options.automated_import_should_detect_type=False
         options.create_physics_asset=record['kind']=='body'
-        data=options.get_editor_property('skeletal_mesh_import_data');data.import_morph_targets=True;data.morph_threshold_position=.0001
-        data.normal_import_method=unreal.FBXNormalImportMethod.FBXNIM_IMPORT_NORMALS
+        data=options.get_editor_property('skeletal_mesh_import_data');data.set_editor_property('import_morph_targets',True);data.set_editor_property('morph_threshold_position',.0001)
+        data.set_editor_property('normal_import_method',unreal.FBXNormalImportMethod.FBXNIM_IMPORT_NORMALS)
+        data.set_editor_property('import_content_type',unreal.FBXImportContentType.FBXICT_ALL)
+        options.set_editor_property('original_import_type',unreal.FBXImportType.FBXIT_SKELETAL_MESH)
         if skeleton:options.skeleton=skeleton
         if existing:
-            stored=existing.get_editor_property('asset_import_data');stored.import_morph_targets=True;stored.morph_threshold_position=.0001
+            if not unreal.LocomotionAssetLibrary.configure_civilian_lod_settings(existing,skeleton):raise RuntimeError('Existing rig setup failed '+name)
+            stored=existing.get_editor_property('asset_import_data');stored.set_editor_property('import_morph_targets',True);stored.set_editor_property('morph_threshold_position',.0001)
+            stored.set_editor_property('import_content_type',unreal.FBXImportContentType.FBXICT_ALL)
             if editor.import_lod(existing,0,str(source))!=0:raise RuntimeError('Reimport failed '+name)
             mesh=existing
         else:
@@ -126,21 +140,32 @@ def prepare(manifest):
             task.automated=True;task.replace_existing=True;task.save=True;task.options=options;task.factory=unreal.FbxFactory()
             TOOLS.import_asset_tasks([task]);mesh=unreal.load_asset(path)
         if not isinstance(mesh,unreal.SkeletalMesh):raise RuntimeError('Missing native mesh '+name)
-        if not skeleton:skeleton=mesh.skeleton
-        if mesh.skeleton!=skeleton:raise RuntimeError('Skeleton mismatch '+name)
-        slots=list(mesh.materials)
+        if not skeleton:skeleton=mesh.get_editor_property('skeleton')
+        if not skeleton:
+            skeleton=unreal.LocomotionAssetLibrary.create_civilian_skeleton(mesh)
+        if not unreal.LocomotionAssetLibrary.configure_civilian_lod_settings(mesh,skeleton):raise RuntimeError('Rig/LOD settings failed '+name)
+        if mesh.get_editor_property('skeleton')!=skeleton:raise RuntimeError('Skeleton mismatch '+name)
+        slots=list(mesh.get_editor_property('materials'))
         for slot in slots:
-            role=str(slot.material_slot_name);slot.material_interface=mats[role if role in mats else 'Skin']
-        mesh.materials=slots
-        if editor.get_lod_count(mesh)<3 and not editor.regenerate_lod(mesh,3,False,False):raise RuntimeError('LOD generation failed '+name)
+            role=str(slot.get_editor_property('material_slot_name'));slot.set_editor_property('material_interface',mats[role if role in mats else 'Skin'])
+        mesh.set_editor_property('materials',slots)
+        if not editor.regenerate_lod(mesh,3,True,False):raise RuntimeError('LOD generation failed '+name)
         unreal.EditorAssetLibrary.save_loaded_asset(mesh,False)
         names=[m.get_name() for m in mesh.get_editor_property('morph_targets')]
+        unreal.log('WTG_HERO_IMPORTED_MORPHS '+name+' '+json.dumps(names))
         for morph in record['morphs']:
             if not any(n==morph['name'] or n.endswith('_'+morph['name']) for n in names):raise RuntimeError('Missing morph '+morph['name'])
         meshes[record['id']]=mesh;reports.append(dict(id=record['id'],mesh=mesh.get_path_name(),lods=editor.get_lod_count(mesh),morphs=names))
     catalog=unreal.load_asset(DEST+'/DA_CivilianAppearance')
+    unreal.EditorAssetLibrary.save_loaded_asset(skeleton,False)
     if not catalog:catalog=unreal.EditorAssetLibrary.duplicate_asset('/Game/CharacterCreator/DA_CharacterAppearanceCatalog',DEST+'/DA_CivilianAppearance')
     bodies=list(catalog.bodies);body=next(b for b in bodies if str(b.id)=='Male.Standard');hero=meshes['male_Body']
+    physics=hero.get_editor_property('physics_asset')
+    if not physics:
+        physics=unreal.LocomotionAssetLibrary.create_civilian_physics(hero)
+        if not physics:raise RuntimeError('Native body physics asset creation failed')
+        hero.set_editor_property('physics_asset',physics)
+        unreal.EditorAssetLibrary.save_loaded_asset(physics,False);unreal.EditorAssetLibrary.save_loaded_asset(hero,False)
     original=next(b for b in unreal.load_asset('/Game/CharacterCreator/DA_CharacterAppearanceCatalog').bodies if str(b.id)=='Male.Standard')
     animation_cache={}
     def animation(source):
@@ -175,7 +200,7 @@ def prepare(manifest):
     if errors:raise RuntimeError('\n'.join(errors))
     if not unreal.EditorAssetLibrary.save_loaded_asset(catalog,False):raise RuntimeError('Catalog save failed')
     report=dict(asset_id=manifest['id'],status='PASS',type='skeletal_mesh',meshes=reports,mesh=hero.get_path_name(),
-                skeleton=skeleton.get_path_name(),catalog=catalog.get_path_name(),animations=[a.get_path_name() for a in animation_cache.values()])
+                skeleton=skeleton.get_path_name(),physics_asset=physics.get_path_name(),catalog=catalog.get_path_name(),animations=[a.get_path_name() for a in animation_cache.values()])
     (out/(manifest['id']+'.json')).write_text(json.dumps(report,indent=2));marker.write_text('PASS\n')
     unreal.log('WTG_HERO_NATIVE_PASS '+str(len(reports)))
     return report

@@ -97,8 +97,12 @@ def save_export(o,rig,sex,kind):
     folder=OUT/sex;folder.mkdir(exist_ok=True)
     bpy.ops.object.select_all(action='DESELECT');o.select_set(True);rig.select_set(True);bpy.context.view_layer.objects.active=o
     fbx=EXPORT/f'{sex}_{o.name}.fbx'
+    # UE's FBX importer strips a mesh-name prefix from blendshapes. A mesh named
+    # Body makes Body_Shoulders become Shoulders; keep gameplay morph IDs intact.
+    object_name=o.name;data_name=o.data.name;o.name='WTG_'+object_name;o.data.name='WTG_'+data_name
     bpy.ops.export_scene.fbx(filepath=str(fbx),use_selection=True,object_types={'MESH','ARMATURE'},add_leaf_bones=False,
         bake_anim=False,use_mesh_modifiers=False,mesh_smooth_type='FACE',axis_forward='-Y',axis_up='Z')
+    o.name=object_name;o.data.name=data_name
     vertices=len(o.data.vertices);morphs=[]
     if o.data.shape_keys:
         base=np.array([v.co[:] for v in o.data.shape_keys.key_blocks[0].data])

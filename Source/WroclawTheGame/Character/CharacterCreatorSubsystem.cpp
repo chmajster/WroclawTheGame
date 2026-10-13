@@ -88,6 +88,15 @@ TArray<FString> UCharacterCreatorValidator::ValidateCatalog(UCharacterAppearance
         {
             if (P.LODProfile<0) Errors.Add(TEXT("Invalid LOD: ")+P.ID.ToString());
             for (auto Tag:P.ClothingCompatibilityTags) if (!C->Bodies.ContainsByPredicate([&](const auto& B){return B.CompatibilityTag==Tag;})) Errors.Add(TEXT("Unknown body tag: ")+Tag.ToString());
+            if (CheckAssets) for (const auto& Override:P.BodyMeshes)
+            {
+                const auto* Body=C->Body(Override.Key);
+                auto* PartMesh=Override.Value.LoadSynchronous();
+                auto* BodyMesh=Body?Body->Mesh.LoadSynchronous():nullptr;
+                if (!BodyMesh || !PartMesh || BodyMesh->GetSkeleton()!=PartMesh->GetSkeleton())
+                    Errors.Add(TEXT("Body-specific part skeleton mismatch: ")+P.ID.ToString()+TEXT(" / ")+Override.Key.ToString());
+                else if (PartMesh->GetLODNum()<2) Errors.Add(TEXT("Missing body-specific part LOD: ")+P.ID.ToString());
+            }
             if (!CheckAssets || P.bPlaceholder || P.ID==TEXT("None")) continue;
             auto* Mesh=P.Mesh.LoadSynchronous(); auto* Static=P.StaticMesh.LoadSynchronous();
             if (!Mesh && !Static) Errors.Add(TEXT("Missing mesh: ")+P.ID.ToString());

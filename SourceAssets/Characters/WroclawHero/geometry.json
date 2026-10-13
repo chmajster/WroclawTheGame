@@ -194,7 +194,7 @@
         "Hands"
       ],
       "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
-      "fbx_sha256": "e9973ebc0188ac3b57096b18da4e040fb5d2415562125598a472806e6d66a328"
+      "fbx_sha256": "27ae933747939d13836807561893e535be73e89d052d17bc0b7f72080271cc36"
     },
     {
       "id": "male_Shirt",
@@ -251,7 +251,7 @@
         "Shirt"
       ],
       "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
-      "fbx_sha256": "00396f17a866e0589935853e52bafc486dcfba5c592ee288dcd9bd6005ccf20e"
+      "fbx_sha256": "040728f6ed710b83a5b7e59ddedf48083e3934f931580c5adcd146bd2c7f2784"
     },
     {
       "id": "male_Trousers",
@@ -308,7 +308,7 @@
         "Denim"
       ],
       "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
-      "fbx_sha256": "0bd3f598959442c2c9fc79b45c5a2c5f899e240c545da4b0094a6c906bc8800d"
+      "fbx_sha256": "9644ef765ce1eac5d4affe06fa9a8c2a713a3c84407dc9e1b1702859e5799972"
     },
     {
       "id": "male_Shoes",
@@ -345,7 +345,7 @@
         "Shoe"
       ],
       "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
-      "fbx_sha256": "27c70e759e3c17c0d1873f255edb6b137e355187164bdac2e2cb1422732ee1f6"
+      "fbx_sha256": "1d1bda54b41024348bcb17e4b6f39f6da0feba7839e3d2f641daea30d0b9d721"
     },
     {
       "id": "male_HairShort",
@@ -452,7 +452,7 @@
         "Hair"
       ],
       "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
-      "fbx_sha256": "124b290ad8d0bf3e562156fe92d0ddb41612bf0d7935f98be116c3185b85b676"
+      "fbx_sha256": "31188ec10f6aaee06caa58712a1029940ed12d2a765c141727af7091ab510685"
     },
     {
       "id": "male_BrowsNatural",
@@ -549,7 +549,7 @@
         "Brows"
       ],
       "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
-      "fbx_sha256": "65fac94f6ee7b1b2f36ea186cae326f60c2d7a9d12cf8b20acb693538249bc98"
+      "fbx_sha256": "bcf6386c35619d856db5e847e1428119c18c9c2d7a181dd430ed3773f8702b58"
     },
     {
       "id": "male_Backpack",
@@ -606,7 +606,7 @@
         "Pack"
       ],
       "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
-      "fbx_sha256": "04101138dc765b2c8695f4e419ee6ada5fc31c67a2db6bf0a329e73b9f5bb3f9"
+      "fbx_sha256": "88cd89caca2a9b6cbaf200d10d4fb302d02a899c6848390d0f455827d5fce017"
     }
   ]
 }

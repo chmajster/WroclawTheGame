@@ -6,6 +6,8 @@
 #include "Animation/AnimData/IAnimationDataModel.h"
 #include "Animation/AnimData/IAnimationDataController.h"
 #if WITH_EDITOR
+#include "PhysicsAssetUtils.h"
+#include "PhysicsEngine/PhysicsAsset.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "Misc/PackageName.h"
 #include "UObject/Package.h"
@@ -61,6 +63,72 @@ UBlendSpace1D* ULocomotionAssetLibrary::BakeLocomotion(const FString& Path,USkel
 #endif
 }
 
+USkeleton* ULocomotionAssetLibrary::CreateCivilianSkeleton(USkeletalMesh* Mesh)
+{
+#if WITH_EDITOR
+    if(!Mesh || !Mesh->GetRefSkeleton().GetNum())return nullptr;
+    const FString Path=TEXT("/Game/Wroclaw/Hero/SK_CivilianSkeleton");
+    auto* Skeleton=LoadObject<USkeleton>(nullptr,*Path);
+    if(!Skeleton)
+    {
+        Skeleton=NewObject<USkeleton>(CreatePackage(*Path),TEXT("SK_CivilianSkeleton"),RF_Public|RF_Standalone);
+        if(!Skeleton->MergeAllBonesToBoneTree(Mesh))return nullptr;
+        FAssetRegistryModule::AssetCreated(Skeleton);
+    }
+    Mesh->SetSkeleton(Skeleton);Skeleton->MarkPackageDirty();Mesh->MarkPackageDirty();return Skeleton;
+#else
+    return nullptr;
+#endif
+}
+
+UPhysicsAsset* ULocomotionAssetLibrary::CreateCivilianPhysics(USkeletalMesh* Mesh)
+{
+#if WITH_EDITOR
+    if(!Mesh)return nullptr;
+    if(Mesh->GetPhysicsAsset())return Mesh->GetPhysicsAsset();
+    const FString Path=TEXT("/Game/Wroclaw/Hero/PHYS_Civilian");
+    auto* Physics=LoadObject<UPhysicsAsset>(nullptr,*Path);
+    if(!Physics)
+    {
+        Physics=NewObject<UPhysicsAsset>(CreatePackage(*Path),TEXT("PHYS_Civilian"),RF_Public|RF_Standalone);
+        FPhysAssetCreateParams Params;FText Error;
+        if(!FPhysicsAssetUtils::CreateFromSkeletalMesh(Physics,Mesh,Params,Error,true))
+        {UE_LOG(LogTemp,Error,TEXT("Civilian physics: %s"),*Error.ToString());return nullptr;}
+        FAssetRegistryModule::AssetCreated(Physics);
+    }
+    Mesh->SetPhysicsAsset(Physics);Physics->MarkPackageDirty();Mesh->MarkPackageDirty();return Physics;
+#else
+    return nullptr;
+#endif
+}
+
+bool ULocomotionAssetLibrary::ConfigureCivilianLodSettings(USkeletalMesh* Mesh,USkeleton* Skeleton)
+{
+#if WITH_EDITOR
+    if (!Mesh || !Skeleton || !Mesh->GetLODInfo(0)) return false;
+    Mesh->Modify();
+    Mesh->SetSkeleton(Skeleton);
+    if(!Skeleton->MergeAllBonesToBoneTree(Mesh))return false;
+    Skeleton->MarkPackageDirty();
+    while (Mesh->GetLODNum()<3) Mesh->AddLODInfo();
+    for (int32 Index=0;Index<3;++Index)
+    {
+        auto* Info=Mesh->GetLODInfo(Index);
+        Info->ScreenSize=Index==0?1.f:(Index==1?.20f:.065f);
+        Info->ReductionSettings.BaseLOD=0;
+        Info->ReductionSettings.TerminationCriterion=SMTC_NumOfTriangles;
+        Info->ReductionSettings.NumOfTrianglesPercentage=Index==0?1.f:(Index==1?.65f:.35f);
+        Info->ReductionSettings.bRemapMorphTargets=true;
+        Info->ReductionSettings.bRecalcNormals=false;
+        Info->ReductionSettings.MaxBonesPerVertex=4;
+    }
+    Mesh->MarkPackageDirty();
+    return true;
+#else
+    return false;
+#endif
+}
+
 bool ULocomotionAssetLibrary::RetargetCivilianAnimation(UAnimationAsset *Animation, USkeletalMesh *Mesh,
                                                              UAnimationAsset *Source)
 {
@@ -73,12 +141,25 @@ bool ULocomotionAssetLibrary::RetargetCivilianAnimation(UAnimationAsset *Animati
     {
         auto *Input = Cast<UAnimSequence>(Source ? Source : Animation);
         if (!Input || !Input->GetSkeleton())
+        {
+            UE_LOG(LogTemp,Error,TEXT("Civilian retarget: source animation/skeleton missing"));
             return false;
+        }
         const auto Model = Input->GetDataModelInterface();
         if (!Model)
+        {
+            UE_LOG(LogTemp,Error,TEXT("Civilian retarget: source data model missing"));
             return false;
+        }
         const auto &SourceRef = Input->GetSkeleton()->GetReferenceSkeleton();
         const auto &TargetRef = Mesh->GetRefSkeleton();
+        for (int32 Bone=0;Bone<TargetRef.GetNum();++Bone)
+            if (SourceRef.FindBoneIndex(TargetRef.GetBoneName(Bone))==INDEX_NONE && TargetRef.GetParentIndex(Bone)!=INDEX_NONE)
+            {
+                UE_LOG(LogTemp,Error,TEXT("Civilian retarget source lacks bone %s"),*TargetRef.GetBoneName(Bone).ToString());
+                return false;
+            }
+        Sequence->SetSkeleton(Mesh->GetSkeleton());
         auto &Controller = Sequence->GetController();
         Controller.OpenBracket(FText::FromString(TEXT("Civilian component-space reference conversion")), false);
         bool Changed = true;
@@ -92,19 +173,23 @@ bool ULocomotionAssetLibrary::RetargetCivilianAnimation(UAnimationAsset *Animati
         {
             const FName Name = TargetRef.GetBoneName(Bone);
             const int32 SourceBone = SourceRef.FindBoneIndex(Name);
+            const int32 Parent = TargetRef.GetParentIndex(Bone);
+            TargetBind[Bone] = Parent == INDEX_NONE ? TargetRef.GetRefBonePose()[Bone]
+                                                    : TargetRef.GetRefBonePose()[Bone] * TargetBind[Parent];
             if (SourceBone == INDEX_NONE)
+            {
+                SourceBind[Bone]=FTransform::Identity;
                 continue;
+            }
             Model->GetBoneTrackTransforms(Name, Tracks[Bone]);
             FrameCount = FMath::Max(FrameCount, Tracks[Bone].Num());
-            const int32 Parent = TargetRef.GetParentIndex(Bone);
             const FTransform Authoring = Bone == 0 && !Tracks[Bone].IsEmpty()
                                              ? Tracks[Bone][0]
                                              : SourceRef.GetRefBonePose()[SourceBone];
             SourceBind[Bone] = Parent == INDEX_NONE ? Authoring : Authoring * SourceBind[Parent];
-            TargetBind[Bone] = Parent == INDEX_NONE ? TargetRef.GetRefBonePose()[Bone]
-                                                    : TargetRef.GetRefBonePose()[Bone] * TargetBind[Parent];
         }
         TArray<TArray<FTransform>> Converted;
+        UE_LOG(LogTemp,Display,TEXT("Civilian retarget source=%s frames=%d bones=%d"),*Input->GetPathName(),FrameCount,TargetRef.GetNum());
         Converted.SetNum(TargetRef.GetNum());
         for (int32 Frame = 0; Frame < FrameCount; ++Frame)
         {
@@ -115,8 +200,11 @@ bool ULocomotionAssetLibrary::RetargetCivilianAnimation(UAnimationAsset *Animati
             {
                 const int32 Parent = TargetRef.GetParentIndex(Bone),
                             SourceBone = SourceRef.FindBoneIndex(TargetRef.GetBoneName(Bone));
-                if (SourceBone == INDEX_NONE)
-                    return false;
+                if(SourceBone==INDEX_NONE)
+                {
+                    SourcePose[Bone]=FTransform::Identity;TargetPose[Bone]=TargetBind[Bone];
+                    Converted[Bone].Add(TargetRef.GetRefBonePose()[Bone]);continue;
+                }
                 const FTransform Local = Tracks[Bone].IsEmpty()
                                              ? SourceRef.GetRefBonePose()[SourceBone]
                                              : Tracks[Bone][FMath::Min(Frame, Tracks[Bone].Num() - 1)];
@@ -144,7 +232,9 @@ bool ULocomotionAssetLibrary::RetargetCivilianAnimation(UAnimationAsset *Animati
             const FName Name = TargetRef.GetBoneName(Bone);
             if (Tracks[Bone].IsEmpty())
                 Controller.AddBoneTrack(Name, false);
-            Changed &= Controller.SetBoneTrackKeys(Name, Positions, Rotations, Scales, false);
+            const bool TrackChanged=Controller.SetBoneTrackKeys(Name, Positions, Rotations, Scales, false);
+            if(!TrackChanged)UE_LOG(LogTemp,Error,TEXT("Civilian retarget cannot set %s (%d frames)"),*Name.ToString(),Positions.Num());
+            Changed &= TrackChanged;
         }
         Controller.CloseBracket(false);
         if (!Changed)

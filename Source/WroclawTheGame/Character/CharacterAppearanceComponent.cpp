@@ -184,9 +184,10 @@ void UCharacterAppearanceComponent::Render()
             }
         }
         auto Attach=[&](FName Role,const FAppearancePartDefinition* P,FLinearColor Color) {
-            if (!P || P->ID==TEXT("None") || (P->bPlaceholder && !P->Mesh.Get() && !P->StaticMesh.Get())) return;
+            if (!P || P->ID==TEXT("None")) return;
             const auto* Override=P->BodyMeshes.Find(Appearance.BodyPreset);
             USkeletalMesh* PartMesh=Override?Override->Get():P->Mesh.Get();
+            if (P->bPlaceholder && !PartMesh && !P->StaticMesh.Get()) return;
             const FName Key(*(Role.ToString()+TEXT(":")+P->ID.ToString()+TEXT(":")+Appearance.BodyPreset.ToString()));
             UMeshComponent* Part=CachedParts.FindRef(Key);
             if (!Part && PartMesh)
