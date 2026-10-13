@@ -24,7 +24,7 @@ def main():
             manifest['mesh']['max_triangles']=512
             manifest['dimensions']={'height_m':round(asset['bounds_m'][2],6)}
             for binding in manifest['materials']:binding['asset']='/Game/Wroclaw/StartLocation/Materials/MI_CurbConcrete'
-        if asset['asset']=='modern-lamp':
+        if asset['asset']=='modern-lamp' or building:
             for binding,name in zip(manifest['materials'],asset['materials']):
                 if name=='Metal':binding['asset']='/Game/Wroclaw/StartLocation/Materials/MI_CoatedMetal'
         if asset['area']=='Vegetation':manifest['lod']['preserve_leaf_cards']=True

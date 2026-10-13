@@ -1,0 +1,32 @@
+{
+  "Grass": {
+    "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/grass_ground_BC.grass_ground_BC",
+    "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+    "srgb": true
+  },
+  "Roof": {
+    "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/roof_tiles_14_BC.roof_tiles_14_BC",
+    "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+    "srgb": true
+  },
+  "Stone": {
+    "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/sandstone_cracks_BC.sandstone_cracks_BC",
+    "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+    "srgb": true
+  },
+  "Plaster": {
+    "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/painted_plaster_wall_BC.painted_plaster_wall_BC",
+    "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+    "srgb": true
+  },
+  "Asphalt": {
+    "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/asphalt_03_BC.asphalt_03_BC",
+    "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+    "srgb": true
+  },
+  "Pavement": {
+    "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/concrete_pavement_03_BC.concrete_pavement_03_BC",
+    "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+    "srgb": true
+  }
+}

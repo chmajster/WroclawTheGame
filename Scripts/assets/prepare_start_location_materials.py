@@ -72,7 +72,7 @@ def prepare():
         if not instance:instance=tools.create_asset('MI_'+name,DEST,unreal.MaterialInstanceConstant,unreal.MaterialInstanceConstantFactoryNew())
         edit.set_material_instance_parent(instance,material)
         if name in {'Stone','Roof','Grass'}:
-            tint={'Stone':(.82,.80,.75),'Roof':(.48,.40,.34),'Grass':(.55,.82,.38)}[name]
+            tint={'Stone':(.82,.80,.75),'Roof':(.48,.40,.34),'Grass':(.35,.52,.34)}[name]
             edit.set_material_instance_vector_parameter_value(instance,'Tint',unreal.LinearColor(*tint,1))
         for usage in [unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES,unreal.MaterialUsage.MATUSAGE_NANITE]:edit.set_material_usage_override(instance,usage,True,True)
         edit.update_material_instance(instance)
