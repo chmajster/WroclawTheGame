@@ -17,20 +17,20 @@ Punkt 1 zakończony. Całe zadanie w toku. Nie uruchamiano CI. Oryginalny screen
 # Kreator postaci — bieżący stan
 
 ## Wykonane
-2/3: UI i studio
+3/3: personalizacja
 
-Trzy panele16/56/28,13 kategorii z ikonami i animacją, kontekstowe edytory, palety, działające podsumowanie i istniejący zapis/menu. Usunięto przyczynę białego targetu: izolacja kanałów widoku/światła i atmosfery, fizyczna ekspozycja. Skalowanie i kadrowanie zależne od panelu, płynny obrót/zoom i animacja kości przy pauzie.
+Pozyskano39 przypiętych plików graficznych/licencyjnych CC0 MakeHuman. Blender rzeczywiście wygenerował42 rigowane siatki:2 ciała,16 ubrań,18 włosów/brwi/zarostów i6 akcesoriów. Dwa edytowalne blendy,32 rzeczywiste kształty twarzy/sylwetki, materiały/UV oraz eksportFBX. Wdrożono zmianę siatki części dla płci, przenoszenie morphów na ubiór i grupowanie historii suwaków.
 
-Sprawdzenia i ograniczenia: UE native build PASS. Rzeczywisty CreatorSmoke1280x720 i1920x1080 exit0, szkic zgodny, model widoczny, idle działa; obrazy obejrzane. Obraz1080 archiwizowany. Baza i garderoba przed strumieniem3 mają dotychczasowe ograniczenia; nie deklarujemy gotowej personalizacji.
+Sprawdzenia i ograniczenia: 39 źródeł: przypięty Gitblob i długości PASS. Blender generator exit0,42 eksporty; metadane kształtów zawierają liczbę zmienionych wierzchołków i przemieszczenie. Native import/materiały i końcowe testy jeszcze niewykonane.
 
 ## Do zrobienia
-W strumieniu2 nic. Całe zadanie: strumień3 siatki/morphy/ubiór/materiały i kontrola zapisu/gry.
+Native import42 siatek i materiałów, katalog/miniatury, podłączenie nowych możliwości do UI, kompilacja oraz sprawdzenia modelu/zapisu/świata.
 
 ## Następny krok
-Po scaleniu utworzyć gałąź z main dla strumienia3. Pozyskać przypięte CC0 MakeHuman base/targets; Blender generator dopasowany do istniejącego riggu, import i funkcjonalna personalizacja.
+Scripts/assets/import_creator_models.py: importFBX do Advanced z morphami,3LOD i wspólnym szkieletem; utworzyć materiały parametryczne i zaktualizować katalog. Dokończyć suwaki/transakcje i native QA.
 
 ## Stan
-UI i studio zakończone; całe zadanie nadal w toku. Nie uruchamiano ani nie oczekiwano na CI.
+W toku. Nie uruchamiano ani nie oczekiwano na CI.
 
 Pełny raport: docs/CHARACTER-CREATOR-REBUILD.md.
 

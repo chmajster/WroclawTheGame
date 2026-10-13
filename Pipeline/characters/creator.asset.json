@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "type": "skeletal_character_set",
+  "source_catalog": "Data/creator_source_catalog.json",
+  "morph_definitions": "Data/creator_morphs.json",
+  "source_generator": "Scripts/assets/build_creator_models.py",
+  "source_models": "SourceAssets/Characters/WroclawCreator/geometry.json",
+  "native_importer": "Scripts/assets/import_creator_models.py",
+  "destination": "/Game/CharacterCreator/Advanced",
+  "skeleton": "existing Quaternius bone names and rest rig",
+  "lod_count": 3,
+  "collision": "existing player capsule; modular garments noncolliding",
+  "qa": ["WTG.CharacterCreator", "WTG.CreatorSmoke"]
+}

@@ -37,6 +37,8 @@ public:
     UFUNCTION(BlueprintCallable) void BeginCreation();
     UFUNCTION(BlueprintCallable) void Cancel();
     UFUNCTION(BlueprintCallable) void Change(const FCharacterAppearanceDefinition& Appearance);
+    void BeginInteraction();
+    void EndInteraction();
     UFUNCTION(BlueprintCallable) void Undo();
     UFUNCTION(BlueprintCallable) void Redo();
     UFUNCTION(BlueprintCallable) void ResetCategory(EAppearanceCategory Category);
@@ -52,4 +54,6 @@ public:
 private:
     UPROPERTY() TArray<FAppearanceChange> History;
     int32 Cursor = 0;
+    bool Interacting=false;
+    FCharacterAppearanceDefinition InteractionStart;
 };
