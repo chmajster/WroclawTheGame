@@ -3,38 +3,46 @@
 PR: https://github.com/chmajster/WroclawTheGame/pull/166
 
 ## Wykonane
-Siedem ważonych siatek: anatomia MakeHuman z oczami, dopasowana koszula i spodnie
-z oficjalnej paczki, buty, maskowane włosy short02, brwi oraz własny plecak.
-32 morphy ciała i twarzy; ubranie ma wewnętrzne powierzchnie i obszycia.
-Źródłowy .blend, generator, metadane i 84 sprawdzone wpisy pochodzenia/CC0.
-Manifest Pipeline/assets/player/civilian.asset.json korzysta z istniejącego
-punktu wejścia Blendera i natywnego importera, rozszerzonych o skeletal_mesh.
-Przestrzeń /Game/Wroclaw/Hero i osobny katalog wyglądu chronią istniejący
-katalog kreatora. Części zależą od BodyPreset, bufor uwzględnia ciało.
-Materiał oczu zachowuje własny shader; druga warstwa tej samej koszuli nie jest
-rysowana pod koszulą w slocie Outerwear. Istniejąca kapsuła i systemy gry pozostają.
+Cywilny bohater na rzeczywistym graczu Nadodrze_Playable: anatomia MakeHuman
+z oczami, ciemna koszula, szare spodnie, buty, krótkie włosy, brwi i plecak.
+Siedem ważonych siatek, 71724 trójkąty, 32 rzeczywiste morphy ciała i twarzy,
+trzy LOD (65%/35%, remap morphów), wspólny 65-kościowy szkielet i Physics Asset.
+Ubranie ma wewnętrzne powierzchnie i obszycia; plecak panele, kieszeń, uchwyt,
+szwy oraz paski związane z tułowiem. Wersjonowane źródła .blend, FBX pipeline,
+tekstury i manifest. 84 wpisy pochodzenia z SHA256 i osobnymi decyzjami o użyciu
+w grze / publicznym repo; szczegóły w docs/CIVILIAN-ASSET-CREDITS.md.
+
+Osobny katalog /Game/Wroclaw/Hero/DA_CivilianAppearance jest wybierany przez
+istniejący subsystem. BodyMeshes wiążą części z ciałem; materiał oczu zachowuje
+własny shader. Nie rysujemy dwóch identycznych koszul. Oryginalny katalog,
+architektura kreatora, kapsuła i źródłowe animacje Quaternius są zachowane.
+Osobne pochodne sześciu klipów oraz blendspace mają retarget rotacji w przestrzeni
+komponentu i zachowują długości kości celu. Generator poprawnie obejmuje końce
+palców w konwersji A/T-pose i kontroluje anatomiczne długości paliczków.
+
+Materiały mają wymagane usage flags, skórę z subsurface, maskowane włosy,
+normalne ubrań/butów, subtelny splot plecaka i poprawne sRGB. Import sprawdza
+każde połączenie shaderów zamiast ignorować odrzucone piny.
 
 ## Sprawdzenia i ograniczenia
-Rzeczywisty Blender 5.2.2: PASS, 71724 trójkąty wszystkich siedmiu siatek.
-Manifest i build C++: PASS. Natywny import UE 5.8.2: PASS, siedem siatek,
-trzy LOD każdej, 32 morphy ciała, wspólny 65-kościowy szkielet, Physics Asset,
-sześć osobnych retargetowanych klipów i blendspace. Redukcje 65%/35%, progi
-0.20/0.065 i remap morphów. Naprawiono usuwanie prefiksu morphów przez importer
-FBX oraz brak przypisania szkieletu. Źródłowe animacje Quaternius są zachowane.
-Tworzenie szkieletu i Physics Asset używa narzędzi silnika bez dialogów.
-Licencja danych graficznych MakeHuman jest osobna od licencji jego aplikacji;
-nie skopiowano kodu MakeHuman. Pochodzenie istniejącego rigu/animacji Quaternius
-jest w docs/FREE_CHARACTER_ANIMATION_ASSETS.md.
+Blender 5.2.2, manifest, build C++ i natywny import UE 5.8.2: PASS.
+Rzeczywisty renderer D3D12/SM6: pięć ujęć gracza (przód, tył, twarz, ubranie,
+plecak), 1280x720; siedem widocznych siatek, bez błędów kompilacji materiałów
+i brakujących flags MorphTargets. Dowody: docs/qa/realism-2026-10-13/hero.
+Powtórny import: 37 zasobów przed i po, zero nowych ścieżek, PASS.
+Naprawiono błędy odkryte w rendererze: szare materiały domyślne, rozciągane
+boki koszuli, palce i paski. Nie deklarujemy fotorealizmu.
+Widoczny VSM marking queue overflow i geometria otoczenia pozostają pracą
+punktów 4–8; Foot IK i naturalniejsza animacja spoczynku należą do punktu 3.
 
 ## Do zrobienia
-Ocena pięciu rzeczywistych kadrów na mapie startowej, poprawa ujawnionych problemów
-materiałów/dopasowania/deformacji. Powtórzenie importu i kontrola braku duplikatów.
+Brak w zakresie punktu 2.
 
 ## Następny krok
-Sprawdzić Saved/Realism/hero-game.log, Saved/Realism/Hero/integration.json
-i pięć PNG z WTG.CivilianHeroSmoke. Poprawić konkretny problem w generatorze,
-importerze lub renderowaniu części i ponowić manifest. Foot IK i dalsza praca
-animacji należą do punktu 3.
+Po scaleniu utworzyć z main gałąź punktu 3. W Character/CivilianAnimInstance
+dodać runtime locomotion i Foot IK, autorski neutralny idle oraz sprawdzenie
+chodu, sprintu, obrotu, kucania, skoku i kamery na Nadodrze_Playable.
 
 ## Stan
-W toku. Nie uruchamiano CI. Nie naruszono niezatwierdzonych zmian PR #164.
+Ukończony punkt 2. Punkty 3–10 pozostają w zakresie całego zadania.
+Nie uruchamiano CI. Nie naruszono niezatwierdzonych zmian PR #164.

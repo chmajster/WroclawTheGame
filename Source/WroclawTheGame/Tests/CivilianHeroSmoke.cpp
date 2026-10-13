@@ -27,10 +27,12 @@ static FAutoConsoleCommandWithWorld GCivilianHeroSmoke(TEXT("WTG.CivilianHeroSmo
         auto* W=Weak.Get();if(!W)return false;Elapsed+=Dt;
         auto* PC=UGameplayStatics::GetPlayerController(W,0);
         auto* P=Cast<ASliceCharacter>(UGameplayStatics::GetPlayerPawn(W,0));
+        if(PC && Camera.IsValid())PC->SetViewTarget(Camera.Get());
         if(Elapsed<Next || !PC || !P || !P->Appearance || P->Appearance->bLoading || W->IsPaused())return true;
         const TCHAR* Names[]={TEXT("front"),TEXT("back"),TEXT("face"),TEXT("garment"),TEXT("backpack")};
         if(Stage<10 && Stage%2==0){
             if(!Camera.IsValid())Camera=W->SpawnActor<ACameraActor>();
+            PC->SetIgnoreMoveInput(true);PC->SetIgnoreLookInput(true);
             const int32 View=Stage/2;
             const float Distance[]={350,-350,125,150,-120};
             const float Height[]={20,20,65,15,35};

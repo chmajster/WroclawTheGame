@@ -177,7 +177,7 @@ void UCharacterAppearanceComponent::Render()
                 if (!MID) continue;
                 MID->SetVectorParameterValue(TEXT("SkinTone"),Catalog->SkinPalette[Appearance.SkinTone]);
                 MID->SetVectorParameterValue(TEXT("EyeColor"),Catalog->EyePalette[Appearance.EyeColor]);
-                MID->SetScalarParameterValue(TEXT("Roughness"),Appearance.SkinRoughness);
+                if(Slot!=TEXT("Eyes"))MID->SetScalarParameterValue(TEXT("Roughness"),Appearance.SkinRoughness);
                 MID->SetScalarParameterValue(TEXT("Freckles"),Appearance.Freckles);
                 MID->SetScalarParameterValue(TEXT("Imperfections"),Appearance.SkinImperfections);
                 MID->SetScalarParameterValue(TEXT("AgeDetail"),(Appearance.VisualAge-20)/25);

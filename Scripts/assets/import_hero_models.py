@@ -6,7 +6,14 @@ import unreal
 
 ROOT=Path(unreal.Paths.project_dir()).resolve()
 DEST='/Game/Wroclaw/Hero'
-EDIT=unreal.MaterialEditingLibrary
+class CheckedMaterialEditor:
+    def __getattr__(self,name):return getattr(unreal.MaterialEditingLibrary,name)
+    def connect_material_expressions(self,source,output,destination,input):
+        if not unreal.MaterialEditingLibrary.connect_material_expressions(source,output,destination,input):
+            raise RuntimeError('Rejected material link: '+source.get_class().get_name()+'.'+output+' -> '+destination.get_class().get_name()+'.'+input)
+    def connect_material_property(self,source,output,property):
+        if not unreal.MaterialEditingLibrary.connect_material_property(source,output,property):raise RuntimeError('Rejected material property: '+str(property))
+EDIT=CheckedMaterialEditor()
 TOOLS=unreal.AssetToolsHelpers.get_asset_tools()
 
 
@@ -37,6 +44,9 @@ def scalar(material,name,value):
 
 def sample(material,tex):
     n=expr(material,unreal.MaterialExpressionTextureSample);n.set_editor_property('texture',tex)
+    if tex.get_name().startswith('T_Pack_'):
+        uv=expr(material,unreal.MaterialExpressionTextureCoordinate);uv.set_editor_property('u_tiling',8);uv.set_editor_property('v_tiling',8)
+        EDIT.connect_material_expressions(uv,'',n,'')
     if tex.get_editor_property('compression_settings')==unreal.TextureCompressionSettings.TC_NORMALMAP:n.set_editor_property('sampler_type',unreal.MaterialSamplerType.SAMPLERTYPE_NORMAL)
     return n
 
@@ -53,14 +63,19 @@ def materials():
     hair=texture(packs+'hair/short02/short02_diffuse.png','T_Hair_BaseColor')
     hairnormal=texture(packs+'hair/short02/short02_normal.png','T_Hair_Normal',True)
     brows=texture(packs+'eyebrows/eyebrow001/eyebrow001.png','T_Brows_BaseColor')
+    fabric=texture('SourceAssets/Characters/WroclawHero/Textures/Pack_BaseColor.png','T_Pack_BaseColor')
+    fabricnormal=texture('SourceAssets/Characters/WroclawHero/Textures/Pack_Normal.png','T_Pack_Normal',True)
+    fabricorm=texture('SourceAssets/Characters/WroclawHero/Textures/Pack_ORM.png','T_Pack_ORM')
+    fabricorm.set_editor_property('srgb',False);unreal.EditorAssetLibrary.save_loaded_asset(fabricorm,False)
     result={}
     for kind,tex,normal,rough in [('Skin',skin,None,.5),('Eyes',eye,None,.12),('Shirt',cloth,clothnormal,.82),
                                 ('Denim',cloth,clothnormal,.87),('Shoe',shoe,shoenormal,.66),
-                                ('Hair',hair,hairnormal,.46),('Brows',brows,None,.62),('Pack',None,None,.86)]:
+                                ('Hair',hair,hairnormal,.46),('Brows',brows,None,.62),('Pack',fabric,fabricnormal,.86)]:
         path=DEST+'/Materials/M_'+kind
         mat=unreal.load_asset(path) or TOOLS.create_asset('M_'+kind,DEST+'/Materials',unreal.Material,unreal.MaterialFactoryNew())
         EDIT.delete_all_material_expressions(mat)
         mat.set_editor_property('used_with_skeletal_mesh',True)
+        mat.set_editor_property('used_with_morph_targets',True)
         mat.set_editor_property('blend_mode',unreal.BlendMode.BLEND_MASKED if kind in ['Hair','Brows','Eyes'] else unreal.BlendMode.BLEND_OPAQUE)
         if kind in ['Hair','Brows']:mat.set_editor_property('two_sided',True)
         tint=vector(mat,'SkinTone' if kind=='Skin' else ('EyeColor' if kind=='Eyes' else 'BaseColor'),(.58,.36,.24) if kind=='Skin' else (.08,.09,.10))
@@ -77,13 +92,17 @@ def materials():
                     # Keep white sclera and pupils; recolor only the brown iris.
                     mask=expr(mat,unreal.MaterialExpressionSubtract);EDIT.connect_material_expressions(s,'R',mask,'A');EDIT.connect_material_expressions(s,'B',mask,'B')
                     iris=expr(mat,unreal.MaterialExpressionLinearInterpolate);EDIT.connect_material_expressions(s,'RGB',iris,'A');EDIT.connect_material_expressions(mult,'',iris,'B');EDIT.connect_material_expressions(mask,'',iris,'Alpha');color=iris
-                else:color=mult
+                else:
+                    div=expr(mat,unreal.MaterialExpressionDivide);EDIT.connect_material_expressions(mult,'',div,'A');EDIT.connect_material_expressions(scalar(mat,'HairReference',.12),'',div,'B');color=div
             else:
-                dot=expr(mat,unreal.MaterialExpressionDesaturation);EDIT.connect_material_expressions(s,'RGB',dot,'Input')
+                dot=expr(mat,unreal.MaterialExpressionDesaturation);EDIT.connect_material_expressions(s,'RGB',dot,'')
                 EDIT.connect_material_expressions(scalar(mat,'Desaturation',1),'',dot,'Fraction')
                 mult=expr(mat,unreal.MaterialExpressionMultiply);EDIT.connect_material_expressions(dot,'',mult,'A');EDIT.connect_material_expressions(tint,'RGB',mult,'B');color=mult
+                if kind in ['Denim','Pack']:
+                    div=expr(mat,unreal.MaterialExpressionDivide);EDIT.connect_material_expressions(mult,'',div,'A');EDIT.connect_material_expressions(scalar(mat,'AlbedoReference',.3 if kind=='Denim' else .38),'',div,'B');color=div
         EDIT.connect_material_property(color,'RGB' if color==tint else '',unreal.MaterialProperty.MP_BASE_COLOR)
-        EDIT.connect_material_property(scalar(mat,'Roughness',rough),'',unreal.MaterialProperty.MP_ROUGHNESS)
+        if kind=='Pack':EDIT.connect_material_property(sample(mat,fabricorm),'G',unreal.MaterialProperty.MP_ROUGHNESS)
+        else:EDIT.connect_material_property(scalar(mat,'Roughness',rough),'',unreal.MaterialProperty.MP_ROUGHNESS)
         EDIT.connect_material_property(scalar(mat,'Specular',.3 if kind=='Skin' else .4),'',unreal.MaterialProperty.MP_SPECULAR)
         if normal:EDIT.connect_material_property(sample(mat,normal),'RGB',unreal.MaterialProperty.MP_NORMAL)
         if kind=='Skin':
@@ -175,7 +194,9 @@ def prepare(manifest):
         path=DEST+'/Animations/'+source.get_name()
         result=unreal.load_asset(path) or unreal.EditorAssetLibrary.duplicate_asset(key,path)
         if isinstance(result,unreal.BlendSpace):
-            samples=list(result.get_editor_property('sample_data'))
+            # Always rebuild from original samples. Reusing the previous output
+            # feeds already converted clips back into their own retarget.
+            samples=list(source.get_editor_property('sample_data'))
             for s in samples:s.set_editor_property('animation',animation(s.get_editor_property('animation')))
             result.set_editor_property('sample_data',samples)
         if not unreal.LocomotionAssetLibrary.retarget_civilian_animation(result,hero,source):raise RuntimeError('Retarget failed '+key)
@@ -195,6 +216,8 @@ def prepare(manifest):
             name=parts_map[str(p.id)];p.set_editor_property('body_meshes',{'Male.Standard':meshes['male_'+name]});p.material=None
             p.offset=unreal.Transform()
             if field=='clothing_definitions':p.hidden_body_regions=['Torso','Arms'] if name=='Shirt' else (['Legs'] if name=='Trousers' else (['Feet'] if name=='Shoes' else []))
+            if name=='Trousers':
+                variants=list(p.variants);variants[1].color=unreal.LinearColor(.28,.28,.28,1);p.variants=variants
         catalog.set_editor_property(field,parts)
     errors=unreal.CharacterCreatorValidator.validate_catalog(catalog,True)
     if errors:raise RuntimeError('\n'.join(errors))

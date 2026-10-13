@@ -144,42 +144,42 @@
         {
           "name": "Body_Shoulders",
           "changed_vertices": 10928,
-          "max_delta_cm": 16.570907831192017
+          "max_delta_cm": 16.689670085906982
         },
         {
           "name": "Body_Waist",
           "changed_vertices": 6152,
-          "max_delta_cm": 6.624049839130712
+          "max_delta_cm": 3.269785624694152
         },
         {
           "name": "Body_Hips",
-          "changed_vertices": 2308,
-          "max_delta_cm": 9.987562894821167
+          "changed_vertices": 1640,
+          "max_delta_cm": 3.5875514149665833
         },
         {
           "name": "Body_Weight",
-          "changed_vertices": 6877,
-          "max_delta_cm": 15.815004063406619
+          "changed_vertices": 6875,
+          "max_delta_cm": 15.41118312191238
         },
         {
           "name": "Body_Muscle",
-          "changed_vertices": 6877,
-          "max_delta_cm": 8.361071627323565
+          "changed_vertices": 6875,
+          "max_delta_cm": 7.000339142879077
         },
         {
           "name": "Body_Torso",
           "changed_vertices": 11996,
-          "max_delta_cm": 4.499721527099609
+          "max_delta_cm": 4.500007629394531
         }
       ],
       "bounds_min_m": [
-        -0.9221182465553284,
-        -0.36898285150527954,
+        -0.9357494115829468,
+        -0.22464346885681152,
         0.0
       ],
       "bounds_max_m": [
-        0.9221183061599731,
-        0.12785905599594116,
+        0.9357494711875916,
+        0.12339808791875839,
         1.7999999523162842
       ],
       "uv_layers": 1,
@@ -194,7 +194,7 @@
         "Hands"
       ],
       "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
-      "fbx_sha256": "27ae933747939d13836807561893e535be73e89d052d17bc0b7f72080271cc36"
+      "fbx_sha256": "ebdc771d3b0ab45e451b7ff99c1359b5318ca22a6e108d722e3683dd6cb3af36"
     },
     {
       "id": "male_Shirt",
@@ -211,28 +211,28 @@
         },
         {
           "name": "Body_Waist",
-          "changed_vertices": 8573,
-          "max_delta_cm": 5.353096452491216
+          "changed_vertices": 8580,
+          "max_delta_cm": 3.254765942290727
         },
         {
           "name": "Body_Hips",
-          "changed_vertices": 2679,
+          "changed_vertices": 2715,
           "max_delta_cm": 2.972020208835602
         },
         {
           "name": "Body_Weight",
-          "changed_vertices": 8584,
+          "changed_vertices": 8585,
           "max_delta_cm": 8.90783538310021
         },
         {
           "name": "Body_Muscle",
-          "changed_vertices": 8584,
+          "changed_vertices": 8585,
           "max_delta_cm": 4.044854286161888
         },
         {
           "name": "Body_Torso",
           "changed_vertices": 9084,
-          "max_delta_cm": 4.499721527099609
+          "max_delta_cm": 4.499995708465576
         }
       ],
       "bounds_min_m": [
@@ -242,7 +242,7 @@
       ],
       "bounds_max_m": [
         0.7503388524055481,
-        0.15870928764343262,
+        0.14666783809661865,
         1.5929646492004395
       ],
       "uv_layers": 1,
@@ -251,7 +251,7 @@
         "Shirt"
       ],
       "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
-      "fbx_sha256": "040728f6ed710b83a5b7e59ddedf48083e3934f931580c5adcd146bd2c7f2784"
+      "fbx_sha256": "ed0da5cc16c2b67aa70de84a4f1f966c2d4c8f4ce0d6aceed6f751908a95e1c6"
     },
     {
       "id": "male_Trousers",
@@ -308,7 +308,7 @@
         "Denim"
       ],
       "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
-      "fbx_sha256": "9644ef765ce1eac5d4affe06fa9a8c2a713a3c84407dc9e1b1702859e5799972"
+      "fbx_sha256": "69e9ad556c01c81cde7f79c22bad85f8155e17cd42615988551c94096ad14235"
     },
     {
       "id": "male_Shoes",
@@ -345,7 +345,7 @@
         "Shoe"
       ],
       "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
-      "fbx_sha256": "1d1bda54b41024348bcb17e4b6f39f6da0feba7839e3d2f641daea30d0b9d721"
+      "fbx_sha256": "c2559e83ec774f85a562901aefffdc31b0bfc3b08a0d54d5d25cbaf39edfd732"
     },
     {
       "id": "male_HairShort",
@@ -452,7 +452,7 @@
         "Hair"
       ],
       "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
-      "fbx_sha256": "31188ec10f6aaee06caa58712a1029940ed12d2a765c141727af7091ab510685"
+      "fbx_sha256": "76a043ba122aecabef33d6b646b0aab81a0ef1a1eda3290cb0e90fc696f44770"
     },
     {
       "id": "male_BrowsNatural",
@@ -549,7 +549,7 @@
         "Brows"
       ],
       "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
-      "fbx_sha256": "bcf6386c35619d856db5e847e1428119c18c9c2d7a181dd430ed3773f8702b58"
+      "fbx_sha256": "1ef815a77dcb9c44258d62085f6ac3def2335fe71c94ffa1ab3df0d69563521d"
     },
     {
       "id": "male_Backpack",
@@ -562,12 +562,12 @@
         {
           "name": "Body_Shoulders",
           "changed_vertices": 1032,
-          "max_delta_cm": 3.3956915140151978
+          "max_delta_cm": 3.213059902191162
         },
         {
           "name": "Body_Waist",
           "changed_vertices": 1032,
-          "max_delta_cm": 3.15638735971713
+          "max_delta_cm": 3.0969640638546836
         },
         {
           "name": "Body_Hips",
@@ -577,17 +577,17 @@
         {
           "name": "Body_Weight",
           "changed_vertices": 1032,
-          "max_delta_cm": 4.631034014137792
+          "max_delta_cm": 4.4020240549836975
         },
         {
           "name": "Body_Muscle",
           "changed_vertices": 1032,
-          "max_delta_cm": 2.581568480526671
+          "max_delta_cm": 2.438782808283544
         },
         {
           "name": "Body_Torso",
           "changed_vertices": 1032,
-          "max_delta_cm": 4.493772983551025
+          "max_delta_cm": 4.499912261962891
         }
       ],
       "bounds_min_m": [
@@ -606,7 +606,7 @@
         "Pack"
       ],
       "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
-      "fbx_sha256": "88cd89caca2a9b6cbaf200d10d4fb302d02a899c6848390d0f455827d5fce017"
+      "fbx_sha256": "8845ec932f25b01ff37f4eb6e3bc27cd6107b81409da80dc82fae24aa776aed6"
     }
   ]
 }

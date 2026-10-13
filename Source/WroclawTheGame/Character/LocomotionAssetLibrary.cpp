@@ -109,6 +109,7 @@ bool ULocomotionAssetLibrary::ConfigureCivilianLodSettings(USkeletalMesh* Mesh,U
     Mesh->Modify();
     Mesh->SetSkeleton(Skeleton);
     if(!Skeleton->MergeAllBonesToBoneTree(Mesh))return false;
+    Skeleton->UpdateReferencePoseFromMesh(Mesh);
     Skeleton->MarkPackageDirty();
     while (Mesh->GetLODNum()<3) Mesh->AddLODInfo();
     for (int32 Index=0;Index<3;++Index)
@@ -215,6 +216,11 @@ bool ULocomotionAssetLibrary::RetargetCivilianAnimation(UAnimationAsset *Animati
                 FTransform Result = Parent == INDEX_NONE
                                         ? TargetPose[Bone]
                                         : TargetPose[Bone].GetRelativeTransform(TargetPose[Parent]);
+                // Component-space rotation conversion must not transfer source
+                // limb lengths. Preserve the civilian's local joint offsets;
+                // otherwise flexing a different hand rig stretches its fingers.
+                Result.SetTranslation(TargetRef.GetRefBonePose()[Bone].GetTranslation());
+                Result.SetScale3D(TargetRef.GetRefBonePose()[Bone].GetScale3D());
                 Result.NormalizeRotation();
                 Converted[Bone].Add(Result);
             }

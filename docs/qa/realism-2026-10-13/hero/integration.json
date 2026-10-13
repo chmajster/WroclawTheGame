@@ -1,0 +1,50 @@
+{
+	"status": "PASS_REQUIRES_VISUAL_REVIEW",
+	"map": "/Game/Maps/Nadodrze_Playable",
+	"meshes": [
+		{
+			"mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_Body.SK_Civilian_Body",
+			"leader": "self",
+			"lod": 0,
+			"bounds": "Origin=X=44617.675 Y=62834.261 Z=261.390, BoxExtent=(X=78.068 Y=118.743 Z=120.794), SphereRadius=(182.448590)"
+		},
+		{
+			"mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_HairShort.SK_Civilian_HairShort",
+			"leader": "SkeletalMeshComponent_0",
+			"lod": 0,
+			"bounds": "Origin=X=44617.675 Y=62834.261 Z=261.390, BoxExtent=(X=78.068 Y=118.743 Z=120.794), SphereRadius=(182.448590)"
+		},
+		{
+			"mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_BrowsNatural.SK_Civilian_BrowsNatural",
+			"leader": "SkeletalMeshComponent_0",
+			"lod": 0,
+			"bounds": "Origin=X=44617.675 Y=62834.261 Z=261.390, BoxExtent=(X=78.068 Y=118.743 Z=120.794), SphereRadius=(182.448590)"
+		},
+		{
+			"mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_Shirt.SK_Civilian_Shirt",
+			"leader": "SkeletalMeshComponent_0",
+			"lod": 0,
+			"bounds": "Origin=X=44617.675 Y=62834.261 Z=261.390, BoxExtent=(X=78.068 Y=118.743 Z=120.794), SphereRadius=(182.448590)"
+		},
+		{
+			"mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_Trousers.SK_Civilian_Trousers",
+			"leader": "SkeletalMeshComponent_0",
+			"lod": 0,
+			"bounds": "Origin=X=44617.675 Y=62834.261 Z=261.390, BoxExtent=(X=78.068 Y=118.743 Z=120.794), SphereRadius=(182.448590)"
+		},
+		{
+			"mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_Shoes.SK_Civilian_Shoes",
+			"leader": "SkeletalMeshComponent_0",
+			"lod": 0,
+			"bounds": "Origin=X=44617.675 Y=62834.261 Z=261.390, BoxExtent=(X=78.068 Y=118.743 Z=120.794), SphereRadius=(182.448590)"
+		},
+		{
+			"mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_Backpack.SK_Civilian_Backpack",
+			"leader": "SkeletalMeshComponent_0",
+			"lod": 0,
+			"bounds": "Origin=X=44617.675 Y=62834.261 Z=261.390, BoxExtent=(X=78.068 Y=118.743 Z=120.794), SphereRadius=(182.448590)"
+		}
+	],
+	"body_rotation": "P=-0.000000 Y=-87.454179 R=-0.000000",
+	"player_rotation": "P=0.000000 Y=2.545821 R=-0.000000"
+}

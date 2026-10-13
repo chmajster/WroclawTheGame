@@ -16,6 +16,22 @@ EXPORT=ROOT/'Saved/Pipeline/generated/wtg-civilian';EXPORT.mkdir(parents=True,ex
 DEFS=json.loads((ROOT/'Data/hero_morphs.json').read_text(encoding='utf-8'))['morphs']
 records=[]
 
+def fabric_textures():
+    folder=OUT/'Textures';folder.mkdir(exist_ok=True)
+    y,x=np.mgrid[:512,:512]/512
+    warp=np.cos(x*math.tau*64);weft=np.cos(y*math.tau*64)
+    stagger=np.sin(x*math.tau*32)*np.sin(y*math.tau*32)
+    height=(warp+weft)*.15+stagger*.12
+    dy,dx=np.gradient(height);normal=np.stack((-dx*.8,-dy*.8,np.ones_like(dx)),axis=-1)
+    normal/=np.linalg.norm(normal,axis=-1,keepdims=True)
+    colors={'Pack_BaseColor':np.repeat((.65+height*.15)[...,None],3,axis=-1),
+            'Pack_Normal':normal*.5+.5,'Pack_ORM':np.stack((np.ones_like(x),.86-height*.09,np.zeros_like(x)),axis=-1)}
+    for name,rgb in colors.items():
+        pixels=np.concatenate((rgb,np.ones((512,512,1))),axis=-1).astype(np.float32)
+        image=bpy.data.images.new(name,width=512,height=512,alpha=True)
+        image.colorspace_settings.name='Non-Color';image.pixels.foreach_set(pixels.ravel())
+        image.filepath_raw=str(folder/(name+'.png'));image.file_format='PNG';image.save()
+
 def obj(path):
     verts=[];uv=[];faces=[];uvfaces=[];groups=[];group='body'
     for line in path.read_text().splitlines():
@@ -79,7 +95,17 @@ def bind(o,rig,weights=None,head=False):
         for b in bones:
             a=np.array(b.head_local);z=np.array(b.tail_local)-a
             t=np.clip(((positions-a)@z)/max(z@z,1e-8),0,1);dist.append(np.sum((positions-a-t[:,None]*z)**2,axis=1))
-        d=np.array(dist).T;ids=np.argsort(d,axis=1)[:,:4];w=1/(np.take_along_axis(d,ids,axis=1)+.000025)**2;w/=w.sum(axis=1)[:,None]
+        d=np.array(dist).T
+        torso=(np.abs(positions[:,0])<.23)&(positions[:,2]>.98)&(positions[:,2]<1.54)
+        head=(np.abs(positions[:,0])<.18)&(positions[:,2]>=1.54)
+        legs=positions[:,2]<.98
+        for bi,b in enumerate(bones):
+            # Anatomical regions prevent leg weights in a shirt hem and finger
+            # weights in the chest even when those bones happen to be nearby.
+            if not (b.name=='pelvis' or b.name.startswith(('spine_','clavicle_','neck_'))):d[torso,bi]=1e6
+            if not (b.name=='Head' or b.name=='head' or b.name.startswith('neck_')):d[head,bi]=1e6
+            if not (b.name=='pelvis' or b.name.startswith(('thigh_','calf_','foot_','ball_'))):d[legs,bi]=1e6
+        ids=np.argsort(d,axis=1)[:,:4];w=1/(np.take_along_axis(d,ids,axis=1)+.000025)**2;w/=w.sum(axis=1)[:,None]
         for bi,b in enumerate(bones):
             g=o.vertex_groups.new(name=b.name)
             for vi,col in zip(*np.where(ids==bi)):g.add([int(vi)],float(w[vi,col]),'REPLACE')
@@ -140,7 +166,16 @@ def create(sex):
     def pose(v):
         result=v.copy()
         for side in ['l','r']:
-            mask=(v[:,0]*(1 if side=='l' else -1)>.12)&(v[:,2]>1.0)
+            # Select arm tissue by distance to its anatomical segments. A broad
+            # X/Z rectangle also catches the waist and lifts it into the sleeves.
+            arm_dist=[]
+            for segment_index,(s,a,b,d,r) in enumerate(segments):
+                if s!=side:continue
+                # Include the hand/fingertips beyond the wrist endpoint. Keeping
+                # those in the original A-pose creates metre-long finger bones.
+                z=b-a;t=np.clip((v-a)@z/(z@z),0,1.85 if segment_index%2 else 1)
+                arm_dist.append(np.sum((v-a-t[:,None]*z)**2,axis=1))
+            mask=(v[:,0]*(1 if side=='l' else -1)>.16)&(np.min(arm_dist,axis=0)<.12**2)
             ids=np.where(mask)[0]
             if not len(ids):continue
             points=v[ids];mapped=[];dist=[]
@@ -149,12 +184,23 @@ def create(sex):
                 z=b-a;t=np.clip((points-a)@z/(z@z),0,1)
                 dist.append(np.sum((points-a-t[:,None]*z)**2,axis=1));mapped.append((points-a)@r.T+d)
             w=1/(np.array(dist).T+.0001)**3;w/=w.sum(axis=1)[:,None]
-            p=sum(m*w[:,i,None] for i,m in enumerate(mapped));fade=np.clip((np.abs(points[:,0])-.12)/.1,0,1)
+            p=sum(m*w[:,i,None] for i,m in enumerate(mapped));fade=np.clip((np.abs(points[:,0])-.16)/.09,0,1)
             result[ids]=points*(1-fade[:,None])+p*fade[:,None]
         return result
     def eyes_for(v):
         # Proxy offsets locate the eyes inside the base mesh, not in the OBJ's authoring coordinates.
         return np.array([np.sum(v[ids]*w[:,None],axis=0)+offset for ids,w,offset in mapping])
+    # Fit finger pivots to this anatomy rather than the superhero's larger hand.
+    # Names/hierarchy remain compatible; component-space retarget handles rolls.
+    bpy.context.view_layer.objects.active=rig;rig.select_set(True);bpy.ops.object.mode_set(mode='EDIT')
+    for side in ['l','r']:
+        for digit,stem in enumerate(['thumb','index','middle','ring','pinky'],1):
+            pivots=pose(np.array([joint(f'joint-{side}-finger-{digit}-{part}') for part in range(1,5)]))
+            for part in range(1,4):
+                bone=rig.data.edit_bones[f'{stem}_{part:02d}_{side}'];bone.use_connect=False
+                bone.head=Vector(pivots[part-1]);bone.tail=Vector(pivots[part])
+                assert .003<bone.length<.095,(bone.name,bone.length,'finger anatomy outside range')
+    bpy.ops.object.mode_set(mode='OBJECT');rig.select_set(False)
     base=pose(convert(raw[used]));eyes=pose(convert(eyes_for(raw)));nv=len(base);base=np.vstack((base,eyes))
     faces=[[index[i] for i in f] for f in bodyfaces]+[[nv+i for i in f] for f in EF]
     uvfaces=[f for f,g in zip(UVF,GROUPS) if g=='body']+[[len(UV)+i for i in f] for f in EUF]
@@ -271,6 +317,7 @@ def create(sex):
         return o
 
     pack_parts=[panel((0,.168,1.30),(.285,.135,.385),.035),panel((0,.24,1.245),(.225,.048,.19),.021)]
+    rigid_parts=list(pack_parts)
     for side in [-1,1]:
         # Contact along the upper back, over the shoulder and down the chest.
         path=[(side*.078,.13,1.46),(side*.112,.10,1.49),(side*.14,.045,1.49),
@@ -282,6 +329,9 @@ def create(sex):
     pack_parts.append(seam([(-.11,.267,1.32),(-.108,.268,1.338),(0,.268,1.346),(.108,.268,1.338),(.11,.267,1.32)],.0015))
     for side in [-1,1]:
         pack_parts.append(seam([(side*.117,.266,1.18),(side*.119,.266,1.24),(side*.117,.266,1.31)],.0009))
+    rigid_parts.extend(pack_parts[-4:])
+    for p in rigid_parts:
+        p.vertex_groups.new(name='BagPanelRigid').add(list(range(len(p.data.vertices))),1,'REPLACE')
     bpy.ops.object.select_all(action='DESELECT')
     for p in pack_parts:p.select_set(True)
     bpy.context.view_layer.objects.active=pack_parts[0];bpy.ops.object.join();pack=pack_parts[0];pack.name='Backpack'
@@ -293,14 +343,29 @@ def create(sex):
     bpy.ops.object.mode_set(mode='EDIT');bpy.ops.mesh.select_all(action='SELECT');bpy.ops.uv.smart_project(island_margin=.015);bpy.ops.object.mode_set(mode='OBJECT')
     # Bag panels follow the torso; straps follow the nearest shoulder/torso weights.
     positions=np.array([v.co[:] for v in pack.data.vertices]);nearest=np.array([tree.find(v.co)[1] for v in pack.data.vertices])
-    bind(pack,rig,weights=(body,nearest));shapes(pack,positions,{k:d[nearest] for k,d in deltas.items() if k.startswith('Body_')})
+    rigid_group=pack.vertex_groups['BagPanelRigid'].index
+    rigid_vertices=[v.index for v in pack.data.vertices if any(g.group==rigid_group for g in v.groups)]
+    bind(pack,rig,weights=(body,nearest))
+    # Shoulder/chest straps belong to the torso. Never let a nearby hand or
+    # upper arm pull the strap away when the player lowers his arms.
+    for g in pack.vertex_groups:
+        if g.name in rig.data.bones:g.remove(list(range(len(pack.data.vertices))))
+    for vertex in pack.data.vertices:
+        z=vertex.co.z;t=max(0,min(1,(z-1.15)/.25))
+        pack.vertex_groups['spine_02'].add([vertex.index],1-t,'REPLACE')
+        pack.vertex_groups['spine_03'].add([vertex.index],t,'REPLACE')
+    for g in pack.vertex_groups:
+        if g.name in rig.data.bones:g.remove(rigid_vertices)
+    pack.vertex_groups['spine_03'].add(rigid_vertices,1,'REPLACE')
+    pack.vertex_groups.remove(pack.vertex_groups['BagPanelRigid'])
+    shapes(pack,positions,{k:d[nearest] for k,d in deltas.items() if k.startswith('Body_')})
     save_export(pack,rig,sex,'accessory')
     for o in bpy.data.objects:
         if o.type=='MESH' and o not in [body,shirt,trousers,shoes,hair,brows,pack]:o.hide_render=True
     bpy.ops.wm.save_as_mainfile(filepath=str(OUT/sex/'hero.blend'))
 
 
-create('male')
+create('male');fabric_textures()
 (OUT/'geometry.json').write_text(json.dumps({'generator':'Scripts/assets/build_hero_models.py',
     'source_catalog':'Data/hero_source_catalog.json','license':'CC0-1.0 graphical derivation and original accessory',
     'assets':records},indent=2))
