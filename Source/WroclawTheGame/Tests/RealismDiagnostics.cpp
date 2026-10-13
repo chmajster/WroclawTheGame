@@ -7,6 +7,9 @@
 #include "Character/CharacterAppearanceComponent.h"
 #include "Engine/GameViewportClient.h"
 #include "Engine/World.h"
+#include "Engine/StaticMesh.h"
+#include "Components/StaticMeshComponent.h"
+#include "StaticMeshResources.h"
 #include "EngineUtils.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
@@ -51,6 +54,28 @@ static FAutoConsoleCommandWithWorld GRealismDiagnostics(TEXT("WTG.RealismDiagnos
         Report->SetStringField(TEXT("map"),W->GetOutermost()->GetName());
         Report->SetStringField(TEXT("status"),TEXT("CAPTURED_REQUIRES_INSPECTION"));
         Report->SetStringField(TEXT("captured_utc"),FDateTime::UtcNow().ToIso8601());
+        TArray<TSharedPtr<FJsonValue>> MeshBasis;
+        for(TActorIterator<AActor> It(W);It;++It) {
+            const FString Label=It->GetActorNameOrLabel();
+            if(!Label.StartsWith(TEXT("StartLocation_Building_")) && !Label.StartsWith(TEXT("StartLocation_Context_")))continue;
+            auto* Component=It->FindComponentByClass<UStaticMeshComponent>();
+            UStaticMesh* Mesh=Component?Component->GetStaticMesh():nullptr;
+            auto* Data=Mesh?Mesh->GetRenderData():nullptr;
+            if(!Data || Data->LODResources.IsEmpty())continue;
+            const auto& Buffer=Data->LODResources[0].VertexBuffers.StaticMeshVertexBuffer;
+            int32 BadX=0,BadZ=0;
+            for(uint32 Index=0;Buffer.GetTangentData() && Index<Buffer.GetNumVertices();++Index){
+                const auto X=Buffer.VertexTangentX(Index),Z=Buffer.VertexTangentZ(Index);
+                BadX+=(X.X*X.X+X.Y*X.Y+X.Z*X.Z<.0001f);
+                BadZ+=(Z.X*Z.X+Z.Y*Z.Y+Z.Z*Z.Z<.0001f);
+            }
+            auto Item=MakeShared<FJsonObject>();Item->SetStringField(TEXT("mesh"),Mesh->GetPathName());
+            Item->SetBoolField(TEXT("basis_cpu_available"),Buffer.GetTangentData()!=nullptr);
+            Item->SetNumberField(TEXT("vertices"),Buffer.GetNumVertices());
+            Item->SetNumberField(TEXT("near_zero_tangents"),BadX);Item->SetNumberField(TEXT("near_zero_normals"),BadZ);
+            MeshBasis.Add(MakeShared<FJsonValueObject>(Item));
+        }
+        Report->SetArrayField(TEXT("architecture_render_basis"),MeshBasis);
         TArray<TSharedPtr<FJsonValue>> Values;for(const auto& Name:Shots)Values.Add(MakeShared<FJsonValueString>(Name));
         Report->SetArrayField(TEXT("screenshots"),Values);
         FString Json;auto Writer=TJsonWriterFactory<>::Create(&Json);FJsonSerializer::Serialize(Report,Writer);

@@ -1,28 +1,31 @@
 # Realizm — punkt 5/10
 
 ## Wykonane
-Wspólna selekcja 8 kamienic + 16 budynków tła do 210 m. Źródła 24 budynków
-mają zachowane obrysy i wysokości, fundamenty do DEM, przestrzenne dachy,
-wnęki wejściowe, obróbki i otwarte rynny. Tagi płaskich dachów zachowane.
-Cztery testy kontraktów, walidacja manifestów i eksport 24 × 3 LOD PASS. 569 311 trójkątów budynków;
-kolizje maks. 29 hulls/budynek. 13 regresji geometrii/dzielnicy PASS.
-Okna dopasowane do kondygnacji, niedodatnie bryly odrzucane podczas generowania. Detale/dachy są interpretacją, nie pomiarem fasad.
+Jeden wybór dla GIS/Blender: 8 kamienic + 16 budynków tła do 210 m.
+Obrysy, wysokości i kotwice zachowane. Dachy przestrzenne z tagami flat,
+fundamenty do DEM, dopasowane okna, głębokie wejścia, obróbki i otwarte rynny.
+569311 trójkątów budynków; maks. 29 kolizji. Źródła i manifesty wersjonowane.
+Eksport 24 × 3 LOD, import 24 + 12 korekt oraz natywna kontrola 29 zasobów PASS
+(skala/UV/LOD/materiały/kolizje). Kompilacja UE 5.8.2 PASS. 13 regresji
+geometrii/dzielnicy + 4 kontrakty dachów i obrysów PASS. GIS: 440 komórek,
+279530 trójkątów, te same kotwice i trasy. Detale są interpretacją fasad.
+Nowa kamera elewacji i 6 widoków diagnostycznych na właściwej mapie.
+Kontrola pozycji/wysokości/Nanite/liczby aktorów oraz renderowanych tangentów.
 
 ## Do zrobienia
-Eksport FBX/LOD, natywny import/QA, regeneracja mapy, rzeczywista ocena
-panoramy i elewacji oraz normalnego sterowania. Zapis dowodów i scalenie #169.
+Regeneracja mapy i kontrola aktorów; 18 rzeczywistych ujęć i normalna rozgrywka.
+Sprawdzić renderowane tangenty: import ostrzega o prawie zerowych tangentach
+dwóch modeli tła, źródłowy GLB nie ma zdegenerowanych UV. Korekty i dowody.
 
 ## Następny krok
-Trwa import_batch.py dla 24 budynków. Po zamknięciu importu skompilować
-RealismDiagnostics.cpp (6 dodatkowych widoków kamery elewacji) i uruchomić
-verify_start_location_assets.py.
-Po pierwszym imporcie skrypt w sesji 76025 odtworzy 12 korekt otworow
-(Saved/Realism/architecture-opening-fix.json) i wykona native build.
-GIS/base/presentation/details/start-placement/quality, verify_start_architecture.py,
-RealismDiagnostics i StartLocationSmoke. Natywna i wizualna weryfikacja jeszcze przed nami.
+Trwa Saved/Realism/run_architecture_native.ps1 (sesja 27553): base → presentation
+→ details → placement → quality → verify_start_architecture.py.
+Po świeżych PASS uruchomić D3D12 WTG.RealismDiagnostics i WTG.StartLocationSmoke.
+Przeczytać architecture_render_basis w Saved/Realism/Diagnostics/capture.json,
+obejrzeć PNG i rozstrzygnąć ostrzeżenia tangentów. Potem scalić #169 i punkt 6.
 
 ## Stan
-W toku, draft #169. Nowe budynki jeszcze bez natywnego importu/oceny w grze.
+W toku — draft #169. Nowe zasoby natywnie zweryfikowane; mapa/obraz przed oceną.
 Bez CI; pierwotny worktree i PR #164 poza zadaniem.
 
 # Realizm — punkt 4/10
