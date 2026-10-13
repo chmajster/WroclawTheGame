@@ -1,0 +1,124 @@
+{
+  "status": "PASS",
+  "settings": {
+    "cpu": "AMD Ryzen 7 7800X3D 8-Core Processor           ",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "width": 1280,
+    "height": 720,
+    "view_distance": 2,
+    "shadow": 2,
+    "gi": 2,
+    "reflection": 2,
+    "texture": 2,
+    "effects": 2,
+    "foliage": 1,
+    "shading": 2,
+    "r.ScreenPercentage": 0,
+    "sg.ResolutionQuality": 0,
+    "r.DynamicRes.OperationMode": 0,
+    "r.VSync": 1,
+    "t.MaxFPS": 60,
+    "r.Shadow.Virtual.Enable": 1,
+    "r.Shadow.Virtual.AllowScreenOverflowMessages": 1,
+    "r.Shadow.Virtual.MaxPhysicalPages": 2048,
+    "route": "Six physical 4m square laps, forward toward meeting, right perpendicular; 180cm/s; 60s asset warmup then 65s sample."
+  },
+  "before": {
+    "status": "PASS",
+    "captured_utc": "2026-10-13T18:08:19.116Z",
+    "distance_cm": 9286.830683540626,
+    "completed_segments": 24,
+    "cpu": "AMD Ryzen 7 7800X3D 8-Core Processor           ",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "process_ram_bytes": 4091244544,
+    "process_peak_ram_bytes": 4095049728,
+    "streaming_texture_bytes": 129232896,
+    "nonstreaming_texture_bytes": 994193408,
+    "vsm_warning_frames_including_warmup": 0,
+    "timings_ms": {
+      "wall_frame": {
+        "mean": 16.868714452926582,
+        "p95": 17.42750033736229,
+        "valid_samples": 3854
+      },
+      "game_thread_active": {
+        "mean": 1.8289436448498841,
+        "p95": 2.6561999320983887,
+        "valid_samples": 3854
+      },
+      "render_thread_active": {
+        "mean": 4.50467039611467,
+        "p95": 6.3383002281188965,
+        "valid_samples": 3854
+      },
+      "rhi_thread_active": {
+        "mean": 1.5943490127531679,
+        "p95": 2.162600040435791,
+        "valid_samples": 3854
+      },
+      "gpu_frame": {
+        "mean": 3.071403244522859,
+        "p95": 3.5445001125335693,
+        "valid_samples": 3854
+      }
+    },
+    "static_components": 882,
+    "nanite_components": 112,
+    "non_nanite_shadow_components": 756
+  },
+  "after": {
+    "status": "PASS",
+    "captured_utc": "2026-10-13T18:19:14.521Z",
+    "distance_cm": 9289.066042316404,
+    "completed_segments": 24,
+    "cpu": "AMD Ryzen 7 7800X3D 8-Core Processor           ",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "process_ram_bytes": 3639672832,
+    "process_peak_ram_bytes": 3649466368,
+    "streaming_texture_bytes": 129200128,
+    "nonstreaming_texture_bytes": 994193408,
+    "vsm_warning_frames_including_warmup": 0,
+    "timings_ms": {
+      "wall_frame": {
+        "mean": 16.883078473082026,
+        "p95": 17.466500401496887,
+        "valid_samples": 3851
+      },
+      "game_thread_active": {
+        "mean": 1.9441274205172907,
+        "p95": 2.913100004196167,
+        "valid_samples": 3851
+      },
+      "render_thread_active": {
+        "mean": 4.6997281986841815,
+        "p95": 6.716100215911865,
+        "valid_samples": 3851
+      },
+      "rhi_thread_active": {
+        "mean": 1.6807507659105225,
+        "p95": 2.2513999938964844,
+        "valid_samples": 3851
+      },
+      "gpu_frame": {
+        "mean": 3.1587652305725857,
+        "p95": 3.6131999492645264,
+        "valid_samples": 3851
+      }
+    },
+    "static_components": 882,
+    "nanite_components": 538,
+    "non_nanite_shadow_components": 330
+  },
+  "report_sha256": {
+    "docs\\qa\\realism-2026-10-13\\performance\\before\\report.json": "d93fabeee0847055ca6b3b0d630d61a31c859185c246859f92971d8c340433c5",
+    "docs\\qa\\realism-2026-10-13\\performance\\after\\report.json": "28bc84f07c9416c9e8860b39c0cf36b00522a60a2a9bc60c4d1307a6b9bfcf60"
+  },
+  "notes": [
+    "Same physical six-lap route, 65s sampling, actual D3D12 renderer; 60fps cap and VSync retained.",
+    "CPU values exclude idle; wall frame times include pacing and screenshot work. GPU cycle timing is engine RHI timing.",
+    "RAM is process working set; texture allocation does not include all GPU buffers/render targets or other apps.",
+    "No VSM overflow reproduced in baseline after items 1-7. Zero warnings after is not a guarantee for every view.",
+    "HISM component bounds aggregate many small instances; these are not individual caster bounds.",
+    "r.ScreenPercentage=0 is automatic. After report also resolves the static engine heuristic; baseline did not record the resolved fraction."
+  ]
+}

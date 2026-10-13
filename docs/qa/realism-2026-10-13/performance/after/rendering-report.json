@@ -1,0 +1,4852 @@
+{
+  "status": "PASS",
+  "records": [
+    {
+      "name": "building_1_3_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 10,
+      "width_cm": [
+        1549.62890625,
+        290.5517578125
+      ]
+    },
+    {
+      "name": "building_1_3_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 16,
+      "width_cm": [
+        737.87939453125,
+        286.1328125
+      ]
+    },
+    {
+      "name": "building_1_3_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 20,
+      "width_cm": [
+        6636.4287109375,
+        511.3203125
+      ]
+    },
+    {
+      "name": "building_1_4_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 63,
+      "width_cm": [
+        5405.02099609375,
+        4719.14501953125
+      ]
+    },
+    {
+      "name": "building_1_4_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 116,
+      "width_cm": [
+        6622.68017578125,
+        9274.1396484375
+      ]
+    },
+    {
+      "name": "building_1_4_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 40,
+      "width_cm": [
+        5856.08154296875,
+        6960.7109375
+      ]
+    },
+    {
+      "name": "building_1_5_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 68,
+      "width_cm": [
+        5752.6162109375,
+        6202.2021484375
+      ]
+    },
+    {
+      "name": "building_1_5_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 51,
+      "width_cm": [
+        2476.3955078125,
+        4430.244079589844
+      ]
+    },
+    {
+      "name": "building_1_5_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 58,
+      "width_cm": [
+        2743.6455078125,
+        3414.110107421875
+      ]
+    },
+    {
+      "name": "building_1_6_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 31,
+      "width_cm": [
+        2757.328125,
+        5047.477294921875
+      ]
+    },
+    {
+      "name": "building_1_6_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 8,
+      "width_cm": [
+        6.2275390625,
+        68.31787109375
+      ]
+    },
+    {
+      "name": "building_1_6_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 42,
+      "width_cm": [
+        5874.8310546875,
+        7396.209228515625
+      ]
+    },
+    {
+      "name": "building_1_8_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 338,
+      "width_cm": [
+        3673.0380859375,
+        4675.280029296875
+      ]
+    },
+    {
+      "name": "building_2_3_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 40,
+      "width_cm": [
+        8748.58447265625,
+        1162.2958984375
+      ]
+    },
+    {
+      "name": "building_2_3_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 101,
+      "width_cm": [
+        7557.869384765625,
+        1529.4482421875
+      ]
+    },
+    {
+      "name": "building_2_3_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 103,
+      "width_cm": [
+        10583.20458984375,
+        1895.9208984375
+      ]
+    },
+    {
+      "name": "building_2_4_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 166,
+      "width_cm": [
+        10587.573974609375,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_2_4_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 166,
+      "width_cm": [
+        11401.7236328125,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_2_4_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 101,
+      "width_cm": [
+        6962.27490234375,
+        11658.9345703125
+      ]
+    },
+    {
+      "name": "building_2_5_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 221,
+      "width_cm": [
+        10841.275634765625,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_2_5_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 326,
+      "width_cm": [
+        12300.735290527344,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_2_5_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 340,
+      "width_cm": [
+        12274.799987792969,
+        12495.378997802734
+      ]
+    },
+    {
+      "name": "building_2_6_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 366,
+      "width_cm": [
+        11155.968017578125,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_2_6_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 146,
+      "width_cm": [
+        12800.0,
+        8761.0087890625
+      ]
+    },
+    {
+      "name": "building_2_6_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 143,
+      "width_cm": [
+        9477.7783203125,
+        7472.9931640625
+      ]
+    },
+    {
+      "name": "building_2_7_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 122,
+      "width_cm": [
+        10232.01611328125,
+        9456.8115234375
+      ]
+    },
+    {
+      "name": "building_2_7_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 547,
+      "width_cm": [
+        12387.878997802734,
+        9937.536743164062
+      ]
+    },
+    {
+      "name": "building_2_7_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 358,
+      "width_cm": [
+        12235.809997558594,
+        9766.44970703125
+      ]
+    },
+    {
+      "name": "building_2_8_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 1480,
+      "width_cm": [
+        10349.76708984375,
+        7359.921855926514
+      ]
+    },
+    {
+      "name": "building_2_8_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 218,
+      "width_cm": [
+        11290.31033706665,
+        7093.55810546875
+      ]
+    },
+    {
+      "name": "building_2_8_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 51,
+      "width_cm": [
+        3840.8701171875,
+        4466.64990234375
+      ]
+    },
+    {
+      "name": "building_3_3_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 60,
+      "width_cm": [
+        12198.896301269531,
+        2332.5302734375
+      ]
+    },
+    {
+      "name": "building_3_3_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 55,
+      "width_cm": [
+        6997.1103515625,
+        2485.4951171875
+      ]
+    },
+    {
+      "name": "building_3_3_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 22,
+      "width_cm": [
+        2313.8701171875,
+        890.1328125
+      ]
+    },
+    {
+      "name": "building_3_4_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 54,
+      "width_cm": [
+        12800.0,
+        1718.2559814453125
+      ]
+    },
+    {
+      "name": "building_3_4_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 62,
+      "width_cm": [
+        11065.433959960938,
+        2757.291015625
+      ]
+    },
+    {
+      "name": "building_3_4_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 10,
+      "width_cm": [
+        544.6416015625,
+        279.48583984375
+      ]
+    },
+    {
+      "name": "building_3_5_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 175,
+      "width_cm": [
+        11534.9580078125,
+        5372.3017578125
+      ]
+    },
+    {
+      "name": "building_3_5_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 10,
+      "width_cm": [
+        803.7939453125,
+        1226.2081298828125
+      ]
+    },
+    {
+      "name": "building_3_5_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 36,
+      "width_cm": [
+        1445.0009765625,
+        4041.18994140625
+      ]
+    },
+    {
+      "name": "building_3_6_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 190,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_3_6_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 92,
+      "width_cm": [
+        12800.0,
+        7856.197814941406
+      ]
+    },
+    {
+      "name": "building_3_6_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 61,
+      "width_cm": [
+        2248.943115234375,
+        1832.44580078125
+      ]
+    },
+    {
+      "name": "building_3_7_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 213,
+      "width_cm": [
+        9569.11328125,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_3_7_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 251,
+      "width_cm": [
+        12800.0,
+        11071.199951171875
+      ]
+    },
+    {
+      "name": "building_3_7_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 156,
+      "width_cm": [
+        12800.0,
+        11218.725952148438
+      ]
+    },
+    {
+      "name": "building_3_8_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 551,
+      "width_cm": [
+        12800.0,
+        6339.68408203125
+      ]
+    },
+    {
+      "name": "building_3_8_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 122,
+      "width_cm": [
+        12722.630996704102,
+        9264.626953125
+      ]
+    },
+    {
+      "name": "building_3_8_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 29,
+      "width_cm": [
+        1570.13671875,
+        4241.0341796875
+      ]
+    },
+    {
+      "name": "building_4_3_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 38,
+      "width_cm": [
+        5500.504150390625,
+        2567.9404296875
+      ]
+    },
+    {
+      "name": "building_4_3_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 119,
+      "width_cm": [
+        11384.901977539062,
+        2849.1298828125
+      ]
+    },
+    {
+      "name": "building_4_3_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 58,
+      "width_cm": [
+        6906.10546875,
+        2772.2041015625
+      ]
+    },
+    {
+      "name": "building_4_4_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 267,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_4_4_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 231,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_4_4_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 249,
+      "width_cm": [
+        9329.35791015625,
+        11264.703125
+      ]
+    },
+    {
+      "name": "building_4_5_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 295,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_4_5_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 110,
+      "width_cm": [
+        11493.56494140625,
+        12680.32421875
+      ]
+    },
+    {
+      "name": "building_4_5_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 337,
+      "width_cm": [
+        12631.26400756836,
+        12116.921997070312
+      ]
+    },
+    {
+      "name": "building_4_6_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 342,
+      "width_cm": [
+        12800.0,
+        12597.16015625
+      ]
+    },
+    {
+      "name": "building_4_6_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 334,
+      "width_cm": [
+        11104.5322265625,
+        12555.044998168945
+      ]
+    },
+    {
+      "name": "building_4_6_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 163,
+      "width_cm": [
+        11933.054992675781,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_4_7_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 202,
+      "width_cm": [
+        10747.35302734375,
+        10515.011840820312
+      ]
+    },
+    {
+      "name": "building_4_7_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 311,
+      "width_cm": [
+        10384.615234375,
+        11951.423828125
+      ]
+    },
+    {
+      "name": "building_4_7_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 211,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_4_8_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 170,
+      "width_cm": [
+        8626.591796875,
+        7139.8717041015625
+      ]
+    },
+    {
+      "name": "building_4_8_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 112,
+      "width_cm": [
+        9052.9453125,
+        6281.7040939331055
+      ]
+    },
+    {
+      "name": "building_4_8_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 259,
+      "width_cm": [
+        12800.0,
+        7879.412109375
+      ]
+    },
+    {
+      "name": "building_5_3_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 30,
+      "width_cm": [
+        5972.866007804871,
+        3014.6064453125
+      ]
+    },
+    {
+      "name": "building_5_3_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 100,
+      "width_cm": [
+        11944.140625,
+        2975.9423828125
+      ]
+    },
+    {
+      "name": "building_5_3_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 112,
+      "width_cm": [
+        9803.718994140625,
+        2021.8525390625
+      ]
+    },
+    {
+      "name": "building_5_4_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 75,
+      "width_cm": [
+        8903.7412109375,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_5_4_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 303,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_5_4_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 275,
+      "width_cm": [
+        12800.0,
+        12359.9326171875
+      ]
+    },
+    {
+      "name": "building_5_5_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 195,
+      "width_cm": [
+        9140.369140625,
+        12040.0009765625
+      ]
+    },
+    {
+      "name": "building_5_5_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 185,
+      "width_cm": [
+        12741.48828125,
+        12646.31640625
+      ]
+    },
+    {
+      "name": "building_5_5_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 108,
+      "width_cm": [
+        12087.0908203125,
+        12483.989990234375
+      ]
+    },
+    {
+      "name": "building_5_6_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 253,
+      "width_cm": [
+        12800.0,
+        10384.31216430664
+      ]
+    },
+    {
+      "name": "building_5_6_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 222,
+      "width_cm": [
+        11381.015991210938,
+        10013.238037109375
+      ]
+    },
+    {
+      "name": "building_5_6_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 330,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_5_7_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 26,
+      "width_cm": [
+        11159.5419921875,
+        4719.13525390625
+      ]
+    },
+    {
+      "name": "building_5_7_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 278,
+      "width_cm": [
+        11021.699951171875,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_5_7_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 26,
+      "width_cm": [
+        2882.469970703125,
+        6812.79296875
+      ]
+    },
+    {
+      "name": "building_5_8_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 118,
+      "width_cm": [
+        5864.7529296875,
+        3349.09912109375
+      ]
+    },
+    {
+      "name": "building_5_8_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 72,
+      "width_cm": [
+        11598.0947265625,
+        5066.0670166015625
+      ]
+    },
+    {
+      "name": "building_6_3_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 63,
+      "width_cm": [
+        6464.32861328125,
+        3070.5810546875
+      ]
+    },
+    {
+      "name": "building_6_3_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 69,
+      "width_cm": [
+        11000.191040039062,
+        3557.529296875
+      ]
+    },
+    {
+      "name": "building_6_3_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 52,
+      "width_cm": [
+        11452.5732421875,
+        2069.306640625
+      ]
+    },
+    {
+      "name": "building_6_4_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 115,
+      "width_cm": [
+        10697.2919921875,
+        11091.726806640625
+      ]
+    },
+    {
+      "name": "building_6_4_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 367,
+      "width_cm": [
+        11100.873046875,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_6_4_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 430,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_6_5_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 64,
+      "width_cm": [
+        8617.20166015625,
+        11622.219360351562
+      ]
+    },
+    {
+      "name": "building_6_5_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 256,
+      "width_cm": [
+        11563.391967773438,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_6_5_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 151,
+      "width_cm": [
+        11681.609008789062,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_6_6_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 205,
+      "width_cm": [
+        12800.0,
+        5502.584777832031
+      ]
+    },
+    {
+      "name": "building_6_6_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 255,
+      "width_cm": [
+        12800.0,
+        7896.89892578125
+      ]
+    },
+    {
+      "name": "building_6_6_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 139,
+      "width_cm": [
+        11190.43359375,
+        7083.93994140625
+      ]
+    },
+    {
+      "name": "building_6_7_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 16,
+      "width_cm": [
+        1054.5409545898438,
+        595.06396484375
+      ]
+    },
+    {
+      "name": "building_6_7_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 154,
+      "width_cm": [
+        11242.5380859375,
+        5485.9022216796875
+      ]
+    },
+    {
+      "name": "building_6_7_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 19,
+      "width_cm": [
+        1677.8330078125,
+        1307.052001953125
+      ]
+    },
+    {
+      "name": "building_7_3_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 61,
+      "width_cm": [
+        9523.946147918701,
+        3726.9892578125
+      ]
+    },
+    {
+      "name": "building_7_3_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 60,
+      "width_cm": [
+        12800.0,
+        1647.529296875
+      ]
+    },
+    {
+      "name": "building_7_3_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 126,
+      "width_cm": [
+        10515.730163574219,
+        3853.3466796875
+      ]
+    },
+    {
+      "name": "building_7_4_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 129,
+      "width_cm": [
+        12800.0,
+        9834.513671875
+      ]
+    },
+    {
+      "name": "building_7_4_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 241,
+      "width_cm": [
+        11831.190002441406,
+        12622.158996582031
+      ]
+    },
+    {
+      "name": "building_7_4_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 305,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_7_5_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 193,
+      "width_cm": [
+        11241.619018554688,
+        10968.350402832031
+      ]
+    },
+    {
+      "name": "building_7_5_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 487,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_7_5_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 475,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_7_6_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 52,
+      "width_cm": [
+        9547.2919921875,
+        3533.7849731445312
+      ]
+    },
+    {
+      "name": "building_7_6_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 88,
+      "width_cm": [
+        3527.425048828125,
+        2166.029052734375
+      ]
+    },
+    {
+      "name": "building_7_6_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 160,
+      "width_cm": [
+        9258.885986328125,
+        5238.38720703125
+      ]
+    },
+    {
+      "name": "building_7_8_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 10,
+      "width_cm": [
+        603.7705078125,
+        279.5810546875
+      ]
+    },
+    {
+      "name": "building_7_8_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 25,
+      "width_cm": [
+        1416.5107421875,
+        447.760986328125
+      ]
+    },
+    {
+      "name": "building_7_8_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 32,
+      "width_cm": [
+        5065.330078125,
+        2404.93505859375
+      ]
+    },
+    {
+      "name": "building_8_3_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 32,
+      "width_cm": [
+        7513.26513671875,
+        3111.7900390625
+      ]
+    },
+    {
+      "name": "building_8_3_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 10,
+      "width_cm": [
+        448.13720703125,
+        633.1923828125
+      ]
+    },
+    {
+      "name": "building_8_4_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 225,
+      "width_cm": [
+        6789.97314453125,
+        7770.9178466796875
+      ]
+    },
+    {
+      "name": "building_8_4_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 182,
+      "width_cm": [
+        7807.31005859375,
+        10787.407958984375
+      ]
+    },
+    {
+      "name": "building_8_4_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 351,
+      "width_cm": [
+        7831.01318359375,
+        12364.625
+      ]
+    },
+    {
+      "name": "building_8_5_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 247,
+      "width_cm": [
+        8256.171875,
+        11933.822631835938
+      ]
+    },
+    {
+      "name": "building_8_5_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 120,
+      "width_cm": [
+        6200.8388671875,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_8_5_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 255,
+      "width_cm": [
+        8265.8818359375,
+        12800.0
+      ]
+    },
+    {
+      "name": "building_8_6_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 127,
+      "width_cm": [
+        5161.209716796875,
+        6037.913818359375
+      ]
+    },
+    {
+      "name": "building_8_6_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 89,
+      "width_cm": [
+        5810.0531005859375,
+        5692.01806640625
+      ]
+    },
+    {
+      "name": "building_8_6_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 132,
+      "width_cm": [
+        8311.2333984375,
+        7887.56494140625
+      ]
+    },
+    {
+      "name": "building_8_8_Brick.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 30,
+      "width_cm": [
+        3407.943359375,
+        7301.40673828125
+      ]
+    },
+    {
+      "name": "building_8_8_Concrete.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 25,
+      "width_cm": [
+        363.5979919433594,
+        391.935791015625
+      ]
+    },
+    {
+      "name": "building_8_8_Plaster.json",
+      "kind": "building",
+      "nanite": true,
+      "distance_field_resolution_scale": 1.0,
+      "triangles": 39,
+      "width_cm": [
+        6278.41015625,
+        1968.4990234375
+      ]
+    },
+    {
+      "name": "green_1_4.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 116,
+      "width_cm": [
+        1152.3017578125,
+        3880.59814453125
+      ]
+    },
+    {
+      "name": "green_1_5.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 512,
+      "width_cm": [
+        4342.9140625,
+        9117.635986328125
+      ]
+    },
+    {
+      "name": "green_1_6.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 119,
+      "width_cm": [
+        2503.279296875,
+        12800.0
+      ]
+    },
+    {
+      "name": "green_1_7.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 562,
+      "width_cm": [
+        5482.2158203125,
+        12800.0
+      ]
+    },
+    {
+      "name": "green_1_8.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 253,
+      "width_cm": [
+        5149.8232421875,
+        9064.75390625
+      ]
+    },
+    {
+      "name": "green_2_4.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 796,
+      "width_cm": [
+        12800.0,
+        10601.742309570312
+      ]
+    },
+    {
+      "name": "green_2_5.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 440,
+      "width_cm": [
+        4890.93603515625,
+        3397.51171875
+      ]
+    },
+    {
+      "name": "green_2_6.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 845,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "green_2_7.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 478,
+      "width_cm": [
+        11746.5146484375,
+        12800.0
+      ]
+    },
+    {
+      "name": "green_2_8.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 771,
+      "width_cm": [
+        12800.0,
+        9262.0888671875
+      ]
+    },
+    {
+      "name": "green_3_3.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 35,
+      "width_cm": [
+        436.60693359375,
+        1620.396484375
+      ]
+    },
+    {
+      "name": "green_3_4.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 927,
+      "width_cm": [
+        5951.55517578125,
+        12800.0
+      ]
+    },
+    {
+      "name": "green_3_5.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1739,
+      "width_cm": [
+        8302.064453125,
+        12800.0
+      ]
+    },
+    {
+      "name": "green_3_6.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1017,
+      "width_cm": [
+        10273.8681640625,
+        11672.56640625
+      ]
+    },
+    {
+      "name": "green_3_7.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 311,
+      "width_cm": [
+        7956.412109375,
+        11730.183959960938
+      ]
+    },
+    {
+      "name": "green_3_8.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 493,
+      "width_cm": [
+        12800.0,
+        9427.732421875
+      ]
+    },
+    {
+      "name": "green_4_3.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 38,
+      "width_cm": [
+        942.2158203125,
+        355.4521484375
+      ]
+    },
+    {
+      "name": "green_4_4.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 127,
+      "width_cm": [
+        5472.9150390625,
+        3614.197265625
+      ]
+    },
+    {
+      "name": "green_4_5.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 238,
+      "width_cm": [
+        4227.5302734375,
+        8958.052978515625
+      ]
+    },
+    {
+      "name": "green_4_7.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 58,
+      "width_cm": [
+        707.4450073242188,
+        2039.8720703125
+      ]
+    },
+    {
+      "name": "green_4_8.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 462,
+      "width_cm": [
+        12800.0,
+        6982.50390625
+      ]
+    },
+    {
+      "name": "green_5_4.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 181,
+      "width_cm": [
+        2497.9990234375,
+        4824.76806640625
+      ]
+    },
+    {
+      "name": "green_5_5.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 727,
+      "width_cm": [
+        12800.0,
+        10676.37890625
+      ]
+    },
+    {
+      "name": "green_5_6.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 183,
+      "width_cm": [
+        8350.23876953125,
+        9412.381103515625
+      ]
+    },
+    {
+      "name": "green_5_7.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 183,
+      "width_cm": [
+        4194.5185546875,
+        5658.7138671875
+      ]
+    },
+    {
+      "name": "green_5_8.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 955,
+      "width_cm": [
+        12800.0,
+        5258.69287109375
+      ]
+    },
+    {
+      "name": "green_6_3.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 147,
+      "width_cm": [
+        4259.3681640625,
+        3526.8134765625
+      ]
+    },
+    {
+      "name": "green_6_4.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1010,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "green_6_5.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1198,
+      "width_cm": [
+        6659.6259765625,
+        8808.8935546875
+      ]
+    },
+    {
+      "name": "green_6_6.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 833,
+      "width_cm": [
+        12800.0,
+        8298.39111328125
+      ]
+    },
+    {
+      "name": "green_6_7.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 908,
+      "width_cm": [
+        8464.93603515625,
+        10844.5078125
+      ]
+    },
+    {
+      "name": "green_6_8.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2482,
+      "width_cm": [
+        12800.0,
+        8201.95751953125
+      ]
+    },
+    {
+      "name": "green_7_4.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 297,
+      "width_cm": [
+        7850.80810546875,
+        8215.7958984375
+      ]
+    },
+    {
+      "name": "green_7_5.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 111,
+      "width_cm": [
+        1143.95703125,
+        1149.98779296875
+      ]
+    },
+    {
+      "name": "green_7_6.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1137,
+      "width_cm": [
+        12800.0,
+        7909.35400390625
+      ]
+    },
+    {
+      "name": "green_7_7.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2290,
+      "width_cm": [
+        12800.0,
+        11373.412109375
+      ]
+    },
+    {
+      "name": "green_7_8.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1454,
+      "width_cm": [
+        12800.0,
+        8400.849212646484
+      ]
+    },
+    {
+      "name": "green_8_3.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 94,
+      "width_cm": [
+        3386.51220703125,
+        1899.3505859375
+      ]
+    },
+    {
+      "name": "green_8_4.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 94,
+      "width_cm": [
+        5465.02001953125,
+        12800.0
+      ]
+    },
+    {
+      "name": "green_8_5.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 37,
+      "width_cm": [
+        1306.9677734375,
+        744.1209716796875
+      ]
+    },
+    {
+      "name": "green_8_6.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 399,
+      "width_cm": [
+        8542.861328125,
+        10506.2548828125
+      ]
+    },
+    {
+      "name": "green_8_7.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1535,
+      "width_cm": [
+        8825.0908203125,
+        11418.5009765625
+      ]
+    },
+    {
+      "name": "green_8_8.json",
+      "kind": "green",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1230,
+      "width_cm": [
+        8065.17919921875,
+        8235.560546875
+      ]
+    },
+    {
+      "name": "rail_1_6.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 27,
+      "width_cm": [
+        814.9443359375,
+        469.8330078125
+      ]
+    },
+    {
+      "name": "rail_1_7.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 331,
+      "width_cm": [
+        5631.17578125,
+        3388.9990234375
+      ]
+    },
+    {
+      "name": "rail_2_6.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 574,
+      "width_cm": [
+        12800.0,
+        2978.11328125
+      ]
+    },
+    {
+      "name": "rail_2_7.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 18,
+      "width_cm": [
+        550.8770141601562,
+        312.510986328125
+      ]
+    },
+    {
+      "name": "rail_3_3.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 78,
+      "width_cm": [
+        1074.806884765625,
+        2275.8974609375
+      ]
+    },
+    {
+      "name": "rail_3_4.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 255,
+      "width_cm": [
+        3347.576171875,
+        12800.0
+      ]
+    },
+    {
+      "name": "rail_3_5.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 254,
+      "width_cm": [
+        3152.89697265625,
+        12800.0
+      ]
+    },
+    {
+      "name": "rail_3_6.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 905,
+      "width_cm": [
+        12509.3818359375,
+        12800.0
+      ]
+    },
+    {
+      "name": "rail_3_7.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 718,
+      "width_cm": [
+        4521.109375,
+        12800.0
+      ]
+    },
+    {
+      "name": "rail_3_8.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 267,
+      "width_cm": [
+        3592.01220703125,
+        8469.9541015625
+      ]
+    },
+    {
+      "name": "rail_4_7.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 912,
+      "width_cm": [
+        12800.0,
+        11787.390014648438
+      ]
+    },
+    {
+      "name": "rail_4_8.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 372,
+      "width_cm": [
+        1745.314453125,
+        7974.64208984375
+      ]
+    },
+    {
+      "name": "rail_5_3.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 113,
+      "width_cm": [
+        1111.73974609375,
+        3076.9189453125
+      ]
+    },
+    {
+      "name": "rail_5_4.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 244,
+      "width_cm": [
+        2780.24609375,
+        12800.0
+      ]
+    },
+    {
+      "name": "rail_5_5.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 358,
+      "width_cm": [
+        3216.919921875,
+        12800.0
+      ]
+    },
+    {
+      "name": "rail_5_6.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 365,
+      "width_cm": [
+        5395.35595703125,
+        12800.0
+      ]
+    },
+    {
+      "name": "rail_5_7.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 601,
+      "width_cm": [
+        12255.0478515625,
+        11520.234375
+      ]
+    },
+    {
+      "name": "rail_6_5.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 258,
+      "width_cm": [
+        1050.698974609375,
+        4742.884765625
+      ]
+    },
+    {
+      "name": "rail_6_6.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 433,
+      "width_cm": [
+        12800.0,
+        12642.767578125
+      ]
+    },
+    {
+      "name": "rail_7_5.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 176,
+      "width_cm": [
+        3418.044921875,
+        1234.6123046875
+      ]
+    },
+    {
+      "name": "rail_7_6.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 557,
+      "width_cm": [
+        12800.0,
+        2207.22314453125
+      ]
+    },
+    {
+      "name": "rail_8_5.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 262,
+      "width_cm": [
+        5586.8740234375,
+        6295.05322265625
+      ]
+    },
+    {
+      "name": "rail_8_6.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 365,
+      "width_cm": [
+        7284.09423828125,
+        4988.2529296875
+      ]
+    },
+    {
+      "name": "rail_8_7.json",
+      "kind": "rail",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 108,
+      "width_cm": [
+        2614.76123046875,
+        1915.988037109375
+      ]
+    },
+    {
+      "name": "road_1_3_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 77,
+      "width_cm": [
+        1818.8310546875,
+        1690.6806640625
+      ]
+    },
+    {
+      "name": "road_1_3_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 263,
+      "width_cm": [
+        5660.68603515625,
+        1844.607421875
+      ]
+    },
+    {
+      "name": "road_1_4_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 402,
+      "width_cm": [
+        6778.97705078125,
+        12399.294006347656
+      ]
+    },
+    {
+      "name": "road_1_4_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 814,
+      "width_cm": [
+        6619.31689453125,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_1_4_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 387,
+      "width_cm": [
+        6775.75,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_1_5_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 238,
+      "width_cm": [
+        6088.62109375,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_1_5_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 683,
+      "width_cm": [
+        5933.49072265625,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_1_5_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 842,
+      "width_cm": [
+        6399.14892578125,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_1_6_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 679,
+      "width_cm": [
+        3774.7255859375,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_1_6_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 893,
+      "width_cm": [
+        5954.81005859375,
+        12396.43359375
+      ]
+    },
+    {
+      "name": "road_1_6_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 417,
+      "width_cm": [
+        5688.27294921875,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_1_7_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 794,
+      "width_cm": [
+        5751.39892578125,
+        10522.451171875
+      ]
+    },
+    {
+      "name": "road_1_7_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 562,
+      "width_cm": [
+        5498.5498046875,
+        9529.947021484375
+      ]
+    },
+    {
+      "name": "road_1_7_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 217,
+      "width_cm": [
+        5658.255859375,
+        5190.9482421875
+      ]
+    },
+    {
+      "name": "road_1_8_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 27,
+      "width_cm": [
+        3729.2744140625,
+        3340.49609375
+      ]
+    },
+    {
+      "name": "road_1_8_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 580,
+      "width_cm": [
+        5349.93994140625,
+        7625.022857666016
+      ]
+    },
+    {
+      "name": "road_2_3_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 77,
+      "width_cm": [
+        11298.166015625,
+        2159.7138671875
+      ]
+    },
+    {
+      "name": "road_2_3_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 319,
+      "width_cm": [
+        12629.121994018555,
+        2059.2529296875
+      ]
+    },
+    {
+      "name": "road_2_3_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 295,
+      "width_cm": [
+        12800.0,
+        1873.51953125
+      ]
+    },
+    {
+      "name": "road_2_4_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 647,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_2_4_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2066,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_2_4_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1088,
+      "width_cm": [
+        12800.0,
+        12386.140014648438
+      ]
+    },
+    {
+      "name": "road_2_5_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 847,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_2_5_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 923,
+      "width_cm": [
+        12652.733001708984,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_2_5_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1007,
+      "width_cm": [
+        12800.0,
+        11573.916015625
+      ]
+    },
+    {
+      "name": "road_2_6_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1497,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_2_6_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 935,
+      "width_cm": [
+        12800.0,
+        12330.1669921875
+      ]
+    },
+    {
+      "name": "road_2_6_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 802,
+      "width_cm": [
+        12800.0,
+        11793.138977050781
+      ]
+    },
+    {
+      "name": "road_2_7_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1003,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_2_7_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 634,
+      "width_cm": [
+        12800.0,
+        11953.073516845703
+      ]
+    },
+    {
+      "name": "road_2_7_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 776,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_2_8_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 297,
+      "width_cm": [
+        12116.447998046875,
+        4403.86083984375
+      ]
+    },
+    {
+      "name": "road_2_8_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 475,
+      "width_cm": [
+        12800.0,
+        6711.155029296875
+      ]
+    },
+    {
+      "name": "road_2_8_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 323,
+      "width_cm": [
+        6312.912109375,
+        7845.52880859375
+      ]
+    },
+    {
+      "name": "road_3_3_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 371,
+      "width_cm": [
+        8025.02880859375,
+        2453.328125
+      ]
+    },
+    {
+      "name": "road_3_3_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 65,
+      "width_cm": [
+        3059.76806640625,
+        2228.0244140625
+      ]
+    },
+    {
+      "name": "road_3_3_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 147,
+      "width_cm": [
+        12800.0,
+        2503.71484375
+      ]
+    },
+    {
+      "name": "road_3_4_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1594,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_3_4_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1657,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_3_4_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1089,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_3_5_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1311,
+      "width_cm": [
+        12547.9326171875,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_3_5_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1571,
+      "width_cm": [
+        12542.265625,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_3_5_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1227,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_3_6_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2133,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_3_6_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1066,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_3_6_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 866,
+      "width_cm": [
+        12800.0,
+        12768.796875
+      ]
+    },
+    {
+      "name": "road_3_7_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1488,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_3_7_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 398,
+      "width_cm": [
+        8594.9541015625,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_3_7_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1056,
+      "width_cm": [
+        12800.0,
+        12518.671997070312
+      ]
+    },
+    {
+      "name": "road_3_8_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 685,
+      "width_cm": [
+        11816.953125,
+        8640.3505859375
+      ]
+    },
+    {
+      "name": "road_3_8_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 707,
+      "width_cm": [
+        12800.0,
+        9936.1171875
+      ]
+    },
+    {
+      "name": "road_3_8_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1140,
+      "width_cm": [
+        8170.45703125,
+        10005.6787109375
+      ]
+    },
+    {
+      "name": "road_4_3_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 261,
+      "width_cm": [
+        12221.046997070312,
+        2847.0859375
+      ]
+    },
+    {
+      "name": "road_4_3_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 56,
+      "width_cm": [
+        6023.494140625,
+        2704.47265625
+      ]
+    },
+    {
+      "name": "road_4_3_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 340,
+      "width_cm": [
+        12800.0,
+        2547.2314453125
+      ]
+    },
+    {
+      "name": "road_4_4_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 697,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_4_4_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1070,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_4_4_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1181,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_4_5_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 740,
+      "width_cm": [
+        8837.140380859375,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_4_5_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1361,
+      "width_cm": [
+        12711.16000366211,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_4_5_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1009,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_4_6_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 770,
+      "width_cm": [
+        10899.498046875,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_4_6_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 888,
+      "width_cm": [
+        12705.8359375,
+        11526.009765625
+      ]
+    },
+    {
+      "name": "road_4_6_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1289,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_4_7_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1717,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_4_7_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 737,
+      "width_cm": [
+        10786.799682617188,
+        12625.216995239258
+      ]
+    },
+    {
+      "name": "road_4_7_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 982,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_4_8_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 852,
+      "width_cm": [
+        12531.746002197266,
+        9495.78125
+      ]
+    },
+    {
+      "name": "road_4_8_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 563,
+      "width_cm": [
+        12456.6181640625,
+        9725.83203125
+      ]
+    },
+    {
+      "name": "road_4_8_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1206,
+      "width_cm": [
+        12800.0,
+        8220.1240234375
+      ]
+    },
+    {
+      "name": "road_5_3_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 507,
+      "width_cm": [
+        12800.0,
+        3183.6201171875
+      ]
+    },
+    {
+      "name": "road_5_3_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 532,
+      "width_cm": [
+        12800.0,
+        3099.9423828125
+      ]
+    },
+    {
+      "name": "road_5_3_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 252,
+      "width_cm": [
+        11874.8837890625,
+        1884.2578125
+      ]
+    },
+    {
+      "name": "road_5_4_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 929,
+      "width_cm": [
+        10236.44921875,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_5_4_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1765,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_5_4_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1057,
+      "width_cm": [
+        12800.0,
+        11490.22998046875
+      ]
+    },
+    {
+      "name": "road_5_5_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1034,
+      "width_cm": [
+        9868.075927734375,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_5_5_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 769,
+      "width_cm": [
+        12800.0,
+        8970.189453125
+      ]
+    },
+    {
+      "name": "road_5_5_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1792,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_5_6_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 985,
+      "width_cm": [
+        12464.441009521484,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_5_6_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 527,
+      "width_cm": [
+        12781.649000167847,
+        8741.052978515625
+      ]
+    },
+    {
+      "name": "road_5_6_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1257,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_5_7_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1111,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_5_7_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1250,
+      "width_cm": [
+        11375.96176147461,
+        12704.162109375
+      ]
+    },
+    {
+      "name": "road_5_7_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 736,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_5_8_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 22,
+      "width_cm": [
+        369.6109924316406,
+        631.3770141601562
+      ]
+    },
+    {
+      "name": "road_5_8_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 619,
+      "width_cm": [
+        6310.81591796875,
+        6714.635986328125
+      ]
+    },
+    {
+      "name": "road_5_8_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 610,
+      "width_cm": [
+        12800.0,
+        6489.15185546875
+      ]
+    },
+    {
+      "name": "road_6_3_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 193,
+      "width_cm": [
+        4836.3427734375,
+        3370.9013671875
+      ]
+    },
+    {
+      "name": "road_6_3_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 507,
+      "width_cm": [
+        12800.0,
+        3568.966796875
+      ]
+    },
+    {
+      "name": "road_6_3_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 421,
+      "width_cm": [
+        10089.498046875,
+        3589.111328125
+      ]
+    },
+    {
+      "name": "road_6_4_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 383,
+      "width_cm": [
+        7623.952880859375,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_6_4_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1601,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_6_4_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1604,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_6_5_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1202,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_6_5_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1527,
+      "width_cm": [
+        12800.0,
+        11486.91796875
+      ]
+    },
+    {
+      "name": "road_6_5_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 959,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_6_6_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1462,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_6_6_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 679,
+      "width_cm": [
+        12800.0,
+        12682.236999511719
+      ]
+    },
+    {
+      "name": "road_6_6_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 651,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_6_7_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 375,
+      "width_cm": [
+        4991.5498046875,
+        4614.55078125
+      ]
+    },
+    {
+      "name": "road_6_7_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 699,
+      "width_cm": [
+        7736.22607421875,
+        10414.576171875
+      ]
+    },
+    {
+      "name": "road_6_7_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 436,
+      "width_cm": [
+        12800.0,
+        8761.646484375
+      ]
+    },
+    {
+      "name": "road_6_8_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1472,
+      "width_cm": [
+        12800.0,
+        7468.0264892578125
+      ]
+    },
+    {
+      "name": "road_6_8_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 543,
+      "width_cm": [
+        12800.0,
+        4749.1240234375
+      ]
+    },
+    {
+      "name": "road_7_3_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 454,
+      "width_cm": [
+        10746.64794921875,
+        3906.6611328125
+      ]
+    },
+    {
+      "name": "road_7_3_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 260,
+      "width_cm": [
+        12800.0,
+        3870.166015625
+      ]
+    },
+    {
+      "name": "road_7_3_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 294,
+      "width_cm": [
+        10954.1337890625,
+        3957.3837890625
+      ]
+    },
+    {
+      "name": "road_7_4_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 776,
+      "width_cm": [
+        9549.823974609375,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_7_4_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1067,
+      "width_cm": [
+        12350.5986328125,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_7_4_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1512,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_7_5_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1158,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_7_5_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1117,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_7_5_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1308,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_7_6_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1366,
+      "width_cm": [
+        12800.0,
+        9784.1591796875
+      ]
+    },
+    {
+      "name": "road_7_6_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1138,
+      "width_cm": [
+        12800.0,
+        12706.15625
+      ]
+    },
+    {
+      "name": "road_7_6_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1008,
+      "width_cm": [
+        12800.0,
+        11197.2939453125
+      ]
+    },
+    {
+      "name": "road_7_7_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 845,
+      "width_cm": [
+        12778.0146484375,
+        7950.582763671875
+      ]
+    },
+    {
+      "name": "road_7_7_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 752,
+      "width_cm": [
+        12800.0,
+        7090.751220703125
+      ]
+    },
+    {
+      "name": "road_7_8_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 618,
+      "width_cm": [
+        12800.0,
+        7211.561767578125
+      ]
+    },
+    {
+      "name": "road_7_8_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 564,
+      "width_cm": [
+        12800.0,
+        5606.134521484375
+      ]
+    },
+    {
+      "name": "road_8_3_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 69,
+      "width_cm": [
+        7583.48291015625,
+        722.9755859375
+      ]
+    },
+    {
+      "name": "road_8_3_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 150,
+      "width_cm": [
+        5594.5341796875,
+        2518.9140625
+      ]
+    },
+    {
+      "name": "road_8_4_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 626,
+      "width_cm": [
+        7986.55615234375,
+        12471.2119140625
+      ]
+    },
+    {
+      "name": "road_8_4_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 362,
+      "width_cm": [
+        6955.0760498046875,
+        8911.14208984375
+      ]
+    },
+    {
+      "name": "road_8_4_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 840,
+      "width_cm": [
+        7862.94384765625,
+        8898.488037109375
+      ]
+    },
+    {
+      "name": "road_8_5_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 661,
+      "width_cm": [
+        8264.7861328125,
+        11374.796997070312
+      ]
+    },
+    {
+      "name": "road_8_5_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 553,
+      "width_cm": [
+        6932.01513671875,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_8_5_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 957,
+      "width_cm": [
+        5595.85498046875,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_8_6_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 666,
+      "width_cm": [
+        8828.8466796875,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_8_6_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 382,
+      "width_cm": [
+        8500.0185546875,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_8_6_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1148,
+      "width_cm": [
+        8702.767578125,
+        12109.2548828125
+      ]
+    },
+    {
+      "name": "road_8_7_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 163,
+      "width_cm": [
+        4962.2236328125,
+        12800.0
+      ]
+    },
+    {
+      "name": "road_8_7_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 327,
+      "width_cm": [
+        8651.285079956055,
+        11081.50390625
+      ]
+    },
+    {
+      "name": "road_8_7_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 735,
+      "width_cm": [
+        4752.69189453125,
+        10974.155700683594
+      ]
+    },
+    {
+      "name": "road_8_8_Asphalt.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 287,
+      "width_cm": [
+        8261.142944335938,
+        7135.6318359375
+      ]
+    },
+    {
+      "name": "road_8_8_Concrete.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1497,
+      "width_cm": [
+        9199.6123046875,
+        7358.052978515625
+      ]
+    },
+    {
+      "name": "road_8_8_Stone.json",
+      "kind": "road",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 578,
+      "width_cm": [
+        9194.169921875,
+        6100.082824707031
+      ]
+    },
+    {
+      "name": "terrain_1_3.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 143,
+      "width_cm": [
+        6728.2900390625,
+        1789.470703125
+      ]
+    },
+    {
+      "name": "terrain_1_4.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 731,
+      "width_cm": [
+        6684.10205078125,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_1_5.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 666,
+      "width_cm": [
+        6331.35791015625,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_1_6.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 643,
+      "width_cm": [
+        5978.61376953125,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_1_7.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 642,
+      "width_cm": [
+        5625.87109375,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_1_8.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 384,
+      "width_cm": [
+        5273.126953125,
+        10575.6142578125
+      ]
+    },
+    {
+      "name": "terrain_2_3.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 241,
+      "width_cm": [
+        12800.0,
+        2143.361328125
+      ]
+    },
+    {
+      "name": "terrain_2_4.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1202,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_2_5.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1155,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_2_6.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1139,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_2_7.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1222,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_2_8.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 815,
+      "width_cm": [
+        12800.0,
+        9580.400390625
+      ]
+    },
+    {
+      "name": "terrain_3_3.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 302,
+      "width_cm": [
+        12800.0,
+        2497.2509765625
+      ]
+    },
+    {
+      "name": "terrain_3_4.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1162,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_3_5.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 958,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_3_6.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 868,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_3_7.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1171,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_3_8.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 825,
+      "width_cm": [
+        12800.0,
+        9552.3388671875
+      ]
+    },
+    {
+      "name": "terrain_4_3.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 365,
+      "width_cm": [
+        12800.0,
+        2851.140625
+      ]
+    },
+    {
+      "name": "terrain_4_4.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1402,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_4_5.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1417,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_4_6.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1290,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_4_7.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1568,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_4_8.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1123,
+      "width_cm": [
+        12800.0,
+        9712.5673828125
+      ]
+    },
+    {
+      "name": "terrain_5_3.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 463,
+      "width_cm": [
+        12800.0,
+        3205.03125
+      ]
+    },
+    {
+      "name": "terrain_5_4.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1554,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_5_5.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1320,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_5_6.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1377,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_5_7.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1547,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_5_8.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 467,
+      "width_cm": [
+        11598.0947265625,
+        6600.1318359375
+      ]
+    },
+    {
+      "name": "terrain_6_3.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 489,
+      "width_cm": [
+        12800.0,
+        3558.9208984375
+      ]
+    },
+    {
+      "name": "terrain_6_4.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1357,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_6_5.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1167,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_6_6.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1314,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_6_7.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 715,
+      "width_cm": [
+        12800.0,
+        9153.4501953125
+      ]
+    },
+    {
+      "name": "terrain_7_3.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 442,
+      "width_cm": [
+        12800.0,
+        3912.810546875
+      ]
+    },
+    {
+      "name": "terrain_7_4.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1446,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_7_5.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1631,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_7_6.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1472,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_7_7.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 33,
+      "width_cm": [
+        12800.0,
+        1381.863037109375
+      ]
+    },
+    {
+      "name": "terrain_7_8.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 147,
+      "width_cm": [
+        5755.83203125,
+        4842.0029296875
+      ]
+    },
+    {
+      "name": "terrain_8_3.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 276,
+      "width_cm": [
+        7555.85009765625,
+        4118.5537109375
+      ]
+    },
+    {
+      "name": "terrain_8_4.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 959,
+      "width_cm": [
+        7910.85693359375,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_8_5.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 988,
+      "width_cm": [
+        8265.865234375,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_8_6.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1014,
+      "width_cm": [
+        8606.578125,
+        12800.0
+      ]
+    },
+    {
+      "name": "terrain_8_7.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 441,
+      "width_cm": [
+        8845.642578125,
+        12505.1669921875
+      ]
+    },
+    {
+      "name": "terrain_8_8.json",
+      "kind": "terrain",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 517,
+      "width_cm": [
+        9199.4345703125,
+        6408.197509765625
+      ]
+    },
+    {
+      "name": "water_1_8.json",
+      "kind": "water",
+      "nanite": false,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 10,
+      "width_cm": [
+        5097.2041015625,
+        4192.064453125
+      ]
+    },
+    {
+      "name": "water_2_8.json",
+      "kind": "water",
+      "nanite": false,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 13,
+      "width_cm": [
+        12800.0,
+        2339.6494140625
+      ]
+    },
+    {
+      "name": "water_3_8.json",
+      "kind": "water",
+      "nanite": false,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 27,
+      "width_cm": [
+        12800.0,
+        2520.3564453125
+      ]
+    },
+    {
+      "name": "water_4_8.json",
+      "kind": "water",
+      "nanite": false,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 46,
+      "width_cm": [
+        12800.0,
+        3131.83203125
+      ]
+    },
+    {
+      "name": "water_5_7.json",
+      "kind": "water",
+      "nanite": false,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 11,
+      "width_cm": [
+        3443.7490234375,
+        3646.5498046875
+      ]
+    },
+    {
+      "name": "water_5_8.json",
+      "kind": "water",
+      "nanite": false,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 61,
+      "width_cm": [
+        12800.0,
+        9378.310546875
+      ]
+    },
+    {
+      "name": "water_6_5.json",
+      "kind": "water",
+      "nanite": false,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 17,
+      "width_cm": [
+        1249.819091796875,
+        1251.2340240478516
+      ]
+    },
+    {
+      "name": "water_6_7.json",
+      "kind": "water",
+      "nanite": false,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 83,
+      "width_cm": [
+        12800.0,
+        11418.136962890625
+      ]
+    },
+    {
+      "name": "water_6_8.json",
+      "kind": "water",
+      "nanite": false,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 56,
+      "width_cm": [
+        12800.0,
+        9024.2509765625
+      ]
+    },
+    {
+      "name": "water_7_6.json",
+      "kind": "water",
+      "nanite": false,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 36,
+      "width_cm": [
+        9994.763427734375,
+        2311.671875
+      ]
+    },
+    {
+      "name": "water_7_7.json",
+      "kind": "water",
+      "nanite": false,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 111,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "water_7_8.json",
+      "kind": "water",
+      "nanite": false,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 29,
+      "width_cm": [
+        12800.0,
+        791.5910034179688
+      ]
+    },
+    {
+      "name": "water_8_7.json",
+      "kind": "water",
+      "nanite": false,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 101,
+      "width_cm": [
+        8975.8876953125,
+        12264.973022460938
+      ]
+    },
+    {
+      "name": "water_8_8.json",
+      "kind": "water",
+      "nanite": false,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 68,
+      "width_cm": [
+        9033.8349609375,
+        8283.8779296875
+      ]
+    },
+    {
+      "name": "sidewalk_1_3.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 256,
+      "width_cm": [
+        5777.14404296875,
+        1954.322265625
+      ]
+    },
+    {
+      "name": "sidewalk_1_4.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 990,
+      "width_cm": [
+        6885.52783203125,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_1_5.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1367,
+      "width_cm": [
+        6522.7998046875,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_1_6.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1184,
+      "width_cm": [
+        3794.8525390625,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_1_7.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 802,
+      "width_cm": [
+        5822.52685546875,
+        11079.408203125
+      ]
+    },
+    {
+      "name": "sidewalk_1_8.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 816,
+      "width_cm": [
+        5493.48291015625,
+        7958.372215270996
+      ]
+    },
+    {
+      "name": "sidewalk_2_3.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 492,
+      "width_cm": [
+        12800.0,
+        2534.4716796875
+      ]
+    },
+    {
+      "name": "sidewalk_2_4.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2525,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_2_5.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2510,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_2_6.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2604,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_2_7.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1861,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_2_8.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 718,
+      "width_cm": [
+        12800.0,
+        7968.02001953125
+      ]
+    },
+    {
+      "name": "sidewalk_3_3.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 448,
+      "width_cm": [
+        12800.0,
+        2480.7109375
+      ]
+    },
+    {
+      "name": "sidewalk_3_4.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2447,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_3_5.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1839,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_3_6.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2057,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_3_7.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2524,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_3_8.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 777,
+      "width_cm": [
+        12800.0,
+        8510.1337890625
+      ]
+    },
+    {
+      "name": "sidewalk_4_3.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 519,
+      "width_cm": [
+        12800.0,
+        2997.25390625
+      ]
+    },
+    {
+      "name": "sidewalk_4_4.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1996,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_4_5.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1776,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_4_6.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2260,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_4_7.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2029,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_4_8.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1758,
+      "width_cm": [
+        12800.0,
+        9151.1650390625
+      ]
+    },
+    {
+      "name": "sidewalk_5_3.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 837,
+      "width_cm": [
+        12800.0,
+        3628.6953125
+      ]
+    },
+    {
+      "name": "sidewalk_5_4.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1891,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_5_5.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2208,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_5_6.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1882,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_5_7.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1823,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_5_8.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 39,
+      "width_cm": [
+        573.5180053710938,
+        960.7880249023438
+      ]
+    },
+    {
+      "name": "sidewalk_6_3.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 726,
+      "width_cm": [
+        12800.0,
+        3616.0390625
+      ]
+    },
+    {
+      "name": "sidewalk_6_4.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1659,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_6_5.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2016,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_6_6.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2255,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_6_7.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 629,
+      "width_cm": [
+        5152.84716796875,
+        4818.576171875
+      ]
+    },
+    {
+      "name": "sidewalk_7_3.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 964,
+      "width_cm": [
+        12800.0,
+        4043.40625
+      ]
+    },
+    {
+      "name": "sidewalk_7_4.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1968,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_7_5.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 3022,
+      "width_cm": [
+        12800.0,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_7_6.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 2144,
+      "width_cm": [
+        12800.0,
+        9950.234375
+      ]
+    },
+    {
+      "name": "sidewalk_7_8.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 501,
+      "width_cm": [
+        5730.85595703125,
+        4082.002197265625
+      ]
+    },
+    {
+      "name": "sidewalk_8_3.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 142,
+      "width_cm": [
+        7622.77587890625,
+        870.9609375
+      ]
+    },
+    {
+      "name": "sidewalk_8_4.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1754,
+      "width_cm": [
+        8110.8310546875,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_8_5.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1705,
+      "width_cm": [
+        8383.7001953125,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_8_6.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1305,
+      "width_cm": [
+        8922.3203125,
+        12800.0
+      ]
+    },
+    {
+      "name": "sidewalk_8_7.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 426,
+      "width_cm": [
+        7995.8704833984375,
+        11085.029296875
+      ]
+    },
+    {
+      "name": "sidewalk_8_8.json",
+      "kind": "sidewalk",
+      "nanite": true,
+      "distance_field_resolution_scale": 0.0,
+      "triangles": 1095,
+      "width_cm": [
+        9272.8232421875,
+        6932.083099365234
+      ]
+    }
+  ],
+  "sector_size_cm": 12800,
+  "world_partition": false,
+  "notes": [
+    "Full collision fallback preserved. Opaque geometry uses Nanite; water retains its translucent raster path.",
+    "Thin open ground skips mesh SDF generation; component raster/VSM shadows retained.",
+    "Skeletal hero and masked foliage retain conventional LOD/culling; no WPO added."
+  ]
+}
