@@ -6,7 +6,19 @@ param(
  [string]$PythonExe='',[switch]$DownloadReviewed,[switch]$GameplayQA)
 $ErrorActionPreference='Stop'
 $taskRoot=Split-Path $PSScriptRoot -Parent
-if(!$PythonExe){$candidate=Join-Path $taskRoot 'Saved/GISPython/Scripts/python.exe';$PythonExe=if(Test-Path -LiteralPath $candidate){$candidate}else{'python'}}
+$bootstrapTaskPython=$false
+if(!$PythonExe){
+ $candidate=Join-Path $taskRoot 'Saved/GISPython/Scripts/python.exe'
+ if(Test-Path -LiteralPath $candidate){
+  $PythonExe=$candidate
+  if($Mode -ne 'Validate'){
+   & $candidate -c "import sys; raise SystemExit(0 if sys.version_info >= (3,12) else 1)"
+   $bootstrapTaskPython=$LASTEXITCODE -ne 0
+  }
+ }
+ elseif($Mode -ne 'Validate'){$PythonExe=$candidate;$bootstrapTaskPython=$true}
+ else{$PythonExe='python'}
+}
 $out=Join-Path $taskRoot 'Saved/StartLocation/production'
 New-Item -ItemType Directory -Force -Path $out | Out-Null
 $steps=[Collections.Generic.List[object]]::new()
@@ -29,6 +41,7 @@ function Invoke-Editor([string]$Name,[string]$Script,[string]$Marker,[switch]$Re
  $started=[DateTime]::UtcNow;$log=Join-Path $out "$Name.log"
  $editorArgs=@($project,'/Engine/Maps/Entry','-unattended','-nosplash',"-ExecutePythonScript=$(Join-Path $taskRoot $Script)","-abslog=$log")
  if(!$Render){$editorArgs+='-nullrhi'}
+ else{$editorArgs+='-RenderOffscreen'}
  & $editor @editorArgs *> (Join-Path $out "$Name-stdout.log")
  $nativeExit=$LASTEXITCODE;$path=Join-Path $taskRoot $Marker
  if($nativeExit -ne 0 -or !(Test-Path -LiteralPath $path) -or (Get-Item -LiteralPath $path).LastWriteTimeUtc -lt $started){throw "$Name failed or lacks fresh marker; inspect $log"}
@@ -39,6 +52,23 @@ try {
  if($Mode -ne 'Validate'){
   $branch=& git branch --show-current
   if($LASTEXITCODE -ne 0 -or !$branch -or $branch -eq 'main'){throw 'Create a dedicated branch from main before producing versioned source/native assets.'}
+ }
+ if($bootstrapTaskPython){
+  Invoke-Step 'isolated-python-environment' {
+   $nativePreference=$ErrorActionPreference;$ErrorActionPreference='Continue'
+   try {
+    $venv=Join-Path $taskRoot 'Saved/GISPython'
+    if(Get-Command uv -ErrorAction SilentlyContinue){
+     & uv venv --python 3.13 --seed --allow-existing $venv *> (Join-Path $out 'python-environment.log')
+    }else{
+     & python -c "import sys; raise SystemExit(0 if sys.version_info >= (3,12) else 1)"
+     if($LASTEXITCODE -ne 0){throw 'Python >=3.12 required for pyproj; install uv or pass -PythonExe pointing to a configured environment.'}
+     & python -m venv $venv *> (Join-Path $out 'python-environment.log')
+    }
+    if($LASTEXITCODE -ne 0){throw 'Cannot create isolated Python environment'}
+    & $PythonExe -m pip install -r Scripts/gis/requirements.txt -r Scripts/assets/requirements.txt *>> (Join-Path $out 'python-environment.log')
+   }finally{$ErrorActionPreference=$nativePreference}
+  }
  }
  $acquire=@('Scripts/assets/acquire_city_assets.py');if($DownloadReviewed){$acquire+='--download'}
  Invoke-Step 'reviewed-source-checksums' {& $PythonExe @acquire}
@@ -56,7 +86,9 @@ try {
   Invoke-Step 'street-infrastructure-models' {& $BlenderExe --background --python-exit-code 1 --python Scripts/assets/build_street_infrastructure.py *> (Join-Path $out 'infrastructure.log')}
   Invoke-Step 'production-manifests' {& $PythonExe Scripts/assets/make_start_location_manifests.py}
   Invoke-Step 'manifest-validation' {& $PythonExe Pipeline/qa/validate_manifest.py --all}
-  foreach($manifest in Get-ChildItem -LiteralPath Pipeline/assets/start_location -Filter '*.asset.json'){
+  $productionManifests=@((Get-ChildItem -LiteralPath Pipeline/assets/start_location -Filter '*.asset.json').FullName)+(Join-Path $taskRoot 'Pipeline/assets/player/civilian.asset.json')
+  foreach($manifestPath in $productionManifests){
+   $manifest=Get-Item -LiteralPath $manifestPath
    $path=$manifest.FullName
    Invoke-Step ("fbx-"+$manifest.BaseName) {& $BlenderExe --background --python-exit-code 1 --python Pipeline/blender/build_asset.py -- --manifest $path *> (Join-Path $out ($manifest.BaseName+'.log'))}
   }
@@ -65,14 +97,14 @@ try {
  }
  if($Mode -eq 'Full'){
   if(!(Test-Path -LiteralPath $editor)){throw 'Unreal executable missing; provide EngineRoot.'}
-  Invoke-Step 'native-module' {& (Join-Path $EngineRoot 'Engine/Build/BatchFiles/Build.bat') WroclawTheGameEditor Win64 Development "-Project=$project" -WaitMutex -NoHotReloadFromIDE *> (Join-Path $out 'module.log')}
+  Invoke-Step 'native-module' {& (Join-Path $EngineRoot 'Engine/Build/BatchFiles/Build.bat') WroclawTheGameEditor Win64 Development "-Project=$project" -WaitMutex -NoHotReloadFromIDE -NoUBTMakefiles *> (Join-Path $out 'module.log')}
   if(!(Test-Path -LiteralPath Saved/FreeModelImportMap.json)){
    Invoke-Step 'existing-library-import' {Invoke-Editor 'library' 'Scripts/import_free_models.py' 'Saved/FreeModelsReady.ok'}
   }
   Invoke-Step 'shared-materials' {Invoke-Editor 'materials' 'Scripts/assets/prepare_start_location_materials.py' 'Saved/StartLocation/materials.ok'}
   Invoke-Step 'foliage-materials' {Invoke-Editor 'foliage' 'Scripts/assets/prepare_foliage_materials.py' 'Saved/StartLocation/foliage.ok'}
   Invoke-Step 'civilian-pbr' {Invoke-Editor 'hero-materials' 'Scripts/assets/prepare_hero_materials.py' 'Saved/StartLocation/hero-materials.ok'}
-  $env:WTG_ASSET_MANIFESTS=ConvertTo-Json -Compress -InputObject @((Get-ChildItem -LiteralPath Pipeline/assets/start_location -Filter '*.asset.json').FullName)
+  $env:WTG_ASSET_MANIFESTS=ConvertTo-Json -Compress -InputObject $productionManifests
   Invoke-Step 'native-model-import' {Invoke-Editor 'import' 'Pipeline/unreal/import_batch.py' 'Saved/Pipeline/import/batch.ok'}
   Invoke-Step 'native-asset-verification' {Invoke-Editor 'assets' 'Scripts/assets/verify_start_location_assets.py' 'Saved/StartLocation/assets.ok'}
   Invoke-Step 'native-base-map' {Invoke-Editor 'base' 'Scripts/prepare_playable_district.py' 'Saved/PlayableDistrictReady.ok'}

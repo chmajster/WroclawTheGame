@@ -188,7 +188,7 @@ Scripts/Invoke-StartLocationProduction.ps1 -Mode Full -GameplayQA
 Validate rzeczywiście wykonano: 21 plików z sumami, 28 manifestów i katalog
 PASS. Source odtwarza GIS, oryginalne modele i 39 FBX. Full dodatkowo buduje
 moduł, sprowadza istniejącą bibliotekę do UE, jeśli brakuje jej mapy importu,
-importuje 13 modeli, wypieka mapę, stosuje rozmieszczenie i jakość oraz zapisuje
+importuje 44 modele otoczenia oraz manifest szkieletowego bohatera, wypieka mapę, stosuje rozmieszczenie i jakość oraz zapisuje
 obrazy. Każdy etap edytora ma oddzielny proces i świeży marker; raport PASS
 dotyczy wyłącznie wybranego trybu i wykonanych etapów. Obrazy wymagają osobnego
 obejrzenia. Istniejący importer biblioteki korzysta z bezpiecznego zakończenia
@@ -196,11 +196,17 @@ po inicjalizacji edytora, tak jak importer produkcyjny.
 
 Wymagane lokalnie: UE 5.8, Blender 5.2 i Python z zależnościami
 `Scripts/gis/requirements.txt` oraz `Scripts/assets/requirements.txt`.
-Domyślnie wykrywana jest istniejąca venv `Saved/GISPython`; ścieżki narzędzi
+Domyślnie wykrywana jest venv `Saved/GISPython` z Pythonem >=3.12; przy jej
+braku Source/Full tworzy izolowane środowisko (uv/Python 3.13, albo zgodny
+systemowy Python) i instaluje zależności. Ścieżki narzędzi
 można podać parametrami EngineRoot, BlenderExe, PythonExe. Brakujące, już
 zatwierdzone tekstury pobiera opcja `-DownloadReviewed`. Produkcja Source/Full
 wymaga gałęzi zadania, a Full możliwości podmiany DLL i zapisu zasobów.
-W tym przebiegu Full nie powtórzono jako jednego polecenia przy ponownie
-otwartym edytorze: wszystkie jego etapy produkcyjne wykonano wcześniej
-oddzielnie, a testy gry na zgodnej kopii kodu. Nowy punkt wejścia sprawdzono
-parserem PowerShell i rzeczywistym trybem Validate; skrypty Python parsują się.
+Stan aktualnego pełnego odtworzenia i porównania instancji zapisano w
+`docs/REALISM-PIPELINE-STATE.md`; raport każdego wywołania jest w
+`Saved/StartLocation/production/report.json`. Source odtwarza również siedem
+siatek bohatera i sześci sekundowy idle przez manifest `player/civilian`.
+Full importuje je tym samym importerem, zachowując cadence/Foot IK i PBR.
+`verify_start_repeatability.py` zapisuje kanoniczne pozycje, siatki, materiały
+i transformacje instancji; identyczne digesty nie zastępują testów rozgrywki.
+Dowody pochodzą z silnika; renderowanie może działać z `-RenderOffscreen`.

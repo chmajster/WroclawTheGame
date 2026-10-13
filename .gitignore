@@ -9,6 +9,8 @@ Builds/
 Content/Generated/
 Content/Maps/*.umap
 __pycache__/
+*.blend1
+*.blend2
 .test-bin/
 
 Content/__ExternalActors__/
