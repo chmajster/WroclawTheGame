@@ -24,6 +24,7 @@ def main():
             manifest['mesh']['max_triangles']=512
             manifest['dimensions']={'height_m':round(asset['bounds_m'][2],6)}
         if asset['area']=='Vegetation':manifest['lod']['preserve_leaf_cards']=True
+        if asset.get('provenance'):manifest['source']['license']=asset['provenance']['license']+'; '+asset['provenance']['author']+'; '+asset['provenance']['url']
         (output/(asset['asset']+'.asset.json')).write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
     print('START_MANIFESTS_PASS',len(data['assets']))
 

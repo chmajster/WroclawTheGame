@@ -1,0 +1,65 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Vegetation/SM_wtg_start_young_tree.SM_wtg_start_young_tree",
+      "triangles": [
+        14680,
+        9284,
+        5320
+      ],
+      "lod_sizes": [
+        1.0,
+        0.05999999865889549,
+        0.014999999664723873
+      ]
+    },
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Vegetation/SM_wtg_start_young_maple.SM_wtg_start_young_maple",
+      "triangles": [
+        14680,
+        9284,
+        5320
+      ],
+      "lod_sizes": [
+        1.0,
+        0.05999999865889549,
+        0.014999999664723873
+      ]
+    },
+    {
+      "mesh": "/Game/Wroclaw/StartLocation/Vegetation/SM_wtg_start_park_lime.SM_wtg_start_park_lime",
+      "triangles": [
+        16280,
+        10166,
+        5674
+      ],
+      "lod_sizes": [
+        1.0,
+        0.05999999865889549,
+        0.014999999664723873
+      ]
+    }
+  ],
+  "texture_paths": [
+    "/Game/Wroclaw/StartLocation/Materials/Textures/leaf_base_color.leaf_base_color",
+    "/Game/Wroclaw/StartLocation/Materials/Textures/leaf_normal.leaf_normal",
+    "/Game/Wroclaw/StartLocation/Materials/Textures/bark_base_color.bark_base_color",
+    "/Game/Wroclaw/StartLocation/Materials/Textures/bark_normal.bark_normal"
+  ],
+  "instance_counts": {
+    "SM_wtg_start_curb": 1058,
+    "SM_wtg_start_drain": 87,
+    "SM_wtg_start_bike_rack": 3,
+    "Cube": 36,
+    "SM_wtg_start_street_bench": 15,
+    "SM_wtg_start_young_maple": 7,
+    "SM_wtg_start_tree_pit": 2,
+    "SM_wtg_start_street_bin": 1,
+    "SM_wtg_start_young_tree": 7,
+    "SM_wtg_start_park_lime": 4,
+    "SM_wtg_start_modern_lamp": 8,
+    "SM_wtg_start_parked_car": 6,
+    "SM_wtg_start_embedded_tram_rail": 422
+  }
+}

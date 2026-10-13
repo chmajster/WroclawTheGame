@@ -47,7 +47,7 @@ def prepare():
         unreal.EditorAssetLibrary.save_loaded_asset(instance,False);component.set_material(0,instance)
     role_mesh={r['asset']:unreal.load_asset(DEST+'/'+r['area']+'/SM_wtg_start_'+r['asset'].replace('-','_')) for r in metadata['assets'] if r['area']!='Buildings'}
     role_mesh['lamp']=role_mesh['modern-lamp']
-    role_mesh['bin']=unreal.load_asset(imported['metal_trash_can']['primary_object'])
+    role_mesh['bin']=role_mesh['street-bin']
     role_mesh['seating']=unreal.load_asset(DEST+'/Props/SM_wtg_start_street_bench')
     role_mesh['embedded-tram-rail']=unreal.load_asset(DEST+'/Roads/SM_wtg_start_embedded_tram_rail')
     role_mesh['paint']=unreal.load_asset('/Engine/BasicShapes/Cube')

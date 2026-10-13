@@ -1,0 +1,283 @@
+{
+	"map": "/Game/Maps/Nadodrze_Playable",
+	"status": "CAPTURED_REQUIRES_INSPECTION",
+	"captured_utc": "2026-10-13T17:09:03.122Z",
+	"architecture_render_basis": [
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_45.SM_wtg_start_pomorska_45",
+			"basis_cpu_available": true,
+			"vertices": 91204,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_47.SM_wtg_start_pomorska_47",
+			"basis_cpu_available": true,
+			"vertices": 76069,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_43.SM_wtg_start_pomorska_43",
+			"basis_cpu_available": true,
+			"vertices": 73148,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_courtyard_east.SM_wtg_start_courtyard_east",
+			"basis_cpu_available": true,
+			"vertices": 36965,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_courtyard_west.SM_wtg_start_courtyard_west",
+			"basis_cpu_available": true,
+			"vertices": 9711,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_nobla_3.SM_wtg_start_nobla_3",
+			"basis_cpu_available": true,
+			"vertices": 36346,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_paulinska_2a.SM_wtg_start_paulinska_2a",
+			"basis_cpu_available": true,
+			"vertices": 67764,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_32.SM_wtg_start_pomorska_32",
+			"basis_cpu_available": true,
+			"vertices": 91371,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101349778_0.SM_wtg_start_context_way_101349778_0",
+			"basis_cpu_available": true,
+			"vertices": 27397,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101348901_0.SM_wtg_start_context_way_101348901_0",
+			"basis_cpu_available": true,
+			"vertices": 27723,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101482248_0.SM_wtg_start_context_way_101482248_0",
+			"basis_cpu_available": true,
+			"vertices": 26544,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101361294_0.SM_wtg_start_context_way_101361294_0",
+			"basis_cpu_available": true,
+			"vertices": 33075,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101432211_0.SM_wtg_start_context_way_101432211_0",
+			"basis_cpu_available": true,
+			"vertices": 55713,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101361370_0.SM_wtg_start_context_way_101361370_0",
+			"basis_cpu_available": true,
+			"vertices": 77353,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101359878_0.SM_wtg_start_context_way_101359878_0",
+			"basis_cpu_available": true,
+			"vertices": 71883,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101429950_0.SM_wtg_start_context_way_101429950_0",
+			"basis_cpu_available": true,
+			"vertices": 29082,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101348438_0.SM_wtg_start_context_way_101348438_0",
+			"basis_cpu_available": true,
+			"vertices": 33571,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101197438_0.SM_wtg_start_context_way_101197438_0",
+			"basis_cpu_available": true,
+			"vertices": 27086,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101347101_0.SM_wtg_start_context_way_101347101_0",
+			"basis_cpu_available": true,
+			"vertices": 33034,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101198472_0.SM_wtg_start_context_way_101198472_0",
+			"basis_cpu_available": true,
+			"vertices": 29659,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101362138_0.SM_wtg_start_context_way_101362138_0",
+			"basis_cpu_available": true,
+			"vertices": 27312,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101481634_0.SM_wtg_start_context_way_101481634_0",
+			"basis_cpu_available": true,
+			"vertices": 33424,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101418883_0.SM_wtg_start_context_way_101418883_0",
+			"basis_cpu_available": true,
+			"vertices": 27659,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101204443_0.SM_wtg_start_context_way_101204443_0",
+			"basis_cpu_available": true,
+			"vertices": 39931,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101194488_0.SM_wtg_start_context_way_101194488_0",
+			"basis_cpu_available": true,
+			"vertices": 26021,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101212067_0.SM_wtg_start_context_way_101212067_0",
+			"basis_cpu_available": true,
+			"vertices": 48124,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101207182_0.SM_wtg_start_context_way_101207182_0",
+			"basis_cpu_available": true,
+			"vertices": 38557,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101361009_0.SM_wtg_start_context_way_101361009_0",
+			"basis_cpu_available": true,
+			"vertices": 25668,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101419762_0.SM_wtg_start_context_way_101419762_0",
+			"basis_cpu_available": true,
+			"vertices": 39715,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101209272_0.SM_wtg_start_context_way_101209272_0",
+			"basis_cpu_available": true,
+			"vertices": 21437,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101189965_0.SM_wtg_start_context_way_101189965_0",
+			"basis_cpu_available": true,
+			"vertices": 33333,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		},
+		{
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101349268_0.SM_wtg_start_context_way_101349268_0",
+			"basis_cpu_available": true,
+			"vertices": 37392,
+			"near_zero_tangents": 0,
+			"near_zero_normals": 0,
+			"tangent_samples": []
+		}
+	],
+	"screenshots": [
+		"street_lit.png",
+		"street_unlit.png",
+		"street_wireframe.png",
+		"street_lighting.png",
+		"street_normals.png",
+		"street_collision.png",
+		"park_lit.png",
+		"park_unlit.png",
+		"park_wireframe.png",
+		"park_lighting.png",
+		"park_normals.png",
+		"park_collision.png",
+		"facade_lit.png",
+		"facade_unlit.png",
+		"facade_wireframe.png",
+		"facade_lighting.png",
+		"facade_normals.png",
+		"facade_collision.png"
+	]
+}

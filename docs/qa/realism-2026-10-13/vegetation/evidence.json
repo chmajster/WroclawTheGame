@@ -1,0 +1,27 @@
+{
+  "source": "Actual UE5.8.2 playable-map D3D12 1280x720. Diagnostic 17:09 UTC before bin replacement; ordinary gameplay after complete bin import. Park Lit/Unlit reviewed: fuller crowns and separate leaves, no old shards. No generated/edited images. Daylight remains dynamic; materials/lighting item7.",
+  "png_sha256": {
+    "facade_collision.png": "205673841c41edf9248fcb1da64b09f37d86efadf39f835a3bac7acd6c4e5a69",
+    "facade_lighting.png": "456ed3265f324e643be1b1b62f00ee3402973ea975f9cb5af68fd619577d8f7e",
+    "facade_lit.png": "3c104cd18c2e0ea6a4d8c11995acf5c36d73261d07fabc49daf176b1896d807f",
+    "facade_normals.png": "37c1a6f3fd932606e8e96b0f54a4969197a54eee9223eff34a362aa1c7764e13",
+    "facade_unlit.png": "35e1a5cfb472354a60fc1f6e7e71951cb28ce46839bed22f84b1b7ac98efaa37",
+    "facade_wireframe.png": "e3e031d93e97b5ce94b0b4d241911788b7f4328d306d87d9fe3e9c21eb6c25be",
+    "park_collision.png": "b5535b57d2018020d0b8434bdf6b6290f434a39366bee1a5ed5fe3d8678bdc93",
+    "park_lighting.png": "51abf203eae121aeb3fa70846b22eeb3240974e53d5652dd45f11a374127e1b7",
+    "park_lit.png": "0c53ba5da2fd4c1b0aea9d8b345841a97fa61f3a46c253e1b21cbe322c7e8b08",
+    "park_normals.png": "29d0cd3c29f73407ebed6dde5a8d90ff394cf2cec3b9a2de62a37ee0abc29447",
+    "park_unlit.png": "cff349d3a87dc3a96f0cd4d6d0ee258178e0d693524ffa6b521c9bcf6b1cae0d",
+    "park_wireframe.png": "68f3eb235f31784cb3540e0ea7e3379f2217938c71d5a97713d04f74e51ec65b",
+    "Start_GamePark.png": "c80fed8c6e5450072745efcaf3ffa37dfa897225faea95b9d34268435c76e5fc",
+    "Start_GamePlayer.png": "4f2206459dc8a3fa72f5abe86036ef2327a88b57b9cfafaf1cb0e272b030eee6",
+    "Start_GameStreet.png": "a3573060f73660883f0e875c9e01bbead859d5e7d4c6c04b31840828675a5aac",
+    "Start_GameWalk.png": "f9f7fd890a4e2499885b95dc40cda409e08389d7f839a5fb8e0d6cf67c3751e6",
+    "street_collision.png": "bde2342699171fab12b76d02955ee1d11afe0f7722ed33aa1ee2afced7108fb1",
+    "street_lighting.png": "8eb3be96ff77ab70bd8c31c66a8bbf7d02376fb5a01b4a4817ad5905775d7850",
+    "street_lit.png": "53102d2747b65a1054f832d2bc505ebc7d08f6ec0c0cd29e8430e3a103d140ed",
+    "street_normals.png": "2f6aab86576094a709fa6dc94643d8bb710142d9b7c8ee63c5766a23938c7b0a",
+    "street_unlit.png": "1a98cdc58f3189a4177f00e8288d81ab29ba46b4fc0c795435c2822674b57856",
+    "street_wireframe.png": "114fd506e25b028c4e32be26881cc9b2cbf87eeb2cf27dbe3e8119184a0926ac"
+  }
+}

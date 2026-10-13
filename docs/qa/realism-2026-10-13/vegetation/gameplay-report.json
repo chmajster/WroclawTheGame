@@ -1,0 +1,21 @@
+{
+	"status": "PASS",
+	"captured_utc": "2026-10-13T17:12:54.182Z",
+	"frames": 1165,
+	"mean_ms": 16.743807287584559,
+	"mean_fps": 59.723573188846629,
+	"p95_ms": 16.985200881958008,
+	"walk_distance_cm": 201.39839172363281,
+	"walls_blocking": 8,
+	"floor_valid": true,
+	"camera_clear": true,
+	"paused": false,
+	"character_placeholder": false,
+	"width": 1280,
+	"height": 720,
+	"r.VSync": 0,
+	"t.MaxFPS": 60,
+	"engine_smooth_framerate": false,
+	"engine_fixed_framerate": false,
+	"measurement": "actual game, 50s warmup, monotonic wall-clock frame intervals; console requests VSync off/no cap, engine pacing recorded; includes walk and one capture, not isolated GPU timing"
+}

@@ -79,6 +79,7 @@ try {
   Invoke-Step 'native-city-details' {Invoke-Editor 'details' 'Scripts/assets/place_city_details.py' 'Saved/CityDetails/placement.ok'}
   Invoke-Step 'native-start-placement' {Invoke-Editor 'placement' 'Scripts/assets/place_start_location.py' 'Saved/StartLocation/placement.ok'}
   Invoke-Step 'native-quality' {Invoke-Editor 'quality' 'Scripts/assets/prepare_start_location_quality.py' 'Saved/StartLocation/quality.ok'}
+  Invoke-Step 'native-foliage-verification' {Invoke-Editor 'foliage-qa' 'Scripts/assets/verify_start_foliage.py' 'Saved/StartLocation/foliage-qa.ok'}
   $env:WTG_ASSET_MANIFEST='Data/start_location_qa.json'
   Invoke-Step 'rendered-capture' {Invoke-Editor 'capture' 'Pipeline/unreal/capture_qa.py' 'Saved/Pipeline/screenshots/start-location/capture.ok' -Render}
   if($GameplayQA){

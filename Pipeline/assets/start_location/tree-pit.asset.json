@@ -30,10 +30,6 @@
   "materials": [
     {
       "slot": 0,
-      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Metal"
-    },
-    {
-      "slot": 1,
       "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Soil"
     }
   ],

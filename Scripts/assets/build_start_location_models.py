@@ -303,7 +303,7 @@ def tree_pit():
     for i in range(sides):
         a=i*math.tau/sides;b=(i+1)*math.tau/sides
         m.face([(0,0,0),(.72*math.cos(a),.72*math.sin(a),0),(.72*math.cos(b),.72*math.sin(b),0)],12)
-        m.face([(.72*math.cos(a),.72*math.sin(a),-.012),(.75*math.cos(a),.75*math.sin(a),-.012),(.75*math.cos(b),.75*math.sin(b),-.012),(.72*math.cos(b),.72*math.sin(b),-.012)],4)
+        m.face([(.72*math.cos(a),.72*math.sin(a),-.012),(.75*math.cos(a),.75*math.sin(a),-.012),(.75*math.cos(b),.75*math.sin(b),-.012),(.72*math.cos(b),.72*math.sin(b),-.012)],12)
     return m,[]
 
 
@@ -318,6 +318,29 @@ def lamp():
         for y in (-.085,.085):m.rod((x,y,.05),(x,y,.075),.014,4,6)
     c=Mesh();c.box((0,0,2.8),(.15,.15,5.65),4)
     return m,[c]
+
+
+def street_bin():
+    # The legacy import map selects handle_left as its primary object. Assemble
+    # the real body, lid and both handles instead of height-scaling that handle.
+    source=ROOT/'SourceAssets/Models/PolyHaven/metal_trash_can/metal_trash_can_1k.fbx'
+    bpy.ops.import_scene.fbx(filepath=str(source))
+    names={'metal_trash_can','metal_trash_can_lid','metal_trash_can_handle_left','metal_trash_can_handle_right'}
+    objects=[o for o in bpy.data.objects if o.type=='MESH' and o.name in names]
+    if {o.name for o in objects}!=names:raise RuntimeError('Incomplete licensed bin assembly')
+    points=[o.matrix_world@v.co for o in objects for v in o.data.vertices]
+    lo=Vector(tuple(min(v[i] for v in points) for i in range(3)));hi=Vector(tuple(max(v[i] for v in points) for i in range(3)))
+    offset=Vector(((lo.x+hi.x)/2,(lo.y+hi.y)/2,lo.z));factor=.85/(hi.z-lo.z)
+    mesh=Mesh()
+    for o in objects:
+        uv=o.data.uv_layers.active
+        for f in o.data.polygons:
+            mesh.face([(o.matrix_world@o.data.vertices[i].co-offset)*factor for i in f.vertices],4,
+                      [tuple(uv.data[i].uv) for i in f.loop_indices],f.use_smooth)
+    for o in list(bpy.data.objects):
+        if o.type=='MESH':bpy.data.objects.remove(o,do_unlink=True)
+    collision=Mesh();collision.box((0,0,.425),((hi.x-lo.x)*factor,(hi.y-lo.y)*factor,.85),4)
+    return mesh,[collision]
 
 
 def car():
@@ -387,9 +410,15 @@ def main():
             'roof':'flat' if config['tags'].get('roof:shape')=='flat' else 'interpreted hipped roof',
             'context':bool(config.get('context')),'footprint':'unaltered source rings; mouldings project beyond wall'}
         updated.append(record)
-    for name,func,area in [('curb',curb,'Roads'),('drain',drain,'Roads'),('bike-rack',rack,'Props'),('young-tree',tree,'Vegetation'),('young-maple',lambda:tree(1),'Vegetation'),('park-lime',lambda:tree(2),'Vegetation'),('tree-pit',tree_pit,'Props'),('modern-lamp',lamp,'Props'),('parked-car',car,'Props')]:
+    for name,func,area in [('curb',curb,'Roads'),('drain',drain,'Roads'),('bike-rack',rack,'Props'),('young-tree',tree,'Vegetation'),('young-maple',lambda:tree(1),'Vegetation'),('park-lime',lambda:tree(2),'Vegetation'),('tree-pit',tree_pit,'Props'),('modern-lamp',lamp,'Props'),('street-bin',street_bin,'Props'),('parked-car',car,'Props')]:
         if options.buildings_only or (options.asset and options.asset!=name):continue
-        reset();mesh,collision=func();updated.append(save(name,mesh,collision,area))
+        reset();mesh,collision=func();record=save(name,mesh,collision,area)
+        if name=='street-bin':
+            record['provenance']={'author':'GurJas Studios','license':'CC0-1.0','url':'https://polyhaven.com/a/metal_trash_can',
+                'license_url':'https://polyhaven.com/license','game_use':True,'public_source_redistribution':True,
+                'source':'SourceAssets/Models/PolyHaven/metal_trash_can/metal_trash_can_1k.fbx',
+                'parts':['metal_trash_can','metal_trash_can_lid','metal_trash_can_handle_left','metal_trash_can_handle_right']}
+        updated.append(record)
     if not updated:raise ValueError('Unknown production asset '+str(options.asset))
     if options.asset or options.buildings_only:
         by_name={r['asset']:r for r in updated}

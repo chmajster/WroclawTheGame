@@ -2,28 +2,180 @@
   "schema_version": 1,
   "map": "/Game/Maps/Nadodrze_Playable",
   "radius_m": 100,
-  "player_anchor_cm": [44611.8, 62830.93, 143.77],
+  "player_anchor_cm": [
+    44611.8,
+    62830.93,
+    143.77
+  ],
   "placement_prefix": "StartLocation_",
   "reference_date": "2026-10-12",
   "references": [
-    {"url": "https://www.wroclaw.pl/dla-mieszkanca/przebudowa-pomorskiej-staszica-zdjecia-otwarcie-ulic-1-czerwca-kierowcy-wracaja", "author": "Błażej Organisty / photographs Magdalena Pasiewicz", "use": "Visual reference only; photographs are not game textures or redistributed files", "facts": "Renovated roadway, stone between tram rails, sidewalks, separate cycling infrastructure, lime/maple young trees"},
-    {"url": "https://www.wroclaw.pl/przedsiebiorczy-wroclaw/galeria/najpiekniejsze-kamienice-wyremontowane-w-2022-roku-we-wroclawiu-inwestycje-budowlane,p,38", "author": "Municipal Wroclaw portal", "use": "Visual reference only", "facts": "Pomorska 47: cream plaster, white window frames, triangular window crowns, iron balconies, ground-floor services and smaller attic windows"}
+    {
+      "url": "https://www.wroclaw.pl/dla-mieszkanca/przebudowa-pomorskiej-staszica-zdjecia-otwarcie-ulic-1-czerwca-kierowcy-wracaja",
+      "author": "Błażej Organisty / photographs Magdalena Pasiewicz",
+      "use": "Visual reference only; photographs are not game textures or redistributed files",
+      "facts": "Renovated roadway, stone between tram rails, sidewalks, separate cycling infrastructure, lime/maple young trees"
+    },
+    {
+      "url": "https://www.wroclaw.pl/przedsiebiorczy-wroclaw/galeria/najpiekniejsze-kamienice-wyremontowane-w-2022-roku-we-wroclawiu-inwestycje-budowlane,p,38",
+      "author": "Municipal Wroclaw portal",
+      "use": "Visual reference only",
+      "facts": "Pomorska 47: cream plaster, white window frames, triangular window crowns, iron balconies, ground-floor services and smaller attic windows"
+    }
   ],
-  "architecture_context": {"radius_m": 210, "max_buildings": 24,
-    "priority_ids": ["way/101432211:0","way/101361294:0","way/101482248:0","way/101348901:0","way/101349778:0","way/101432351:0","way/101361370:0"],
-    "priority_reason": "Source footprints confirmed in the real Start_Park view; nearest-only selection missed the visible skyline"},
+  "architecture_context": {
+    "radius_m": 210,
+    "max_buildings": 24,
+    "priority_ids": [
+      "way/101432211:0",
+      "way/101361294:0",
+      "way/101482248:0",
+      "way/101348901:0",
+      "way/101349778:0",
+      "way/101432351:0",
+      "way/101361370:0"
+    ],
+    "priority_reason": "Source footprints confirmed in the real Start_Park view; nearest-only selection missed the visible skyline"
+  },
   "buildings": [
-    {"id": "way/101359583:0", "asset": "pomorska-45", "height_m": 22.4, "floors": 7, "tint": [0.66,0.58,0.47], "style": "historic", "accuracy": "OSM footprint; photograph-informed neighbouring proportions, estimated height and window layout"},
-    {"id": "way/101362270:0", "asset": "pomorska-47", "height_m": 22.4, "floors": 7, "tint": [0.88,0.84,0.69], "style": "pediment", "accuracy": "OSM footprint; municipal photograph inspected; height estimated, not surveyed"},
-    {"id": "way/101215682:0", "asset": "pomorska-43", "height_m": 21.0, "floors": 6, "tint": [0.77,0.73,0.64], "style": "historic", "accuracy": "OSM footprint; neighbouring architectural interpretation, not a measured replica"},
-    {"id": "way/101427320:0", "asset": "courtyard-east", "height_m": 18.2, "floors": 5, "tint": [0.65,0.70,0.61], "style": "plain", "accuracy": "OSM footprint; estimated courtyard facade"},
-    {"id": "way/101349101:0", "asset": "courtyard-west", "height_m": 15.0, "floors": 4, "tint": [0.77,0.70,0.57], "style": "plain", "accuracy": "OSM footprint; estimated courtyard facade"},
-    {"id": "way/101424732:0", "asset": "nobla-3", "height_m": 19.0, "floors": 6, "tint": [0.74,0.73,0.68], "style": "plain", "accuracy": "OSM footprint and flat roof tag; estimated height"},
-    {"id": "way/101428681:0", "asset": "paulinska-2a", "height_m": 20.0, "floors": 6, "tint": [0.74,0.78,0.69], "style": "historic", "accuracy": "OSM footprint; estimated proportions"},
-    {"id": "way/101202111:0", "asset": "pomorska-32", "height_m": 21.0, "floors": 6, "tint": [0.84,0.78,0.66], "style": "historic", "accuracy": "OSM footprint; estimated proportions"}
+    {
+      "id": "way/101359583:0",
+      "asset": "pomorska-45",
+      "height_m": 22.4,
+      "floors": 7,
+      "tint": [
+        0.66,
+        0.58,
+        0.47
+      ],
+      "style": "historic",
+      "accuracy": "OSM footprint; photograph-informed neighbouring proportions, estimated height and window layout"
+    },
+    {
+      "id": "way/101362270:0",
+      "asset": "pomorska-47",
+      "height_m": 22.4,
+      "floors": 7,
+      "tint": [
+        0.88,
+        0.84,
+        0.69
+      ],
+      "style": "pediment",
+      "accuracy": "OSM footprint; municipal photograph inspected; height estimated, not surveyed"
+    },
+    {
+      "id": "way/101215682:0",
+      "asset": "pomorska-43",
+      "height_m": 21.0,
+      "floors": 6,
+      "tint": [
+        0.77,
+        0.73,
+        0.64
+      ],
+      "style": "historic",
+      "accuracy": "OSM footprint; neighbouring architectural interpretation, not a measured replica"
+    },
+    {
+      "id": "way/101427320:0",
+      "asset": "courtyard-east",
+      "height_m": 18.2,
+      "floors": 5,
+      "tint": [
+        0.65,
+        0.7,
+        0.61
+      ],
+      "style": "plain",
+      "accuracy": "OSM footprint; estimated courtyard facade"
+    },
+    {
+      "id": "way/101349101:0",
+      "asset": "courtyard-west",
+      "height_m": 15.0,
+      "floors": 4,
+      "tint": [
+        0.77,
+        0.7,
+        0.57
+      ],
+      "style": "plain",
+      "accuracy": "OSM footprint; estimated courtyard facade"
+    },
+    {
+      "id": "way/101424732:0",
+      "asset": "nobla-3",
+      "height_m": 19.0,
+      "floors": 6,
+      "tint": [
+        0.74,
+        0.73,
+        0.68
+      ],
+      "style": "plain",
+      "accuracy": "OSM footprint and flat roof tag; estimated height"
+    },
+    {
+      "id": "way/101428681:0",
+      "asset": "paulinska-2a",
+      "height_m": 20.0,
+      "floors": 6,
+      "tint": [
+        0.74,
+        0.78,
+        0.69
+      ],
+      "style": "historic",
+      "accuracy": "OSM footprint; estimated proportions"
+    },
+    {
+      "id": "way/101202111:0",
+      "asset": "pomorska-32",
+      "height_m": 21.0,
+      "floors": 6,
+      "tint": [
+        0.84,
+        0.78,
+        0.66
+      ],
+      "style": "historic",
+      "accuracy": "OSM footprint; estimated proportions"
+    }
   ],
-  "street_rules": {"curb_spacing_m": 1, "curb_height_m": 0.14, "tree_spacing_m": 18, "keep_player_clear_m": 2.5, "keep_mission_clear_m": 3, "retain_osm_surfaces": true, "signals": "Use only source traffic-signal nodes; never invent traffic controls", "crossings": "Use only source crossing nodes and mapped road width"},
-  "quality": {"texture_max_size": 2048, "instance_cull_start_cm": 18000, "instance_cull_end_cm": 26000, "max_instances": 2400, "max_new_mesh_triangles": 1600000,
+  "street_rules": {
+    "curb_spacing_m": 1,
+    "curb_height_m": 0.14,
+    "tree_spacing_m": 18,
+    "keep_player_clear_m": 2.5,
+    "keep_mission_clear_m": 3,
+    "retain_osm_surfaces": true,
+    "signals": "Use only source traffic-signal nodes; never invent traffic controls",
+    "crossings": "Use only source crossing nodes and mapped road width"
+  },
+  "quality": {
+    "texture_max_size": 2048,
+    "instance_cull_start_cm": 18000,
+    "instance_cull_end_cm": 26000,
+    "max_instances": 2400,
+    "max_new_mesh_triangles": 1600000,
     "nanite_fallback_percent_triangles": 1.0,
-    "lod_screen_sizes": {"building": [1.0,0.22,0.06], "vegetation": [1.0,0.01,0.003], "prop": [1.0,0.16,0.04]}}
+    "lod_screen_sizes": {
+      "building": [
+        1.0,
+        0.22,
+        0.06
+      ],
+      "vegetation": [
+        1,
+        0.06,
+        0.015
+      ],
+      "prop": [
+        1.0,
+        0.16,
+        0.04
+      ]
+    }
+  }
 }
