@@ -1,0 +1,612 @@
+{
+  "generator": "Scripts/assets/build_hero_models.py",
+  "source_catalog": "Data/hero_source_catalog.json",
+  "license": "CC0-1.0 graphical derivation and original accessory",
+  "assets": [
+    {
+      "id": "male_Body",
+      "sex": "male",
+      "kind": "body",
+      "fbx": "Saved/Pipeline/generated/wtg-civilian/male_Body.fbx",
+      "vertices": 14444,
+      "triangles": 28796,
+      "morphs": [
+        {
+          "name": "Face_Width",
+          "changed_vertices": 5224,
+          "max_delta_cm": 1.750442385673523
+        },
+        {
+          "name": "Face_Length",
+          "changed_vertices": 5275,
+          "max_delta_cm": 2.378547191619873
+        },
+        {
+          "name": "Face_HeadShape",
+          "changed_vertices": 500,
+          "max_delta_cm": 1.1361895067578591
+        },
+        {
+          "name": "Face_Cheekbones",
+          "changed_vertices": 118,
+          "max_delta_cm": 0.8340340107679367
+        },
+        {
+          "name": "Face_Cheeks",
+          "changed_vertices": 420,
+          "max_delta_cm": 0.9740057643327311
+        },
+        {
+          "name": "Face_ForeheadHeight",
+          "changed_vertices": 140,
+          "max_delta_cm": 3.902459144592285
+        },
+        {
+          "name": "Face_ForeheadWidth",
+          "changed_vertices": 258,
+          "max_delta_cm": 0.6696037078076239
+        },
+        {
+          "name": "Ears_Size",
+          "changed_vertices": 1016,
+          "max_delta_cm": 1.1168933970947585
+        },
+        {
+          "name": "Ears_Angle",
+          "changed_vertices": 662,
+          "max_delta_cm": 1.3593613676936007
+        },
+        {
+          "name": "Eyes_Size",
+          "changed_vertices": 930,
+          "max_delta_cm": 0.24776355004493836
+        },
+        {
+          "name": "Eyes_Spacing",
+          "changed_vertices": 2246,
+          "max_delta_cm": 0.4736538976430893
+        },
+        {
+          "name": "Eyes_Tilt",
+          "changed_vertices": 300,
+          "max_delta_cm": 0.25742053985595703
+        },
+        {
+          "name": "Eyes_Brows",
+          "changed_vertices": 441,
+          "max_delta_cm": 0.7346074166443861
+        },
+        {
+          "name": "Nose_Width",
+          "changed_vertices": 448,
+          "max_delta_cm": 0.3500884398818016
+        },
+        {
+          "name": "Nose_Length",
+          "changed_vertices": 366,
+          "max_delta_cm": 0.8855178952217102
+        },
+        {
+          "name": "Nose_Bridge",
+          "changed_vertices": 406,
+          "max_delta_cm": 0.4604825295365914
+        },
+        {
+          "name": "Nose_Tip",
+          "changed_vertices": 42,
+          "max_delta_cm": 0.15750890302509818
+        },
+        {
+          "name": "Nose_Position",
+          "changed_vertices": 526,
+          "max_delta_cm": 0.4221677780151367
+        },
+        {
+          "name": "Mouth_Width",
+          "changed_vertices": 834,
+          "max_delta_cm": 0.5157617336476459
+        },
+        {
+          "name": "Mouth_UpperLip",
+          "changed_vertices": 141,
+          "max_delta_cm": 0.30562749294586167
+        },
+        {
+          "name": "Mouth_LowerLip",
+          "changed_vertices": 130,
+          "max_delta_cm": 0.49316783885899573
+        },
+        {
+          "name": "Mouth_Shape",
+          "changed_vertices": 83,
+          "max_delta_cm": 0.3133253473966901
+        },
+        {
+          "name": "Jaw_Width",
+          "changed_vertices": 5198,
+          "max_delta_cm": 1.7286919057369232
+        },
+        {
+          "name": "Jaw_Height",
+          "changed_vertices": 480,
+          "max_delta_cm": 2.1108269691467285
+        },
+        {
+          "name": "Chin_Width",
+          "changed_vertices": 198,
+          "max_delta_cm": 1.2256987942656852
+        },
+        {
+          "name": "Chin_Projection",
+          "changed_vertices": 108,
+          "max_delta_cm": 1.2253105640411377
+        },
+        {
+          "name": "Body_Shoulders",
+          "changed_vertices": 10928,
+          "max_delta_cm": 16.689670085906982
+        },
+        {
+          "name": "Body_Waist",
+          "changed_vertices": 6152,
+          "max_delta_cm": 3.269785624694152
+        },
+        {
+          "name": "Body_Hips",
+          "changed_vertices": 1640,
+          "max_delta_cm": 3.5875514149665833
+        },
+        {
+          "name": "Body_Weight",
+          "changed_vertices": 6875,
+          "max_delta_cm": 15.41118312191238
+        },
+        {
+          "name": "Body_Muscle",
+          "changed_vertices": 6875,
+          "max_delta_cm": 7.000339142879077
+        },
+        {
+          "name": "Body_Torso",
+          "changed_vertices": 11996,
+          "max_delta_cm": 4.500007629394531
+        }
+      ],
+      "bounds_min_m": [
+        -0.9357494115829468,
+        -0.22464346885681152,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.9357494711875916,
+        0.12339808791875839,
+        1.7999999523162842
+      ],
+      "uv_layers": 1,
+      "weighted_vertices": 14444,
+      "materials": [
+        "Face",
+        "Torso",
+        "Arms",
+        "Legs",
+        "Feet",
+        "Eyes",
+        "Hands"
+      ],
+      "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
+      "fbx_sha256": "ebdc771d3b0ab45e451b7ff99c1359b5318ca22a6e108d722e3683dd6cb3af36"
+    },
+    {
+      "id": "male_Shirt",
+      "sex": "male",
+      "kind": "clothing",
+      "fbx": "Saved/Pipeline/generated/wtg-civilian/male_Shirt.fbx",
+      "vertices": 9084,
+      "triangles": 18176,
+      "morphs": [
+        {
+          "name": "Body_Shoulders",
+          "changed_vertices": 8879,
+          "max_delta_cm": 13.443976640701294
+        },
+        {
+          "name": "Body_Waist",
+          "changed_vertices": 8580,
+          "max_delta_cm": 3.254765942290727
+        },
+        {
+          "name": "Body_Hips",
+          "changed_vertices": 2715,
+          "max_delta_cm": 2.972020208835602
+        },
+        {
+          "name": "Body_Weight",
+          "changed_vertices": 8585,
+          "max_delta_cm": 8.90783538310021
+        },
+        {
+          "name": "Body_Muscle",
+          "changed_vertices": 8585,
+          "max_delta_cm": 4.044854286161888
+        },
+        {
+          "name": "Body_Torso",
+          "changed_vertices": 9084,
+          "max_delta_cm": 4.499995708465576
+        }
+      ],
+      "bounds_min_m": [
+        -0.7604873180389404,
+        -0.16208858788013458,
+        0.9652169942855835
+      ],
+      "bounds_max_m": [
+        0.7503388524055481,
+        0.14666783809661865,
+        1.5929646492004395
+      ],
+      "uv_layers": 1,
+      "weighted_vertices": 9084,
+      "materials": [
+        "Shirt"
+      ],
+      "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
+      "fbx_sha256": "ed0da5cc16c2b67aa70de84a4f1f966c2d4c8f4ce0d6aceed6f751908a95e1c6"
+    },
+    {
+      "id": "male_Trousers",
+      "sex": "male",
+      "kind": "clothing",
+      "fbx": "Saved/Pipeline/generated/wtg-civilian/male_Trousers.fbx",
+      "vertices": 7952,
+      "triangles": 15908,
+      "morphs": [
+        {
+          "name": "Body_Shoulders",
+          "changed_vertices": 363,
+          "max_delta_cm": 0.0014513731002807617
+        },
+        {
+          "name": "Body_Waist",
+          "changed_vertices": 2083,
+          "max_delta_cm": 1.4705499252405707
+        },
+        {
+          "name": "Body_Hips",
+          "changed_vertices": 3337,
+          "max_delta_cm": 3.5875514149665833
+        },
+        {
+          "name": "Body_Weight",
+          "changed_vertices": 7344,
+          "max_delta_cm": 4.8692193769263445
+        },
+        {
+          "name": "Body_Muscle",
+          "changed_vertices": 7344,
+          "max_delta_cm": 2.6011234250247113
+        },
+        {
+          "name": "Body_Torso",
+          "changed_vertices": 4205,
+          "max_delta_cm": 1.934647560119629
+        }
+      ],
+      "bounds_min_m": [
+        -0.2668232023715973,
+        -0.14810310304164886,
+        0.07426100224256516
+      ],
+      "bounds_max_m": [
+        0.27399760484695435,
+        0.10691414028406143,
+        0.9925807118415833
+      ],
+      "uv_layers": 1,
+      "weighted_vertices": 7952,
+      "materials": [
+        "Denim"
+      ],
+      "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
+      "fbx_sha256": "69e9ad556c01c81cde7f79c22bad85f8155e17cd42615988551c94096ad14235"
+    },
+    {
+      "id": "male_Shoes",
+      "sex": "male",
+      "kind": "clothing",
+      "fbx": "Saved/Pipeline/generated/wtg-civilian/male_Shoes.fbx",
+      "vertices": 1722,
+      "triangles": 3320,
+      "morphs": [
+        {
+          "name": "Body_Weight",
+          "changed_vertices": 158,
+          "max_delta_cm": 3.041100250196824
+        },
+        {
+          "name": "Body_Muscle",
+          "changed_vertices": 158,
+          "max_delta_cm": 1.3873577529888037
+        }
+      ],
+      "bounds_min_m": [
+        -0.25996458530426025,
+        -0.22661685943603516,
+        -0.001923713251017034
+      ],
+      "bounds_max_m": [
+        0.25996458530426025,
+        0.05710795149207115,
+        0.2230129987001419
+      ],
+      "uv_layers": 1,
+      "weighted_vertices": 1722,
+      "materials": [
+        "Shoe"
+      ],
+      "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
+      "fbx_sha256": "c2559e83ec774f85a562901aefffdc31b0bfc3b08a0d54d5d25cbaf39edfd732"
+    },
+    {
+      "id": "male_HairShort",
+      "sex": "male",
+      "kind": "hair",
+      "fbx": "Saved/Pipeline/generated/wtg-civilian/male_HairShort.fbx",
+      "vertices": 1755,
+      "triangles": 3344,
+      "morphs": [
+        {
+          "name": "Face_Width",
+          "changed_vertices": 1674,
+          "max_delta_cm": 1.6989588737487793
+        },
+        {
+          "name": "Face_Length",
+          "changed_vertices": 1739,
+          "max_delta_cm": 2.378547191619873
+        },
+        {
+          "name": "Face_HeadShape",
+          "changed_vertices": 624,
+          "max_delta_cm": 1.091456413269043
+        },
+        {
+          "name": "Face_Cheekbones",
+          "changed_vertices": 44,
+          "max_delta_cm": 0.35008862614631653
+        },
+        {
+          "name": "Face_Cheeks",
+          "changed_vertices": 45,
+          "max_delta_cm": 0.21102091364603934
+        },
+        {
+          "name": "Face_ForeheadHeight",
+          "changed_vertices": 576,
+          "max_delta_cm": 3.902459144592285
+        },
+        {
+          "name": "Face_ForeheadWidth",
+          "changed_vertices": 259,
+          "max_delta_cm": 0.6696037078076239
+        },
+        {
+          "name": "Ears_Size",
+          "changed_vertices": 568,
+          "max_delta_cm": 1.1169038375499785
+        },
+        {
+          "name": "Ears_Angle",
+          "changed_vertices": 63,
+          "max_delta_cm": 1.24193954693159
+        },
+        {
+          "name": "Eyes_Size",
+          "changed_vertices": 5,
+          "max_delta_cm": 0.020599365234375
+        },
+        {
+          "name": "Eyes_Spacing",
+          "changed_vertices": 61,
+          "max_delta_cm": 0.12356080114841461
+        },
+        {
+          "name": "Eyes_Brows",
+          "changed_vertices": 309,
+          "max_delta_cm": 0.7346074166443861
+        },
+        {
+          "name": "Jaw_Width",
+          "changed_vertices": 899,
+          "max_delta_cm": 0.8576519787311554
+        },
+        {
+          "name": "Jaw_Height",
+          "changed_vertices": 53,
+          "max_delta_cm": 1.3554905777368655
+        },
+        {
+          "name": "Body_Shoulders",
+          "changed_vertices": 1674,
+          "max_delta_cm": 0.2578325569629669
+        },
+        {
+          "name": "Body_Torso",
+          "changed_vertices": 1755,
+          "max_delta_cm": 0.4723668098449707
+        }
+      ],
+      "bounds_min_m": [
+        -0.09305579960346222,
+        -0.17534123361110687,
+        1.6079646348953247
+      ],
+      "bounds_max_m": [
+        0.08735308051109314,
+        0.048826832324266434,
+        1.8157860040664673
+      ],
+      "uv_layers": 1,
+      "weighted_vertices": 1755,
+      "materials": [
+        "Hair"
+      ],
+      "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
+      "fbx_sha256": "76a043ba122aecabef33d6b646b0aab81a0ef1a1eda3290cb0e90fc696f44770"
+    },
+    {
+      "id": "male_BrowsNatural",
+      "sex": "male",
+      "kind": "brows",
+      "fbx": "Saved/Pipeline/generated/wtg-civilian/male_BrowsNatural.fbx",
+      "vertices": 124,
+      "triangles": 192,
+      "morphs": [
+        {
+          "name": "Face_Width",
+          "changed_vertices": 124,
+          "max_delta_cm": 1.194419339299202
+        },
+        {
+          "name": "Face_Length",
+          "changed_vertices": 124,
+          "max_delta_cm": 0.5251288414001465
+        },
+        {
+          "name": "Face_HeadShape",
+          "changed_vertices": 18,
+          "max_delta_cm": 0.13104930356984068
+        },
+        {
+          "name": "Face_ForeheadWidth",
+          "changed_vertices": 24,
+          "max_delta_cm": 0.11326409876346588
+        },
+        {
+          "name": "Ears_Size",
+          "changed_vertices": 6,
+          "max_delta_cm": 0.02059340476989746
+        },
+        {
+          "name": "Eyes_Size",
+          "changed_vertices": 97,
+          "max_delta_cm": 0.1765540363147606
+        },
+        {
+          "name": "Eyes_Spacing",
+          "changed_vertices": 124,
+          "max_delta_cm": 0.42216554284095764
+        },
+        {
+          "name": "Eyes_Tilt",
+          "changed_vertices": 6,
+          "max_delta_cm": 0.04118680953979492
+        },
+        {
+          "name": "Eyes_Brows",
+          "changed_vertices": 94,
+          "max_delta_cm": 0.27800798416137695
+        },
+        {
+          "name": "Nose_Bridge",
+          "changed_vertices": 16,
+          "max_delta_cm": 0.08237361907958984
+        },
+        {
+          "name": "Nose_Position",
+          "changed_vertices": 22,
+          "max_delta_cm": 0.25742053985595703
+        },
+        {
+          "name": "Jaw_Width",
+          "changed_vertices": 124,
+          "max_delta_cm": 0.0037860125303268433
+        },
+        {
+          "name": "Body_Shoulders",
+          "changed_vertices": 124,
+          "max_delta_cm": 0.07266998291015625
+        },
+        {
+          "name": "Body_Torso",
+          "changed_vertices": 124,
+          "max_delta_cm": 0.14940500259399414
+        }
+      ],
+      "bounds_min_m": [
+        -0.06193861365318298,
+        -0.1612195372581482,
+        1.692191481590271
+      ],
+      "bounds_max_m": [
+        0.06193861365318298,
+        -0.12824632227420807,
+        1.7018213272094727
+      ],
+      "uv_layers": 1,
+      "weighted_vertices": 124,
+      "materials": [
+        "Brows"
+      ],
+      "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
+      "fbx_sha256": "1ef815a77dcb9c44258d62085f6ac3def2335fe71c94ffa1ab3df0d69563521d"
+    },
+    {
+      "id": "male_Backpack",
+      "sex": "male",
+      "kind": "accessory",
+      "fbx": "Saved/Pipeline/generated/wtg-civilian/male_Backpack.fbx",
+      "vertices": 1032,
+      "triangles": 1988,
+      "morphs": [
+        {
+          "name": "Body_Shoulders",
+          "changed_vertices": 1032,
+          "max_delta_cm": 3.213059902191162
+        },
+        {
+          "name": "Body_Waist",
+          "changed_vertices": 1032,
+          "max_delta_cm": 3.0969640638546836
+        },
+        {
+          "name": "Body_Hips",
+          "changed_vertices": 704,
+          "max_delta_cm": 0.6683498620986938
+        },
+        {
+          "name": "Body_Weight",
+          "changed_vertices": 1032,
+          "max_delta_cm": 4.4020240549836975
+        },
+        {
+          "name": "Body_Muscle",
+          "changed_vertices": 1032,
+          "max_delta_cm": 2.438782808283544
+        },
+        {
+          "name": "Body_Torso",
+          "changed_vertices": 1032,
+          "max_delta_cm": 4.499912261962891
+        }
+      ],
+      "bounds_min_m": [
+        -0.17000000178813934,
+        -0.1040000170469284,
+        1.1074999570846558
+      ],
+      "bounds_max_m": [
+        0.17000000178813934,
+        0.26940417289733887,
+        1.5355366468429565
+      ],
+      "uv_layers": 1,
+      "weighted_vertices": 1032,
+      "materials": [
+        "Pack"
+      ],
+      "source_blend": "SourceAssets/Characters/WroclawHero/male/hero.blend",
+      "fbx_sha256": "8845ec932f25b01ff37f4eb6e3bc27cd6107b81409da80dc82fae24aa776aed6"
+    }
+  ]
+}

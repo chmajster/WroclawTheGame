@@ -3,6 +3,7 @@
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInterface.h"
 #include "Animation/Skeleton.h"
+#include "Animation/BlendSpace1D.h"
 
 namespace {
 float Safe(float V,float Min,float Max,float Default) { return FMath::IsFinite(V) ? FMath::Clamp(V,Min,Max) : Default; }
@@ -87,6 +88,15 @@ TArray<FString> UCharacterCreatorValidator::ValidateCatalog(UCharacterAppearance
         {
             if (P.LODProfile<0) Errors.Add(TEXT("Invalid LOD: ")+P.ID.ToString());
             for (auto Tag:P.ClothingCompatibilityTags) if (!C->Bodies.ContainsByPredicate([&](const auto& B){return B.CompatibilityTag==Tag;})) Errors.Add(TEXT("Unknown body tag: ")+Tag.ToString());
+            if (CheckAssets) for (const auto& Override:P.BodyMeshes)
+            {
+                const auto* Body=C->Body(Override.Key);
+                auto* PartMesh=Override.Value.LoadSynchronous();
+                auto* BodyMesh=Body?Body->Mesh.LoadSynchronous():nullptr;
+                if (!BodyMesh || !PartMesh || BodyMesh->GetSkeleton()!=PartMesh->GetSkeleton())
+                    Errors.Add(TEXT("Body-specific part skeleton mismatch: ")+P.ID.ToString()+TEXT(" / ")+Override.Key.ToString());
+                else if (PartMesh->GetLODNum()<2) Errors.Add(TEXT("Missing body-specific part LOD: ")+P.ID.ToString());
+            }
             if (!CheckAssets || P.bPlaceholder || P.ID==TEXT("None")) continue;
             auto* Mesh=P.Mesh.LoadSynchronous(); auto* Static=P.StaticMesh.LoadSynchronous();
             if (!Mesh && !Static) Errors.Add(TEXT("Missing mesh: ")+P.ID.ToString());
@@ -101,7 +111,7 @@ TArray<FString> UCharacterCreatorValidator::ValidateCatalog(UCharacterAppearance
         auto* Mesh=B.Mesh.LoadSynchronous(); auto* Face=B.FaceMesh.IsNull()?Mesh:B.FaceMesh.LoadSynchronous();
         if (!Mesh || !Face) { Errors.Add(TEXT("Missing body/face: ")+B.ID.ToString()); continue; }
         if (Mesh->GetLODNum()<2 || Face->GetLODNum()<2) Errors.Add(TEXT("Missing body LOD: ")+B.ID.ToString());
-        if (!B.AnimationClass.LoadSynchronous()) Errors.Add(TEXT("Missing animation class: ")+B.ID.ToString());
+        if (!B.AnimationClass.LoadSynchronous() && !B.Locomotion.LoadSynchronous() && !B.CreatorIdle.LoadSynchronous()) Errors.Add(TEXT("Missing animation class: ")+B.ID.ToString());
         if (!B.SkinMaterial.LoadSynchronous()) Errors.Add(TEXT("Missing skin material: ")+B.ID.ToString());
         for (const auto& M:C->Morphs) if (!Face->FindMorphTarget(M.MorphTargetName)) Errors.Add(TEXT("Missing morph ")+M.MorphTargetName.ToString()+TEXT(" on ")+B.ID.ToString());
         for (const auto& P:C->ClothingDefinitions) if (P.ClothingCompatibilityTags.IsEmpty() || P.ClothingCompatibilityTags.Contains(B.CompatibilityTag))
@@ -112,7 +122,8 @@ TArray<FString> UCharacterCreatorValidator::ValidateCatalog(UCharacterAppearance
 void UCharacterCreatorSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
     Super::Initialize(Collection);
-    Catalog=LoadObject<UCharacterAppearanceCatalog>(nullptr,TEXT("/Game/CharacterCreator/DA_CharacterAppearanceCatalog.DA_CharacterAppearanceCatalog"));
+    Catalog=LoadObject<UCharacterAppearanceCatalog>(nullptr,TEXT("/Game/Wroclaw/Hero/DA_CivilianAppearance.DA_CivilianAppearance"));
+    if(!Catalog)Catalog=LoadObject<UCharacterAppearanceCatalog>(nullptr,TEXT("/Game/CharacterCreator/DA_CharacterAppearanceCatalog.DA_CharacterAppearanceCatalog"));
     if (Catalog && !UCharacterCreatorValidator::ValidateCatalog(Catalog,false).IsEmpty())
     { UE_LOG(LogTemp,Warning,TEXT("Invalid Character Creator catalog; using built-in fallback.")); Catalog=nullptr; }
     if (!Catalog) { Catalog=NewObject<UCharacterAppearanceCatalog>(this); Catalog->BuildFallbackCatalog(); }

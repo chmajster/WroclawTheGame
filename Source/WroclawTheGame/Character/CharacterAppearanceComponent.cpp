@@ -20,6 +20,7 @@
 #include "Animation/AnimInstance.h"
 #include "Animation/AnimSingleNodeInstance.h"
 #include "Animation/BlendSpace1D.h"
+#include "Animation/MorphTarget.h"
 #include "HAL/PlatformTime.h"
 
 UCharacterAppearanceComponent::UCharacterAppearanceComponent()
@@ -44,7 +45,7 @@ void UCharacterAppearanceComponent::ApplyAppearance(const FCharacterAppearanceDe
     auto Add=[&](const auto& Ref){ if (!Ref.IsNull()) Paths.AddUnique(Ref.ToSoftObjectPath()); };
     if (const auto* B=Catalog->Body(Appearance.BodyPreset))
     { Add(B->Mesh); Add(B->FaceMesh); Add(B->AnimationClass); Add(B->FaceAnimationClass); Add(B->SkinMaterial); Add(B->CreatorIdle); Add(B->Walk); Add(B->Jog); Add(B->Crouch); Add(B->Locomotion);Add(B->JumpLoop); }
-    auto AddPart=[&](const FAppearancePartDefinition* P){if (P) { Add(P->Mesh); Add(P->StaticMesh); Add(P->Material); }};
+    auto AddPart=[&](const FAppearancePartDefinition* P){if (P) { Add(P->Mesh); if(const auto* Override=P->BodyMeshes.Find(Appearance.BodyPreset))Add(*Override); Add(P->StaticMesh); Add(P->Material); }};
     AddPart(Catalog->Part(Catalog->HairStyleDefinitions,Appearance.HairStyle));
     AddPart(Catalog->Part(Catalog->BeardStyleDefinitions,Appearance.BeardStyle));
     AddPart(Catalog->Part(Catalog->EyebrowStyleDefinitions,Appearance.EyebrowStyle));
@@ -156,7 +157,7 @@ void UCharacterAppearanceComponent::Render()
     if (bUsingPlaceholder) BuildPlaceholder();
     else
     {
-        if (BodyMesh->GetSkeletalMeshAsset()!=B->Mesh.Get()) BodyMesh->SetSkeletalMesh(B->Mesh.Get());
+        if (BodyMesh->GetSkeletalMeshAsset()!=B->Mesh.Get()) { BodyMesh->EmptyOverrideMaterials(); BodyMesh->SetSkeletalMesh(B->Mesh.Get()); }
         BodyMesh->SetRelativeRotation(B->MeshRotation);
         if (BodyMesh->GetAnimClass()!=B->AnimationClass.Get()) BodyMesh->SetAnimInstanceClass(B->AnimationClass.Get());
         BodyMesh->SetForcedLOD(bPreview?1:0);
@@ -171,23 +172,27 @@ void UCharacterAppearanceComponent::Render()
             for (int32 I=0; I<Mesh->GetNumMaterials(); ++I)
             {
                 auto* MID=Cast<UMaterialInstanceDynamic>(Mesh->GetMaterial(I));
-                if (!MID) MID=Mesh->CreateAndSetMaterialInstanceDynamicFromMaterial(I,B->SkinMaterial.Get()?B->SkinMaterial.Get():Mesh->GetMaterial(I));
+                const FName Slot=Mesh->GetSkeletalMeshAsset()->GetMaterials()[I].MaterialSlotName;
+                if (!MID) MID=Mesh->CreateAndSetMaterialInstanceDynamicFromMaterial(I,Slot!=TEXT("Eyes") && B->SkinMaterial.Get()?B->SkinMaterial.Get():Mesh->GetMaterial(I));
                 if (!MID) continue;
                 MID->SetVectorParameterValue(TEXT("SkinTone"),Catalog->SkinPalette[Appearance.SkinTone]);
                 MID->SetVectorParameterValue(TEXT("EyeColor"),Catalog->EyePalette[Appearance.EyeColor]);
-                MID->SetScalarParameterValue(TEXT("Roughness"),Appearance.SkinRoughness);
+                if(Slot!=TEXT("Eyes"))MID->SetScalarParameterValue(TEXT("Roughness"),Appearance.SkinRoughness);
                 MID->SetScalarParameterValue(TEXT("Freckles"),Appearance.Freckles);
                 MID->SetScalarParameterValue(TEXT("Imperfections"),Appearance.SkinImperfections);
                 MID->SetScalarParameterValue(TEXT("AgeDetail"),(Appearance.VisualAge-20)/25);
             }
         }
         auto Attach=[&](FName Role,const FAppearancePartDefinition* P,FLinearColor Color) {
-            if (!P || P->ID==TEXT("None") || (P->bPlaceholder && !P->Mesh.Get() && !P->StaticMesh.Get())) return;
-            const FName Key(*(Role.ToString()+TEXT(":")+P->ID.ToString()));
+            if (!P || P->ID==TEXT("None")) return;
+            const auto* Override=P->BodyMeshes.Find(Appearance.BodyPreset);
+            USkeletalMesh* PartMesh=Override?Override->Get():P->Mesh.Get();
+            if (P->bPlaceholder && !PartMesh && !P->StaticMesh.Get()) return;
+            const FName Key(*(Role.ToString()+TEXT(":")+P->ID.ToString()+TEXT(":")+Appearance.BodyPreset.ToString()));
             UMeshComponent* Part=CachedParts.FindRef(Key);
-            if (!Part && P->Mesh.Get())
+            if (!Part && PartMesh)
             {
-                auto* M=NewObject<USkeletalMeshComponent>(GetOwner()); M->SetupAttachment(BodyMesh); M->SetSkeletalMesh(P->Mesh.Get()); M->SetLeaderPoseComponent(BodyMesh); M->SetForcedLOD(bPreview?1:P->LODProfile); Part=M;
+                auto* M=NewObject<USkeletalMeshComponent>(GetOwner()); M->SetupAttachment(BodyMesh); M->SetSkeletalMesh(PartMesh); M->SetLeaderPoseComponent(BodyMesh); M->SetForcedLOD(bPreview?1:P->LODProfile); Part=M;
             }
             else if (!Part && P->StaticMesh.Get())
             { auto* M=NewObject<UStaticMeshComponent>(GetOwner()); M->SetupAttachment(BodyMesh,P->Socket); M->SetStaticMesh(P->StaticMesh.Get()); Part=M; }
@@ -195,6 +200,16 @@ void UCharacterAppearanceComponent::Render()
             Part->SetRelativeTransform(P->Offset); Part->SetCollisionEnabled(ECollisionEnabled::NoCollision);
             if (!Part->IsRegistered()) { Part->RegisterComponent(); ModularParts.Add(Part); CachedParts.Add(Key,Part); }
             Part->SetVisibility(true);
+            if(auto* Skeletal=Cast<USkeletalMeshComponent>(Part))
+            {
+                Skeletal->ClearMorphTargets();
+                for(const auto& Morph:Catalog->Morphs)
+                {
+                    const FString Suffix=Morph.MorphID.ToString().Replace(TEXT("."),TEXT("_"));
+                    for(const auto& Target:PartMesh->GetMorphTargets())if(Target && (Target->GetName()==Suffix || Target->GetName().EndsWith(TEXT("_")+Suffix)))
+                        Skeletal->SetMorphTarget(Target->GetFName(),Appearance.FaceMorphs.FindRef(Morph.MorphID));
+                }
+            }
             for (int32 I=0; I<Part->GetNumMaterials(); ++I)
             {
                 auto* MID=Cast<UMaterialInstanceDynamic>(Part->GetMaterial(I));
@@ -209,8 +224,11 @@ void UCharacterAppearanceComponent::Render()
         for (const auto& Pair:Appearance.Clothing)
         {
             const auto* P=Catalog->Part(Catalog->ClothingDefinitions,Pair.Value); if (!P) continue;
+            if(Pair.Key==EClothingSlot::Top)
+                if(const auto* Outer=Catalog->Part(Catalog->ClothingDefinitions,Appearance.Clothing.FindRef(EClothingSlot::Outerwear)))
+                    if(Outer->Mesh.Get() || (Outer->BodyMeshes.Contains(Appearance.BodyPreset) && Outer->BodyMeshes[Appearance.BodyPreset].Get()))continue;
             int32 V=Appearance.ClothingVariants.FindRef(Pair.Key); Attach(TEXT("Clothing"),P,P->Variants.IsValidIndex(V)?P->Variants[V].Color:FLinearColor::White);
-            if (P->Mesh.Get() || P->StaticMesh.Get()) for (FName Region:P->HiddenBodyRegions) Hidden.Add(Region);
+            if (P->Mesh.Get() || P->StaticMesh.Get() || (P->BodyMeshes.Contains(Appearance.BodyPreset) && P->BodyMeshes[Appearance.BodyPreset].Get())) for (FName Region:P->HiddenBodyRegions) Hidden.Add(Region);
         }
         for (int32 I=0; I<BodyMesh->GetNumMaterials(); ++I) for (int32 L=0; L<B->Mesh.Get()->GetLODNum(); ++L)
             BodyMesh->ShowMaterialSection(I,I,!Hidden.Contains(B->Mesh.Get()->GetMaterials()[I].MaterialSlotName),L);

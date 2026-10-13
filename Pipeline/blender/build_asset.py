@@ -209,6 +209,18 @@ def main() -> None:
     sys.path.insert(0,str(ROOT/"Pipeline/qa"))
     from validate_manifest import validate_manifest
     validate_manifest(manifest)
+    if manifest['type']=='skeletal_mesh':
+        import runpy
+        runpy.run_path(str(resolve(manifest['skeletal']['generator'])),run_name='__main__')
+        metadata=json.loads(resolve(manifest['skeletal']['geometry']).read_text())
+        triangles=sum(a['triangles'] for a in metadata['assets'])
+        if triangles>manifest['mesh']['max_triangles']:raise RuntimeError('Skeletal triangle budget exceeded')
+        report={'asset_id':manifest['id'],'status':'PASS','type':'skeletal_mesh','lod0_triangles':triangles,
+                'max_triangles':manifest['mesh']['max_triangles'],'exports':[str(resolve(a['fbx'])) for a in metadata['assets']],
+                'lods':[{'index':i,'ratio':v,'stage':'native skeletal reduction'} for i,v in enumerate(manifest['lod']['ratios'])]}
+        folder=ROOT/'Saved/Pipeline/generated'/manifest['id'];folder.mkdir(parents=True,exist_ok=True)
+        (folder/'blender-report.json').write_text(json.dumps(report,indent=2))
+        return
     asset_id = manifest["id"]
     safe_name = "SM_" + "".join(ch if ch.isalnum() or ch == "_" else "_" for ch in asset_id)
     out = ROOT / "Saved" / "Pipeline" / "generated" / asset_id

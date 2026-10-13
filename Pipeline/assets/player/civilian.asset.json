@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "wtg-civilian",
+  "display_name": "Civilian gameplay hero",
+  "area": "Player",
+  "type": "skeletal_mesh",
+  "quality": "hero",
+  "source": {"model": "SourceAssets/Characters/WroclawHero/male/hero.blend", "license": "CC0-1.0 graphical data; original accessory geometry", "reference_directory": null},
+  "dimensions": {"height_m": 1.8},
+  "mesh": {"max_triangles": 160000, "combine": true, "generate_uv_if_missing": false},
+  "lod": {"ratios": [1.0, 0.65, 0.35]},
+  "collision": {"mode": "none", "max_hulls": 1},
+  "textures": {"base_color": "SourceAssets/Characters/MakeHuman/system-assets/skins/young_caucasian_male/young_lightskinned_male_diffuse.png", "normal": null, "orm": null},
+  "unreal": {"destination": "/Game/Wroclaw/Hero", "nanite": false, "qa_map": "/Game/Maps/Nadodrze_Playable"},
+  "skeletal": {"generator": "Scripts/assets/build_hero_models.py", "importer": "Scripts/assets/import_hero_models.py", "geometry": "SourceAssets/Characters/WroclawHero/geometry.json", "sources": "Data/hero_source_catalog.json"},
+  "qa": {"automation_filter": "WTG.Hero", "cameras": ["StartLocation_Start_Player", "StartLocation_Start_Street"], "screenshot_width": 1920, "screenshot_height": 1080}
+}

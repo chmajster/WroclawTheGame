@@ -36,14 +36,21 @@ def validate_manifest(data: dict, check_files: bool = True) -> None:
         "source", "mesh", "lod", "collision", "textures", "unreal", "qa",
     }
     require(isinstance(data, dict), "manifest root must be an object")
-    require(not (set(data)-required-{"dimensions","materials"}), "unknown manifest fields")
+    require(not (set(data)-required-{"dimensions","materials","skeletal"}), "unknown manifest fields")
     missing = sorted(required - set(data))
     require(not missing, f"missing required fields: {', '.join(missing)}")
     require(data["schema_version"] == 1, "schema_version must be 1")
     require(isinstance(data["id"], str) and ID_RE.fullmatch(data["id"]) is not None, "invalid id")
     require(isinstance(data["display_name"], str) and data["display_name"].strip(), "display_name is required")
     require(isinstance(data["area"], str) and data["area"].strip(), "area is required")
-    require(data["type"] == "static_mesh", "only static_mesh is currently supported")
+    require(data["type"] in {"static_mesh","skeletal_mesh"}, "unsupported asset type")
+    if data['type']=='skeletal_mesh':
+        contract=data.get('skeletal',{})
+        require(set(contract)=={'generator','importer','geometry','sources'}, 'skeletal production contract incomplete')
+        for key,value in contract.items():
+            require(isinstance(value,str) and not Path(value).is_absolute() and project_path(value).is_relative_to(ROOT), 'skeletal paths must remain inside project')
+            if check_files: require(project_path(value).is_file(), 'missing skeletal '+key+': '+value)
+        require(data['unreal'].get('nanite') is False, 'civilian skeletal pipeline uses conventional LODs')
     require(data["quality"] in {"background", "standard", "hero"}, "quality must be background, standard or hero")
 
     source = data["source"]

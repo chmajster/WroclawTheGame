@@ -81,6 +81,8 @@ struct FAppearancePartDefinition
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FText DisplayName;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TArray<FName> ClothingCompatibilityTags;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TSoftObjectPtr<class USkeletalMesh> Mesh;
+    // Per-body art upgrades keep other creator bodies on their authored parts.
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) TMap<FName,TSoftObjectPtr<class USkeletalMesh>> BodyMeshes;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TSoftObjectPtr<class UStaticMesh> StaticMesh;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TSoftObjectPtr<class UMaterialInterface> Material;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FName Socket = TEXT("head");

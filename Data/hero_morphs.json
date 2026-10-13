@@ -1,0 +1,357 @@
+{
+  "version": 1,
+  "morphs": [
+    {
+      "id": "Face.Width",
+      "label": "Szerokość twarzy",
+      "category": "Face",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "head/head-scale-horiz-incr"
+      ]
+    },
+    {
+      "id": "Face.Length",
+      "label": "Długość twarzy",
+      "category": "Face",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "head/head-scale-vert-incr"
+      ]
+    },
+    {
+      "id": "Face.HeadShape",
+      "label": "Kształt głowy",
+      "category": "Face",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "head/head-square"
+      ]
+    },
+    {
+      "id": "Face.Cheekbones",
+      "label": "Kości policzkowe",
+      "category": "Face",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "cheek/l-cheek-bones-incr",
+        "cheek/r-cheek-bones-incr"
+      ]
+    },
+    {
+      "id": "Face.Cheeks",
+      "label": "Pełność policzków",
+      "category": "Face",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "cheek/l-cheek-volume-incr",
+        "cheek/r-cheek-volume-incr"
+      ]
+    },
+    {
+      "id": "Face.ForeheadHeight",
+      "label": "Wysokość czoła",
+      "category": "Face",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "forehead/forehead-scale-vert-incr"
+      ]
+    },
+    {
+      "id": "Face.ForeheadWidth",
+      "label": "Szerokość czoła",
+      "category": "Face",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "forehead/forehead-temple-incr"
+      ]
+    },
+    {
+      "id": "Ears.Size",
+      "label": "Wielkość uszu",
+      "category": "Face",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "ears/l-ear-scale-incr",
+        "ears/r-ear-scale-incr"
+      ]
+    },
+    {
+      "id": "Ears.Angle",
+      "label": "Odstawanie uszu",
+      "category": "Face",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "ears/l-ear-wing-incr",
+        "ears/r-ear-wing-incr"
+      ]
+    },
+    {
+      "id": "Eyes.Size",
+      "label": "Wielkość oczu",
+      "category": "Eyes",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "eyes/l-eye-scale-incr",
+        "eyes/r-eye-scale-incr"
+      ]
+    },
+    {
+      "id": "Eyes.Spacing",
+      "label": "Rozstaw oczu",
+      "category": "Eyes",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "eyes/l-eye-trans-out",
+        "eyes/r-eye-trans-out"
+      ]
+    },
+    {
+      "id": "Eyes.Tilt",
+      "label": "Nachylenie oczu",
+      "category": "Eyes",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "eyes/l-eye-corner2-up",
+        "eyes/r-eye-corner2-up"
+      ]
+    },
+    {
+      "id": "Eyes.Brows",
+      "label": "Położenie brwi",
+      "category": "Eyes",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "eyebrows/eyebrows-trans-up"
+      ]
+    },
+    {
+      "id": "Nose.Width",
+      "label": "Szerokość nosa",
+      "category": "Nose",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "nose/nose-scale-horiz-incr"
+      ]
+    },
+    {
+      "id": "Nose.Length",
+      "label": "Długość nosa",
+      "category": "Nose",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "nose/nose-scale-depth-incr"
+      ]
+    },
+    {
+      "id": "Nose.Bridge",
+      "label": "Wysokość grzbietu",
+      "category": "Nose",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "nose/nose-hump-incr"
+      ]
+    },
+    {
+      "id": "Nose.Tip",
+      "label": "Rozmiar końcówki",
+      "category": "Nose",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "nose/nose-point-width-incr"
+      ]
+    },
+    {
+      "id": "Nose.Position",
+      "label": "Położenie nosa",
+      "category": "Nose",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "nose/nose-trans-up"
+      ]
+    },
+    {
+      "id": "Mouth.Width",
+      "label": "Szerokość ust",
+      "category": "Mouth",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "mouth/mouth-scale-horiz-incr"
+      ]
+    },
+    {
+      "id": "Mouth.UpperLip",
+      "label": "Górna warga",
+      "category": "Mouth",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "mouth/mouth-upperlip-volume-incr"
+      ]
+    },
+    {
+      "id": "Mouth.LowerLip",
+      "label": "Dolna warga",
+      "category": "Mouth",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "mouth/mouth-lowerlip-volume-incr"
+      ]
+    },
+    {
+      "id": "Mouth.Shape",
+      "label": "Kształt ust",
+      "category": "Mouth",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "mouth/mouth-cupidsbow-incr"
+      ]
+    },
+    {
+      "id": "Jaw.Width",
+      "label": "Szerokość szczęki",
+      "category": "Jaw",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [],
+      "custom": "jaw-width"
+    },
+    {
+      "id": "Jaw.Height",
+      "label": "Wysokość szczęki",
+      "category": "Jaw",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "chin/chin-height-incr"
+      ]
+    },
+    {
+      "id": "Chin.Width",
+      "label": "Szerokość podbródka",
+      "category": "Jaw",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "chin/chin-width-incr"
+      ]
+    },
+    {
+      "id": "Chin.Projection",
+      "label": "Wysunięcie podbródka",
+      "category": "Jaw",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [
+        "chin/chin-prominent-incr"
+      ]
+    },
+    {
+      "id": "Body.Shoulders",
+      "label": "Szerokość ramion",
+      "category": "Body",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [],
+      "custom": "shoulders"
+    },
+    {
+      "id": "Body.Waist",
+      "label": "Talia",
+      "category": "Body",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [],
+      "custom": "waist"
+    },
+    {
+      "id": "Body.Hips",
+      "label": "Szerokość bioder",
+      "category": "Body",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [],
+      "custom": "hips"
+    },
+    {
+      "id": "Body.Weight",
+      "label": "Masa ciała",
+      "category": "Body",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [],
+      "custom": "weight"
+    },
+    {
+      "id": "Body.Muscle",
+      "label": "Umięśnienie",
+      "category": "Body",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [],
+      "custom": "muscle"
+    },
+    {
+      "id": "Body.Torso",
+      "label": "Proporcje tułowia",
+      "category": "Body",
+      "min": -0.35,
+      "max": 0.35,
+      "default": 0,
+      "sources": [],
+      "custom": "torso"
+    }
+  ]
+}

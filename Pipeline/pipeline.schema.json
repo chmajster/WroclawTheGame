@@ -4,70 +4,161 @@
   "title": "WroclawTheGame asset production manifest",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "id", "display_name", "area", "type", "quality", "source", "mesh", "lod", "collision", "textures", "unreal", "qa"],
+  "required": [
+    "schema_version",
+    "id",
+    "display_name",
+    "area",
+    "type",
+    "quality",
+    "source",
+    "mesh",
+    "lod",
+    "collision",
+    "textures",
+    "unreal",
+    "qa"
+  ],
   "properties": {
-    "schema_version": {"const": 1},
-    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_\\-]{2,63}$"},
-    "display_name": {"type": "string", "minLength": 1},
-    "area": {"type": "string", "minLength": 1},
-    "type": {"enum": ["static_mesh"]},
-    "quality": {"enum": ["background", "standard", "hero"]},
+    "schema_version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_\\-]{2,63}$"
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "area": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "enum": [
+        "static_mesh",
+        "skeletal_mesh"
+      ]
+    },
+    "quality": {
+      "enum": [
+        "background",
+        "standard",
+        "hero"
+      ]
+    },
     "source": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["model"],
+      "required": [
+        "model"
+      ],
       "properties": {
-        "model": {"type": "string", "minLength": 1},
-        "license": {"type": "string"},
-        "reference_directory": {"type": ["string", "null"]}
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license": {
+          "type": "string"
+        },
+        "reference_directory": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "dimensions": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "height_m": {"type": "number", "exclusiveMinimum": 0}
+        "height_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
       }
     },
     "mesh": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["max_triangles", "combine", "generate_uv_if_missing"],
+      "required": [
+        "max_triangles",
+        "combine",
+        "generate_uv_if_missing"
+      ],
       "properties": {
-        "max_triangles": {"type": "integer", "minimum": 1},
-        "combine": {"type": "boolean"},
-        "generate_uv_if_missing": {"type": "boolean"}
+        "max_triangles": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "combine": {
+          "type": "boolean"
+        },
+        "generate_uv_if_missing": {
+          "type": "boolean"
+        }
       }
     },
     "lod": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["ratios"],
+      "required": [
+        "ratios"
+      ],
       "properties": {
         "ratios": {
           "type": "array",
           "minItems": 1,
           "maxItems": 6,
-          "items": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1
+          }
         }
       }
     },
     "collision": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["mode"],
+      "required": [
+        "mode"
+      ],
       "properties": {
-        "mode": {"enum": ["none", "simple", "authored"]},
-        "max_hulls": {"type": "integer", "minimum": 1, "maximum": 32}
+        "mode": {
+          "enum": [
+            "none",
+            "simple",
+            "authored"
+          ]
+        },
+        "max_hulls": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        }
       }
     },
     "materials": {
       "type": "array",
       "items": {
-        "type": "object", "additionalProperties": false, "required": ["slot", "asset"],
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "slot",
+          "asset"
+        ],
         "properties": {
-          "slot": {"type": "integer", "minimum": 0},
-          "asset": {"type": "string", "pattern": "^/Game/"}
+          "slot": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "asset": {
+            "type": "string",
+            "pattern": "^/Game/"
+          }
         }
       }
     },
@@ -75,31 +166,125 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "base_color": {"type": ["string", "null"]},
-        "normal": {"type": ["string", "null"]},
-        "orm": {"type": ["string", "null"]}
+        "base_color": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "normal": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "orm": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "unreal": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["destination", "nanite", "qa_map"],
+      "required": [
+        "destination",
+        "nanite",
+        "qa_map"
+      ],
       "properties": {
-        "destination": {"type": "string", "pattern": "^/Game/"},
-        "nanite": {"type": "boolean"},
-        "qa_map": {"type": "string", "pattern": "^/Game/"}
+        "destination": {
+          "type": "string",
+          "pattern": "^/Game/"
+        },
+        "nanite": {
+          "type": "boolean"
+        },
+        "qa_map": {
+          "type": "string",
+          "pattern": "^/Game/"
+        }
       }
     },
     "qa": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["automation_filter", "cameras", "screenshot_width", "screenshot_height"],
+      "required": [
+        "automation_filter",
+        "cameras",
+        "screenshot_width",
+        "screenshot_height"
+      ],
       "properties": {
-        "automation_filter": {"type": "string", "minLength": 1},
-        "cameras": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
-        "screenshot_width": {"type": "integer", "minimum": 640, "maximum": 7680},
-        "screenshot_height": {"type": "integer", "minimum": 360, "maximum": 4320}
+        "automation_filter": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cameras": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "screenshot_width": {
+          "type": "integer",
+          "minimum": 640,
+          "maximum": 7680
+        },
+        "screenshot_height": {
+          "type": "integer",
+          "minimum": 360,
+          "maximum": 4320
+        }
+      }
+    },
+    "skeletal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "generator",
+        "importer",
+        "geometry",
+        "sources"
+      ],
+      "properties": {
+        "generator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "importer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "geometry": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sources": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "skeletal_mesh"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "skeletal"
+        ]
+      }
+    }
+  ]
 }

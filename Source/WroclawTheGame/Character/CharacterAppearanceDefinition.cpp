@@ -135,6 +135,14 @@ void UCharacterAppearanceCatalog::ApplyModernHeroProfile()
     Equip(EClothingSlot::Accessory, TEXT("Glasses01"), 0);
     Equip(EClothingSlot::Back, TEXT("Backpack01"), 0);
 
+    if(const auto* BodyPreset=Body(TEXT("Male.Standard")))
+        if(BodyPreset->Mesh.ToSoftObjectPath().ToString().StartsWith(TEXT("/Game/Wroclaw/Hero/")))
+        {
+            Hero.BodyBuild=TEXT("Average");Hero.BeardStyle=TEXT("None");Hero.SkinRoughness=.52f;
+            Hero.Clothing.Remove(EClothingSlot::Accessory);
+            Hero.ClothingVariants.Remove(EClothingSlot::Accessory);
+        }
+
     Presets[0] = Hero;
     FallbackDefinition = Hero;
 }
