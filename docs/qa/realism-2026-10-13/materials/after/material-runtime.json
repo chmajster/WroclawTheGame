@@ -1,0 +1,318 @@
+{
+	"runtime_materials": [
+		{
+			"actor": "District_green_1_4",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_1_4.green_1_4",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_1_5",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_1_5.green_1_5",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_1_6",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_1_6.green_1_6",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_1_7",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_1_7.green_1_7",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_1_8",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_1_8.green_1_8",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_2_4",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_2_4.green_2_4",
+			"materials": [
+				"/Game/Wroclaw/StartLocation/Materials/MI_Grass.MI_Grass"
+			]
+		},
+		{
+			"actor": "District_green_2_5",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_2_5.green_2_5",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_2_6",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_2_6.green_2_6",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_2_7",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_2_7.green_2_7",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_2_8",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_2_8.green_2_8",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_3_3",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_3_3.green_3_3",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_3_4",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_3_4.green_3_4",
+			"materials": [
+				"/Game/Wroclaw/StartLocation/Materials/MI_Grass.MI_Grass"
+			]
+		},
+		{
+			"actor": "District_green_3_5",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_3_5.green_3_5",
+			"materials": [
+				"/Game/Wroclaw/StartLocation/Materials/MI_Grass.MI_Grass"
+			]
+		},
+		{
+			"actor": "District_green_3_6",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_3_6.green_3_6",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_3_7",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_3_7.green_3_7",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_3_8",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_3_8.green_3_8",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_4_3",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_4_3.green_4_3",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_4_4",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_4_4.green_4_4",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_4_5",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_4_5.green_4_5",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_4_7",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_4_7.green_4_7",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_4_8",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_4_8.green_4_8",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_5_4",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_5_4.green_5_4",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_5_5",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_5_5.green_5_5",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_5_6",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_5_6.green_5_6",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_5_7",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_5_7.green_5_7",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_5_8",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_5_8.green_5_8",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_6_3",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_6_3.green_6_3",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_6_4",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_6_4.green_6_4",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_6_5",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_6_5.green_6_5",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_6_6",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_6_6.green_6_6",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_6_7",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_6_7.green_6_7",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_6_8",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_6_8.green_6_8",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_7_4",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_7_4.green_7_4",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_7_5",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_7_5.green_7_5",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_7_6",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_7_6.green_7_6",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_7_7",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_7_7.green_7_7",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_7_8",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_7_8.green_7_8",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_8_3",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_8_3.green_8_3",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_8_4",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_8_4.green_8_4",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_8_5",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_8_5.green_8_5",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_8_6",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_8_6.green_8_6",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_8_7",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_8_7.green_8_7",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "District_green_8_8",
+			"mesh": "/Game/Generated/GIS/PlayableDistrict/green_8_8.green_8_8",
+			"materials": [
+				"/Game/Maps/Nadodrze_Playable.Nadodrze_Playable:PersistentLevel.SurfaceQualityDirector_0.MID_MI_Soil_0"
+			]
+		},
+		{
+			"actor": "StartLocation_Building_pomorska-47",
+			"mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_47.SM_wtg_start_pomorska_47",
+			"materials": [
+				"/Game/Wroclaw/StartLocation/Materials/MI_Wall_pomorska_47.MI_Wall_pomorska_47",
+				"/Game/Wroclaw/StartLocation/Materials/MI_Stone.MI_Stone",
+				"/Game/Wroclaw/StartLocation/Materials/MI_Frame.MI_Frame",
+				"/Game/Wroclaw/StartLocation/Materials/MI_Glazing.MI_Glazing",
+				"/Game/Wroclaw/StartLocation/Materials/MI_CoatedMetal.MI_CoatedMetal",
+				"/Game/Wroclaw/StartLocation/Materials/MI_Roof.MI_Roof",
+				"/Game/Wroclaw/StartLocation/Materials/MI_Wood.MI_Wood"
+			]
+		}
+	]
+}

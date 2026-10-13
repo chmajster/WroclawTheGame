@@ -27,6 +27,7 @@ static FAutoConsoleCommandWithWorld GRealismDiagnostics(TEXT("WTG.RealismDiagnos
     FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda(
       [Weak=TWeakObjectPtr<UWorld>(World),Elapsed=0.f,NextAt=50.f,Stage=0,Shots=TArray<FString>(),Folder](float Dt) mutable {
         auto* W=Weak.Get();if(!W)return false;Elapsed+=Dt;
+        WTGRealismCaptureTime(W);
         auto* PC=UGameplayStatics::GetPlayerController(W,0);
         auto* P=Cast<ASliceCharacter>(UGameplayStatics::GetPlayerPawn(W,0));
         if(Elapsed<NextAt || !PC || !P || !P->Appearance || P->Appearance->bLoading || W->IsPaused())return true;
@@ -54,6 +55,10 @@ static FAutoConsoleCommandWithWorld GRealismDiagnostics(TEXT("WTG.RealismDiagnos
         Report->SetStringField(TEXT("map"),W->GetOutermost()->GetName());
         Report->SetStringField(TEXT("status"),TEXT("CAPTURED_REQUIRES_INSPECTION"));
         Report->SetStringField(TEXT("captured_utc"),FDateTime::UtcNow().ToIso8601());
+        for(TActorIterator<AWTGDayNightEnvironment> It(W);It;++It){
+            Report->SetNumberField(TEXT("time_of_day_hours"),It->GetTimeOfDay());
+            Report->SetBoolField(TEXT("time_advances"),It->bAdvanceTime);break;
+        }
         TArray<TSharedPtr<FJsonValue>> MeshBasis;
         for(TActorIterator<AActor> It(W);It;++It) {
             const FString Label=It->GetActorNameOrLabel();
@@ -91,6 +96,45 @@ static FAutoConsoleCommandWithWorld GRealismDiagnostics(TEXT("WTG.RealismDiagnos
         FFileHelper::SaveStringToFile(Json,*(Folder/TEXT("capture.json")));
         UE_LOG(LogTemp,Display,TEXT("WTG_REALISM_DIAGNOSTICS_CAPTURED %d"),Shots.Num());
         FPlatformMisc::RequestExit(false);return false;
+      }));
+ }));
+#endif
+
+#if WITH_DEV_AUTOMATION_TESTS
+#include "HAL/IConsoleManager.h"
+#include "Containers/Ticker.h"
+#include "Engine/World.h"
+#include "EngineUtils.h"
+#include "Components/StaticMeshComponent.h"
+#include "Engine/StaticMesh.h"
+#include "Materials/MaterialInterface.h"
+#include "Misc/Paths.h"
+#include "Misc/FileHelper.h"
+#include "Serialization/JsonSerializer.h"
+#include "Tests/RealismCaptureReady.h"
+
+static FAutoConsoleCommandWithWorld GMaterialDiagnostics(TEXT("WTG.MaterialDiagnostics"),
+ TEXT("Read actual runtime materials on the start surfaces, then exit."),
+ FConsoleCommandWithWorldDelegate::CreateLambda([](UWorld* World){
+    if(!World || !World->IsGameWorld())return;
+    FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda(
+      [Weak=TWeakObjectPtr<UWorld>(World),Elapsed=0.f](float Dt)mutable{
+        auto* W=Weak.Get();if(!W)return false;Elapsed+=Dt;WTGRealismCaptureTime(W);
+        if(Elapsed<50 || !WTGRealismCaptureReady())return true;
+        TArray<TSharedPtr<FJsonValue>> Materials;
+        for(TActorIterator<AActor> It(W);It;++It){
+            auto* C=It->FindComponentByClass<UStaticMeshComponent>();UStaticMesh* Mesh=C?C->GetStaticMesh():nullptr;
+            if(!Mesh)continue;
+            if(!Mesh->GetName().StartsWith(TEXT("green_")) && It->GetActorNameOrLabel()!=TEXT("StartLocation_Building_pomorska-47"))continue;
+            auto Item=MakeShared<FJsonObject>();Item->SetStringField(TEXT("actor"),It->GetActorNameOrLabel());
+            Item->SetStringField(TEXT("mesh"),Mesh->GetPathName());TArray<TSharedPtr<FJsonValue>> Slots;
+            for(int32 I=0;I<C->GetNumMaterials();++I)Slots.Add(MakeShared<FJsonValueString>(GetPathNameSafe(C->GetMaterial(I))));
+            Item->SetArrayField(TEXT("materials"),Slots);Materials.Add(MakeShared<FJsonValueObject>(Item));
+        }
+        auto Report=MakeShared<FJsonObject>();Report->SetArrayField(TEXT("runtime_materials"),Materials);
+        FString Json;auto Writer=TJsonWriterFactory<>::Create(&Json);FJsonSerializer::Serialize(Report,Writer);
+        FFileHelper::SaveStringToFile(Json,*(FPaths::ProjectSavedDir()/TEXT("Realism/material-runtime.json")));
+        UE_LOG(LogTemp,Display,TEXT("WTG_MATERIAL_DIAGNOSTICS_PASS %d"),Materials.Num());FPlatformMisc::RequestExit(false);return false;
       }));
  }));
 #endif

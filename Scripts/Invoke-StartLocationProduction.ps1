@@ -71,6 +71,7 @@ try {
   }
   Invoke-Step 'shared-materials' {Invoke-Editor 'materials' 'Scripts/assets/prepare_start_location_materials.py' 'Saved/StartLocation/materials.ok'}
   Invoke-Step 'foliage-materials' {Invoke-Editor 'foliage' 'Scripts/assets/prepare_foliage_materials.py' 'Saved/StartLocation/foliage.ok'}
+  Invoke-Step 'civilian-pbr' {Invoke-Editor 'hero-materials' 'Scripts/assets/prepare_hero_materials.py' 'Saved/StartLocation/hero-materials.ok'}
   $env:WTG_ASSET_MANIFESTS=ConvertTo-Json -Compress -InputObject @((Get-ChildItem -LiteralPath Pipeline/assets/start_location -Filter '*.asset.json').FullName)
   Invoke-Step 'native-model-import' {Invoke-Editor 'import' 'Pipeline/unreal/import_batch.py' 'Saved/Pipeline/import/batch.ok'}
   Invoke-Step 'native-asset-verification' {Invoke-Editor 'assets' 'Scripts/assets/verify_start_location_assets.py' 'Saved/StartLocation/assets.ok'}
@@ -80,6 +81,7 @@ try {
   Invoke-Step 'native-start-placement' {Invoke-Editor 'placement' 'Scripts/assets/place_start_location.py' 'Saved/StartLocation/placement.ok'}
   Invoke-Step 'native-quality' {Invoke-Editor 'quality' 'Scripts/assets/prepare_start_location_quality.py' 'Saved/StartLocation/quality.ok'}
   Invoke-Step 'native-foliage-verification' {Invoke-Editor 'foliage-qa' 'Scripts/assets/verify_start_foliage.py' 'Saved/StartLocation/foliage-qa.ok'}
+  Invoke-Step 'native-pbr-verification' {Invoke-Editor 'pbr-qa' 'Scripts/assets/verify_start_pbr.py' 'Saved/StartLocation/pbr.ok'}
   $env:WTG_ASSET_MANIFEST='Data/start_location_qa.json'
   Invoke-Step 'rendered-capture' {Invoke-Editor 'capture' 'Pipeline/unreal/capture_qa.py' 'Saved/Pipeline/screenshots/start-location/capture.ok' -Render}
   if($GameplayQA){

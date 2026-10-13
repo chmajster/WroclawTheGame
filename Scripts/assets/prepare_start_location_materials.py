@@ -28,7 +28,13 @@ def prepare():
         tint=edit.create_material_expression(material,unreal.MaterialExpressionVectorParameter,-600,-400)
         tint.set_editor_property('parameter_name','Tint');tint.set_editor_property('default_value',unreal.LinearColor(1,1,1,1))
         multiply=edit.create_material_expression(material,unreal.MaterialExpressionMultiply,-300,-200)
-        edit.connect_material_expressions(base,'RGB',multiply,'A');edit.connect_material_expressions(tint,'',multiply,'B')
+        color=base
+        if name=='Stone':
+            desaturate=edit.create_material_expression(material,unreal.MaterialExpressionDesaturation,-450,-150)
+            amount=edit.create_material_expression(material,unreal.MaterialExpressionConstant,-600,-100);amount.set_editor_property('r',.68)
+            edit.connect_material_expressions(amount,'',desaturate,'Fraction')
+            edit.connect_material_expressions(base,'RGB',desaturate,'');color=desaturate
+        edit.connect_material_expressions(color,'RGB' if color==base else '',multiply,'A');edit.connect_material_expressions(tint,'',multiply,'B')
         edit.connect_material_property(multiply,'',unreal.MaterialProperty.MP_BASE_COLOR)
         normal=texture_sample(edit,material,textures['normal'],-600,80,'Normal')
         orm=texture_sample(edit,material,textures['orm'],-600,300,'ORM')
@@ -37,7 +43,7 @@ def prepare():
         if name in ['Asphalt','Pavement','Cobble','Grass']:
             # GIS ground has arbitrary/degenerate UVs; use centimetre world XY.
             world=edit.create_material_expression(material,unreal.MaterialExpressionWorldPosition,-1100,0)
-            divide=edit.create_material_expression(material,unreal.MaterialExpressionDivide,-900,0);divide.set_editor_property('const_b',float(by_slug[slug]['dimensions_mm'][0])/10)
+            divide=edit.create_material_expression(material,unreal.MaterialExpressionDivide,-900,0);divide.set_editor_property('const_b',float(by_slug[slug]['dimensions_mm'][0])/10*(.72 if name=='Cobble' else 1))
             mask=edit.create_material_expression(material,unreal.MaterialExpressionComponentMask,-750,0)
             mask.set_editor_property('r',True);mask.set_editor_property('g',True)
             edit.connect_material_expressions(world,'',divide,'A');edit.connect_material_expressions(divide,'',mask,'Input')
@@ -45,10 +51,11 @@ def prepare():
             for node in (normal,orm):edit.connect_material_expressions(mask,'',node,'Coordinates')
         for usage in [unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES,unreal.MaterialUsage.MATUSAGE_NANITE]:edit.set_material_usage(material,usage)
         edit.recompile_material(material);unreal.EditorAssetLibrary.save_loaded_asset(material,False);masters[name]=material
-    constants={'Frame':((.75,.73,.67),.65,0),'Glazing':((.025,.055,.075),.18,.25),
-               'Metal':((.07,.075,.08),.4,.85),'Wood':((.15,.065,.025),.76,0),
+    constants={'Frame':((.73,.73,.70),.58,0),'Glazing':((.045,.075,.095),.14,0),
+               'Metal':((.32,.34,.36),.34,1),'Wood':((.15,.065,.025),.76,0),
                'Leaf':((.055,.16,.022),.76,0),'Rubber':((.018,.018,.018),.9,0),
-               'Paint':((.13,.2,.26),.25,.3),'Light':((.8,.8,.65),.25,0)}
+               'Paint':((.13,.2,.26),.28,0),'Light':((.8,.8,.65),.25,0),
+               'CoatedMetal':((.055,.062,.068),.48,0)}
     for name,(color,roughness,metallic) in constants.items():
         path=DEST+'/M_Start_'+name;mat=unreal.load_asset(path)
         if not mat:mat=tools.create_asset('M_Start_'+name,DEST,unreal.Material,unreal.MaterialFactoryNew())
@@ -64,9 +71,20 @@ def prepare():
         path=DEST+'/MI_'+name;instance=unreal.load_asset(path)
         if not instance:instance=tools.create_asset('MI_'+name,DEST,unreal.MaterialInstanceConstant,unreal.MaterialInstanceConstantFactoryNew())
         edit.set_material_instance_parent(instance,material)
+        if name in {'Stone','Roof','Grass'}:
+            tint={'Stone':(.82,.80,.75),'Roof':(.48,.40,.34),'Grass':(.35,.52,.34)}[name]
+            edit.set_material_instance_vector_parameter_value(instance,'Tint',unreal.LinearColor(*tint,1))
         for usage in [unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES,unreal.MaterialUsage.MATUSAGE_NANITE]:edit.set_material_usage_override(instance,usage,True,True)
         edit.update_material_instance(instance)
         unreal.EditorAssetLibrary.save_loaded_asset(instance,False)
+    # Same physical UVs, separate concrete interface for metre curb stones.
+    curb=unreal.load_asset(DEST+'/MI_CurbConcrete') or tools.create_asset('MI_CurbConcrete',DEST,unreal.MaterialInstanceConstant,unreal.MaterialInstanceConstantFactoryNew())
+    edit.set_material_instance_parent(curb,masters['Stone'])
+    for param,role in [('BaseColor','base_color'),('Normal','normal'),('ORM','orm')]:
+        file=by_slug['concrete_pavement_03']['files'][role]['path']
+        edit.set_material_instance_texture_parameter_value(curb,param,unreal.load_asset(DEST+'/Textures/'+Path(file).stem))
+    edit.set_material_instance_vector_parameter_value(curb,'Tint',unreal.LinearColor(.67,.69,.70,1))
+    edit.update_material_instance(curb);unreal.EditorAssetLibrary.save_loaded_asset(curb,False)
     for path in ['/Game/SurfaceQuality/Instances/MI_PaintedMetal','/Game/Wroclaw/Nadodrze/MI_DistrictWindowGlazing']:
         material=unreal.load_asset(path)
         if isinstance(material,unreal.MaterialInstanceConstant):

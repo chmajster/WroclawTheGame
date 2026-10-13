@@ -39,6 +39,7 @@ static FAutoConsoleCommandWithWorld GStartLocationSmoke(TEXT("WTG.StartLocationS
         const double Now=FPlatformTime::Seconds();
         const float WallFrameMs=float((Now-LastFrameSeconds)*1000);LastFrameSeconds=Now;
         auto* W=Weak.Get();if(!W)return false;Elapsed+=Dt;
+        WTGRealismCaptureTime(W);
         auto* PC=UGameplayStatics::GetPlayerController(W,0);
         auto* P=Cast<ASliceCharacter>(UGameplayStatics::GetPlayerPawn(W,0));
         AWTGDistrictRegistry* R=nullptr;

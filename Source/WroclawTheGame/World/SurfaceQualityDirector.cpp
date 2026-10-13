@@ -75,6 +75,12 @@ void ASurfaceQualityDirector::BeginPlay()
     P.MotionBlurAmount = 0;
     P.bOverride_BloomIntensity = true;
     P.BloomIntensity = .15f;
+    P.bOverride_SceneFringeIntensity = true;
+    P.SceneFringeIntensity = 0;
+    P.bOverride_DepthOfFieldFocalDistance = true;
+    P.DepthOfFieldFocalDistance = 0;
+    P.bOverride_WhiteTemp = true;
+    P.WhiteTemp = 6500;
     P.bOverride_ColorSaturation = true;
     P.ColorSaturation = FVector4(.96f, .96f, .96f, 1);
     if (DistrictOutdoor)

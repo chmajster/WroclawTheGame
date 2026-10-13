@@ -27,6 +27,7 @@ def texture(path,name,normal=False):
     if normal:
         result.set_editor_property('compression_settings',unreal.TextureCompressionSettings.TC_NORMALMAP)
         result.set_editor_property('flip_green_channel',True) # MakeHuman's GL tangent normal -> DirectX
+    else:result.set_editor_property('compression_settings',unreal.TextureCompressionSettings.TC_DEFAULT)
     unreal.EditorAssetLibrary.save_loaded_asset(result,False)
     return result
 
@@ -48,6 +49,8 @@ def sample(material,tex):
         uv=expr(material,unreal.MaterialExpressionTextureCoordinate);uv.set_editor_property('u_tiling',8);uv.set_editor_property('v_tiling',8)
         EDIT.connect_material_expressions(uv,'',n,'')
     if tex.get_editor_property('compression_settings')==unreal.TextureCompressionSettings.TC_NORMALMAP:n.set_editor_property('sampler_type',unreal.MaterialSamplerType.SAMPLERTYPE_NORMAL)
+    elif tex.get_editor_property('compression_settings')==unreal.TextureCompressionSettings.TC_MASKS:n.set_editor_property('sampler_type',unreal.MaterialSamplerType.SAMPLERTYPE_MASKS)
+    elif not tex.get_editor_property('srgb'):n.set_editor_property('sampler_type',unreal.MaterialSamplerType.SAMPLERTYPE_LINEAR_COLOR)
     return n
 
 
@@ -58,6 +61,8 @@ def materials():
     eye=texture(source+'makehuman/data/eyes/materials/brown_eye.png','T_Eyes_BaseColor')
     cloth=texture(packs+'clothes/male_casualsuit01/male_casualsuit01_diffuse.png','T_Outfit_BaseColor')
     clothnormal=texture(packs+'clothes/male_casualsuit01/male_casualsuit01_normal.png','T_Outfit_Normal',True)
+    clothao=texture(packs+'clothes/male_casualsuit01/male_casualsuit01_ao.png','T_Outfit_AO')
+    clothao.set_editor_property('srgb',False);clothao.set_editor_property('compression_settings',unreal.TextureCompressionSettings.TC_MASKS);unreal.EditorAssetLibrary.save_loaded_asset(clothao,False)
     shoe=texture(packs+'clothes/shoes01/shoes01_diffuse.png','T_Shoes_BaseColor')
     shoenormal=texture(packs+'clothes/shoes01/shoes01_normal.png','T_Shoes_Normal',True)
     hair=texture(packs+'hair/short02/short02_diffuse.png','T_Hair_BaseColor')
@@ -66,7 +71,7 @@ def materials():
     fabric=texture('SourceAssets/Characters/WroclawHero/Textures/Pack_BaseColor.png','T_Pack_BaseColor')
     fabricnormal=texture('SourceAssets/Characters/WroclawHero/Textures/Pack_Normal.png','T_Pack_Normal',True)
     fabricorm=texture('SourceAssets/Characters/WroclawHero/Textures/Pack_ORM.png','T_Pack_ORM')
-    fabricorm.set_editor_property('srgb',False);unreal.EditorAssetLibrary.save_loaded_asset(fabricorm,False)
+    fabricorm.set_editor_property('srgb',False);fabricorm.set_editor_property('compression_settings',unreal.TextureCompressionSettings.TC_MASKS);unreal.EditorAssetLibrary.save_loaded_asset(fabricorm,False)
     result={}
     for kind,tex,normal,rough in [('Skin',skin,None,.5),('Eyes',eye,None,.12),('Shirt',cloth,clothnormal,.82),
                                 ('Denim',cloth,clothnormal,.87),('Shoe',shoe,shoenormal,.66),
@@ -106,9 +111,17 @@ def materials():
         EDIT.connect_material_property(scalar(mat,'Specular',.3 if kind=='Skin' else .4),'',unreal.MaterialProperty.MP_SPECULAR)
         if normal:EDIT.connect_material_property(sample(mat,normal),'RGB',unreal.MaterialProperty.MP_NORMAL)
         if kind=='Skin':
+            # Subtle variation follows the licensed anatomical texture. No
+            # random surface noise or large invented pore displacement.
+            luma=expr(mat,unreal.MaterialExpressionDesaturation);EDIT.connect_material_expressions(sample(mat,skin),'RGB',luma,'')
+            EDIT.connect_material_expressions(scalar(mat,'SkinRoughnessLuma',1),'',luma,'Fraction')
+            variation=expr(mat,unreal.MaterialExpressionMultiply);variation.set_editor_property('const_b',.10);EDIT.connect_material_expressions(luma,'',variation,'A')
+            roughness=expr(mat,unreal.MaterialExpressionAdd);roughness.set_editor_property('const_b',.44);EDIT.connect_material_expressions(variation,'',roughness,'A')
+            EDIT.connect_material_property(roughness,'',unreal.MaterialProperty.MP_ROUGHNESS)
             mat.set_editor_property('shading_model',unreal.MaterialShadingModel.MSM_SUBSURFACE)
             EDIT.connect_material_property(vector(mat,'Scattering',(.30,.12,.065)),'RGB',unreal.MaterialProperty.MP_SUBSURFACE_COLOR)
             EDIT.connect_material_property(scalar(mat,'SkinDensity',.86),'',unreal.MaterialProperty.MP_OPACITY)
+        if kind in ['Shirt','Denim']:EDIT.connect_material_property(sample(mat,clothao),'R',unreal.MaterialProperty.MP_AMBIENT_OCCLUSION)
         if kind=='Hair':
             mat.set_editor_property('shading_model',unreal.MaterialShadingModel.MSM_HAIR)
             cross=expr(mat,unreal.MaterialExpressionCrossProduct)

@@ -89,6 +89,9 @@ def import_texture(path: Path, destination: str, kind: str):
         texture.set_editor_property("compression_settings",unreal.TextureCompressionSettings.TC_MASKS)
     else:
         texture.set_editor_property("srgb",True)
+        # Explicit color policy also applies to 16-bit PNGs. Keep future
+        # imports in the same sRGB/default-compression contract as current assets.
+        texture.set_editor_property("compression_settings",unreal.TextureCompressionSettings.TC_DEFAULT)
     texture.set_editor_property("never_stream",False)
     texture.set_editor_property("max_texture_size",2048)
     texture.set_editor_property("mip_gen_settings",unreal.TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP)

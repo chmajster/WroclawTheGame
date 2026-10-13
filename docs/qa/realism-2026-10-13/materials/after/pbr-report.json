@@ -1,0 +1,223 @@
+{
+  "status": "PASS",
+  "materials": [
+    {
+      "material": "/Game/Wroclaw/StartLocation/Materials/MI_Grass.MI_Grass",
+      "textures": [
+        {
+          "parameter": "BaseColor",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/grass_ground_BC.grass_ground_BC",
+          "srgb": true,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "Normal",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/grass_ground_N.grass_ground_N",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "ORM",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/grass_ground_ORM.grass_ground_ORM",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_MASKS: 2>",
+          "max_size": 2048
+        }
+      ],
+      "tint": "<Struct 'LinearColor' (0x000001E434015460) {r: 0.350000, g: 0.520000, b: 0.340000, a: 1.000000}>"
+    },
+    {
+      "material": "/Game/Wroclaw/StartLocation/Materials/MI_Stone.MI_Stone",
+      "textures": [
+        {
+          "parameter": "BaseColor",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/sandstone_cracks_BC.sandstone_cracks_BC",
+          "srgb": true,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "Normal",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/sandstone_cracks_N.sandstone_cracks_N",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "ORM",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/sandstone_cracks_ORM.sandstone_cracks_ORM",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_MASKS: 2>",
+          "max_size": 2048
+        }
+      ],
+      "tint": "<Struct 'LinearColor' (0x000001E4340A9820) {r: 0.820000, g: 0.800000, b: 0.750000, a: 1.000000}>"
+    },
+    {
+      "material": "/Game/Wroclaw/StartLocation/Materials/MI_Roof.MI_Roof",
+      "textures": [
+        {
+          "parameter": "BaseColor",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/roof_tiles_14_BC.roof_tiles_14_BC",
+          "srgb": true,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "Normal",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/roof_tiles_14_N.roof_tiles_14_N",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "ORM",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/roof_tiles_14_ORM.roof_tiles_14_ORM",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_MASKS: 2>",
+          "max_size": 2048
+        }
+      ],
+      "tint": "<Struct 'LinearColor' (0x000001E4340A8CA0) {r: 0.480000, g: 0.400000, b: 0.340000, a: 1.000000}>"
+    },
+    {
+      "material": "/Game/Wroclaw/StartLocation/Materials/MI_Plaster.MI_Plaster",
+      "textures": [
+        {
+          "parameter": "BaseColor",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/painted_plaster_wall_BC.painted_plaster_wall_BC",
+          "srgb": true,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "Normal",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/painted_plaster_wall_N.painted_plaster_wall_N",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "ORM",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/painted_plaster_wall_ORM.painted_plaster_wall_ORM",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_MASKS: 2>",
+          "max_size": 2048
+        }
+      ],
+      "tint": "<Struct 'LinearColor' (0x000001E4340B8BE0) {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}>"
+    },
+    {
+      "material": "/Game/Wroclaw/StartLocation/Materials/MI_Pavement.MI_Pavement",
+      "textures": [
+        {
+          "parameter": "BaseColor",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/concrete_pavement_03_BC.concrete_pavement_03_BC",
+          "srgb": true,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "Normal",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/concrete_pavement_03_N.concrete_pavement_03_N",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "ORM",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/concrete_pavement_03_ORM.concrete_pavement_03_ORM",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_MASKS: 2>",
+          "max_size": 2048
+        }
+      ],
+      "tint": "<Struct 'LinearColor' (0x000001E4340B8EE0) {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}>"
+    },
+    {
+      "material": "/Game/Wroclaw/StartLocation/Materials/MI_Asphalt.MI_Asphalt",
+      "textures": [
+        {
+          "parameter": "BaseColor",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/asphalt_03_BC.asphalt_03_BC",
+          "srgb": true,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "Normal",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/asphalt_03_N.asphalt_03_N",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "ORM",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/asphalt_03_ORM.asphalt_03_ORM",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_MASKS: 2>",
+          "max_size": 2048
+        }
+      ],
+      "tint": "<Struct 'LinearColor' (0x000001E4340B9020) {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}>"
+    },
+    {
+      "material": "/Game/Wroclaw/StartLocation/Materials/MI_Cobble.MI_Cobble",
+      "textures": [
+        {
+          "parameter": "BaseColor",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/cobblestone_floor_08_BC.cobblestone_floor_08_BC",
+          "srgb": true,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "Normal",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/cobblestone_floor_08_N.cobblestone_floor_08_N",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "ORM",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/cobblestone_floor_08_ORM.cobblestone_floor_08_ORM",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_MASKS: 2>",
+          "max_size": 2048
+        }
+      ],
+      "tint": "<Struct 'LinearColor' (0x000001E4340B9120) {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}>"
+    },
+    {
+      "material": "/Game/Wroclaw/StartLocation/Materials/MI_CurbConcrete.MI_CurbConcrete",
+      "textures": [
+        {
+          "parameter": "BaseColor",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/concrete_pavement_03_BC.concrete_pavement_03_BC",
+          "srgb": true,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "Normal",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/concrete_pavement_03_N.concrete_pavement_03_N",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+          "max_size": 2048
+        },
+        {
+          "parameter": "ORM",
+          "texture": "/Game/Wroclaw/StartLocation/Materials/Textures/concrete_pavement_03_ORM.concrete_pavement_03_ORM",
+          "srgb": false,
+          "compression": "<TextureCompressionSettings.TC_MASKS: 2>",
+          "max_size": 2048
+        }
+      ],
+      "tint": "<Struct 'LinearColor' (0x000001E4340B9220) {r: 0.670000, g: 0.690000, b: 0.700000, a: 1.000000}>"
+    }
+  ],
+  "glass": "Opaque reflection approximation; no modelled interiors",
+  "daylight": "110000 lux sun; sky intensity2.2; cycle remains active. QA13:00 only."
+}

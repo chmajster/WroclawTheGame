@@ -30,7 +30,7 @@
   "materials": [
     {
       "slot": 0,
-      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_Stone"
+      "asset": "/Game/Wroclaw/StartLocation/Materials/MI_CurbConcrete"
     }
   ],
   "unreal": {
