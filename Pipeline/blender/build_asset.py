@@ -195,6 +195,9 @@ def export_fbx(path: Path, objects: list[bpy.types.Object]) -> None:
         bake_anim=False,
         add_leaf_bones=False,
         use_mesh_modifiers=True,
+        mesh_smooth_type="FACE",
+        use_triangles=True,
+        use_tspace=True,
         path_mode="AUTO",
     )
 

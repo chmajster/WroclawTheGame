@@ -8,6 +8,7 @@ def select_buildings(data, policy):
     primary=[dict(item,context=False) for item in policy['buildings']]
     selected={item['id'] for item in primary}
     rule=policy.get('architecture_context',{})
+    priority=set(rule.get('priority_ids',[]))
     centre=Point(policy['player_anchor_cm'][:2])
     candidates=[]
     for feature in data['features']:
@@ -15,10 +16,10 @@ def select_buildings(data, policy):
         shape=Polygon([p[:2] for p in feature['rings'][0]],[[p[:2] for p in ring] for ring in feature['rings'][1:]])
         distance=shape.distance(centre)
         if distance>rule.get('radius_m',0)*100 or shape.area<80*10000 or feature['height_m']<8:continue
-        candidates.append((distance,feature['id'],feature))
+        candidates.append((0 if feature['id'] in priority else 1,distance,feature['id'],feature))
     palette=[(.74,.70,.63),(.68,.66,.59),(.77,.75,.68),(.65,.69,.65)]
     context=[]
-    for _,identifier,feature in sorted(candidates)[:rule.get('max_buildings',0)]:
+    for _,_,identifier,feature in sorted(candidates)[:rule.get('max_buildings',0)]:
         try:floors=int(float(feature['tags'].get('building:levels',round(feature['height_m']/3.2))))
         except ValueError:floors=round(feature['height_m']/3.2)
         colour=palette[int(hashlib.sha256(identifier.encode()).hexdigest()[:8],16)%len(palette)]

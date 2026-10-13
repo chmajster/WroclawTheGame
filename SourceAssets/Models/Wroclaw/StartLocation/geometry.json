@@ -949,6 +949,286 @@
         "context": true,
         "footprint": "unaltered source rings; mouldings project beyond wall"
       }
+    },
+    {
+      "asset": "context-way-101349778-0",
+      "area": "Buildings",
+      "triangles": 14090,
+      "bounds_m": [
+        15.577817916870117,
+        25.018295288085938,
+        13.253120422363281
+      ],
+      "source_center_m": [
+        0.0017352104187011719,
+        -0.1761460304260254,
+        -1.3131203651428223
+      ],
+      "collision_shapes": 8,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection",
+      "architecture": {
+        "source_id": "way/101349778:0",
+        "height_datum_m": 12.0,
+        "maximum_z_m": 11.94,
+        "foundation_z_m": -1.31312,
+        "roof": "flat",
+        "context": true,
+        "footprint": "unaltered source rings; mouldings project beyond wall"
+      }
+    },
+    {
+      "asset": "context-way-101348901-0",
+      "area": "Buildings",
+      "triangles": 14315,
+      "bounds_m": [
+        19.951900482177734,
+        21.765438079833984,
+        12.906360626220703
+      ],
+      "source_center_m": [
+        0.004023075103759766,
+        0.0004811286926269531,
+        -0.9663600921630859
+      ],
+      "collision_shapes": 5,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection",
+      "architecture": {
+        "source_id": "way/101348901:0",
+        "height_datum_m": 12.0,
+        "maximum_z_m": 11.94,
+        "foundation_z_m": -0.96636,
+        "roof": "flat",
+        "context": true,
+        "footprint": "unaltered source rings; mouldings project beyond wall"
+      }
+    },
+    {
+      "asset": "context-way-101482248-0",
+      "area": "Buildings",
+      "triangles": 13690,
+      "bounds_m": [
+        21.005571365356445,
+        21.268352508544922,
+        13.218390464782715
+      ],
+      "source_center_m": [
+        0.006861686706542969,
+        -0.001392364501953125,
+        -1.2783900499343872
+      ],
+      "collision_shapes": 4,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection",
+      "architecture": {
+        "source_id": "way/101482248:0",
+        "height_datum_m": 12.0,
+        "maximum_z_m": 11.94,
+        "foundation_z_m": -1.27839,
+        "roof": "flat",
+        "context": true,
+        "footprint": "unaltered source rings; mouldings project beyond wall"
+      }
+    },
+    {
+      "asset": "context-way-101361294-0",
+      "area": "Buildings",
+      "triangles": 16753,
+      "bounds_m": [
+        30.024234771728516,
+        23.099258422851562,
+        14.198980331420898
+      ],
+      "source_center_m": [
+        0.15681695938110352,
+        -0.00046825408935546875,
+        -2.2589802742004395
+      ],
+      "collision_shapes": 11,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection",
+      "architecture": {
+        "source_id": "way/101361294:0",
+        "height_datum_m": 12.0,
+        "maximum_z_m": 11.94,
+        "foundation_z_m": -2.25898,
+        "roof": "flat",
+        "context": true,
+        "footprint": "unaltered source rings; mouldings project beyond wall"
+      }
+    },
+    {
+      "asset": "context-way-101432211-0",
+      "area": "Buildings",
+      "triangles": 30929,
+      "bounds_m": [
+        38.72040557861328,
+        37.523155212402344,
+        15.271689414978027
+      ],
+      "source_center_m": [
+        0.009251594543457031,
+        -0.015417098999023438,
+        -3.2916901111602783
+      ],
+      "collision_shapes": 11,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection",
+      "architecture": {
+        "source_id": "way/101432211:0",
+        "height_datum_m": 12.0,
+        "maximum_z_m": 11.98,
+        "foundation_z_m": -3.29169,
+        "roof": "interpreted hipped roof",
+        "context": true,
+        "footprint": "unaltered source rings; mouldings project beyond wall"
+      }
+    },
+    {
+      "asset": "context-way-101361370-0",
+      "area": "Buildings",
+      "triangles": 41808,
+      "bounds_m": [
+        36.138206481933594,
+        32.6419677734375,
+        13.642680168151855
+      ],
+      "source_center_m": [
+        0.20812320709228516,
+        -0.22966289520263672,
+        -1.6426801681518555
+      ],
+      "collision_shapes": 44,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection",
+      "architecture": {
+        "source_id": "way/101361370:0",
+        "height_datum_m": 12.0,
+        "maximum_z_m": 12.0,
+        "foundation_z_m": -1.64268,
+        "roof": "interpreted hipped roof",
+        "context": true,
+        "footprint": "unaltered source rings; mouldings project beyond wall"
+      }
+    },
+    {
+      "asset": "context-way-101189965-0",
+      "area": "Buildings",
+      "triangles": 17492,
+      "bounds_m": [
+        26.357131958007812,
+        15.384140014648438,
+        13.309959411621094
+      ],
+      "source_center_m": [
+        -0.021175861358642578,
+        -6.008148193359375e-05,
+        -1.3299601078033447
+      ],
+      "collision_shapes": 7,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection",
+      "architecture": {
+        "source_id": "way/101189965:0",
+        "height_datum_m": 12.0,
+        "maximum_z_m": 11.98,
+        "foundation_z_m": -1.32996,
+        "roof": "interpreted hipped roof",
+        "context": true,
+        "footprint": "unaltered source rings; mouldings project beyond wall"
+      }
+    },
+    {
+      "asset": "context-way-101349268-0",
+      "area": "Buildings",
+      "triangles": 18873,
+      "bounds_m": [
+        22.28009033203125,
+        28.274463653564453,
+        13.329300880432129
+      ],
+      "source_center_m": [
+        0.0015420913696289062,
+        0.004858493804931641,
+        -1.389299988746643
+      ],
+      "collision_shapes": 11,
+      "materials": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ],
+      "uv": "2m physical projection",
+      "architecture": {
+        "source_id": "way/101349268:0",
+        "height_datum_m": 12.0,
+        "maximum_z_m": 11.94,
+        "foundation_z_m": -1.3893,
+        "roof": "flat",
+        "context": true,
+        "footprint": "unaltered source rings; mouldings project beyond wall"
+      }
     }
   ]
 }

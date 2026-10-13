@@ -58,6 +58,10 @@ def import_task(filename: Path, destination: str, static_mesh: bool = False, nam
         static_options.set_editor_property("convert_scene_unit", True)
         static_options.set_editor_property("generate_lightmap_u_vs", True)
         static_options.set_editor_property("auto_generate_collision", False)
+        # Blender exports explicit per-corner normals and tangent space.
+        # Preserve it instead of averaging opposing UV directions at shared
+        # architectural seams (observed zero tangents in a real native buffer).
+        static_options.set_editor_property("normal_import_method",unreal.FBXNormalImportMethod.FBXNIM_IMPORT_NORMALS_AND_TANGENTS)
         task.set_editor_property("options", options)
     unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
     imported = list(task.get_editor_property("imported_object_paths") or [])
