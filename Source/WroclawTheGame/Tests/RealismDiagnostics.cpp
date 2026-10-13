@@ -32,17 +32,17 @@ static FAutoConsoleCommandWithWorld GRealismDiagnostics(TEXT("WTG.RealismDiagnos
         const EViewModeIndex Modes[]={VMI_Lit,VMI_Unlit,VMI_Wireframe,VMI_LightingOnly,VMI_VisualizeBuffer,VMI_CollisionPawn};
         const TCHAR* Names[]={TEXT("lit"),TEXT("unlit"),TEXT("wireframe"),TEXT("lighting"),TEXT("normals"),TEXT("collision")};
         // A stage sets a mode/camera; the following tick after 4 seconds captures it.
-        if(Stage%2==0 && Stage<24) {
+        if(Stage%2==0 && Stage<36) {
             const int32 Index=Stage/2,Mode=Index%6;
-            const TCHAR* Camera=Index<6?TEXT("StartLocation_Start_Street"):TEXT("StartLocation_Start_Park");
+            const TCHAR* Camera=Index<6?TEXT("StartLocation_Start_Street"):(Index<12?TEXT("StartLocation_Start_Park"):TEXT("StartLocation_Start_Facade"));
             for(TActorIterator<ACameraActor> It(W);It;++It)
                 if(It->GetActorNameOrLabel()==Camera){PC->SetViewTarget(*It);break;}
             if(Mode==4)if(auto* CV=IConsoleManager::Get().FindConsoleVariable(TEXT("r.BufferVisualizationTarget")))CV->Set(TEXT("WorldNormal"),ECVF_SetByConsole);
             Viewport->SetViewMode(Modes[Mode]);NextAt=Elapsed+4;Stage++;return true;
         }
-        if(Stage<24) {
+        if(Stage<36) {
             const int32 Index=Stage/2,Mode=Index%6;
-            const FString Name=FString::Printf(TEXT("%s_%s.png"),Index<6?TEXT("street"):TEXT("park"),Names[Mode]);
+            const FString Name=FString::Printf(TEXT("%s_%s.png"),Index<6?TEXT("street"):(Index<12?TEXT("park"):TEXT("facade")),Names[Mode]);
             FScreenshotRequest::RequestScreenshot(Folder/Name,true,false);Shots.Add(Name);
             NextAt=Elapsed+1;Stage++;return true;
         }
