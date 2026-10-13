@@ -11,3 +11,5 @@ Invoke-StartLocationProduction.ps1: Source build_hero_models.py oraz import_batc
 
 ## Stan
 W toku, osobna gałąź z main, bez CI, oryginalny worktree poza zakresem.
+
+Bie??cy batch: Source/Full z jednego polecenia przeszed? izolowany Python 3.13, ?r?d?a/checksums, GIS, obrysy, foliage, modele/infrastruktur?, wszystkie 45 eksport?w (bohater: 7 siatek, idle 181 klatek), plany, native build oraz materia?y. Native import trwa w sesji 31149; raport Saved/StartLocation/production/report.json. Snapshot przed: 887 aktor?w, 15330 instancji, digest 9c610a3d89ec31be3821e2db29b0921720b30144fc9d93f3189456964f1dbbaf. Nast?pny krok: doko?czy? Full i native snapshot po; nie deklarowa? jeszcze powtarzalno?ci ca?ego przebiegu.
