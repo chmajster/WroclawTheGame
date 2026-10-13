@@ -22,6 +22,13 @@ try:
     configs=source['buildings']+source.get('context_buildings',[])
     if len(buildings)!=len(configs):raise RuntimeError('Duplicate/missing architecture actors')
     by_label={a.get_actor_label():a for a in buildings}
+    all_actors=actors.get_all_level_actors()
+    camera_report=[]
+    for label in ['StartLocation_Start_Street','StartLocation_Start_Park','StartLocation_Start_Facade']:
+        matches=[a for a in all_actors if a.get_actor_label()==label and isinstance(a,unreal.CameraActor)]
+        if len(matches)!=1:raise RuntimeError('Missing/duplicate diagnostic camera '+label)
+        p=matches[0].get_actor_location()
+        camera_report.append(dict(actor=label,position_cm=[p.x,p.y,p.z]))
     report=[]
     for c in configs:
         label=('StartLocation_Context_' if c.get('context') else 'StartLocation_Building_')+c['asset']
@@ -45,7 +52,7 @@ try:
         report.append(dict(actor=label,mesh=mesh.get_path_name(),position_cm=position,
             source_roof_max_cm=maximum,actual_roof_top_cm=top,nanite=True,collision_hulls=hulls))
     result=dict(status='PASS',map='/Game/Maps/Nadodrze_Playable',primary=len(source['buildings']),
-        context=len(source.get('context_buildings',[])),actors=report,
+        context=len(source.get('context_buildings',[])),actors=report,cameras=camera_report,
         limits='Source geometry/placement contract; facade interpretation is not a surveyed reconstruction. Visual/runtime evidence is separate.')
     (marker.parent/'architecture-report.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
     marker.write_text('PASS\n',encoding='utf-8')

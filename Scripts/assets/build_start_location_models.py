@@ -34,6 +34,7 @@ class Mesh:
         self.slots.append(slot)
 
     def box(self, center, size, slot=0, axes=None):
+        if any(v<=0 for v in size):raise ValueError('Nonpositive architectural/prop box size '+str(size))
         axes = axes or ((1,0,0),(0,1,0),(0,0,1))
         c = Vector(center); a = [Vector(v) for v in axes]
         verts = [c+a[0]*x*size[0]/2+a[1]*y*size[1]/2+a[2]*z*size[2]/2
@@ -126,7 +127,7 @@ def building(config):
                 storefront = floor==0 and edge_index==front
                 entrance = storefront and column==bays//2
                 w = min(bay-.55,1.65 if entrance else (2.15 if storefront else 1.18))
-                h = min(floor_height-.5,2.9 if storefront else (1.15 if floor==floors-1 else 1.95))
+                h = min(floor_height-(.4 if storefront else .95),2.9 if storefront else (1.15 if floor==floors-1 else 1.95))
                 sill = floor_base+(.08 if entrance else (.2 if storefront else .72))
                 top = sill+h
                 box(column*bay+(bay-w)/4,floor_base+floor_height/2,(bay-w)/2,floor_height)

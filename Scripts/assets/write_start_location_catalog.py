@@ -34,7 +34,8 @@ def main():
     for record in json.loads((ROOT/'Data/free_model_catalog.json').read_text(encoding='utf-8')):
         if record['slug'] in ['street_lamp_01','modular_street_seating','metal_trash_can']:reused.append(record)
     if len(reused)!=3:raise ValueError('Required existing props missing from source catalog')
-    catalog=dict(schema_version=1,scope='Existing Pomorska/Paulinska start,100m',assets=assets,
+    policy=json.loads((ROOT/'Data/start_location.json').read_text(encoding='utf-8'))
+    catalog=dict(schema_version=1,scope=f"Existing Pomorska/Paulinska start,{policy['radius_m']}m; bounded architecture context {policy.get('architecture_context',{}).get('radius_m',0)}m",assets=assets,
         textures=textures,reused_models=reused,credit=approved['credit'],
         placement_sources=['Data/start_location.json','Data/start_location_buildings.json','Data/playable_district.json',
                            'Data/source/wroclaw/osm/wave1.osm.gz (part-aware source_bytes reader)'],
