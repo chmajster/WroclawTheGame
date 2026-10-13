@@ -1,49 +1,41 @@
 # Realizm — punkt 5/10
 
 ## Wykonane
-Punkty 1–4 scalone. Źródła 8 kamienic + 24 budynków tła do 210 m (32 razem),
-737261 trójkątów, zachowane obrysy/wysokości/kotwice/trasy. Osiem dodatkowych
-obrysów wynika z rzeczywistej oceny Start_Park: nearest-only pozostawiał blockout.
-Przestrzenne dachy i flat tags, cokoły do DEM, poprawne otwory, wnęki wejściowe,
-gzymsy, obróbki, otwarte rynny. Detale są interpretacją fasad, nie pomiarem.
-Pierwsze 24 budynki: native import i kontrakt mapy PASS; 29 assets QA PASS;
-kompilacja PASS. 13 regresji geometrii/dzielnicy + 4 kontrakty dachów/obrysów PASS.
-GIS odtworzony: 440 komórek/279224 trójkątów. Plany CityDetails/start odtworzone.
-18 rzeczywistych ujęć z D3D12, ocena ulicy/parku/portalu. Bufor jednego modelu
-ma 119 zerowych tangentów, pozostałe 23 poprawne. GLB ma poprawne UV.
-Eksport/import zachowuje teraz jawną bazę, Nanite architektury explicit_tangents.
-GetAuthoredMeshBounds mierzy zapisane LOD0; culling bounds Nanite są konserwatywne.
+Zastąpiono blockout 8 kamienic i 24 budynków panoramy do 210 m: 32 modele,
+737261 trójkątów źródłowych. Zachowano obrysy, wysokości, kotwice i trasy GIS.
+Dodano przestrzenne dachy, wnęki, wejścia, gzymsy, cokoły do DEM i rynny.
+Detale fasad i dachy bez roof:shape są interpretacją, nie dokumentacją pomiarową.
+GIS wyklucza wszystkie zastąpione bryły: 440 komórek/279224 trójkątów.
+Nowe źródła Blender/GLB, manifesty i rzeczywiste natywne zasoby są w pipeline.
 
+Rozpoznano zerowe tangenty MikkTSpace na wąskich trójkątach dachu także
+w źródłowym Blenderze (149). Import zachowuje jawną bazę i naprawia tylko
+brakujące tangenty na podstawie UV i normalnej. Naprawiono 230 wektorów w 27
+LOD; końcowy pomiar buforów renderera: 32/32 modeli, zero niepoprawnych
+tangentów i normalnych. GetAuthoredMeshBounds odróżnia rzeczywiste wierzchołki
+od konserwatywnego bounds Nanite, bez zmiany wymaganej wysokości budynku.
 
-Aktualizacja 16:35 UTC: native QA 37 zasobów i kontrakt 32 aktorów PASS.
-Wszystkie 7 faz mapy PASS. 1654 instancje, 31 HISM, 1169968 trójkątów,
-1525 kolizji — limit 1,6 mln zachowany. Trwa sesja 35586: D3D12 diagnostics,
-potem StartLocationSmoke. Oceniać tylko świeże capture.json/18 PNG, sprawdzić
-32 basis records i Start_Park. Eksport explicit rozpoznawany przez report,
-starsze FBX zachowują normalne i wyliczają brakujące tangenty; 2 takie assety
-nadodrze ponownie zaimportowane PASS. Końcowy obraz/baza nadal przed oceną.
+Kompilacja i 22 testy statyczne PASS. Wszystkie siedem faz mapy PASS;
+końcowe native QA: 37 zasobów oraz 32 aktorów/obrysów/wysokości PASS.
+1654 instancje, 31 HISM, 1169968 trójkątów nowych obiektów, 1525 kolizji,
+limit 1,6 mln zachowany. StartLocationSmoke PASS: rzeczywisty spacer 201,40 cm,
+podłoże, osiem ścian, kamera bez overlap, bohater bez placeholdera.
+18 diagnostycznych i cztery zwykłe ujęcia, raporty oraz SHA obrazów:
+docs/qa/realism-2026-10-13/architecture. Materiały, światło i zieleń pozostają
+zakresem kolejnych punktów; samej geometrii nie opisujemy jako fotorealizmu.
+Czas dnia jest dynamiczny; porównania geometrii używają tych samych kamer Unlit.
 
-Aktualizacja basis: MikkTSpace w źródłowym Blenderze również generuje 149 zerowych
-wektorów na wąskich trójkątach dachu (mimo niezerowych UV). RepairAuthoredMeshTangents
-wylicza tylko brakujące tangenty z Jacobian UV i normalnej, nie zmienia geometrii.
-Importer robi to dla jawnie eksportowanych LOD0 i tymczasowych LOD1/2.
-Kompilacja PASS. Trwa sesja 37095: native repair 9 jawnych meshes × 3 LOD, potem
-D3D12 architecture-game-basis-fixed.log. Sprawdzić 32 render basis records.
-StartLocationSmoke PASS 16:39 UTC, architecture-gameplay.log — przed korektą samych tangentów.
 ## Do zrobienia
-Dokończyć import 8 nowych + 1 korekty tangentów. Native QA 37 assets/32 aktorów,
-odtworzyć mapę, 18 ujęć i pomiar bufora, zwykłe chodzenie. Dowody i merge #169.
+Nic nie pozostaje w zakresie punktu 5.
 
 ## Następny krok
-Trwa eksport/import 9 manifestów (sesja 47787), architecture-import-panorama.log,
-lista Saved/Realism/architecture-panorama-import.json. Po zakończeniu usunąć filtr
-stages w Saved/Realism/run_architecture_native.ps1 (teraz tylko details/placement/
-quality/contract), wykonać też assets/base/presentation. Potem RealismDiagnostics
-i StartLocationSmoke; ocenić architecture_render_basis oraz Start_Park.
+Scalić #169, następnie utworzyć z main gałąź punktu 6. Przebudować tree()
+w Scripts/assets/build_start_location_models.py, materiały foliage i osadzenie
+w build_start_location_plan.py/place_start_location.py. Zachować mapped nodes.
 
 ## Stan
-W toku — draft #169. Źródła 32 budynków gotowe; nowe 8 i korekta przed końcową oceną.
-Bez CI; oryginalny dirty worktree i PR #164 poza zadaniem.
+Punkt 5 zakończony. Punkty 1–4 scalone. Bez uruchamiania CI.
+Oryginalny dirty worktree i PR #164 pozostają poza zakresem.
 
 # Realizm — punkt 4/10
 
