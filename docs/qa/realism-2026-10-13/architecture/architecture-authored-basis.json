@@ -1,0 +1,272 @@
+[
+  {
+    "asset": "context-way-101349778-0",
+    "lod": 0,
+    "instances": 42270,
+    "before_tangents": 12,
+    "before_normals": 0,
+    "repaired": 12,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101349778-0",
+    "lod": 1,
+    "instances": 23247,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101349778-0",
+    "lod": 2,
+    "instances": 9297,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101348901-0",
+    "lod": 0,
+    "instances": 42945,
+    "before_tangents": 6,
+    "before_normals": 0,
+    "repaired": 6,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101348901-0",
+    "lod": 1,
+    "instances": 23619,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101348901-0",
+    "lod": 2,
+    "instances": 9447,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101482248-0",
+    "lod": 0,
+    "instances": 41070,
+    "before_tangents": 13,
+    "before_normals": 0,
+    "repaired": 13,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101482248-0",
+    "lod": 1,
+    "instances": 22587,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101482248-0",
+    "lod": 2,
+    "instances": 9033,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101361294-0",
+    "lod": 0,
+    "instances": 50259,
+    "before_tangents": 14,
+    "before_normals": 0,
+    "repaired": 14,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101361294-0",
+    "lod": 1,
+    "instances": 27642,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101361294-0",
+    "lod": 2,
+    "instances": 11055,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101432211-0",
+    "lod": 0,
+    "instances": 92787,
+    "before_tangents": 16,
+    "before_normals": 0,
+    "repaired": 16,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101432211-0",
+    "lod": 1,
+    "instances": 51030,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101432211-0",
+    "lod": 2,
+    "instances": 20412,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101361370-0",
+    "lod": 0,
+    "instances": 125424,
+    "before_tangents": 8,
+    "before_normals": 0,
+    "repaired": 8,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101361370-0",
+    "lod": 1,
+    "instances": 68982,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101361370-0",
+    "lod": 2,
+    "instances": 27591,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101189965-0",
+    "lod": 0,
+    "instances": 52476,
+    "before_tangents": 2,
+    "before_normals": 0,
+    "repaired": 2,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101189965-0",
+    "lod": 1,
+    "instances": 28860,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101189965-0",
+    "lod": 2,
+    "instances": 11544,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101349268-0",
+    "lod": 0,
+    "instances": 56619,
+    "before_tangents": 6,
+    "before_normals": 0,
+    "repaired": 6,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101349268-0",
+    "lod": 1,
+    "instances": 31140,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101349268-0",
+    "lod": 2,
+    "instances": 12456,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101348438-0",
+    "lod": 0,
+    "instances": 51930,
+    "before_tangents": 153,
+    "before_normals": 0,
+    "repaired": 153,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101348438-0",
+    "lod": 1,
+    "instances": 28560,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  },
+  {
+    "asset": "context-way-101348438-0",
+    "lod": 2,
+    "instances": 11424,
+    "before_tangents": 0,
+    "before_normals": 0,
+    "repaired": 0,
+    "after_tangents": 0,
+    "after_normals": 0
+  }
+]

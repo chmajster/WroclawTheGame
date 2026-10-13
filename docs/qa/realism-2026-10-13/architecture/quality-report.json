@@ -1,0 +1,386 @@
+{
+  "status": "PASS",
+  "instances": 1654,
+  "hism_components": 31,
+  "instanced_lod0_triangles": 1169968,
+  "native_collision_shapes": 1525,
+  "shared_texture_count": 21,
+  "texture_max_size": 2048,
+  "instance_cull_cm": [
+    18000,
+    26000
+  ],
+  "assets": [
+    {
+      "asset": "pomorska-45",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 50444
+    },
+    {
+      "asset": "pomorska-47",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 42072
+    },
+    {
+      "asset": "pomorska-43",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 40556
+    },
+    {
+      "asset": "courtyard-east",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 20445
+    },
+    {
+      "asset": "courtyard-west",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 5144
+    },
+    {
+      "asset": "nobla-3",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 19332
+    },
+    {
+      "asset": "paulinska-2a",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 36556
+    },
+    {
+      "asset": "pomorska-32",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 50102
+    },
+    {
+      "asset": "curb",
+      "lod_screen_sizes": [
+        1.0,
+        0.1599999964237213,
+        0.03999999910593033
+      ],
+      "nanite": false,
+      "lod0_triangles": 48
+    },
+    {
+      "asset": "drain",
+      "lod_screen_sizes": [
+        1.0,
+        0.1599999964237213,
+        0.03999999910593033
+      ],
+      "nanite": false,
+      "lod0_triangles": 144
+    },
+    {
+      "asset": "bike-rack",
+      "lod_screen_sizes": [
+        1.0,
+        0.1599999964237213,
+        0.03999999910593033
+      ],
+      "nanite": false,
+      "lod0_triangles": 1424
+    },
+    {
+      "asset": "young-tree",
+      "lod_screen_sizes": [
+        1.0,
+        0.009999999776482582,
+        0.003000000026077032
+      ],
+      "nanite": false,
+      "lod0_triangles": 6008
+    },
+    {
+      "asset": "parked-car",
+      "lod_screen_sizes": [
+        1.0,
+        0.1599999964237213,
+        0.03999999910593033
+      ],
+      "nanite": false,
+      "lod0_triangles": 2176
+    },
+    {
+      "asset": "context-way-101359878-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 42056
+    },
+    {
+      "asset": "context-way-101429950-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 15417
+    },
+    {
+      "asset": "context-way-101348438-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 17310
+    },
+    {
+      "asset": "context-way-101197438-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 14618
+    },
+    {
+      "asset": "context-way-101347101-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 18020
+    },
+    {
+      "asset": "context-way-101198472-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 16148
+    },
+    {
+      "asset": "context-way-101362138-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 14392
+    },
+    {
+      "asset": "context-way-101481634-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 17902
+    },
+    {
+      "asset": "context-way-101418883-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 14911
+    },
+    {
+      "asset": "context-way-101204443-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 22900
+    },
+    {
+      "asset": "context-way-101194488-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 14018
+    },
+    {
+      "asset": "context-way-101212067-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 28020
+    },
+    {
+      "asset": "context-way-101207182-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 21512
+    },
+    {
+      "asset": "context-way-101361009-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 13968
+    },
+    {
+      "asset": "context-way-101419762-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 21608
+    },
+    {
+      "asset": "context-way-101209272-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 11860
+    },
+    {
+      "asset": "context-way-101349778-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 14090
+    },
+    {
+      "asset": "context-way-101348901-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 14315
+    },
+    {
+      "asset": "context-way-101482248-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 13690
+    },
+    {
+      "asset": "context-way-101361294-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 16753
+    },
+    {
+      "asset": "context-way-101432211-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 30929
+    },
+    {
+      "asset": "context-way-101361370-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 41808
+    },
+    {
+      "asset": "context-way-101189965-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 17492
+    },
+    {
+      "asset": "context-way-101349268-0",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 18873
+    }
+  ],
+  "limits": "Engineering budget, not measured GPU memory or FPS; map uses source cells/HISM, not World Partition."
+}
