@@ -147,7 +147,7 @@ void UCharacterAppearanceComponent::Render()
         // Keep the movement capsule stable across crouch/uncrouch and checkpoint restores.
         // The authored maximum-height body fits the standing capsule; only the visual rig scales.
         VisualRoot->SetRelativeLocation(FVector(0,0,-C->GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight()));
-        C->Boom->SocketOffset=FVector(0,35,55+(Appearance.Height-180)*.65f);
+        C->Boom->SocketOffset=FVector(0,35,25+(Appearance.Height-180)*.45f);
         C->GetCharacterMovement()->GetNavAgentPropertiesRef().AgentHeight=C->GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight()*2;
     }
     bUsingPlaceholder=!B || !B->Mesh.Get();
@@ -165,8 +165,24 @@ void UCharacterAppearanceComponent::Render()
         if (B->FaceAnimationClass.Get()) { if (FaceMesh->GetAnimClass()!=B->FaceAnimationClass.Get()) FaceMesh->SetAnimInstanceClass(B->FaceAnimationClass.Get()); }
         else FaceMesh->SetLeaderPoseComponent(BodyMesh);
         auto* Face=B->FaceMesh.Get()?FaceMesh.Get():BodyMesh.Get(); Face->ClearMorphTargets();
-        for (const auto& M:Catalog->Morphs) Face->SetMorphTarget(M.MorphTargetName,Appearance.FaceMorphs.FindRef(M.MorphID));
-        for (FName Build:{FName(TEXT("Slim")),FName(TEXT("Average")),FName(TEXT("Athletic")),FName(TEXT("Heavy"))}) BodyMesh->SetMorphTarget(FName(*(TEXT("Body_")+Build.ToString())),Build==Appearance.BodyBuild?1.f:0.f);
+        auto MorphValue=[&](FName ID){
+            float Value=Appearance.FaceMorphs.FindRef(ID);
+            if(ID==TEXT("Body.Weight"))Value+=Appearance.BodyBuild==TEXT("Slim")?-.2f:(Appearance.BodyBuild==TEXT("Heavy")?.25f:0.f);
+            if(ID==TEXT("Body.Muscle") && Appearance.BodyBuild==TEXT("Athletic"))Value+=.3f;
+            return FMath::Clamp(Value,-1.f,1.f);
+        };
+        for (const auto& M:Catalog->Morphs) Face->SetMorphTarget(M.MorphTargetName,MorphValue(M.MorphID));
+        auto BodyMorphs=[&](USkeletalMeshComponent* Component){
+            for(const auto& Target:Component->GetSkeletalMeshAsset()->GetMorphTargets())if(Target)
+                for(FName ID:{FName(TEXT("Body.Weight")),FName(TEXT("Body.Muscle"))}){
+                    const FString Suffix=ID.ToString().Replace(TEXT("."),TEXT("_"));
+                    if(Target->GetName()==Suffix || Target->GetName().EndsWith(TEXT("_")+Suffix))Component->SetMorphTarget(Target->GetFName(),MorphValue(ID));
+                }
+        };
+        BodyMorphs(BodyMesh);
+        for (FName Build:{FName(TEXT("Slim")),FName(TEXT("Average")),FName(TEXT("Athletic")),FName(TEXT("Heavy"))})
+            if(BodyMesh->GetSkeletalMeshAsset()->FindMorphTarget(FName(*(TEXT("Body_")+Build.ToString()))))
+                BodyMesh->SetMorphTarget(FName(*(TEXT("Body_")+Build.ToString())),Build==Appearance.BodyBuild?1.f:0.f);
         for (auto* Mesh:{BodyMesh.Get(),Face})
         {
             for (int32 I=0; I<Mesh->GetNumMaterials(); ++I)
@@ -207,8 +223,9 @@ void UCharacterAppearanceComponent::Render()
                 {
                     const FString Suffix=Morph.MorphID.ToString().Replace(TEXT("."),TEXT("_"));
                     for(const auto& Target:PartMesh->GetMorphTargets())if(Target && (Target->GetName()==Suffix || Target->GetName().EndsWith(TEXT("_")+Suffix)))
-                        Skeletal->SetMorphTarget(Target->GetFName(),Appearance.FaceMorphs.FindRef(Morph.MorphID));
+                        Skeletal->SetMorphTarget(Target->GetFName(),MorphValue(Morph.MorphID));
                 }
+                BodyMorphs(Skeletal);
             }
             for (int32 I=0; I<Part->GetNumMaterials(); ++I)
             {

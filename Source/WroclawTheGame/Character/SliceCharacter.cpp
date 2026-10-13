@@ -60,7 +60,7 @@ ASliceCharacter::ASliceCharacter()
     Boom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
     Boom->SetupAttachment(RootComponent);
     Boom->TargetArmLength = 250;
-    Boom->SocketOffset = FVector(0, 35, 55);
+    Boom->SocketOffset = FVector(0, 35, 25);
     Boom->bUsePawnControlRotation = true;
     Boom->bDoCollisionTest = true;
     Boom->ProbeSize = 15;

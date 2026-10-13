@@ -1,0 +1,152 @@
+{
+  "asset_id": "wtg-civilian",
+  "status": "PASS",
+  "type": "skeletal_mesh",
+  "meshes": [
+    {
+      "id": "male_Body",
+      "mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_Body.SK_Civilian_Body",
+      "lods": 3,
+      "morphs": [
+        "Face_Width",
+        "Face_Length",
+        "Face_HeadShape",
+        "Face_Cheekbones",
+        "Face_Cheeks",
+        "Face_ForeheadHeight",
+        "Face_ForeheadWidth",
+        "Ears_Size",
+        "Ears_Angle",
+        "Eyes_Size",
+        "Eyes_Spacing",
+        "Eyes_Tilt",
+        "Eyes_Brows",
+        "Nose_Width",
+        "Nose_Length",
+        "Nose_Bridge",
+        "Nose_Tip",
+        "Nose_Position",
+        "Mouth_Width",
+        "Mouth_UpperLip",
+        "Mouth_LowerLip",
+        "Mouth_Shape",
+        "Jaw_Width",
+        "Jaw_Height",
+        "Chin_Width",
+        "Chin_Projection",
+        "Body_Shoulders",
+        "Body_Waist",
+        "Body_Hips",
+        "Body_Weight",
+        "Body_Muscle",
+        "Body_Torso"
+      ]
+    },
+    {
+      "id": "male_Shirt",
+      "mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_Shirt.SK_Civilian_Shirt",
+      "lods": 3,
+      "morphs": [
+        "Body_Shoulders",
+        "Body_Waist",
+        "Body_Hips",
+        "Body_Weight",
+        "Body_Muscle",
+        "Body_Torso"
+      ]
+    },
+    {
+      "id": "male_Trousers",
+      "mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_Trousers.SK_Civilian_Trousers",
+      "lods": 3,
+      "morphs": [
+        "Body_Shoulders",
+        "Body_Waist",
+        "Body_Hips",
+        "Body_Weight",
+        "Body_Muscle",
+        "Body_Torso"
+      ]
+    },
+    {
+      "id": "male_Shoes",
+      "mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_Shoes.SK_Civilian_Shoes",
+      "lods": 3,
+      "morphs": [
+        "Body_Weight",
+        "Body_Muscle"
+      ]
+    },
+    {
+      "id": "male_HairShort",
+      "mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_HairShort.SK_Civilian_HairShort",
+      "lods": 3,
+      "morphs": [
+        "Face_Width",
+        "Face_Length",
+        "Face_HeadShape",
+        "Face_Cheekbones",
+        "Face_Cheeks",
+        "Face_ForeheadHeight",
+        "Face_ForeheadWidth",
+        "Ears_Size",
+        "Ears_Angle",
+        "Eyes_Size",
+        "Eyes_Spacing",
+        "Eyes_Brows",
+        "Jaw_Width",
+        "Jaw_Height",
+        "Body_Shoulders",
+        "Body_Torso"
+      ]
+    },
+    {
+      "id": "male_BrowsNatural",
+      "mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_BrowsNatural.SK_Civilian_BrowsNatural",
+      "lods": 3,
+      "morphs": [
+        "Face_Width",
+        "Face_Length",
+        "Face_HeadShape",
+        "Face_ForeheadWidth",
+        "Ears_Size",
+        "Eyes_Size",
+        "Eyes_Spacing",
+        "Eyes_Tilt",
+        "Eyes_Brows",
+        "Nose_Bridge",
+        "Nose_Position",
+        "Jaw_Width",
+        "Body_Shoulders",
+        "Body_Torso"
+      ]
+    },
+    {
+      "id": "male_Backpack",
+      "mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_Backpack.SK_Civilian_Backpack",
+      "lods": 3,
+      "morphs": [
+        "Body_Shoulders",
+        "Body_Waist",
+        "Body_Hips",
+        "Body_Weight",
+        "Body_Muscle",
+        "Body_Torso"
+      ]
+    }
+  ],
+  "mesh": "/Game/Wroclaw/Hero/Meshes/SK_Civilian_Body.SK_Civilian_Body",
+  "skeleton": "/Game/Wroclaw/Hero/SK_CivilianSkeleton.SK_CivilianSkeleton",
+  "physics_asset": "/Game/Wroclaw/Hero/PHYS_Civilian.PHYS_Civilian",
+  "catalog": "/Game/Wroclaw/Hero/DA_CivilianAppearance.DA_CivilianAppearance",
+  "animations": [
+    "/Game/Wroclaw/Hero/Animations/UAL1_StandardIdle_Loop.UAL1_StandardIdle_Loop",
+    "/Game/Wroclaw/Hero/Animations/UAL1_StandardWalk_Loop.UAL1_StandardWalk_Loop",
+    "/Game/Wroclaw/Hero/Animations/UAL1_StandardJog_Fwd_Loop.UAL1_StandardJog_Fwd_Loop",
+    "/Game/Wroclaw/Hero/Animations/UAL1_StandardCrouch_Fwd_Loop.UAL1_StandardCrouch_Fwd_Loop",
+    "/Game/Wroclaw/Hero/Animations/UAL1_StandardSprint_Loop.UAL1_StandardSprint_Loop",
+    "/Game/Wroclaw/Hero/Animations/BS_Male_Standard.BS_Male_Standard",
+    "/Game/Wroclaw/Hero/Animations/UAL1_StandardJump_Loop.UAL1_StandardJump_Loop",
+    "/Game/Wroclaw/Hero/Animations/A_CivilianIdle.A_CivilianIdle"
+  ]
+}

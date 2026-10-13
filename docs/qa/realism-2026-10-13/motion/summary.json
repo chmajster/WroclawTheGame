@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "source_report": "motion.json",
+  "sample_count": 432,
+  "states": [
+    "Crouch",
+    "Idle",
+    "Jump",
+    "Run",
+    "Sprint",
+    "Walk"
+  ],
+  "camera_arm_cm": 250,
+  "minimum_camera_head_cm": 195.14645385742188,
+  "maximum_ik_offset_cm": 17.290424346923828,
+  "displacement_cm": 2346.3241272046107,
+  "visual_review": "Real rendered game images inspected; no fixed art claim about the environment (items 4-8).",
+  "screenshots": {
+    "crouch.png": "8d39606d5827d23d072aed1f53c2147415c82e30422d49ea10a92e4b5f39bdfe",
+    "crouch_walk.png": "e1348ad0f0d5832558392aaac5a41d52ec47373eee93320de38f65fb740da898",
+    "heavy.png": "d8231324bdb1c353c1a2d677e1d49706f7eb983b8c1d0ca6c68e2189af3c48d9",
+    "idle.png": "fb241e5000f572a6f9f64b3b4aebd83fd5e1b4fdf8f43d05f901acfc27e0cda6",
+    "jump.png": "d501c4b3a190fb01fc7b584cfb637d2b486dd5d26ec3144452ac4f6339e004b7",
+    "land.png": "07e3e0b3d9c04ae675f7ab6bb7dc51267cd73d26008c5801d5b0e0ddea4d0b0a",
+    "restored.png": "1959dd00a31c5db96a4e1398c62f2aac27df3c55dca194ec362f63e34c425999",
+    "run.png": "8632bcf00d56764fe89eafa9bbe1b504a9c6e2a7d13ad167a888ab1e05a61abf",
+    "slim.png": "9e8d7853b8dd04e8be3037325082e6442d1dde50e40dd52c486acf31c3670ec7",
+    "sprint.png": "f72390c82e4fd6126a107baf56048fba56636aaa9b6068d543a5432897cf0419",
+    "stop.png": "d49ac7058c5d1293d931a6a7f602e2d119bec8e2acb22fdea2894f6d58f9156a",
+    "turn.png": "1cb4cff3c3c4bc6562d3eea057ab2595a530319f3bf0009da473079d1569ada4",
+    "walk.png": "688ac1d295c6c3bf8ab36eef4b81bc69085f5e18cb97d21cd3dd4306f5a2b23e"
+  }
+}

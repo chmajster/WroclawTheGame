@@ -203,6 +203,46 @@ def prepare(manifest):
         unreal.EditorAssetLibrary.save_loaded_asset(result,False);animation_cache[key]=result;return result
     body.mesh=hero;body.face_mesh=None;body.skin_material=mats['Skin'];body.reference_height=180;body.placeholder=False
     for field in ['creator_idle','walk','jog','crouch','locomotion','jump_loop']:body.set_editor_property(field,animation(original.get_editor_property(field)))
+    idle_metadata=json.loads((ROOT/'SourceAssets/Characters/WroclawHero/Animations/animations.json').read_text())
+    idle_source=ROOT/idle_metadata['fbx']
+    if hashlib.sha256(idle_source.read_bytes()).hexdigest()!=idle_metadata['sha256']:raise RuntimeError('Stale civilian idle export')
+    options=unreal.FbxImportUI();options.set_editor_property('import_mesh',False)
+    options.set_editor_property('import_animations',True);options.set_editor_property('skeleton',skeleton)
+    options.set_editor_property('mesh_type_to_import',unreal.FBXImportType.FBXIT_ANIMATION)
+    options.set_editor_property('original_import_type',unreal.FBXImportType.FBXIT_ANIMATION)
+    options.set_editor_property('automated_import_should_detect_type',False)
+    task=unreal.AssetImportTask();task.filename=str(idle_source);task.destination_path=DEST+'/Animations'
+    task.destination_name=idle_metadata['name']+'_Source';task.automated=True;task.replace_existing=True;task.save=True
+    task.options=options;task.factory=unreal.FbxFactory();TOOLS.import_asset_tasks([task])
+    idle_source_asset=unreal.load_asset(DEST+'/Animations/'+idle_metadata['name']+'_Source')
+    if not isinstance(idle_source_asset,unreal.AnimSequence):raise RuntimeError('Authored civilian idle import failed: '+str(task.imported_object_paths))
+    idle=unreal.load_asset(DEST+'/Animations/'+idle_metadata['name']) or unreal.EditorAssetLibrary.duplicate_asset(idle_source_asset.get_path_name(),DEST+'/Animations/'+idle_metadata['name'])
+    if not unreal.LocomotionAssetLibrary.retarget_civilian_animation(idle,hero,idle_source_asset):raise RuntimeError('Civilian idle bind normalization failed')
+    unreal.EditorAssetLibrary.save_loaded_asset(idle,False)
+    body.creator_idle=idle
+    samples=list(body.locomotion.get_editor_property('sample_data'))
+    for sample_data in samples:
+        if sample_data.get_editor_property('sample_value').x<1:sample_data.set_editor_property('animation',idle)
+        else:
+            clip=sample_data.get_editor_property('animation')
+            measured=unreal.LocomotionAssetLibrary.measure_civilian_stride(clip,hero)
+            if measured<=20:raise RuntimeError('Cannot measure stance stride '+clip.get_name())
+            rate=sample_data.get_editor_property('sample_value').x/measured
+            if not .25<rate<3:
+                # The source sprint has an incompatible stance cadence on this
+                # anatomy. Use the measured run cycle at the sprint speed.
+                if sample_data.get_editor_property('sample_value').x<500:raise RuntimeError('Implausible stride correction '+clip.get_name()+' '+str(rate))
+                if not unreal.LocomotionAssetLibrary.retarget_civilian_animation(clip,hero,original.jog):raise RuntimeError('Sprint run-cycle conversion failed')
+                measured=unreal.LocomotionAssetLibrary.measure_civilian_stride(clip,hero)
+                rate=sample_data.get_editor_property('sample_value').x/measured
+                if not .25<rate<3:raise RuntimeError('Sprint cadence still invalid')
+            clip.set_editor_property('rate_scale',rate);unreal.EditorAssetLibrary.save_loaded_asset(clip,False)
+            unreal.log('WTG_CIVILIAN_STRIDE '+clip.get_name()+' source_cm_s='+str(measured)+' rate='+str(rate))
+    body.locomotion.set_editor_property('sample_data',samples)
+    unreal.EditorAssetLibrary.save_loaded_asset(body.locomotion,False)
+    body.animation_class=unreal.load_class(None,'/Script/WroclawTheGame.CivilianAnimInstance')
+    if not body.animation_class:raise RuntimeError('Civilian animation class is not compiled')
+    animation_cache['authored_idle']=idle
     catalog.bodies=bodies
     morphs=list(catalog.morphs)
     for m in morphs:
