@@ -28,18 +28,25 @@ Dwanaście testów dzielnicy i geometrii PASS. Plan ma 422 odcinki szyn,
 1058 segmentów krawężnika i 1654 instancje, poniżej budżetu 2400. Pipeline
 Source/Full odtwarza oba nowe modele. BakeMesh zachowuje fizyczne normalne,
 projektuje UV ścian w ich płaszczyźnie i jawnie buduje ortogonalne tangenty.
+Rzeczywisty probe potwierdził 15 pełnych ławek i 422 szyny; brak dawnego
+crossbar. Placement/quality: PASS, 31 HISM, 650217 trójkątów, 1234 kolizje.
+Próba regeneracji dała identyczne SHA wszystkich 442 plików geometrii.
+Widoki silnika ujawniły CW z constrained Delaunay: generator jawnie ustawia
+CCW i odrzuca slivery odwrócone/zerowe po kwantyzacji do 0,001 cm. Kontrakty
+sprawdzają teraz kierunek wszystkich rzeczywiście zapisanych nawierzchni.
+Diagnostyka i test startu czekają na zakończenie kompilacji zasobów,
+aby zrzuty nie przedstawiały niedokończonych tekstur/SDF/kart Lumen.
 
 ## Do zrobienia
-Dokończyć przebudowę rzeczywistej mapy i ponownie zastosować
-presentation / city details / start placement / quality. Sprawdzić zrzuty,
-kolizję i powtórzenie generowania; naprawić ewentualne konkretne problemy.
+Zakończyć regenerację po poprawce windingu i powtórzyć bake/placement.
+Ocenić finalne widoki Lit/Unlit/normalne/kolizja i chodzenie w rzeczywistej grze.
 
 ## Następny krok
-Zakończyć proces build-tangents / base-surfaces-tangents (Saved/Realism),
-następnie uruchomić Scripts/prepare_district_presentation.py, assets/place_city_details.py,
-assets/place_start_location.py i prepare_start_location_quality.py. Potem
-WTG.RealismDiagnostics i WTG.StartLocationSmoke na Nadodrze_Playable.
+Zakończyć procesy Saved/Realism/surfaces-quantized.log i build-capture-ready.log.
+Uruchomić prepare_playable_district.py, prepare_district_presentation.py,
+assets/place_city_details.py, assets/place_start_location.py,
+assets/prepare_start_location_quality.py. Potem WTG.RealismDiagnostics
+i WTG.StartLocationSmoke; zapisać finalne dowody w docs/qa/.../surfaces.
 
 ## Stan
 W toku, draft. Bez CI; bez zmian w pierwotnym worktree i PR #164.
-

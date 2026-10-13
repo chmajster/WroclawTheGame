@@ -50,15 +50,21 @@ def emit_triangle(cells, kind, material, points):
             ring = clip_triangle(points, (x * CELL_CM, y * CELL_CM, (x + 1) * CELL_CM, (y + 1) * CELL_CM))
             for i in range(1, len(ring) - 1):
                 tri = [ring[0], ring[i], ring[i + 1]]
+                local = [[round(p[j] - (x*CELL_CM,y*CELL_CM,0)[j],3) for j in range(3)] for p in tri]
+                # Quantization may collapse a boundary sliver. Validate the
+                # actual serialized triangle, not its pre-rounding geometry.
+                tri=local
                 a = [tri[1][j] - tri[0][j] for j in range(3)]
                 b = [tri[2][j] - tri[0][j] for j in range(3)]
                 cross = [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]]
                 if sum(v*v for v in cross) < .000001:
                     continue
+                if kind in ('road','rail','sidewalk','green','terrain') and cross[2]<=0:
+                    continue
                 key = kind, x, y, material
                 record = cells.setdefault(key, dict(kind=kind, material=material, origin=[x*CELL_CM, y*CELL_CM, 0], vertices=[], triangles=[]))
                 index = len(record['vertices'])
-                record['vertices'].extend([[round(p[j] - record['origin'][j], 3) for j in range(3)] for p in tri])
+                record['vertices'].extend(local)
                 record['triangles'].extend([index, index + 1, index + 2])
 
 
@@ -76,6 +82,11 @@ def emit_surface(cells, geometry, kind, material, height, grid=GRID_CM):
                         continue
                     for triangle in constrained_delaunay_triangles(part).geoms:
                         points = [[px, py, height(px, py)] for px, py in list(triangle.exterior.coords)[:3]]
+                        # GEOS constrained Delaunay does not promise CCW rings.
+                        # The native baker expects mathematical upward fronts.
+                        a,b,c=points
+                        if (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0])<0:
+                            points[1],points[2]=points[2],points[1]
                         emit_triangle(cells, kind, material, points)
 
 

@@ -22,6 +22,8 @@ class SurfaceMeshTests(unittest.TestCase):
             vertices=[[p[i]+record['origin'][i] for i in range(3)] for p in record['vertices']]
             for i in range(0,len(record['triangles']),3):
                 points=[vertices[j] for j in record['triangles'][i:i+3]]
+                a,b,c=points
+                self.assertGreater((b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),0)
                 triangle=Polygon([p[:2] for p in points]);area+=triangle.area
                 self.assertLess(triangle.difference(shape).area,.5)
                 for x,y,z in points:self.assertAlmostEqual(z,height(x,y),delta=.002)
@@ -46,6 +48,11 @@ class SurfaceMeshTests(unittest.TestCase):
                 self.assertTrue(all(math.isfinite(v) for v in point))
                 for v in point[:2]:self.assertGreaterEqual(v,-.001);self.assertLessEqual(v,CELL_CM+.001)
             for index in record['triangles']:self.assertTrue(0<=index<len(record['vertices']))
+            if record['kind'] in ['road','rail','sidewalk','green','terrain']:
+                v=record['vertices']
+                for i in range(0,len(record['triangles']),3):
+                    a,b,c=[v[index] for index in record['triangles'][i:i+3]]
+                    self.assertGreater((b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),0)
 
     def test_production_rail_profiles_are_flush_and_have_source_gauge(self):
         plan=json.loads((ROOT/'Saved/StartLocation/placement.json').read_text())

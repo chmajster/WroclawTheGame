@@ -21,6 +21,7 @@
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
 #include "Serialization/JsonSerializer.h"
+#include "Tests/RealismCaptureReady.h"
 
 // Uses ordinary character movement and the real renderer. No teleports,
 // gameplay transactions, save writes or permanent graphics settings changes.
@@ -65,7 +66,7 @@ static FAutoConsoleCommandWithWorld GStartLocationSmoke(TEXT("WTG.StartLocationS
                 if(It->GetActorNameOrLabel()==Label){PC->SetViewTarget(*It);return true;}
             return false;
         };
-        if(Stage==0 && Elapsed>50 && PC && P && R && P->Appearance && !P->Appearance->bLoading
+        if(Stage==0 && Elapsed>50 && WTGRealismCaptureReady() && PC && P && R && P->Appearance && !P->Appearance->bLoading
             && !P->Appearance->bUsingPlaceholder && P->GetCharacterMovement()->IsMovingOnGround() && !W->IsPaused()){
             // Override console variables in this process only, after menu settings.
             for(const TCHAR* Name:{TEXT("r.VSync"),TEXT("t.MaxFPS"),TEXT("Slate.bAllowThrottling"),TEXT("t.IdleWhenNotForeground")})
@@ -98,7 +99,7 @@ static FAutoConsoleCommandWithWorld GStartLocationSmoke(TEXT("WTG.StartLocationS
         if(Stage==2 && Since>29){Shot(TEXT("Start_GameStreet.png"));Stage=3;}
         if(Stage==3 && Since>31){OK&=SetView(TEXT("StartLocation_Start_Park"));Stage=4;}
         if(Stage==4 && Since>37){Shot(TEXT("Start_GamePark.png"));Stage=5;}
-        if((Stage==5 && Since>40) || Elapsed>240){
+        if((Stage==5 && Since>40) || Elapsed>1200){
             OK&=Stage==5 && Frames.Num()>60;
             double Total=0;for(float Value:Frames)Total+=Value;Frames.Sort();
             const double Mean=Frames.IsEmpty()?0:Total/Frames.Num();
