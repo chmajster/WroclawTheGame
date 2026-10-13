@@ -6,6 +6,7 @@ layers; height sampling happens at XY vertices, including across road width.
 import math
 from collections import defaultdict
 from shapely.geometry import Polygon, LineString, box, GeometryCollection
+from shapely.geometry.polygon import orient
 from shapely.ops import triangulate, unary_union
 from shapely import constrained_delaunay_triangles
 
@@ -44,7 +45,7 @@ def clip_triangle(points, bounds):
     return output
 
 
-def emit_triangle(cells, kind, material, points):
+def emit_triangle(cells, kind, material, points, vertical=False):
     for x in range(math.floor(min(p[0] for p in points) / CELL_CM), math.floor(max(p[0] for p in points) / CELL_CM) + 1):
         for y in range(math.floor(min(p[1] for p in points) / CELL_CM), math.floor(max(p[1] for p in points) / CELL_CM) + 1):
             ring = clip_triangle(points, (x * CELL_CM, y * CELL_CM, (x + 1) * CELL_CM, (y + 1) * CELL_CM))
@@ -59,7 +60,7 @@ def emit_triangle(cells, kind, material, points):
                 cross = [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]]
                 if sum(v*v for v in cross) < .000001:
                     continue
-                if kind in ('road','rail','sidewalk','green','terrain') and cross[2]<=0:
+                if kind in ('road','rail','sidewalk','green','terrain') and (cross[2]<0 or (cross[2]==0 and not vertical)):
                     continue
                 key = kind, x, y, material
                 record = cells.setdefault(key, dict(kind=kind, material=material, origin=[x*CELL_CM, y*CELL_CM, 0], vertices=[], triangles=[]))
@@ -68,7 +69,7 @@ def emit_triangle(cells, kind, material, points):
                 record['triangles'].extend([index, index + 1, index + 2])
 
 
-def emit_surface(cells, geometry, kind, material, height, grid=GRID_CM):
+def emit_surface(cells, geometry, kind, material, height, grid=GRID_CM, skirt_bottom=None):
     """Bound tessellation length and evaluate the same DEM at shared XY points."""
     for polygon in polygons(geometry):
         if polygon.is_empty:
@@ -88,6 +89,22 @@ def emit_surface(cells, geometry, kind, material, height, grid=GRID_CM):
                         if (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0])<0:
                             points[1],points[2]=points[2],points[1]
                         emit_triangle(cells, kind, material, points)
+        if skirt_bottom is not None:
+            ordered=orient(polygon,sign=1)
+            for ring in [ordered.exterior,*ordered.interiors]:
+                for a,b in zip(ring.coords,list(ring.coords)[1:]):
+                    cuts={0.,1.}
+                    for axis in (0,1):
+                        delta=b[axis]-a[axis]
+                        if abs(delta)<1e-9:continue
+                        for step in range(math.floor(min(a[axis],b[axis])/grid)+1,math.ceil(max(a[axis],b[axis])/grid)):
+                            cuts.add((step*grid-a[axis])/delta)
+                    points=[(a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t) for t in sorted(cuts)]
+                    for p,q in zip(points,points[1:]):
+                        low_p=[*p,skirt_bottom(*p)];low_q=[*q,skirt_bottom(*q)]
+                        high_p=[*p,height(*p)];high_q=[*q,height(*q)]
+                        emit_triangle(cells,kind,material,[low_p,low_q,high_q],vertical=True)
+                        emit_triangle(cells,kind,material,[low_p,high_q,high_p],vertical=True)
 
 
 def surface_shapes(data):

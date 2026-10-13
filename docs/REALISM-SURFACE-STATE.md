@@ -23,8 +23,8 @@ eliminuje koplanarne road/rail/footway. Zielone poligony próbkują DEM zamiast
 max wysokości obwodu. Chodniki/jezdnie mają tessellację constrained Delaunay
 z zachowaniem otworów i poprzecznego spadku. Trójkąty są dokładnie przycinane
 do 128 m sektorów z interpolacją Z (także pionowe ściany), zamiast centroidów.
-Regeneracja źródeł: 441 komórek, 211419 trójkątów poniżej budżetu 250000.
-Dwanaście testów dzielnicy i geometrii PASS. Plan ma 422 odcinki szyn,
+Regeneracja źródeł: 440 komórek, 280208 trójkątów poniżej budżetu 320000.
+Trzynaście testów dzielnicy i geometrii PASS. Plan ma 422 odcinki szyn,
 1058 segmentów krawężnika i 1654 instancje, poniżej budżetu 2400. Pipeline
 Source/Full odtwarza oba nowe modele. BakeMesh zachowuje fizyczne normalne,
 projektuje UV ścian w ich płaszczyźnie i jawnie buduje ortogonalne tangenty.
@@ -37,16 +37,26 @@ sprawdzają teraz kierunek wszystkich rzeczywiście zapisanych nawierzchni.
 Diagnostyka i test startu czekają na zakończenie kompilacji zasobów,
 aby zrzuty nie przedstawiały niedokończonych tekstur/SDF/kart Lumen.
 
+Nawierzchnie mają pionowe krawędzie do DEM−3 cm: usunięto widoczne w Unlit
+prześwity między zielenią (+4 cm), jezdnią (+8 cm) i chodnikami (+20 cm).
+Końce krawędzi pokrywają się z siatką próbkowania, także przy otworach.
+Usunięto redundantną drugą triangulację rastra. Budżet 320 tys. uwzględnia
+rzeczywiste domknięcie geometrii; sektory nadal 128 m.
+Krawężnik to dwie metrowe sztuki z fugą, a nie jedna sztuka rozciągnięta do 2 m:
+48/26/10 trójkątów w LOD, źródło Blender/GLB, manifest i import natywny PASS.
+Odpływy cofnięto 30 cm na jezdnię i osadzono 2 mm nad lokalną nawierzchnią.
+Przed domknięciem krawędzi zwykły start/chodzenie/8 ścian/kamera PASS.
+
 ## Do zrobienia
-Zakończyć regenerację po poprawce windingu i powtórzyć bake/placement.
-Ocenić finalne widoki Lit/Unlit/normalne/kolizja i chodzenie w rzeczywistej grze.
+Dokończyć ostatni bake/placement i kontrolę renderowania po domknięciu krawędzi.
+Zapisać finalne dowody, ocenić kolizję i pozostałe ograniczenia powierzchni.
 
 ## Następny krok
-Zakończyć procesy Saved/Realism/surfaces-quantized.log i build-capture-ready.log.
-Uruchomić prepare_playable_district.py, prepare_district_presentation.py,
-assets/place_city_details.py, assets/place_start_location.py,
-assets/prepare_start_location_quality.py. Potem WTG.RealismDiagnostics
-i WTG.StartLocationSmoke; zapisać finalne dowody w docs/qa/.../surfaces.
+Zakończyć trwający proces Saved/Realism/*-surfaces-accepted.log
+(base → presentation → details → placement → quality → RealismDiagnostics
+→ StartLocationSmoke). Proces narzędzia 18683. Sprawdzić 12 świeżych PNG
+Saved/Realism/Diagnostics i raport Saved/StartLocation/gameplay-report.json.
+Potem skopiować zaakceptowane dowody do docs/qa/.../surfaces i zakończyć PR.
 
 ## Stan
 W toku, draft. Bez CI; bez zmian w pierwotnym worktree i PR #164.

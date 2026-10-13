@@ -16,7 +16,7 @@
     115.0
   ],
   "budgets": {
-    "mesh_triangles": 250000,
+    "mesh_triangles": 320000,
     "pedestrians": 16,
     "traffic": 4,
     "facade_instances": 12000

@@ -191,7 +191,8 @@ def build_district(output):
     sidewalks=surface_shapes(data)['sidewalk']
     cells={}
     surface_elevation=elevation_sampler(geo)
-    emit_surface(cells,sidewalks,'sidewalk','Concrete',lambda x,y:surface_elevation(x,y)+20)
+    emit_surface(cells,sidewalks,'sidewalk','Concrete',lambda x,y:surface_elevation(x,y)+20,
+                 skirt_bottom=lambda x,y:surface_elevation(x,y)-3)
     filenames=read(meshes/'meshes.json')
     for key,record in sorted(cells.items()):
         name=f'sidewalk_{key[1]}_{key[2]}.json'

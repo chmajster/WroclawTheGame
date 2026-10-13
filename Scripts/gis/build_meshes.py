@@ -38,21 +38,20 @@ def generate(destination, data=None, geo=None, exclude_feature_ids=None):
             if kind=='building':
                 for ring in rings:
                     for a,b in zip(ring,ring[1:]):face(kind,[[a[0],a[1],min(a[2],base)-50],[b[0],b[1],min(b[2],base)-50],[b[0],b[1],base+height],[a[0],a[1],base+height]])
-    emit_surface(cells,shapes['green'],'green',None,lambda x,y:elevation(x,y)+4)
-    emit_surface(cells,shapes['rail'],'rail',None,lambda x,y:elevation(x,y)+8)
+    bottom=lambda x,y:elevation(x,y)-3
+    emit_surface(cells,shapes['green'],'green',None,lambda x,y:elevation(x,y)+4,skirt_bottom=bottom)
+    emit_surface(cells,shapes['rail'],'rail',None,lambda x,y:elevation(x,y)+8,skirt_bottom=bottom)
     for road_material,shape in shapes['roads'].items():
-        emit_surface(cells,shape,'road',road_material,lambda x,y:elevation(x,y)+(20 if road_material=='Concrete' else 8))
+        emit_surface(cells,shape,'road',road_material,lambda x,y:elevation(x,y)+(20 if road_material=='Concrete' else 8),skirt_bottom=bottom)
     # Terrain samples are interpolation of the source raster, never invented hills.
     west,south,east,north=data['bbox']
     material=None
-    width=math.dist(geo.world(west,south),geo.world(east,south))
-    height=math.dist(geo.world(west,south),geo.world(west,north))
-    columns=max(128,math.ceil(width/1200));rows=max(128,math.ceil(height/1200))
-    for y in range(rows):
-        for x in range(columns):
-            ring=[geo.world(west+(east-west)*u/columns,north-(north-south)*v/rows) for u,v in ((x,y),(x+1,y),(x+1,y+1),(x,y+1))]
-            tile=Polygon([p[:2] for p in ring]).difference(shapes['ground_covered'])
-            emit_surface(cells,tile,'terrain',None,elevation)
+    # One shared six-metre sampling grid already interpolates the DEM. A
+    # second arbitrary raster grid only split triangles again and consumed
+    # the geometry budget without adding height information.
+    ring=[geo.world(lon,lat) for lon,lat in [(west,south),(east,south),(east,north),(west,north)]]
+    terrain=Polygon([p[:2] for p in ring]).difference(shapes['ground_covered'])
+    emit_surface(cells,terrain,'terrain',None,elevation)
     destination.mkdir(parents=True,exist_ok=True)
     meshes=[]
     for (kind,x,y,material),record in sorted(cells.items(),key=lambda item: str(item[0])):

@@ -21,6 +21,9 @@ def build():
     sector_path=ROOT/'Saved/PlayableDistrict/sector.json';sector=json.loads(sector_path.read_text(encoding='utf-8'))
     if district['anchors']['player']!=policy['player_anchor_cm']:raise ValueError('Start moved without policy review')
     config=json.loads((ROOT/'Data/playable_district.json').read_text(encoding='utf-8'))
+    geometry_path=ROOT/'SourceAssets/Models/Wroclaw/StartLocation/geometry.json'
+    geometry=json.loads(geometry_path.read_text(encoding='utf-8'))
+    drain_height=next(asset['bounds_m'][2]*100 for asset in geometry['assets'] if asset['asset']=='drain')
     geo=Geography(config['bbox'],SOURCE/'terrain'/f"{config['source_dataset']}.csv",config['origin_projected_m'])
     osm_path=SOURCE/'osm'/f"{config['source_dataset']}.osm.gz";provenance=metadata(osm_path)
     xml=gzip.decompress(source_bytes(osm_path))
@@ -60,8 +63,13 @@ def build():
             distance=step*200+span*.5;q=line.interpolate(distance);a=line.interpolate(max(0,distance-25));b=line.interpolate(min(line.length,distance+25))
             if curb_building_clearance.covers(q) or q.distance(region.boundary)<80:continue
             lowered=any(q.distance(c)<220 for c in crossings)
-            add('curb',[q.x,q.y,ground(q.x,q.y)-(12 if lowered else 1)],math.degrees(math.atan2(b.y-a.y,b.x-a.x)),(span/100,1,1))
-            if step%12==6 and not lowered:add('drain',[q.x,q.y,ground(q.x,q.y)+8],math.degrees(math.atan2(b.y-a.y,b.x-a.x)))
+            add('curb',[q.x,q.y,ground(q.x,q.y)-(12 if lowered else 1)],math.degrees(math.atan2(b.y-a.y,b.x-a.x)),(span/200,1,1))
+            if step%12==6 and not lowered:
+                dx,dy=b.x-a.x,b.y-a.y;norm=max(1,math.hypot(dx,dy))
+                nx,ny=-dy/norm,dx/norm
+                side=1 if paved.covers(Point(q.x+nx*30,q.y+ny*30)) else -1
+                x,y=q.x+nx*30*side,q.y+ny*30*side
+                add('drain',[x,y,ground(x,y)+8-drain_height+.2],math.degrees(math.atan2(dy,dx)))
     def nearest_road(p):return min(roads,key=lambda f:LineString([v[:2] for v in f['points']]).distance(Point(p[:2])))
     def tangent(f,p):
         line=LineString([v[:2] for v in f['points']]);d=line.project(Point(p[:2]));a=line.interpolate(max(0,d-50));b=line.interpolate(min(line.length,d+50))
@@ -132,7 +140,7 @@ def build():
                     counts['embedded-tram-rail']+=1
     # Continuous panel order: a-left, a-right, b-right, b-left.
     output=dict(schema_version=1,map=policy['map'],items=items,counts=dict(counts),rail_strips=strips,
-        source_nodes=nodes,source_files={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in [policy_path,district_path,sector_path,ROOT/'Data/start_location_buildings.json']},
+        source_nodes=nodes,source_files={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in [policy_path,district_path,sector_path,ROOT/'Data/start_location_buildings.json',geometry_path]},
         placement_accuracy='OSM nodes exact; curb follows source widths; supplemental vegetation/lighting/parking explicitly estimated; no invented traffic signals')
     if len(items)>policy['quality']['max_instances']:raise ValueError('Start instance budget exceeded')
     folder=ROOT/'Saved/StartLocation';folder.mkdir(parents=True,exist_ok=True)
