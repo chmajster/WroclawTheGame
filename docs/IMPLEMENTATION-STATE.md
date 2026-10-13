@@ -1,3 +1,19 @@
+# Realizm ? strumie? 1/10
+
+## Wykonane
+Audyt ?r?d?owy i narz?dzie natywnej inspekcji. UE 5.8.2; mapa Nadodrze_Playable; zakres 100 m. Wykryto nadpisywanie cia?a przez importer, p?ask? wysoko?? zieleni i kom?rki o bounds wi?kszych ni? deklarowany sektor. Dok?adny komunikat VSM znaleziony w kodzie silnika.
+
+## Do zrobienia
+Zako?czy? izolowany build i natywn? diagnostyk?. Punkty 2?10 w kolejnych oddzielnych PR.
+
+## Nast?pny krok
+Sprawdzi? Saved/Realism/build-baseline.log; uruchomi? Scripts/assets/inspect_realism_native.py.
+
+## Stan
+W toku. Nie uruchamiano CI. Oryginalny screen nie zosta? za??czony; nie ustalono to?samo?ci poziomego elementu.
+
+# Wcze?niejsze zadania
+
 # Kreator postaci — bieżący stan
 
 ## Wykonane
