@@ -11,7 +11,7 @@ def configure_mesh(mesh,manifest):
     if area not in ["tenements","start_location"]: return
     if area=="start_location":
         policy=json.loads((ROOT/"Data/start_location.json").read_text(encoding="utf-8"))["quality"]
-        category="building" if manifest["quality"]=="hero" else ("vegetation" if manifest["display_name"]=="young-tree" else "prop")
+        category="building" if manifest['unreal']['destination'].endswith('/Buildings') else ("vegetation" if manifest["display_name"]=="young-tree" else "prop")
         screen_sizes=policy["lod_screen_sizes"][category]
     else:
         policy=json.loads((ROOT/"Data/city_asset_quality.json").read_text(encoding="utf-8"))
@@ -19,6 +19,8 @@ def configure_mesh(mesh,manifest):
     editor=unreal.get_editor_subsystem(unreal.StaticMeshEditorSubsystem)
     nanite=editor.get_nanite_settings(mesh)
     if nanite.get_editor_property("enabled"):
+        if area=="start_location" and category=="building":
+            nanite.set_editor_property("explicit_tangents",True)
         nanite.set_editor_property("fallback_target",unreal.NaniteFallbackTarget.PERCENT_TRIANGLES)
         nanite.set_editor_property("fallback_percent_triangles",policy["nanite_fallback_percent_triangles"])
         nanite.set_editor_property("fallback_relative_error",0.)

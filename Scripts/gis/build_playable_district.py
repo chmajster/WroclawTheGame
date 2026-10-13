@@ -16,6 +16,7 @@ from import_sector import ROOT, build, DRIVE
 from build_meshes import generate as generate_meshes
 from generate_facades import generate as generate_facades
 from surface_mesh import surface_shapes, emit_surface, elevation_sampler
+from start_architecture import select_buildings
 
 CONFIG = ROOT/'Data/playable_district.json'
 
@@ -172,7 +173,7 @@ def build_district(output):
                 feature['surface_built']=True
     meshes=output/'Meshes'
     start_policy=read(ROOT/'Data/start_location.json')
-    replacement_ids=[b['id'] for b in start_policy['buildings']]
+    replacement_ids=[b['id'] for b in select_buildings(data,start_policy)]
     generate_meshes(meshes,data,geo,exclude_feature_ids=replacement_ids)
     # Keep the river genuinely open: no collision terrain immediately under water.
     for filename in read(meshes/'meshes.json'):

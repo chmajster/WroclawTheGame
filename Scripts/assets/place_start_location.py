@@ -29,14 +29,14 @@ def prepare():
     for actor in actors.get_all_level_actors():
         if actor.get_actor_label().startswith(policy['placement_prefix']):actors.destroy_actor(actor)
     tools=unreal.AssetToolsHelpers.get_asset_tools();edit=unreal.MaterialEditingLibrary
-    for building in source['buildings']:
+    for building in source['buildings']+source.get('context_buildings',[]):
         record=records[building['asset']]
         mesh=unreal.load_asset(DEST+'/Buildings/SM_wtg_start_'+building['asset'].replace('-','_'))
         if not isinstance(mesh,unreal.StaticMesh):raise RuntimeError('Production mesh missing '+building['asset'])
         center=record['source_center_m'];origin=building['origin_cm']
         position=[origin[0]+center[0]*100,origin[1]-center[1]*100,origin[2]+center[2]*100]
         actor=actors.spawn_actor_from_class(unreal.StaticMeshActor,unreal.Vector(*position))
-        actor.set_actor_label('StartLocation_Building_'+building['asset'])
+        actor.set_actor_label(('StartLocation_Context_' if building.get('context') else 'StartLocation_Building_')+building['asset'])
         component=actor.get_component_by_class(unreal.StaticMeshComponent);component.set_static_mesh(mesh);component.set_collision_profile_name('BlockAll')
         name='MI_Wall_'+building['asset'].replace('-','_');instance=unreal.load_asset(DEST+'/Materials/'+name)
         if not instance:instance=tools.create_asset(name,DEST+'/Materials',unreal.MaterialInstanceConstant,unreal.MaterialInstanceConstantFactoryNew())
@@ -121,6 +121,29 @@ def prepare():
     views=[('Start_Player',[-400,0,200],[2400,350,900]),
            ('Start_Street',[-700,-1500,320],[1800,200,1000]),
            ('Start_Park',[1200,1000,250],[-2400,-600,250])]
+    # A close facade inspection complements the unchanged comparison cameras.
+    # It is an actor in the playable map, not a separate showcase scene.
+    facade=next(b for b in source['buildings'] if b['asset']=='pomorska-47')
+    ring=facade['rings_m'][0]
+    signed=sum(a[0]*b[1]-b[0]*a[1] for a,b in zip(ring,ring[1:]))
+    if signed<0:ring=list(reversed(ring))
+    edges=[]
+    for a,b in zip(ring,ring[1:]):
+        dx,dy=b[0]-a[0],b[1]-a[1];length=math.hypot(dx,dy)
+        if length<9:continue
+        nx,ny=dy/length,-dx/length
+        world=[facade['origin_cm'][0]+(a[0]+b[0])*50,facade['origin_cm'][1]+(a[1]+b[1])*50]
+        sx,sy=start[0]-world[0],start[1]-world[1]
+        edges.append(((sx*nx+sy*ny)/max(1,math.hypot(sx,sy)),a,b,nx,ny,length))
+    _,a,b,nx,ny,length=max(edges,key=lambda e:e[0])
+    # Blender reverses the outer ring after the UE Y-axis reflection.
+    bays=max(1,int(length/2.8));fraction=1-(bays//2+.5)/bays
+    entry=[facade['origin_cm'][0]+(a[0]+(b[0]-a[0])*fraction)*100,
+           facade['origin_cm'][1]+(a[1]+(b[1]-a[1])*fraction)*100,
+           facade['origin_cm'][2]+(a[2]+b[2])*50+20]
+    p=[entry[0]+nx*650,entry[1]+ny*650,entry[2]+220]
+    q=[entry[0],entry[1],entry[2]+350]
+    views.append(('Start_Facade',[p[i]-start[i] for i in range(3)],[q[i]-start[i] for i in range(3)]))
     for name,offset,target in views:
         p=[start[i]+offset[i] for i in range(3)];q=[start[i]+target[i] for i in range(3)]
         direction=unreal.Vector(*q)-unreal.Vector(*p)
@@ -137,7 +160,7 @@ def prepare():
         camera_component.set_editor_property('post_process_blend_weight',1.)
     if sum(c.get_facade_instance_count() for c in clusters.values())!=len(plan['items']):raise RuntimeError('Instance count mismatch')
     if not levels.save_current_level():raise RuntimeError('Save failed')
-    report=dict(status='PASS',buildings=len(source['buildings']),instances=len(plan['items']),clusters=len(clusters),counts=plan['counts'],surfaces=surfaces,rail_strips=len(plan['rail_strips']),accuracy=plan['placement_accuracy'])
+    report=dict(status='PASS',buildings=len(source['buildings']),context_buildings=len(source.get('context_buildings',[])),instances=len(plan['items']),clusters=len(clusters),counts=plan['counts'],surfaces=surfaces,rail_strips=len(plan['rail_strips']),accuracy=plan['placement_accuracy'])
     (marker.parent/'placement-report.json').write_text(json.dumps(report,indent=2),encoding='utf-8');marker.write_text('PASS\n',encoding='utf-8');unreal.log('WTG_START_LOCATION_PLACED '+json.dumps(report))
 
 

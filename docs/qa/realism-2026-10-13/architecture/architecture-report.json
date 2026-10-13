@@ -1,0 +1,483 @@
+{
+  "status": "PASS",
+  "map": "/Game/Maps/Nadodrze_Playable",
+  "primary": 8,
+  "context": 24,
+  "actors": [
+    {
+      "actor": "StartLocation_Building_pomorska-45",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_45.SM_wtg_start_pomorska_45",
+      "position_cm": [
+        47687.35353437805,
+        63116.748332138064,
+        -7.520003528594998
+      ],
+      "source_roof_max_cm": 2381.28,
+      "actual_roof_top_cm": 2381.280289440155,
+      "conservative_culling_top_cm": 2405.853043346405,
+      "nanite": true,
+      "collision_hulls": 10
+    },
+    {
+      "actor": "StartLocation_Building_pomorska-47",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_47.SM_wtg_start_pomorska_47",
+      "position_cm": [
+        46998.16047640992,
+        61238.47295036315,
+        7.666969299316406
+      ],
+      "source_roof_max_cm": 2340.0,
+      "actual_roof_top_cm": 2337.9999771118164,
+      "conservative_culling_top_cm": 2344.2048110961914,
+      "nanite": true,
+      "collision_hulls": 7
+    },
+    {
+      "actor": "StartLocation_Building_pomorska-43",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_43.SM_wtg_start_pomorska_43",
+      "position_cm": [
+        48171.0527449646,
+        66456.7224260559,
+        64.404996559143
+      ],
+      "source_roof_max_cm": 2321.272,
+      "actual_roof_top_cm": 2321.271939918518,
+      "conservative_culling_top_cm": 2346.609586402893,
+      "nanite": true,
+      "collision_hulls": 14
+    },
+    {
+      "actor": "StartLocation_Building_courtyard-east",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_courtyard_east.SM_wtg_start_courtyard_east",
+      "position_cm": [
+        46817.06237203979,
+        59604.877686599735,
+        53.68793836975101
+      ],
+      "source_roof_max_cm": 1959.864,
+      "actual_roof_top_cm": 1959.864207901001,
+      "conservative_culling_top_cm": 1983.776805557251,
+      "nanite": true,
+      "collision_hulls": 11
+    },
+    {
+      "actor": "StartLocation_Building_courtyard-west",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_courtyard_west.SM_wtg_start_courtyard_west",
+      "position_cm": [
+        48610.29528339386,
+        62952.33093309784,
+        -7.519998908996627
+      ],
+      "source_roof_max_cm": 1546.324,
+      "actual_roof_top_cm": 1546.3239952316285,
+      "conservative_culling_top_cm": 1612.1316124191285,
+      "nanite": true,
+      "collision_hulls": 5
+    },
+    {
+      "actor": "StartLocation_Building_nobla-3",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_nobla_3.SM_wtg_start_nobla_3",
+      "position_cm": [
+        48457.889290100095,
+        59232.17131982422,
+        49.85599468994144
+      ],
+      "source_roof_max_cm": 2027.388,
+      "actual_roof_top_cm": 2021.3882212524413,
+      "conservative_culling_top_cm": 2033.2746958618163,
+      "nanite": true,
+      "collision_hulls": 10
+    },
+    {
+      "actor": "StartLocation_Building_paulinska-2a",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_paulinska_2a.SM_wtg_start_paulinska_2a",
+      "position_cm": [
+        49790.35829446411,
+        63460.908209899906,
+        13.278998529434148
+      ],
+      "source_roof_max_cm": 2106.262,
+      "actual_roof_top_cm": 2106.262152826309,
+      "conservative_culling_top_cm": 2113.772406732559,
+      "nanite": true,
+      "collision_hulls": 9
+    },
+    {
+      "actor": "StartLocation_Building_pomorska-32",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_pomorska_32.SM_wtg_start_pomorska_32",
+      "position_cm": [
+        38719.50996069336,
+        64689.13938891601,
+        79.41691787719719
+      ],
+      "source_roof_max_cm": 2363.08,
+      "actual_roof_top_cm": 2363.080247955322,
+      "conservative_culling_top_cm": 2377.363695220947,
+      "nanite": true,
+      "collision_hulls": 8
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101349778-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101349778_0.SM_wtg_start_context_way_101349778_0",
+      "position_cm": [
+        38935.97252104187,
+        53951.33560304261,
+        74.39596348571774
+      ],
+      "source_roof_max_cm": 1405.708,
+      "actual_roof_top_cm": 1399.7082193450929,
+      "conservative_culling_top_cm": 1399.7082193450929,
+      "nanite": true,
+      "collision_hulls": 8
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101348901-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101348901_0.SM_wtg_start_context_way_101348901_0",
+      "position_cm": [
+        37688.651807510374,
+        54528.23988713074,
+        73.06399078369145
+      ],
+      "source_roof_max_cm": 1369.7,
+      "actual_roof_top_cm": 1363.7002212524415,
+      "conservative_culling_top_cm": 1363.7002212524415,
+      "nanite": true,
+      "collision_hulls": 5
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101482248-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101482248_0.SM_wtg_start_context_way_101482248_0",
+      "position_cm": [
+        36279.601168670655,
+        54936.356736450194,
+        72.4099950065613
+      ],
+      "source_roof_max_cm": 1400.249,
+      "actual_roof_top_cm": 1394.2492284049988,
+      "conservative_culling_top_cm": 1394.2492284049988,
+      "nanite": true,
+      "collision_hulls": 4
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101361294-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101361294_0.SM_wtg_start_context_way_101361294_0",
+      "position_cm": [
+        34488.364695938115,
+        55478.633825408935,
+        72.40997257995605
+      ],
+      "source_roof_max_cm": 1498.308,
+      "actual_roof_top_cm": 1492.308165939331,
+      "conservative_culling_top_cm": 1492.308165939331,
+      "nanite": true,
+      "collision_hulls": 11
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101432211-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101432211_0.SM_wtg_start_context_way_101432211_0",
+      "position_cm": [
+        31853.10965945435,
+        55344.875709899905,
+        -30.86101111602784
+      ],
+      "source_roof_max_cm": 1498.308,
+      "actual_roof_top_cm": 1496.3081783370972,
+      "conservative_culling_top_cm": 1496.3081783370972,
+      "nanite": true,
+      "collision_hulls": 11
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101361370-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101361370_0.SM_wtg_start_context_way_101361370_0",
+      "position_cm": [
+        28377.997820709228,
+        56772.61528952027,
+        66.77598318481444
+      ],
+      "source_roof_max_cm": 1431.044,
+      "actual_roof_top_cm": 1431.0440495910643,
+      "conservative_culling_top_cm": 1431.0440495910643,
+      "nanite": true,
+      "collision_hulls": 44
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101359878-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101359878_0.SM_wtg_start_context_way_101359878_0",
+      "position_cm": [
+        45879.16378759766,
+        55190.71657537842,
+        132.0300030670166
+      ],
+      "source_roof_max_cm": 1683.046,
+      "actual_roof_top_cm": 1683.0461163482667,
+      "conservative_culling_top_cm": 1685.9285626373292,
+      "nanite": true,
+      "collision_hulls": 15
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101429950-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101429950_0.SM_wtg_start_context_way_101429950_0",
+      "position_cm": [
+        49891.07628617859,
+        59215.73987919617,
+        96.49400056457523
+      ],
+      "source_roof_max_cm": 1414.436,
+      "actual_roof_top_cm": 1408.4362613067628,
+      "conservative_culling_top_cm": 1431.3808413848878,
+      "nanite": true,
+      "collision_hulls": 11
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101348438-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101348438_0.SM_wtg_start_context_way_101348438_0",
+      "position_cm": [
+        38020.68000256347,
+        62537.31594184875,
+        79.29799491882318
+      ],
+      "source_roof_max_cm": 1730.32,
+      "actual_roof_top_cm": 1728.3199675750732,
+      "conservative_culling_top_cm": 1728.3199675750732,
+      "nanite": true,
+      "collision_hulls": 8
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101197438-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101197438_0.SM_wtg_start_context_way_101197438_0",
+      "position_cm": [
+        48609.100466171265,
+        68238.30263739014,
+        107.40799694824216
+      ],
+      "source_roof_max_cm": 1441.083,
+      "actual_roof_top_cm": 1439.0830457763673,
+      "conservative_culling_top_cm": 1450.7455213623048,
+      "nanite": true,
+      "collision_hulls": 8
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101347101-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101347101_0.SM_wtg_start_context_way_101347101_0",
+      "position_cm": [
+        37684.01290336609,
+        61252.46372650146,
+        93.84000026702881
+      ],
+      "source_roof_max_cm": 1768.12,
+      "actual_roof_top_cm": 1766.1200295639037,
+      "conservative_culling_top_cm": 1775.4496194076537,
+      "nanite": true,
+      "collision_hulls": 9
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101198472-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101198472_0.SM_wtg_start_context_way_101198472_0",
+      "position_cm": [
+        39227.232151199336,
+        67142.56944242859,
+        193.75999992370606
+      ],
+      "source_roof_max_cm": 1929.68,
+      "actual_roof_top_cm": 1927.6800438690186,
+      "conservative_culling_top_cm": 1929.5014550018311,
+      "nanite": true,
+      "collision_hulls": 10
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101362138-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101362138_0.SM_wtg_start_context_way_101362138_0",
+      "position_cm": [
+        51433.38601622009,
+        60928.09428392029,
+        104.26400292205813
+      ],
+      "source_roof_max_cm": 1471.028,
+      "actual_roof_top_cm": 1465.0281630783081,
+      "conservative_culling_top_cm": 1483.8902236251831,
+      "nanite": true,
+      "collision_hulls": 6
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101481634-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101481634_0.SM_wtg_start_context_way_101481634_0",
+      "position_cm": [
+        51322.85433876038,
+        59042.30891481018,
+        141.3649975090027
+      ],
+      "source_roof_max_cm": 1471.028,
+      "actual_roof_top_cm": 1465.0282055168152,
+      "conservative_culling_top_cm": 1483.0513988761902,
+      "nanite": true,
+      "collision_hulls": 8
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101418883-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101418883_0.SM_wtg_start_context_way_101418883_0",
+      "position_cm": [
+        51955.174371284484,
+        62734.748228149416,
+        66.74399043273922
+      ],
+      "source_roof_max_cm": 1427.987,
+      "actual_roof_top_cm": 1421.9872765655518,
+      "conservative_culling_top_cm": 1501.2870812530518,
+      "nanite": true,
+      "collision_hulls": 17
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101204443-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101204443_0.SM_wtg_start_context_way_101204443_0",
+      "position_cm": [
+        38884.798374679565,
+        68991.97861755372,
+        244.52000537872317
+      ],
+      "source_roof_max_cm": 1645.285,
+      "actual_roof_top_cm": 1645.2850200271607,
+      "conservative_culling_top_cm": 1648.1502544021607,
+      "nanite": true,
+      "collision_hulls": 12
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101194488-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101194488_0.SM_wtg_start_context_way_101194488_0",
+      "position_cm": [
+        50492.497521804806,
+        67960.3298419342,
+        24.115998699188253
+      ],
+      "source_roof_max_cm": 1344.052,
+      "actual_roof_top_cm": 1342.0520338554384,
+      "conservative_culling_top_cm": 1348.9896559257509,
+      "nanite": true,
+      "collision_hulls": 8
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101212067-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101212067_0.SM_wtg_start_context_way_101212067_0",
+      "position_cm": [
+        52698.50222317505,
+        66016.91136959838,
+        -29.972014022827125
+      ],
+      "source_roof_max_cm": 1279.624,
+      "actual_roof_top_cm": 1277.6241773834229,
+      "conservative_culling_top_cm": 1287.8832105865479,
+      "nanite": true,
+      "collision_hulls": 29
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101207182-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101207182_0.SM_wtg_start_context_way_101207182_0",
+      "position_cm": [
+        49216.781268798826,
+        70494.33001019288,
+        129.7589963340759
+      ],
+      "source_roof_max_cm": 1494.465,
+      "actual_roof_top_cm": 1494.4650510215758,
+      "conservative_culling_top_cm": 1496.3140500450133,
+      "nanite": true,
+      "collision_hulls": 10
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101361009-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101361009_0.SM_wtg_start_context_way_101361009_0",
+      "position_cm": [
+        35956.00158413696,
+        61703.93222921753,
+        81.88799192810052
+      ],
+      "source_roof_max_cm": 1439.724,
+      "actual_roof_top_cm": 1437.724051498413,
+      "conservative_culling_top_cm": 1441.875418685913,
+      "nanite": true,
+      "collision_hulls": 7
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101419762-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101419762_0.SM_wtg_start_context_way_101419762_0",
+      "position_cm": [
+        50888.9893863678,
+        55357.945362091064,
+        20.0429990539551
+      ],
+      "source_roof_max_cm": 1331.701,
+      "actual_roof_top_cm": 1329.701202178955,
+      "conservative_culling_top_cm": 1331.47976663208,
+      "nanite": true,
+      "collision_hulls": 18
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101209272-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101209272_0.SM_wtg_start_context_way_101209272_0",
+      "position_cm": [
+        51154.555905204776,
+        69959.02051538849,
+        51.85198095703129
+      ],
+      "source_roof_max_cm": 1441.859,
+      "actual_roof_top_cm": 1439.8590610351562,
+      "conservative_culling_top_cm": 1443.6801059570312,
+      "nanite": true,
+      "collision_hulls": 14
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101189965-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101189965_0.SM_wtg_start_context_way_101189965_0",
+      "position_cm": [
+        53190.03291386414,
+        68015.64900814819,
+        -29.97201078033447
+      ],
+      "source_roof_max_cm": 1303.024,
+      "actual_roof_top_cm": 1301.023960899353,
+      "conservative_culling_top_cm": 1301.023960899353,
+      "nanite": true,
+      "collision_hulls": 7
+    },
+    {
+      "actor": "StartLocation_Context_context-way-101349268-0",
+      "mesh": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101349268_0.SM_wtg_start_context_way_101349268_0",
+      "position_cm": [
+        40721.49820913696,
+        53324.6776506195,
+        155.9780011253357
+      ],
+      "source_roof_max_cm": 1494.908,
+      "actual_roof_top_cm": 1488.908298976898,
+      "conservative_culling_top_cm": 1488.908298976898,
+      "nanite": true,
+      "collision_hulls": 11
+    }
+  ],
+  "cameras": [
+    {
+      "actor": "StartLocation_Start_Street",
+      "position_cm": [
+        43911.8,
+        61330.93,
+        463.77
+      ]
+    },
+    {
+      "actor": "StartLocation_Start_Park",
+      "position_cm": [
+        45811.8,
+        63830.93,
+        393.77
+      ]
+    },
+    {
+      "actor": "StartLocation_Start_Facade",
+      "position_cm": [
+        45606.36791460905,
+        61603.07723289208,
+        340.0
+      ]
+    }
+  ],
+  "limits": "Source geometry/placement contract; facade interpretation is not a surveyed reconstruction. Visual/runtime evidence is separate."
+}

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "scope": "Existing Pomorska/Paulinska start,100m",
+  "scope": "Existing Pomorska/Paulinska start,100m; bounded architecture context 210m",
   "assets": [
     {
       "id": "wtg-start-pomorska-45",
@@ -13,11 +13,11 @@
       "author": "WroclawTheGame original procedural geometry",
       "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
       "generator": "Scripts/assets/build_start_location_models.py",
-      "triangles_lod0": 47928,
+      "triangles_lod0": 50444,
       "bounds_m": [
         26.872600555419922,
         27.664291381835938,
-        23.25
+        23.888002395629883
       ],
       "source_material_slots": [
         "Plaster",
@@ -40,11 +40,11 @@
       "author": "WroclawTheGame original procedural geometry",
       "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
       "generator": "Scripts/assets/build_start_location_models.py",
-      "triangles_lod0": 40561,
+      "triangles_lod0": 42072,
       "bounds_m": [
         19.3790283203125,
         19.528167724609375,
-        23.25
+        23.303329467773438
       ],
       "source_material_slots": [
         "Plaster",
@@ -67,11 +67,11 @@
       "author": "WroclawTheGame original procedural geometry",
       "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
       "generator": "Scripts/assets/build_start_location_models.py",
-      "triangles_lod0": 37456,
+      "triangles_lod0": 40556,
       "bounds_m": [
         21.895645141601562,
         24.956445693969727,
-        21.850000381469727
+        22.56867027282715
       ],
       "source_material_slots": [
         "Plaster",
@@ -94,11 +94,11 @@
       "author": "WroclawTheGame original procedural geometry",
       "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
       "generator": "Scripts/assets/build_start_location_models.py",
-      "triangles_lod0": 17529,
+      "triangles_lod0": 20445,
       "bounds_m": [
         21.214826583862305,
         22.330902099609375,
-        19.049999237060547
+        19.0617618560791
       ],
       "source_material_slots": [
         "Plaster",
@@ -121,11 +121,11 @@
       "author": "WroclawTheGame original procedural geometry",
       "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
       "generator": "Scripts/assets/build_start_location_models.py",
-      "triangles_lod0": 4543,
+      "triangles_lod0": 5144,
       "bounds_m": [
         8.87407112121582,
         7.113847255706787,
-        15.84999942779541
+        15.538439750671387
       ],
       "source_material_slots": [
         "Plaster",
@@ -148,11 +148,11 @@
       "author": "WroclawTheGame original procedural geometry",
       "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
       "generator": "Scripts/assets/build_start_location_models.py",
-      "triangles_lod0": 18544,
+      "triangles_lod0": 19332,
       "bounds_m": [
         17.658885955810547,
         18.794572830200195,
-        19.850000381469727
+        19.715320587158203
       ],
       "source_material_slots": [
         "Plaster",
@@ -175,11 +175,11 @@
       "author": "WroclawTheGame original procedural geometry",
       "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
       "generator": "Scripts/assets/build_start_location_models.py",
-      "triangles_lod0": 34695,
+      "triangles_lod0": 36556,
       "bounds_m": [
         18.718299865722656,
         16.62014389038086,
-        20.850000381469727
+        20.92983055114746
       ],
       "source_material_slots": [
         "Plaster",
@@ -202,11 +202,11 @@
       "author": "WroclawTheGame original procedural geometry",
       "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
       "generator": "Scripts/assets/build_start_location_models.py",
-      "triangles_lod0": 46174,
+      "triangles_lod0": 50102,
       "bounds_m": [
         20.182016372680664,
         36.816322326660156,
-        21.850000381469727
+        22.836631774902344
       ],
       "source_material_slots": [
         "Plaster",
@@ -229,9 +229,9 @@
       "author": "WroclawTheGame original procedural geometry",
       "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
       "generator": "Scripts/assets/build_start_location_models.py",
-      "triangles_lod0": 24,
+      "triangles_lod0": 48,
       "bounds_m": [
-        1.0,
+        1.9900000095367432,
         0.1599999964237213,
         0.24199999868869781
       ],
@@ -328,6 +328,654 @@
         "Rubber",
         "Paint",
         "Light"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101359878-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101359878-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101359878-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101359878-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101359878_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 42056,
+      "bounds_m": [
+        30.014240264892578,
+        49.893741607666016,
+        15.510160446166992
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101429950-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101429950-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101429950-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101429950-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101429950_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 15417,
+      "bounds_m": [
+        18.203895568847656,
+        22.654430389404297,
+        13.119421005249023
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101348438-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101348438-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101348438-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101348438-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101348438_0",
+      "native_file_present": false,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 17310,
+      "bounds_m": [
+        20.75465965270996,
+        17.462615966796875,
+        16.490219116210938
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101197438-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101197438-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101197438-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101197438-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101197438_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 14618,
+      "bounds_m": [
+        22.121219635009766,
+        14.939156532287598,
+        13.316749572753906
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101347101-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101347101-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101347101-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101347101-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101347101_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 18020,
+      "bounds_m": [
+        22.29033660888672,
+        14.910361289978027,
+        16.72279930114746
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101198472-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101198472-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101198472-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101198472-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101198472_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 16148,
+      "bounds_m": [
+        16.786182403564453,
+        18.95238494873047,
+        17.33919906616211
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101362138-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101362138-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101362138-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101362138-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101362138_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 14392,
+      "bounds_m": [
+        19.79505157470703,
+        18.858352661132812,
+        13.607640266418457
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101481634-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101481634-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101481634-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101481634-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101481634_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 17902,
+      "bounds_m": [
+        18.474613189697266,
+        24.71805191040039,
+        13.2366304397583
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101418883-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101418883-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101418883-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101418883-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101418883_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 14911,
+      "bounds_m": [
+        14.392608642578125,
+        24.972625732421875,
+        13.552431106567383
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101204443-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101204443-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101204443-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101204443-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101204443_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 22900,
+      "bounds_m": [
+        30.117389678955078,
+        24.40585708618164,
+        14.007650375366211
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101194488-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101194488-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101194488-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101194488-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101194488_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 14018,
+      "bounds_m": [
+        19.299320220947266,
+        11.906180381774902,
+        13.179359436035156
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101212067-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101212067-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101212067-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101212067-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101212067_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 28020,
+      "bounds_m": [
+        26.485034942626953,
+        27.963748931884766,
+        13.075960159301758
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101207182-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101207182-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101207182-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101207182-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101207182_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 21512,
+      "bounds_m": [
+        25.523941040039062,
+        23.663278579711914,
+        13.64706039428711
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101361009-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101361009-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101361009-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101361009-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101361009_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 13968,
+      "bounds_m": [
+        19.0920467376709,
+        18.826000213623047,
+        13.558359146118164
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101419762-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101419762-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101419762-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101419762-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101419762_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 21608,
+      "bounds_m": [
+        18.436119079589844,
+        31.376609802246094,
+        13.096579551696777
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101209272-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101209272-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101209272-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101209272-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101209272_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 11860,
+      "bounds_m": [
+        15.750555038452148,
+        15.356609344482422,
+        13.880069732666016
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101349778-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101349778-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101349778-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101349778-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101349778_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 14090,
+      "bounds_m": [
+        15.577817916870117,
+        25.018295288085938,
+        13.253120422363281
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101348901-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101348901-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101348901-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101348901-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101348901_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 14315,
+      "bounds_m": [
+        19.951900482177734,
+        21.765438079833984,
+        12.906360626220703
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101482248-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101482248-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101482248-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101482248-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101482248_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 13690,
+      "bounds_m": [
+        21.005571365356445,
+        21.268352508544922,
+        13.218390464782715
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101361294-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101361294-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101361294-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101361294-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101361294_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 16753,
+      "bounds_m": [
+        30.024234771728516,
+        23.099258422851562,
+        14.198980331420898
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101432211-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101432211-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101432211-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101432211-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101432211_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 30929,
+      "bounds_m": [
+        38.72040557861328,
+        37.523155212402344,
+        15.271689414978027
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101361370-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101361370-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101361370-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101361370-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101361370_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 41808,
+      "bounds_m": [
+        36.138206481933594,
+        32.6419677734375,
+        13.642680168151855
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101189965-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101189965-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101189965-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101189965-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101189965_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 17492,
+      "bounds_m": [
+        26.357131958007812,
+        15.384140014648438,
+        13.309959411621094
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
+      ]
+    },
+    {
+      "id": "wtg-start-context-way-101349268-0",
+      "category": "Buildings",
+      "source_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101349268-0.blend",
+      "exchange_model": "SourceAssets/Models/Wroclaw/StartLocation/Buildings/context-way-101349268-0.glb",
+      "manifest": "Pipeline/assets/start_location/context-way-101349268-0.asset.json",
+      "native_path": "/Game/Wroclaw/StartLocation/Buildings/SM_wtg_start_context_way_101349268_0",
+      "native_file_present": true,
+      "author": "WroclawTheGame original procedural geometry",
+      "license": "Project-owned original geometry; building footprints derived from OpenStreetMap ODbL 1.0",
+      "generator": "Scripts/assets/build_start_location_models.py",
+      "triangles_lod0": 18873,
+      "bounds_m": [
+        22.28009033203125,
+        28.274463653564453,
+        13.329300880432129
+      ],
+      "source_material_slots": [
+        "Plaster",
+        "Stone",
+        "Frame",
+        "Glazing",
+        "Metal",
+        "Roof",
+        "Wood"
       ]
     }
   ],

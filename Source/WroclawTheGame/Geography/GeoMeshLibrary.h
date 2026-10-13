@@ -10,4 +10,11 @@ class WROCLAWTHEGAME_API UGeoMeshLibrary : public UBlueprintFunctionLibrary
     UFUNCTION(BlueprintCallable, Category = "Wroclaw|Geography")
     static class UStaticMesh *BakeMesh(const FString &AssetPath, const TArray<FVector> &Vertices,
                                        const TArray<int32> &Triangles);
+    // Editor source vertices, independent of conservative Nanite render bounds.
+    UFUNCTION(BlueprintCallable, Category = "Wroclaw|Geography")
+    static FBox GetAuthoredMeshBounds(class UStaticMesh* Mesh, int32 LodIndex = 0);
+    UFUNCTION(BlueprintCallable, Category = "Wroclaw|Geography")
+    static FIntVector GetAuthoredMeshBasisStats(class UStaticMesh* Mesh, int32 LodIndex = 0);
+    UFUNCTION(BlueprintCallable, Category = "Wroclaw|Geography")
+    static int32 RepairAuthoredMeshTangents(class UStaticMesh* Mesh, int32 LodIndex = 0);
 };

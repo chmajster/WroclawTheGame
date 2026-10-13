@@ -1,0 +1,27 @@
+{
+  "source": "Actual UE 5.8.2 D3D12 playable-map captures, 1280x720; no generated/edited images",
+  "png_sha256": {
+    "facade_collision.png": "def5ece01e0f0f5a10a9eeeb33eb120ac3cf29be67916aa4789b1aafa12ef0dd",
+    "facade_lighting.png": "5a163f6b1fc9e729ad53c031be4a45b2c808f0b809758af79dba1f24c934be4f",
+    "facade_lit.png": "3e86066192f3eb7d306b3a64a742036eea7cdc8d63b42eb57c8e1532d636e819",
+    "facade_normals.png": "388e67547a6fa0406a89f487497077d98760e739c590d6fec7b6db9f5a57eaa2",
+    "facade_unlit.png": "7d4116e26a6220b547f209cb3ee5dce051c12afb89297a4d40aa37b8df8ba453",
+    "facade_wireframe.png": "1575525f25e57a6211578ced2fed4e5aaf405ffde238213e959e038eb21cff3e",
+    "park_collision.png": "543d4314d5818c99462556fd8dc58311cd8e6d25f4dbdad0bd0bf767aa1c9465",
+    "park_lighting.png": "7e4838fba4f8f10a2003b52cbeaa4def04cf0ca094566328442009def1c74ec3",
+    "park_lit.png": "e6e22d0335602bd054e2b1dc051476e1ef088540ab80f4286021464b92bd995d",
+    "park_normals.png": "5954477d464806d2ffe6dbcc5f40ec85b4c36fdeeb162eb6e383857c2ef7f5ba",
+    "park_unlit.png": "7bd051ea8fe7aa94c0833e3e418d6f8d4d9eeeb61770fade3d4736b2b9188627",
+    "park_wireframe.png": "0e0f668eb0aed25b38422ecab3c2383a6fb6f1a5a60bc16bc7b69da6cfb0c3d4",
+    "Start_GamePark.png": "ed8da86b24622064b92acc3a631caabdd95a4e680368f3241beedc32d95c06b8",
+    "Start_GamePlayer.png": "1589c41ac0c6438b269a11d537e5d8e23d5d00898b7a2eb31554c27fa419fd16",
+    "Start_GameStreet.png": "679793536886dc63661f9cd06a76927ac8d74e22d27f4096415c0797d30ed3c6",
+    "Start_GameWalk.png": "bc2323f14fb56a85baf7550615da0a272e045608753b7a846a9ab45a6a363717",
+    "street_collision.png": "935b33eaa4e3e4f9d36319a3e66e89290b980691924903680ec024d4dae3c67a",
+    "street_lighting.png": "c53f8aee40bdd020769cd980ba71075522116efb73de1c797960c7133dfa815b",
+    "street_lit.png": "5be96633da61288e6482cf1e48424380618de9ad643ce3f94a6b33abc6c9a5b5",
+    "street_normals.png": "168cd0fdb8fc0a890062adc3e36fb19195399a6531d9679f926629ba4cf873f0",
+    "street_unlit.png": "2874c8ecd7a028d794923b6cd45e543a3f944b30007d63dce7e5b326b4dcf7a0",
+    "street_wireframe.png": "48751a97c444710e39c8615efafbe88d8eafec6e83536747f7ae6071b5d421f2"
+  }
+}

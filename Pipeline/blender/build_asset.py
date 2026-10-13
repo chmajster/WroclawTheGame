@@ -195,6 +195,9 @@ def export_fbx(path: Path, objects: list[bpy.types.Object]) -> None:
         bake_anim=False,
         add_leaf_bones=False,
         use_mesh_modifiers=True,
+        mesh_smooth_type="FACE",
+        use_triangles=True,
+        use_tspace=True,
         path_mode="AUTO",
     )
 
@@ -303,6 +306,7 @@ def main() -> None:
         "collision_shapes": len(collisions),
         "bounds_m": dimensions,
         "uv_layers": len(base.data.uv_layers),
+        "tangent_space": "explicit",
         "material_slots": len(base.data.materials),
         "exports": [f"{safe_name}_LOD{i}.fbx" for i in range(len(lod_objects))],
         "status": "PASS",

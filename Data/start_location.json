@@ -9,6 +9,9 @@
     {"url": "https://www.wroclaw.pl/dla-mieszkanca/przebudowa-pomorskiej-staszica-zdjecia-otwarcie-ulic-1-czerwca-kierowcy-wracaja", "author": "Błażej Organisty / photographs Magdalena Pasiewicz", "use": "Visual reference only; photographs are not game textures or redistributed files", "facts": "Renovated roadway, stone between tram rails, sidewalks, separate cycling infrastructure, lime/maple young trees"},
     {"url": "https://www.wroclaw.pl/przedsiebiorczy-wroclaw/galeria/najpiekniejsze-kamienice-wyremontowane-w-2022-roku-we-wroclawiu-inwestycje-budowlane,p,38", "author": "Municipal Wroclaw portal", "use": "Visual reference only", "facts": "Pomorska 47: cream plaster, white window frames, triangular window crowns, iron balconies, ground-floor services and smaller attic windows"}
   ],
+  "architecture_context": {"radius_m": 210, "max_buildings": 24,
+    "priority_ids": ["way/101432211:0","way/101361294:0","way/101482248:0","way/101348901:0","way/101349778:0","way/101432351:0","way/101361370:0"],
+    "priority_reason": "Source footprints confirmed in the real Start_Park view; nearest-only selection missed the visible skyline"},
   "buildings": [
     {"id": "way/101359583:0", "asset": "pomorska-45", "height_m": 22.4, "floors": 7, "tint": [0.66,0.58,0.47], "style": "historic", "accuracy": "OSM footprint; photograph-informed neighbouring proportions, estimated height and window layout"},
     {"id": "way/101362270:0", "asset": "pomorska-47", "height_m": 22.4, "floors": 7, "tint": [0.88,0.84,0.69], "style": "pediment", "accuracy": "OSM footprint; municipal photograph inspected; height estimated, not surveyed"},
