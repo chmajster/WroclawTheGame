@@ -21,6 +21,69 @@ FBox UGeoMeshLibrary::GetAuthoredMeshBounds(UStaticMesh* Mesh,int32 LodIndex)
 #endif
     return Bounds;
 }
+FIntVector UGeoMeshLibrary::GetAuthoredMeshBasisStats(UStaticMesh* Mesh,int32 LodIndex)
+{
+    FIntVector Result=FIntVector::ZeroValue;
+#if WITH_EDITOR
+    if(Mesh && LodIndex>=0 && LodIndex<Mesh->GetNumSourceModels())
+        if(const FMeshDescription* Description=Mesh->GetMeshDescription(LodIndex)){
+            const FStaticMeshConstAttributes Attributes(*Description);
+            const auto Tangents=Attributes.GetVertexInstanceTangents();
+            const auto Normals=Attributes.GetVertexInstanceNormals();
+            for(const FVertexInstanceID ID:Description->VertexInstances().GetElementIDs()){
+                ++Result.X;Result.Y+=Tangents[ID].IsNearlyZero(.0001f);Result.Z+=Normals[ID].IsNearlyZero(.0001f);
+            }
+        }
+#endif
+    return Result;
+}
+int32 UGeoMeshLibrary::RepairAuthoredMeshTangents(UStaticMesh* Mesh,int32 LodIndex)
+{
+    int32 Repaired=0;
+#if WITH_EDITOR
+    if(!Mesh || LodIndex<0 || LodIndex>=Mesh->GetNumSourceModels())return 0;
+    FMeshDescription* Description=Mesh->GetMeshDescription(LodIndex);
+    if(!Description)return 0;
+    FStaticMeshAttributes Attributes(*Description);
+    const auto Positions=Attributes.GetVertexPositions();
+    const auto Normals=Attributes.GetVertexInstanceNormals();
+    auto Tangents=Attributes.GetVertexInstanceTangents();
+    auto Signs=Attributes.GetVertexInstanceBinormalSigns();
+    const auto UVs=Attributes.GetVertexInstanceUVs();
+    if(UVs.GetNumChannels()==0)return 0;
+    for(const FTriangleID Triangle:Description->Triangles().GetElementIDs()){
+        const auto IDs=Description->GetTriangleVertexInstances(Triangle);
+        const FVector A(Positions[Description->GetVertexInstanceVertex(IDs[0])]);
+        const FVector E1=FVector(Positions[Description->GetVertexInstanceVertex(IDs[1])])-A;
+        const FVector E2=FVector(Positions[Description->GetVertexInstanceVertex(IDs[2])])-A;
+        const FVector2D U1=FVector2D(UVs.Get(IDs[1],0))-FVector2D(UVs.Get(IDs[0],0));
+        const FVector2D U2=FVector2D(UVs.Get(IDs[2],0))-FVector2D(UVs.Get(IDs[0],0));
+        const double Det=U1.X*U2.Y-U1.Y*U2.X;
+        for(const FVertexInstanceID ID:IDs){
+            if(!Tangents[ID].IsNearlyZero(.0001f))continue;
+            const FVector N=FVector(Normals[ID]).GetSafeNormal();
+            if(N.IsNearlyZero())continue;
+            FVector T=FMath::Abs(Det)>1.e-12 ? (E1*U2.Y-E2*U1.Y)/Det : E1;
+            T=FVector::VectorPlaneProject(T,N).GetSafeNormal();
+            if(T.IsNearlyZero()){
+                const FVector Axis=FMath::Abs(N.X)<.8 ? FVector::ForwardVector : FVector::RightVector;
+                T=FVector::VectorPlaneProject(Axis,N).GetSafeNormal();
+            }
+            const FVector B=FMath::Abs(Det)>1.e-12 ? (E2*U1.X-E1*U2.X)/Det : FVector::CrossProduct(N,T);
+            Tangents[ID]=FVector3f(T);
+            Signs[ID]=FVector::DotProduct(FVector::CrossProduct(N,T),B)>=0 ? 1.f : -1.f;
+            ++Repaired;
+        }
+    }
+    if(Repaired){
+        Mesh->GetSourceModel(LodIndex).BuildSettings.bRecomputeTangents=false;
+        Mesh->CommitMeshDescription(LodIndex);
+        Mesh->Build(false);
+        Mesh->MarkPackageDirty();
+    }
+#endif
+    return Repaired;
+}
 UStaticMesh *UGeoMeshLibrary::BakeMesh(const FString &Path, const TArray<FVector> &Vertices,
                                        const TArray<int32> &Triangles)
 {

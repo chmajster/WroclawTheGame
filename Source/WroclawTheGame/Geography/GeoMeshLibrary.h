@@ -13,4 +13,8 @@ class WROCLAWTHEGAME_API UGeoMeshLibrary : public UBlueprintFunctionLibrary
     // Editor source vertices, independent of conservative Nanite render bounds.
     UFUNCTION(BlueprintCallable, Category = "Wroclaw|Geography")
     static FBox GetAuthoredMeshBounds(class UStaticMesh* Mesh, int32 LodIndex = 0);
+    UFUNCTION(BlueprintCallable, Category = "Wroclaw|Geography")
+    static FIntVector GetAuthoredMeshBasisStats(class UStaticMesh* Mesh, int32 LodIndex = 0);
+    UFUNCTION(BlueprintCallable, Category = "Wroclaw|Geography")
+    static int32 RepairAuthoredMeshTangents(class UStaticMesh* Mesh, int32 LodIndex = 0);
 };

@@ -64,15 +64,24 @@ static FAutoConsoleCommandWithWorld GRealismDiagnostics(TEXT("WTG.RealismDiagnos
             if(!Data || Data->LODResources.IsEmpty())continue;
             const auto& Buffer=Data->LODResources[0].VertexBuffers.StaticMeshVertexBuffer;
             int32 BadX=0,BadZ=0;
+            TArray<TSharedPtr<FJsonValue>> Samples;
             for(uint32 Index=0;Buffer.GetTangentData() && Index<Buffer.GetNumVertices();++Index){
                 const auto X=Buffer.VertexTangentX(Index),Z=Buffer.VertexTangentZ(Index);
                 BadX+=(X.X*X.X+X.Y*X.Y+X.Z*X.Z<.0001f);
                 BadZ+=(Z.X*Z.X+Z.Y*Z.Y+Z.Z*Z.Z<.0001f);
+                if(X.X*X.X+X.Y*X.Y+X.Z*X.Z<.0001f && Samples.Num()<8){
+                    const auto UV=Buffer.GetVertexUV(Index,0);
+                    const auto Position=Data->LODResources[0].VertexBuffers.PositionVertexBuffer.VertexPosition(Index);
+                    auto Sample=MakeShared<FJsonObject>();
+                    Sample->SetStringField(TEXT("position_cm"),Position.ToString());Sample->SetStringField(TEXT("uv"),UV.ToString());
+                    Samples.Add(MakeShared<FJsonValueObject>(Sample));
+                }
             }
             auto Item=MakeShared<FJsonObject>();Item->SetStringField(TEXT("mesh"),Mesh->GetPathName());
             Item->SetBoolField(TEXT("basis_cpu_available"),Buffer.GetTangentData()!=nullptr);
             Item->SetNumberField(TEXT("vertices"),Buffer.GetNumVertices());
             Item->SetNumberField(TEXT("near_zero_tangents"),BadX);Item->SetNumberField(TEXT("near_zero_normals"),BadZ);
+            Item->SetArrayField(TEXT("tangent_samples"),Samples);
             MeshBasis.Add(MakeShared<FJsonValueObject>(Item));
         }
         Report->SetArrayField(TEXT("architecture_render_basis"),MeshBasis);

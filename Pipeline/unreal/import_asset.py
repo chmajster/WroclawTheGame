@@ -146,6 +146,7 @@ def configure_lods(base_mesh, generated: Path, mesh_name: str, destination: str,
     for index in range(1, lod_count):
         lod_file = generated / f"{mesh_name}_LOD{index}.fbx"
         source = first_asset(import_task(lod_file, temp_root, True,explicit_tangents=explicit_tangents), unreal.StaticMesh)
+        if explicit_tangents:unreal.GeoMeshLibrary.repair_authored_mesh_tangents(source,0)
         # Match the render source's slot order using the same interfaces before
         # attaching a LOD. Reimport retains authored materials on the base while
         # temporary FBX meshes get defaults; UE would append duplicate slots.
@@ -212,6 +213,7 @@ def prepare(manifest_value=None) -> None:
         unreal.EditorAssetLibrary.delete_directory(stage)
     if base_mesh is None:
         raise RuntimeError(f"Cannot load imported base mesh {expected_path}")
+    if explicit_tangents:unreal.GeoMeshLibrary.repair_authored_mesh_tangents(base_mesh,0)
     expected_slots=blender_report.get("material_slots")
     if expected_slots:
         slots=list(base_mesh.get_editor_property("static_materials"))

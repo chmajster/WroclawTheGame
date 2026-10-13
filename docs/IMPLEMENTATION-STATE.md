@@ -22,6 +22,14 @@ potem StartLocationSmoke. Oceniać tylko świeże capture.json/18 PNG, sprawdzi�
 32 basis records i Start_Park. Eksport explicit rozpoznawany przez report,
 starsze FBX zachowują normalne i wyliczają brakujące tangenty; 2 takie assety
 nadodrze ponownie zaimportowane PASS. Końcowy obraz/baza nadal przed oceną.
+
+Aktualizacja basis: MikkTSpace w źródłowym Blenderze również generuje 149 zerowych
+wektorów na wąskich trójkątach dachu (mimo niezerowych UV). RepairAuthoredMeshTangents
+wylicza tylko brakujące tangenty z Jacobian UV i normalnej, nie zmienia geometrii.
+Importer robi to dla jawnie eksportowanych LOD0 i tymczasowych LOD1/2.
+Kompilacja PASS. Trwa sesja 37095: native repair 9 jawnych meshes × 3 LOD, potem
+D3D12 architecture-game-basis-fixed.log. Sprawdzić 32 render basis records.
+StartLocationSmoke PASS 16:39 UTC, architecture-gameplay.log — przed korektą samych tangentów.
 ## Do zrobienia
 Dokończyć import 8 nowych + 1 korekty tangentów. Native QA 37 assets/32 aktorów,
 odtworzyć mapę, 18 ujęć i pomiar bufora, zwykłe chodzenie. Dowody i merge #169.
