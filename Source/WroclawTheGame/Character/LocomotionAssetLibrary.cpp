@@ -219,7 +219,7 @@ bool ULocomotionAssetLibrary::RetargetCivilianAnimation(UAnimationAsset *Animati
                 // Component-space rotation conversion must not transfer source
                 // limb lengths. Preserve the civilian's local joint offsets;
                 // otherwise flexing a different hand rig stretches its fingers.
-                Result.SetTranslation(TargetRef.GetRefBonePose()[Bone].GetTranslation());
+                if(TargetRef.GetBoneName(Bone)!=TEXT("pelvis"))Result.SetTranslation(TargetRef.GetRefBonePose()[Bone].GetTranslation());
                 Result.SetScale3D(TargetRef.GetRefBonePose()[Bone].GetScale3D());
                 Result.NormalizeRotation();
                 Converted[Bone].Add(Result);
