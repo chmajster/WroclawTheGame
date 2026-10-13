@@ -93,7 +93,7 @@ static FAutoConsoleCommandWithWorld GCivilianMotionSmoke(TEXT("WTG.CivilianMotio
         if(S->Stage>=1 && S->Stage<=3)P->AddMovementInput(S->Forward,S->Stage==1?.6f:1.f,true);
         if(S->Stage==4 || S->Stage==7)P->AddMovementInput(-S->Forward,1,true);
         if(S->Stage==4)PC->SetControlRotation(FRotator(-12,(-S->Forward).Rotation().Yaw,0));
-        if(!S->Captured && Age>1.5f){
+        if(!S->Captured && Age>(S->Stage==8?.4f:1.5f)){
             FScreenshotRequest::RequestScreenshot(Folder/(FString(Names[S->Stage])+TEXT(".png")),true,false);S->Captured=true;
         }
         if(S->Elapsed>=S->SampleAt){
@@ -111,6 +111,7 @@ static FAutoConsoleCommandWithWorld GCivilianMotionSmoke(TEXT("WTG.CivilianMotio
             S->OK&=!P->Appearance->bUsingPlaceholder && FMath::IsFinite(Anim->FootOffsets.X) && FMath::IsFinite(Anim->FootOffsets.Y)
                 && FMath::Abs(Anim->FootOffsets.X)<=22.1 && FMath::Abs(Anim->FootOffsets.Y)<=22.1 && CameraHead>45 && P->Boom->bDoCollisionTest;
             const float Floor=P->GetActorLocation().Z-P->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+            Item->SetNumberField(TEXT("capsule_floor_z"),Floor);Item->SetNumberField(TEXT("body_bounds_half_height_cm"),Mesh->Bounds.BoxExtent.Z);
             if(Anim->bGrounded)S->OK&=Mesh->GetSocketLocation(TEXT("foot_l")).Z>Floor-10 && Mesh->GetSocketLocation(TEXT("foot_r")).Z>Floor-10;
             S->OK&=Mesh->Bounds.BoxExtent.Z>30 && Mesh->Bounds.BoxExtent.Z<150;
             if(S->Stage==10 || S->Stage==11){
@@ -122,7 +123,10 @@ static FAutoConsoleCommandWithWorld GCivilianMotionSmoke(TEXT("WTG.CivilianMotio
                         Item->SetNumberField(Part->GetSkeletalMeshAsset()->GetName()+TEXT("_weight"),Value);
                         if(FMath::IsNearlyEqual(Value,Expected,.001f))++Matched;
                     }
-                if(Age>1)S->OK&=Matched==7;
+                Item->SetNumberField(TEXT("body_morph_matches"),Matched);
+                // These five surfaces deform with mass; head cards have no
+                // nonzero weight morph and Unreal correctly omits that curve.
+                if(Age>1)S->OK&=Matched==5;
             }
             S->Samples.Add(MakeShared<FJsonValueObject>(Item));
         }

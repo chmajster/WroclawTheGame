@@ -42,7 +42,7 @@ def build():
                 for part, angle in [(1, 8), (2, 12), (3, 8)]:
                     bone = rig.pose.bones.get(f'{finger}_{part:02d}_{side}')
                     if bone:
-                        bone.rotation_quaternion = Quaternion((1, 0, 0), math.radians(angle))
+                        bone.rotation_quaternion = Quaternion((1, 0, 0), math.radians(angle * .15))
         global_delta('spine_02', (1, 0, 0), math.sin(phase) * .45)
         global_delta('spine_03', (0, 1, 0), math.sin(phase) * .35)
         global_delta('head', (0, 0, 1), math.sin(phase) * .7)

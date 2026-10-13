@@ -147,7 +147,7 @@ void UCharacterAppearanceComponent::Render()
         // Keep the movement capsule stable across crouch/uncrouch and checkpoint restores.
         // The authored maximum-height body fits the standing capsule; only the visual rig scales.
         VisualRoot->SetRelativeLocation(FVector(0,0,-C->GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight()));
-        C->Boom->SocketOffset=FVector(0,35,55+(Appearance.Height-180)*.65f);
+        C->Boom->SocketOffset=FVector(0,35,25+(Appearance.Height-180)*.45f);
         C->GetCharacterMovement()->GetNavAgentPropertiesRef().AgentHeight=C->GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight()*2;
     }
     bUsingPlaceholder=!B || !B->Mesh.Get();

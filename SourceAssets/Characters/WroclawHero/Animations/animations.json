@@ -2,7 +2,7 @@
   "name": "A_CivilianIdle",
   "source": "SourceAssets/Characters/WroclawHero/Animations/civilian-idle.blend",
   "fbx": "SourceAssets/Characters/WroclawHero/Animations/civilian-idle.fbx",
-  "sha256": "93b518f52218f9114be0188b8c6e7eb3d54b90c791925220246085b21d73fc50",
+  "sha256": "fd458118388d76fc00d47beb82c20a4cc340d917cc2c80fb3a8e403ad509406d",
   "author": "WroclawTheGame contributors",
   "license": "CC0-1.0",
   "fps": 30,

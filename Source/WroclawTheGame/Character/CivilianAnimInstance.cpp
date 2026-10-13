@@ -96,7 +96,12 @@ struct FCivilianAnimProxy final : FAnimSingleNodeInstanceProxy
         HasLastFoot=true;
         if(Grounded){
             const float PelvisOffset=FMath::Clamp(FMath::Min(Offsets[0],Offsets[1]),-10.f,0.f)/Scale;
-            Output.Pose[Pelvis].AddToTranslation(FVector(0,0,PelvisOffset));BuildComponent();
+            // Blender's armature parent carries FBX's metre-to-centimetre scale.
+            // A local pelvis offset must account for that parent as well as the
+            // component scale, or a 3 cm correction moves the body by 3 metres.
+            const auto Parent=Bones.GetParentBoneIndex(Pelvis);
+            const FTransform ParentTransform=Parent.IsValid()?Component[Parent.GetInt()]:FTransform::Identity;
+            Output.Pose[Pelvis].AddToTranslation(ParentTransform.InverseTransformVector(FVector(0,0,PelvisOffset)));BuildComponent();
         }
         for(int32 Side=0;Side<2;++Side){
             if(Weight[Side]<=.01f)continue;

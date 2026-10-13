@@ -288,7 +288,7 @@ bool ULocomotionAssetLibrary::RetargetCivilianAnimation(UAnimationAsset *Animati
             }
             const FName Name = TargetRef.GetBoneName(Bone);
             if (Tracks[Bone].IsEmpty())
-                Controller.AddBoneTrack(Name, false);
+                Controller.AddBoneCurve(Name, false);
             const bool TrackChanged=Controller.SetBoneTrackKeys(Name, Positions, Rotations, Scales, false);
             if(!TrackChanged)UE_LOG(LogTemp,Error,TEXT("Civilian retarget cannot set %s (%d frames)"),*Name.ToString(),Positions.Num());
             Changed &= TrackChanged;
