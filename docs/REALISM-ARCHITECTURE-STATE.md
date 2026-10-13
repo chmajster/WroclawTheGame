@@ -14,6 +14,14 @@ ma 119 zerowych tangentów, pozostałe 23 poprawne. GLB ma poprawne UV.
 Eksport/import zachowuje teraz jawną bazę, Nanite architektury explicit_tangents.
 GetAuthoredMeshBounds mierzy zapisane LOD0; culling bounds Nanite są konserwatywne.
 
+
+Aktualizacja 16:35 UTC: native QA 37 zasobów i kontrakt 32 aktorów PASS.
+Wszystkie 7 faz mapy PASS. 1654 instancje, 31 HISM, 1169968 trójkątów,
+1525 kolizji — limit 1,6 mln zachowany. Trwa sesja 35586: D3D12 diagnostics,
+potem StartLocationSmoke. Oceniać tylko świeże capture.json/18 PNG, sprawdzić
+32 basis records i Start_Park. Eksport explicit rozpoznawany przez report,
+starsze FBX zachowują normalne i wyliczają brakujące tangenty; 2 takie assety
+nadodrze ponownie zaimportowane PASS. Końcowy obraz/baza nadal przed oceną.
 ## Do zrobienia
 Dokończyć import 8 nowych + 1 korekty tangentów. Native QA 37 assets/32 aktorów,
 odtworzyć mapę, 18 ujęć i pomiar bufora, zwykłe chodzenie. Dowody i merge #169.

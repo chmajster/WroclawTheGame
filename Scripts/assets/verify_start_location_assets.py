@@ -16,7 +16,10 @@ try:
         path='/Game/Wroclaw/StartLocation/'+record['area']+'/SM_wtg_start_'+record['asset'].replace('-','_')
         mesh=unreal.load_asset(path)
         if not isinstance(mesh,unreal.StaticMesh):raise RuntimeError('Missing production mesh '+path)
-        bounds=mesh.get_bounds();actual=[2*bounds.box_extent.x,2*bounds.box_extent.y,2*bounds.box_extent.z]
+        # Nanite render bounds are conservative. Certify imported geometry,
+        # not its enlarged culling box, against the source metre dimensions.
+        bounds=unreal.GeoMeshLibrary.get_authored_mesh_bounds(mesh,0)
+        actual=[bounds.max.x-bounds.min.x,bounds.max.y-bounds.min.y,bounds.max.z-bounds.min.z]
         if any(abs(a-b*100)>max(.5,b) for a,b in zip(actual,record['bounds_m'])):raise RuntimeError('Metric bounds mismatch '+path)
         slots=list(mesh.get_editor_property('static_materials'))
         names=[str(s.get_editor_property('imported_material_slot_name')) for s in slots]

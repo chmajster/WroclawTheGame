@@ -25,7 +25,7 @@ def clean_name(value: str) -> str:
     return re.sub(r"[^A-Za-z0-9_]+", "_", value).strip("_")
 
 
-def import_task(filename: Path, destination: str, static_mesh: bool = False, name=None):
+def import_task(filename: Path, destination: str, static_mesh: bool = False, name=None, explicit_tangents=False):
     task = unreal.AssetImportTask()
     task.set_editor_property("filename", str(filename))
     task.set_editor_property("destination_path", destination)
@@ -61,7 +61,8 @@ def import_task(filename: Path, destination: str, static_mesh: bool = False, nam
         # Blender exports explicit per-corner normals and tangent space.
         # Preserve it instead of averaging opposing UV directions at shared
         # architectural seams (observed zero tangents in a real native buffer).
-        static_options.set_editor_property("normal_import_method",unreal.FBXNormalImportMethod.FBXNIM_IMPORT_NORMALS_AND_TANGENTS)
+        method=unreal.FBXNormalImportMethod.FBXNIM_IMPORT_NORMALS_AND_TANGENTS if explicit_tangents else unreal.FBXNormalImportMethod.FBXNIM_IMPORT_NORMALS
+        static_options.set_editor_property("normal_import_method",method)
         task.set_editor_property("options", options)
     unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
     imported = list(task.get_editor_property("imported_object_paths") or [])
@@ -138,13 +139,13 @@ def create_material(asset_id: str, destination: str, textures: dict):
     return material
 
 
-def configure_lods(base_mesh, generated: Path, mesh_name: str, destination: str, lod_count: int):
+def configure_lods(base_mesh, generated: Path, mesh_name: str, destination: str, lod_count: int, explicit_tangents=False):
     subsystem = unreal.get_editor_subsystem(unreal.StaticMeshEditorSubsystem)
     integrated = [0]
     temp_root = f"/Game/_PipelineTemp/{clean_name(mesh_name)}"
     for index in range(1, lod_count):
         lod_file = generated / f"{mesh_name}_LOD{index}.fbx"
-        source = first_asset(import_task(lod_file, temp_root, True), unreal.StaticMesh)
+        source = first_asset(import_task(lod_file, temp_root, True,explicit_tangents=explicit_tangents), unreal.StaticMesh)
         # Match the render source's slot order using the same interfaces before
         # attaching a LOD. Reimport retains authored materials on the base while
         # temporary FBX meshes get defaults; UE would append duplicate slots.
@@ -196,7 +197,8 @@ def prepare(manifest_value=None) -> None:
     # Build a fresh pipeline product in isolation, then replace the manifest's
     # stable package path. Never depend on old per-user FBX import state.
     stage=f"/Game/_PipelineTemp/Import_{clean_name(asset_id)}_{uuid.uuid4().hex}"
-    base_mesh = first_asset(import_task(base_file, stage, True, mesh_name), unreal.StaticMesh)
+    explicit_tangents=blender_report.get('tangent_space')=='explicit'
+    base_mesh = first_asset(import_task(base_file, stage, True, mesh_name,explicit_tangents), unreal.StaticMesh)
 
     expected_path = f"{destination}/{mesh_name}"
     current_path = base_mesh.get_path_name().split(".")[0]
@@ -262,7 +264,7 @@ def prepare(manifest_value=None) -> None:
     # Set real, distinct interfaces before UE's LOD copy. Its implementation
     # matches by interface identity; assigning later collapses all default-grid
     # sections onto slot zero even when source material names are different.
-    integrated_lods=configure_lods(base_mesh,generated,mesh_name,destination,len(manifest['lod']['ratios']))
+    integrated_lods=configure_lods(base_mesh,generated,mesh_name,destination,len(manifest['lod']['ratios']),explicit_tangents)
     actual_lod_count=mesh_subsystem.get_lod_count(base_mesh)
     expected_lod_count=len(manifest['lod']['ratios'])
     if actual_lod_count!=expected_lod_count:raise RuntimeError('Unexpected Unreal LOD count')
