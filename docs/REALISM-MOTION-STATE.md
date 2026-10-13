@@ -14,13 +14,23 @@ dotychczasowy manifest zakończył się PASS dla siedmiu siatek. Katalog wskazuj
 natywną klasę, blendspace używa nowego idle. Budowa ciała deformuje też ubranie.
 Dodano WTG.CivilianMotionSmoke: rzeczywiste wejście ruchu, obrót, sprint,
 kucanie/skok, próbki stóp/kamery i zrzuty na mapie startowej bez zapisu zmian.
+Pierwszy rzeczywisty test ujawnił zmianę skali kości przez FBX idle i błędne
+jednostki przesunięcia miednicy w retargetingu. Poprawiono normalizację względem
+bind pose; oryginalny import idle pozostaje osobnym źródłem dla powtarzalnego
+retargetu. Kadencję wyznacza medianowa prędkość stopy w fazie podporu: walk
+98,76 cm/s, jog 563,13 cm/s. Pochodny sprint używa dopasowanego cyklu run,
+bo oryginalny sprint wymagał nieprawidłowego przyspieszenia 5,45×.
+Foot IK blokuje kontakt poziomy podczas podporu, zwalnia stopę w fazie wymachu.
+Smoke rozszerzono o kontrolę bounds, zapadnięcia stóp oraz zgodność wag morphów
+w siedmiu częściach dla Heavy/Slim, po czym odtwarza pierwotny wygląd.
 
 ## Do zrobienia
-Zbudować nowy smoke i sprawdzić jego wyniki oraz rzeczywiste zrzuty.
+Zbudować rozszerzony smoke i sprawdzić jego wyniki oraz rzeczywiste zrzuty.
 Skorygować konkretne błędy deformacji/kontaktu stóp. Potwierdzić morphy ubrań.
 
 ## Następny krok
-Sprawdzić Saved/Realism/build-motion-smoke.log, uruchomić grę na
+Sprawdzić Saved/Realism/motion-game-2.log oraz zrzuty po normalizacji.
+Zbudować rozszerzony Tests/CivilianMotionSmoke.cpp; uruchomić grę na
 /Game/Maps/Nadodrze_Playable z ExecCmds=WTG.CivilianMotionSmoke i RenderOffscreen.
 Odczytać Saved/Realism/motion/motion.json i obejrzeć dziesięć prawdziwych PNG.
 

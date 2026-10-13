@@ -172,6 +172,14 @@ void UCharacterAppearanceComponent::Render()
             return FMath::Clamp(Value,-1.f,1.f);
         };
         for (const auto& M:Catalog->Morphs) Face->SetMorphTarget(M.MorphTargetName,MorphValue(M.MorphID));
+        auto BodyMorphs=[&](USkeletalMeshComponent* Component){
+            for(const auto& Target:Component->GetSkeletalMeshAsset()->GetMorphTargets())if(Target)
+                for(FName ID:{FName(TEXT("Body.Weight")),FName(TEXT("Body.Muscle"))}){
+                    const FString Suffix=ID.ToString().Replace(TEXT("."),TEXT("_"));
+                    if(Target->GetName()==Suffix || Target->GetName().EndsWith(TEXT("_")+Suffix))Component->SetMorphTarget(Target->GetFName(),MorphValue(ID));
+                }
+        };
+        BodyMorphs(BodyMesh);
         for (FName Build:{FName(TEXT("Slim")),FName(TEXT("Average")),FName(TEXT("Athletic")),FName(TEXT("Heavy"))})
             if(BodyMesh->GetSkeletalMeshAsset()->FindMorphTarget(FName(*(TEXT("Body_")+Build.ToString()))))
                 BodyMesh->SetMorphTarget(FName(*(TEXT("Body_")+Build.ToString())),Build==Appearance.BodyBuild?1.f:0.f);
@@ -217,6 +225,7 @@ void UCharacterAppearanceComponent::Render()
                     for(const auto& Target:PartMesh->GetMorphTargets())if(Target && (Target->GetName()==Suffix || Target->GetName().EndsWith(TEXT("_")+Suffix)))
                         Skeletal->SetMorphTarget(Target->GetFName(),MorphValue(Morph.MorphID));
                 }
+                BodyMorphs(Skeletal);
             }
             for (int32 I=0; I<Part->GetNumMaterials(); ++I)
             {

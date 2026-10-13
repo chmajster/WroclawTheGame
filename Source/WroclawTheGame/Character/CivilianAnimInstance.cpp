@@ -22,6 +22,9 @@ struct FCivilianAnimProxy final : FAnimSingleNodeInstanceProxy
     float Dt=0,TransitionAge=1,Offsets[2]={0,0},Floor=0;
     int32 Serial=0,LastSerial=0;
     TArray<FTransform> PreviousPose;
+    FVector LastFoot[2]={FVector::ZeroVector,FVector::ZeroVector},PlantedPoint[2]={FVector::ZeroVector,FVector::ZeroVector};
+    bool Planted[2]={false,false},HasLastFoot=false;
+    float Speed=0;
 
     virtual void PreUpdate(UAnimInstance* Instance,float DeltaSeconds) override
     {
@@ -33,6 +36,7 @@ struct FCivilianAnimProxy final : FAnimSingleNodeInstanceProxy
         Normal[0]=Civilian->LeftNormal;Normal[1]=Civilian->RightNormal;
         Contact[0]=Civilian->bLeftContact;Contact[1]=Civilian->bRightContact;
         Grounded=Civilian->bGrounded;Floor=Civilian->FloorZ;Serial=Civilian->TransitionSerial;Dt=DeltaSeconds;
+        Speed=Civilian->GroundSpeed;
         Forward=MeshToWorld.InverseTransformVectorNoScale(Mesh->GetOwner()->GetActorForwardVector()).GetSafeNormal();
     }
     virtual void PostUpdate(UAnimInstance* Instance) const override
@@ -82,7 +86,14 @@ struct FCivilianAnimProxy final : FAnimSingleNodeInstanceProxy
             Weight[Side]=Grounded && Contact[Side]?1-FMath::Clamp((Raw.Z-Floor-Sole[Side]-4)/10,0.f,1.f):0;
             const float Target=Weight[Side]*FMath::Clamp(Ground[Side].Z+Sole[Side]-Raw.Z,-22.f,22.f);
             Offsets[Side]=FMath::FInterpTo(Offsets[Side],Target,Dt,18);
+            const auto Local=Component[Foot.GetInt()].GetLocation();
+            const float Backward=HasLastFoot && Dt>0?FVector::DotProduct(Local-LastFoot[Side],Forward)*Scale/Dt:0;
+            const bool Stance=Weight[Side]>.8f && Speed>25 && Backward<-10;
+            if(!Stance || FVector::Dist2D(Raw,PlantedPoint[Side])>35)Planted[Side]=false;
+            if(Stance && !Planted[Side]){Planted[Side]=true;PlantedPoint[Side]=Raw;}
+            LastFoot[Side]=Local;
         }
+        HasLastFoot=true;
         if(Grounded){
             const float PelvisOffset=FMath::Clamp(FMath::Min(Offsets[0],Offsets[1]),-10.f,0.f)/Scale;
             Output.Pose[Pelvis].AddToTranslation(FVector(0,0,PelvisOffset));BuildComponent();
@@ -93,6 +104,7 @@ struct FCivilianAnimProxy final : FAnimSingleNodeInstanceProxy
             if(!Thigh.IsValid() || !Calf.IsValid() || !Foot.IsValid())continue;
             auto Root=Component[Thigh.GetInt()],Joint=Component[Calf.GetInt()],End=Component[Foot.GetInt()];
             FVector Target=MeshToWorld.TransformPosition(End.GetLocation());Target.Z=Ground[Side].Z+Sole[Side];
+            if(Planted[Side]){Target.X=PlantedPoint[Side].X;Target.Y=PlantedPoint[Side].Y;}
             Target=MeshToWorld.InverseTransformPosition(Target);
             // Clamp reach to ordinary curb-sized corrections; no leg stretching.
             const float Correction=FMath::Clamp(Target.Z-End.GetLocation().Z,-22.f/Scale,22.f/Scale);
