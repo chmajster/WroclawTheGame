@@ -44,13 +44,17 @@ try:
         mesh=component.get_editor_property('static_mesh')
         if mesh.get_name()!='SM_wtg_start_'+c['asset'].replace('-','_'):raise RuntimeError('Placeholder restored '+label)
         if not meshes.get_nanite_settings(mesh).enabled:raise RuntimeError('Architecture Nanite missing '+label)
-        bounds=mesh.get_bounds();top=actual.z+bounds.origin.z+bounds.box_extent.z
+        bounds=mesh.get_bounds()
+        authored=unreal.GeoMeshLibrary.get_authored_mesh_bounds(mesh,0)
+        top=actual.z+authored.max.z
         maximum=origin[2]+c['height_m']*100
-        if top>maximum+.2 or top<maximum-10:raise RuntimeError('Source roof height changed '+label)
+        if top>maximum+.2 or top<maximum-10:raise RuntimeError('Source roof height changed '+str(dict(actor=label,actual_top=top,maximum=maximum)))
         hulls=meshes.get_simple_collision_count(mesh)+meshes.get_convex_collision_count(mesh)
         if hulls!=record['collision_shapes']:raise RuntimeError('Wall collision missing '+label)
         report.append(dict(actor=label,mesh=mesh.get_path_name(),position_cm=position,
-            source_roof_max_cm=maximum,actual_roof_top_cm=top,nanite=True,collision_hulls=hulls))
+            source_roof_max_cm=maximum,actual_roof_top_cm=top,
+            conservative_culling_top_cm=actual.z+bounds.origin.z+bounds.box_extent.z,
+            nanite=True,collision_hulls=hulls))
     result=dict(status='PASS',map='/Game/Maps/Nadodrze_Playable',primary=len(source['buildings']),
         context=len(source.get('context_buildings',[])),actors=report,cameras=camera_report,
         limits='Source geometry/placement contract; facade interpretation is not a surveyed reconstruction. Visual/runtime evidence is separate.')

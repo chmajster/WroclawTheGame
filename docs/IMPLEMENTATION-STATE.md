@@ -12,6 +12,12 @@ geometrii/dzielnicy + 4 kontrakty dachów i obrysów PASS. GIS: 440 komórek,
 Nowa kamera elewacji i 6 widoków diagnostycznych na właściwej mapie.
 Kontrola pozycji/wysokości/Nanite/liczby aktorów oraz renderowanych tangentów.
 
+
+Aktualizacja natywna: regeneracja mapy i kontrakt 24 aktorów PASS. 1654 instancje,
+31 HISM, 1002018 trójkątów, 1424 kolizje. GetAuthoredMeshBounds mierzy zapisane
+wierzchołki LOD0; bounds Nanite do cullingu są konserwatywne, nie wysokością dachu.
+Trwa D3D12 WTG.RealismDiagnostics, sesja 47830, architecture-game-diagnostics.log.
+Po zakończeniu ocenić 18 PNG i architecture_render_basis, potem StartLocationSmoke.
 ## Do zrobienia
 Regeneracja mapy i kontrola aktorów; 18 rzeczywistych ujęć i normalna rozgrywka.
 Sprawdzić renderowane tangenty: import ostrzega o prawie zerowych tangentach

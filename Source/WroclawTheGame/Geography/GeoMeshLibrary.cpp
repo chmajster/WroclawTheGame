@@ -9,6 +9,18 @@
 #include "Misc/PackageName.h"
 #include "UObject/Package.h"
 #endif
+FBox UGeoMeshLibrary::GetAuthoredMeshBounds(UStaticMesh* Mesh,int32 LodIndex)
+{
+    FBox Bounds(ForceInit);
+#if WITH_EDITOR
+    if(Mesh && LodIndex>=0 && LodIndex<Mesh->GetNumSourceModels())
+        if(const FMeshDescription* Description=Mesh->GetMeshDescription(LodIndex)){
+            const auto Positions=Description->GetVertexPositions();
+            for(const FVertexID Vertex:Description->Vertices().GetElementIDs())Bounds+=FVector(Positions[Vertex]);
+        }
+#endif
+    return Bounds;
+}
 UStaticMesh *UGeoMeshLibrary::BakeMesh(const FString &Path, const TArray<FVector> &Vertices,
                                        const TArray<int32> &Triangles)
 {
