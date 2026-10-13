@@ -130,7 +130,8 @@ void AWTGDayNightEnvironment::ApplyEnvironmentState()
     SunLight->SetLightColor(FLinearColor::LerpUsingHSV(HorizonSun, NoonSun, Daylight));
     MoonLight->SetLightColor(FLinearColor(0.54f, 0.65f, 1.0f));
 
-    SkyLight->SetIntensity(FMath::Lerp(0.06f, 1.1f, Daylight));
+    // Moderate sky fill keeps stone/cloth readable in ordinary street shade.
+    SkyLight->SetIntensity(FMath::Lerp(0.06f, 1.65f, Daylight));
     HeightFog->SetFogDensity(FMath::Lerp(NightFogDensity, DayFogDensity, Daylight));
 
     SetMaterialScalar(TEXT("TimeOfDay01"), TimeOfDayHours / 24.0f);

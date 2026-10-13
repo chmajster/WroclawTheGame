@@ -22,11 +22,13 @@ try:
         actual=[bounds.max.x-bounds.min.x,bounds.max.y-bounds.min.y,bounds.max.z-bounds.min.z]
         if any(abs(a-b*100)>max(.5,b) for a,b in zip(actual,record['bounds_m'])):raise RuntimeError('Metric bounds mismatch '+path)
         slots=list(mesh.get_editor_property('static_materials'))
+        manifest=json.loads((ROOT/'Pipeline/assets/start_location'/(record['asset']+'.asset.json')).read_text(encoding='utf-8'))
+        bindings={b['slot']:b['asset'] for b in manifest['materials']}
         names=[str(s.get_editor_property('imported_material_slot_name')) for s in slots]
         if names!=record['materials']:raise RuntimeError('Source/native material order mismatch '+str((path,names,record['materials'])))
-        for slot,name in zip(slots,record['materials']):
+        for i,(slot,name) in enumerate(zip(slots,record['materials'])):
             material=slot.get_editor_property('material_interface')
-            if not material or material.get_name()!='MI_'+name:raise RuntimeError('Material binding mismatch '+path)
+            if not material or material.get_path_name().split('.')[0]!=bindings[i]:raise RuntimeError('Material binding mismatch '+path)
         lods=subsystem.get_lod_count(mesh)
         if lods!=3:raise RuntimeError('Missing LOD '+path)
         sections=[]
