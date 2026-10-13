@@ -13,6 +13,7 @@
 #include "Misc/Paths.h"
 #include "Misc/FileHelper.h"
 #include "Serialization/JsonSerializer.h"
+#include "Tests/RealismCaptureReady.h"
 
 static FAutoConsoleCommandWithWorld GRealismDiagnostics(TEXT("WTG.RealismDiagnostics"),
  TEXT("Capture lit, unlit, wireframe, lighting, normals and collision on the real start map; exit."),
@@ -26,6 +27,7 @@ static FAutoConsoleCommandWithWorld GRealismDiagnostics(TEXT("WTG.RealismDiagnos
         auto* PC=UGameplayStatics::GetPlayerController(W,0);
         auto* P=Cast<ASliceCharacter>(UGameplayStatics::GetPlayerPawn(W,0));
         if(Elapsed<NextAt || !PC || !P || !P->Appearance || P->Appearance->bLoading || W->IsPaused())return true;
+        if(!WTGRealismCaptureReady()){NextAt=Elapsed+4;return true;}
         auto* Viewport=W->GetGameViewport();if(!Viewport)return true;
         const EViewModeIndex Modes[]={VMI_Lit,VMI_Unlit,VMI_Wireframe,VMI_LightingOnly,VMI_VisualizeBuffer,VMI_CollisionPawn};
         const TCHAR* Names[]={TEXT("lit"),TEXT("unlit"),TEXT("wireframe"),TEXT("lighting"),TEXT("normals"),TEXT("collision")};

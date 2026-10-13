@@ -21,6 +21,9 @@ def build():
     sector_path=ROOT/'Saved/PlayableDistrict/sector.json';sector=json.loads(sector_path.read_text(encoding='utf-8'))
     if district['anchors']['player']!=policy['player_anchor_cm']:raise ValueError('Start moved without policy review')
     config=json.loads((ROOT/'Data/playable_district.json').read_text(encoding='utf-8'))
+    geometry_path=ROOT/'SourceAssets/Models/Wroclaw/StartLocation/geometry.json'
+    geometry=json.loads(geometry_path.read_text(encoding='utf-8'))
+    drain_height=next(asset['bounds_m'][2]*100 for asset in geometry['assets'] if asset['asset']=='drain')
     geo=Geography(config['bbox'],SOURCE/'terrain'/f"{config['source_dataset']}.csv",config['origin_projected_m'])
     osm_path=SOURCE/'osm'/f"{config['source_dataset']}.osm.gz";provenance=metadata(osm_path)
     xml=gzip.decompress(source_bytes(osm_path))
@@ -52,14 +55,21 @@ def build():
         if radius:occupied.append((point,radius))
         items.append(dict(role=role,position_cm=[round(v,3) for v in p],yaw_deg=round(yaw,3),scale=list(scale),source=source));counts[role]+=1
     crossings=[Point(n['position_cm'][:2]) for n in nodes if n['tags'].get('highway')=='crossing']
+    curb_building_clearance=buildings.buffer(30)
     for line in getattr(paved.boundary.intersection(region),'geoms',[paved.boundary.intersection(region)]):
         if line.geom_type!='LineString':continue
-        for step in range(int(line.length/100)):
-            distance=(step+.5)*100;q=line.interpolate(distance);a=line.interpolate(max(0,distance-25));b=line.interpolate(min(line.length,distance+25))
-            if buildings.buffer(30).covers(q) or q.distance(region.boundary)<80:continue
+        for step in range(math.ceil(line.length/200)):
+            span=min(200,line.length-step*200)
+            distance=step*200+span*.5;q=line.interpolate(distance);a=line.interpolate(max(0,distance-25));b=line.interpolate(min(line.length,distance+25))
+            if curb_building_clearance.covers(q) or q.distance(region.boundary)<80:continue
             lowered=any(q.distance(c)<220 for c in crossings)
-            add('curb',[q.x,q.y,ground(q.x,q.y)-(12 if lowered else 1)],math.degrees(math.atan2(b.y-a.y,b.x-a.x)))
-            if step%24==12 and not lowered:add('drain',[q.x,q.y,ground(q.x,q.y)+8],math.degrees(math.atan2(b.y-a.y,b.x-a.x)))
+            add('curb',[q.x,q.y,ground(q.x,q.y)-(12 if lowered else 1)],math.degrees(math.atan2(b.y-a.y,b.x-a.x)),(span/200,1,1))
+            if step%12==6 and not lowered:
+                dx,dy=b.x-a.x,b.y-a.y;norm=max(1,math.hypot(dx,dy))
+                nx,ny=-dy/norm,dx/norm
+                side=1 if paved.covers(Point(q.x+nx*30,q.y+ny*30)) else -1
+                x,y=q.x+nx*30*side,q.y+ny*30*side
+                add('drain',[x,y,ground(x,y)+8-drain_height+.2],math.degrees(math.atan2(dy,dx)))
     def nearest_road(p):return min(roads,key=lambda f:LineString([v[:2] for v in f['points']]).distance(Point(p[:2])))
     def tangent(f,p):
         line=LineString([v[:2] for v in f['points']]);d=line.project(Point(p[:2]));a=line.interpolate(max(0,d-50));b=line.interpolate(min(line.length,d+50))
@@ -102,19 +112,35 @@ def build():
                 c,s=math.cos(math.radians(yaw)),math.sin(math.radians(yaw))
                 footprint=Polygon([(x+u*c-v*s,y+u*s+v*c) for u,v in [(-225,-105),(225,-105),(225,105),(-225,105)]])
                 if region.covers(Point(x,y)) and not footprint.intersects(vehicle_paths) and not any(Point(x,y).distance(cross)<800 for cross in crossings):add('parked-car',[x,y,ground(x,y)+8],yaw,source=road['id']+':curbside-parking-estimate',radius=250)
-    # Real steel rail heads follow existing OSM rail centrelines, 1435 mm gauge.
+    # The production profile has a real head/web/flange. Gauge is measured
+    # between inner rail-head faces, not between the two profile centres.
     strips=[]
     for f in sector['features']:
-        if f['kind']!='rail':continue
-        for a,b in zip(f['points'],f['points'][1:]):
+        if f['kind']!='rail' or f['tags'].get('railway')!='tram':continue
+        line=LineString([p[:2] for p in f['points']]).intersection(region)
+        lines=list(getattr(line,'geoms',[line]))
+        for segment in lines:
+          if segment.geom_type!='LineString':continue
+          for a,b in zip(segment.coords,list(segment.coords)[1:]):
             dx,dy=b[0]-a[0],b[1]-a[1];length=math.hypot(dx,dy)
-            if length<1 or not LineString([a[:2],b[:2]]).intersects(region):continue
+            if length<1:continue
+            try:gauge=float(f['tags'].get('gauge','1435').split(';')[0])/10
+            except ValueError:gauge=143.5
+            steps=math.ceil(length/200)
             for side in (-1,1):
-                offset=71.75*side
-                strips.append([[a[0]-dy/length*(offset+w),a[1]+dx/length*(offset+w),a[2]+12] if j<2 else [b[0]-dy/length*(offset+w),b[1]+dx/length*(offset+w),b[2]+12] for j,w in enumerate([-1.7,1.7,1.7,-1.7])])
+                offset=(gauge+6.8)*.5*side
+                for step in range(steps):
+                    t=(step+.5)/steps;x=a[0]+dx*t-dy/length*offset;y=a[1]+dy*t+dx/length*offset
+                    ax=a[0]+dx*step/steps-dy/length*offset;ay=a[1]+dy*step/steps+dx/length*offset
+                    bx=ax+dx/steps;by=ay+dy/steps;za=ground(ax,ay);zb=ground(bx,by)
+                    # 18 cm profile is embedded below paving; head is 3 mm proud.
+                    items.append(dict(role='embedded-tram-rail',position_cm=[x,y,(za+zb)*.5+8.3-18],
+                        yaw_deg=math.degrees(math.atan2(dy,dx)),pitch_deg=math.degrees(math.atan2(zb-za,length/steps)),
+                        scale=[math.hypot(length/steps,zb-za)/100,1,1],source=f['id'],gauge_cm=gauge))
+                    counts['embedded-tram-rail']+=1
     # Continuous panel order: a-left, a-right, b-right, b-left.
     output=dict(schema_version=1,map=policy['map'],items=items,counts=dict(counts),rail_strips=strips,
-        source_nodes=nodes,source_files={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in [policy_path,district_path,sector_path,ROOT/'Data/start_location_buildings.json']},
+        source_nodes=nodes,source_files={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in [policy_path,district_path,sector_path,ROOT/'Data/start_location_buildings.json',geometry_path]},
         placement_accuracy='OSM nodes exact; curb follows source widths; supplemental vegetation/lighting/parking explicitly estimated; no invented traffic signals')
     if len(items)>policy['quality']['max_instances']:raise ValueError('Start instance budget exceeded')
     folder=ROOT/'Saved/StartLocation';folder.mkdir(parents=True,exist_ok=True)

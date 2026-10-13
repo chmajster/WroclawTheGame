@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "id": "wtg-start-street-bench",
+  "display_name": "street-bench",
+  "area": "start_location",
+  "type": "static_mesh",
+  "quality": "standard",
+  "source": {
+    "model": "SourceAssets/Models/Wroclaw/StartLocation/Props/street-bench.blend",
+    "license": "CC0-1.0; provenance in SourceAssets/Models/Wroclaw/StartLocation/infrastructure.json",
+    "reference_directory": null
+  },
+  "dimensions": {
+    "height_m": 0.866914
+  },
+  "mesh": {
+    "max_triangles": 50000,
+    "combine": true,
+    "generate_uv_if_missing": false
+  },
+  "lod": {
+    "ratios": [
+      1,
+      0.65,
+      0.35
+    ]
+  },
+  "collision": {
+    "mode": "simple",
+    "max_hulls": 2
+  },
+  "textures": {},
+  "materials": [
+    {
+      "slot": 0,
+      "asset": "/Game/FreeModels/PolyHaven/modular_street_seating/modular_street_seating_timber"
+    },
+    {
+      "slot": 1,
+      "asset": "/Game/FreeModels/PolyHaven/modular_street_seating/modular_street_seating_armrests"
+    },
+    {
+      "slot": 2,
+      "asset": "/Game/FreeModels/PolyHaven/modular_street_seating/modular_street_seating_supports"
+    }
+  ],
+  "unreal": {
+    "destination": "/Game/Wroclaw/StartLocation/Props",
+    "nanite": false,
+    "qa_map": "/Game/Maps/Nadodrze_Playable"
+  },
+  "qa": {
+    "automation_filter": "WTG.District",
+    "cameras": [
+      "StartLocation_Start_Street",
+      "StartLocation_Start_Park"
+    ],
+    "screenshot_width": 1280,
+    "screenshot_height": 720
+  }
+}

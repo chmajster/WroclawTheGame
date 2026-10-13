@@ -11,7 +11,7 @@
     "reference_directory": null
   },
   "mesh": {
-    "max_triangles": 18000,
+    "max_triangles": 512,
     "combine": true,
     "generate_uv_if_missing": false
   },
@@ -47,5 +47,8 @@
     ],
     "screenshot_width": 1280,
     "screenshot_height": 720
+  },
+  "dimensions": {
+    "height_m": 0.242
   }
 }

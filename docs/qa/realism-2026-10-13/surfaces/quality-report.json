@@ -1,0 +1,146 @@
+{
+  "status": "PASS",
+  "instances": 1654,
+  "hism_components": 31,
+  "instanced_lod0_triangles": 675609,
+  "native_collision_shapes": 1234,
+  "shared_texture_count": 21,
+  "texture_max_size": 2048,
+  "instance_cull_cm": [
+    18000,
+    26000
+  ],
+  "assets": [
+    {
+      "asset": "pomorska-45",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 47928
+    },
+    {
+      "asset": "pomorska-47",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 40561
+    },
+    {
+      "asset": "pomorska-43",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 37456
+    },
+    {
+      "asset": "courtyard-east",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 17529
+    },
+    {
+      "asset": "courtyard-west",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 4543
+    },
+    {
+      "asset": "nobla-3",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 18544
+    },
+    {
+      "asset": "paulinska-2a",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 34695
+    },
+    {
+      "asset": "pomorska-32",
+      "lod_screen_sizes": [
+        1.0,
+        0.2199999988079071,
+        0.05999999865889549
+      ],
+      "nanite": true,
+      "lod0_triangles": 46174
+    },
+    {
+      "asset": "curb",
+      "lod_screen_sizes": [
+        1.0,
+        0.1599999964237213,
+        0.03999999910593033
+      ],
+      "nanite": false,
+      "lod0_triangles": 48
+    },
+    {
+      "asset": "drain",
+      "lod_screen_sizes": [
+        1.0,
+        0.1599999964237213,
+        0.03999999910593033
+      ],
+      "nanite": false,
+      "lod0_triangles": 144
+    },
+    {
+      "asset": "bike-rack",
+      "lod_screen_sizes": [
+        1.0,
+        0.1599999964237213,
+        0.03999999910593033
+      ],
+      "nanite": false,
+      "lod0_triangles": 1424
+    },
+    {
+      "asset": "young-tree",
+      "lod_screen_sizes": [
+        1.0,
+        0.009999999776482582,
+        0.003000000026077032
+      ],
+      "nanite": false,
+      "lod0_triangles": 6008
+    },
+    {
+      "asset": "parked-car",
+      "lod_screen_sizes": [
+        1.0,
+        0.1599999964237213,
+        0.03999999910593033
+      ],
+      "nanite": false,
+      "lod0_triangles": 2176
+    }
+  ],
+  "limits": "Engineering budget, not measured GPU memory or FPS; map uses source cells/HISM, not World Partition."
+}

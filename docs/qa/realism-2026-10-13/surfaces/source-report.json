@@ -1,0 +1,32 @@
+{
+  "features": 2772,
+  "mesh_cells": 440,
+  "triangles": 280208,
+  "drive_route_m": 472.9,
+  "pedestrian_routes": 16,
+  "status": "SourceValidated",
+  "source_dataset": "wave1",
+  "anchors": {
+    "meeting": [
+      45624.12,
+      62875.94,
+      141.37
+    ],
+    "player": [
+      44611.8,
+      62830.93,
+      143.77
+    ],
+    "vehicle": [
+      48421.28,
+      64491.78,
+      170.37
+    ],
+    "delivery": [
+      59320.85,
+      87004.33,
+      114.01
+    ]
+  },
+  "source_sha256": "80688040c5c14ef62d180e7c2e90df0f553e1b0564f429d1bc217a6125e3c961"
+}

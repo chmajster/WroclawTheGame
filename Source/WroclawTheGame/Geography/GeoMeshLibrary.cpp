@@ -23,6 +23,8 @@ UStaticMesh *UGeoMeshLibrary::BakeMesh(const FString &Path, const TArray<FVector
     Attributes.Register();
     auto Positions = Attributes.GetVertexPositions();
     auto Normals = Attributes.GetVertexInstanceNormals();
+    auto Tangents = Attributes.GetVertexInstanceTangents();
+    auto BinormalSigns = Attributes.GetVertexInstanceBinormalSigns();
     auto UVs = Attributes.GetVertexInstanceUVs();
     UVs.SetNumChannels(1);
     TArray<FVertexID> IDs;
@@ -38,6 +40,14 @@ UStaticMesh *UGeoMeshLibrary::BakeMesh(const FString &Path, const TArray<FVector
         const FVector Normal = FVector::CrossProduct(Vertices[Triangles[I + 1]] - Vertices[Triangles[I]],
                                                      Vertices[Triangles[I + 2]] - Vertices[Triangles[I]])
                                    .GetSafeNormal();
+        // Project walls in their dominant plane, not XY (which collapses
+        // their UVs). Explicit orthogonal tangents also remain stable on
+        // tiny triangles produced at exact sector boundaries.
+        const FVector UAxis = FMath::Abs(Normal.Z)>.5f || FMath::Abs(Normal.Y)>=FMath::Abs(Normal.X)
+            ? FVector::ForwardVector : FVector::RightVector;
+        const FVector VAxis = FMath::Abs(Normal.Z)>.5f ? FVector::RightVector : FVector::UpVector;
+        const FVector Tangent=FVector::VectorPlaneProject(UAxis,Normal).GetSafeNormal();
+        const float Sign=FVector::DotProduct(FVector::CrossProduct(Normal,Tangent),VAxis)>=0 ? 1.f : -1.f;
         TArray<FVertexInstanceID> Instances;
         for (int32 J = 0; J < 3; J++)
         {
@@ -46,7 +56,10 @@ UStaticMesh *UGeoMeshLibrary::BakeMesh(const FString &Path, const TArray<FVector
             const int32 Index = Triangles[I + (J==1?2:(J==2?1:0))];
             const FVertexInstanceID Instance = Description.CreateVertexInstance(IDs[Index]);
             Normals[Instance] = FVector3f(Normal);
-            UVs.Set(Instance, 0, FVector2f(Vertices[Index].X / 400, Vertices[Index].Y / 400));
+            Tangents[Instance] = FVector3f(Tangent);
+            BinormalSigns[Instance] = Sign;
+            UVs.Set(Instance, 0, FVector2f(FVector::DotProduct(Vertices[Index],UAxis)/400,
+                                         FVector::DotProduct(Vertices[Index],VAxis)/400));
             Instances.Add(Instance);
         }
         Description.CreatePolygon(Group, Instances);
@@ -59,7 +72,7 @@ UStaticMesh *UGeoMeshLibrary::BakeMesh(const FString &Path, const TArray<FVector
     // independently of the raster winding conversion during editor rebuilds.
     Mesh->SetNumSourceModels(1);
     Mesh->GetSourceModel(0).BuildSettings.bRecomputeNormals = false;
-    Mesh->GetSourceModel(0).BuildSettings.bRecomputeTangents = true;
+    Mesh->GetSourceModel(0).BuildSettings.bRecomputeTangents = false;
     UStaticMesh::FBuildMeshDescriptionsParams Params;
     Params.bBuildSimpleCollision = false;
     Params.bFastBuild = false;

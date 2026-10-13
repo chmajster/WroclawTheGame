@@ -1,0 +1,66 @@
+{
+  "height_cm": 24.20000206630482,
+  "bounds_cm": [
+    199.0,
+    16.000003814697266,
+    24.20000206630482
+  ],
+  "material_slots": 1,
+  "material_bindings": {
+    "0": "/Game/Wroclaw/StartLocation/Materials/MI_Stone"
+  },
+  "asset_id": "wtg-start-curb",
+  "mesh": "/Game/Wroclaw/StartLocation/Roads/SM_wtg_start_curb",
+  "lods": [
+    0,
+    1,
+    2
+  ],
+  "expected_lods": 3,
+  "unreal_lod_count": 3,
+  "nanite": false,
+  "textures": {},
+  "material": null,
+  "collision": "simple",
+  "collision_count": 1,
+  "blender_report": {
+    "asset_id": "wtg-start-curb",
+    "source": "D:\\Github\\WroclawTheGame-realism\\SourceAssets\\Models\\Wroclaw\\StartLocation\\Roads\\curb.blend",
+    "mesh_name": "SM_wtg_start_curb",
+    "lod0_triangles": 48,
+    "max_triangles": 512,
+    "lods": [
+      {
+        "lod": 0,
+        "ratio": 1.0,
+        "triangles": 48
+      },
+      {
+        "lod": 1,
+        "ratio": 0.55,
+        "triangles": 26
+      },
+      {
+        "lod": 2,
+        "ratio": 0.22,
+        "triangles": 10
+      }
+    ],
+    "collision": "simple",
+    "collision_shapes": 1,
+    "bounds_m": [
+      1.9900000095367432,
+      0.1599999964237213,
+      0.24199999868869781
+    ],
+    "uv_layers": 1,
+    "material_slots": 1,
+    "exports": [
+      "SM_wtg_start_curb_LOD0.fbx",
+      "SM_wtg_start_curb_LOD1.fbx",
+      "SM_wtg_start_curb_LOD2.fbx"
+    ],
+    "status": "PASS"
+  },
+  "status": "PASS"
+}

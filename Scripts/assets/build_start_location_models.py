@@ -173,9 +173,12 @@ def building(config):
 
 
 def curb():
-    m=Mesh();m.box((0,0,.115),(1,.16,.23),1)
+    m=Mesh()
     # Chamfered top lip, one-centimetre joints separate neighbouring pieces.
-    m.box((0,-.005,.236),(.98,.13,.012),1)
+    # Batch two real metre-long stones rather than stretch one stone to 2 m.
+    for x in (-.5,.5):
+        m.box((x,0,.115),(.99,.16,.23),1)
+        m.box((x,-.005,.236),(.98,.13,.012),1)
     return m,[]
 
 

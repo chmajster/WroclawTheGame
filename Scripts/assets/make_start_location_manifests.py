@@ -20,6 +20,9 @@ def main():
             textures={},materials=[dict(slot=i,asset='/Game/Wroclaw/StartLocation/Materials/MI_'+name) for i,name in enumerate(asset['materials'])],
             unreal=dict(destination='/Game/Wroclaw/StartLocation/'+asset['area'],nanite=building,qa_map='/Game/Maps/Nadodrze_Playable'),
             qa=dict(automation_filter='WTG.District',cameras=['StartLocation_Start_Player','StartLocation_Start_Street','StartLocation_Start_Park'],screenshot_width=1280,screenshot_height=720))
+        if asset['asset']=='curb':
+            manifest['mesh']['max_triangles']=512
+            manifest['dimensions']={'height_m':round(asset['bounds_m'][2],6)}
         (output/(asset['asset']+'.asset.json')).write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
     print('START_MANIFESTS_PASS',len(data['assets']))
 

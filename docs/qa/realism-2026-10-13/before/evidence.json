@@ -1,17 +1,23 @@
 {
-  "source_commit": "939d86d",
-  "engine": "5.8.2",
-  "map": "/Game/Maps/Nadodrze_Playable",
-  "native_components": 822,
-  "non_nanite_components": 733,
-  "missing_packages": 0,
-  "screenshot_sha256": {
-    "street_lit.png": "1bc82d63a51be1116c039c002d4609794c671f7e054d4f3ee17598ce8732338f",
-    "park_lit.png": "7047ddf15dd3d430f7ee9e30e3c3228a745fc4bc4cf54ee66379614081e08e03",
-    "park_unlit.png": "f98ea47396ed8b7758018b7b7faa16758de7b66ffeab3a609f9cff1b48b19baf",
-    "park_wireframe.png": "1eb1c36afe8b5b54261c6b07d25b39c6ef1b562e73fc8de0f84cfeeeeb983a35",
-    "park_normals.png": "64f014e5b259aa57cfd7e5d0614961a05e100cf0dac25d0d60837ba29a51a484",
-    "park_collision.png": "ba727ff6983624ab34b1624b913792a6fe3b197fe030ac168cc7f0670b7e6bc1"
-  },
-  "note": "Read-only inherited generated map, main source in isolated worktree; final warmed captures. Marking queue reproduced in earlier cold diagnostic run. No FPS claim."
+    "source_commit":  "939d86d",
+    "engine":  "5.8.2",
+    "map":  "/Game/Maps/Nadodrze_Playable",
+    "native_components":  822,
+    "non_nanite_components":  733,
+    "missing_packages":  0,
+    "screenshot_sha256":  {
+                              "park_collision.png":  "ba727ff6983624ab34b1624b913792a6fe3b197fe030ac168cc7f0670b7e6bc1",
+                              "park_lighting.png":  "35c97fcee35076aac1ba8cdf4988b5516df0fb3170dd940e361697fb43fe6042",
+                              "park_lit.png":  "7047ddf15dd3d430f7ee9e30e3c3228a745fc4bc4cf54ee66379614081e08e03",
+                              "park_normals.png":  "64f014e5b259aa57cfd7e5d0614961a05e100cf0dac25d0d60837ba29a51a484",
+                              "park_unlit.png":  "f98ea47396ed8b7758018b7b7faa16758de7b66ffeab3a609f9cff1b48b19baf",
+                              "park_wireframe.png":  "1eb1c36afe8b5b54261c6b07d25b39c6ef1b562e73fc8de0f84cfeeeeb983a35",
+                              "street_collision.png":  "d17be677c79f5c5ebbed928e79b22e00a8ed14d4538f7dda413adb7100ee65b2",
+                              "street_lighting.png":  "2b507ac7d0ce83f19e867ccd103b5d44a04cd6ff77ad43aa9ea15aacd4030742",
+                              "street_lit.png":  "1bc82d63a51be1116c039c002d4609794c671f7e054d4f3ee17598ce8732338f",
+                              "street_normals.png":  "13df8d9d38957d3afa1ff0a8f7439042c0cb6c33bede3050ad68a84f7a5ac611",
+                              "street_unlit.png":  "7bb9dff1e8bc1070701e00c98f97bd575012b35d88bc65bf2956f5ebed019662",
+                              "street_wireframe.png":  "d4abab9c235a839218b452969fb91640a43e2294868bcd9291915a91ce5f5fc0"
+                          },
+    "note":  "Read-only inherited generated map, main source in isolated worktree; final warmed captures. Marking queue reproduced in earlier cold diagnostic run. No FPS claim."
 }
