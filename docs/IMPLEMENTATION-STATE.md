@@ -1,3 +1,19 @@
+# Realizm — strumień 1/10
+
+## Wykonane
+Audyt źródłowy i natywny: UE 5.8.2, mapa Nadodrze_Playable, zakres 100 m. Wykryto nadpisywanie ciała przez importer, płaską wysokość zieleni i komórki większe niż deklarowany sektor. Wykonano izolowany build i 12 świeżych kadrów gry (Lit, Unlit, Wireframe, oświetlenie, normalne, kolizje). Natywny audyt: 822 komponenty, 733 non-Nanite; zero brakujących pakietów. Dokładny komunikat VSM odtworzono w zimnym przebiegu. Dowody: docs/qa/realism-2026-10-13/before. Raport: docs/REALISM-REBUILD.md.
+
+## Do zrobienia
+Nic w zakresie rozpoznania źródeł i dostępnej mapy. Cała przebudowa pozostaje w punktach 2–10, w kolejnych osobnych PR.
+
+## Następny krok
+Scalić zakończony PR #165. Następnie utworzyć z main gałąź punktu 2 i wdrożyć ocenione źródła MakeHuman, cywilne ubranie i włosy z oficjalnej paczki CC0. Narzędzia pobierania i źródła referencyjne są obecnie tylko w Saved/Realism; nie są wdrożonymi assetami.
+
+## Stan
+Punkt 1 zakończony. Całe zadanie w toku. Nie uruchamiano CI. Oryginalny screen nie został załączony; nie ustalono jednoznacznie tożsamości opisanego poziomego elementu i nie usunięto infrastruktury.
+
+# Wcześniejsze zadania
+
 # Kreator postaci — bieżący stan
 
 ## Wykonane
