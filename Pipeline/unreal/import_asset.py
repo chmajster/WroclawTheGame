@@ -171,6 +171,11 @@ def prepare(manifest_value=None) -> None:
         raise RuntimeError("WTG_ASSET_MANIFEST is not set")
     manifest_path = project_path(manifest_value)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest['type']=='skeletal_mesh':
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('wtg_skeletal_import',project_path(manifest['skeletal']['importer']))
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        return module.prepare(manifest)
     asset_id = manifest["id"]
     mesh_name = "SM_" + clean_name(asset_id)
     generated = ROOT / "Saved" / "Pipeline" / "generated" / asset_id

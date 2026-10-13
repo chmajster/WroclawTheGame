@@ -6,3 +6,6 @@ Data/processed/** linguist-generated=true
 # Preserve source bytes: terrain provenance hashes must survive Windows checkout.
 Data/source/**/*.csv -text
 Data/source/**/*.osm.gz.part* -text
+
+# Graphical source hashes must survive Windows checkout unchanged.
+SourceAssets/Characters/MakeHuman/** -text
