@@ -165,8 +165,16 @@ void UCharacterAppearanceComponent::Render()
         if (B->FaceAnimationClass.Get()) { if (FaceMesh->GetAnimClass()!=B->FaceAnimationClass.Get()) FaceMesh->SetAnimInstanceClass(B->FaceAnimationClass.Get()); }
         else FaceMesh->SetLeaderPoseComponent(BodyMesh);
         auto* Face=B->FaceMesh.Get()?FaceMesh.Get():BodyMesh.Get(); Face->ClearMorphTargets();
-        for (const auto& M:Catalog->Morphs) Face->SetMorphTarget(M.MorphTargetName,Appearance.FaceMorphs.FindRef(M.MorphID));
-        for (FName Build:{FName(TEXT("Slim")),FName(TEXT("Average")),FName(TEXT("Athletic")),FName(TEXT("Heavy"))}) BodyMesh->SetMorphTarget(FName(*(TEXT("Body_")+Build.ToString())),Build==Appearance.BodyBuild?1.f:0.f);
+        auto MorphValue=[&](FName ID){
+            float Value=Appearance.FaceMorphs.FindRef(ID);
+            if(ID==TEXT("Body.Weight"))Value+=Appearance.BodyBuild==TEXT("Slim")?-.2f:(Appearance.BodyBuild==TEXT("Heavy")?.25f:0.f);
+            if(ID==TEXT("Body.Muscle") && Appearance.BodyBuild==TEXT("Athletic"))Value+=.3f;
+            return FMath::Clamp(Value,-1.f,1.f);
+        };
+        for (const auto& M:Catalog->Morphs) Face->SetMorphTarget(M.MorphTargetName,MorphValue(M.MorphID));
+        for (FName Build:{FName(TEXT("Slim")),FName(TEXT("Average")),FName(TEXT("Athletic")),FName(TEXT("Heavy"))})
+            if(BodyMesh->GetSkeletalMeshAsset()->FindMorphTarget(FName(*(TEXT("Body_")+Build.ToString()))))
+                BodyMesh->SetMorphTarget(FName(*(TEXT("Body_")+Build.ToString())),Build==Appearance.BodyBuild?1.f:0.f);
         for (auto* Mesh:{BodyMesh.Get(),Face})
         {
             for (int32 I=0; I<Mesh->GetNumMaterials(); ++I)
@@ -207,7 +215,7 @@ void UCharacterAppearanceComponent::Render()
                 {
                     const FString Suffix=Morph.MorphID.ToString().Replace(TEXT("."),TEXT("_"));
                     for(const auto& Target:PartMesh->GetMorphTargets())if(Target && (Target->GetName()==Suffix || Target->GetName().EndsWith(TEXT("_")+Suffix)))
-                        Skeletal->SetMorphTarget(Target->GetFName(),Appearance.FaceMorphs.FindRef(Morph.MorphID));
+                        Skeletal->SetMorphTarget(Target->GetFName(),MorphValue(Morph.MorphID));
                 }
             }
             for (int32 I=0; I<Part->GetNumMaterials(); ++I)

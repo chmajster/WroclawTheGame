@@ -1,0 +1,13 @@
+{
+  "name": "A_CivilianIdle",
+  "source": "SourceAssets/Characters/WroclawHero/Animations/civilian-idle.blend",
+  "fbx": "SourceAssets/Characters/WroclawHero/Animations/civilian-idle.fbx",
+  "sha256": "93b518f52218f9114be0188b8c6e7eb3d54b90c791925220246085b21d73fc50",
+  "author": "WroclawTheGame contributors",
+  "license": "CC0-1.0",
+  "fps": 30,
+  "frames": 181,
+  "duration_seconds": 6,
+  "root_motion": false,
+  "skeleton": "SK_CivilianSkeleton"
+}

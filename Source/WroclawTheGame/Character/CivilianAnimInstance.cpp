@@ -67,10 +67,10 @@ struct FCivilianAnimProxy final : FAnimSingleNodeInstanceProxy
         const TCHAR* FootNames[]={TEXT("foot_l"),TEXT("foot_r")};
         float Sole[2]={0,0},Weight[2]={0,0};FVector SoleAxis[2];
         TArray<FTransform> Reference;Reference.SetNum(Count);
-        const auto& RefPose=Bones.GetRefPoseCompactArray();
         for(auto Bone:Output.Pose.ForEachBoneIndex()){
             auto Parent=Bones.GetParentBoneIndex(Bone);
-            Reference[Bone.GetInt()]=Parent.IsValid()?RefPose[Bone.GetInt()]*Reference[Parent.GetInt()]:RefPose[Bone.GetInt()];
+            const auto& RefPose=Bones.GetRefPoseTransform(Bone);
+            Reference[Bone.GetInt()]=Parent.IsValid()?RefPose*Reference[Parent.GetInt()]:RefPose;
         }
         const float Scale=FMath::Max(.1f,MeshToWorld.GetScale3D().Z);
         for(int32 Side=0;Side<2;++Side){
@@ -117,6 +117,7 @@ void UCivilianAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
     auto* Player=Cast<ASliceCharacter>(TryGetPawnOwner());auto* Mesh=GetSkelMeshComponent();
     if(!Player || !Mesh || !Player->Appearance)return;
     auto* Creator=GetWorld()->GetGameInstance()->GetSubsystem<UCharacterCreatorSubsystem>();
+    if(!Creator || !Creator->Catalog)return;
     const auto* Body=Creator->Catalog->Body(Player->Appearance->Appearance.BodyPreset);if(!Body)return;
     GroundSpeed=Player->GetVelocity().Size2D();bGrounded=Player->GetCharacterMovement()->IsMovingOnGround();
     const bool Falling=Player->GetCharacterMovement()->IsFalling(),Crouched=Player->bIsCrouched;

@@ -370,3 +370,5 @@ create('male');fabric_textures()
     'source_catalog':'Data/hero_source_catalog.json','license':'CC0-1.0 graphical derivation and original accessory',
     'assets':records},indent=2))
 print('WTG_HERO_MODELS_PASS',len(records))
+import runpy
+runpy.run_path(str(ROOT/'Scripts/assets/build_civilian_idle.py'),run_name='__main__')

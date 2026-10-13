@@ -203,6 +203,28 @@ def prepare(manifest):
         unreal.EditorAssetLibrary.save_loaded_asset(result,False);animation_cache[key]=result;return result
     body.mesh=hero;body.face_mesh=None;body.skin_material=mats['Skin'];body.reference_height=180;body.placeholder=False
     for field in ['creator_idle','walk','jog','crouch','locomotion','jump_loop']:body.set_editor_property(field,animation(original.get_editor_property(field)))
+    idle_metadata=json.loads((ROOT/'SourceAssets/Characters/WroclawHero/Animations/animations.json').read_text())
+    idle_source=ROOT/idle_metadata['fbx']
+    if hashlib.sha256(idle_source.read_bytes()).hexdigest()!=idle_metadata['sha256']:raise RuntimeError('Stale civilian idle export')
+    options=unreal.FbxImportUI();options.set_editor_property('import_mesh',False)
+    options.set_editor_property('import_animations',True);options.set_editor_property('skeleton',skeleton)
+    options.set_editor_property('mesh_type_to_import',unreal.FBXImportType.FBXIT_ANIMATION)
+    options.set_editor_property('original_import_type',unreal.FBXImportType.FBXIT_ANIMATION)
+    options.set_editor_property('automated_import_should_detect_type',False)
+    task=unreal.AssetImportTask();task.filename=str(idle_source);task.destination_path=DEST+'/Animations'
+    task.destination_name=idle_metadata['name'];task.automated=True;task.replace_existing=True;task.save=True
+    task.options=options;task.factory=unreal.FbxFactory();TOOLS.import_asset_tasks([task])
+    idle=unreal.load_asset(DEST+'/Animations/'+idle_metadata['name'])
+    if not isinstance(idle,unreal.AnimSequence):raise RuntimeError('Authored civilian idle import failed: '+str(task.imported_object_paths))
+    body.creator_idle=idle
+    samples=list(body.locomotion.get_editor_property('sample_data'))
+    for sample_data in samples:
+        if sample_data.get_editor_property('sample_value').x<1:sample_data.set_editor_property('animation',idle)
+    body.locomotion.set_editor_property('sample_data',samples)
+    unreal.EditorAssetLibrary.save_loaded_asset(body.locomotion,False)
+    body.animation_class=unreal.load_class(None,'/Script/WroclawTheGame.CivilianAnimInstance')
+    if not body.animation_class:raise RuntimeError('Civilian animation class is not compiled')
+    animation_cache['authored_idle']=idle
     catalog.bodies=bodies
     morphs=list(catalog.morphs)
     for m in morphs:
